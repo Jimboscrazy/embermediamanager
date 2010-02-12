@@ -47,7 +47,7 @@ Namespace TVDB
                 Try
                     Me.pbBanner.Image = Res.Result
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End Sub
@@ -87,13 +87,13 @@ Namespace TVDB
                         Me.pnlTop.BackgroundImage = iBackground
                     End Using
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
             Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
                 Select Case eType
-                    Case Ember_Media_Manager.TVDB.Scraper.EventType.SearchResultsDownloaded
+                    Case TVDB.Scraper.EventType.SearchResultsDownloaded
                         Dim lItem As ListViewItem
                         Dim sResults As List(Of TVSearchResults) = DirectCast(Parameter, List(Of TVSearchResults))
 
@@ -110,7 +110,7 @@ Namespace TVDB
                         End If
 
                         Me.pnlLoading.Visible = False
-                    Case Ember_Media_Manager.TVDB.Scraper.EventType.ShowDownloaded
+                    Case TVDB.Scraper.EventType.ShowDownloaded
                         Me.DialogResult = System.Windows.Forms.DialogResult.OK
                         Me.Close()
                 End Select

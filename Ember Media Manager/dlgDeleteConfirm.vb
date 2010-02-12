@@ -57,7 +57,7 @@ Public Class dlgDeleteConfirm
                 If .Nodes.Count = 0 Then Return False
 
                 For Each MovieParentNode As TreeNode In .Nodes
-                    Dim mMovie As Master.DBMovie = CType(MovieParentNode.Tag, Master.DBMovie)
+                    Dim mMovie As Structures.DBMovie = CType(MovieParentNode.Tag, Structures.DBMovie)
 
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
                         Master.DB.DeleteFromDB(mMovie.ID, True)
@@ -91,14 +91,14 @@ Public Class dlgDeleteConfirm
                 Return result
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
 
     Private Sub Populate_FileList(ByVal MoviesToDelete As List(Of Long))
-        Dim mMovie As New Master.DBMovie
+        Dim mMovie As New Structures.DBMovie
         Dim hadError As Boolean = False
-        Dim fDeleter As New FileManip.Delete
+        Dim fDeleter As New FileUtils.Delete
         Dim ItemsToDelete As New List(Of IO.FileSystemInfo)
         Dim MovieParentNode As New TreeNode
         Try
@@ -148,7 +148,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -171,7 +171,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Throw
         End Try
 
@@ -184,7 +184,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Throw
         End Try
     End Sub
@@ -244,9 +244,9 @@ Public Class dlgDeleteConfirm
         Try
             Select Case e.Node.ImageKey
                 Case "MOVIE"
-                    lblNodeSelected.Text = CType(e.Node.Tag, Master.DBMovie).ListTitle
+                    lblNodeSelected.Text = CType(e.Node.Tag, Structures.DBMovie).ListTitle
                 Case "RECORD"
-                    lblNodeSelected.Text = CType(e.Node.Tag, Master.DBMovie).ListTitle
+                    lblNodeSelected.Text = CType(e.Node.Tag, Structures.DBMovie).ListTitle
                 Case "FOLDER"
                     lblNodeSelected.Text = e.Node.Tag.ToString
                 Case "FILE"

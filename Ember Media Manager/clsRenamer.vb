@@ -293,7 +293,7 @@ Public Class FileFolderRenamer
     End Sub
 
     Public Sub New()
-        Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
+        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
 
         _movies.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -388,11 +388,11 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Public Shared Function SelectMPAA(ByVal _movies As Media.Movie) As String
+    Public Shared Function SelectMPAA(ByVal _movies As MediaContainers.Movie) As String
         If Not String.IsNullOrEmpty(_movies.MPAA) Then
             Try
                 Dim strMPAA As String = _movies.MPAA
@@ -420,7 +420,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             Return String.Empty
@@ -432,7 +432,7 @@ Public Class FileFolderRenamer
         Try
             Dim pattern As String = opattern
             Dim strSource As String = String.Empty
-            Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+            Dim xVSourceFlag = From xVSource In APIXML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
             'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
             If xVSourceFlag.Count > 0 Then
                 strSource = xVSourceFlag(0).ToString
@@ -524,7 +524,7 @@ Public Class FileFolderRenamer
             Next
             Return pattern.Trim
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return String.Empty
         End Try
     End Function
@@ -557,7 +557,7 @@ Public Class FileFolderRenamer
         Return pattern
     End Function
 
-    Private Shared Sub UpdateFaSPaths(ByRef _DBM As Master.DBMovie, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
+    Private Shared Sub UpdateFaSPaths(ByRef _DBM As Structures.DBMovie, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
         If Not String.IsNullOrEmpty(_DBM.FanartPath) Then _DBM.FanartPath = Path.Combine(newPath, Path.GetFileName(_DBM.FanartPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ExtraPath) Then _DBM.ExtraPath = Path.Combine(newPath, Path.GetFileName(_DBM.ExtraPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.Filename) Then _DBM.Filename = Path.Combine(newPath, Path.GetFileName(_DBM.Filename).Replace(oldFile, newFile))
@@ -572,7 +572,7 @@ Public Class FileFolderRenamer
     Public Sub DoRename(Optional ByVal sfunction As ShowProgress = Nothing)
         Dim DoDB As Boolean
         Dim DoUpdate As Boolean
-        Dim _movieDB As Master.DBMovie = Nothing
+        Dim _movieDB As Structures.DBMovie = Nothing
         Dim iProg As Integer = 0
         Try
             For Each f As FileFolderRenamer.FileRename In _movies
@@ -620,7 +620,7 @@ Public Class FileFolderRenamer
                                 End If
                                 DoUpdate = True
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                                ErrorLogger.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                                 'Need to make some type of failure log
                                 Continue For
                             End Try
@@ -667,7 +667,7 @@ Public Class FileFolderRenamer
 
                                                 DoUpdate = True
                                             Catch ex As Exception
-                                                Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                                ErrorLogger.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                                 'Need to make some type of failure log
                                             End Try
                                         End If
@@ -706,11 +706,11 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Public Shared Sub RenameSingle(ByRef _tmpMovie As Master.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
+    Public Shared Sub RenameSingle(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
         Dim MovieFile As New FileRename
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
             If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = NFO.GetResFromDimensions(NFO.GetBestVideo(_tmpMovie.Movie.FileInfo))
@@ -738,7 +738,7 @@ Public Class FileFolderRenamer
         For Each i As String In mFolders
             If _tmpMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                 MovieFile.BasePath = i
-                If FileManip.Common.isVideoTS(_tmpMovie.Filename) Then
+                If FileUtils.Common.isVideoTS(_tmpMovie.Filename) Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).Name
                     If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName Then
                         MovieFile.OldPath = String.Empty
@@ -747,7 +747,7 @@ Public Class FileFolderRenamer
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
                     MovieFile.IsVIDEO_TS = True
-                ElseIf FileManip.Common.isBDRip(_tmpMovie.Filename) Then
+                ElseIf FileUtils.Common.isBDRip(_tmpMovie.Filename) Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).Name
                     If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName Then
                         MovieFile.OldPath = String.Empty
@@ -772,7 +772,7 @@ Public Class FileFolderRenamer
         MovieFile.Path = If(MovieFile.Path.StartsWith(Path.DirectorySeparatorChar), MovieFile.Path.Substring(1), MovieFile.Path)
 
         If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
-            MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpMovie.Filename))
+            MovieFile.FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(_tmpMovie.Filename))
             Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
             If _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                 MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
@@ -802,7 +802,7 @@ Public Class FileFolderRenamer
         End If
     End Sub
 
-    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Master.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
+    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
         Try
             If Not _movie.IsLock Then
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
@@ -836,7 +836,7 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(637, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(638, "Unable to Rename Directory"))
                         Else
-                            Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                         End If
                     End Try
 
@@ -878,7 +878,7 @@ Public Class FileFolderRenamer
                                         If ShowError Then
                                             MsgBox(String.Format(Master.eLang.GetString(639, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(640, "Unable to Rename File"))
                                         Else
-                                            Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                            ErrorLogger.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         End If
                                     End Try
                                 End If
@@ -914,7 +914,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 End Class

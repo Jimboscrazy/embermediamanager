@@ -20,7 +20,6 @@
 
 'TODO: Image Selection - filters, remove current image, revert to default
 'TODO: Add setting to only get posters for the specified language and default to english posters if posters are not available in the selected language
-'TODO: TV Scraper to background worker
 'TODO: Show/Season/Episode Locking and Marking
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
@@ -83,11 +82,11 @@ Namespace TVDB
                             If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
                             Me.tvList.Nodes.Add(TnS)
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -97,7 +96,7 @@ Namespace TVDB
                 Try
                     Me.bwLoadImages.ReportProgress(tmpTVDBShow.Episodes.Count + tmpTVDBShow.SeasonPosters.Count + tmpTVDBShow.ShowPosters.Count + tmpTVDBShow.Fanart.Count + tmpTVDBShow.Posters.Count, "max")
 
-                    For Each Epi As Master.DBTV In tmpTVDBShow.Episodes
+                    For Each Epi As Structures.DBTV In tmpTVDBShow.Episodes
                         Try
                             If Not File.Exists(Epi.TVEp.LocalFile) Then
                                 If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
@@ -116,7 +115,7 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
@@ -140,7 +139,7 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
@@ -164,7 +163,7 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
@@ -188,7 +187,7 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
@@ -212,12 +211,12 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 Return Me.SetDefaults()
@@ -286,11 +285,11 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
-                    For Each Episode As Master.DBTV In tmpTVDBShow.Episodes
+                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
                         Try
                             If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
                                 Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
@@ -312,12 +311,12 @@ Namespace TVDB
                             Me.bwLoadImages.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 Return False
@@ -377,7 +376,7 @@ Namespace TVDB
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -428,7 +427,7 @@ Namespace TVDB
 
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 Me.iCounter += 1
@@ -485,7 +484,7 @@ Namespace TVDB
                         Next
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -521,7 +520,7 @@ Namespace TVDB
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -562,7 +561,7 @@ Namespace TVDB
                     Return
                 End If
 
-                For Each sEpisode As Master.DBTV In tmpTVDBShow.Episodes
+                For Each sEpisode As Structures.DBTV In tmpTVDBShow.Episodes
                     Try
                         iSeason = sEpisode.TVEp.Season
 
@@ -606,7 +605,7 @@ Namespace TVDB
                         Me.bwLoadData.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 Next
 
@@ -625,7 +624,7 @@ Namespace TVDB
                         Me.pbStatus.Maximum = e.ProgressPercentage
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -647,7 +646,7 @@ Namespace TVDB
                 AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
                 AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
 
-                Master.PNLDoubleBuffer(Me.pnlImages)
+                Functions.PNLDoubleBuffer(Me.pnlImages)
             End Sub
 
             Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
@@ -689,7 +688,7 @@ Namespace TVDB
                         Me.pbStatus.Maximum = e.ProgressPercentage
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 

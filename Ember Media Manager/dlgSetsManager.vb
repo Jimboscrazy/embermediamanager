@@ -70,7 +70,7 @@ Public Class dlgSetsManager
     End Class
 
     Friend Class Movies : Implements IComparable(Of Movies)
-        Private _dbmovie As Master.DBMovie
+        Private _dbmovie As Structures.DBMovie
         Private _order As Integer
         Private _listtitle As String
 
@@ -78,11 +78,11 @@ Public Class dlgSetsManager
             Return (Me.Order).CompareTo(other.Order)
         End Function
 
-        Public Property DBMovie() As Master.DBMovie
+        Public Property DBMovie() As Structures.DBMovie
             Get
                 Return Me._dbmovie
             End Get
-            Set(ByVal value As Master.DBMovie)
+            Set(ByVal value As Structures.DBMovie)
                 Me._dbmovie = value
             End Set
         End Property
@@ -110,7 +110,7 @@ Public Class dlgSetsManager
         End Sub
 
         Public Sub Clear()
-            Me._dbmovie = New Master.DBMovie
+            Me._dbmovie = New Structures.DBMovie
             Me._order = 0
             Me._listtitle = String.Empty
         End Sub
@@ -170,7 +170,7 @@ Public Class dlgSetsManager
             Next
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim tmpMovie As New Master.DBMovie
+                Dim tmpMovie As New Structures.DBMovie
                 Dim iProg As Integer = 0
                 SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -185,7 +185,7 @@ Public Class dlgSetsManager
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                                 lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(tmpMovie.Movie.Title, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
-                                    For Each mSet As Media.Set In tmpMovie.Movie.Sets
+                                    For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
                                         If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
                                             alSets.Add(mSet.Set)
                                         End If
@@ -199,7 +199,7 @@ Public Class dlgSetsManager
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -250,7 +250,7 @@ Public Class dlgSetsManager
 
             Me.lbMovies.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -291,7 +291,7 @@ Public Class dlgSetsManager
                 Me.currSet.Set = Me.lbSets.SelectedItem.ToString
 
                 For Each tMovie As Movies In lMovies
-                    For Each mSet As Media.Set In tMovie.DBMovie.Movie.Sets
+                    For Each mSet As MediaContainers.Set In tMovie.DBMovie.Movie.Sets
                         If mSet.Set = Me.currSet.Set Then
                             If Not String.IsNullOrEmpty(mSet.Order) Then
                                 tOrder = Convert.ToInt32(mSet.Order)
@@ -311,7 +311,7 @@ Public Class dlgSetsManager
             Me.FillMovies()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -325,7 +325,7 @@ Public Class dlgSetsManager
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -362,7 +362,7 @@ Public Class dlgSetsManager
 
             Me.SetControlsEnabled(True)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -403,7 +403,7 @@ Public Class dlgSetsManager
                 Me.LoadCurrSet()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -420,7 +420,7 @@ Public Class dlgSetsManager
 
             Me.lbMoviesInSet.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -430,7 +430,7 @@ Public Class dlgSetsManager
             Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -470,7 +470,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -486,7 +486,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -523,7 +523,7 @@ Public Class dlgSetsManager
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -543,7 +543,7 @@ Public Class dlgSetsManager
 
             Me.LoadSets()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

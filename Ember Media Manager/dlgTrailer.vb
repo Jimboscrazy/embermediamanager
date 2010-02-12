@@ -41,7 +41,7 @@ Public Class dlgTrailer
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
         Dim didCancel As Boolean = False
 
-        If StringManip.isValidURL(Me.txtYouTube.Text) Then
+        If StringUtils.isValidURL(Me.txtYouTube.Text) Then
             tURL = Me.txtYouTube.Text
         ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
             tURL = lbTrailers.SelectedItem.ToString
@@ -90,7 +90,7 @@ Public Class dlgTrailer
         If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
             If CloseDialog Then
                 Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
-                FileManip.Common.MoveFileWithStream(Me.prePath, Me.tURL)
+                FileUtils.Common.MoveFileWithStream(Me.prePath, Me.tURL)
 
                 File.Delete(Me.prePath)
 
@@ -103,7 +103,7 @@ Public Class dlgTrailer
         ElseIf Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
             If CloseDialog Then
                 Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-                FileManip.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+                FileUtils.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
 
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
@@ -124,7 +124,7 @@ Public Class dlgTrailer
                     didCancel = True
                 End If
             End Using
-        ElseIf StringManip.isValidURL(Me.txtYouTube.Text) Then
+        ElseIf StringUtils.isValidURL(Me.txtYouTube.Text) Then
             Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
             Me.bwDownloadTrailer.WorkerReportsProgress = True
             Me.bwDownloadTrailer.WorkerSupportsCancellation = True
@@ -303,7 +303,7 @@ Public Class dlgTrailer
         Try
             With ofdTrailer
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
-                .Filter = String.Concat("Supported Trailer Formats|*", Master.ListToStringWithSeparator(Master.eSettings.ValidExts.ToArray(), ";*"))
+                .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.ValidExts.ToArray(), ";*"))
                 .FilterIndex = 0
             End With
 
@@ -311,7 +311,7 @@ Public Class dlgTrailer
                 txtManual.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -351,7 +351,7 @@ Public Class dlgTrailer
             Me.prePath = String.Empty
         End If
 
-        If StringManip.isValidURL(Me.txtYouTube.Text) OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
+        If StringUtils.isValidURL(Me.txtYouTube.Text) OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
             Me.OK_Button.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then

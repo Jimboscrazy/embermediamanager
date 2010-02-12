@@ -32,7 +32,7 @@ Public Class dlgExportMovies
     Private use_filter As Boolean = False
     Private TempPath As String = Path.Combine(Master.TempPath, "Export")
     Private HTMLBody As New StringBuilder
-    Private _movies As New List(Of Master.DBMovie)
+    Private _movies As New List(Of Structures.DBMovie)
     Private bFiltered As Boolean = False
     Private bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
@@ -79,10 +79,10 @@ Public Class dlgExportMovies
                 Application.DoEvents()
             End While
             MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
-            Dim srcPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
+            Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -100,7 +100,7 @@ Public Class dlgExportMovies
                 Application.DoEvents()
             End While
         End If
-        FileManip.Delete.DeleteDirectory(Me.TempPath)
+        FileUtils.Delete.DeleteDirectory(Me.TempPath)
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -112,7 +112,7 @@ Public Class dlgExportMovies
             _movies.Clear()
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim _tmpMovie As New Master.DBMovie
+                Dim _tmpMovie As New Structures.DBMovie
                 Dim _ID As Integer
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
@@ -140,7 +140,7 @@ Public Class dlgExportMovies
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -149,14 +149,14 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Master.DBMovie In _movies
+            For Each _curMovie As Structures.DBMovie In _movies
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
                     If File.Exists(_curMovie.PosterPath) Then
                         If new_width > 0 Then
                             Dim im As New Images
                             im.FromFile(_curMovie.PosterPath)
-                            ImageManip.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
+                            ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
                             im.Save(posterfile)
                         Else
                             File.Copy(_curMovie.PosterPath, posterfile, True)
@@ -172,7 +172,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -181,7 +181,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Master.DBMovie In _movies
+            For Each _curMovie As Structures.DBMovie In _movies
                 Try
                     Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
                     If File.Exists(_curMovie.FanartPath) Then
@@ -197,19 +197,19 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String) As String
+    Private Function GetAVImages(ByVal AVMovie As Structures.DBMovie, ByVal line As String) As String
 
         '//
         ' Parse the Flags XML and set the proper images
         '\\
 
-        If XML.FlagsXML.Nodes.Count > 0 Then
+        If APIXML.FlagsXML.Nodes.Count > 0 Then
             'Dim mePath As String = ""
-            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
+            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             Try
                 Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
                 Dim atypeRef As String = String.Empty
@@ -222,62 +222,62 @@ Public Class dlgExportMovies
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
                 Dim sourceCheck As String = String.Empty
 
-                If FileManip.Common.isVideoTS(AVMovie.Filename) Then
+                If FileUtils.Common.isVideoTS(AVMovie.Filename) Then
                     sourceCheck = "dvd"
-                ElseIf FileManip.Common.isBDRip(AVMovie.Filename) Then
+                ElseIf FileUtils.Common.isBDRip(AVMovie.Filename) Then
                     sourceCheck = "bluray"
                 Else
                     sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
                 End If
 
                 'video resolution
-                Dim xVResDefault = From xDef In XML.FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
+                Dim xVResDefault = From xDef In APIXML.FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
                 If xVResDefault.Count > 0 Then
                     vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
                 End If
 
                 Dim strRes As String = NFO.GetResFromDimensions(tVideo).ToLower
                 If Not String.IsNullOrEmpty(strRes) Then
-                    Dim xVResFlag = From xVRes In XML.FlagsXML...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
+                    Dim xVResFlag = From xVRes In APIXML.FlagsXML...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
                     If xVResFlag.Count > 0 Then
                         vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
                     End If
                 End If
 
                 'video source
-                Dim xVSourceDefault = From xDef In XML.FlagsXML...<vsource> Select xDef.Element("default").Element("icon").Value
+                Dim xVSourceDefault = From xDef In APIXML.FlagsXML...<vsource> Select xDef.Element("default").Element("icon").Value
                 If xVSourceDefault.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In APIXML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
 
                 'video type
-                Dim xVTypeDefault = From xDef In XML.FlagsXML...<vtype> Select xDef.Element("default").Element("icon").Value
+                Dim xVTypeDefault = From xDef In APIXML.FlagsXML...<vtype> Select xDef.Element("default").Element("icon").Value
                 If xVTypeDefault.Count > 0 Then
                     vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
                 End If
 
                 Dim vCodec As String = tVideo.Codec.ToLower
                 If Not String.IsNullOrEmpty(vCodec) Then
-                    Dim xVTypeFlag = From xVType In XML.FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
+                    Dim xVTypeFlag = From xVType In APIXML.FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
                         vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
                     End If
                 End If
 
                 'audio type
-                Dim xATypeDefault = From xDef In XML.FlagsXML...<atype> Select xDef.Element("default").Element("icon").Value
+                Dim xATypeDefault = From xDef In APIXML.FlagsXML...<atype> Select xDef.Element("default").Element("icon").Value
                 If xATypeDefault.Count > 0 Then
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
                 Dim aCodec As String = tAudio.Codec.ToLower
                 If Not String.IsNullOrEmpty(aCodec) Then
-                    Dim xATypeFlag = From xAType In XML.FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                    Dim xATypeFlag = From xAType In APIXML.FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                     If xATypeFlag.Count > 0 Then
                         atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
                         If Not IsNothing(xATypeFlag(0).ref) Then
@@ -287,40 +287,40 @@ Public Class dlgExportMovies
                 End If
 
                 'audio channels
-                Dim xAChanDefault = From xDef In XML.FlagsXML...<achan> Select xDef.Element("default").Element("icon").Value
+                Dim xAChanDefault = From xDef In APIXML.FlagsXML...<achan> Select xDef.Element("default").Element("icon").Value
                 If xAChanDefault.Count > 0 Then
                     achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
                 If Not String.IsNullOrEmpty(tAudio.Channels) Then
-                    Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) AndAlso Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                    Dim xAChanFlag = From xAChan In APIXML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) AndAlso Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
                     If xAChanFlag.Count > 0 Then
                         achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
+                If Not String.IsNullOrEmpty(vresImage) AndAlso APIXML.alFlags.Contains(vresImage.ToLower) Then
                     line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage))).Replace("\", "/")
                 End If
 
-                If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
+                If Not String.IsNullOrEmpty(vsourceImage) AndAlso APIXML.alFlags.Contains(vsourceImage.ToLower) Then
                     line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage))).Replace("\", "/")
                 End If
 
-                If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
+                If Not String.IsNullOrEmpty(vtypeImage) AndAlso APIXML.alFlags.Contains(vtypeImage.ToLower) Then
                     line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage))).Replace("\", "/")
                 End If
 
-                If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
+                If Not String.IsNullOrEmpty(atypeImage) AndAlso APIXML.alFlags.Contains(atypeImage.ToLower) Then
                     line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage))).Replace("\", "/")
                 End If
 
-                If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
+                If Not String.IsNullOrEmpty(achanImage) AndAlso APIXML.alFlags.Contains(achanImage.ToLower) Then
                     line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage))).Replace("\", "/")
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
         Return line
@@ -339,13 +339,13 @@ Public Class dlgExportMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim htmlPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
+            Dim htmlPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
             Dim pattern As String
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
             If Not File.Exists(htmlPath) Then
-                htmlPath = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
+                htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
             End If
             pattern = File.ReadAllText(htmlPath)
             If pattern.Contains("<$NEED_POSTERS>") Then
@@ -382,7 +382,7 @@ Public Class dlgExportMovies
 
             HTMLBody.Append(movieheader)
             Dim counter As Integer = 1
-            For Each _curMovie As Master.DBMovie In _movies
+            For Each _curMovie As Structures.DBMovie In _movies
 
                 Dim _vidDetails As String = String.Empty
                 Dim _vidDimensions As String = String.Empty
@@ -405,11 +405,11 @@ Public Class dlgExportMovies
 
                 'now check if we need to include this movie
                 If bSearch Then
-                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringManip.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso StringManip.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(21, "Title") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(278, "Year") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
+                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(21, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(278, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
                         'included - build the output
                     Else
                         'filtered out - exclude this one
@@ -426,30 +426,30 @@ Public Class dlgExportMovies
                 row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
                 row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
                 If Not String.IsNullOrEmpty(_curMovie.Movie.Title) Then
-                    row = row.Replace("<$MOVIENAME>", StringManip.HtmlEncode(_curMovie.Movie.Title))
+                    row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.Movie.Title))
                 Else
-                    row = row.Replace("<$MOVIENAME>", StringManip.HtmlEncode(_curMovie.ListTitle))
+                    row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.ListTitle))
                 End If
-                row = row.Replace("<$ACTORS>", StringManip.HtmlEncode(Master.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
-                row = row.Replace("<$DIRECTOR>", StringManip.HtmlEncode(_curMovie.Movie.Director))
-                row = row.Replace("<$CERTIFICATION>", StringManip.HtmlEncode(_curMovie.Movie.Certification))
-                row = row.Replace("<$IMDBID>", StringManip.HtmlEncode(_curMovie.Movie.IMDBID))
-                row = row.Replace("<$MPAA>", StringManip.HtmlEncode(_curMovie.Movie.MPAA))
-                row = row.Replace("<$RELEASEDATE>", StringManip.HtmlEncode(_curMovie.Movie.ReleaseDate))
-                row = row.Replace("<$RUNTIME>", StringManip.HtmlEncode(_curMovie.Movie.Runtime))
-                row = row.Replace("<$TAGLINE>", StringManip.HtmlEncode(_curMovie.Movie.Tagline))
-                row = row.Replace("<$RATING>", StringManip.HtmlEncode(_curMovie.Movie.Rating))
-                row = row.Replace("<$VOTES>", StringManip.HtmlEncode(_curMovie.Movie.Votes))
-                row = row.Replace("<$LISTTITLE>", StringManip.HtmlEncode(_curMovie.ListTitle))
+                row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(Functions.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
+                row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curMovie.Movie.Director))
+                row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Movie.Certification))
+                row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curMovie.Movie.IMDBID))
+                row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curMovie.Movie.MPAA))
+                row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curMovie.Movie.ReleaseDate))
+                row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curMovie.Movie.Runtime))
+                row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Tagline))
+                row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curMovie.Movie.Rating))
+                row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curMovie.Movie.Votes))
+                row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curMovie.ListTitle))
                 row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                 row = row.Replace("<$COUNT>", counter.ToString)
-                row = row.Replace("<$FILENAME>", StringManip.HtmlEncode(Path.GetFileName(_curMovie.Filename)))
-                row = row.Replace("<$DIRNAME>", StringManip.HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
+                row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curMovie.Filename)))
+                row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
                 'row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
-                row = row.Replace("<$OUTLINE>", StringManip.HtmlEncode(_curMovie.Movie.Outline))
+                row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Outline))
                 'row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$PLOT>", StringManip.HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$GENRES>", StringManip.HtmlEncode(_curMovie.Movie.Genre))
+                row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curMovie.Movie.Plot))
+                row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
@@ -465,7 +465,7 @@ Public Class dlgExportMovies
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -537,10 +537,10 @@ Public Class dlgExportMovies
             Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
             'Only create extra files once for each template... dont do it when applyng filters
             If Not DontSaveExtra Then
-                FileManip.Delete.DeleteDirectory(Me.TempPath)
+                FileUtils.Delete.DeleteDirectory(Me.TempPath)
                 CopyDirectory(Args.srcPath, destPathShort, True)
                 If Me.bexportFlags Then
-                    Args.srcPath = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+                    Args.srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                     Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
                     CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "Flags"), True)
                 End If
@@ -574,7 +574,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -617,7 +617,7 @@ Public Class dlgExportMovies
             myStream.Close()
             If Not IsNothing(myStream) Then
                 DontSaveExtra = False 'Force Full Save
-                Dim srcPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
+                Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
                 Me.SaveAll(Master.eLang.GetString(589, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
             End If
         End If
@@ -662,7 +662,7 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Me.isCL Then
             Me.SetUp()
-            Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
+            Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
             For Each i As DirectoryInfo In di.GetDirectories
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
                     cbTemplate.Items.Add(i.Name)

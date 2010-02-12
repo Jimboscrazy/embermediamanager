@@ -30,7 +30,7 @@ Public Class OFDB
     Private _plot As String
     Private _genre As String
 
-    Private OFDBMovie As Media.Movie
+    Private OFDBMovie As MediaContainers.Movie
     Private imdbID As String
 
     Public Property Title() As String
@@ -76,7 +76,7 @@ Public Class OFDB
         _genre = String.Empty
     End Sub
 
-    Public Sub New(ByVal sID As String, ByRef mMovie As Media.Movie)
+    Public Sub New(ByVal sID As String, ByRef mMovie As MediaContainers.Movie)
         Clear()
         imdbID = sID
         OFDBMovie = mMovie
@@ -100,7 +100,7 @@ Public Class OFDB
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return ofdbURL
@@ -176,7 +176,7 @@ Public Class OFDB
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -206,7 +206,7 @@ Public Class OFDB
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return FullPlot
@@ -220,7 +220,7 @@ Public Class OFDB
 
             If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return CleanString
     End Function

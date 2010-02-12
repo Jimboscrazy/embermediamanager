@@ -32,9 +32,9 @@ Public Class dlgImgSelect
     Friend WithEvents bwTMDBDownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMPDBDownload As New System.ComponentModel.BackgroundWorker
 
-    Private tMovie As New Master.DBMovie
+    Private tMovie As New Structures.DBMovie
     Private isEdit As Boolean = False
-    Private DLType As Master.ImageType
+    Private DLType As Enums.ImageType
     Private PreDL As Boolean = False
     Private isShown As Boolean = False
 
@@ -50,9 +50,9 @@ Public Class dlgImgSelect
     Private selIndex As Integer = -1
     Private noImages As Boolean = False
 
-    Private IMPAPosters As New List(Of Media.Image)
-    Private TMDBPosters As New List(Of Media.Image)
-    Private MPDBPosters As New List(Of Media.Image)
+    Private IMPAPosters As New List(Of MediaContainers.Image)
+    Private TMDBPosters As New List(Of MediaContainers.Image)
+    Private MPDBPosters As New List(Of MediaContainers.Image)
 
     Private _impaDone As Boolean = True
     Private _tmdbDone As Boolean = True
@@ -63,7 +63,7 @@ Public Class dlgImgSelect
     Private Event MPDBDone()
 
     Private CachePath As String = String.Empty
-    Private Results As New Master.ImgResult
+    Private Results As New Containers.ImgResult
     Private ETHashes As New List(Of String)
 
 
@@ -72,7 +72,7 @@ Public Class dlgImgSelect
         Try
             Dim tmpPathPlus As String = String.Empty
 
-            If DLType = Master.ImageType.Fanart Then
+            If DLType = Enums.ImageType.Fanart Then
                 tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
             Else
                 tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
@@ -83,7 +83,7 @@ Public Class dlgImgSelect
                     Me.tmpImage.Save(tmpPathPlus)
                     Results.ImagePath = tmpPathPlus
                 Else
-                    If Me.DLType = Master.ImageType.Fanart Then
+                    If Me.DLType = Enums.ImageType.Fanart Then
                         Results.ImagePath = Me.tmpImage.SaveAsFanart(tMovie)
                     Else
                         Results.ImagePath = Me.tmpImage.SaveAsPoster(tMovie)
@@ -122,7 +122,7 @@ Public Class dlgImgSelect
                         Me.tmpImage.Save(tmpPathPlus)
                         Results.ImagePath = tmpPathPlus
                     Else
-                        If Me.DLType = Master.ImageType.Fanart Then
+                        If Me.DLType = Enums.ImageType.Fanart Then
                             Results.ImagePath = Me.tmpImage.SaveAsFanart(Me.tMovie)
                         Else
                             Results.ImagePath = Me.tmpImage.SaveAsPoster(Me.tMovie)
@@ -132,7 +132,7 @@ Public Class dlgImgSelect
                 Me.pnlSinglePic.Visible = False
             End If
 
-            If Me.DLType = Master.ImageType.Fanart Then
+            If Me.DLType = Enums.ImageType.Fanart Then
                 Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
                 Dim extraPath As String = String.Empty
@@ -150,14 +150,14 @@ Public Class dlgImgSelect
                     If isEdit Then
                         extraPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
-                        If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(Me.tMovie.Filename) Then
+                        If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Me.tMovie.Filename) Then
                             extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Me.tMovie.Filename).FullName).FullName, "extrathumbs")
-                        ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(Me.tMovie.Filename) Then
+                        ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Me.tMovie.Filename) Then
                             extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Me.tMovie.Filename).FullName).FullName).FullName, "extrathumbs")
                         Else
                             extraPath = Path.Combine(Directory.GetParent(Me.tMovie.Filename).FullName, "extrathumbs")
                         End If
-                        iMod = Master.GetExtraModifier(extraPath)
+                        iMod = Functions.GetExtraModifier(extraPath)
                         iVal = iMod + 1
                     End If
 
@@ -178,7 +178,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -216,7 +216,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelect_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Master.eSettings.AutoET AndAlso Not Master.eSettings.UseImgCache Then FileManip.Delete.DeleteDirectory(Me.CachePath)
+        If Master.eSettings.AutoET AndAlso Not Master.eSettings.UseImgCache Then FileUtils.Delete.DeleteDirectory(Me.CachePath)
     End Sub
 
     Private Sub dlgImgSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -238,9 +238,9 @@ Public Class dlgImgSelect
             AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlBG.MouseWheel, AddressOf MouseWheelEvent
 
-            Master.PNLDoubleBuffer(Me.pnlBG)
+            Functions.PNLDoubleBuffer(Me.pnlBG)
 
-            If Me.DLType = Master.ImageType.Posters Then
+            If Me.DLType = Enums.ImageType.Posters Then
                 Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
             Else
                 Me.Text = String.Concat(Master.eLang.GetString(309, "Select Fanart - "), If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
@@ -252,7 +252,7 @@ Public Class dlgImgSelect
                 End If
             End If
 
-            CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
+            CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.ImageType.Posters, "posters", "fanart"))
 
             Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
             Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
@@ -266,7 +266,7 @@ Public Class dlgImgSelect
             Me.lblDL1.Text = Me.lblDL3.Text
             Me.Label2.Text = Master.eLang.GetString(307, "Downloading Selected Image...")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -276,14 +276,14 @@ Public Class dlgImgSelect
             Me._mpdbDone = True
             Me.AllDoneDownloading()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub TMDBDoneDownloading()
 
         Try
-            If Me.DLType = Master.ImageType.Posters Then
+            If Me.DLType = Enums.ImageType.Posters Then
                 Me._tmdbDone = True
                 Me.AllDoneDownloading()
             Else
@@ -295,7 +295,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -304,7 +304,7 @@ Public Class dlgImgSelect
             Me._impaDone = True
             Me.AllDoneDownloading()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -318,7 +318,7 @@ Public Class dlgImgSelect
         End If
     End Sub
 
-    Private Sub ProcessPics(ByVal posters As List(Of Media.Image))
+    Private Sub ProcessPics(ByVal posters As List(Of MediaContainers.Image))
         Try
             Dim iIndex As Integer = 0
 
@@ -332,15 +332,15 @@ Public Class dlgImgSelect
             End If
 
             If posters.Count > 0 Then
-                For Each xPoster As Media.Image In posters.OrderBy(Function(p) p.URL)
-                    If Not IsNothing(xPoster.WebImage.Image) AndAlso (Me.DLType = Master.ImageType.Fanart OrElse Not (xPoster.URL.ToLower.Contains("themoviedb.org") AndAlso Not xPoster.Description = "cover")) Then
+                For Each xPoster As MediaContainers.Image In posters.OrderBy(Function(p) p.URL)
+                    If Not IsNothing(xPoster.WebImage.Image) AndAlso (Me.DLType = Enums.ImageType.Fanart OrElse Not (xPoster.URL.ToLower.Contains("themoviedb.org") AndAlso Not xPoster.Description = "cover")) Then
                         Me.AddImage(xPoster.WebImage.Image, xPoster.Description, iIndex, xPoster.URL, xPoster.isChecked)
                         iIndex += 1
                     End If
                 Next
             Else
                 If Not Me.PreDL OrElse isShown Then
-                    If Me.DLType = Master.ImageType.Fanart Then
+                    If Me.DLType = Enums.ImageType.Fanart Then
                         MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
                     Else
                         MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
@@ -355,7 +355,7 @@ Public Class dlgImgSelect
             Me.Activate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -363,7 +363,7 @@ Public Class dlgImgSelect
         Me.pbDL3.Value = iPercent
     End Sub
 
-    Private Sub MPDBPostersDownloaded(ByVal Posters As List(Of Media.Image))
+    Private Sub MPDBPostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
 
         Try
             Me.pbDL3.Value = 0
@@ -378,7 +378,7 @@ Public Class dlgImgSelect
             Me.bwMPDBDownload.WorkerReportsProgress = True
             Me.bwMPDBDownload.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -387,7 +387,7 @@ Public Class dlgImgSelect
         Me.pbDL1.Value = iPercent
     End Sub
 
-    Private Sub TMDBPostersDownloaded(ByVal Posters As List(Of Media.Image))
+    Private Sub TMDBPostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
 
         Try
             Me.pbDL1.Value = 0
@@ -402,7 +402,7 @@ Public Class dlgImgSelect
             Me.bwTMDBDownload.WorkerReportsProgress = True
             Me.bwTMDBDownload.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -411,7 +411,7 @@ Public Class dlgImgSelect
         Me.pbDL2.Value = iPercent
     End Sub
 
-    Private Sub IMPAPostersDownloaded(ByVal Posters As List(Of Media.Image))
+    Private Sub IMPAPostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
 
         Try
             Me.pbDL2.Value = 0
@@ -426,7 +426,7 @@ Public Class dlgImgSelect
             Me.bwIMPADownload.WorkerReportsProgress = True
             Me.bwIMPADownload.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -456,9 +456,9 @@ Public Class dlgImgSelect
                     Me.pnlDLStatus.Visible = True
                     Application.DoEvents()
                     NoneFound = False
-                    Dim tImage As Media.Image
+                    Dim tImage As MediaContainers.Image
                     For Each sFile As FileInfo In lFi
-                        tImage = New Media.Image
+                        tImage = New MediaContainers.Image
                         tImage.WebImage.FromFile(sFile.FullName)
                         Select Case True
                             Case sFile.Name.Contains("(original)")
@@ -528,7 +528,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -554,29 +554,29 @@ Public Class dlgImgSelect
                     Me.pnlDLStatus.Visible = True
                     Application.DoEvents()
                     NoneFound = False
-                    Dim tImage As Media.Image
+                    Dim tImage As MediaContainers.Image
                     For Each sFile As FileInfo In lFi
-                        tImage = New Media.Image
+                        tImage = New MediaContainers.Image
                         tImage.WebImage.FromFile(sFile.FullName)
                         If Not IsNothing(tImage.WebImage.Image) Then
                             Select Case True
                                 Case sFile.Name.Contains("(original)")
                                     tImage.Description = "original"
-                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Lrg Then
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
                                         If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
                                             tImage.isChecked = True
                                         End If
                                     End If
                                 Case sFile.Name.Contains("(mid)")
                                     tImage.Description = "mid"
-                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Mid Then
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
                                         If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
                                             tImage.isChecked = True
                                         End If
                                     End If
                                 Case sFile.Name.Contains("(thumb)")
                                     tImage.Description = "thumb"
-                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Small Then
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
                                         If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
                                             tImage.isChecked = True
                                         End If
@@ -613,7 +613,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -648,7 +648,7 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
-            If Me.DLType = Master.ImageType.Fanart Then
+            If Me.DLType = Enums.ImageType.Fanart Then
                 ReDim Preserve Me.chkImage(iIndex)
                 Me.chkImage(iIndex) = New CheckBox()
                 Me.chkImage(iIndex).Name = iIndex.ToString
@@ -683,7 +683,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iCounter += 1
@@ -706,7 +706,7 @@ Public Class dlgImgSelect
             For i As Integer = 0 To UBound(Me.pnlImage)
                 Me.pnlImage(i).BackColor = Color.White
 
-                If DLType = Master.ImageType.Fanart Then
+                If DLType = Enums.ImageType.Fanart Then
                     Me.chkImage(i).BackColor = Color.White
                     Me.chkImage(i).ForeColor = Color.Black
                 Else
@@ -718,7 +718,7 @@ Public Class dlgImgSelect
             'set selected pnl color to blue
             Me.pnlImage(iIndex).BackColor = Color.Blue
 
-            If DLType = Master.ImageType.Fanart Then
+            If DLType = Enums.ImageType.Fanart Then
                 Me.chkImage(iIndex).BackColor = Color.Blue
                 Me.chkImage(iIndex).ForeColor = Color.White
             Else
@@ -730,7 +730,7 @@ Public Class dlgImgSelect
 
             Me.pnlSize.Visible = False
 
-            If Not Me.DLType = Master.ImageType.Fanart AndAlso sURL.ToLower.Contains("themoviedb.org") Then
+            If Not Me.DLType = Enums.ImageType.Fanart AndAlso sURL.ToLower.Contains("themoviedb.org") Then
                 Me.SetupSizes(sURL)
                 If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
                     Me.OK_Button.Enabled = False
@@ -749,7 +749,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -801,13 +801,13 @@ Public Class dlgImgSelect
             Next
 
             Select Case Master.eSettings.PreferredPosterSize
-                Case Master.PosterSize.Small
+                Case Enums.PosterSize.Small
                     Me.rbSmall.Checked = Me.rbSmall.Enabled
-                Case Master.PosterSize.Mid
+                Case Enums.PosterSize.Mid
                     Me.rbMedium.Checked = Me.rbMedium.Enabled
-                Case Master.PosterSize.Lrg
+                Case Enums.PosterSize.Lrg
                     Me.rbLarge.Checked = Me.rbLarge.Enabled
-                Case Master.PosterSize.Xlrg
+                Case Enums.PosterSize.Xlrg
                     Me.rbXLarge.Checked = Me.rbXLarge.Enabled
             End Select
 
@@ -815,13 +815,13 @@ Public Class dlgImgSelect
 
             Me.Invalidate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            If Me.DLType = Master.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
+            If Me.DLType = Enums.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(DirectCast(sender, PictureBox).Image)
                 End Using
@@ -848,7 +848,7 @@ Public Class dlgImgSelect
             If Not PreDL Then
                 StartDownload()
             ElseIf noImages Then
-                If Me.DLType = Master.ImageType.Fanart Then
+                If Me.DLType = Enums.ImageType.Fanart Then
                     MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
                 Else
                     MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
@@ -858,20 +858,20 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub StartDownload()
         Try
             Select Case Me.DLType
-                Case Master.ImageType.Posters
+                Case Enums.ImageType.Posters
                     Me.GetPosters()
-                Case Master.ImageType.Fanart
+                Case Enums.ImageType.Fanart
                     Me.GetFanart()
             End Select
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -893,7 +893,7 @@ Public Class dlgImgSelect
                 If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.IMPAPosters.Item(i).URL)
                 If Master.eSettings.UseImgCache Then
                     Try
-                        Me.IMPAPosters.Item(i).URL = StringManip.CleanURL(Me.IMPAPosters.Item(i).URL)
+                        Me.IMPAPosters.Item(i).URL = StringUtils.CleanURL(Me.IMPAPosters.Item(i).URL)
                         Me.IMPAPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Me.IMPAPosters.Item(i).URL, ").jpg")))
                     Catch
                     End Try
@@ -911,10 +911,10 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL2Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL2Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL2.Value = e.ProgressPercentage
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -942,7 +942,7 @@ Public Class dlgImgSelect
         Dim savePath As String = String.Empty
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
-                If Me.DLType = Master.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
+                If Me.DLType = Enums.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
                     If Me.bwTMDBDownload.CancellationPending Then
                         e.Cancel = True
                         Return
@@ -951,7 +951,7 @@ Public Class dlgImgSelect
                     Try
                         Me.TMDBPosters.Item(i).WebImage.FromWeb(Me.TMDBPosters.Item(i).URL)
                         If Not Master.eSettings.NoSaveImagesToNfo Then
-                            If Me.DLType = Master.ImageType.Fanart Then
+                            If Me.DLType = Enums.ImageType.Fanart Then
                                 If Not Me.TMDBPosters.Item(i).URL.Contains("_thumb.") Then
                                     Me.Results.Fanart.URL = "http://images.themoviedb.org"
                                     thumbLink = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)
@@ -960,7 +960,7 @@ Public Class dlgImgSelect
                                     Else
                                         thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
                                     End If
-                                    Me.Results.Fanart.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                    Me.Results.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
                                 End If
                             Else
                                 Me.Results.Posters.Add(Me.TMDBPosters.Item(i).URL)
@@ -968,20 +968,20 @@ Public Class dlgImgSelect
                         End If
                         If Master.eSettings.UseImgCache OrElse Master.eSettings.AutoET Then
                             Try
-                                Me.TMDBPosters.Item(i).URL = StringManip.CleanURL(Me.TMDBPosters.Item(i).URL)
+                                Me.TMDBPosters.Item(i).URL = StringUtils.CleanURL(Me.TMDBPosters.Item(i).URL)
 
-                                savePath = Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg"))
+                                savePath = Path.Combine(CachePath, String.Concat(If(Me.DLType = Enums.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg"))
                                 Me.TMDBPosters.Item(i).WebImage.Save(savePath)
 
                                 If Master.eSettings.AutoET Then
-                                    Dim tSize As New Master.FanartSize
+                                    Dim tSize As New Enums.FanartSize
                                     Select Case Me.TMDBPosters.Item(i).Description.ToLower
                                         Case "original"
-                                            tSize = Master.FanartSize.Lrg
+                                            tSize = Enums.FanartSize.Lrg
                                         Case "mid"
-                                            tSize = Master.FanartSize.Mid
+                                            tSize = Enums.FanartSize.Mid
                                         Case "thumb"
-                                            tSize = Master.FanartSize.Small
+                                            tSize = Enums.FanartSize.Small
                                     End Select
                                     If Master.eSettings.AutoETSize = tSize Then
                                         If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
@@ -1009,10 +1009,10 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1048,7 +1048,7 @@ Public Class dlgImgSelect
                     If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MPDBPosters.Item(i).URL)
                     If Master.eSettings.UseImgCache Then
                         Try
-                            Me.MPDBPosters.Item(i).URL = StringManip.CleanURL(Me.MPDBPosters.Item(i).URL)
+                            Me.MPDBPosters.Item(i).URL = StringUtils.CleanURL(Me.MPDBPosters.Item(i).URL)
                             Me.MPDBPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Me.MPDBPosters.Item(i).URL, ").jpg")))
                         Catch
                         End Try
@@ -1068,10 +1068,10 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL3Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL3Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL3.Value = e.ProgressPercentage
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1109,7 +1109,7 @@ Public Class dlgImgSelect
         Me.btnPreview.Enabled = True
     End Sub
 
-    Public Sub PreLoad(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False)
+    Public Sub PreLoad(ByVal mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, Optional ByVal _isEdit As Boolean = False)
         Me.tMovie = mMovie
         Me.DLType = _DLType
         Me.isEdit = _isEdit
@@ -1118,7 +1118,7 @@ Public Class dlgImgSelect
         Me.StartDownload()
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Master.ImgResult
+    Public Overloads Function ShowDialog(ByVal mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, Optional ByVal _isEdit As Boolean = False) As Containers.ImgResult
 
         '//
         ' Overload to pass data
@@ -1133,7 +1133,7 @@ Public Class dlgImgSelect
 
     End Function
 
-    Public Overloads Function ShowDialog() As Master.ImgResult
+    Public Overloads Function ShowDialog() As Containers.ImgResult
 
 
         Me.isShown = True
@@ -1215,7 +1215,7 @@ Public Class dlgImgSelect
 
         Catch ex As Exception
             Me.pnlSinglePic.Visible = False
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub

@@ -102,22 +102,22 @@ Public Class frmMain
     Private filSource As String = String.Empty
 
     Private Structure Results
-        Dim scrapeType As Master.ScrapeType
-        Dim Options As Master.ScrapeOptions
+        Dim scrapeType As Enums.ScrapeType
+        Dim Options As Structures.ScrapeOptions
         Dim fileInfo As String
         Dim setEnabled As Boolean
-        Dim Movie As Master.DBMovie
+        Dim Movie As Structures.DBMovie
         Dim Path As String
         Dim Result As Image
     End Structure
 
     Private Structure Arguments
         Dim setEnabled As Boolean
-        Dim scrapeType As Master.ScrapeType
-        Dim Options As Master.ScrapeOptions
+        Dim scrapeType As Enums.ScrapeType
+        Dim Options As Structures.ScrapeOptions
         Dim pURL As String
         Dim Path As String
-        Dim Movie As Master.DBMovie
+        Dim Movie As Structures.DBMovie
         Dim ID As Integer
         Dim Season As Integer
     End Structure
@@ -270,7 +270,7 @@ Public Class frmMain
             If Me.Created Then
                 Me.MoveMPAA()
                 Me.MoveGenres()
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
@@ -278,7 +278,7 @@ Public Class frmMain
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -290,7 +290,7 @@ Public Class frmMain
 
         Try
             Using dSettings As New dlgSettings
-                Dim dResult As Master.SettingsResult = dSettings.ShowDialog
+                Dim dResult As Structures.SettingsResult = dSettings.ShowDialog
                 If Not dResult.DidCancel Then
 
                     Me.SetUp(False)
@@ -327,7 +327,7 @@ Public Class frmMain
                                 While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 End While
-                                Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
+                                Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                             End If
                         End If
                     Else
@@ -343,7 +343,7 @@ Public Class frmMain
             End Using
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -368,15 +368,15 @@ Public Class frmMain
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
         AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
 
-        Master.DGVDoubleBuffer(Me.dgvMediaList)
-        Master.DGVDoubleBuffer(Me.dgvTVShows)
-        Master.DGVDoubleBuffer(Me.dgvTVSeasons)
-        Master.DGVDoubleBuffer(Me.dgvTVEpisodes)
+        Functions.DGVDoubleBuffer(Me.dgvMediaList)
+        Functions.DGVDoubleBuffer(Me.dgvTVShows)
+        Functions.DGVDoubleBuffer(Me.dgvTVSeasons)
+        Functions.DGVDoubleBuffer(Me.dgvTVEpisodes)
 
-        Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+        Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
             If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
-            FileManip.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
+            FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
         End If
 
@@ -387,7 +387,7 @@ Public Class frmMain
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
             Dim hasSpec As Boolean = False
-            Dim clScrapeType As Master.ScrapeType = Nothing
+            Dim clScrapeType As Enums.ScrapeType = Nothing
             isCL = True
             Dim clExport As Boolean = False
             Dim clExportResizePoster As Integer = 0
@@ -397,34 +397,34 @@ Public Class frmMain
 
                 Select Case Args(i).ToLower
                     Case "-fullask"
-                        clScrapeType = Master.ScrapeType.FullAsk
+                        clScrapeType = Enums.ScrapeType.FullAsk
                         clAsk = True
                     Case "-fullauto"
-                        clScrapeType = Master.ScrapeType.FullAuto
+                        clScrapeType = Enums.ScrapeType.FullAuto
                         clAsk = False
                     Case "-missask"
-                        clScrapeType = Master.ScrapeType.UpdateAsk
+                        clScrapeType = Enums.ScrapeType.UpdateAsk
                         clAsk = True
                     Case "-missauto"
-                        clScrapeType = Master.ScrapeType.UpdateAuto
+                        clScrapeType = Enums.ScrapeType.UpdateAuto
                         clAsk = False
                     Case "-newask"
-                        clScrapeType = Master.ScrapeType.NewAsk
+                        clScrapeType = Enums.ScrapeType.NewAsk
                         clAsk = True
                     Case "-newauto"
-                        clScrapeType = Master.ScrapeType.NewAuto
+                        clScrapeType = Enums.ScrapeType.NewAuto
                         clAsk = False
                     Case "-markask"
-                        clScrapeType = Master.ScrapeType.MarkAsk
+                        clScrapeType = Enums.ScrapeType.MarkAsk
                         clAsk = True
                     Case "-markauto"
-                        clScrapeType = Master.ScrapeType.MarkAuto
+                        clScrapeType = Enums.ScrapeType.MarkAuto
                         clAsk = False
                     Case "-file"
                         If Args.Count - 1 > i Then
                             isSingle = False
                             hasSpec = True
-                            clScrapeType = Master.ScrapeType.SingleScrape
+                            clScrapeType = Enums.ScrapeType.SingleScrape
                             If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
                                 MoviePath = Args(i + 1).Replace("""", String.Empty)
                                 i += 1
@@ -436,7 +436,7 @@ Public Class frmMain
                         If Args.Count - 1 > i Then
                             isSingle = True
                             hasSpec = True
-                            clScrapeType = Master.ScrapeType.SingleScrape
+                            clScrapeType = Enums.ScrapeType.SingleScrape
                             If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
                                 MoviePath = Args(i + 1).Replace("""", String.Empty)
                                 i += 1
@@ -464,15 +464,15 @@ Public Class frmMain
                             Exit For
                         End If
                     Case "-all"
-                        Master.SetScraperMod(Master.ModType.All, True)
+                        Functions.SetScraperMod(Enums.ModType.All, True)
                     Case "-nfo"
-                        Master.SetScraperMod(Master.ModType.NFO, True)
+                        Functions.SetScraperMod(Enums.ModType.NFO, True)
                     Case "-posters"
-                        Master.SetScraperMod(Master.ModType.Poster, True)
+                        Functions.SetScraperMod(Enums.ModType.Poster, True)
                     Case "-fanart"
-                        Master.SetScraperMod(Master.ModType.Fanart, True)
+                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
                     Case "-extra"
-                        Master.SetScraperMod(Master.ModType.Extra, True)
+                        Functions.SetScraperMod(Enums.ModType.Extra, True)
                     Case "--verbose"
                         clAsk = True
                     Case Else
@@ -481,30 +481,30 @@ Public Class frmMain
                         'End If
                 End Select
             Next
-            XML.CacheXMLs()
+            APIXML.CacheXMLs()
             Master.DB.Connect(False, False)
             If clExport = True Then
                 dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
             End If
             If Not IsNothing(clScrapeType) Then
-                If Master.HasModifier AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
+                If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
                     Try
-                        LoadMedia(New Master.Scans With {.Movies = True})
+                        LoadMedia(New Structures.Scans With {.Movies = True})
                         While Not Me.LoadingDone
                             Application.DoEvents()
                         End While
                         ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                     Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 Else
                     Try
 
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-                            Me.tmpTitle = StringManip.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                            Me.tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                             If Master.currMovie.Movie Is Nothing Then
-                                Master.currMovie.Movie = New Media.Movie
+                                Master.currMovie.Movie = New MediaContainers.Movie
                                 Master.currMovie.Movie.Title = tmpTitle
                                 Dim sFile As New Scanner.MovieContainer
                                 sFile.Filename = MoviePath
@@ -519,20 +519,20 @@ Public Class frmMain
                                 If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                                     'no title so assume it's an invalid nfo, clear nfo path if exists
                                     sFile.Nfo = String.Empty
-                                    If FileManip.Common.isVideoTS(sFile.Filename) Then
-                                        Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                    ElseIf FileManip.Common.isBDRip(sFile.Filename) Then
-                                        Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
+                                    If FileUtils.Common.isVideoTS(sFile.Filename) Then
+                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    ElseIf FileUtils.Common.isBDRip(sFile.Filename) Then
+                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
                                     Else
                                         If sFile.UseFolder AndAlso sFile.isSingle Then
-                                            Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                            Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(sFile.Filename).Name)
                                         Else
-                                            Master.currMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                            Master.currMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                         End If
                                     End If
                                     If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
                                 Else
-                                    Dim tTitle As String = StringManip.FilterTokens(Master.currMovie.Movie.Title)
+                                    Dim tTitle As String = StringUtils.FilterTokens(Master.currMovie.Movie.Title)
                                     If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                                         Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
@@ -555,13 +555,13 @@ Public Class frmMain
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
+                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
                         End If
                     Catch ex As Exception
                         Me.ScraperDone = True
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 End If
 
@@ -575,13 +575,13 @@ Public Class frmMain
 
         Else
             Try
-                XML.CacheXMLs()
+                APIXML.CacheXMLs()
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
                 If Master.eSettings.CheckUpdates Then
-                    Dim tmpNew As Integer = Master.CheckUpdate
+                    Dim tmpNew As Integer = Functions.CheckUpdate
                     If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
                         Using dNewVer As New dlgNewVersion
                             dNewVer.ShowDialog(tmpNew)
@@ -617,7 +617,7 @@ Public Class frmMain
 
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+                    Me.pnlFilter.Height = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
@@ -641,7 +641,7 @@ Public Class frmMain
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
-                        Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
+                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     Else
                         Me.FillList(0)
                         Me.Visible = True
@@ -650,10 +650,10 @@ Public Class frmMain
                 End If
 
                 Me.SetMenus(True)
-                Master.GetListOfSources()
+                Functions.GetListOfSources()
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Me.Activate()
@@ -691,7 +691,7 @@ Public Class frmMain
                 Me.pbActors.Image = My.Resources.actor_silhouette
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -702,7 +702,7 @@ Public Class frmMain
         ' Reload media type when "Rescan Media" is clicked
         '\\
 
-        Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
+        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
 
     End Sub
 
@@ -818,7 +818,7 @@ Public Class frmMain
             End Select
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -911,16 +911,16 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions)
+                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -983,7 +983,7 @@ Public Class frmMain
             grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
             DirectCast(sender, PictureBox).Image = bmGenre
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -998,7 +998,7 @@ Public Class frmMain
             If Master.eSettings.AllwaysDisplayGenresText Then Return
             DirectCast(sender, PictureBox).Image = GenreImage
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1038,7 +1038,7 @@ Public Class frmMain
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1058,7 +1058,7 @@ Public Class frmMain
                 Me.MoveMPAA()
                 Me.MoveGenres()
 
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
@@ -1066,7 +1066,7 @@ Public Class frmMain
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1078,10 +1078,12 @@ Public Class frmMain
 
         Try
             If Not IsNothing(Me.pbPoster.Image) Then
-                dlgImgView.ShowDialog(Me.pbPosterCache.Image)
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbPosterCache.Image)
+                End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1094,10 +1096,12 @@ Public Class frmMain
 
         Try
             If Not IsNothing(Me.pbFanartCache.Image) Then
-                dlgImgView.ShowDialog(Me.pbFanartCache.Image)
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbFanartCache.Image)
+                End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1152,7 +1156,7 @@ Public Class frmMain
             Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1174,7 +1178,7 @@ Public Class frmMain
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1196,7 +1200,7 @@ Public Class frmMain
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1219,7 +1223,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1239,7 +1243,7 @@ Public Class frmMain
             Me.tmrWait.Enabled = True
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1261,7 +1265,7 @@ Public Class frmMain
                 Me.tmrWaitShow.Enabled = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1282,7 +1286,7 @@ Public Class frmMain
             Me.tmrWaitSeason.Enabled = True
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1303,7 +1307,7 @@ Public Class frmMain
             Me.tmrWaitEp.Enabled = True
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1431,7 +1435,7 @@ Public Class frmMain
     End Sub
 
     Private Sub txtSearch_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearch.KeyPress
-        e.Handled = StringManip.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = StringUtils.AlphaNumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -1488,7 +1492,7 @@ Public Class frmMain
 
     Private Sub tsbUpdateXBMC_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.ButtonClick
         Try
-            For Each xCom As emmSettings.XBMCCom In Master.eSettings.XBMCComs
+            For Each xCom As Settings.XBMCCom In Master.eSettings.XBMCComs
                 Me.DoXCom(xCom)
             Next
         Catch
@@ -1524,17 +1528,17 @@ Public Class frmMain
                 End If
             End With
             If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing, Nothing)
+                Me.ScrapeData(Enums.ScrapeType.CleanFolders, Nothing, Nothing)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
         Using dSortFiles As New dlgSortFiles
-            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(New Master.Scans With {.Movies = True})
+            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(New Structures.Scans With {.Movies = True})
         End Using
     End Sub
 
@@ -1663,7 +1667,7 @@ Public Class frmMain
         Try
             Me.RunFilter(True)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1671,7 +1675,7 @@ Public Class frmMain
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
 
         Try
-            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
                     If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                         drvRow.Selected = True
@@ -1699,9 +1703,9 @@ Public Class frmMain
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions)
+                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
@@ -1710,7 +1714,7 @@ Public Class frmMain
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1718,7 +1722,7 @@ Public Class frmMain
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
 
         Try
-            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
                     If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                         drvRow.Selected = True
@@ -1728,7 +1732,7 @@ Public Class frmMain
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1736,7 +1740,7 @@ Public Class frmMain
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
 
         Try
-            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
                     If drvRow.Cells(4).Value.ToString = e.KeyChar.ToString Then
                         drvRow.Selected = True
@@ -1746,7 +1750,7 @@ Public Class frmMain
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1754,7 +1758,7 @@ Public Class frmMain
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
 
         Try
-            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
                     If drvRow.Cells(2).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                         drvRow.Selected = True
@@ -1764,7 +1768,7 @@ Public Class frmMain
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1816,7 +1820,7 @@ Public Class frmMain
             Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1858,7 +1862,7 @@ Public Class frmMain
             Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1893,7 +1897,7 @@ Public Class frmMain
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1923,7 +1927,7 @@ Public Class frmMain
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1954,7 +1958,7 @@ Public Class frmMain
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1965,7 +1969,7 @@ Public Class frmMain
         ' Begin the process to scrape IMDB with the current ID
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
+        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
@@ -1974,7 +1978,7 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
+        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -1992,15 +1996,15 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
+                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2082,385 +2086,385 @@ Public Class frmMain
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click
 
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoMI.Click
 
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskAll.Click
 
-        Master.SetScraperMod(Master.ModType.All, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTrailer.Click
 
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskMI.Click
 
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2515,7 +2519,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2529,7 +2533,7 @@ Public Class frmMain
             Me.FillList(0)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2538,7 +2542,7 @@ Public Class frmMain
         ' Copy all existing fanart to the backdrops folder
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.CopyBD, Nothing, Nothing)
+        Me.ScrapeData(Enums.ScrapeType.CopyBD, Nothing, Nothing)
     End Sub
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
@@ -2559,7 +2563,7 @@ Public Class frmMain
             dgvMediaList.Refresh()
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2602,7 +2606,7 @@ Public Class frmMain
 
         Try
 
-            Dim pHeight As Integer = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+            Dim pHeight As Integer = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
 
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniFilterRaise Then
@@ -2628,7 +2632,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2650,61 +2654,61 @@ Public Class frmMain
 
             Me.RunFilter()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Me.LoadMedia(New Master.Scans With {.Movies = True})
+                Me.LoadMedia(New Structures.Scans With {.Movies = True})
             End If
         End Using
     End Sub
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click
         Using dUpdate As New dlgUpdateMedia
-            Dim CustomUpdater As Master.CustomUpdaterStruct = Nothing
+            Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
                 Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Options)
@@ -2713,40 +2717,40 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuAllAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True)
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
         Using dBulkRename As New dlgBulkRenamer
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Me.LoadMedia(New Master.Scans With {.Movies = True})
+                    Me.LoadMedia(New Structures.Scans With {.Movies = True})
                 End If
             Catch ex As Exception
             End Try
@@ -2773,7 +2777,7 @@ Public Class frmMain
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3000,7 +3004,7 @@ Public Class frmMain
             End If
             Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Cursor.Current = Cursors.Default
     End Sub
@@ -3162,7 +3166,7 @@ Public Class frmMain
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3195,7 +3199,7 @@ Public Class frmMain
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3216,7 +3220,7 @@ Public Class frmMain
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3242,7 +3246,7 @@ Public Class frmMain
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3277,7 +3281,7 @@ Public Class frmMain
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3298,7 +3302,7 @@ Public Class frmMain
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3329,7 +3333,7 @@ Public Class frmMain
 
             e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
@@ -3349,7 +3353,7 @@ Public Class frmMain
                     Me.pbMILoading.Visible = False
                     Me.txtMetaData.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
-                        XML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename)
+                        APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename)
                         Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                         Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                     Else
@@ -3364,7 +3368,7 @@ Public Class frmMain
                     Me.btnMetaDataRefresh.Focus()
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Res.setEnabled Then
@@ -3462,7 +3466,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
         End Try
 
@@ -3480,7 +3484,7 @@ Public Class frmMain
                 Me.fillScreenInfoWithMovie()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3520,7 +3524,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
         End Try
 
@@ -3538,7 +3542,7 @@ Public Class frmMain
                 Me.fillScreenInfoWithShow()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3585,7 +3589,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
         End Try
 
@@ -3599,7 +3603,7 @@ Public Class frmMain
                 Me.fillScreenInfoWithSeason()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3651,7 +3655,7 @@ Public Class frmMain
 
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
         End Try
 
@@ -3669,7 +3673,7 @@ Public Class frmMain
                 Me.fillScreenInfoWithEpisode()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -3704,10 +3708,10 @@ Public Class frmMain
         Dim tURL As String = String.Empty
         Dim Poster As New Images
         Dim Fanart As New Images
-        Dim scrapeMovie As New Master.DBMovie
+        Dim scrapeMovie As New Structures.DBMovie
         Dim doSave As Boolean = False
-        Dim pResults As New Master.ImgResult
-        Dim fResults As New Master.ImgResult
+        Dim pResults As New Containers.ImgResult
+        Dim fResults As New Containers.ImgResult
         Dim didEts As Boolean = False
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
@@ -3718,15 +3722,15 @@ Public Class frmMain
                 If Me.dtMedia.Rows.Count > 0 Then
 
                     Select Case Args.scrapeType
-                        Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.FullAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
+                        Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.FullAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
                                 Select Case Args.scrapeType
-                                    Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto
+                                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
                                         If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                                    Case Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
+                                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
                                         If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                                    Case Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
+                                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
                                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                                         If Not index >= 0 Then Continue For
                                 End Select
@@ -3747,7 +3751,7 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
                                         IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options)
                                     Else
-                                        scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New Media.Movie, Args.scrapeType, Args.Options)
+                                        scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New MediaContainers.Movie, Args.scrapeType, Args.Options)
                                     End If
                                     doSave = True
                                 End If
@@ -3763,9 +3767,9 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.GlobalScrapeMod.Poster Then
                                         Poster.Clear()
-                                        If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            pResults = New Master.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                        If Poster.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Posters) Then
+                                            pResults = New Containers.ImgResult
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -3775,10 +3779,10 @@ Public Class frmMain
                                                             scrapeMovie.Movie.Thumb = pResults.Posters
                                                         End If
                                                     End If
-                                                ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
+                                                ElseIf Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk Then
                                                     MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
+                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                                             scrapeMovie.PosterPath = pResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
@@ -3796,10 +3800,10 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.GlobalScrapeMod.Fanart Then
                                         Fanart.Clear()
-                                        If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            fResults = New Master.ImgResult
+                                        If Fanart.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Fanart) Then
+                                            fResults = New Containers.ImgResult
                                             didEts = True
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fResults.ImagePath) Then
@@ -3809,11 +3813,11 @@ Public Class frmMain
                                                             scrapeMovie.Movie.Fanart = fResults.Fanart
                                                         End If
                                                     End If
-                                                ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
+                                                ElseIf Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk Then
                                                     MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
 
                                                     Using dImgSelect As New dlgImgSelect
-                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
+                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Fanart)
                                                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                                             scrapeMovie.FanartPath = fResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
@@ -3850,7 +3854,7 @@ Public Class frmMain
                                         Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
                                     End If
                                     If Master.eSettings.AutoThumbs > 0 AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
+                                        Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
                                             scrapeMovie.ExtraPath = "TRUE"
@@ -3868,7 +3872,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                    tTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                    tTitle = StringUtils.FilterTokens(scrapeMovie.Movie.Title)
                                     If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
                                         scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
@@ -3876,15 +3880,15 @@ Public Class frmMain
                                         scrapeMovie.ListTitle = tTitle
                                     End If
                                 Else
-                                    If FileManip.Common.isVideoTS(drvRow.Item(1).ToString) Then
-                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                    ElseIf FileManip.Common.isBDRip(drvRow.Item(1).ToString) Then
-                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
+                                    If FileUtils.Common.isVideoTS(drvRow.Item(1).ToString) Then
+                                        scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
+                                    ElseIf FileUtils.Common.isBDRip(drvRow.Item(1).ToString) Then
+                                        scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
                                     Else
                                         If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
+                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
                                         Else
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
+                                            scrapeMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                         End If
                                     End If
                                     If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
@@ -3904,7 +3908,7 @@ Public Class frmMain
                                 iCount += 1
                             Next
 
-                        Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
+                        Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
 
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
@@ -3928,7 +3932,7 @@ Public Class frmMain
                                     If Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO Then
 
                                         If String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) OrElse Not IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options) Then
-                                            scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New Media.Movie, Args.scrapeType, Args.Options)
+                                            scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New MediaContainers.Movie, Args.scrapeType, Args.Options)
                                             doSave = True
                                         End If
 
@@ -3942,9 +3946,9 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
                                         Poster.Clear()
-                                        If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            pResults = New Master.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                        If Poster.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Posters) Then
+                                            pResults = New Containers.ImgResult
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -3954,10 +3958,10 @@ Public Class frmMain
                                                             scrapeMovie.Movie.Thumb = pResults.Posters
                                                         End If
                                                     End If
-                                                ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
+                                                ElseIf Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                                     MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
+                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                                             scrapeMovie.PosterPath = pResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
@@ -3975,10 +3979,10 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
                                         Fanart.Clear()
-                                        If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            fResults = New Master.ImgResult
+                                        If Fanart.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Fanart) Then
+                                            fResults = New Containers.ImgResult
                                             didEts = True
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fResults.ImagePath) Then
@@ -3988,10 +3992,10 @@ Public Class frmMain
                                                             scrapeMovie.Movie.Fanart = fResults.Fanart
                                                         End If
                                                     End If
-                                                ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
+                                                ElseIf Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                                     MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
+                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Fanart)
                                                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                                             scrapeMovie.FanartPath = fResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
@@ -4027,7 +4031,7 @@ Public Class frmMain
                                         End If
 
                                         If Master.eSettings.AutoThumbs > 0 Then
-                                            Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
+                                            Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                             If Not String.IsNullOrEmpty(ETasFA) Then
 
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
@@ -4041,7 +4045,7 @@ Public Class frmMain
                                     End If
 
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                        tTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                        tTitle = StringUtils.FilterTokens(scrapeMovie.Movie.Title)
                                         If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
                                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
                                             scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
@@ -4049,15 +4053,15 @@ Public Class frmMain
                                             scrapeMovie.ListTitle = tTitle
                                         End If
                                     Else
-                                        If FileManip.Common.isVideoTS(drvRow.Item(1).ToString) Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                        ElseIf FileManip.Common.isBDRip(drvRow.Item(1).ToString) Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
+                                        If FileUtils.Common.isVideoTS(drvRow.Item(1).ToString) Then
+                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
+                                        ElseIf FileUtils.Common.isBDRip(drvRow.Item(1).ToString) Then
+                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
                                         Else
                                             If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
+                                                scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
                                             Else
-                                                scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
+                                                scrapeMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                             End If
                                         End If
                                         If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
@@ -4083,8 +4087,8 @@ Public Class frmMain
 
                             Next
 
-                        Case Master.ScrapeType.CleanFolders
-                            Dim fDeleter As New FileManip.Delete
+                        Case Enums.ScrapeType.CleanFolders
+                            Dim fDeleter As New FileUtils.Delete
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(15))
@@ -4099,7 +4103,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If
                             Next
-                        Case Master.ScrapeType.CopyBD
+                        Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
@@ -4109,31 +4113,31 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 sPath = drvRow.Item(40).ToString
                                 If Not String.IsNullOrEmpty(sPath) Then
-                                    If FileManip.Common.isVideoTS(sPath) Then
+                                    If FileUtils.Common.isVideoTS(sPath) Then
                                         If Master.eSettings.VideoTSParent Then
-                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
                                             Else
-                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
                                         End If
-                                    ElseIf FileManip.Common.isBDRip(sPath) Then
+                                    ElseIf FileUtils.Common.isBDRip(sPath) Then
                                         If Master.eSettings.VideoTSParent Then
-                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
                                             Else
-                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
                                         End If
                                     Else
                                         If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
                                         Else
-                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                         End If
 
                                     End If
@@ -4144,11 +4148,11 @@ Public Class frmMain
 
             Catch ex As Exception
                 ScraperDone = True
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
 doCancel:
-            If Not Args.scrapeType = Master.ScrapeType.CopyBD Then
+            If Not Args.scrapeType = Enums.ScrapeType.CopyBD Then
                 SQLtransaction.Commit()
             End If
         End Using
@@ -4193,11 +4197,11 @@ doCancel:
             Else
                 Me.pnlCancel.Visible = False
 
-                If DirectCast(e.Result, Master.ScrapeType) = Master.ScrapeType.CleanFolders Then
+                If DirectCast(e.Result, Enums.ScrapeType) = Enums.ScrapeType.CleanFolders Then
                     'only rescan media if expert cleaner and videos are not whitelisted 
                     'since the db is updated during cleaner now.
                     If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
-                        Me.LoadMedia(New Master.Scans With {.Movies = True})
+                        Me.LoadMedia(New Structures.Scans With {.Movies = True})
                     Else
                         Me.FillList(0)
                     End If
@@ -4217,7 +4221,7 @@ doCancel:
             Me.EnableFilters(True)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4564,7 +4568,7 @@ doCancel:
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4581,7 +4585,7 @@ doCancel:
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4599,7 +4603,7 @@ doCancel:
 
     End Sub
 
-    Public Sub LoadMedia(ByVal Scan As Master.Scans, Optional ByVal SourceName As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
 
         '//
         ' Begin threads to fill datagrid with media data
@@ -4639,7 +4643,7 @@ doCancel:
 
         Catch ex As Exception
             Me.LoadingDone = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
 
@@ -4676,7 +4680,7 @@ doCancel:
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4701,7 +4705,7 @@ doCancel:
             Me.FillSeasons(ID)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4727,7 +4731,7 @@ doCancel:
             Me.FillEpisodes(ShowID, Season)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4749,7 +4753,7 @@ doCancel:
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4853,7 +4857,7 @@ doCancel:
                 Application.DoEvents()
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4899,7 +4903,7 @@ doCancel:
 
             If Master.currMovie.Movie.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As Media.Person In Master.currMovie.Movie.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
                         If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
@@ -4920,7 +4924,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-                Dim tmpRatingImg As Image = XML.GetRatingImage(Master.currMovie.Movie.MPAA)
+                Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
@@ -4930,7 +4934,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
@@ -4940,13 +4944,13 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-                Me.pbStudio.Image = XML.GetStudioImage(Master.currMovie.Movie.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio)
             Else
-                Me.pbStudio.Image = XML.GetStudioImage("####")
+                Me.pbStudio.Image = APIXML.GetStudioImage("####")
             End If
 
             If Master.eSettings.ScanMediaInfo Then
-                XML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename)
+                APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename)
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -4967,8 +4971,8 @@ doCancel:
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageManip.SetGlassOverlay(Me.pbPoster)
+                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -4977,7 +4981,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                 End If
 
@@ -4994,7 +4998,7 @@ doCancel:
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
@@ -5003,7 +5007,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
             Else
@@ -5025,7 +5029,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5050,7 +5054,7 @@ doCancel:
 
             If Master.currShow.TVShow.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
                         If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
@@ -5071,7 +5075,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
-                Dim tmpRatingImg As Image = XML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
@@ -5081,7 +5085,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVShow.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVShow.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
@@ -5091,9 +5095,9 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
-                Me.pbStudio.Image = XML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
             Else
-                Me.pbStudio.Image = XML.GetStudioImage("####")
+                Me.pbStudio.Image = APIXML.GetStudioImage("####")
             End If
 
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
@@ -5101,8 +5105,8 @@ doCancel:
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageManip.SetGlassOverlay(Me.pbPoster)
+                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5111,7 +5115,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                 End If
 
@@ -5128,7 +5132,7 @@ doCancel:
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
@@ -5137,7 +5141,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
             Else
@@ -5158,7 +5162,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5183,7 +5187,7 @@ doCancel:
 
             If Master.currShow.TVShow.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
                         If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
@@ -5204,7 +5208,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
-                Dim tmpRatingImg As Image = XML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
@@ -5214,7 +5218,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVShow.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVShow.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
@@ -5224,9 +5228,9 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
-                Me.pbStudio.Image = XML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
             Else
-                Me.pbStudio.Image = XML.GetStudioImage("####")
+                Me.pbStudio.Image = APIXML.GetStudioImage("####")
             End If
 
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
@@ -5234,8 +5238,8 @@ doCancel:
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageManip.SetGlassOverlay(Me.pbPoster)
+                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5244,7 +5248,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                 End If
 
@@ -5261,7 +5265,7 @@ doCancel:
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
@@ -5270,7 +5274,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
             Else
@@ -5291,7 +5295,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5321,7 +5325,7 @@ doCancel:
 
             If Master.currShow.TVEp.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As Media.Person In Master.currShow.TVEp.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
                         If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
@@ -5343,13 +5347,13 @@ doCancel:
 
             Me.pnlMPAA.Visible = False
 
-            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVEp.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEp.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
 
             If Master.eSettings.ScanMediaInfo Then
-                XML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename)
+                APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename)
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -5361,8 +5365,8 @@ doCancel:
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
-                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageManip.SetGlassOverlay(Me.pbPoster)
+                ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5371,7 +5375,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                 End If
 
@@ -5388,7 +5392,7 @@ doCancel:
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
@@ -5397,7 +5401,7 @@ doCancel:
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
             Else
@@ -5418,7 +5422,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5490,7 +5494,7 @@ doCancel:
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -5517,7 +5521,7 @@ doCancel:
                 Me.pbGenre(i).BackColor = Me.GenrePanelColor
                 Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
                 Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-                Me.pbGenre(i).Image = XML.GetGenreImage(genreArray(i).Trim)
+                Me.pbGenre(i).Image = APIXML.GetGenreImage(genreArray(i).Trim)
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
                 Me.pbGenre(i).Left = 2
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
@@ -5545,12 +5549,12 @@ doCancel:
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
 
-    Private Sub ScrapeData(ByVal sType As Master.ScrapeType, ByVal Options As Master.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
+    Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
 
         Try
             Dim chkCount As Integer = 0
@@ -5562,12 +5566,12 @@ doCancel:
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
 
-                If Not sType = Master.ScrapeType.SingleScrape Then
+                If Not sType = Enums.ScrapeType.SingleScrape Then
                     Select Case sType
-                        Case Master.ScrapeType.CleanFolders
+                        Case Enums.ScrapeType.CleanFolders
                             lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
                             btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
-                        Case Master.ScrapeType.CopyBD
+                        Case Enums.ScrapeType.CopyBD
                             lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                             btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
                         Case Else
@@ -5582,24 +5586,24 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
+                Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.FullAuto, Enums.ScrapeType.CleanFolders, Enums.ScrapeType.CopyBD, Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
-                        Case Master.ScrapeType.FullAsk
+                        Case Enums.ScrapeType.FullAsk
                             Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                        Case Master.ScrapeType.FullAuto
+                        Case Enums.ScrapeType.FullAuto
                             Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                        Case Master.ScrapeType.CleanFolders
+                        Case Enums.ScrapeType.CleanFolders
                             Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-                        Case Master.ScrapeType.CopyBD
+                        Case Enums.ScrapeType.CopyBD
                             Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
-                        Case Master.ScrapeType.UpdateAuto
+                        Case Enums.ScrapeType.UpdateAuto
                             Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                        Case Master.ScrapeType.UpdateAsk
+                        Case Enums.ScrapeType.UpdateAsk
                             Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                        Case Master.ScrapeType.FilterAsk
+                        Case Enums.ScrapeType.FilterAsk
                             Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                        Case Master.ScrapeType.FilterAuto
+                        Case Enums.ScrapeType.FilterAuto
                             Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
                     End Select
                     Me.tslLoading.Visible = True
@@ -5609,25 +5613,25 @@ doCancel:
                     bwScraper.WorkerSupportsCancellation = True
                     bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
 
-                Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
+                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
                     For Each drvRow As DataRow In Me.dtMedia.Rows
-                        If Convert.ToBoolean(drvRow.Item(10)) AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
+                        If Convert.ToBoolean(drvRow.Item(10)) AndAlso (sType = Enums.ScrapeType.NewAsk OrElse sType = Enums.ScrapeType.NewAuto) Then
                             chkCount += 1
                         End If
-                        If Convert.ToBoolean(drvRow.Item(11)) AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
+                        If Convert.ToBoolean(drvRow.Item(11)) AndAlso (sType = Enums.ScrapeType.MarkAsk OrElse sType = Enums.ScrapeType.MarkAuto) Then
                             chkCount += 1
                         End If
                     Next
 
                     If chkCount > 0 Then
                         Select Case sType
-                            Case Master.ScrapeType.NewAsk
+                            Case Enums.ScrapeType.NewAsk
                                 Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                            Case Master.ScrapeType.NewAuto
+                            Case Enums.ScrapeType.NewAuto
                                 Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                            Case Master.ScrapeType.MarkAsk
+                            Case Enums.ScrapeType.MarkAsk
                                 Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                            Case Master.ScrapeType.MarkAuto
+                            Case Enums.ScrapeType.MarkAuto
                                 Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
                         End Select
                         Me.tspbLoading.Maximum = chkCount
@@ -5649,7 +5653,7 @@ doCancel:
                             Me.pnlCancel.Visible = False
                         End If
                     End If
-                Case Master.ScrapeType.SingleScrape
+                Case Enums.ScrapeType.SingleScrape
                     Me.ClearInfo()
                     Me.SetStatus(String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.currMovie.Movie.Title))
                     Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
@@ -5662,14 +5666,14 @@ doCancel:
                     If isCL AndAlso doSearch = False Then
                         Dim Poster As New Images
                         Dim Fanart As New Images
-                        Dim fResults As New Master.ImgResult
-                        Dim pResults As New Master.ImgResult
+                        Dim fResults As New Containers.ImgResult
+                        Dim pResults As New Containers.ImgResult
 
                         Try
                             If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
                                 IMDB.GetMovieInfo(Master.tmpMovie.IMDBID, Master.currMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Master.DefaultOptions)
                             Else
-                                Master.currMovie.Movie = IMDB.GetSearchMovieInfo(Me.tmpTitle, Master.tmpMovie, Master.ScrapeType.SingleScrape, Master.DefaultOptions)
+                                Master.currMovie.Movie = IMDB.GetSearchMovieInfo(Me.tmpTitle, Master.tmpMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                             End If
 
                             If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
@@ -5677,8 +5681,8 @@ doCancel:
                                     UpdateMediaInfo(Master.currMovie)
                                 End If
 
-                                If Poster.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters) Then
-                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, Master.currMovie.Filename, False) Then
+                                If Poster.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters) Then
+                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, Master.currMovie.Filename, False) Then
                                         If Not IsNothing(Poster.Image) Then
                                             Master.currMovie.PosterPath = Poster.SaveAsPoster(Master.currMovie)
                                             If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Thumb = pResults.Posters
@@ -5687,8 +5691,8 @@ doCancel:
                                 End If
                                 pResults = Nothing
 
-                                If Fanart.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart) Then
-                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, Master.currMovie.Filename, True) Then
+                                If Fanart.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart) Then
+                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, Master.currMovie.Filename, True) Then
                                         If Not IsNothing(Fanart.Image) Then
                                             Master.currMovie.FanartPath = Fanart.SaveAsFanart(Master.currMovie)
                                             If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Fanart = fResults.Fanart
@@ -5701,7 +5705,7 @@ doCancel:
                             End If
 
                             If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                                Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, False)
+                                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, False)
                             End If
                         Catch
                         End Try
@@ -5750,12 +5754,12 @@ doCancel:
             End Select
         Catch ex As Exception
             ScraperDone = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
 
-    Private Sub UpdateMediaInfo(ByRef miMovie As Master.DBMovie)
+    Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
         Try
             'clear it out
             miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
@@ -5784,7 +5788,7 @@ doCancel:
                 If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -5813,15 +5817,15 @@ doCancel:
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
                     Using dImgSelectFanart As New dlgImgSelect
-                        Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart, True)
+                        Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                        If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Master.ImageType.Fanart, True)
+                        If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                        If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
+                        If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
                             Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                             Application.DoEvents()
                             Using dImgSelect As New dlgImgSelect
-                                Dim pResults As Master.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
+                                Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
                                 If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                     Master.currMovie.PosterPath = pResults.ImagePath
                                     If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
@@ -5833,7 +5837,7 @@ doCancel:
                         If AllowFA Then
                             Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                             Application.DoEvents()
-                            Dim fResults As Master.ImgResult = dImgSelectFanart.ShowDialog
+                            Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
                             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                 Master.currMovie.FanartPath = fResults.ImagePath
                                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
@@ -5860,7 +5864,7 @@ doCancel:
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
                     Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
                     Application.DoEvents()
-                    Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
+                    ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                 End If
 
                 If Not isCL Then
@@ -5883,10 +5887,10 @@ doCancel:
                                 End If
                             Case Windows.Forms.DialogResult.Retry
                                 Master.currMovie.ClearExtras = False
-                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
+                                Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
                                 Master.currMovie.ClearExtras = False
-                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                                Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                             Case Else
                                 If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                         End Select
@@ -5903,7 +5907,7 @@ doCancel:
                 MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Master.currMovie.ClearExtras = False
@@ -5921,8 +5925,8 @@ doCancel:
 
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-        Dim tmpMovie As New Media.Movie
-        Dim tmpMovieDb As New Master.DBMovie
+        Dim tmpMovie As New MediaContainers.Movie
+        Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
 
         Dim myDelegate As New MydtMediaUpdate(AddressOf dtMediaUpdate)
@@ -5947,24 +5951,24 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
-                    If FileManip.Common.isVideoTS(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
-                    ElseIf FileManip.Common.isBDRip(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
+                    If FileUtils.Common.isVideoTS(tmpMovieDb.Filename) Then
+                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
+                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
+                    ElseIf FileUtils.Common.isBDRip(tmpMovieDb.Filename) Then
+                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
+                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
                     Else
                         If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
-                            tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
-                            tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
+                            tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
+                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
                         Else
-                            tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
-                            tmpMovieDb.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename), False)
+                            tmpMovieDb.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
+                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename), False)
                         End If
                     End If
                     If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
                 Else
-                    Dim tTitle As String = StringManip.FilterTokens(tmpMovieDb.Movie.Title)
+                    Dim tTitle As String = StringUtils.FilterTokens(tmpMovieDb.Movie.Title)
                     If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tTitle
                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
                         tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)
@@ -5980,7 +5984,7 @@ doCancel:
                 'update genre
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
-                tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
+                tmpMovieDb.FileSource = APIXML.GetFileSource(tmpMovieDb.Filename)
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
                 fScanner.GetMovieFolderContents(mContainer)
                 tmpMovieDb.PosterPath = mContainer.Poster
@@ -6014,7 +6018,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -6022,8 +6026,8 @@ doCancel:
 
     Private Function RefreshShow(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-        Dim tmpShowDb As New Master.DBTV
-        Dim tmpShow As New Media.TVShow
+        Dim tmpShowDb As New Structures.DBTV
+        Dim tmpShow As New MediaContainers.TVShow
 
         Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
 
@@ -6045,7 +6049,7 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
-                    tmpShowDb.TVShow.Title = StringManip.FilterTVShowName(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
+                    tmpShowDb.TVShow.Title = StringUtils.FilterTVShowName(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
                 End If
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
@@ -6075,7 +6079,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -6083,8 +6087,8 @@ doCancel:
 
     Private Function RefreshEpisode(ByVal ID As Long, ByVal SeasonNum As Integer, ByVal EpNum As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-        Dim tmpShowDb As New Master.DBTV
-        Dim tmpEp As New Media.EpisodeDetails
+        Dim tmpShowDb As New Structures.DBTV
+        Dim tmpEp As New MediaContainers.EpisodeDetails
 
         Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
 
@@ -6106,7 +6110,7 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
-                    tmpShowDb.TVEp.Title = StringManip.FilterTVEpName(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
+                    tmpShowDb.TVEp.Title = StringUtils.FilterTVEpName(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
                 End If
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 2, tmpShowDb.TVEp.Title})
@@ -6136,7 +6140,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -6160,7 +6164,7 @@ doCancel:
                 If .XBMCComs.Count > 0 Then
                     Me.tsbUpdateXBMC.Enabled = True
                     tsbUpdateXBMC.DropDownItems.Clear()
-                    For Each xCom As emmSettings.XBMCCom In .XBMCComs
+                    For Each xCom As Settings.XBMCCom In .XBMCComs
                         tsbUpdateXBMC.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), Nothing, New System.EventHandler(AddressOf XComSubClick))
                     Next
                 Else
@@ -6263,7 +6267,7 @@ doCancel:
 
                 GenreListToolStripComboBox.Items.Clear()
                 Me.clbFilterGenres.Items.Clear()
-                Dim lGenre() As Object = XML.GetGenreList
+                Dim lGenre() As Object = APIXML.GetGenreList
                 GenreListToolStripComboBox.Items.AddRange(lGenre)
                 clbFilterGenres.Items.AddRange(lGenre)
 
@@ -6296,7 +6300,7 @@ doCancel:
                     RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
                     cbFilterFileSource.Items.Clear()
                     cbFilterFileSource.Items.Add(Master.eLang.All)
-                    cbFilterFileSource.Items.AddRange(XML.GetSourceList)
+                    cbFilterFileSource.Items.AddRange(APIXML.GetSourceList)
                     cbFilterFileSource.SelectedIndex = 0
                     AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
@@ -6304,7 +6308,7 @@ doCancel:
             End With
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -6323,9 +6327,9 @@ doCancel:
                     For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
                         If Master.eSettings.LevTolerance > 0 Then
-                            If FileManip.Common.isVideoTS(drvRow.Cells(1).Value.ToString) Then
+                            If FileUtils.Common.isVideoTS(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
-                            ElseIf FileManip.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
+                            ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                             Else
                                 If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
@@ -6335,7 +6339,7 @@ doCancel:
                                 End If
                             End If
 
-                            LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringManip.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
+                            LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
                             drvRow.Cells(47).Value = LevFail
@@ -6354,7 +6358,7 @@ doCancel:
 
             Me.dgvMediaList.Invalidate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -6430,7 +6434,7 @@ doCancel:
 
             If Reload Then Me.FillList(0)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6459,30 +6463,30 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
-        Me.LoadMedia(New Master.Scans With {.Movies = True}, SourceName)
+        Me.LoadMedia(New Structures.Scans With {.Movies = True}, SourceName)
     End Sub
 
     Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
-        Me.LoadMedia(New Master.Scans With {.TV = True}, SourceName)
+        Me.LoadMedia(New Structures.Scans With {.TV = True}, SourceName)
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim xComName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update"), String.Empty).Replace(Master.eLang.GetString(145, "Only"), String.Empty).Trim
-        Dim xCom = From x As emmSettings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
+        Dim xCom = From x As Settings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
         If xCom.Count > 0 Then
             DoXCom(xCom(0))
         End If
     End Sub
 
-    Private Sub DoXCom(ByVal xCom As emmSettings.XBMCCom)
+    Private Sub DoXCom(ByVal xCom As Settings.XBMCCom)
         Try
             Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
             Wr.Timeout = 2500
@@ -6672,7 +6676,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.LoadingDone = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not isCL Then
@@ -6699,7 +6703,7 @@ doCancel:
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -6721,7 +6725,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6742,7 +6746,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6766,7 +6770,7 @@ doCancel:
 
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6786,7 +6790,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7003,7 +7007,7 @@ doCancel:
         If Directory.Exists(Master.TempPath) Then
             Dim dInfo As New DirectoryInfo(Master.TempPath)
             For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows")
-                FileManip.Delete.DeleteDirectory(dDir.FullName)
+                FileUtils.Delete.DeleteDirectory(dDir.FullName)
             Next
 
             For Each fFile As FileInfo In dInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
@@ -7023,49 +7027,56 @@ doCancel:
 
     Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.LoadingEpisodes
+            Case TVDB.Scraper.EventType.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Loading All Episodes:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.SavingStarted
+            Case TVDB.Scraper.EventType.SavingStarted
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Saving All Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.ScraperDone
+            Case TVDB.Scraper.EventType.ScraperDone
                 Me.RefreshShow(Master.currShow.ShowID, True, False, False)
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
                 Me.tslStatus.Visible = False
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.Searching
+            Case TVDB.Scraper.EventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Searching theTVDB:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.SelectImages
+            Case TVDB.Scraper.EventType.SelectImages
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Select Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.StartingDownload
+            Case TVDB.Scraper.EventType.StartingDownload
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.Verifying
+            Case TVDB.Scraper.EventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Show:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case Ember_Media_Manager.TVDB.Scraper.EventType.Progress
+
+                Using dEditShow As New dlgEditShow
+                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        Master.TVScraper.SaveImages()
+                    End If
+                End Using
+
+            Case TVDB.Scraper.EventType.Progress
                 Select Case Parameter.ToString
                     Case "max"
                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -7075,6 +7086,12 @@ doCancel:
                 End Select
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
+
+            Case TVDB.Scraper.EventType.Cancelled
+                Me.tspbLoading.Visible = False
+                Me.tslLoading.Visible = False
+
+                Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
         End Select
     End Sub
 

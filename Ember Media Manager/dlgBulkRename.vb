@@ -84,7 +84,7 @@ Public Class dlgBulkRenamer
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -94,7 +94,7 @@ Public Class dlgBulkRenamer
         '\\
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
-            Dim _curMovie As New Master.DBMovie
+            Dim _curMovie As New Structures.DBMovie
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
@@ -143,14 +143,14 @@ Public Class dlgBulkRenamer
                                                         MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
                                                     End If
                                                 Catch ex As Exception
-                                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
                                                 End Try
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders
                                                 If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                                                     MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar.ToString), i.Substring(0, i.Length - 1), i)
-                                                    If FileManip.Common.isVideoTS(_curMovie.Filename) Then
+                                                    If FileUtils.Common.isVideoTS(_curMovie.Filename) Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
@@ -159,7 +159,7 @@ Public Class dlgBulkRenamer
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsVideo_TS = True
-                                                    ElseIf FileManip.Common.isBDRip(_curMovie.Filename) Then
+                                                    ElseIf FileUtils.Common.isBDRip(_curMovie.Filename) Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
@@ -181,7 +181,7 @@ Public Class dlgBulkRenamer
                                             Next
 
                                             If Not MovieFile.IsVIDEO_TS AndAlso Not MovieFile.IsBDMV Then
-                                                MovieFile.FileName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_curMovie.Filename))
+                                                MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_curMovie.Filename))
                                                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
                                                 If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                                                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
@@ -199,7 +199,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             End Try
                             iProg += 1
 
@@ -215,7 +215,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -242,7 +242,7 @@ Public Class dlgBulkRenamer
             End If
             Me.pnlCancel.Visible = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -256,7 +256,7 @@ Public Class dlgBulkRenamer
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -289,7 +289,7 @@ Public Class dlgBulkRenamer
             Me.bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -311,7 +311,7 @@ Public Class dlgBulkRenamer
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -320,7 +320,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -333,7 +333,7 @@ Public Class dlgBulkRenamer
                 tThread.Start()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -449,7 +449,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -458,7 +458,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -527,7 +527,7 @@ Public Class dlgBulkRenamer
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

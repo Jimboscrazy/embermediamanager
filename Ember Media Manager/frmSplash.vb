@@ -24,6 +24,7 @@ Public NotInheritable Class frmSplash
     ' if the splash form, is closed by the main form, it is cross-thread
     ' operation. so we need to use the Invoke method to deal with it.
     Public Sub CloseForm()
+
         If (Me.InvokeRequired) Then
             Me.Invoke(New DelegateToCloseForm(AddressOf CloseForm))
         Else

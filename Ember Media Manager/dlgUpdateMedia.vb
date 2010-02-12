@@ -23,7 +23,7 @@ Imports System.IO
 
 Public Class dlgUpdateMedia
 
-    Private CustomUpdater As New Master.CustomUpdaterStruct
+    Private CustomUpdater As New Structures.CustomUpdaterStruct
 
     Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -55,8 +55,8 @@ Public Class dlgUpdateMedia
             Me.chkTrailer.Checked = Not Master.eSettings.LockTrailer
 
             'set defaults
-            CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
-            Master.SetScraperMod(Master.ModType.All, True)
+            CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
+            Functions.SetScraperMod(Enums.ModType.All, True)
 
             Me.CheckEnable()
 
@@ -64,7 +64,7 @@ Public Class dlgUpdateMedia
             Me.CheckNewAndMark()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -134,9 +134,9 @@ Public Class dlgUpdateMedia
 
     Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_All.CheckedChanged
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
         Else
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.FullAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAsk
         End If
     End Sub
 
@@ -148,9 +148,9 @@ Public Class dlgUpdateMedia
 
 
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.UpdateAuto
         Else
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.UpdateAsk
         End If
 
         Me.CheckEnable()
@@ -158,43 +158,43 @@ Public Class dlgUpdateMedia
 
     Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_New.CheckedChanged
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.NewAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
         Else
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.NewAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
         End If
     End Sub
 
     Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_Marked.CheckedChanged
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.MarkAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAuto
         Else
-            Me.CustomUpdater.ScrapeType = Master.ScrapeType.MarkAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAsk
         End If
     End Sub
 
     Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdate_Auto.CheckedChanged
         Select Case True
             Case Me.rbUpdateModifier_All.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
             Case Me.rbUpdateModifier_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.UpdateAuto
             Case Me.rbUpdateModifier_New.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.NewAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
             Case Me.rbUpdateModifier_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.MarkAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAuto
         End Select
     End Sub
 
     Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdate_Ask.CheckedChanged
         Select Case True
             Case Me.rbUpdateModifier_All.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.FullAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAsk
             Case Me.rbUpdateModifier_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.UpdateAsk
             Case Me.rbUpdateModifier_New.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.NewAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
             Case rbUpdateModifier_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Master.ScrapeType.MarkAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAsk
         End Select
     End Sub
 
@@ -298,7 +298,7 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
-    Public Overloads Function ShowDialog() As Master.CustomUpdaterStruct
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
 
         '//
         ' Overload to pass data
@@ -322,37 +322,37 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkAllMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAllMod.Click
-        Master.SetScraperMod(Master.ModType.All, chkAllMod.Checked)
+        Functions.SetScraperMod(Enums.ModType.All, chkAllMod.Checked)
         CheckEnable()
     End Sub
 
     Private Sub chkNFOMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNFOMod.Click
-        Master.SetScraperMod(Master.ModType.NFO, chkNFOMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.NFO, chkNFOMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkPosterMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkPosterMod.Click
-        Master.SetScraperMod(Master.ModType.Poster, chkPosterMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.Poster, chkPosterMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkFanartMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFanartMod.Click
-        Master.SetScraperMod(Master.ModType.Fanart, chkFanartMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkMetaMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMetaMod.Click
-        Master.SetScraperMod(Master.ModType.Meta, chkMetaMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.Meta, chkMetaMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkExtraMod.Click
-        Master.SetScraperMod(Master.ModType.Extra, chkExtraMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.Extra, chkExtraMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkTrailerMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkTrailerMod.Click
-        Master.SetScraperMod(Master.ModType.Trailer, chkTrailerMod.Checked, False)
+        Functions.SetScraperMod(Enums.ModType.Trailer, chkTrailerMod.Checked, False)
         CheckEnable()
     End Sub
 

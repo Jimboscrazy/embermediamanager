@@ -21,16 +21,15 @@
 
 Imports System
 Imports System.IO
-Imports EmberAPI
 
 Public Class dlgSettings
 
     Private didApply As Boolean = False
-    Private sResult As New Master.SettingsResult
-    Private XComs As List(Of emmSettings.XBMCCom)
-    Private Meta As List(Of emmSettings.MetadataPerType)
+    Private sResult As New Structures.SettingsResult
+    Private XComs As List(Of Settings.XBMCCom)
+    Private Meta As List(Of Settings.MetadataPerType)
     Private LangChanged As Boolean = False
-    Private ShowRegex As List(Of emmSettings.TVShowRegEx)
+    Private ShowRegex As List(Of Settings.TVShowRegEx)
 
 #Region "Form/Controls"
 
@@ -38,7 +37,7 @@ Public Class dlgSettings
     ' ############ FORMS/CONTROLS ############
     ' ########################################
 
-    Public Overloads Function ShowDialog() As Master.SettingsResult
+    Public Overloads Function ShowDialog() As Structures.SettingsResult
 
         MyBase.ShowDialog()
         Return Me.sResult
@@ -59,7 +58,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -134,7 +133,7 @@ Public Class dlgSettings
             sResult.DidCancel = False
             Me.didApply = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -337,7 +336,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -353,7 +352,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -369,7 +368,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -385,7 +384,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -401,7 +400,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -417,7 +416,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -510,7 +509,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtIP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtIP.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub txtIP_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIP.TextChanged
@@ -518,7 +517,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPort.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPort.TextChanged
@@ -554,11 +553,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartWidth.TextChanged
@@ -582,11 +581,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPosterWidth.TextChanged
@@ -614,7 +613,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtAutoThumbs_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAutoThumbs.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtAutoThumbs_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAutoThumbs.TextChanged
@@ -716,7 +715,7 @@ Public Class dlgSettings
 
             If Not String.IsNullOrEmpty(txtIP.Text) Then
                 If Not String.IsNullOrEmpty(txtPort.Text) Then
-                    XComs.Add(New emmSettings.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
+                    XComs.Add(New Settings.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
                     Me.LoadXComs()
 
                     Me.txtName.Text = String.Empty
@@ -903,7 +902,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSkipLessThan.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSkipLessThan.TextChanged
@@ -971,7 +970,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged
@@ -1220,11 +1219,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtETWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtETHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtETWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtETWidth.TextChanged
@@ -1264,7 +1263,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtCheckTitleTol_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCheckTitleTol.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub chkCheckTitles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCheckTitles.CheckedChanged
@@ -1403,11 +1402,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtActorLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtActorLimit.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtGenreLimit.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtActorLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtActorLimit.TextChanged
@@ -1499,7 +1498,7 @@ Public Class dlgSettings
             Dim fi As New MediaInfo.Fileinfo
             fi = dEditMeta.ShowDialog(fi, False)
             If Not fi Is Nothing Then
-                Dim m As New emmSettings.MetadataPerType
+                Dim m As New Settings.MetadataPerType
                 m.FileType = txtDefFIExt.Text
                 m.MetaData = New MediaInfo.Fileinfo
                 m.MetaData = fi
@@ -1515,12 +1514,12 @@ Public Class dlgSettings
     Private Sub btnEditMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditMetaDataFT.Click
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
-            For Each x As emmSettings.MetadataPerType In Meta
+            For Each x As Settings.MetadataPerType In Meta
                 If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, False)
                     If Not fi Is Nothing Then
                         Meta.Remove(x)
-                        Dim m As New emmSettings.MetadataPerType
+                        Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
                         m.MetaData = New MediaInfo.Fileinfo
                         m.MetaData = fi
@@ -1542,12 +1541,12 @@ Public Class dlgSettings
         If Me.lstMetaData.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo
                 Dim fi As New MediaInfo.Fileinfo
-                For Each x As emmSettings.MetadataPerType In Meta
+                For Each x As Settings.MetadataPerType In Meta
                     If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, False)
                         If Not fi Is Nothing Then
                             Meta.Remove(x)
-                            Dim m As New emmSettings.MetadataPerType
+                            Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
                             m.MetaData = New MediaInfo.Fileinfo
                             m.MetaData = fi
@@ -1647,15 +1646,15 @@ Public Class dlgSettings
 
     Private Sub btnAddShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddShowRegex.Click
         If String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then
-            Dim lID = (From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Select lRegex.ID).Max
-            Me.ShowRegex.Add(New emmSettings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtSeasonRegex.Text, .SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtEpRegex.Text, .EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, emmSettings.EpRetrieve)})
+            Dim lID = (From lRegex As Settings.TVShowRegEx In Me.ShowRegex Select lRegex.ID).Max
+            Me.ShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtSeasonRegex.Text, .SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtEpRegex.Text, .EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, Settings.EpRetrieve)})
         Else
-            Dim selRex = From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnAddShowRegex.Tag)
+            Dim selRex = From lRegex As Settings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnAddShowRegex.Tag)
             If selRex.Count > 0 Then
                 selRex(0).SeasonRegex = Me.txtSeasonRegex.Text
                 selRex(0).SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex)
                 selRex(0).EpisodeRegex = Me.txtEpRegex.Text
-                selRex(0).EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, emmSettings.EpRetrieve)
+                selRex(0).EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, Settings.EpRetrieve)
             End If
         End If
 
@@ -1711,7 +1710,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowFanartWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtShowFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowFanartWidth.TextChanged
@@ -1719,7 +1718,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowFanartHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtShowFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowFanartHeight.TextChanged
@@ -1771,7 +1770,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowPosterWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtShowPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowPosterWidth.TextChanged
@@ -1779,7 +1778,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowPosterHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtShowPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowPosterHeight.TextChanged
@@ -1945,7 +1944,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtEpPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpPosterWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtEpPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpPosterWidth.TextChanged
@@ -1953,7 +1952,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtEpPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpPosterHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtEpPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpPosterHeight.TextChanged
@@ -2003,7 +2002,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtEpFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpFanartWidth.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtEpFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpFanartWidth.TextChanged
@@ -2011,7 +2010,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtEpFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpFanartHeight.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtEpFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpFanartHeight.TextChanged
@@ -2074,7 +2073,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtProxyPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPort.TextChanged
@@ -2308,15 +2307,15 @@ Public Class dlgSettings
             Master.eSettings.UseTMDB = Me.chkUseTMDB.Checked
             Master.eSettings.UseIMPA = Me.chkUseIMPA.Checked
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
-            Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Master.PosterSize)
-            Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Master.ShowPosterType)
-            Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredSeasonPosterSize = DirectCast(Me.cbSeaPosterSize.SelectedIndex, Master.SeasonPosterType)
-            Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbSeaFanartSize.SelectedIndex, Master.FanartSize)
+            Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Enums.PosterSize)
+            Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Enums.FanartSize)
+            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.ShowPosterType)
+            Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Enums.FanartSize)
+            Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Enums.FanartSize)
+            Master.eSettings.PreferredSeasonPosterSize = DirectCast(Me.cbSeaPosterSize.SelectedIndex, Enums.SeasonPosterType)
+            Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbSeaFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.AutoET = Me.chkAutoETSize.Checked
-            Master.eSettings.AutoETSize = DirectCast(Me.cbAutoETSize.SelectedIndex, Master.FanartSize)
+            Master.eSettings.AutoETSize = DirectCast(Me.cbAutoETSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
@@ -2413,13 +2412,13 @@ Public Class dlgSettings
             Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
             If Me.cbTrailerQuality.SelectedValue IsNot Nothing Then
-                Master.eSettings.PreferredTrailerQuality = DirectCast(Me.cbTrailerQuality.SelectedValue, Master.TrailerQuality)
+                Master.eSettings.PreferredTrailerQuality = DirectCast(Me.cbTrailerQuality.SelectedValue, Enums.TrailerQuality)
             End If
 
             Master.eSettings.TrailerSites.Clear()
             If Me.lbTrailerSites.CheckedItems.Count > 0 Then
                 For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
-                    Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Master.TrailerPages))
+                    Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Enums.TrailerPages))
                 Next
                 Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
                 Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
@@ -2566,7 +2565,7 @@ Public Class dlgSettings
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
             Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
-            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of containers.TVLanguage))
+            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of Containers.TVLanguage))
             If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
                 Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)
             Else
@@ -2590,9 +2589,9 @@ Public Class dlgSettings
             End If
             Master.eSettings.Save()
 
-            Master.CreateDefaultOptions()
+            Functions.CreateDefaultOptions()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2925,7 +2924,7 @@ Public Class dlgSettings
             Me.RefreshSources()
             Me.RefreshTVSources()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2946,10 +2945,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadTrailerQualities()
-        Dim items As New Dictionary(Of String, Master.TrailerQuality)
-        items.Add("1080p", Master.TrailerQuality.HD1080p)
-        items.Add("720p", Master.TrailerQuality.HD720p)
-        items.Add("Standard", Master.TrailerQuality.Standard)
+        Dim items As New Dictionary(Of String, Enums.TrailerQuality)
+        items.Add("1080p", Enums.TrailerQuality.HD1080p)
+        items.Add("720p", Enums.TrailerQuality.HD720p)
+        items.Add("Standard", Enums.TrailerQuality.Standard)
         Me.cbTrailerQuality.DataSource = items.ToList
         Me.cbTrailerQuality.DisplayMember = "Key"
         Me.cbTrailerQuality.ValueMember = "Value"
@@ -2957,7 +2956,7 @@ Public Class dlgSettings
 
     Private Sub LoadXComs()
         Me.lbXBMCCom.Items.Clear()
-        For Each x As emmSettings.XBMCCom In Me.XComs
+        For Each x As Settings.XBMCCom In Me.XComs
             Me.lbXBMCCom.Items.Add(x.Name)
         Next
     End Sub
@@ -2965,25 +2964,25 @@ Public Class dlgSettings
     Private Sub LoadGenreLangs()
 
         Me.lbGenre.Items.Add(Master.eLang.All)
-        Me.lbGenre.Items.AddRange(XML.GetGenreList(True))
+        Me.lbGenre.Items.AddRange(APIXML.GetGenreList(True))
 
     End Sub
 
     Private Sub LoadLangs()
 
         Me.cbLanguages.Items.Add(Master.eLang.Disabled)
-        Me.cbLanguages.Items.AddRange(XML.GetLanguageList)
+        Me.cbLanguages.Items.AddRange(APIXML.GetLanguageList)
 
     End Sub
 
     Private Sub LoadIntLangs()
 
         Me.cbIntLang.Items.Clear()
-        If Directory.Exists(Path.Combine(Master.AppPath, "Langs")) Then
+        If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
             Dim alL As New List(Of String)
             Dim alLangs As New List(Of String)
             Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Langs"), "*).xml"))
+                alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
             Catch
             End Try
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToList)
@@ -2997,22 +2996,22 @@ Public Class dlgSettings
         Me.cbMovieTheme.Items.Clear()
         Me.cbTVShowTheme.Items.Clear()
         Me.cbEpTheme.Items.Clear()
-        If Directory.Exists(Path.Combine(Master.AppPath, "Themes")) Then
+        If Directory.Exists(Path.Combine(Functions.AppPath, "Themes")) Then
             Dim mT As New List(Of String)
             Dim sT As New List(Of String)
             Dim eT As New List(Of String)
             Try
-                mT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "movie-*.xml"))
+                mT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movie-*.xml"))
             Catch
             End Try
             Me.cbMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
             Try
-                sT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "tvshow-*.xml"))
+                sT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvshow-*.xml"))
             Catch
             End Try
             Me.cbTVShowTheme.Items.AddRange(sT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvshow-", String.Empty)).ToArray)
             Try
-                eT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "tvep-*.xml"))
+                eT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvep-*.xml"))
             Catch
             End Try
             Me.cbEpTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
@@ -3022,7 +3021,7 @@ Public Class dlgSettings
 
     Private Sub LoadMetadata()
         Me.lstMetaData.Items.Clear()
-        For Each x As emmSettings.MetadataPerType In Meta
+        For Each x As Settings.MetadataPerType In Meta
             Me.lstMetaData.Items.Add(x.FileType)
         Next
     End Sub
@@ -3068,17 +3067,17 @@ Public Class dlgSettings
     Private Sub LoadShowRegex()
         Dim lvItem As ListViewItem
         lvShowRegex.Items.Clear()
-        For Each rShow As emmSettings.TVShowRegEx In Me.ShowRegex
+        For Each rShow As Settings.TVShowRegEx In Me.ShowRegex
             lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.SeasonRegex)
             lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Directory", "File"))
             lvItem.SubItems.Add(rShow.EpisodeRegex)
             Select Case rShow.EpisodeRetrieve
-                Case emmSettings.EpRetrieve.FromDirectory
+                Case Settings.EpRetrieve.FromDirectory
                     lvItem.SubItems.Add("Directory")
-                Case emmSettings.EpRetrieve.FromFilename
+                Case Settings.EpRetrieve.FromFilename
                     lvItem.SubItems.Add("File")
-                Case emmSettings.EpRetrieve.FromSeasonResult
+                Case Settings.EpRetrieve.FromSeasonResult
                     lvItem.SubItems.Add("Result")
             End Select
             Me.lvShowRegex.Items.Add(lvItem)
@@ -3497,7 +3496,7 @@ Public Class dlgSettings
 
     Private Sub RemoveMetaData()
         If Me.lstMetaData.SelectedItems.Count > 0 Then
-            For Each x As emmSettings.MetadataPerType In Meta
+            For Each x As Settings.MetadataPerType In Meta
                 If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                     Meta.Remove(x)
                     LoadMetadata()
@@ -3537,14 +3536,14 @@ Public Class dlgSettings
                     Me.lvMovies.EndUpdate()
                     Me.lvMovies.Refresh()
 
-                    Master.GetListOfSources()
+                    Functions.GetListOfSources()
 
                     Me.SetApplyButton(True)
                     Me.sResult.NeedsUpdate = True
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3581,7 +3580,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3633,7 +3632,7 @@ Public Class dlgSettings
         Dim ID As Integer
         For Each lItem As ListViewItem In lvShowRegex.SelectedItems
             ID = Convert.ToInt32(lItem.Text)
-            Dim selRex = From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = ID
+            Dim selRex = From lRegex As Settings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = ID
             If selRex.Count > 0 Then
                 Me.ShowRegex.Remove(selRex(0))
                 Me.SetApplyButton(True)
@@ -3643,7 +3642,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadRatingRegions()
-        Me.cbRatingRegion.Items.AddRange(XML.GetRatingRegions)
+        Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
 

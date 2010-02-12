@@ -51,7 +51,7 @@ Public Class dlgIMDBSearchResults
             End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Close()
@@ -78,7 +78,7 @@ Public Class dlgIMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -135,7 +135,7 @@ Public Class dlgIMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -154,7 +154,7 @@ Public Class dlgIMDBSearchResults
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -176,7 +176,7 @@ Public Class dlgIMDBSearchResults
         Try
             Me.pbPoster.Image = Res.Result
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -272,7 +272,7 @@ Public Class dlgIMDBSearchResults
 
                     If M.PartialMatches.Count > 0 Then
                         M.PartialMatches.Sort()
-                        For Each Movie As Media.Movie In M.PartialMatches
+                        For Each Movie As MediaContainers.Movie In M.PartialMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
@@ -286,7 +286,7 @@ Public Class dlgIMDBSearchResults
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(298, "Exact Matches ({0})"), M.ExactMatches.Count))
-                        For Each Movie As Media.Movie In M.ExactMatches
+                        For Each Movie As MediaContainers.Movie In M.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
@@ -301,7 +301,7 @@ Public Class dlgIMDBSearchResults
                         End If
 
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(299, "Popular Titles ({0})"), M.PopularTitles.Count))
-                        For Each Movie As Media.Movie In M.PopularTitles
+                        For Each Movie As MediaContainers.Movie In M.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
@@ -318,7 +318,7 @@ Public Class dlgIMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
