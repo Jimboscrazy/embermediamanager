@@ -356,6 +356,8 @@ Public Class frmMain
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
         ExternalModules = New EmberModules
+        ExternalModules.ModuleAPI.MenuMediaList = Me.mnuMediaList
+        ExternalModules.ModuleAPI.MediaList = Me.dgvMediaList
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -4375,6 +4377,7 @@ doCancel:
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
                 .SettingsToolStripMenuItem.Text = Master.eLang.GetString(4, "&Settings...")
+                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(999, "Module Settings")
                 .HelpToolStripMenuItem.Text = Master.eLang.GetString(5, "&Help")
                 .AboutToolStripMenuItem.Text = Master.eLang.GetString(6, "&About...")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
@@ -7095,5 +7098,8 @@ doCancel:
         End Select
     End Sub
 
+    Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
+        ExternalModules.Setup()
+    End Sub
 End Class
 
