@@ -165,7 +165,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsModules.vb" />
-    <Compile Include="clsScrapeTVDB.vb" />
+    <Compile Include="TV Scraper\clsScrapeTVDB.vb" />
     <Compile Include="clsDatabase.vb" />
     <Compile Include="clsFileManip.vb" />
     <Compile Include="clsDVD.vb" />
@@ -216,16 +216,16 @@
     <Compile Include="dlgTrailerFormat.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVDBSearchResults.Designer.vb">
+    <Compile Include="TV Scraper\dlgTVDBSearchResults.Designer.vb">
       <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTVDBSearchResults.vb">
+    <Compile Include="TV Scraper\dlgTVDBSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVImageSelect.Designer.vb">
+    <Compile Include="TV Scraper\dlgTVImageSelect.Designer.vb">
       <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTVImageSelect.vb">
+    <Compile Include="TV Scraper\dlgTVImageSelect.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVSource.Designer.vb">
@@ -441,11 +441,8 @@
     <EmbeddedResource Include="dlgTrailerFormat.resx">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVDBSearchResults.resx">
+    <EmbeddedResource Include="TV Scraper\dlgTVDBSearchResults.resx">
       <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVImageSelect.resx">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
@@ -616,9 +613,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\modulesmenu.png" />
-    <None Include="Resources\puzzle.png" />
     <Content Include="television.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
+      <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
+      <Name>EmberAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

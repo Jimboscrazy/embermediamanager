@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,16 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Ember Media Manager")> 
+<Assembly: AssemblyTitle("EmberAPI")> 
 <Assembly: AssemblyDescription("www.embermm.com")> 
-<Assembly: AssemblyProduct("Ember Media Manager")> 
-<Assembly: AssemblyCopyright("Copyright � 2009-2010")> 
+<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyProduct("EmberAPI")> 
+<Assembly: AssemblyCopyright("Copyright © 2009-2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("54d9eaeb-ad55-48be-8fbd-bbea6349f6ea")> 
+<Assembly: Guid("8b4c3757-1e73-4f81-a5d2-78490dd1ae01")> 
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -28,7 +29,7 @@ Imports System.Runtime.InteropServices
 '
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
-' <Assembly: AssemblyVersion("")> 
+' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("0.0.0.$WCREV$")> 
-<Assembly: AssemblyFileVersion("0.0.0.$WCREV$")> 
+<Assembly: AssemblyVersion("1.0.0.0")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")> 

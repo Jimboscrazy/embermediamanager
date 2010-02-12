@@ -1679,47 +1679,4 @@ foundIT:
         End Try
     End Sub
 
-    Public Class SeasonImage
-        Private _season As Integer
-        Private _poster As Images
-        Private _fanart As TVDB.TVDBFanart
-
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
-        Public Property Poster() As Images
-            Get
-                Return Me._poster
-            End Get
-            Set(ByVal value As Images)
-                Me._poster = value
-            End Set
-        End Property
-
-        Public Property Fanart() As TVDB.TVDBFanart
-            Get
-                Return Me._fanart
-            End Get
-            Set(ByVal value As TVDB.TVDBFanart)
-                Me._fanart = value
-            End Set
-        End Property
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-        Public Sub Clear()
-            Me._season = -1
-            Me._poster = New Images
-            Me._fanart = New TVDB.TVDBFanart
-        End Sub
-    End Class
-
 End Class
