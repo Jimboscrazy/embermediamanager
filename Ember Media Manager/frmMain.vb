@@ -358,6 +358,7 @@ Public Class frmMain
         ExternalModules = New EmberModules
         ExternalModules.ModuleAPI.MenuMediaList = Me.mnuMediaList
         ExternalModules.ModuleAPI.MediaList = Me.dgvMediaList
+        ExternalModules.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)

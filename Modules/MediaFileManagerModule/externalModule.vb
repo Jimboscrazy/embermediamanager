@@ -29,10 +29,15 @@ Imports System.Xml.Serialization
 
 Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmAPI As New Object
+    Dim emmAPI As New EmberModules.ExposedAPI
     Private _Name As String = "Media File Manager"
     Private _Version As String = "0.1"
 
+    Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
+    Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
+    Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
+    Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
     Private MyPath As String
     Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
         Dim _setup As New frmSetup
@@ -75,7 +80,7 @@ Public Class FileManagerExternalModule
         emmAPI.MenuMediaList.Items.Remove(MyMenuSep)
         emmAPI.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As EmberModules._ModuleAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
+    Sub Init(ByRef emm As EmberModules.ExposedAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmAPI = emm
         MyPath = Path.Combine(emmAPI.AppPath, "Modules")
         Load()
@@ -91,11 +96,7 @@ Public Class FileManagerExternalModule
             Return _Version
         End Get
     End Property
-    Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
-    Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
-    Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
+
     Private Sub MySubMenuItem1_MouseHover(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MySubMenu1.MouseHover
         'PopulateFolders(sender)
     End Sub
@@ -116,9 +117,10 @@ Public Class FileManagerExternalModule
             Next
             If MoviesToWork.Count > 0 Then
                 Dim mMovie As New Object
+                Dim FileDelete As New FileUtils.Delete
                 For Each Id As Long In MoviesToWork
-                    mMovie = emmAPI.DB.LoadMovieFromDB(Id)
-                    ItemsToWork = emmAPI.FileDelete.GetItemsToDelete(False, mMovie)
+                    mMovie = Master.DB.LoadMovieFromDB(Id)
+                    ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                     'Dim dPath As String = mMovie.Filename
                     'Dim sPathShort As String = Directory.GetParent(dPath).FullName
                     Select Case sender.parent.tag
