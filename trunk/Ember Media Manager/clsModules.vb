@@ -31,25 +31,7 @@ Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 
-Public Interface EmberExternalModule
-    Sub Enable()
-    Sub Disable()
-    Sub Setup()
-    Sub Init(ByRef emm As Object)
-    ReadOnly Property ModuleName() As String
-    ReadOnly Property ModuleVersion() As String
-End Interface
 
-Public Interface EmberScraperModule
-    Sub Setup()
-    'Title or Id must be field in, all movie is past because some scrapper may run to update only some fields (defined in setup)
-    Function Scraper(ByVal Movie As Media.Movie) As Media.Movie
-    Function PostScraper(ByVal Movie As Media.Movie) As Media.Movie
-    ReadOnly Property ModuleName() As String
-    ReadOnly Property ModuleVersion() As String
-    ReadOnly Property IsScraper() As Boolean
-    ReadOnly Property IsPostScraper() As Boolean
-End Interface
 
 Public Class EmberModules
     Class _EmberAPI
