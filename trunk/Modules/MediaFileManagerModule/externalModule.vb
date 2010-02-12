@@ -25,14 +25,7 @@ Imports System.Drawing.Bitmap
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
-Public Interface EmberExternalModule
-    Sub Enable()
-    Sub Disable()
-    Sub Setup()
-    Sub Init(ByRef emm As Object)
-    ReadOnly Property ModuleName() As String
-    ReadOnly Property ModuleVersion() As String
-End Interface
+
 
 Public Class FileManagerExternalModule
     Implements EmberExternalModule
