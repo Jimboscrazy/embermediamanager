@@ -28,13 +28,13 @@ Imports System.Xml.Serialization
 
 
 Public Class FileManagerExternalModule
-    Implements EmberExternalModule
+    Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmAPI As New Object
     Private _Name As String = "Media File Manager"
     Private _Version As String = "0.1"
 
     Private MyPath As String
-    Sub Setup() Implements EmberExternalModule.Setup
+    Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
         Dim _setup As New frmSetup
         Dim li As ListViewItem
         For Each e As SettingItem In eSettings.ModuleSettings
@@ -56,7 +56,7 @@ Public Class FileManagerExternalModule
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
     End Sub
-    Sub Enable() Implements EmberExternalModule.Enable
+    Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         MyMenu.Text = "Media File Manager"
         MySubMenu1.Text = "Move To"
         MySubMenu1.Tag = "MOVE"
@@ -71,22 +71,22 @@ Public Class FileManagerExternalModule
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
     End Sub
-    Sub Disable() Implements EmberExternalModule.Disable
+    Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
         emmAPI.MenuMediaList.Items.Remove(MyMenuSep)
         emmAPI.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As Object) Implements EmberExternalModule.Init
+    Sub Init(ByRef emm As EmberModules._ModuleAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmAPI = emm
         MyPath = Path.Combine(emmAPI.AppPath, "Modules")
         Load()
     End Sub
 
-    ReadOnly Property ModuleName() As String Implements EmberExternalModule.ModuleName
+    ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName
         Get
             Return _Name
         End Get
     End Property
-    ReadOnly Property ModuleVersion() As String Implements EmberExternalModule.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleVersion
         Get
             Return _Version
         End Get
