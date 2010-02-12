@@ -31,10 +31,9 @@ Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 
-
-
-Public Class EmberModules
-    Class RuntimeObjects
+Public Class ModulesManager
+    Class EmberRuntimeObjects
+        'all runtime object (not classes or shared methods) that need to be exposed to Modules
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         'Public FileDelete As New FileUtils.Delete
@@ -76,7 +75,7 @@ Public Class EmberModules
         Public IsPostScraper As Boolean
     End Class
 
-    Public ModuleAPI As New RuntimeObjects
+    Public RuntimeObjects As New EmberRuntimeObjects
     Public externalProcessorModules As New List(Of _externalProcessorModuleClass)
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
@@ -108,7 +107,7 @@ Public Class EmberModules
                                 End If
                             Next
                             externalProcessorModules.Add(_externalProcessorModule)
-                            ProcessorModule.Init(ModuleAPI)
+                            ProcessorModule.Init(RuntimeObjects)
                             If _externalProcessorModule.Enabled Then
                                 ProcessorModule.Enable()
                             Else
@@ -202,17 +201,29 @@ Public Class EmberModules
             li.Tag = _externalProcessorModule.AssemblyName
         Next
         For Each _externalScraperModule In externalScrapersModules
-            Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
-            li.SubItems.Add(If(_externalScraperModule.IsScraper, "Yes", "No"))
-            li.SubItems.Add(If(_externalScraperModule.IsPostScraper, "Yes", "No"))
-            If _externalScraperModule.Enabled Then
-                li.SubItems.Add("Enabled")
-            Else
+            If _externalScraperModule.IsScraper Then
+                Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+                If _externalScraperModule.Enabled Then
+                    li.SubItems.Add("Enabled")
+                Else
+                    li.SubItems.Add("Disabled")
+                End If
                 li.SubItems.Add("Disabled")
+                li.Tag = _externalScraperModule.AssemblyName
             End If
-            li.SubItems.Add("Disabled")
-            li.Tag = _externalScraperModule.AssemblyName
+            If _externalScraperModule.IsPostScraper Then
+                Dim li As ListViewItem = modulesSetup.lstPostScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+                If _externalScraperModule.Enabled Then
+                    li.SubItems.Add("Enabled")
+                Else
+                    li.SubItems.Add("Disabled")
+                End If
+                li.SubItems.Add("Disabled")
+                li.Tag = _externalScraperModule.AssemblyName
+            End If
         Next
+
+
         modulesSetup.ModulesManager = Me
         modulesSetup.ShowDialog()
     End Sub

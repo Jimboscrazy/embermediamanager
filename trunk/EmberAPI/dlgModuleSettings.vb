@@ -23,7 +23,7 @@ Imports System
 Imports System.IO
 
 Public Class dlgModuleSettings
-    Public ModulesManager As EmberModules
+    Public ModulesManager As ModulesManager
 
     Private Sub lstModules_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstModules.SelectedIndexChanged
         If lstModules.SelectedItems.Count > 0 Then
@@ -78,18 +78,7 @@ Public Class dlgModuleSettings
 
     End Sub
 
-    Private Sub TabPage1_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabGenreic.Enter
-        CurrentTab("Generic")
-    End Sub
-    Private Sub TabPage2_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabScraper.Enter
-        CurrentTab("Scraper")
-        btnRemoveSet.Enabled = False
-        btnNewSet.Enabled = False
-        btnEditSet.Enabled = False
-    End Sub
+    Private Sub tabScraper_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabScraper.Click
 
-    Dim Mytab As String = "Generic"
-    Sub CurrentTab(ByVal t As String)
-        Mytab = t
     End Sub
 End Class
