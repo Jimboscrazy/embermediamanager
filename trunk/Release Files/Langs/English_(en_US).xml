@@ -457,7 +457,7 @@
   <string id="455">Do Not Display Fanart</string>
   <string id="456">Do Not Display Poster</string>
   <string id="457">Display Image Dimensions</string>
-  <string id="458">(New movies will still display in green if not checked.)</string>
+  <string id="458">*New movies will still display in green if not checked.</string>
   <string id="459">Mark New Movies</string>
   <string id="460">Media List Options</string>
   <string id="461">Mismatch Tolerance:</string>
