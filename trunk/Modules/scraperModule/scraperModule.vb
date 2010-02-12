@@ -21,40 +21,40 @@
 Imports EmberAPI
 
 Public Class TestEmberScraperModule
-    Implements EmberAPI.EmberScraperModule
+    Implements EmberAPI.Interfaces.EmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Teste Scraper"
     Private _Version As String = "1.0"
 
-    ReadOnly Property IsScraper() As Boolean Implements EmberAPI.EmberScraperModule.IsScraper
+    ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
             Return False
         End Get
     End Property
-    ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.EmberScraperModule.IsPostScraper
+    ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
         Get
             Return True
         End Get
     End Property
-    Sub Setup() Implements EmberAPI.EmberScraperModule.Setup
+    Sub Setup() Implements EmberAPI.Interfaces.EmberScraperModule.Setup
         Dim _setup As New frmSetup
         _setup.ShowDialog()
     End Sub
-    Function Scraper(ByVal Movie As Object) As Object Implements EmberAPI.EmberScraperModule.Scraper
-        Dim aMovie As EmberProxy.Movie
-        aMovie = Movie(0)
+    Function Scraper(ByVal Movie As EmberAPI.MediaContainers.Movie) As EmberAPI.MediaContainers.Movie Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+        Dim aMovie As EmberAPI.MediaContainers.Movie
+        aMovie = Movie
         aMovie.Title = "Bla bla"
         Return aMovie
     End Function
-    Function PostScraper(ByVal Movie As Object) As Object Implements EmberAPI.EmberScraperModule.PostScraper
+    Function PostScraper(ByVal Movie As EmberAPI.MediaContainers.Movie) As EmberAPI.MediaContainers.Movie Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
         Return Nothing
     End Function
-    ReadOnly Property ModuleName() As String Implements EmberAPI.EmberScraperModule.ModuleName
+    ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
         Get
             Return _Name
         End Get
     End Property
-    ReadOnly Property ModuleVersion() As String Implements EmberAPI.EmberScraperModule.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
         Get
             Return _Version
         End Get
