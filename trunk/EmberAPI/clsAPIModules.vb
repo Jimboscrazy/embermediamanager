@@ -34,16 +34,12 @@ Imports System.Xml.Serialization
 
 
 Public Class EmberModules
-    Class _ModuleAPI
+    Class ExposedAPI
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
-        'Public EmberAPP As Object = frmMain
-        Public DB As Object = Master.DB
         Public FileDelete As New FileUtils.Delete
         Public AppPAth As Object = Functions.AppPath
         Sub New()
-            ''''' _MenuMediaList = frmMain.mnuMediaList
-            ''''' _MediaList = frmMain.dgvMediaList
         End Sub
         Public Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
             Get
@@ -80,7 +76,7 @@ Public Class EmberModules
         Public IsPostScraper As Boolean
     End Class
 
-    Public ModuleAPI As New _ModuleAPI
+    Public ModuleAPI As New ExposedAPI
     Public externalProcessorModules As New List(Of _externalProcessorModuleClass)
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
@@ -185,9 +181,13 @@ Public Class EmberModules
     End Function
 
     Sub New()
+    End Sub
+
+    Public Sub LoadAllModules()
         loadModules()
         loadScrapersModules()
     End Sub
+
 
     Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings

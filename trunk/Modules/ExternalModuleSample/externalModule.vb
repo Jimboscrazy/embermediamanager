@@ -21,7 +21,7 @@ Imports EmberAPI
 
 Public Class TestEmberExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmAPI As New EmberModules._ModuleAPI
+    Dim emmAPI As New EmberModules.ExposedAPI
     Private _Name As String = "Teste Module"
     Private _Version As String = "1.0"
     Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
@@ -32,7 +32,7 @@ Public Class TestEmberExternalModule
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
     End Sub
-    Sub Init(ByRef emm As EmberModules._ModuleAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
+    Sub Init(ByRef emm As EmberModules.ExposedAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmAPI = emm
     End Sub
 

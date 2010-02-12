@@ -4,7 +4,7 @@
         Sub Enable()
         Sub Disable()
         Sub Setup()
-        Sub Init(ByRef emm As EmberModules._ModuleAPI)
+        Sub Init(ByRef emm As EmberModules.ExposedAPI)
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
     End Interface
