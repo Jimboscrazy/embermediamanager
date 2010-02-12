@@ -25,7 +25,7 @@
 '
 '
 
-Option Strict Off
+'Option Strict Off
 Imports System
 Imports System.IO
 Imports System.Xml
@@ -45,15 +45,21 @@ Public Class EmberModules
             ''''' _MenuMediaList = frmMain.mnuMediaList
             ''''' _MediaList = frmMain.dgvMediaList
         End Sub
-        Public ReadOnly Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
+        Public Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
             Get
                 Return _MenuMediaList
             End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuMediaList = value
+            End Set
         End Property
-        Public ReadOnly Property MediaList() As System.Windows.Forms.DataGridView
+        Public Property MediaList() As System.Windows.Forms.DataGridView
             Get
                 Return _MediaList
             End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaList = value
+            End Set
         End Property
     End Class
     <XmlRoot("EmberModule")> _
@@ -62,12 +68,12 @@ Public Class EmberModules
         Public AssemblyName As String
     End Class
     Class _externalProcessorModuleClass
-        Public ProcessorModule As Object
+        Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
     End Class
     Class _externalScraperModuleClass
-        Public ProcessorModule As Object
+        Public ProcessorModule As Interfaces.EmberScraperModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
         Public IsScraper As Boolean
@@ -87,15 +93,15 @@ Public Class EmberModules
             'For each .dll file in the module directory
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 'Load the assembly
-                assembly = System.Reflection.Assembly.LoadFrom(file)
+                assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
                 For Each fileType As Type In assembly.GetTypes
                     Try
                         'Activate the located module
                         Dim t As Type = fileType.GetInterface("EmberExternalModule")
                         If Not t Is Nothing Then
-                            Dim ProcessorModule As New Object
-                            ProcessorModule = Activator.CreateInstance(fileType)
+                            Dim ProcessorModule As Interfaces.EmberExternalModule 'Object
+                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberExternalModule)
                             'Add the activated module to the arraylist
                             Dim _externalProcessorModule As New _externalProcessorModuleClass
                             _externalProcessorModule.ProcessorModule = ProcessorModule
@@ -127,15 +133,15 @@ Public Class EmberModules
             'For each .dll file in the module directory
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 'Load the assembly
-                assembly = System.Reflection.Assembly.LoadFrom(file)
+                assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
                 For Each fileType As Type In assembly.GetTypes
                     Try
                         'Activate the located module
                         Dim t As Type = fileType.GetInterface("EmberScraperModule")
                         If Not t Is Nothing Then
-                            Dim ProcessorModule As New Object
-                            ProcessorModule = Activator.CreateInstance(fileType)
+                            Dim ProcessorModule As Interfaces.EmberScraperModule
+                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberScraperModule)
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
@@ -178,15 +184,12 @@ Public Class EmberModules
         Return movie
     End Function
 
-    Dim WithEvents ModulesMenu As New System.Windows.Forms.ToolStripMenuItem
     Sub New()
-        ModulesMenu.Text = Master.eLang.GetString(999, "Module Settings")
-        ModulesMenu.Image = My.Resources.ModulesMenu
-        '''''frmMain.EditToolStripMenuItem.DropDownItems.Add(ModulesMenu)
         loadModules()
         loadScrapersModules()
     End Sub
-    Private Sub ModulesMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModulesMenu.Click
+
+    Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
