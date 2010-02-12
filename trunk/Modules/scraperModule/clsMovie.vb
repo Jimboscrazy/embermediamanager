@@ -23,7 +23,7 @@
 Imports System.Drawing.Imaging
 Imports System.Xml.Serialization
 
-Namespace Media
+Namespace EmberProxy
     <XmlRoot("movie")> _
     Public Class Movie : Implements IComparable(Of Movie)
         Private _imdbid As String
