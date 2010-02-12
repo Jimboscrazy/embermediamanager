@@ -106,7 +106,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -118,11 +118,11 @@ Public Class dlgWizard
 
     Private Sub LoadIntLangs()
 
-        If Directory.Exists(Path.Combine(Master.AppPath, "Langs")) Then
+        If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
             Dim alL As New List(Of String)
             Dim alLangs As New List(Of String)
             Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Langs"), "*).xml"))
+                alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
             Catch
             End Try
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)

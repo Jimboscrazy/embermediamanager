@@ -34,7 +34,7 @@ Namespace AllHTPC
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return String.Empty

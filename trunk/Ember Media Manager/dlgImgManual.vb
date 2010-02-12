@@ -26,14 +26,14 @@ Imports System.IO
 Public Class dlgImgManual
 
     Dim tImage As New Images
-    Dim DLType As New Master.ImageType
+    Dim DLType As New Enums.ImageType
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Dim tmpPathPlus As String = String.Empty
 
         Try
-            If DLType = Master.ImageType.Fanart Then
+            If DLType = Enums.ImageType.Fanart Then
                 tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
             Else
                 tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
@@ -47,7 +47,7 @@ Public Class dlgImgManual
                 tImage.Save(tmpPathPlus)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -60,7 +60,7 @@ Public Class dlgImgManual
     End Sub
 
     Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
-        If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso StringManip.isValidURL(Me.txtURL.Text) Then
+        If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso StringUtils.isValidURL(Me.txtURL.Text) Then
             Me.btnPreview.Enabled = True
             Me.OK_Button.Enabled = True
         Else
@@ -81,7 +81,7 @@ Public Class dlgImgManual
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -90,7 +90,7 @@ Public Class dlgImgManual
         tImage = Nothing
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal _DLType As Master.ImageType) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As Windows.Forms.DialogResult
 
         '//
         ' Overload to pass data
@@ -104,7 +104,7 @@ Public Class dlgImgManual
     Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
 
-        If Me.DLType = Master.ImageType.Fanart Then
+        If Me.DLType = Enums.ImageType.Fanart Then
             Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
         Else
             Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")

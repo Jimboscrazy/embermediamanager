@@ -42,7 +42,7 @@ Public Class dlgRenameManual
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        Dim FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(Master.currMovie.Filename))
+        Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
         Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
         If Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
             FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)

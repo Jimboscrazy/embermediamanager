@@ -28,18 +28,18 @@ Namespace My
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             Try
 
-                If Not Master.GetNETVersion Then
+                If Not Functions.GetNETVersion Then
                     MsgBox(String.Concat("Ember Media Manager requires .NET Framework version 3.5 or higher.", vbNewLine, vbNewLine, _
                                "Please install .NET Framework version 3.5 or higher before attempting to use Ember."), MsgBoxStyle.Critical, "Unsupported .NET Version")
                     End
                 End If
 
-                Master.TestMediaInfoDLL()
+                Functions.TestMediaInfoDLL()
                 Master.eSettings.Load()
                 Master.eLang.LoadLanguage(Master.eSettings.Language)
-                Master.CreateDefaultOptions()
+                Functions.CreateDefaultOptions()
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 

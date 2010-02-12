@@ -21,7 +21,6 @@
 Imports System.IO
 Imports System.Text
 Imports ICSharpCode.SharpZipLib.Zip
-Imports EmberAPI
 
 Namespace TVDB
     Public Class Scraper
@@ -43,6 +42,7 @@ Namespace TVDB
             Searching = 7
             SelectImages = 8
             Verifying = 9
+            Cancelled = 10
         End Enum
 
         Public Structure TVImages
@@ -69,27 +69,27 @@ Namespace TVDB
         End Sub
 
         Public Class TVDBShow
-            Private _show As Master.DBTV
-            Private _episodes As New List(Of Master.DBTV)
+            Private _show As Structures.DBTV
+            Private _episodes As New List(Of Structures.DBTV)
             Private _fanart As New List(Of TVDBFanart)
             Private _showposters As New List(Of TVDBShowPoster)
             Private _seasonposters As New List(Of TVDBSeasonPoster)
             Private _posters As New List(Of TVDBPoster)
 
-            Public Property Show() As Master.DBTV
+            Public Property Show() As Structures.DBTV
                 Get
                     Return Me._show
                 End Get
-                Set(ByVal value As Master.DBTV)
+                Set(ByVal value As Structures.DBTV)
                     Me._show = value
                 End Set
             End Property
 
-            Public Property Episodes() As List(Of Master.DBTV)
+            Public Property Episodes() As List(Of Structures.DBTV)
                 Get
                     Return Me._episodes
                 End Get
-                Set(ByVal value As List(Of Master.DBTV))
+                Set(ByVal value As List(Of Structures.DBTV))
                     Me._episodes = value
                 End Set
             End Property
@@ -135,8 +135,8 @@ Namespace TVDB
             End Sub
 
             Public Sub Clear()
-                Me._show = New Master.DBTV
-                Me._episodes = New List(Of Master.DBTV)
+                Me._show = New Structures.DBTV
+                Me._episodes = New List(Of Structures.DBTV)
                 Me._fanart = New List(Of TVDBFanart)
                 Me._showposters = New List(Of TVDBShowPoster)
                 Me._seasonposters = New List(Of TVDBSeasonPoster)
@@ -298,7 +298,7 @@ Namespace TVDB
 
         Public Class TVDBShowPoster
             Private _url As String
-            Private _type As Master.ShowPosterType
+            Private _type As Enums.ShowPosterType
             Private _localfile As String
             Private _image As Images
 
@@ -311,11 +311,11 @@ Namespace TVDB
                 End Set
             End Property
 
-            Public Property Type() As Master.ShowPosterType
+            Public Property Type() As Enums.ShowPosterType
                 Get
                     Return Me._type
                 End Get
-                Set(ByVal value As Master.ShowPosterType)
+                Set(ByVal value As Enums.ShowPosterType)
                     Me._type = value
                 End Set
             End Property
@@ -344,7 +344,7 @@ Namespace TVDB
 
             Public Sub Clear()
                 Me._url = String.Empty
-                Me._type = Master.ShowPosterType.None
+                Me._type = Enums.ShowPosterType.None
                 Me._localfile = String.Empty
                 Me._image = New Images
             End Sub
@@ -353,7 +353,7 @@ Namespace TVDB
         Public Class TVDBSeasonPoster
             Private _url As String
             Private _season As Integer
-            Private _type As Master.SeasonPosterType
+            Private _type As Enums.SeasonPosterType
             Private _localfile As String
             Private _image As Images
 
@@ -375,11 +375,11 @@ Namespace TVDB
                 End Set
             End Property
 
-            Public Property Type() As Master.SeasonPosterType
+            Public Property Type() As Enums.SeasonPosterType
                 Get
                     Return Me._type
                 End Get
-                Set(ByVal value As Master.SeasonPosterType)
+                Set(ByVal value As Enums.SeasonPosterType)
                     Me._type = value
                 End Set
             End Property
@@ -409,7 +409,7 @@ Namespace TVDB
             Public Sub Clear()
                 Me._url = String.Empty
                 Me._season = 0
-                Me._type = Master.SeasonPosterType.None
+                Me._type = Enums.SeasonPosterType.None
                 Me._localfile = String.Empty
                 Me._image = New Images
             End Sub
@@ -552,6 +552,10 @@ Namespace TVDB
             Return sObject.IsBusy
         End Function
 
+        Public Sub SaveImages()
+            sObject.SaveImages()
+        End Sub
+
         Public Class ScraperObject
             Public Event ScraperEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
@@ -566,6 +570,14 @@ Namespace TVDB
                 Dim Parameter As Object
                 Dim Type As Integer
             End Structure
+
+            Public Sub SaveImages()
+                RaiseEvent ScraperEvent(EventType.SavingStarted, 0, Nothing)
+                Me.bwTVDB = New System.ComponentModel.BackgroundWorker
+                Me.bwTVDB.WorkerReportsProgress = True
+                Me.bwTVDB.WorkerSupportsCancellation = True
+                Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
+            End Sub
 
             Private Sub DownloadSeries(ByVal sID As String)
                 Dim gURL As String = String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage)
@@ -587,12 +599,12 @@ Namespace TVDB
                         End If
                     Else
                         Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Open, FileAccess.Read)
-                            Dim fZip As Byte() = Master.ReadStreamToEnd(fStream)
+                            Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
                             Me.ProcessTVDBZip(fZip, gURL)
                         End Using
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -606,7 +618,7 @@ Namespace TVDB
                         Dim zEntry As ZipEntry = zStream.GetNextEntry
 
                         While Not IsNothing(zEntry)
-                            Dim zBuffer As Byte() = Master.ReadStreamToEnd(zStream)
+                            Dim zBuffer As Byte() = Functions.ReadStreamToEnd(zStream)
 
                             Select Case True
                                 Case zEntry.Name.Equals(String.Concat(Master.eSettings.TVDBLanguage, ".xml"))
@@ -621,14 +633,14 @@ Namespace TVDB
                         End While
                     End Using
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 ShowFromXML(sXML, aXML, bXML, gURL)
             End Sub
 
             Private Sub ShowFromXML(ByVal sXML As String, ByVal aXML As String, ByVal bXML As String, ByVal gURL As String)
-                Dim Actors As New List(Of Media.Person)
+                Dim Actors As New List(Of MediaContainers.Person)
                 Dim sID As String = String.Empty
                 Dim iEp As Integer = -1
                 Dim iSeas As Integer = -1
@@ -639,11 +651,11 @@ Namespace TVDB
                         Dim xdActors As XDocument = XDocument.Parse(aXML)
                         Dim xA = From xActor In xdActors.Descendants("Actor")
                         For Each Actor As XElement In xA
-                            Actors.Add(New Media.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
+                            Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
                         Next
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 'now let's get the show info and all the episodes
@@ -666,7 +678,7 @@ Namespace TVDB
                                 .Actors = Actors
                             End With
 
-                            For Each Episode As Master.DBTV In tmpTVDBShow.Episodes
+                            For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
@@ -694,7 +706,7 @@ Namespace TVDB
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 'and finally the images
@@ -709,31 +721,31 @@ Namespace TVDB
                                         tmpTVDBShow.Fanart.Add(New TVDBFanart With { _
                                                              .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
                                                              .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
-                                                             .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                             .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                     Case "poster"
                                         tmpTVDBShow.Posters.Add(New TVDBPoster With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                     Case "season"
                                         tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                                 .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                 .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Master.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                 .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                     Case "series"
                                         tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Master.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 End Select
                             End If
                         Next
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End Sub
@@ -781,7 +793,7 @@ Namespace TVDB
                         bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = iID.ToString})
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -793,7 +805,7 @@ Namespace TVDB
                         bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
@@ -833,7 +845,7 @@ Namespace TVDB
                     End If
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 Return tvdbResults
@@ -856,17 +868,12 @@ Namespace TVDB
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
                                     RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
-                                    Using dEditShow As New dlgEditShow
-                                        If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                            RaiseEvent ScraperEvent(EventType.SavingStarted, 0, Nothing)
-                                            Me.bwTVDB = New System.ComponentModel.BackgroundWorker
-                                            Me.bwTVDB.WorkerReportsProgress = True
-                                            Me.bwTVDB.WorkerSupportsCancellation = True
-                                            Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
-                                        End If
-                                    End Using
+                                Else
+                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                                 End If
                             End Using
+                        Else
+                            RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                         End If
                     End Using
                 Else
@@ -877,15 +884,8 @@ Namespace TVDB
                         Using dTVImageSel As New dlgTVImageSelect
                             If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
                                 RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
-                                Using dEditShow As New dlgEditShow
-                                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                        RaiseEvent ScraperEvent(EventType.SavingStarted, 0, Nothing)
-                                        Me.bwTVDB = New System.ComponentModel.BackgroundWorker
-                                        Me.bwTVDB.WorkerReportsProgress = True
-                                        Me.bwTVDB.WorkerSupportsCancellation = True
-                                        Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
-                                    End If
-                                End Using
+                            Else
+                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     Else
@@ -897,17 +897,12 @@ Namespace TVDB
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
                                         RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
-                                        Using dEditShow As New dlgEditShow
-                                            If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                                RaiseEvent ScraperEvent(EventType.SavingStarted, 0, Nothing)
-                                                Me.bwTVDB = New System.ComponentModel.BackgroundWorker
-                                                Me.bwTVDB.WorkerReportsProgress = True
-                                                Me.bwTVDB.WorkerSupportsCancellation = True
-                                                Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
-                                            End If
-                                        End Using
+                                    Else
+                                        RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                                     End If
                                 End Using
+                            Else
+                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     End If
@@ -944,7 +939,7 @@ Namespace TVDB
                             e.Result = New Results With {.Type = Args.Type}
                     End Select
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End Sub
@@ -972,7 +967,7 @@ Namespace TVDB
                             RaiseEvent ScraperEvent(EventType.ScraperDone, 0, Nothing)
                     End Select
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End Sub
@@ -987,7 +982,7 @@ Namespace TVDB
 
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Try
-                        For Each Episode As Master.DBTV In tmpTVDBShow.Episodes
+                        For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                             Try
                                 Episode.ShowID = Master.currShow.ShowID
@@ -1033,7 +1028,7 @@ Namespace TVDB
                                 Me.bwTVDB.ReportProgress(iProgress, "progress")
                                 iProgress += 1
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             End Try
                         Next
 
@@ -1042,7 +1037,7 @@ Namespace TVDB
                         SQLTrans.Commit()
 
                     Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
 qExit:
 
@@ -1073,31 +1068,31 @@ qExit:
                         End Using
                     End Using
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End Sub
 
-            Private Function StringToSeasonPosterType(ByVal sType As String) As Master.SeasonPosterType
+            Private Function StringToSeasonPosterType(ByVal sType As String) As Enums.SeasonPosterType
                 Select Case sType.ToLower
                     Case "season"
-                        Return Master.SeasonPosterType.Poster
+                        Return Enums.SeasonPosterType.Poster
                     Case "seasonwide"
-                        Return Master.SeasonPosterType.Wide
+                        Return Enums.SeasonPosterType.Wide
                     Case Else
-                        Return Master.SeasonPosterType.None
+                        Return Enums.SeasonPosterType.None
                 End Select
             End Function
 
-            Private Function StringToShowPosterType(ByVal sType As String) As Master.ShowPosterType
+            Private Function StringToShowPosterType(ByVal sType As String) As Enums.ShowPosterType
                 Select Case sType.ToLower
                     Case "blank"
-                        Return Master.ShowPosterType.Blank
+                        Return Enums.ShowPosterType.Blank
                     Case "graphical"
-                        Return Master.ShowPosterType.Graphical
+                        Return Enums.ShowPosterType.Graphical
                     Case "text"
-                        Return Master.ShowPosterType.Text
+                        Return Enums.ShowPosterType.Text
                     Case Else
-                        Return Master.ShowPosterType.None
+                        Return Enums.ShowPosterType.None
                 End Select
             End Function
         End Class

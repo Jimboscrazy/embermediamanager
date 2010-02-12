@@ -47,7 +47,7 @@ Namespace YouTube
                     bwYT.RunWorkerAsync(url)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -56,7 +56,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -95,11 +95,11 @@ Namespace YouTube
                                 Case "22"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "720p"
-                                    Link.FormatQuality = Master.TrailerQuality.HD720p
+                                    Link.FormatQuality = Enums.TrailerQuality.HD720p
                                 Case "37"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "1080p"
-                                    Link.FormatQuality = Master.TrailerQuality.HD1080p
+                                    Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             End Select
 
                             If bwYT.CancellationPending Then Return DownloadLinks
@@ -119,7 +119,7 @@ Namespace YouTube
                             Dim StdLink As New VideoLinkItem
                             StdLink.URL = "http://www.youtube.com/get_video?fmt=18&video_id=" & VideoId & "&t=" & VideoHash
                             StdLink.Description = "Standard"
-                            StdLink.FormatQuality = Master.TrailerQuality.Standard
+                            StdLink.FormatQuality = Enums.TrailerQuality.Standard
                             DownloadLinks.Add(StdLink)
                         End If
 
@@ -129,7 +129,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing
@@ -181,7 +181,7 @@ Namespace YouTube
             Try
                 e.Result = ParseYTFormats(Url, True)
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -204,7 +204,7 @@ Namespace YouTube
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
         End Sub
@@ -232,12 +232,12 @@ Namespace YouTube
             End Set
         End Property
 
-        Private _FormatQuality As Master.TrailerQuality
-        Friend Property FormatQuality() As Master.TrailerQuality
+        Private _FormatQuality As Enums.TrailerQuality
+        Friend Property FormatQuality() As Enums.TrailerQuality
             Get
                 Return _FormatQuality
             End Get
-            Set(ByVal value As Master.TrailerQuality)
+            Set(ByVal value As Enums.TrailerQuality)
                 _FormatQuality = value
             End Set
         End Property
@@ -245,7 +245,7 @@ Namespace YouTube
     End Class
 
     Public Class VideoLinkItemCollection
-        Inherits Generic.SortedList(Of Master.TrailerQuality, VideoLinkItem)
+        Inherits Generic.SortedList(Of Enums.TrailerQuality, VideoLinkItem)
 
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
             MyBase.Add(Link.FormatQuality, Link)

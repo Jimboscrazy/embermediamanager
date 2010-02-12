@@ -52,17 +52,17 @@ Public Class Trailers
         Me._ImdbID = ImdbID
 
 
-        For Each TP As Master.TrailerPages In Master.eSettings.TrailerSites
+        For Each TP As Enums.TrailerPages In Master.eSettings.TrailerSites
             If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
                 Exit For
             End If
             Try
                 Select Case TP
-                    Case Master.TrailerPages.AllHTPC
+                    Case Enums.TrailerPages.AllHTPC
                         Me.GetAllHTPCTrailer()
-                    Case Master.TrailerPages.TMDB
+                    Case Enums.TrailerPages.TMDB
                         Me.GetTMDBTrailer()
-                    Case Master.TrailerPages.IMDB
+                    Case Enums.TrailerPages.IMDB
                         Me.GetImdbTrailer()
                 End Select
             Catch
@@ -168,7 +168,7 @@ Public Class Trailers
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return tURL
     End Function
@@ -230,7 +230,7 @@ Public Class Trailers
 
     Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
         Dim parPath As String = Directory.GetParent(sPath).FullName
-        Dim tmpName As String = Path.Combine(parPath, StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+        Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
         Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
         For Each t As String In Master.eSettings.ValidExts
             If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then

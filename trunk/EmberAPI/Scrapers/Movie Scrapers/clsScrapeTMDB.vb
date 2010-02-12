@@ -32,7 +32,7 @@ Namespace TMDB
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
-        Public Event PostersDownloaded(ByVal Posters As List(Of Media.Image))
+        Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
         Private Structure Arguments
@@ -41,7 +41,7 @@ Namespace TMDB
         End Structure
 
         Private Structure Results
-            Dim ResultList As List(Of Media.Image)
+            Dim ResultList As List(Of MediaContainers.Image)
             Dim Result As Object
         End Structure
 
@@ -112,7 +112,7 @@ Namespace TMDB
                     bwTMDB.ReportProgress(3)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return String.Empty
@@ -127,12 +127,12 @@ Namespace TMDB
                     Me.bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .sType = sType})
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-        Public Function GetTMDBImages(ByVal imdbID As String, ByVal sType As String) As List(Of Media.Image)
-            Dim alPosters As New List(Of Media.Image)
+        Public Function GetTMDBImages(ByVal imdbID As String, ByVal sType As String) As List(Of MediaContainers.Image)
+            Dim alPosters As New List(Of MediaContainers.Image)
             Dim xmlTMDB As XDocument
             Dim sHTTP As New HTTP
 
@@ -159,7 +159,7 @@ Namespace TMDB
                             If tmdbImages.Count > 0 Then
                                 For Each tmdbI As XElement In tmdbImages
                                     If Me.bwTMDB.CancellationPending Then Return Nothing
-                                    Dim tmpPoster As New Media.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
+                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
                                     alPosters.Add(tmpPoster)
                                 Next
                             End If
@@ -170,15 +170,15 @@ Namespace TMDB
                                     If Me.bwTMDB.CancellationPending Then Return Nothing
                                     If sType = "backdrop" AndAlso Master.eSettings.FanartPrefSizeOnly Then
                                         Select Case Master.eSettings.PreferredFanartSize
-                                            Case Master.FanartSize.Lrg
+                                            Case Enums.FanartSize.Lrg
                                                 If Not tmdbI.@size.ToLower = "original" Then Continue For
-                                            Case Master.FanartSize.Mid
+                                            Case Enums.FanartSize.Mid
                                                 If Not tmdbI.@size.ToLower = "mid" Then Continue For
-                                            Case Master.FanartSize.Small
+                                            Case Enums.FanartSize.Small
                                                 If Not tmdbI.@size.ToLower = "thumb" Then Continue For
                                         End Select
                                     End If
-                                    Dim tmpPoster As New Media.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
+                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
                                     alPosters.Add(tmpPoster)
                                 Next
                             End If
@@ -190,7 +190,7 @@ Namespace TMDB
                     bwTMDB.ReportProgress(2)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             sHTTP = Nothing
@@ -203,7 +203,7 @@ Namespace TMDB
             Try
                 e.Result = GetTMDBImages(Args.Parameter, Args.sType)
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub
@@ -216,7 +216,7 @@ Namespace TMDB
 
         Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
             If Not IsNothing(e.Result) Then
-                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of Media.Image)))
+                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
             End If
         End Sub
     End Class

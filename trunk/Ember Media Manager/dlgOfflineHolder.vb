@@ -35,8 +35,8 @@ Public Class dlgOfflineHolder
     Private idxStsImage As Integer = -1
     Private Preview As Bitmap
     Private Overlay As New Images
-    Private PreviewPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
-    Private OverlayPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
+    Private PreviewPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
+    Private OverlayPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
     Private currText As String = Master.eLang.GetString(350, "Insert DVD")
     Private prevText As String = String.Empty
     Private currNameText As String = String.Empty
@@ -44,7 +44,7 @@ Public Class dlgOfflineHolder
     '    Private currTopText As String
     '    Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
-    Private tMovie As New Master.DBMovie
+    Private tMovie As New Structures.DBMovie
     Private MovieName As String = String.Empty
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
     Private Video_Width As Integer
@@ -87,7 +87,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -102,7 +102,7 @@ Public Class dlgOfflineHolder
 
     Private Sub dlgOfflineHolder_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         If Directory.Exists(WorkingPath) Then
-            FileManip.Delete.DeleteDirectory(WorkingPath)
+            FileUtils.Delete.DeleteDirectory(WorkingPath)
         End If
     End Sub
 
@@ -133,12 +133,12 @@ Public Class dlgOfflineHolder
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
-                FileManip.Delete.DeleteDirectory(WorkingPath)
+                FileUtils.Delete.DeleteDirectory(WorkingPath)
             End If
             Directory.CreateDirectory(WorkingPath)
 
             CreatePreview()
-            tMovie.Movie = New Media.Movie
+            tMovie.Movie = New MediaContainers.Movie
             tMovie.isSingle = True
             idxStsSource = lvStatus.Items.Add(Master.eLang.GetString(353, "Source Folder")).Index
             lvStatus.Items(idxStsSource).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
@@ -154,7 +154,7 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
             'tbTagLine.Value = tbTagLine.Maximum - 470 'Video_Height - 100
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -202,7 +202,7 @@ Public Class dlgOfflineHolder
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -211,9 +211,9 @@ Public Class dlgOfflineHolder
             If bSuccess Then
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Posters) Then
+                    If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
-                            Dim dResultsP As Master.ImgResult = dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
+                            Dim dResultsP As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Posters)
                             If Not String.IsNullOrEmpty(dResultsP.ImagePath) Then
                                 tMovie.PosterPath = dResultsP.ImagePath
                                 If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Thumb = dResultsP.Posters
@@ -221,9 +221,9 @@ Public Class dlgOfflineHolder
                         End Using
                     End If
 
-                    If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Fanart) Then
+                    If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
-                            Dim dResultsF As Master.ImgResult = dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
+                            Dim dResultsF As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(dResultsF.ImagePath) Then
                                 tMovie.FanartPath = dResultsF.ImagePath
                                 If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = dResultsF.Fanart
@@ -246,7 +246,7 @@ Public Class dlgOfflineHolder
                 MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.pbProgress.Visible = False
         Me.GetIMDB_Button.Enabled = True
@@ -402,7 +402,7 @@ Public Class dlgOfflineHolder
         Dim newGraphics As Graphics
         Me.bwCreateHolder.ReportProgress(0, Master.eLang.GetString(356, "Preparing Data"))
         If Directory.Exists(buildPath) Then
-            FileManip.Delete.DeleteDirectory(buildPath)
+            FileUtils.Delete.DeleteDirectory(buildPath)
         End If
         Directory.CreateDirectory(buildPath)
 
@@ -457,7 +457,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(358, "Building Movie"))
         Using ffmpeg As New Process()
-            ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+            ffmpeg.StartInfo.FileName = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True
@@ -475,7 +475,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(359, "Moving Files"))
         If Directory.Exists(buildPath) Then
-            FileManip.Delete.DeleteDirectory(buildPath)
+            FileUtils.Delete.DeleteDirectory(buildPath)
         End If
 
         DirectoryCopy(WorkingPath, destPath)
@@ -485,12 +485,12 @@ Public Class dlgOfflineHolder
         If Not String.IsNullOrEmpty(tMovie.FanartPath) Then tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
 
         If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
-            Dim tTitle As String = StringManip.FilterTokens(tMovie.Movie.Title)
+            Dim tTitle As String = StringUtils.FilterTokens(tMovie.Movie.Title)
             tMovie.Movie.SortTitle = tTitle
             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tMovie.Movie.Year) Then
                 tMovie.ListTitle = String.Format("{0} ({1})", tTitle, tMovie.Movie.Year)
             Else
-                tMovie.ListTitle = StringManip.FilterTokens(tMovie.Movie.Title)
+                tMovie.ListTitle = StringUtils.FilterTokens(tMovie.Movie.Title)
             End If
         Else
             tMovie.ListTitle = MovieName.Replace("[Offline]", String.Empty).Trim
@@ -502,7 +502,7 @@ Public Class dlgOfflineHolder
 
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(360, "Renaming Files"))
         If Directory.Exists(buildPath) Then
-            FileManip.Delete.DeleteDirectory(buildPath)
+            FileUtils.Delete.DeleteDirectory(buildPath)
         End If
         Try
             FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
@@ -584,7 +584,7 @@ Public Class dlgOfflineHolder
         End Try
 
         For Each sFile As FileInfo In Files
-            FileManip.Common.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+            FileUtils.Common.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
         Next
 
         Files = Nothing
@@ -644,7 +644,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress
-        If StringManip.NumericOnly(e.KeyChar) Then
+        If StringUtils.NumericOnly(e.KeyChar) Then
             e.Handled = True
             Me.CheckConditions()
         Else

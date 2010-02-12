@@ -23,7 +23,7 @@
 Imports System.Text.RegularExpressions
 
 Public Class dlgAddEditActor
-    Private eActor As Media.Person
+    Private eActor As MediaContainers.Person
     Private isNew As Boolean = True
     Private sHTTP As New HTTP
     Public Shared selIndex As Integer = 0
@@ -31,7 +31,7 @@ Public Class dlgAddEditActor
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         '//
-        ' Fill the Media.Person with the data
+        ' Fill the MediaContainers.Person with the data
         '\\
 
         Try
@@ -40,7 +40,7 @@ Public Class dlgAddEditActor
             Me.eActor.Thumb = Me.txtThumb.Text
             Me.DialogResult = Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Close()
@@ -78,7 +78,7 @@ Public Class dlgAddEditActor
 
             Me.Activate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -90,7 +90,7 @@ Public Class dlgAddEditActor
 
         Try
             If Not String.IsNullOrEmpty(Me.txtThumb.Text) Then
-                If StringManip.isValidURL(Me.txtThumb.Text) Then
+                If StringUtils.isValidURL(Me.txtThumb.Text) Then
                     If Me.bwDownloadPic.IsBusy Then
                         Me.bwDownloadPic.CancelAsync()
                     End If
@@ -107,7 +107,7 @@ Public Class dlgAddEditActor
                 MsgBox(Master.eLang.GetString(161, "Please enter a URL to verify."), MsgBoxStyle.Exclamation, Master.eLang.GetString(162, "No Thumb URL Specified"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -129,7 +129,7 @@ Public Class dlgAddEditActor
 
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As Media.Person = Nothing) As Media.Person
+    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As EmberAPI.MediaContainers.Person = Nothing) As EmberAPI.MediaContainers.Person
 
         '//
         ' Overload to pass data
@@ -138,7 +138,7 @@ Public Class dlgAddEditActor
         Me.isNew = bNew
 
         If bNew Then
-            Me.eActor = New Media.Person
+            Me.eActor = New EmberAPI.MediaContainers.Person
         Else
             Me.eActor = inActor
         End If

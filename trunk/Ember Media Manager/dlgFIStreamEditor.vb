@@ -34,11 +34,11 @@ Public Class dlgFIStreamEditor
 
             If stream_type = Master.eLang.GetString(595, "Video Stream") Then
                 GroupBox1.Visible = True
-                Dim xVTypeFlag = From xVType In XML.FlagsXML...<vtype>...<name> Select xVType.@searchstring
+                Dim xVTypeFlag = From xVType In APIXML.FlagsXML...<vtype>...<name> Select xVType.@searchstring
                 For Each p() As String In xVTypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
                     cbVideoCodec.Items.AddRange(p)
                 Next
-                Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbVideoLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
@@ -56,11 +56,11 @@ Public Class dlgFIStreamEditor
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                 GroupBox2.Visible = True
-                Dim xATypeFlag = From xAType In XML.FlagsXML...<atype>...<name> Select xAType.@searchstring
+                Dim xATypeFlag = From xAType In APIXML.FlagsXML...<atype>...<name> Select xAType.@searchstring
                 For Each p() As String In xATypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
                     cbAudioCodec.Items.AddRange(p)
                 Next
-                Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
                 cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})
                 If Not movie Is Nothing Then
@@ -71,7 +71,7 @@ Public Class dlgFIStreamEditor
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                 GroupBox3.Visible = True
-                Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbSubsLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbSubsLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
@@ -113,8 +113,8 @@ Public Class dlgFIStreamEditor
 
     Private Function ConvertL(ByVal sLang As String) As String
 
-        If XML.LanguageXML.Nodes.Count > 0 Then
-            Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
+        If APIXML.LanguageXML.Nodes.Count > 0 Then
+            Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
             If xShortLang.Count > 0 Then
                 Return xShortLang(0)
             Else

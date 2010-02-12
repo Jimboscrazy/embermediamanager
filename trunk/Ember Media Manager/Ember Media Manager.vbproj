@@ -150,6 +150,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="EmberAPI" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -164,34 +165,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="clsModules.vb" />
-    <Compile Include="TV Scraper\clsScrapeTVDB.vb" />
-    <Compile Include="clsDatabase.vb" />
-    <Compile Include="clsFileManip.vb" />
-    <Compile Include="clsDVD.vb" />
-    <Compile Include="clsErrorLog.vb" />
-    <Compile Include="clsScanner.vb" />
-    <Compile Include="clsGenerateThumbs.vb" />
-    <Compile Include="clsHashing.vb" />
-    <Compile Include="clsHTTP.vb" />
-    <Compile Include="clsImageManip.vb" />
-    <Compile Include="clsImages.vb" />
-    <Compile Include="clsLocalization.vb" />
-    <Compile Include="clsNFO.vb" />
     <Compile Include="clsRenamer.vb" />
-    <Compile Include="clsScrapeAllHTPC.vb" />
-    <Compile Include="clsScrapeIMDB.vb" />
-    <Compile Include="clsScrapeIMPA.vb" />
-    <Compile Include="clsScrapeMPDB.vb" />
-    <Compile Include="clsScrapeOFDB.vb" />
-    <Compile Include="clsScrapeYouTube.vb" />
-    <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
-    <Compile Include="clsScrapeTMDB.vb" />
-    <Compile Include="clsStringManip.vb" />
     <Compile Include="clsTheming.vb" />
     <Compile Include="clsTrailers.vb" />
-    <Compile Include="clsXML.vb" />
     <Compile Include="dlgEditEpisode.Designer.vb">
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>
     </Compile>
@@ -204,28 +181,10 @@
     <Compile Include="dlgEditShow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgModuleSettings.designer.vb">
-      <DependentUpon>dlgModuleSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgModuleSettings.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgTrailerFormat.Designer.vb">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgTrailerFormat.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TV Scraper\dlgTVDBSearchResults.Designer.vb">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TV Scraper\dlgTVDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TV Scraper\dlgTVImageSelect.Designer.vb">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TV Scraper\dlgTVImageSelect.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVSource.Designer.vb">
@@ -354,12 +313,6 @@
     <Compile Include="dlgManualEdit.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgIMDBSearchResults.Designer.vb">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgIMDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgAddEditActor.Designer.vb">
       <DependentUpon>dlgAddEditActor.vb</DependentUpon>
     </Compile>
@@ -378,27 +331,18 @@
     <Compile Include="dlgImgSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgView.Designer.vb">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgImgView.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgAbout.Designer.vb">
       <DependentUpon>dlgAbout.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgAbout.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="clsMedia.vb" />
-    <Compile Include="clsMediaInfo.vb" />
     <Compile Include="frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>
     <Compile Include="frmSplash.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="clsGlobal.vb" />
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -435,14 +379,8 @@
     <EmbeddedResource Include="dlgEditShow.resx">
       <DependentUpon>dlgEditShow.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgModuleSettings.resx">
-      <DependentUpon>dlgModuleSettings.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgTrailerFormat.resx">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TV Scraper\dlgTVDBSearchResults.resx">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
@@ -527,10 +465,6 @@
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgIMDBSearchResults.resx">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgAddEditActor.resx">
       <DependentUpon>dlgAddEditActor.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -541,10 +475,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgView.resx">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgAbout.resx">

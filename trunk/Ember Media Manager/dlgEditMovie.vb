@@ -36,8 +36,8 @@ Public Class dlgEditMovie
     Private ExtraIndex As Integer = 0
     Private CachePath As String = String.Empty
     Private hasCleared As Boolean = False
-    Private fResults As New Master.ImgResult
-    Private pResults As New Master.ImgResult
+    Private fResults As New Containers.ImgResult
+    Private pResults As New Containers.ImgResult
     Private isAborting As Boolean = False
     Private PreviousFrameValue As Integer
 
@@ -50,7 +50,7 @@ Public Class dlgEditMovie
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -122,7 +122,7 @@ Public Class dlgEditMovie
             Me.FillInfo()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -130,9 +130,9 @@ Public Class dlgEditMovie
         Dim mTitle As String = Master.currMovie.Movie.Title
         Dim mPathPieces() As String = Master.currMovie.Filename.Split(Path.DirectorySeparatorChar)
         Dim mShortPath As String = Master.currMovie.Filename
-        If Not String.IsNullOrEmpty(mShortPath) AndAlso FileManip.Common.isVideoTS(mShortPath) Then
+        If Not String.IsNullOrEmpty(mShortPath) AndAlso FileUtils.Common.isVideoTS(mShortPath) Then
             mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
-        ElseIf Not String.IsNullOrEmpty(mShortPath) AndAlso FileManip.Common.isBDRip(mShortPath) Then
+        ElseIf Not String.IsNullOrEmpty(mShortPath) AndAlso FileUtils.Common.isBDRip(mShortPath) Then
             mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 4), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
         Else
             mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
@@ -202,7 +202,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -216,7 +216,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -226,7 +226,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -240,7 +240,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -250,7 +250,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -264,7 +264,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -274,7 +274,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -288,7 +288,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -298,7 +298,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -312,7 +312,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -348,7 +348,7 @@ Public Class dlgEditMovie
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -372,7 +372,7 @@ Public Class dlgEditMovie
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -384,13 +384,13 @@ Public Class dlgEditMovie
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnAddActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddActor.Click
         Try
-            Dim eActor As New Media.Person
+            Dim eActor As New MediaContainers.Person
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
@@ -400,14 +400,14 @@ Public Class dlgEditMovie
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
         Try
             Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-            Dim eActor As New Media.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+            Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(False, eActor)
             End Using
@@ -420,14 +420,14 @@ Public Class dlgEditMovie
             End If
             eActor = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
         Try
             If Directory.Exists(CachePath) Then
-                FileManip.Delete.DeleteDirectory(CachePath)
+                FileUtils.Delete.DeleteDirectory(CachePath)
             End If
 
             btnClearCache.Visible = False
@@ -450,7 +450,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
-                    If Master.currMovie.Movie.SortTitle <> StringManip.FilterTokens(Master.currMovie.Movie.Title) Then
+                    If Master.currMovie.Movie.SortTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
                         .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
                     End If
                 End If
@@ -548,13 +548,13 @@ Public Class dlgEditMovie
 
                 Dim lvItem As ListViewItem
                 .lvActors.Items.Clear()
-                For Each imdbAct As Media.Person In Master.currMovie.Movie.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
                     lvItem = .lvActors.Items.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                Dim tRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
+                Dim tRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
                 .tmpRating = tRating.ToString
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
@@ -614,7 +614,7 @@ Public Class dlgEditMovie
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -626,9 +626,9 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
-                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
+                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
                     Else
-                        Master.currMovie.ListTitle = StringManip.FilterTokens(.txtTitle.Text.Trim)
+                        Master.currMovie.ListTitle = StringUtils.FilterTokens(.txtTitle.Text.Trim)
                     End If
                     Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
@@ -636,7 +636,7 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
                     Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
                 Else
-                    Master.currMovie.Movie.SortTitle = StringManip.FilterTokens(.txtTitle.Text.Trim)
+                    Master.currMovie.Movie.SortTitle = StringUtils.FilterTokens(.txtTitle.Text.Trim)
                 End If
 
                 Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
@@ -656,7 +656,7 @@ Public Class dlgEditMovie
                         Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringManip.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If
@@ -689,7 +689,7 @@ Public Class dlgEditMovie
 
                 If .lvActors.Items.Count > 0 Then
                     For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New Media.Person
+                        Dim addActor As New MediaContainers.Person
                         addActor.Name = lviActor.Text.Trim
                         addActor.Role = lviActor.SubItems(1).Text.Trim
                         addActor.Thumb = lviActor.SubItems(2).Text.Trim
@@ -728,7 +728,7 @@ Public Class dlgEditMovie
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -793,7 +793,7 @@ Public Class dlgEditMovie
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -813,7 +813,7 @@ Public Class dlgEditMovie
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -833,7 +833,7 @@ Public Class dlgEditMovie
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -842,7 +842,7 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                pResults = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
+                pResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
                 If Not String.IsNullOrEmpty(pResults.ImagePath) Then
 
                     Poster.FromFile(sPath)
@@ -857,7 +857,7 @@ Public Class dlgEditMovie
                 Me.btnClearCache.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -866,7 +866,7 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                fResults = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)
+                fResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, True)
                 If Not String.IsNullOrEmpty(fResults.ImagePath) Then
 
                     Fanart.FromFile(sPath)
@@ -882,7 +882,7 @@ Public Class dlgEditMovie
                 Me.btnClearCache.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -890,7 +890,7 @@ Public Class dlgEditMovie
         Try
             Using ffmpeg As New Process()
 
-                ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                ffmpeg.StartInfo.FileName = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                 ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
@@ -935,7 +935,7 @@ Public Class dlgEditMovie
             PreviousFrameValue = 0
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
@@ -962,7 +962,7 @@ Public Class dlgEditMovie
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -972,7 +972,7 @@ Public Class dlgEditMovie
             tbFrame.Enabled = False
             Dim ffmpeg As New Process()
 
-            ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+            ffmpeg.StartInfo.FileName = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
             ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
@@ -1009,7 +1009,7 @@ Public Class dlgEditMovie
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             PreviousFrameValue = 0
             lblTime.Text = String.Empty
             tbFrame.Maximum = 0
@@ -1029,7 +1029,7 @@ Public Class dlgEditMovie
                 Directory.CreateDirectory(tPath)
             End If
 
-            Dim iMod As Integer = Master.GetExtraModifier(tPath)
+            Dim iMod As Integer = Functions.GetExtraModifier(tPath)
 
             Dim exImage As New Images
             exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg")))
@@ -1037,7 +1037,7 @@ Public Class dlgEditMovie
             exImage = Nothing
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         btnFrameSave.Enabled = False
@@ -1067,7 +1067,7 @@ Public Class dlgEditMovie
                     Next
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
             lFI = Nothing
             di = Nothing
@@ -1085,7 +1085,7 @@ Public Class dlgEditMovie
                 Me.ExtraIndex = Convert.ToInt32(Me.lvThumbs.SelectedItems(0).Tag)
                 Me.btnSetAsFanart.Enabled = True
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
     End Sub
@@ -1100,7 +1100,7 @@ Public Class dlgEditMovie
                 lvThumbs.Sort()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1113,7 +1113,7 @@ Public Class dlgEditMovie
                 lvThumbs.Sort()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1121,16 +1121,16 @@ Public Class dlgEditMovie
 
         Dim tPath As String = String.Empty
         Try
-            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(Master.currMovie.Filename) Then
+            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                 tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(Master.currMovie.Filename) Then
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
                 tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
             Else
                 tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
             End If
 
             If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                FileManip.Delete.DeleteDirectory(tPath)
+                FileUtils.Delete.DeleteDirectory(tPath)
                 hasCleared = True
             Else
                 'first delete the ones from the delete list
@@ -1149,7 +1149,7 @@ Public Class dlgEditMovie
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1170,7 +1170,7 @@ Public Class dlgEditMovie
             End While
             RenumberThumbs()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1195,7 +1195,7 @@ Public Class dlgEditMovie
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1207,7 +1207,7 @@ Public Class dlgEditMovie
 
         Me.lbGenre.Items.Add(Master.eLang.None)
 
-        Me.lbGenre.Items.AddRange(XML.GetGenreList)
+        Me.lbGenre.Items.AddRange(APIXML.GetGenreList)
 
     End Sub
 
@@ -1219,14 +1219,14 @@ Public Class dlgEditMovie
 
         Me.lbMPAA.Items.Add(Master.eLang.None)
 
-        Me.lbMPAA.Items.AddRange(XML.GetRatingList)
+        Me.lbMPAA.Items.AddRange(APIXML.GetRatingList)
 
     End Sub
 
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
                     Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
                     Me.lbMPAA.SelectedIndex = l
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
@@ -1264,7 +1264,7 @@ Public Class dlgEditMovie
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             Me.lbMPAA.SelectedIndex = 0
@@ -1286,12 +1286,12 @@ Public Class dlgEditMovie
             If Convert.ToInt32(txtThumbCount.Text) > 0 Then
                 pnlFrameProgress.Visible = True
                 Me.Refresh()
-                Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
+                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
                 pnlFrameProgress.Visible = False
                 Me.RefreshExtraThumbs()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1300,7 +1300,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtThumbCount.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.LostFocus
@@ -1318,7 +1318,7 @@ Public Class dlgEditMovie
             ilThumbs.Images.Clear()
             Me.bwThumbs.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1380,7 +1380,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
-        If StringManip.isValidURL(txtTrailer.Text) Then
+        If StringUtils.isValidURL(txtTrailer.Text) Then
             Me.btnPlayTrailer.Enabled = True
         Else
             Me.btnPlayTrailer.Enabled = False
@@ -1397,20 +1397,20 @@ Public Class dlgEditMovie
         Try
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
                 Dim ePath As String = String.Empty
-                If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(Master.currMovie.Filename) Then
+                If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                     ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-                ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(Master.currMovie.Filename) Then
+                ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
                     ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
                 Else
                     ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
                 End If
 
                 If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                    FileManip.Delete.DeleteDirectory(ePath)
+                    FileUtils.Delete.DeleteDirectory(ePath)
                     hasCleared = True
                 End If
 
-                Dim iMod As Integer = Master.GetExtraModifier(ePath)
+                Dim iMod As Integer = Functions.GetExtraModifier(ePath)
                 Dim iVal As Integer = iMod + 1
                 Dim hasET As Boolean = Not iMod = 0
                 Dim fList As New List(Of String)
@@ -1427,17 +1427,17 @@ Public Class dlgEditMovie
                     End If
 
                     For Each sFile As String In fList
-                        FileManip.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
+                        FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
                         iVal += 1
                     Next
                 End If
 
                 Master.currMovie.ExtraPath = ePath
 
-                FileManip.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1451,7 +1451,7 @@ Public Class dlgEditMovie
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1470,17 +1470,17 @@ Public Class dlgEditMovie
             End If
 
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                FileManip.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                If dImgManual.ShowDialog(Master.ImageType.Posters) = DialogResult.OK Then
+                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
                     Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
                     pbPoster.Image = Poster.Image
 
@@ -1489,14 +1489,14 @@ Public Class dlgEditMovie
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                If dImgManual.ShowDialog(Master.ImageType.Fanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
                     Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
                     pbFanart.Image = Fanart.Image
 
@@ -1505,7 +1505,7 @@ Public Class dlgEditMovie
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

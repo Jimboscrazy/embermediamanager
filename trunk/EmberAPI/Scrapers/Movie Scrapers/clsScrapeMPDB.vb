@@ -29,7 +29,7 @@ Namespace MPDB
     Public Class Scraper
         Friend WithEvents bwMPDB As New System.ComponentModel.BackgroundWorker
 
-        Public Event PostersDownloaded(ByVal Posters As List(Of Media.Image))
+        Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
         Private Structure Arguments
@@ -37,7 +37,7 @@ Namespace MPDB
         End Structure
 
         Private Structure Results
-            Dim ResultList As List(Of Media.Image)
+            Dim ResultList As List(Of MediaContainers.Image)
             Dim Result As Object
         End Structure
 
@@ -58,12 +58,12 @@ Namespace MPDB
                     Me.bwMPDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID})
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-        Public Function GetMPDBPosters(ByVal imdbID As String) As List(Of Media.Image)
-            Dim alPosters As New List(Of Media.Image)
+        Public Function GetMPDBPosters(ByVal imdbID As String) As List(Of MediaContainers.Image)
+            Dim alPosters As New List(Of MediaContainers.Image)
 
             If Me.bwMPDB.CancellationPending Then Return Nothing
 
@@ -87,14 +87,14 @@ Namespace MPDB
                         If Me.bwMPDB.CancellationPending Then Return Nothing
                         PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
                         PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
-                        alPosters.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
+                        alPosters.Add(New MediaContainers.Image With {.Description = "poster", .URL = PosterURL})
                     Next
                 End If
                 If bwMPDB.WorkerReportsProgress Then
                     bwMPDB.ReportProgress(3)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPosters
@@ -105,7 +105,7 @@ Namespace MPDB
             Try
                 e.Result = GetMPDBPosters(Args.Parameter)
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub
@@ -118,7 +118,7 @@ Namespace MPDB
 
         Private Sub bwMPDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMPDB.RunWorkerCompleted
             If Not IsNothing(e.Result) Then
-                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of Media.Image)))
+                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
             End If
         End Sub
     End Class

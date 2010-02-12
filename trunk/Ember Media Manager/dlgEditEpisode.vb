@@ -35,7 +35,7 @@ Public Class dlgEditEpisode
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -89,13 +89,13 @@ Public Class dlgEditEpisode
 
             Dim lvItem As ListViewItem
             .lvActors.Items.Clear()
-            For Each imdbAct As Media.Person In Master.currShow.TVEp.Actors
+            For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
                 lvItem = .lvActors.Items.Add(imdbAct.Name)
                 lvItem.SubItems.Add(imdbAct.Role)
                 lvItem.SubItems.Add(imdbAct.Thumb)
             Next
 
-            Dim tRating As Single = Master.ConvertToSingle(Master.currShow.TVEp.Rating)
+            Dim tRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEp.Rating)
             .tmpRating = tRating.ToString
             .pbStar1.Tag = tRating
             .pbStar2.Tag = tRating
@@ -187,7 +187,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -206,7 +206,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -217,7 +217,7 @@ Public Class dlgEditEpisode
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -238,7 +238,7 @@ Public Class dlgEditEpisode
 
                 If .lvActors.Items.Count > 0 Then
                     For Each lviActor As ListViewItem In .lvActors.Items
-                        Dim addActor As New Media.Person
+                        Dim addActor As New MediaContainers.Person
                         addActor.Name = lviActor.Text.Trim
                         addActor.Role = lviActor.SubItems(1).Text.Trim
                         addActor.Thumb = lviActor.SubItems(2).Text.Trim
@@ -264,13 +264,13 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnAddActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddActor.Click
         Try
-            Dim eActor As New Media.Person
+            Dim eActor As New MediaContainers.Person
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
@@ -280,14 +280,14 @@ Public Class dlgEditEpisode
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
         Try
             Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-            Dim eActor As New Media.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+            Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
             Using dAddEditActor As New dlgAddEditActor
                 eActor = dAddEditActor.ShowDialog(False, eActor)
             End Using
@@ -300,7 +300,7 @@ Public Class dlgEditEpisode
             End If
             eActor = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -316,7 +316,7 @@ Public Class dlgEditEpisode
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -326,7 +326,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -340,7 +340,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -350,7 +350,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -364,7 +364,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -374,7 +374,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -388,7 +388,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -398,7 +398,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -412,7 +412,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -422,7 +422,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -436,7 +436,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -461,15 +461,16 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub txtEpisode_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpisode.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub txtSeason_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSeason.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub SetUp()
-        Dim mTitle As String = Master.currShow.TVEp.Title
+        Dim mTitle As String = String.Empty
+        mTitle = Master.currShow.TVEp.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")

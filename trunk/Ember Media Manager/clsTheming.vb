@@ -319,7 +319,7 @@ Public Class Theming
                 _availablecontrols.Add(New Controls With {.Control = sCon})
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -331,7 +331,7 @@ Public Class Theming
         Dim cFontSize As Integer = 8
         Dim cFontStyle As FontStyle = FontStyle.Bold
 
-        Dim tPath As String = String.Concat(Master.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, sTheme))
+        Dim tPath As String = String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, sTheme))
         If File.Exists(tPath) Then
 
             ThemeXML = XDocument.Load(tPath)
@@ -344,7 +344,7 @@ Public Class Theming
                     If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             'images
@@ -359,7 +359,7 @@ Public Class Theming
                     If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Try
@@ -402,7 +402,7 @@ Public Class Theming
 
                 Next
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
 
@@ -529,7 +529,7 @@ Public Class Theming
 
             Return Convert.ToInt32(sFormula)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(String.Format("{0} ({1})", ex.Message, sFormula), ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(String.Format("{0} ({1})", ex.Message, sFormula), ex.StackTrace, "Error")
         End Try
 
         Return 0
@@ -572,7 +572,7 @@ Public Class Theming
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub

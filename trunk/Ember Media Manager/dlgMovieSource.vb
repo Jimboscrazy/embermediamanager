@@ -70,10 +70,10 @@ Public Class dlgMovieSource
             End Using
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Finally
-            Master.GetListOfSources()
+            Functions.GetListOfSources()
         End Try
 
         Me.Close()
@@ -95,7 +95,7 @@ Public Class dlgMovieSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -141,7 +141,7 @@ Public Class dlgMovieSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -188,7 +188,7 @@ Public Class dlgMovieSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

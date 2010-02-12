@@ -25,7 +25,7 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgSortFiles
     Private _hitgo As Boolean = False
-    Private fSorter As New FileManip.FileSorter
+    Private fSorter As New FileUtils.FileSorter
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = If(Me._hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)

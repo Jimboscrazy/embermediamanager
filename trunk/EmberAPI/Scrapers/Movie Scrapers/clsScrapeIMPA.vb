@@ -29,7 +29,7 @@ Namespace IMPA
     Public Class Scraper
         Friend WithEvents bwIMPA As New System.ComponentModel.BackgroundWorker
 
-        Public Event PostersDownloaded(ByVal Posters As List(Of Media.Image))
+        Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
         Private Structure Arguments
@@ -38,7 +38,7 @@ Namespace IMPA
         End Structure
 
         Private Structure Results
-            Dim ResultList As List(Of Media.Image)
+            Dim ResultList As List(Of MediaContainers.Image)
             Dim Result As Object
         End Structure
 
@@ -59,7 +59,7 @@ Namespace IMPA
                 Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
-                Dim mcIMPA As MatchCollection = Regex.Matches(Html, "http://([^""]*)impawards.com/([^""]*)")
+                Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "http://([^""]*)impawards.com/([^""]*)")
                 If mcIMPA.Count > 0 Then
                     'just use the first one if more are found
                     Return mcIMPA(0).Value.ToString
@@ -67,7 +67,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Return String.Empty
             End Try
         End Function
@@ -80,12 +80,12 @@ Namespace IMPA
                     bwIMPA.RunWorkerAsync(New Arguments With {.Parameter = sURL})
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-        Public Function GetIMPAPosters(ByVal imdbID As String) As List(Of Media.Image)
-            Dim alPoster As New List(Of Media.Image)
+        Public Function GetIMPAPosters(ByVal imdbID As String) As List(Of MediaContainers.Image)
+            Dim alPoster As New List(Of MediaContainers.Image)
 
             Try
                 If bwIMPA.CancellationPending Then Return Nothing
@@ -99,7 +99,7 @@ Namespace IMPA
 
                     If bwIMPA.CancellationPending Then Return Nothing
 
-                    Dim mcPoster As MatchCollection = Regex.Matches(Html, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
+                    Dim mcPoster As MatchCollection = Regex.Matches(HTML, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
 
                     Dim PosterURL As String
 
@@ -107,14 +107,14 @@ Namespace IMPA
                         If bwIMPA.CancellationPending Then Return Nothing
                         PosterURL = Strings.Replace(String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters"), "imp_", String.Empty)
 
-                        alPoster.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
+                        alPoster.Add(New MediaContainers.Image With {.Description = "poster", .URL = PosterURL})
 
                         PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")
-                        alPoster.Add(New Media.Image With {.Description = "original", .URL = PosterURL})
+                        alPoster.Add(New MediaContainers.Image With {.Description = "original", .URL = PosterURL})
                     Next
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPoster
@@ -125,7 +125,7 @@ Namespace IMPA
             Try
                 e.Result = GetIMPAPosters(Args.Parameter)
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub
@@ -138,7 +138,7 @@ Namespace IMPA
 
         Private Sub bwIMPA_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMPA.RunWorkerCompleted
             If Not IsNothing(e.Result) Then
-                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of Media.Image)))
+                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
             End If
         End Sub
 
