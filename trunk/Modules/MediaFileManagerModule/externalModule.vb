@@ -29,7 +29,7 @@ Imports System.Xml.Serialization
 
 Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmAPI As New EmberModules.ExposedAPI
+    Dim emmAPI As New EmberModules.RuntimeObjects
     Private _Name As String = "Media File Manager"
     Private _Version As String = "0.1"
 
@@ -80,9 +80,9 @@ Public Class FileManagerExternalModule
         emmAPI.MenuMediaList.Items.Remove(MyMenuSep)
         emmAPI.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As EmberModules.ExposedAPI) Implements EmberAPI.Interfaces.EmberExternalModule.Init
+    Sub Init(ByRef emm As EmberModules.RuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmAPI = emm
-        MyPath = Path.Combine(emmAPI.AppPath, "Modules")
+        MyPath = Path.Combine(Functions.AppPath, "Modules")
         Load()
     End Sub
 
@@ -123,7 +123,7 @@ Public Class FileManagerExternalModule
                     ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                     'Dim dPath As String = mMovie.Filename
                     'Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                    Select Case sender.parent.tag
+                    Select Case sender.OwnerItem.Tag
                         Case "MOVE"
                             MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
                         Case "COPY"

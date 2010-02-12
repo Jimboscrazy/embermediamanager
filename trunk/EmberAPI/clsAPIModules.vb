@@ -34,11 +34,11 @@ Imports System.Xml.Serialization
 
 
 Public Class EmberModules
-    Class ExposedAPI
+    Class RuntimeObjects
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
-        Public FileDelete As New FileUtils.Delete
-        Public AppPAth As Object = Functions.AppPath
+        'Public FileDelete As New FileUtils.Delete
+        'Public AppPAth As String = Functions.AppPath
         Sub New()
         End Sub
         Public Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
@@ -76,7 +76,7 @@ Public Class EmberModules
         Public IsPostScraper As Boolean
     End Class
 
-    Public ModuleAPI As New ExposedAPI
+    Public ModuleAPI As New RuntimeObjects
     Public externalProcessorModules As New List(Of _externalProcessorModuleClass)
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
