@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,47 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="haslanguage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\haslanguage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <metadata name="tsImgView.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tsbFit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAsdJREFUOE+tk2tI
+        k1EYx18jgkgJahghxLALISXUwr4pJHjNoJqRRWBhNwUJU5dlIt4qVEgo8oZkmlKDvKRzqcN3Y15o6ubu
+        6pyb7vbuXczC/Oi/s+V02tcO/Djnec55/ud5Hs6hqP81fq+sxDidzncMyzQzLNvkg91BwLe6upqy7d71
+        9fUwm8ulUNpc0DhZgts/awk6vx3ADZXdjWU3u7i2tnZkU4RlHbzvlmW0GpfQvsGnOSuadUto1C7Btw74
+        Ww1WjFrs8DIMf0vA4eDRJivKJw14OWVErdKIW9/mEd5gwsF6E/j986ghvldkr1xhgJic9XqYK5sCKyQD
+        8ZwZufIZCMbVyKY12FOtAVWpAlWlQshLDe4Ma/BkQu0/88VoJgKe7QJd+nlkSBTIkk7iUu8kqOIJUKUb
+        PJtAnFCNTFqL9KEZtGnn8WtbBqSEDrUR8X1yXBSPIXVgFPsrpaAKaVACGntLaTyQ1KFQXoV7I9VoUGn/
+        FXiv1ON8N40LfTLE9cgQXjkIKneAIAanrB91E8fQpAhF7dgh1E+PkSYGlcCSDFqmtYjpoRHbK8O+gl5Q
+        d7tAZXeDetiNXdlCPB86RYIjUCKNxJupUXgcQU10WK28ViIQ/VWKwzV9oK62grrR9peMDlCZQuSLeKiQ
+        HUWBJAotShW8Du9WEw0GA09vnIVIZ4RwTIuPEhU6aTU+S/VoHBzB5eZkPOqLxmNRFPJEp/FCko728bIt
+        AZPJdE6v02FxdhZ26yLc9mWwThs8Lgd+EJrl+bj2gYvbndG43haJioGbMJqV6ZvvgM/nH5BKpRbzwgIs
+        FgvsNhtcTicYhgHrdsPLruD1cAni355Ece99qGfUP3Oyck4EBELIIpTD4ZxNTkzMS0pIEJC5KDUx8Wlq
+        crKfNB+paUXcMxGClKSU/ONcbiyJCSP4Yv1jd7Cx4fNtBrPz4/tiqD9Q0B2TCXr1XgAAAABJRU5ErkJg
+        gg==
+</value>
   </data>
-  <data name="MediaListLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MediaListLogo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="tsbFull.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAsVJREFUOE+tk1tI
+        FGEUx0cKIaVSEsSisKcozWpNjJIQL+uKvUgbCj4ZoUi52QUVijRLDFNfwiRN85IUYnjJa5bNmpasuuve
+        V13cnV3H2Z1RUxR889/MaF6WHvvgx3fmnP/5f8yZ+Qjif62VlZVLDMO8dnPut26OqxHgPNjMuWvW1tYS
+        95y7sbFx0OFyTWjmXNAzHHQMK+6GLYR4ExaTtBsOlrOtr68Hb5uwNC0ZtTlRb3agyUKhyUzh4zSFagOF
+        N/rNWMgJtXp+H7bTWGbZlD0Gg1Y7isbMeDFhQZnGgrS+GRypssKfJ7lrBmVqi1gTNL1WCsuL7I1tg98s
+        LemxzEIxrEXeLx2yvuvh/VIPonhSxKtEh/QBPfJHdaKmldeuehq0GmeQ+lWFW8pxyNrGQDweBVGwxaNR
+        RLdM4qZyUtQ06Kc9DPgZNGrNiOn6gWt9IyKHi5UgckkQeSQOFCiR1v8e6YPNvGYYlRoTVtndr8Ab1GqM
+        iGwnecEQojuHEPDsCwhFL4jsfgQ87UKVKhiVqpO40jGAinETP0RmZwbCV6ie0COig8RVvtnnYSeIjDYQ
+        We3wvvMJh+43o0R5GqUjoXy9G+VjGqwyizsGtN0uaVAbEPZZiaMV3SDkDSBSPsBPUYrCwbN48u0CishT
+        IoWkBM+V4Xj1M2nHYMZkkpgsU+g0WNA8rMO7fjUaBwyoHexAfn8o8vrC8KAnRCS3N0yknEzeMbBareFm
+        oxG2qSnMUzaw804sMHPgmHnMUlYYrGpktFxEZksEtBYVzNMGOGxzqdv/QVJUlL+SJJ12mw0OisI8TcPt
+        coFjWSwtLIFmnLhedxnyuijYHbPQarUrcrn8zF8DLz7w8ff1DYmPicmUxsZmJ8TF3ZVJpTmy+Ph7AklS
+        Wc7xc0E5J84HKRITEm8fCwyM5Hv8eIRece37x60Wip7slu0XHv4AAlAdmo2ND5EAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="MovieListFooter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListFooter.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListHeader" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListHeader.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableCol" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableCol.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableEnd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableEnd.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableHeader" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableHeader.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableRowEnd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableRowEnd.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableRowStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableRowStart.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="MovieListTableStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableStart.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="overlay" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\overlay.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="overlay2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\overlay2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="television" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\television.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ModulesMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADKysre3t7g4ODk5OXn5+jp
+        6enp6erp6ern5+jl5ebj4+TT09QAAAAAAAAAAAAAAADU1NbZ2d/f4ebj5erk5+vl5+zl6Ozl5+zl6Ovj
+        5erf4OXb290AAAAAAAAAAAAAAADZ2NfY1bbUx6vQvaXSv6fTwKjTwKjTwKjSv6fUxqra17bf3tkAAAAA
+        AAAAAAAAAADUzqDBsy60jhqhUwCjWgCjWgCjWgCjWgChVACxghHAsy3Ty48AAAAAAAAAAAAAAADUzZrA
+        sTXCsj+ydQuvZQCwagCwagCvZgCxbwfBrjvAsTbSyowAAAAAAAAAAAAAAADVz53AsDfCtULCsT66hRa3
+        bgC3bgC5fxHBrz3CtUPAsDfTzI8AAAAAAAAAAAAAAADX0aPEtELGuEzFuEzBhhDAdgDAdwDBgAnFtEjG
+        uE3EtELWz5UAAAAAAAAAAAAAAADb1azKvFnMwWTMr0nIfADIgADIgADIewDLq0PMwmXKvFna1KIAAAAA
+        AAAAAAAAAADe2bbRxG7Sx3fTwGnTiwfQhQDQhQDSiAHTu2HSyHjRxG7e2K0AAAAAAAAAAAAAAADg3L7X
+        y4PYzYjYz43bul7cmBXcmBPbtVPYzozYzYnXy4Ph3LcAAAAAAAAAAAAAAADj38ji2KHi2KTi2KTh2qji
+        1Zzi1Jvh2qni2KTi2KTh16Hl4MQAAAAAAAAAAAAAAADu7eno5M/r59Pq59Pr59Pr59Tr59Xr59Pr59Pq
+        59Pp5dDt7OYAAAAAAAAAAAAAAAAAAADx8fLy8vLy8vLy8vLz8vLz8vLz8vLy8vLy8vLy8vIAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//6xB//+sQcAD
+        rEHAA6xBwAOsQcADrEHAA6xBwAOsQcADrEHAA6xBwAOsQcADrEHAA6xBwAOsQeAHrEH//6xB
+</value>
   </data>
 </root>
