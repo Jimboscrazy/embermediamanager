@@ -178,22 +178,19 @@ Public Class ModulesManager
     Public Function ScrapeOnly(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
         ' Local (ByVal) Options to allow chain blocking scraping
 
-        Dim _externalScraperModule As _externalScraperModuleClass = externalScrapersModules.FirstOrDefault(Function(e) e.IsScraper AndAlso e.Enabled)
-        If Not IsNothing(_externalscrapermodule) Then
-            Return _externalscrapermodule.ProcessorModule.Scraper(movie, Options)
-        Else
-            Return False
-        End If
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.Enabled)
+            _externalScraperModule.ProcessorModule.Scraper(movie, Options)
+        Next
+
+        Return True
     End Function
     Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
 
-        Dim _externalScraperModule As _externalScraperModuleClass = externalScrapersModules.FirstOrDefault(Function(e) e.IsPostScraper AndAlso e.Enabled)
-        If Not IsNothing(_externalScraperModule) Then
-            Return _externalScraperModule.ProcessorModule.PostScraper(movie)
-        Else
-            Return False
-        End If
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.Enabled)
+            _externalScraperModule.ProcessorModule.PostScraper(movie)
+        Next
 
+        Return True
     End Function
 
     Sub New()
