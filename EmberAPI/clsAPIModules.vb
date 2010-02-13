@@ -36,8 +36,6 @@ Public Class ModulesManager
         'all runtime object (not classes or shared methods) that need to be exposed to Modules
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
-        'Public FileDelete As New FileUtils.Delete
-        'Public AppPAth As String = Functions.AppPath
         Sub New()
         End Sub
         Public Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
@@ -60,7 +58,11 @@ Public Class ModulesManager
     <XmlRoot("EmberModule")> _
     Class _XMLEmberModuleClass
         Public Enabled As Boolean
+        Public ScraperEnabled As Boolean
+        Public PostScraperEnabled As Boolean
         Public AssemblyName As String
+        Public ScraperOrder As Integer
+        Public PostScraperOrder As Integer
     End Class
     Class _externalProcessorModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
@@ -80,8 +82,10 @@ Public Class ModulesManager
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
 
+    ''' <summary>
+    ''' Load all Generic Modules and field in externalProcessorModules List
+    ''' </summary>
     Public Sub loadModules()
-
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -121,6 +125,10 @@ Public Class ModulesManager
         End If
     End Sub
 
+    ''' <summary>
+    ''' Load all Scraper Modules and field in externalScrapersModules List
+    ''' </summary>
+
     Public Sub loadScrapersModules()
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
@@ -157,6 +165,12 @@ Public Class ModulesManager
         End If
     End Sub
     'TODO : Bellow functions should go to Background worker
+
+    ''' <summary>
+    ''' Entry point to Scrape and Post Scrape .. will run all modules enabled
+    ''' </summary>
+    ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
+    ''' <returns>MediaContainers.Movie with scraped information</returns>
     Public Function FullScrape(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
         movie = ScrapeOnly(movie)
         movie = PostScrapeOnly(movie)
@@ -164,7 +178,7 @@ Public Class ModulesManager
     End Function
     Public Function ScrapeOnly(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
         For Each _externalScraperModule In externalScrapersModules
-            If _externalScraperModule.IsScraper Then
+            If _externalScraperModule.IsScraper And _externalScraperModule.Enabled Then
                 movie = _externalScraperModule.ProcessorModule.Scraper(movie)
             End If
         Next
@@ -172,7 +186,7 @@ Public Class ModulesManager
     End Function
     Public Function PostScrapeOnly(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
         For Each _externalScraperModule In externalScrapersModules
-            If _externalScraperModule.IsPostScraper Then
+            If _externalScraperModule.IsPostScraper And _externalScraperModule.Enabled Then
                 movie = _externalScraperModule.ProcessorModule.Scraper(movie)
             End If
         Next
@@ -197,33 +211,25 @@ Public Class ModulesManager
             Else
                 li.SubItems.Add("Disabled")
             End If
-            li.SubItems.Add("Disabled")
             li.Tag = _externalProcessorModule.AssemblyName
         Next
         For Each _externalScraperModule In externalScrapersModules
+            Dim li As New ListViewItem
             If _externalScraperModule.IsScraper Then
-                Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
-                If _externalScraperModule.Enabled Then
-                    li.SubItems.Add("Enabled")
-                Else
-                    li.SubItems.Add("Disabled")
-                End If
-                li.SubItems.Add("Disabled")
-                li.Tag = _externalScraperModule.AssemblyName
+                li = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
             End If
             If _externalScraperModule.IsPostScraper Then
-                Dim li As ListViewItem = modulesSetup.lstPostScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+                li = modulesSetup.lstPostScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+            End If
+            If _externalScraperModule.IsScraper OrElse _externalScraperModule.IsPostScraper Then
                 If _externalScraperModule.Enabled Then
                     li.SubItems.Add("Enabled")
                 Else
                     li.SubItems.Add("Disabled")
                 End If
-                li.SubItems.Add("Disabled")
                 li.Tag = _externalScraperModule.AssemblyName
             End If
         Next
-
-
         modulesSetup.ModulesManager = Me
         modulesSetup.ShowDialog()
     End Sub

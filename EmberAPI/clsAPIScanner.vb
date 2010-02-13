@@ -542,7 +542,7 @@ Public Class Scanner
             dInfo.Name.ToLower.Contains("lost+found") OrElse _
             dInfo.Name.ToLower.Contains("system volume information") OrElse _
             dInfo.Name.ToLower.Contains("sample") OrElse _
-            dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":") Then
+            If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
 
@@ -598,7 +598,7 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="sPath">MovieContainer object.</param>
+    ''' <param name="Movie">MovieContainer object.</param>
     Public Sub GetMovieFolderContents(ByRef Movie As MovieContainer)
 
         Dim tmpName As String = String.Empty
