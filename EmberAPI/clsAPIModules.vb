@@ -171,15 +171,15 @@ Public Class ModulesManager
     ''' </summary>
     ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
     ''' <returns>MediaContainers.Movie with scraped information</returns>
-    Public Function FullScrape(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
-        movie = ScrapeOnly(movie)
+    Public Function FullScrape(ByVal movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
+        movie = ScrapeOnly(movie, Options)
         movie = PostScrapeOnly(movie)
         Return movie
     End Function
-    Public Function ScrapeOnly(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
+    Public Function ScrapeOnly(ByVal movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsScraper And _externalScraperModule.Enabled Then
-                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+                movie = _externalScraperModule.ProcessorModule.Scraper(movie, Options)
             End If
         Next
         Return movie
@@ -187,7 +187,7 @@ Public Class ModulesManager
     Public Function PostScrapeOnly(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsPostScraper And _externalScraperModule.Enabled Then
-                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+                movie = _externalScraperModule.ProcessorModule.PostScraper(movie)
             End If
         Next
         Return movie

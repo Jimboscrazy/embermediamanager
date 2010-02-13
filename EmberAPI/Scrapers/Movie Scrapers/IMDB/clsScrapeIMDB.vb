@@ -201,12 +201,14 @@ Namespace IMDB
             End Try
         End Sub
 
-        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions, Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
+        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) ', Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Details, _
-                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = Options})
+                                          .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = Options.bFullCrew, .FullCast = Options.bFullCast, .Options = Options})
+                    'TODO: need to change bwIMDB to support options FullCrew and FullCast
+                    '.Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = Options})
                 End If
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

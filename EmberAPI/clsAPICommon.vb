@@ -252,6 +252,9 @@ Public Class Structures
         Dim bMusicBy As Boolean
         Dim bOtherCrew As Boolean
         Dim bTop250 As Boolean
+        ' Why this 2 arent here?
+        Dim bFullCrew As Boolean
+        Dim bFullCast As Boolean
     End Structure
 
     Public Structure ScrapeModifier
@@ -370,6 +373,9 @@ Public Class Functions
             .bWriters = Master.eSettings.FieldWriters
             .bYear = Master.eSettings.FieldYear
             .bTop250 = Master.eSettings.Field250
+            ' Why this 2 arent here?
+            .bFullCrew = Master.eSettings.FullCrew
+            .bFullCast = Master.eSettings.FullCast
         End With
     End Sub
 
