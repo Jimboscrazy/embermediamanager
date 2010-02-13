@@ -172,6 +172,10 @@ Public Class frmMain
 
 #Region "Form/Controls"
 
+    Private Sub frmMain_LocationChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LocationChanged
+
+    End Sub
+
     ' ########################################
     ' ######### FORM/CONTROLS EVENTS #########
     ' ########################################
@@ -349,6 +353,10 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        Master.eSettings.Load()
+        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
@@ -377,12 +385,7 @@ Public Class frmMain
         Functions.DGVDoubleBuffer(Me.dgvTVSeasons)
         Functions.DGVDoubleBuffer(Me.dgvTVEpisodes)
 
-        Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
-        If File.Exists(sPath) Then
-            If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
-            FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
-            File.Delete(sPath)
-        End If
+        'old place of log stuff
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
@@ -4949,7 +4952,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
             End If

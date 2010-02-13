@@ -17,7 +17,7 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
+Imports System.IO
 Namespace My
 
     Partial Friend Class MyApplication
@@ -33,11 +33,17 @@ Namespace My
                                "Please install .NET Framework version 3.5 or higher before attempting to use Ember."), MsgBoxStyle.Critical, "Unsupported .NET Version")
                     End
                 End If
+                Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+                If File.Exists(sPath) Then
+                    If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
+                    FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
+                    File.Delete(sPath)
+                End If
 
                 Functions.TestMediaInfoDLL()
-                Master.eSettings.Load()
-                Master.eLang.LoadLanguage(Master.eSettings.Language)
-                Functions.CreateDefaultOptions()
+                'Master.eSettings.Load()
+                'Master.eLang.LoadLanguage(Master.eSettings.Language)
+                'Functions.CreateDefaultOptions()
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try

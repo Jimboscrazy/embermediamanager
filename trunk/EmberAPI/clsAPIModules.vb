@@ -135,7 +135,6 @@ Public Class ModulesManager
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
-                'Load the assembly
                 assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
                 For Each fileType As Type In assembly.GetTypes

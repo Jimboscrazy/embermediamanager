@@ -984,7 +984,6 @@ Public Class Scanner
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Dim mPath As String = String.Empty
-
             Master.DB.SaveMovieList()
 
             If Args.Scan.Movies Then
@@ -1120,7 +1119,6 @@ Public Class Scanner
         If Not e.Cancelled Then
             RaiseEvent ScanningCompleted()
         End If
-
     End Sub
 
     Private Sub GetSeasonImages(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
