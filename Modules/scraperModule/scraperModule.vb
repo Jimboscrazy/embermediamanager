@@ -40,7 +40,7 @@ Public Class TestEmberScraperModule
         Dim _setup As New frmSetup
         _setup.ShowDialog()
     End Sub
-    Function Scraper(ByVal Movie As EmberAPI.MediaContainers.Movie) As EmberAPI.MediaContainers.Movie Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+    Function Scraper(ByVal Movie As EmberAPI.MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As EmberAPI.MediaContainers.Movie Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         Dim aMovie As EmberAPI.MediaContainers.Movie
         aMovie = Movie
         aMovie.Title = "Bla bla"
