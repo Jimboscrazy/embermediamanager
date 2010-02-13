@@ -150,10 +150,8 @@ Public Class ModulesManager
                             _externalScraperModule.AssemblyName = Path.GetFileName(file)
                             _externalScraperModule.IsScraper = ProcessorModule.IsScraper
                             _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
-                            For Each i In Master.eSettings.EmberModules
-                                If i.AssemblyName = _externalScraperModule.AssemblyName Then
-                                    _externalScraperModule.Enabled = i.Enabled
-                                End If
+                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
+                                _externalScraperModule.Enabled = i.Enabled
                             Next
                             externalScrapersModules.Add(_externalScraperModule)
                         End If
@@ -172,28 +170,30 @@ Public Class ModulesManager
     ''' <param Options="movie">ScrapeOptions Structure defining user scrape options</param>
     ''' <returns>boolean success</returns>
     Public Function FullScrape(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
-        ScrapeOnly(movie, Options)
-        PostScrapeOnly(movie)
-        Return True 'TODO: Success need to be tested
+        'AndAlso? Only return true if both complete successfully?
+
+        Return ScrapeOnly(movie, Options) OrElse PostScrapeOnly(movie)
     End Function
+
     Public Function ScrapeOnly(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
         ' Local (ByVal) Options to allow chain blocking scraping
-        For Each _externalScraperModule In externalScrapersModules
-            If _externalScraperModule.IsScraper And _externalScraperModule.Enabled Then
-                ' Allow chain Breaking from Scraper Module
-                If Not _externalScraperModule.ProcessorModule.Scraper(movie, Options) Then Exit For
-            End If
-        Next
-        Return True
+
+        Dim _externalScraperModule As _externalScraperModuleClass = externalScrapersModules.FirstOrDefault(Function(e) e.IsScraper AndAlso e.Enabled)
+        If Not IsNothing(_externalscrapermodule) Then
+            Return _externalscrapermodule.ProcessorModule.Scraper(movie, Options)
+        Else
+            Return False
+        End If
     End Function
     Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
-        For Each _externalScraperModule In externalScrapersModules
-            If _externalScraperModule.IsPostScraper And _externalScraperModule.Enabled Then
-                ' Allow chain Breaking from Scraper Module
-                If Not _externalScraperModule.ProcessorModule.PostScraper(movie) Then Exit For
-            End If
-        Next
-        Return True
+
+        Dim _externalScraperModule As _externalScraperModuleClass = externalScrapersModules.FirstOrDefault(Function(e) e.IsPostScraper AndAlso e.Enabled)
+        If Not isnothing(_externalScraperModule then
+            Return _externalScraperModule.ProcessorModule.PostScraper(movie)
+        Else
+            Return False
+        End If
+
     End Function
 
     Sub New()
@@ -207,7 +207,7 @@ Public Class ModulesManager
 
     Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings
-        For Each _externalProcessorModule In externalProcessorModules
+        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
             If _externalProcessorModule.Enabled Then
                 li.SubItems.Add("Enabled")
@@ -216,7 +216,7 @@ Public Class ModulesManager
             End If
             li.Tag = _externalProcessorModule.AssemblyName
         Next
-        For Each _externalScraperModule In externalScrapersModules
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
             Dim li As New ListViewItem
             If _externalScraperModule.IsScraper Then
                 li = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
@@ -237,21 +237,17 @@ Public Class ModulesManager
         modulesSetup.ShowDialog()
     End Sub
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
-        For Each _externalProcessorModule In externalProcessorModules
-            If _externalProcessorModule.AssemblyName = ModuleAssembly Then
-                _externalProcessorModule.ProcessorModule.Setup()
-            End If
+        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalProcessorModule.ProcessorModule.Setup()
         Next
     End Sub
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalProcessorModule In externalProcessorModules
-            If _externalProcessorModule.AssemblyName = ModuleAssembly Then
-                _externalProcessorModule.Enabled = value
-                If value = True Then
-                    _externalProcessorModule.ProcessorModule.Enable()
-                Else
-                    _externalProcessorModule.ProcessorModule.Disable()
-                End If
+        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalProcessorModule.Enabled = value
+            If value = True Then
+                _externalProcessorModule.ProcessorModule.Enable()
+            Else
+                _externalProcessorModule.ProcessorModule.Disable()
             End If
         Next
     End Sub
