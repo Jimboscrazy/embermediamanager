@@ -164,33 +164,36 @@ Public Class ModulesManager
             Next
         End If
     End Sub
-    'TODO : Bellow functions should go to Background worker
+    'TODO : Bellow functions should go to Background worker ?
 
     ''' <summary>
     ''' Entry point to Scrape and Post Scrape .. will run all modules enabled
     ''' </summary>
     ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
-    ''' <returns>MediaContainers.Movie with scraped information</returns>
-    Public Function FullScrape(ByVal movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
-        movie = ScrapeOnly(movie, Options)
-        movie = PostScrapeOnly(movie)
-        Return movie
+    ''' <param Options="movie">ScrapeOptions Structure defining user scrape options</param>
+    ''' <returns>boolean success</returns>
+    Public Function FullScrape(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
+        ScrapeOnly(movie, Options)
+        PostScrapeOnly(movie)
+        Return True 'TODO: Success need to be tested
     End Function
-    Public Function ScrapeOnly(ByVal movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
+    Public Function ScrapeOnly(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
+        ' Local (ByVal) Options to allow chain blocking scraping
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsScraper And _externalScraperModule.Enabled Then
-                movie = _externalScraperModule.ProcessorModule.Scraper(movie, Options)
+                ' Allow chain Breaking from Scraper Module
+                If Not _externalScraperModule.ProcessorModule.Scraper(movie, Options) Then Exit For
             End If
         Next
-        Return movie
+        Return True
     End Function
-    Public Function PostScrapeOnly(ByVal movie As MediaContainers.Movie) As MediaContainers.Movie
+    Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsPostScraper And _externalScraperModule.Enabled Then
-                movie = _externalScraperModule.ProcessorModule.PostScraper(movie)
+                If Not _externalScraperModule.ProcessorModule.PostScraper(movie) Then Exit For
             End If
         Next
-        Return movie
+        Return True
     End Function
 
     Sub New()
