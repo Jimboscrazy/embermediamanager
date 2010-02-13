@@ -347,7 +347,7 @@ Public Class dlgManualEdit
         If File.Exists(currFile) Then
             RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
         End If
-        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf("\") + 1))
+        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
 
         Changed = False
 
