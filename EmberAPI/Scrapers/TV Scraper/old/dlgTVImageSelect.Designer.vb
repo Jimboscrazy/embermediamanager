@@ -1,4 +1,5 @@
 ﻿Namespace TVDB
+    Partial Public Class Scraper
         <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
         Partial Class dlgTVImageSelect
             Inherits System.Windows.Forms.Form
@@ -142,4 +143,5 @@
             Friend WithEvents btnOK As System.Windows.Forms.Button
             Friend WithEvents btnCancel As System.Windows.Forms.Button
         End Class
+    End Class
 End Namespace

@@ -24,12 +24,12 @@ Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace TVDB
     Public Class Scraper
-        Public Const APIKey As String = "7B090234F418D074"
-        Public Shared TVDBImages As New TVImages
-        Public Shared tmpTVDBShow As New TVDBShow
+        Private Const APIKey As String = "7B090234F418D074"
+        Private Shared TVDBImages As New TVImages
+        Private Shared tmpTVDBShow As New TVDBShow
 
         Public Event ScraperEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-        Public Shared WithEvents sObject As New ScraperObject
+        Shared WithEvents sObject As New ScraperObject
 
         Public Enum EventType As Integer
             Progress = 0

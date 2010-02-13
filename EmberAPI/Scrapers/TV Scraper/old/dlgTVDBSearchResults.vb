@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Namespace TVDB
+    Partial Public Class Scraper
         Public Class dlgTVDBSearchResults
             Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
@@ -57,7 +58,7 @@ Namespace TVDB
                     Me.Label3.Text = Master.eLang.GetString(999, "Downloading show info...")
                     Me.pnlLoading.Visible = True
 
-                Scraper.sObject.DownloadSeriesAsync(DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults).ID)
+                    sObject.DownloadSeriesAsync(DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, TVSearchResults).ID)
                 End If
 
             End Sub
@@ -94,18 +95,18 @@ Namespace TVDB
                 Select Case eType
                     Case TVDB.Scraper.EventType.SearchResultsDownloaded
                         Dim lItem As ListViewItem
-                    Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
+                        Dim sResults As List(Of TVSearchResults) = DirectCast(Parameter, List(Of TVSearchResults))
 
                         Me.lvSearchResults.Items.Clear()
                         Me.ClearInfo()
 
                         If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
-                        For Each sRes As Scraper.TVSearchResults In sResults
-                            lItem = New ListViewItem(sRes.Name)
-                            lItem.SubItems.Add(sRes.Language.LongLang)
-                            lItem.Tag = sRes
-                            Me.lvSearchResults.Items.Add(lItem)
-                        Next
+                            For Each sRes As TVSearchResults In sResults
+                                lItem = New ListViewItem(sRes.Name)
+                                lItem.SubItems.Add(sRes.Language.LongLang)
+                                lItem.Tag = sRes
+                                Me.lvSearchResults.Items.Add(lItem)
+                            Next
                         End If
 
                         Me.pnlLoading.Visible = False
@@ -120,21 +121,21 @@ Namespace TVDB
                 Me.lblTitle.Text = String.Empty
                 Me.lblAired.Text = String.Empty
                 Me.pbBanner.Image = Nothing
-            Scraper.sObject.CancelAsync()
+                sObject.CancelAsync()
             End Sub
 
-        Public Overloads Function ShowDialog(ByVal sInfo As Scraper.ScrapeInfo) As Windows.Forms.DialogResult
+            Public Overloads Function ShowDialog(ByVal sInfo As ScrapeInfo) As Windows.Forms.DialogResult
 
-            Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
-            Scraper.sObject.GetSearchResultsAsync(sInfo)
+                Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
+                sObject.GetSearchResultsAsync(sInfo)
 
-            Return MyBase.ShowDialog()
-        End Function
+                Return MyBase.ShowDialog()
+            End Function
 
             Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
                 Me.ClearInfo()
                 If Me.lvSearchResults.SelectedItems.Count > 0 Then
-                Dim SelectedShow As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
+                    Dim SelectedShow As TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, TVSearchResults)
                     If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
                         If Me.bwDownloadPic.IsBusy Then
                             Me.bwDownloadPic.CancelAsync()
@@ -154,4 +155,5 @@ Namespace TVDB
                 Me.ControlsVisible(True)
             End Sub
         End Class
+    End Class
 End Namespace
