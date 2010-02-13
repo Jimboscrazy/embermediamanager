@@ -694,6 +694,7 @@ Namespace TVDB
                                         .Aired = xE.Element("FirstAired").Value
                                         .Rating = xE.Element("Rating").Value
                                         .Plot = xE.Element("Overview").Value
+
                                         .Director = xE.Element("Director").Value
                                         .Credits = CreditsString(xE.Element("GuestStars").Value, xE.Element("Writer").Value)
                                         .Actors = Actors
