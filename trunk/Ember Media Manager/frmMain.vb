@@ -5725,7 +5725,8 @@ doCancel:
                         Master.tmpMovie.Clear()
                         If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso doSearch = False Then
                             Master.tmpMovie = Master.currMovie.Movie
-                            IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                            IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
+                            ' Note: possible place to invoke scrape modules
                         Else
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
@@ -5745,7 +5746,9 @@ doCancel:
                                         Master.currMovie.ExtraPath = String.Empty
                                         Master.currMovie.SubPath = String.Empty
                                         Master.currMovie.NfoPath = String.Empty
-                                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
+                                        ' Note: possible place to invoke scrape modules
+                                        ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
                                     End If
                                 Else
                                     If isCL Then
@@ -5768,6 +5771,9 @@ doCancel:
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
+    End Sub
+    Private Sub ScrapeMovieWithModules(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions)
+        IMDBMovie = ExternalModulesManager.FullScrape(IMDBMovie, Options)
     End Sub
 
     Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
