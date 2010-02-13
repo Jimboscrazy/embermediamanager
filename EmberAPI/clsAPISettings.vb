@@ -2896,9 +2896,9 @@ Public Class Settings
     End Sub
 
     Public Sub Load()
-
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
+
             If File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) Then
                 Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
                 Master.eSettings = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
