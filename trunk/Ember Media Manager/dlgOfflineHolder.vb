@@ -197,7 +197,7 @@ Public Class dlgOfflineHolder
                         Me.pbProgress.Visible = True
                         'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
                         Me.GetIMDB_Button.Enabled = False
-                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions)
                     End If
                 End If
             End Using
