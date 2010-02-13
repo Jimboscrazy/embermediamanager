@@ -1,4 +1,6 @@
 ﻿Namespace TVDB
+    Partial Public Class Scraper
+
         <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
         Partial Class dlgTVDBSearchResults
             Inherits System.Windows.Forms.Form
@@ -284,4 +286,5 @@
             Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
         End Class
+    End Class
 End Namespace
