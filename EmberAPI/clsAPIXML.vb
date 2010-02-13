@@ -37,11 +37,13 @@ Public Class APIXML
     Public Shared RatingXML As New XDocument
     Public Shared LanguageXML As New XDocument
 
-    Public Shared Sub GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String)
+    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String) As Image()
 
         '//
         ' Parse the Flags XML and set the proper images
         '\\
+
+        Dim iReturn(5) As Image
 
         If FlagsXML.Nodes.Count > 0 Then
             Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
@@ -135,43 +137,45 @@ Public Class APIXML
 
                 If Not String.IsNullOrEmpty(vresImage) AndAlso alFlags.Contains(vresImage.ToLower) Then
                     Using fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
-                        '''''frmMain.pbResolution.Image = Image.FromStream(fsImage)
+                        iReturn(0) = Image.FromStream(fsImage)
                     End Using
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso alFlags.Contains(vsourceImage.ToLower) Then
                     Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
-                        '''''frmMain.pbVideo.Image = Image.FromStream(fsImage)
+                        iReturn(1) = Image.FromStream(fsImage)
                     End Using
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso alFlags.Contains(vtypeImage.ToLower) Then
                     Using fsImage As New FileStream(vtypeImage, FileMode.Open, FileAccess.Read)
-                        '''''frmMain.pbVType.Image = Image.FromStream(fsImage)
+                        iReturn(2) = Image.FromStream(fsImage)
                     End Using
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
                     Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
                         If tAudio.HasPreferred Then
-                            '''''frmMain.pbAudio.Image = ImageUtils.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.haslanguage, 4)
+                            iReturn(3) = ImageUtils.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.haslanguage, 4)
                         Else
-                            '''''frmMain.pbAudio.Image = Image.FromStream(fsImage)
+                            iReturn(3) = Image.FromStream(fsImage)
                         End If
                     End Using
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso alFlags.Contains(achanImage.ToLower) Then
                     Using fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
-                        '''''frmMain.pbChannels.Image = Image.FromStream(fsImage)
+                        iReturn(4) = Image.FromStream(fsImage)
                     End Using
                 End If
+
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
 
-    End Sub
+        Return iReturn
+    End Function
 
     Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
 

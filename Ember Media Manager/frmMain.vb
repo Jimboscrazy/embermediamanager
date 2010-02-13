@@ -3357,7 +3357,7 @@ Public Class frmMain
                     Me.pbMILoading.Visible = False
                     Me.txtMetaData.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
-                        APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename)
+                        Me.SetAVImages(APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename))
                         Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                         Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                     Else
@@ -4955,7 +4955,7 @@ doCancel:
             End If
 
             If Master.eSettings.ScanMediaInfo Then
-                APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename)
+                Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -5357,8 +5357,14 @@ doCancel:
                 Me.BuildStars(tmpRating)
             End If
 
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
+            Else
+                Me.pbStudio.Image = APIXML.GetStudioImage("####")
+            End If
+
             If Master.eSettings.ScanMediaInfo Then
-                APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename)
+                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -7102,6 +7108,18 @@ doCancel:
 
     Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
         ExternalModulesManager.Setup()
+    End Sub
+
+    Private Sub SetAVImages(ByVal aImage As Image())
+        Try
+            Me.pbResolution.Image = aImage(0)
+            Me.pbVideo.Image = aImage(1)
+            Me.pbVType.Image = aImage(2)
+            Me.pbAudio.Image = aImage(3)
+            Me.pbChannels.Image = aImage(4)
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 End Class
 
