@@ -188,7 +188,7 @@ Public Class ModulesManager
     Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
 
         Dim _externalScraperModule As _externalScraperModuleClass = externalScrapersModules.FirstOrDefault(Function(e) e.IsPostScraper AndAlso e.Enabled)
-        If Not isnothing(_externalScraperModule then
+        If Not IsNothing(_externalScraperModule) Then
             Return _externalScraperModule.ProcessorModule.PostScraper(movie)
         Else
             Return False
