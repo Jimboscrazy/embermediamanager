@@ -5727,6 +5727,7 @@ doCancel:
                             Master.tmpMovie = Master.currMovie.Movie
                             IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
                             ' Note: possible place to invoke scrape modules
+                            ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
                         Else
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
@@ -5773,6 +5774,9 @@ doCancel:
 
     End Sub
     Private Sub ScrapeMovieWithModules(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions)
+        ' TODO TODO TODO
+        'this is the current proposed replacement for IMDB.GetMovieInfoAsync
+        'need to become async? ....
         IMDBMovie = ExternalModulesManager.FullScrape(IMDBMovie, Options)
     End Sub
 

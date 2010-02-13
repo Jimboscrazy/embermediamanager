@@ -198,6 +198,8 @@ Public Class dlgOfflineHolder
                         'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
                         Me.GetIMDB_Button.Enabled = False
                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions)
+                        ' Note: possible place to invoke scrape modules
+                        ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
                     End If
                 End If
             End Using
