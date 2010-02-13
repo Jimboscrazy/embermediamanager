@@ -190,6 +190,7 @@ Public Class ModulesManager
     Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsPostScraper And _externalScraperModule.Enabled Then
+                ' Allow chain Breaking from Scraper Module
                 If Not _externalScraperModule.ProcessorModule.PostScraper(movie) Then Exit For
             End If
         Next

@@ -5777,7 +5777,7 @@ doCancel:
         ' TODO TODO TODO
         'this is the current proposed replacement for IMDB.GetMovieInfoAsync
         'need to become async? ....
-        IMDBMovie = ExternalModulesManager.FullScrape(IMDBMovie, Options)
+        ExternalModulesManager.FullScrape(IMDBMovie, Options)
     End Sub
 
     Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
