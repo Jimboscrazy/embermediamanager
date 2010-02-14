@@ -9,10 +9,13 @@ Public Class Master
     Public Shared DefaultOptions As New Structures.ScrapeOptions
     Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
 
+    Public Shared isWindows As Boolean = Functions.CheckIfWindows
+
     Public Shared currMovie As New Structures.DBMovie
     Public Shared currShow As New Structures.DBTV
     Public Shared CanScanDiscImage As Boolean
     Public Shared tmpMovie As New MediaContainers.Movie
 
     Public Shared TVScraper As New TVDB.Scraper
+
 End Class

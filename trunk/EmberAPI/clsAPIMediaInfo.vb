@@ -282,7 +282,7 @@ Public Class MediaInfo
 
                 Me.Handle = MediaInfo_New()
 
-                If Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0 Then
+                If Master.isWindows Then
                     UseAnsi = False
                 Else
                     UseAnsi = True

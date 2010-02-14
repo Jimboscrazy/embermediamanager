@@ -459,7 +459,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(358, "Building Movie"))
         Using ffmpeg As New Process()
-            ffmpeg.StartInfo.FileName = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+            ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True

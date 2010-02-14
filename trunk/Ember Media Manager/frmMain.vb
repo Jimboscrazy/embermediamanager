@@ -354,6 +354,13 @@ Public Class frmMain
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+        If File.Exists(sPath) Then
+            If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
+            FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
+            File.Delete(sPath)
+        End If
+
         Master.eSettings.Load()
         Master.eLang.LoadLanguage(Master.eSettings.Language)
         Functions.CreateDefaultOptions()

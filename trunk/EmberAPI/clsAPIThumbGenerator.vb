@@ -148,7 +148,7 @@ Public Class ThumbGenerator
                         Directory.CreateDirectory(tPath)
                     End If
 
-                    ffmpeg.StartInfo.FileName = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                    ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
                     ffmpeg.EnableRaisingEvents = False
                     ffmpeg.StartInfo.UseShellExecute = False
                     ffmpeg.StartInfo.CreateNoWindow = True
