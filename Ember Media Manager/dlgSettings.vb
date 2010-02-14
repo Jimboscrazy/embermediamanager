@@ -2214,6 +2214,9 @@ Public Class dlgSettings
         End With
     End Sub
 
+    Private Sub txtAPIKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAPIKey.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2591,6 +2594,9 @@ Public Class dlgSettings
                 Master.eSettings.ProxyURI = String.Empty
                 Master.eSettings.ProxyPort = -1
             End If
+
+            Master.eSettings.ExternalTVDBAPIKey = Me.txtAPIKey.Text
+
             Master.eSettings.Save()
 
             Functions.CreateDefaultOptions()
@@ -2924,6 +2930,7 @@ Public Class dlgSettings
                     Me.txtProxyDomain.Text = Master.eSettings.ProxyCreds.Domain
                 End If
             End If
+            Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3650,11 +3657,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub lblShowPosterHeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblShowPosterHeight.Click
-
-    End Sub
-
-    Private Sub Label46_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label46.Click
-
-    End Sub
 End Class

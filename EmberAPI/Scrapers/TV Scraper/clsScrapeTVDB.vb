@@ -601,12 +601,10 @@ Namespace TVDB
             End Sub
 
             Private Sub DownloadSeries(ByVal sID As String)
-                Dim gURL As String = String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage)
-
                 Try
                     If Not File.Exists(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))) Then
                         Dim sHTTP As New HTTP
-                        Dim xZip As Byte() = sHTTP.DownloadZip(gURL)
+                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage))
                         sHTTP = Nothing
 
                         If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
@@ -616,12 +614,12 @@ Namespace TVDB
                                 fStream.Write(xZip, 0, xZip.Length)
                             End Using
 
-                            Me.ProcessTVDBZip(xZip, gURL)
+                            Me.ProcessTVDBZip(xZip)
                         End If
                     Else
                         Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Open, FileAccess.Read)
                             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
-                            Me.ProcessTVDBZip(fZip, gURL)
+                            Me.ProcessTVDBZip(fZip)
                         End Using
                     End If
                 Catch ex As Exception
@@ -629,7 +627,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Sub ProcessTVDBZip(ByVal tvZip As Byte(), ByVal gURL As String)
+            Public Sub ProcessTVDBZip(ByVal tvZip As Byte())
                 Dim sXML As String = String.Empty
                 Dim bXML As String = String.Empty
                 Dim aXML As String = String.Empty
@@ -657,10 +655,10 @@ Namespace TVDB
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
-                ShowFromXML(sXML, aXML, bXML, gURL)
+                ShowFromXML(sXML, aXML, bXML)
             End Sub
 
-            Private Sub ShowFromXML(ByVal sXML As String, ByVal aXML As String, ByVal bXML As String, ByVal gURL As String)
+            Private Sub ShowFromXML(ByVal sXML As String, ByVal aXML As String, ByVal bXML As String)
                 Dim Actors As New List(Of MediaContainers.Person)
                 Dim sID As String = String.Empty
                 Dim iEp As Integer = -1
@@ -689,7 +687,7 @@ Namespace TVDB
                                 sID = xS(0).Element("id").Value
                                 .ID = sID
                                 .Title = xS(0).Element("SeriesName").Value
-                                .EpisodeGuideURL = gURL
+                                .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
                                 .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
                                 .MPAA = xS(0).Element("ContentRating").Value
                                 .Plot = xS(0).Element("Overview").Value
