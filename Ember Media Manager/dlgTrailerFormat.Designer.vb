@@ -36,6 +36,7 @@ Partial Class dlgTrailerFormat
         'OK_Button
         '
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(84, 115)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -45,6 +46,7 @@ Partial Class dlgTrailerFormat
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(154, 115)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -54,6 +56,7 @@ Partial Class dlgTrailerFormat
         'lstFormats
         '
         Me.lstFormats.Enabled = False
+        Me.lstFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstFormats.FormattingEnabled = True
         Me.lstFormats.Location = New System.Drawing.Point(17, 19)
         Me.lstFormats.Name = "lstFormats"
@@ -63,6 +66,7 @@ Partial Class dlgTrailerFormat
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.lstFormats)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(55, 6)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(114, 100)
@@ -84,16 +88,17 @@ Partial Class dlgTrailerFormat
         'lblStatus
         '
         Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(3, 10)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(132, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(147, 13)
         Me.lblStatus.TabIndex = 1
         Me.lblStatus.Text = "Getting available formats..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pbStatus
         '
-        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
+        Me.pbStatus.Location = New System.Drawing.Point(3, 29)
         Me.pbStatus.MarqueeAnimationSpeed = 25
         Me.pbStatus.Name = "pbStatus"
         Me.pbStatus.Size = New System.Drawing.Size(192, 17)

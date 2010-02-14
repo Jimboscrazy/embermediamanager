@@ -59,6 +59,7 @@ Partial Class dlgRenameManual
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -69,6 +70,7 @@ Partial Class dlgRenameManual
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -78,9 +80,10 @@ Partial Class dlgRenameManual
         'txtFolder
         '
         Me.txtFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFolder.Location = New System.Drawing.Point(89, 42)
         Me.txtFolder.Name = "txtFolder"
-        Me.txtFolder.Size = New System.Drawing.Size(318, 20)
+        Me.txtFolder.Size = New System.Drawing.Size(318, 22)
         Me.txtFolder.TabIndex = 1
         '
         'Label1
@@ -106,9 +109,10 @@ Partial Class dlgRenameManual
         'txtFile
         '
         Me.txtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFile.Location = New System.Drawing.Point(89, 68)
         Me.txtFile.Name = "txtFile"
-        Me.txtFile.Size = New System.Drawing.Size(318, 20)
+        Me.txtFile.Size = New System.Drawing.Size(318, 22)
         Me.txtFile.TabIndex = 3
         '
         'lblTitle
@@ -124,10 +128,11 @@ Partial Class dlgRenameManual
         'txtTitle
         '
         Me.txtTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTitle.Location = New System.Drawing.Point(89, 11)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.ReadOnly = True
-        Me.txtTitle.Size = New System.Drawing.Size(318, 20)
+        Me.txtTitle.Size = New System.Drawing.Size(318, 22)
         Me.txtTitle.TabIndex = 5
         '
         'PictureBox1

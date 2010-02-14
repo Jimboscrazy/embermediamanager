@@ -137,7 +137,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_All.Checked = True
         Me.rbUpdateModifier_All.Location = New System.Drawing.Point(6, 19)
         Me.rbUpdateModifier_All.Name = "rbUpdateModifier_All"
-        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(73, 17)
+        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(77, 17)
         Me.rbUpdateModifier_All.TabIndex = 59
         Me.rbUpdateModifier_All.TabStop = True
         Me.rbUpdateModifier_All.Text = "All Movies"
@@ -149,6 +149,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_New)
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_Missing)
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
+        Me.gbUpdateModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
         Me.gbUpdateModifier.Size = New System.Drawing.Size(275, 68)
@@ -162,7 +163,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_Marked.Enabled = False
         Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(126, 42)
         Me.rbUpdateModifier_Marked.Name = "rbUpdateModifier_Marked"
-        Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(98, 17)
+        Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(103, 17)
         Me.rbUpdateModifier_Marked.TabIndex = 62
         Me.rbUpdateModifier_Marked.Text = "Marked Movies"
         Me.rbUpdateModifier_Marked.UseVisualStyleBackColor = True
@@ -173,7 +174,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_New.Enabled = False
         Me.rbUpdateModifier_New.Location = New System.Drawing.Point(6, 42)
         Me.rbUpdateModifier_New.Name = "rbUpdateModifier_New"
-        Me.rbUpdateModifier_New.Size = New System.Drawing.Size(84, 17)
+        Me.rbUpdateModifier_New.Size = New System.Drawing.Size(87, 17)
         Me.rbUpdateModifier_New.TabIndex = 61
         Me.rbUpdateModifier_New.Text = "New Movies"
         Me.rbUpdateModifier_New.UseVisualStyleBackColor = True
@@ -183,7 +184,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_Missing.AutoSize = True
         Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(126, 20)
         Me.rbUpdateModifier_Missing.Name = "rbUpdateModifier_Missing"
-        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(125, 17)
+        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(134, 17)
         Me.rbUpdateModifier_Missing.TabIndex = 60
         Me.rbUpdateModifier_Missing.Text = "Movies Missing Items"
         Me.rbUpdateModifier_Missing.UseVisualStyleBackColor = True
@@ -192,6 +193,7 @@ Partial Class dlgUpdateMedia
         '
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Ask)
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
+        Me.gbUpdateType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 147)
         Me.gbUpdateType.Name = "gbUpdateType"
         Me.gbUpdateType.Size = New System.Drawing.Size(275, 75)
@@ -204,7 +206,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdate_Ask.AutoSize = True
         Me.rbUpdate_Ask.Location = New System.Drawing.Point(6, 41)
         Me.rbUpdate_Ask.Name = "rbUpdate_Ask"
-        Me.rbUpdate_Ask.Size = New System.Drawing.Size(205, 17)
+        Me.rbUpdate_Ask.Size = New System.Drawing.Size(215, 17)
         Me.rbUpdate_Ask.TabIndex = 64
         Me.rbUpdate_Ask.Text = "Ask (Require Input If No Exact Match)"
         Me.rbUpdate_Ask.UseVisualStyleBackColor = True
@@ -215,7 +217,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdate_Auto.Checked = True
         Me.rbUpdate_Auto.Location = New System.Drawing.Point(6, 18)
         Me.rbUpdate_Auto.Name = "rbUpdate_Auto"
-        Me.rbUpdate_Auto.Size = New System.Drawing.Size(165, 17)
+        Me.rbUpdate_Auto.Size = New System.Drawing.Size(174, 17)
         Me.rbUpdate_Auto.TabIndex = 63
         Me.rbUpdate_Auto.TabStop = True
         Me.rbUpdate_Auto.Text = "Automatic (Force Best Match)"
@@ -230,6 +232,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Controls.Add(Me.chkPosterMod)
         Me.gbUpdateItems.Controls.Add(Me.chkNFOMod)
         Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
+        Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
         Me.gbUpdateItems.Name = "gbUpdateItems"
         Me.gbUpdateItems.Size = New System.Drawing.Size(275, 96)
@@ -245,7 +248,7 @@ Partial Class dlgUpdateMedia
         Me.chkTrailerMod.Enabled = False
         Me.chkTrailerMod.Location = New System.Drawing.Point(135, 54)
         Me.chkTrailerMod.Name = "chkTrailerMod"
-        Me.chkTrailerMod.Size = New System.Drawing.Size(55, 17)
+        Me.chkTrailerMod.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailerMod.TabIndex = 6
         Me.chkTrailerMod.Text = "Trailer"
         Me.chkTrailerMod.UseVisualStyleBackColor = True
@@ -258,7 +261,7 @@ Partial Class dlgUpdateMedia
         Me.chkExtraMod.Enabled = False
         Me.chkExtraMod.Location = New System.Drawing.Point(135, 36)
         Me.chkExtraMod.Name = "chkExtraMod"
-        Me.chkExtraMod.Size = New System.Drawing.Size(84, 17)
+        Me.chkExtraMod.Size = New System.Drawing.Size(90, 17)
         Me.chkExtraMod.TabIndex = 5
         Me.chkExtraMod.Text = "Extrathumbs"
         Me.chkExtraMod.UseVisualStyleBackColor = True
@@ -271,7 +274,7 @@ Partial Class dlgUpdateMedia
         Me.chkMetaMod.Enabled = False
         Me.chkMetaMod.Location = New System.Drawing.Point(135, 18)
         Me.chkMetaMod.Name = "chkMetaMod"
-        Me.chkMetaMod.Size = New System.Drawing.Size(76, 17)
+        Me.chkMetaMod.Size = New System.Drawing.Size(79, 17)
         Me.chkMetaMod.TabIndex = 4
         Me.chkMetaMod.Text = "Meta Data"
         Me.chkMetaMod.UseVisualStyleBackColor = True
@@ -284,7 +287,7 @@ Partial Class dlgUpdateMedia
         Me.chkFanartMod.Enabled = False
         Me.chkFanartMod.Location = New System.Drawing.Point(14, 72)
         Me.chkFanartMod.Name = "chkFanartMod"
-        Me.chkFanartMod.Size = New System.Drawing.Size(56, 17)
+        Me.chkFanartMod.Size = New System.Drawing.Size(59, 17)
         Me.chkFanartMod.TabIndex = 3
         Me.chkFanartMod.Text = "Fanart"
         Me.chkFanartMod.UseVisualStyleBackColor = True
@@ -297,7 +300,7 @@ Partial Class dlgUpdateMedia
         Me.chkPosterMod.Enabled = False
         Me.chkPosterMod.Location = New System.Drawing.Point(14, 54)
         Me.chkPosterMod.Name = "chkPosterMod"
-        Me.chkPosterMod.Size = New System.Drawing.Size(56, 17)
+        Me.chkPosterMod.Size = New System.Drawing.Size(58, 17)
         Me.chkPosterMod.TabIndex = 2
         Me.chkPosterMod.Text = "Poster"
         Me.chkPosterMod.UseVisualStyleBackColor = True
@@ -310,7 +313,7 @@ Partial Class dlgUpdateMedia
         Me.chkNFOMod.Enabled = False
         Me.chkNFOMod.Location = New System.Drawing.Point(14, 36)
         Me.chkNFOMod.Name = "chkNFOMod"
-        Me.chkNFOMod.Size = New System.Drawing.Size(48, 17)
+        Me.chkNFOMod.Size = New System.Drawing.Size(49, 17)
         Me.chkNFOMod.TabIndex = 1
         Me.chkNFOMod.Text = "NFO"
         Me.chkNFOMod.UseVisualStyleBackColor = True
@@ -322,7 +325,7 @@ Partial Class dlgUpdateMedia
         Me.chkAllMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkAllMod.Location = New System.Drawing.Point(14, 18)
         Me.chkAllMod.Name = "chkAllMod"
-        Me.chkAllMod.Size = New System.Drawing.Size(65, 17)
+        Me.chkAllMod.Size = New System.Drawing.Size(69, 17)
         Me.chkAllMod.TabIndex = 0
         Me.chkAllMod.Text = "All Items"
         Me.chkAllMod.UseVisualStyleBackColor = True
@@ -359,6 +362,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
+        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(287, 70)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(274, 254)
@@ -385,7 +389,7 @@ Partial Class dlgUpdateMedia
         Me.chkCrew.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkCrew.Location = New System.Drawing.Point(147, 203)
         Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Size = New System.Drawing.Size(79, 17)
+        Me.chkCrew.Size = New System.Drawing.Size(85, 17)
         Me.chkCrew.TabIndex = 18
         Me.chkCrew.Text = "Other Crew"
         Me.chkCrew.UseVisualStyleBackColor = True
@@ -397,7 +401,7 @@ Partial Class dlgUpdateMedia
         Me.chkMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMusicBy.Location = New System.Drawing.Point(147, 180)
         Me.chkMusicBy.Name = "chkMusicBy"
-        Me.chkMusicBy.Size = New System.Drawing.Size(69, 17)
+        Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
         Me.chkMusicBy.TabIndex = 17
         Me.chkMusicBy.Text = "Music By"
         Me.chkMusicBy.UseVisualStyleBackColor = True
@@ -409,7 +413,7 @@ Partial Class dlgUpdateMedia
         Me.chkProducers.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkProducers.Location = New System.Drawing.Point(147, 157)
         Me.chkProducers.Name = "chkProducers"
-        Me.chkProducers.Size = New System.Drawing.Size(74, 17)
+        Me.chkProducers.Size = New System.Drawing.Size(77, 17)
         Me.chkProducers.TabIndex = 16
         Me.chkProducers.Text = "Producers"
         Me.chkProducers.UseVisualStyleBackColor = True
@@ -421,7 +425,7 @@ Partial Class dlgUpdateMedia
         Me.chkWriters.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkWriters.Location = New System.Drawing.Point(147, 134)
         Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(59, 17)
+        Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 15
         Me.chkWriters.Text = "Writers"
         Me.chkWriters.UseVisualStyleBackColor = True
@@ -433,7 +437,7 @@ Partial Class dlgUpdateMedia
         Me.chkStudio.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkStudio.Location = New System.Drawing.Point(6, 181)
         Me.chkStudio.Name = "chkStudio"
-        Me.chkStudio.Size = New System.Drawing.Size(56, 17)
+        Me.chkStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkStudio.TabIndex = 14
         Me.chkStudio.Text = "Studio"
         Me.chkStudio.UseVisualStyleBackColor = True
@@ -445,7 +449,7 @@ Partial Class dlgUpdateMedia
         Me.chkRuntime.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRuntime.Location = New System.Drawing.Point(6, 112)
         Me.chkRuntime.Name = "chkRuntime"
-        Me.chkRuntime.Size = New System.Drawing.Size(65, 17)
+        Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 13
         Me.chkRuntime.Text = "Runtime"
         Me.chkRuntime.UseVisualStyleBackColor = True
@@ -457,7 +461,7 @@ Partial Class dlgUpdateMedia
         Me.chkPlot.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkPlot.Location = New System.Drawing.Point(147, 65)
         Me.chkPlot.Name = "chkPlot"
-        Me.chkPlot.Size = New System.Drawing.Size(44, 17)
+        Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 12
         Me.chkPlot.Text = "Plot"
         Me.chkPlot.UseVisualStyleBackColor = True
@@ -469,7 +473,7 @@ Partial Class dlgUpdateMedia
         Me.chkOutline.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkOutline.Location = New System.Drawing.Point(147, 42)
         Me.chkOutline.Name = "chkOutline"
-        Me.chkOutline.Size = New System.Drawing.Size(59, 17)
+        Me.chkOutline.Size = New System.Drawing.Size(65, 17)
         Me.chkOutline.TabIndex = 11
         Me.chkOutline.Text = "Outline"
         Me.chkOutline.UseVisualStyleBackColor = True
@@ -481,7 +485,7 @@ Partial Class dlgUpdateMedia
         Me.chkGenre.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkGenre.Location = New System.Drawing.Point(6, 204)
         Me.chkGenre.Name = "chkGenre"
-        Me.chkGenre.Size = New System.Drawing.Size(55, 17)
+        Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 10
         Me.chkGenre.Text = "Genre"
         Me.chkGenre.UseVisualStyleBackColor = True
@@ -493,7 +497,7 @@ Partial Class dlgUpdateMedia
         Me.chkDirector.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkDirector.Location = New System.Drawing.Point(147, 111)
         Me.chkDirector.Name = "chkDirector"
-        Me.chkDirector.Size = New System.Drawing.Size(63, 17)
+        Me.chkDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkDirector.TabIndex = 9
         Me.chkDirector.Text = "Director"
         Me.chkDirector.UseVisualStyleBackColor = True
@@ -505,7 +509,7 @@ Partial Class dlgUpdateMedia
         Me.chkTagline.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTagline.Location = New System.Drawing.Point(147, 19)
         Me.chkTagline.Name = "chkTagline"
-        Me.chkTagline.Size = New System.Drawing.Size(61, 17)
+        Me.chkTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkTagline.TabIndex = 8
         Me.chkTagline.Text = "Tagline"
         Me.chkTagline.UseVisualStyleBackColor = True
@@ -517,7 +521,7 @@ Partial Class dlgUpdateMedia
         Me.chkCast.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkCast.Location = New System.Drawing.Point(147, 88)
         Me.chkCast.Name = "chkCast"
-        Me.chkCast.Size = New System.Drawing.Size(47, 17)
+        Me.chkCast.Size = New System.Drawing.Size(48, 17)
         Me.chkCast.TabIndex = 7
         Me.chkCast.Text = "Cast"
         Me.chkCast.UseVisualStyleBackColor = True
@@ -529,7 +533,7 @@ Partial Class dlgUpdateMedia
         Me.chkVotes.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkVotes.Location = New System.Drawing.Point(6, 158)
         Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(53, 17)
+        Me.chkVotes.Size = New System.Drawing.Size(55, 17)
         Me.chkVotes.TabIndex = 6
         Me.chkVotes.Text = "Votes"
         Me.chkVotes.UseVisualStyleBackColor = True
@@ -541,7 +545,7 @@ Partial Class dlgUpdateMedia
         Me.chkTrailer.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTrailer.Location = New System.Drawing.Point(6, 227)
         Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(55, 17)
+        Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 5
         Me.chkTrailer.Text = "Trailer"
         Me.chkTrailer.UseVisualStyleBackColor = True
@@ -553,7 +557,7 @@ Partial Class dlgUpdateMedia
         Me.chkRating.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRating.Location = New System.Drawing.Point(6, 135)
         Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(57, 17)
+        Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 4
         Me.chkRating.Text = "Rating"
         Me.chkRating.UseVisualStyleBackColor = True
@@ -565,7 +569,7 @@ Partial Class dlgUpdateMedia
         Me.chkRelease.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRelease.Location = New System.Drawing.Point(6, 89)
         Me.chkRelease.Name = "chkRelease"
-        Me.chkRelease.Size = New System.Drawing.Size(91, 17)
+        Me.chkRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkRelease.TabIndex = 3
         Me.chkRelease.Text = "Release Date"
         Me.chkRelease.UseVisualStyleBackColor = True
@@ -577,7 +581,7 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMPAA.Location = New System.Drawing.Point(6, 66)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(80, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(81, 17)
         Me.chkMPAA.TabIndex = 2
         Me.chkMPAA.Text = "MPAA/Cert"
         Me.chkMPAA.UseVisualStyleBackColor = True
@@ -589,7 +593,7 @@ Partial Class dlgUpdateMedia
         Me.chkYear.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkYear.Location = New System.Drawing.Point(6, 43)
         Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(48, 17)
+        Me.chkYear.Size = New System.Drawing.Size(47, 17)
         Me.chkYear.TabIndex = 1
         Me.chkYear.Text = "Year"
         Me.chkYear.UseVisualStyleBackColor = True
@@ -601,7 +605,7 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTitle.Location = New System.Drawing.Point(6, 20)
         Me.chkTitle.Name = "chkTitle"
-        Me.chkTitle.Size = New System.Drawing.Size(46, 17)
+        Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
@@ -619,6 +623,7 @@ Partial Class dlgUpdateMedia
         Me.Controls.Add(Me.gbUpdateModifier)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

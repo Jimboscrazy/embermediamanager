@@ -37,6 +37,7 @@ Partial Class dlgSortFiles
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(351, 140)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(72, 23)
@@ -45,7 +46,8 @@ Partial Class dlgSortFiles
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(386, 27)
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(386, 28)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(37, 23)
         Me.btnBrowse.TabIndex = 1
@@ -54,13 +56,15 @@ Partial Class dlgSortFiles
         '
         'txtPath
         '
+        Me.txtPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtPath.Location = New System.Drawing.Point(12, 29)
         Me.txtPath.Name = "txtPath"
-        Me.txtPath.Size = New System.Drawing.Size(365, 20)
+        Me.txtPath.Size = New System.Drawing.Size(365, 22)
         Me.txtPath.TabIndex = 2
         '
         'btnGo
         '
+        Me.btnGo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnGo.Location = New System.Drawing.Point(12, 140)
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Size = New System.Drawing.Size(72, 24)
@@ -72,6 +76,7 @@ Partial Class dlgSortFiles
         '
         Me.GroupBox1.Controls.Add(Me.lblStatus)
         Me.GroupBox1.Controls.Add(Me.pbStatus)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(12, 55)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(411, 79)
@@ -91,7 +96,7 @@ Partial Class dlgSortFiles
         '
         'pbStatus
         '
-        Me.pbStatus.Location = New System.Drawing.Point(6, 50)
+        Me.pbStatus.Location = New System.Drawing.Point(6, 45)
         Me.pbStatus.Name = "pbStatus"
         Me.pbStatus.Size = New System.Drawing.Size(399, 23)
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Continuous

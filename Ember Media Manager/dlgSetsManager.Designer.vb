@@ -62,6 +62,7 @@ Partial Class dlgSetsManager
         '
         'OK_Button
         '
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(628, 455)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -72,6 +73,7 @@ Partial Class dlgSetsManager
         '
         Me.GroupBox1.Controls.Add(Me.lbMovies)
         Me.GroupBox1.Controls.Add(Me.btnAdd)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(469, 69)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(226, 382)
@@ -82,6 +84,7 @@ Partial Class dlgSetsManager
         'lbMovies
         '
         Me.lbMovies.Enabled = False
+        Me.lbMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbMovies.FormattingEnabled = True
         Me.lbMovies.Location = New System.Drawing.Point(8, 19)
         Me.lbMovies.Name = "lbMovies"
@@ -107,6 +110,7 @@ Partial Class dlgSetsManager
         Me.GroupBox2.Controls.Add(Me.btnEditSet)
         Me.GroupBox2.Controls.Add(Me.btnNewSet)
         Me.GroupBox2.Controls.Add(Me.lbSets)
+        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(5, 69)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(226, 382)
@@ -151,6 +155,7 @@ Partial Class dlgSetsManager
         'lbSets
         '
         Me.lbSets.Enabled = False
+        Me.lbSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbSets.FormattingEnabled = True
         Me.lbSets.Location = New System.Drawing.Point(8, 20)
         Me.lbSets.Name = "lbSets"
@@ -165,6 +170,7 @@ Partial Class dlgSetsManager
         Me.GroupBox3.Controls.Add(Me.btnUp)
         Me.GroupBox3.Controls.Add(Me.btnRemove)
         Me.GroupBox3.Controls.Add(Me.lbMoviesInSet)
+        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(237, 69)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(226, 382)
@@ -174,7 +180,7 @@ Partial Class dlgSetsManager
         '
         'lblCurrentSet
         '
-        Me.lblCurrentSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCurrentSet.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCurrentSet.Location = New System.Drawing.Point(6, 20)
         Me.lblCurrentSet.Name = "lblCurrentSet"
         Me.lblCurrentSet.Size = New System.Drawing.Size(214, 23)
@@ -215,6 +221,7 @@ Partial Class dlgSetsManager
         'lbMoviesInSet
         '
         Me.lbMoviesInSet.Enabled = False
+        Me.lbMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbMoviesInSet.FormattingEnabled = True
         Me.lbMoviesInSet.Location = New System.Drawing.Point(9, 46)
         Me.lbMoviesInSet.Name = "lbMoviesInSet"
@@ -278,7 +285,7 @@ Partial Class dlgSetsManager
         '
         'btnCancel
         '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnCancel.Location = New System.Drawing.Point(298, 3)

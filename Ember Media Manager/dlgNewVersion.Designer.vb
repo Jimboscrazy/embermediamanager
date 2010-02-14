@@ -36,6 +36,7 @@ Partial Class dlgNewVersion
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(457, 390)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -48,7 +49,7 @@ Partial Class dlgNewVersion
         Me.txtChangelog.AcceptsTab = True
         Me.txtChangelog.BackColor = System.Drawing.Color.White
         Me.txtChangelog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtChangelog.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtChangelog.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtChangelog.Location = New System.Drawing.Point(9, 96)
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"
@@ -69,7 +70,7 @@ Partial Class dlgNewVersion
         '
         'lblNew
         '
-        Me.lblNew.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNew.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblNew.Location = New System.Drawing.Point(247, 27)
         Me.lblNew.Name = "lblNew"
         Me.lblNew.Size = New System.Drawing.Size(277, 43)
@@ -80,10 +81,10 @@ Partial Class dlgNewVersion
         'llClick
         '
         Me.llClick.AutoSize = True
-        Me.llClick.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.llClick.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.llClick.Location = New System.Drawing.Point(5, 391)
         Me.llClick.Name = "llClick"
-        Me.llClick.Size = New System.Drawing.Size(91, 20)
+        Me.llClick.Size = New System.Drawing.Size(87, 21)
         Me.llClick.TabIndex = 12
         Me.llClick.TabStop = True
         Me.llClick.Text = "Click Here"
@@ -91,10 +92,10 @@ Partial Class dlgNewVersion
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(93, 391)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(166, 20)
+        Me.Label2.Size = New System.Drawing.Size(169, 21)
         Me.Label2.TabIndex = 13
         Me.Label2.Text = "to visit embermm.com."
         '

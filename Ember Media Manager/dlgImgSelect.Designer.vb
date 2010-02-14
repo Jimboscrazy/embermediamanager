@@ -83,6 +83,7 @@ Partial Class dlgImgSelect
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -93,6 +94,7 @@ Partial Class dlgImgSelect
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -124,7 +126,7 @@ Partial Class dlgImgSelect
         'pnlSize
         '
         Me.pnlSize.BackColor = System.Drawing.Color.White
-        Me.pnlSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSize.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.pnlSize.Controls.Add(Me.btnPreview)
         Me.pnlSize.Controls.Add(Me.rbSmall)
         Me.pnlSize.Controls.Add(Me.rbMedium)
@@ -139,6 +141,7 @@ Partial Class dlgImgSelect
         'btnPreview
         '
         Me.btnPreview.Enabled = False
+        Me.btnPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnPreview.Image = CType(resources.GetObject("btnPreview.Image"), System.Drawing.Image)
         Me.btnPreview.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnPreview.Location = New System.Drawing.Point(593, 5)
@@ -153,9 +156,10 @@ Partial Class dlgImgSelect
         '
         Me.rbSmall.AutoSize = True
         Me.rbSmall.Enabled = False
+        Me.rbSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbSmall.Location = New System.Drawing.Point(475, 8)
         Me.rbSmall.Name = "rbSmall"
-        Me.rbSmall.Size = New System.Drawing.Size(50, 17)
+        Me.rbSmall.Size = New System.Drawing.Size(53, 17)
         Me.rbSmall.TabIndex = 5
         Me.rbSmall.TabStop = True
         Me.rbSmall.Text = "Small"
@@ -164,9 +168,10 @@ Partial Class dlgImgSelect
         'rbMedium
         '
         Me.rbMedium.AutoSize = True
+        Me.rbMedium.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbMedium.Location = New System.Drawing.Point(322, 8)
         Me.rbMedium.Name = "rbMedium"
-        Me.rbMedium.Size = New System.Drawing.Size(62, 17)
+        Me.rbMedium.Size = New System.Drawing.Size(69, 17)
         Me.rbMedium.TabIndex = 4
         Me.rbMedium.TabStop = True
         Me.rbMedium.Text = "Medium"
@@ -176,9 +181,10 @@ Partial Class dlgImgSelect
         '
         Me.rbLarge.AutoSize = True
         Me.rbLarge.Enabled = False
+        Me.rbLarge.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbLarge.Location = New System.Drawing.Point(179, 8)
         Me.rbLarge.Name = "rbLarge"
-        Me.rbLarge.Size = New System.Drawing.Size(52, 17)
+        Me.rbLarge.Size = New System.Drawing.Size(54, 17)
         Me.rbLarge.TabIndex = 3
         Me.rbLarge.TabStop = True
         Me.rbLarge.Text = "Large"
@@ -188,9 +194,10 @@ Partial Class dlgImgSelect
         '
         Me.rbXLarge.AutoSize = True
         Me.rbXLarge.Enabled = False
+        Me.rbXLarge.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbXLarge.Location = New System.Drawing.Point(26, 8)
         Me.rbXLarge.Name = "rbXLarge"
-        Me.rbXLarge.Size = New System.Drawing.Size(62, 17)
+        Me.rbXLarge.Size = New System.Drawing.Size(65, 17)
         Me.rbXLarge.TabIndex = 2
         Me.rbXLarge.TabStop = True
         Me.rbXLarge.Text = "X-Large"
@@ -277,7 +284,8 @@ Partial Class dlgImgSelect
         '
         'lblDL3Status
         '
-        Me.lblDL3Status.Location = New System.Drawing.Point(5, 36)
+        Me.lblDL3Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDL3Status.Location = New System.Drawing.Point(5, 34)
         Me.lblDL3Status.Name = "lblDL3Status"
         Me.lblDL3Status.Size = New System.Drawing.Size(310, 13)
         Me.lblDL3Status.TabIndex = 8
@@ -293,7 +301,7 @@ Partial Class dlgImgSelect
         '
         'pbDL3
         '
-        Me.pbDL3.Location = New System.Drawing.Point(6, 52)
+        Me.pbDL3.Location = New System.Drawing.Point(6, 53)
         Me.pbDL3.Name = "pbDL3"
         Me.pbDL3.Size = New System.Drawing.Size(309, 19)
         Me.pbDL3.Style = System.Windows.Forms.ProgressBarStyle.Continuous
@@ -311,7 +319,8 @@ Partial Class dlgImgSelect
         '
         'lblDL2Status
         '
-        Me.lblDL2Status.Location = New System.Drawing.Point(5, 36)
+        Me.lblDL2Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDL2Status.Location = New System.Drawing.Point(5, 34)
         Me.lblDL2Status.Name = "lblDL2Status"
         Me.lblDL2Status.Size = New System.Drawing.Size(310, 13)
         Me.lblDL2Status.TabIndex = 8
@@ -335,6 +344,7 @@ Partial Class dlgImgSelect
         '
         'lblDL1Status
         '
+        Me.lblDL1Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDL1Status.Location = New System.Drawing.Point(5, 29)
         Me.lblDL1Status.Name = "lblDL1Status"
         Me.lblDL1Status.Size = New System.Drawing.Size(310, 13)
@@ -380,7 +390,7 @@ Partial Class dlgImgSelect
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(6, 52)
+        Me.ProgressBar1.Location = New System.Drawing.Point(6, 53)
         Me.ProgressBar1.MarqueeAnimationSpeed = 25
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(309, 19)
