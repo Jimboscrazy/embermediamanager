@@ -105,6 +105,10 @@ Partial Class frmMain
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuShowTitle = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuReloadShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuMarkShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuLockShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrapeShow = New System.Windows.Forms.ToolStripMenuItem
@@ -323,10 +327,10 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.cmnuReloadShow = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuLockShow = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuMarkShow = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuReloadEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuMarkEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuLockEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1058,7 +1062,7 @@ Partial Class frmMain
         '
         Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(176, 198)
+        Me.mnuShows.Size = New System.Drawing.Size(176, 176)
         '
         'cmnuShowTitle
         '
@@ -1072,6 +1076,32 @@ Partial Class frmMain
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuReloadShow
+        '
+        Me.cmnuReloadShow.Image = CType(resources.GetObject("cmnuReloadShow.Image"), System.Drawing.Image)
+        Me.cmnuReloadShow.Name = "cmnuReloadShow"
+        Me.cmnuReloadShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuReloadShow.Text = "Reload"
+        '
+        'cmnuMarkShow
+        '
+        Me.cmnuMarkShow.Image = CType(resources.GetObject("cmnuMarkShow.Image"), System.Drawing.Image)
+        Me.cmnuMarkShow.Name = "cmnuMarkShow"
+        Me.cmnuMarkShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuMarkShow.Text = "Mark"
+        '
+        'cmnuLockShow
+        '
+        Me.cmnuLockShow.Image = CType(resources.GetObject("cmnuLockShow.Image"), System.Drawing.Image)
+        Me.cmnuLockShow.Name = "cmnuLockShow"
+        Me.cmnuLockShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuLockShow.Text = "Lock"
+        '
+        'ToolStripSeparator8
+        '
+        Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(172, 6)
         '
         'cmnuEditShow
         '
@@ -1177,28 +1207,28 @@ Partial Class frmMain
         '
         'mnuEpisodes
         '
-        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuEditEpisode})
+        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(139, 54)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(153, 148)
         '
         'cmnuEpTitle
         '
         Me.cmnuEpTitle.Enabled = False
         Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
         Me.cmnuEpTitle.Name = "cmnuEpTitle"
-        Me.cmnuEpTitle.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEpTitle.Size = New System.Drawing.Size(152, 22)
         Me.cmnuEpTitle.Text = "Title"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(135, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(149, 6)
         '
         'cmnuEditEpisode
         '
         Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
         Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
-        Me.cmnuEditEpisode.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEditEpisode.Size = New System.Drawing.Size(152, 22)
         Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'pnlListTop
@@ -3048,31 +3078,31 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
-        'cmnuReloadShow
+        'cmnuReloadEp
         '
-        Me.cmnuReloadShow.Image = CType(resources.GetObject("cmnuReloadShow.Image"), System.Drawing.Image)
-        Me.cmnuReloadShow.Name = "cmnuReloadShow"
-        Me.cmnuReloadShow.Size = New System.Drawing.Size(175, 22)
-        Me.cmnuReloadShow.Text = "Reload"
+        Me.cmnuReloadEp.Image = CType(resources.GetObject("cmnuReloadEp.Image"), System.Drawing.Image)
+        Me.cmnuReloadEp.Name = "cmnuReloadEp"
+        Me.cmnuReloadEp.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuReloadEp.Text = "Reload"
         '
-        'cmnuLockShow
+        'cmnuMarkEp
         '
-        Me.cmnuLockShow.Image = CType(resources.GetObject("cmnuLockShow.Image"), System.Drawing.Image)
-        Me.cmnuLockShow.Name = "cmnuLockShow"
-        Me.cmnuLockShow.Size = New System.Drawing.Size(175, 22)
-        Me.cmnuLockShow.Text = "Lock"
+        Me.cmnuMarkEp.Image = CType(resources.GetObject("cmnuMarkEp.Image"), System.Drawing.Image)
+        Me.cmnuMarkEp.Name = "cmnuMarkEp"
+        Me.cmnuMarkEp.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMarkEp.Text = "Mark"
         '
-        'cmnuMarkShow
+        'cmnuLockEp
         '
-        Me.cmnuMarkShow.Image = CType(resources.GetObject("cmnuMarkShow.Image"), System.Drawing.Image)
-        Me.cmnuMarkShow.Name = "cmnuMarkShow"
-        Me.cmnuMarkShow.Size = New System.Drawing.Size(175, 22)
-        Me.cmnuMarkShow.Text = "Mark"
+        Me.cmnuLockEp.Image = CType(resources.GetObject("cmnuLockEp.Image"), System.Drawing.Image)
+        Me.cmnuLockEp.Name = "cmnuLockEp"
+        Me.cmnuLockEp.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuLockEp.Text = "Lock"
         '
-        'ToolStripSeparator8
+        'ToolStripSeparator9
         '
-        Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(149, 6)
         '
         'frmMain
         '
@@ -3468,4 +3498,8 @@ Partial Class frmMain
     Friend WithEvents cmnuMarkShow As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuLockShow As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuReloadEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMarkEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuLockEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
 End Class
