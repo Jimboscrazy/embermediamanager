@@ -24,6 +24,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Drawing.Imaging
 
+<Serializable()> _
 Public Class Images : Implements IDisposable
 
     Private _image As Image

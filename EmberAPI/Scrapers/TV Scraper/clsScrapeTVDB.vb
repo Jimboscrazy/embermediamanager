@@ -45,10 +45,23 @@ Namespace TVDB
             Cancelled = 10
         End Enum
 
+        <Serializable()> _
         Public Structure TVImages
             Dim ShowPoster As TVDBShowPoster
             Dim ShowFanart As TVDBFanart
             Dim SeasonImageList As List(Of TVDBSeasonImage)
+
+            Public Function Clone() As TVImages
+                Dim newTVI As New TVImages
+                Using ms As New IO.MemoryStream()
+                    Dim bf As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+                    bf.Serialize(ms, Me)
+                    ms.Position = 0
+                    newTVI = DirectCast(bf.Deserialize(ms), TVImages)
+                    ms.Close()
+                End Using
+                Return newTVI
+            End Function
         End Structure
 
         Public Structure ScrapeInfo
@@ -220,6 +233,7 @@ Namespace TVDB
             End Sub
         End Class
 
+        <Serializable()> _
         Public Class TVDBFanart
             Private _url As String
             Private _thumbnailurl As String
@@ -296,6 +310,7 @@ Namespace TVDB
             End Sub
         End Class
 
+        <Serializable()> _
         Public Class TVDBShowPoster
             Private _url As String
             Private _type As Enums.ShowPosterType
@@ -469,6 +484,7 @@ Namespace TVDB
             End Sub
         End Class
 
+        <Serializable()> _
         Public Class TVDBSeasonImage
             Private _season As Integer
             Private _poster As Images

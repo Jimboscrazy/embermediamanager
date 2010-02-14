@@ -23,6 +23,7 @@
 Imports System.IO
 Imports System.IO.Compression
 
+<Serializable()> _
 Public Class HTTP
 
     Dim _responseuri As String
