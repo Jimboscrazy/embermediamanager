@@ -3892,7 +3892,7 @@ Partial Class dlgSettings
         Me.lvTVSources.HideSelection = False
         Me.lvTVSources.Location = New System.Drawing.Point(6, 4)
         Me.lvTVSources.Name = "lvTVSources"
-        Me.lvTVSources.Size = New System.Drawing.Size(466, 105)
+        Me.lvTVSources.Size = New System.Drawing.Size(482, 105)
         Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvTVSources.TabIndex = 0
         Me.lvTVSources.UseCompatibleStateImageBehavior = False
@@ -3928,9 +3928,9 @@ Partial Class dlgSettings
         '
         Me.chkTVIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 16)
+        Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 19)
         Me.chkTVIgnoreLastScan.Name = "chkTVIgnoreLastScan"
-        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(142, 41)
+        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(142, 34)
         Me.chkTVIgnoreLastScan.TabIndex = 72
         Me.chkTVIgnoreLastScan.Text = "Ignore last scan time when updating library"
         Me.chkTVIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3940,7 +3940,7 @@ Partial Class dlgSettings
         '
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVCleanDB.Location = New System.Drawing.Point(7, 60)
+        Me.chkTVCleanDB.Location = New System.Drawing.Point(6, 52)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
         Me.chkTVCleanDB.Size = New System.Drawing.Size(138, 43)
         Me.chkTVCleanDB.TabIndex = 71

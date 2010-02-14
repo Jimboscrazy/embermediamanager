@@ -1575,4 +1575,9 @@ Public Class dlgEditMovie
         DelayTimer.Stop()
         GrabTheFrame()
     End Sub
+
+
+    Private Sub lblPosterSize_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblPosterSize.Click
+
+    End Sub
 End Class
