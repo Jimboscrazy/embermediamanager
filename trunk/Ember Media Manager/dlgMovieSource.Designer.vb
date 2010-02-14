@@ -65,6 +65,7 @@ Partial Class dlgMovieSource
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -75,6 +76,7 @@ Partial Class dlgMovieSource
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -83,16 +85,17 @@ Partial Class dlgMovieSource
         '
         'txtSourceName
         '
+        Me.txtSourceName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtSourceName.Location = New System.Drawing.Point(15, 29)
         Me.txtSourceName.Name = "txtSourceName"
-        Me.txtSourceName.Size = New System.Drawing.Size(130, 20)
+        Me.txtSourceName.Size = New System.Drawing.Size(130, 22)
         Me.txtSourceName.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(12, 12)
+        Me.Label1.Location = New System.Drawing.Point(13, 14)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(79, 13)
         Me.Label1.TabIndex = 2
@@ -102,7 +105,7 @@ Partial Class dlgMovieSource
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(12, 85)
+        Me.Label2.Location = New System.Drawing.Point(13, 86)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(72, 13)
         Me.Label2.TabIndex = 4
@@ -110,14 +113,16 @@ Partial Class dlgMovieSource
         '
         'txtSourcePath
         '
+        Me.txtSourcePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtSourcePath.Location = New System.Drawing.Point(15, 101)
         Me.txtSourcePath.Name = "txtSourcePath"
-        Me.txtSourcePath.Size = New System.Drawing.Size(376, 20)
+        Me.txtSourcePath.Size = New System.Drawing.Size(376, 22)
         Me.txtSourcePath.TabIndex = 3
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(397, 99)
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(397, 100)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
         Me.btnBrowse.TabIndex = 5
@@ -129,6 +134,7 @@ Partial Class dlgMovieSource
         Me.GroupBox1.Controls.Add(Me.chkSingle)
         Me.GroupBox1.Controls.Add(Me.chkUseFolderName)
         Me.GroupBox1.Controls.Add(Me.chkScanRecursive)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(175, 8)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(248, 85)
@@ -139,9 +145,10 @@ Partial Class dlgMovieSource
         'chkSingle
         '
         Me.chkSingle.AutoSize = True
+        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkSingle.Location = New System.Drawing.Point(6, 59)
         Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(223, 17)
+        Me.chkSingle.Size = New System.Drawing.Size(237, 17)
         Me.chkSingle.TabIndex = 2
         Me.chkSingle.Text = "Only Detect One Movie From Each Folder"
         Me.chkSingle.UseVisualStyleBackColor = True
@@ -149,9 +156,10 @@ Partial Class dlgMovieSource
         'chkUseFolderName
         '
         Me.chkUseFolderName.AutoSize = True
+        Me.chkUseFolderName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkUseFolderName.Location = New System.Drawing.Point(6, 39)
         Me.chkUseFolderName.Name = "chkUseFolderName"
-        Me.chkUseFolderName.Size = New System.Drawing.Size(183, 17)
+        Me.chkUseFolderName.Size = New System.Drawing.Size(200, 17)
         Me.chkUseFolderName.TabIndex = 1
         Me.chkUseFolderName.Text = "Use Folder Name for Initial Listing"
         Me.chkUseFolderName.UseVisualStyleBackColor = True
@@ -159,6 +167,7 @@ Partial Class dlgMovieSource
         'chkScanRecursive
         '
         Me.chkScanRecursive.AutoSize = True
+        Me.chkScanRecursive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkScanRecursive.Location = New System.Drawing.Point(6, 19)
         Me.chkScanRecursive.Name = "chkScanRecursive"
         Me.chkScanRecursive.Size = New System.Drawing.Size(109, 17)

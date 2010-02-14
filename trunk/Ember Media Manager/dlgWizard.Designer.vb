@@ -82,6 +82,7 @@ Partial Class dlgWizard
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(396, 337)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -92,6 +93,7 @@ Partial Class dlgWizard
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(469, 337)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -102,6 +104,7 @@ Partial Class dlgWizard
         '
         Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnBack.Enabled = False
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnBack.Location = New System.Drawing.Point(213, 337)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(67, 23)
@@ -111,6 +114,7 @@ Partial Class dlgWizard
         'btnNext
         '
         Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnNext.Location = New System.Drawing.Point(286, 337)
         Me.btnNext.Name = "btnNext"
         Me.btnNext.Size = New System.Drawing.Size(67, 23)
@@ -133,23 +137,26 @@ Partial Class dlgWizard
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(107, 241)
+        Me.Label32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label32.Location = New System.Drawing.Point(108, 260)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(103, 13)
+        Me.Label32.Size = New System.Drawing.Size(110, 13)
         Me.Label32.TabIndex = 19
         Me.Label32.Text = "Interface Language:"
         '
         'cbIntLang
         '
         Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbIntLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbIntLang.FormattingEnabled = True
-        Me.cbIntLang.Location = New System.Drawing.Point(110, 258)
+        Me.cbIntLang.Location = New System.Drawing.Point(110, 275)
         Me.cbIntLang.Name = "cbIntLang"
         Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
         Me.cbIntLang.TabIndex = 18
         '
         'Label2
         '
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(17, 46)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(337, 201)
@@ -160,10 +167,10 @@ Partial Class dlgWizard
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(15, 15)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(340, 24)
+        Me.Label1.Size = New System.Drawing.Size(325, 25)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Welcome to Ember Media Manager"
         '
@@ -196,9 +203,10 @@ Partial Class dlgWizard
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
+        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox7.Location = New System.Drawing.Point(224, 203)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(122, 61)
+        Me.GroupBox7.Size = New System.Drawing.Size(139, 61)
         Me.GroupBox7.TabIndex = 68
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "NFO"
@@ -208,7 +216,7 @@ Partial Class dlgWizard
         Me.chkMovieNameNFO.AutoSize = True
         Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 41)
         Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
-        Me.chkMovieNameNFO.Size = New System.Drawing.Size(84, 17)
+        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
         Me.chkMovieNameNFO.TabIndex = 69
         Me.chkMovieNameNFO.Text = "<movie>.nfo"
         Me.chkMovieNameNFO.UseVisualStyleBackColor = True
@@ -218,7 +226,7 @@ Partial Class dlgWizard
         Me.chkMovieNFO.AutoSize = True
         Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
         Me.chkMovieNFO.Name = "chkMovieNFO"
-        Me.chkMovieNFO.Size = New System.Drawing.Size(72, 17)
+        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
         Me.chkMovieNFO.TabIndex = 68
         Me.chkMovieNFO.Text = "movie.nfo"
         Me.chkMovieNFO.UseVisualStyleBackColor = True
@@ -228,9 +236,10 @@ Partial Class dlgWizard
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
+        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox6.Location = New System.Drawing.Point(224, 111)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(122, 86)
+        Me.GroupBox6.Size = New System.Drawing.Size(139, 86)
         Me.GroupBox6.TabIndex = 67
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -240,7 +249,7 @@ Partial Class dlgWizard
         Me.chkMovieNameDotFanartJPG.AutoSize = True
         Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 63)
         Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
-        Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(113, 17)
+        Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(126, 17)
         Me.chkMovieNameDotFanartJPG.TabIndex = 68
         Me.chkMovieNameDotFanartJPG.Text = "<movie>.fanart.jpg"
         Me.chkMovieNameDotFanartJPG.UseVisualStyleBackColor = True
@@ -250,7 +259,7 @@ Partial Class dlgWizard
         Me.chkMovieNameFanartJPG.AutoSize = True
         Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 42)
         Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
-        Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(113, 17)
+        Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(127, 17)
         Me.chkMovieNameFanartJPG.TabIndex = 67
         Me.chkMovieNameFanartJPG.Text = "<movie>-fanart.jpg"
         Me.chkMovieNameFanartJPG.UseVisualStyleBackColor = True
@@ -260,7 +269,7 @@ Partial Class dlgWizard
         Me.chkFanartJPG.AutoSize = True
         Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
         Me.chkFanartJPG.Name = "chkFanartJPG"
-        Me.chkFanartJPG.Size = New System.Drawing.Size(70, 17)
+        Me.chkFanartJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFanartJPG.TabIndex = 66
         Me.chkFanartJPG.Text = "fanart.jpg"
         Me.chkFanartJPG.UseVisualStyleBackColor = True
@@ -274,6 +283,7 @@ Partial Class dlgWizard
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
+        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(19, 111)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(199, 126)
@@ -286,7 +296,7 @@ Partial Class dlgWizard
         Me.chkFolderJPG.AutoSize = True
         Me.chkFolderJPG.Location = New System.Drawing.Point(10, 97)
         Me.chkFolderJPG.Name = "chkFolderJPG"
-        Me.chkFolderJPG.Size = New System.Drawing.Size(69, 17)
+        Me.chkFolderJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFolderJPG.TabIndex = 70
         Me.chkFolderJPG.Text = "folder.jpg"
         Me.chkFolderJPG.UseVisualStyleBackColor = True
@@ -296,7 +306,7 @@ Partial Class dlgWizard
         Me.chkPosterJPG.AutoSize = True
         Me.chkPosterJPG.Location = New System.Drawing.Point(101, 74)
         Me.chkPosterJPG.Name = "chkPosterJPG"
-        Me.chkPosterJPG.Size = New System.Drawing.Size(72, 17)
+        Me.chkPosterJPG.Size = New System.Drawing.Size(79, 17)
         Me.chkPosterJPG.TabIndex = 69
         Me.chkPosterJPG.Text = "poster.jpg"
         Me.chkPosterJPG.UseVisualStyleBackColor = True
@@ -306,7 +316,7 @@ Partial Class dlgWizard
         Me.chkPosterTBN.AutoSize = True
         Me.chkPosterTBN.Location = New System.Drawing.Point(10, 74)
         Me.chkPosterTBN.Name = "chkPosterTBN"
-        Me.chkPosterTBN.Size = New System.Drawing.Size(73, 17)
+        Me.chkPosterTBN.Size = New System.Drawing.Size(80, 17)
         Me.chkPosterTBN.TabIndex = 68
         Me.chkPosterTBN.Text = "poster.tbn"
         Me.chkPosterTBN.UseVisualStyleBackColor = True
@@ -316,7 +326,7 @@ Partial Class dlgWizard
         Me.chkMovieNameJPG.AutoSize = True
         Me.chkMovieNameJPG.Location = New System.Drawing.Point(101, 51)
         Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
-        Me.chkMovieNameJPG.Size = New System.Drawing.Size(83, 17)
+        Me.chkMovieNameJPG.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieNameJPG.TabIndex = 67
         Me.chkMovieNameJPG.Text = "<movie>.jpg"
         Me.chkMovieNameJPG.UseVisualStyleBackColor = True
@@ -326,7 +336,7 @@ Partial Class dlgWizard
         Me.chkMovieJPG.AutoSize = True
         Me.chkMovieJPG.Location = New System.Drawing.Point(10, 51)
         Me.chkMovieJPG.Name = "chkMovieJPG"
-        Me.chkMovieJPG.Size = New System.Drawing.Size(71, 17)
+        Me.chkMovieJPG.Size = New System.Drawing.Size(76, 17)
         Me.chkMovieJPG.TabIndex = 66
         Me.chkMovieJPG.Text = "movie.jpg"
         Me.chkMovieJPG.UseVisualStyleBackColor = True
@@ -336,7 +346,7 @@ Partial Class dlgWizard
         Me.chkMovieNameTBN.AutoSize = True
         Me.chkMovieNameTBN.Location = New System.Drawing.Point(101, 28)
         Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
-        Me.chkMovieNameTBN.Size = New System.Drawing.Size(84, 17)
+        Me.chkMovieNameTBN.Size = New System.Drawing.Size(93, 17)
         Me.chkMovieNameTBN.TabIndex = 65
         Me.chkMovieNameTBN.Text = "<movie>.tbn"
         Me.chkMovieNameTBN.UseVisualStyleBackColor = True
@@ -346,7 +356,7 @@ Partial Class dlgWizard
         Me.chkMovieTBN.AutoSize = True
         Me.chkMovieTBN.Location = New System.Drawing.Point(10, 28)
         Me.chkMovieTBN.Name = "chkMovieTBN"
-        Me.chkMovieTBN.Size = New System.Drawing.Size(72, 17)
+        Me.chkMovieTBN.Size = New System.Drawing.Size(77, 17)
         Me.chkMovieTBN.TabIndex = 64
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
@@ -364,6 +374,7 @@ Partial Class dlgWizard
         '
         'Label4
         '
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label4.Location = New System.Drawing.Point(13, 15)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(341, 93)
@@ -400,6 +411,7 @@ Partial Class dlgWizard
         'lvMovies
         '
         Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle})
+        Me.lvMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvMovies.FullRowSelect = True
         Me.lvMovies.HideSelection = False
         Me.lvMovies.Location = New System.Drawing.Point(5, 124)
@@ -438,6 +450,7 @@ Partial Class dlgWizard
         '
         'btnMovieRem
         '
+        Me.btnMovieRem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
         Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieRem.Location = New System.Drawing.Point(263, 236)
@@ -450,6 +463,7 @@ Partial Class dlgWizard
         '
         'btnMovieAddFolder
         '
+        Me.btnMovieAddFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
         Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieAddFolder.Location = New System.Drawing.Point(3, 236)
@@ -462,6 +476,7 @@ Partial Class dlgWizard
         '
         'Label3
         '
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(18, 15)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(332, 93)
@@ -484,15 +499,17 @@ Partial Class dlgWizard
         '
         'Label8
         '
-        Me.Label8.Location = New System.Drawing.Point(3, 124)
+        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label8.Location = New System.Drawing.Point(3, 105)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(364, 189)
+        Me.Label8.Size = New System.Drawing.Size(364, 216)
         Me.Label8.TabIndex = 2
         Me.Label8.Text = resources.GetString("Label8.Text")
         '
         'Label6
         '
-        Me.Label6.Location = New System.Drawing.Point(13, 75)
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label6.Location = New System.Drawing.Point(13, 58)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(337, 46)
         Me.Label6.TabIndex = 1
@@ -503,10 +520,10 @@ Partial Class dlgWizard
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(17, 15)
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label7.Location = New System.Drawing.Point(17, 5)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(315, 48)
+        Me.Label7.Size = New System.Drawing.Size(297, 50)
         Me.Label7.TabIndex = 0
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -523,10 +540,10 @@ Partial Class dlgWizard
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.Panel4)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

@@ -53,6 +53,7 @@ Partial Class dlgTranslationDL
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -63,6 +64,7 @@ Partial Class dlgTranslationDL
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -74,6 +76,7 @@ Partial Class dlgTranslationDL
         Me.lvDownload.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lvDownload.CheckBoxes = True
         Me.lvDownload.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.lvDownload.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvDownload.FullRowSelect = True
         Me.lvDownload.Location = New System.Drawing.Point(12, 12)
         Me.lvDownload.Name = "lvDownload"
@@ -116,7 +119,7 @@ Partial Class dlgTranslationDL
         '
         'pbStatus
         '
-        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
+        Me.pbStatus.Location = New System.Drawing.Point(3, 30)
         Me.pbStatus.MarqueeAnimationSpeed = 25
         Me.pbStatus.Name = "pbStatus"
         Me.pbStatus.Size = New System.Drawing.Size(260, 17)

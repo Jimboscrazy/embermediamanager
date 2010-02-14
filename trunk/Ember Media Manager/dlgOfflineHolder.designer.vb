@@ -74,7 +74,8 @@ Partial Class dlgOfflineHolder
         '
         Me.CLOSE_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.CLOSE_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.CLOSE_Button.Location = New System.Drawing.Point(621, 500)
+        Me.CLOSE_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.CLOSE_Button.Location = New System.Drawing.Point(621, 514)
         Me.CLOSE_Button.Name = "CLOSE_Button"
         Me.CLOSE_Button.Size = New System.Drawing.Size(80, 23)
         Me.CLOSE_Button.TabIndex = 0
@@ -131,6 +132,7 @@ Partial Class dlgOfflineHolder
         'cbSources
         '
         Me.cbSources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbSources.FormattingEnabled = True
         Me.cbSources.Location = New System.Drawing.Point(9, 87)
         Me.cbSources.Name = "cbSources"
@@ -141,7 +143,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblSources.AutoSize = True
         Me.lblSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSources.Location = New System.Drawing.Point(8, 71)
+        Me.lblSources.Location = New System.Drawing.Point(7, 72)
         Me.lblSources.Name = "lblSources"
         Me.lblSources.Size = New System.Drawing.Size(84, 13)
         Me.lblSources.TabIndex = 60
@@ -149,16 +151,17 @@ Partial Class dlgOfflineHolder
         '
         'txtMovieName
         '
+        Me.txtMovieName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtMovieName.Location = New System.Drawing.Point(9, 133)
         Me.txtMovieName.Name = "txtMovieName"
-        Me.txtMovieName.Size = New System.Drawing.Size(313, 20)
+        Me.txtMovieName.Size = New System.Drawing.Size(313, 22)
         Me.txtMovieName.TabIndex = 61
         '
         'lblMovie
         '
         Me.lblMovie.AutoSize = True
         Me.lblMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMovie.Location = New System.Drawing.Point(6, 116)
+        Me.lblMovie.Location = New System.Drawing.Point(7, 118)
         Me.lblMovie.Name = "lblMovie"
         Me.lblMovie.Size = New System.Drawing.Size(183, 13)
         Me.lblMovie.TabIndex = 62
@@ -166,6 +169,7 @@ Partial Class dlgOfflineHolder
         '
         'GetIMDB_Button
         '
+        Me.GetIMDB_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GetIMDB_Button.Location = New System.Drawing.Point(9, 158)
         Me.GetIMDB_Button.Name = "GetIMDB_Button"
         Me.GetIMDB_Button.Size = New System.Drawing.Size(80, 21)
@@ -175,6 +179,7 @@ Partial Class dlgOfflineHolder
         'Bulk_Button
         '
         Me.Bulk_Button.Enabled = False
+        Me.Bulk_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Bulk_Button.Location = New System.Drawing.Point(95, 158)
         Me.Bulk_Button.Name = "Bulk_Button"
         Me.Bulk_Button.Size = New System.Drawing.Size(80, 21)
@@ -195,12 +200,13 @@ Partial Class dlgOfflineHolder
         'lvStatus
         '
         Me.lvStatus.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colCondition, Me.colStatus})
+        Me.lvStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStatus.FullRowSelect = True
         Me.lvStatus.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lvStatus.Location = New System.Drawing.Point(5, 44)
         Me.lvStatus.MultiSelect = False
         Me.lvStatus.Name = "lvStatus"
-        Me.lvStatus.Size = New System.Drawing.Size(303, 183)
+        Me.lvStatus.Size = New System.Drawing.Size(303, 229)
         Me.lvStatus.TabIndex = 66
         Me.lvStatus.UseCompatibleStateImageBehavior = False
         Me.lvStatus.View = System.Windows.Forms.View.Details
@@ -219,7 +225,8 @@ Partial Class dlgOfflineHolder
         '
         Me.Create_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Create_Button.Enabled = False
-        Me.Create_Button.Location = New System.Drawing.Point(535, 500)
+        Me.Create_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Create_Button.Location = New System.Drawing.Point(535, 514)
         Me.Create_Button.Name = "Create_Button"
         Me.Create_Button.Size = New System.Drawing.Size(80, 23)
         Me.Create_Button.TabIndex = 67
@@ -228,7 +235,8 @@ Partial Class dlgOfflineHolder
         'chkUseFanart
         '
         Me.chkUseFanart.Enabled = False
-        Me.chkUseFanart.Location = New System.Drawing.Point(9, 354)
+        Me.chkUseFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkUseFanart.Location = New System.Drawing.Point(9, 364)
         Me.chkUseFanart.Name = "chkUseFanart"
         Me.chkUseFanart.Size = New System.Drawing.Size(192, 22)
         Me.chkUseFanart.TabIndex = 71
@@ -239,7 +247,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblTagline.AutoSize = True
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTagline.Location = New System.Drawing.Point(6, 295)
+        Me.lblTagline.Location = New System.Drawing.Point(7, 297)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(149, 13)
         Me.lblTagline.TabIndex = 70
@@ -247,9 +255,10 @@ Partial Class dlgOfflineHolder
         '
         'txtTagline
         '
+        Me.txtTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTagline.Location = New System.Drawing.Point(9, 312)
         Me.txtTagline.Name = "txtTagline"
-        Me.txtTagline.Size = New System.Drawing.Size(220, 20)
+        Me.txtTagline.Size = New System.Drawing.Size(220, 22)
         Me.txtTagline.TabIndex = 69
         Me.txtTagline.Text = "Insert DVD"
         '
@@ -257,8 +266,9 @@ Partial Class dlgOfflineHolder
         '
         Me.btnTextColor.BackColor = System.Drawing.Color.White
         Me.btnTextColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btnTextColor.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnTextColor.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnTextColor.Location = New System.Drawing.Point(337, 316)
+        Me.btnTextColor.Location = New System.Drawing.Point(337, 320)
         Me.btnTextColor.Name = "btnTextColor"
         Me.btnTextColor.Size = New System.Drawing.Size(24, 22)
         Me.btnTextColor.TabIndex = 77
@@ -267,7 +277,7 @@ Partial Class dlgOfflineHolder
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(235, 321)
+        Me.Label1.Location = New System.Drawing.Point(235, 325)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(100, 13)
         Me.Label1.TabIndex = 72
@@ -302,7 +312,7 @@ Partial Class dlgOfflineHolder
         Me.GroupBox1.Controls.Add(Me.pbPreview)
         Me.GroupBox1.Location = New System.Drawing.Point(332, 71)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(371, 423)
+        Me.GroupBox1.Size = New System.Drawing.Size(371, 437)
         Me.GroupBox1.TabIndex = 74
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Preview"
@@ -311,7 +321,7 @@ Partial Class dlgOfflineHolder
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label6.Location = New System.Drawing.Point(6, 338)
+        Me.Label6.Location = New System.Drawing.Point(6, 343)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(148, 13)
         Me.Label6.TabIndex = 83
@@ -320,9 +330,10 @@ Partial Class dlgOfflineHolder
         'cbFormat
         '
         Me.cbFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbFormat.FormattingEnabled = True
         Me.cbFormat.Items.AddRange(New Object() {"Standard", "HDV", "DV PAL"})
-        Me.cbFormat.Location = New System.Drawing.Point(156, 333)
+        Me.cbFormat.Location = New System.Drawing.Point(156, 338)
         Me.cbFormat.Name = "cbFormat"
         Me.cbFormat.Size = New System.Drawing.Size(73, 21)
         Me.cbFormat.TabIndex = 70
@@ -332,7 +343,8 @@ Partial Class dlgOfflineHolder
         Me.chkBackground.Checked = True
         Me.chkBackground.CheckState = System.Windows.Forms.CheckState.Indeterminate
         Me.chkBackground.Enabled = False
-        Me.chkBackground.Location = New System.Drawing.Point(9, 398)
+        Me.chkBackground.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkBackground.Location = New System.Drawing.Point(9, 408)
         Me.chkBackground.Name = "chkBackground"
         Me.chkBackground.Size = New System.Drawing.Size(176, 22)
         Me.chkBackground.TabIndex = 73
@@ -343,8 +355,9 @@ Partial Class dlgOfflineHolder
         '
         Me.btnBackgroundColor.BackColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.btnBackgroundColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btnBackgroundColor.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnBackgroundColor.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnBackgroundColor.Location = New System.Drawing.Point(337, 396)
+        Me.btnBackgroundColor.Location = New System.Drawing.Point(337, 405)
         Me.btnBackgroundColor.Name = "btnBackgroundColor"
         Me.btnBackgroundColor.Size = New System.Drawing.Size(24, 22)
         Me.btnBackgroundColor.TabIndex = 79
@@ -354,7 +367,7 @@ Partial Class dlgOfflineHolder
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label5.Location = New System.Drawing.Point(191, 401)
+        Me.Label5.Location = New System.Drawing.Point(191, 410)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(145, 13)
         Me.Label5.TabIndex = 80
@@ -365,7 +378,8 @@ Partial Class dlgOfflineHolder
         Me.chkOverlay.Checked = True
         Me.chkOverlay.CheckState = System.Windows.Forms.CheckState.Indeterminate
         Me.chkOverlay.Enabled = False
-        Me.chkOverlay.Location = New System.Drawing.Point(9, 376)
+        Me.chkOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOverlay.Location = New System.Drawing.Point(9, 386)
         Me.chkOverlay.Name = "chkOverlay"
         Me.chkOverlay.Size = New System.Drawing.Size(192, 22)
         Me.chkOverlay.TabIndex = 72
@@ -374,7 +388,8 @@ Partial Class dlgOfflineHolder
         '
         'btnFont
         '
-        Me.btnFont.Location = New System.Drawing.Point(258, 341)
+        Me.btnFont.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFont.Location = New System.Drawing.Point(258, 345)
         Me.btnFont.Name = "btnFont"
         Me.btnFont.Size = New System.Drawing.Size(104, 23)
         Me.btnFont.TabIndex = 78
@@ -383,9 +398,10 @@ Partial Class dlgOfflineHolder
         '
         'txtTop
         '
+        Me.txtTop.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTop.Location = New System.Drawing.Point(325, 295)
         Me.txtTop.Name = "txtTop"
-        Me.txtTop.Size = New System.Drawing.Size(36, 20)
+        Me.txtTop.Size = New System.Drawing.Size(36, 22)
         Me.txtTop.TabIndex = 76
         Me.txtTop.Text = "470"
         Me.txtTop.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -393,7 +409,7 @@ Partial Class dlgOfflineHolder
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(238, 296)
+        Me.Label3.Location = New System.Drawing.Point(238, 297)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(88, 13)
         Me.Label3.TabIndex = 77
@@ -412,9 +428,10 @@ Partial Class dlgOfflineHolder
         '
         Me.GroupBox2.Controls.Add(Me.pbProgress)
         Me.GroupBox2.Controls.Add(Me.lvStatus)
+        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(9, 229)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(313, 265)
+        Me.GroupBox2.Size = New System.Drawing.Size(313, 279)
         Me.GroupBox2.TabIndex = 75
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Information"
@@ -440,7 +457,7 @@ Partial Class dlgOfflineHolder
         Me.AcceptButton = Me.CLOSE_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(727, 526)
+        Me.ClientSize = New System.Drawing.Size(727, 540)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Create_Button)
