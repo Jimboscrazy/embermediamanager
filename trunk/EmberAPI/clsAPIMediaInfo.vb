@@ -41,18 +41,27 @@ Public Class MediaInfo
     Private Declare Unicode Function MediaInfo_New Lib "Bin\MediaInfo.DLL" () As IntPtr
     Private Declare Unicode Sub MediaInfo_Delete Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
     Private Declare Unicode Function MediaInfo_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
+    Private Declare Unicode Function MediaInfoA_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
     Private Declare Unicode Sub MediaInfo_Close Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
     Private Declare Unicode Function MediaInfo_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
     Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
+    Private Declare Unicode Function MediaInfoA_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
 
     Private Handle As IntPtr
+    Private UseAnsi As Boolean
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
 
     Private Sub Open(ByVal FileName As String)
-        MediaInfo_Open(Handle, FileName)
+        If UseAnsi Then
+            Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(FileName)
+            MediaInfoA_Open(Handle, FileName_Ptr)
+            Marshal.FreeHGlobal(FileName_Ptr)
+        Else
+            MediaInfo_Open(Handle, FileName)
+        End If
     End Sub
 
     Private Sub Close()
@@ -62,7 +71,14 @@ Public Class MediaInfo
     End Sub
 
     Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
-        Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
+        If UseAnsi Then
+            Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(Parameter)
+            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter_Ptr, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
+            Marshal.FreeHGlobal(Parameter_Ptr)
+            Return ToReturn
+        Else
+            Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
+        End If
     End Function
 
     Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
@@ -242,6 +258,12 @@ Public Class MediaInfo
                 Dim sLang As String = String.Empty
 
                 Me.Handle = MediaInfo_New()
+
+                If Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0 Then
+                    UseAnsi = False
+                Else
+                    UseAnsi = True
+                End If
 
                 Me.Open(sPath)
 
