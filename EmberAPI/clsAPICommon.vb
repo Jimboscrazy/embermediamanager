@@ -564,4 +564,16 @@ Public Class Functions
             Return 0
         End Try
     End Function
+
+    Public Shared Function CheckIfWindows() As Boolean
+        Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
+    End Function
+
+    Public Shared Function GetFFMpeg() As String
+        If Master.isWindows Then
+            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+        Else
+            Return "ffmpeg"
+        End If
+    End Function
 End Class
