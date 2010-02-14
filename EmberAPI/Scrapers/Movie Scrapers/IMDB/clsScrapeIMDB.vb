@@ -207,8 +207,6 @@ Namespace IMDB
                     bwIMDB.WorkerReportsProgress = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Details, _
                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = Options.bFullCrew, .FullCast = Options.bFullCast, .Options = Options})
-                    'TODO: need to change bwIMDB to support options FullCrew and FullCast
-                    '.Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = Options})
                 End If
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -6600,6 +6600,7 @@ doCancel:
                         .dgvMediaList.Columns(0).ValueType = GetType(Int32)
 
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        ResizeMediaList()
 
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
@@ -6655,6 +6656,7 @@ doCancel:
                         .dgvTVShows.Columns(0).ValueType = GetType(Int32)
 
                         .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        ResizeTVLists()
 
                         .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
@@ -6866,6 +6868,7 @@ doCancel:
                 .dgvTVSeasons.Columns(0).ValueType = GetType(Int32)
 
                 .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                ResizeTVLists()
 
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
@@ -6926,6 +6929,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(11).ValueType = GetType(Int32)
 
                 .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                ResizeTVLists()
 
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(11), ComponentModel.ListSortDirection.Ascending)
 
@@ -7113,6 +7117,47 @@ doCancel:
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub dgvMediaList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Resize
+        ResizeMediaList()
+    End Sub
+
+    Private Sub ResizeMediaList()
+        If Not Master.isWindows Then
+            If Me.dgvMediaList.ColumnCount > 0 Then
+                Me.dgvMediaList.Columns(3).Width = Me.dgvMediaList.Width - _
+                If(Master.eSettings.MoviePosterCol, 0, 20) - _
+                If(Master.eSettings.MovieFanartCol, 0, 20) - _
+                If(Master.eSettings.MovieInfoCol, 0, 20) - _
+                If(Master.eSettings.MovieTrailerCol, 0, 20) - _
+                If(Master.eSettings.MovieExtraCol, 0, 20)
+            End If
+        End If
+    End Sub
+
+    Private Sub ResizeTVLists()
+        If Not Master.isWindows Then
+            If Me.dgvTVShows.ColumnCount > 0 Then
+                Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width - _
+                If(Master.eSettings.ShowPosterCol, 0, 20) - _
+                If(Master.eSettings.ShowFanartCol, 0, 20) - _
+                If(Master.eSettings.ShowNfoCol, 0, 20)
+            End If
+
+            If Me.dgvTVSeasons.ColumnCount > 0 Then
+                Me.dgvTVSeasons.Columns(2).Width = Me.dgvTVSeasons.Width - _
+                If(Master.eSettings.SeasonPosterCol, 0, 20) - _
+                If(Master.eSettings.SeasonFanartCol, 0, 20)
+            End If
+
+            If Me.dgvTVEpisodes.ColumnCount > 0 Then
+                Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVShows.Width - _
+                If(Master.eSettings.EpisodePosterCol, 0, 20) - _
+                If(Master.eSettings.EpisodeFanartCol, 0, 20) - _
+                If(Master.eSettings.EpisodeNfoCol, 0, 20)
+            End If
+        End If
     End Sub
 End Class
 
