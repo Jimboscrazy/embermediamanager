@@ -6599,7 +6599,7 @@ doCancel:
 
                         .dgvMediaList.Columns(0).ValueType = GetType(Int32)
 
-                        .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        If Master.isWindows Then .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMediaList()
 
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
@@ -6655,7 +6655,7 @@ doCancel:
 
                         .dgvTVShows.Columns(0).ValueType = GetType(Int32)
 
-                        .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        If Master.isWindows Then .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeTVLists()
 
                         .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
@@ -6867,7 +6867,7 @@ doCancel:
 
                 .dgvTVSeasons.Columns(0).ValueType = GetType(Int32)
 
-                .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                If Master.isWindows Then .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 ResizeTVLists()
 
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(2), ComponentModel.ListSortDirection.Ascending)
@@ -6928,7 +6928,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(0).ValueType = GetType(Int32)
                 .dgvTVEpisodes.Columns(11).ValueType = GetType(Int32)
 
-                .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                If Master.isWindows Then .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 ResizeTVLists()
 
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(11), ComponentModel.ListSortDirection.Ascending)
@@ -7123,6 +7123,18 @@ doCancel:
         ResizeMediaList()
     End Sub
 
+    Private Sub dgvTVShows_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Resize
+        ResizeTVLists()
+    End Sub
+
+    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
+        ResizeTVLists()
+    End Sub
+
+    Private Sub dgvTVEpisodes_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Resize
+        ResizeTVLists()
+    End Sub
+
     Private Sub ResizeMediaList()
         If Not Master.isWindows Then
             If Me.dgvMediaList.ColumnCount > 0 Then
@@ -7159,5 +7171,6 @@ doCancel:
             End If
         End If
     End Sub
+
 End Class
 
