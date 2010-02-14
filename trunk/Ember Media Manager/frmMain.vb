@@ -7143,6 +7143,7 @@ doCancel:
                 If(Master.eSettings.MovieFanartCol, 0, 20) - _
                 If(Master.eSettings.MovieInfoCol, 0, 20) - _
                 If(Master.eSettings.MovieTrailerCol, 0, 20) - _
+                If(Master.eSettings.MovieSubCol, 0, 20) - _
                 If(Master.eSettings.MovieExtraCol, 0, 20) - _
                 If(Me.dgvMediaList.DisplayRectangle.Height > Me.dgvMediaList.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
