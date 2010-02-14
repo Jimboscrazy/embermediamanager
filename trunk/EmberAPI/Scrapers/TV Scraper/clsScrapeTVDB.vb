@@ -43,6 +43,7 @@ Namespace TVDB
             SelectImages = 8
             Verifying = 9
             Cancelled = 10
+            ImageView = 11
         End Enum
 
         <Serializable()> _
@@ -77,8 +78,8 @@ Namespace TVDB
             AddHandler sObject.ScraperEvent, AddressOf InnerEvent
         End Sub
 
-        Public Sub InnerEvent(ByVal etype As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-            RaiseEvent ScraperEvent(etype, iProgress, Parameter)
+        Public Sub InnerEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+            RaiseEvent ScraperEvent(eType, iProgress, Parameter)
         End Sub
 
         Public Class TVDBShow
@@ -593,6 +594,10 @@ Namespace TVDB
                 Me.bwTVDB.WorkerReportsProgress = True
                 Me.bwTVDB.WorkerSupportsCancellation = True
                 Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
+            End Sub
+
+            Public Sub PassEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+                RaiseEvent ScraperEvent(eType, iProgress, Parameter)
             End Sub
 
             Private Sub DownloadSeries(ByVal sID As String)

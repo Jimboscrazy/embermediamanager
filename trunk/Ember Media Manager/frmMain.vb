@@ -7116,6 +7116,10 @@ doCancel:
                 Me.tslLoading.Visible = False
 
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
+            Case TVDB.Scraper.EventType.ImageView
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(DirectCast(Parameter, Image))
+                End Using
         End Select
     End Sub
 
