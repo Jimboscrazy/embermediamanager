@@ -266,11 +266,6 @@ Public Class frmMain
 
     Private Sub frmMain_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
         Try
-            If Me.dgvMediaList.Columns.Count > 0 Then
-                Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            End If
-
             If Me.Created Then
                 Me.MoveMPAA()
                 Me.MoveGenres()
@@ -306,10 +301,6 @@ Public Class frmMain
                         Me.dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
                         Me.dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
                         Me.dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
-
-                        'Trick to autosize the first column, but still allow resizing by user
-                        Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                        Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                     End If
 
                     'might as well wait for these
@@ -1063,11 +1054,6 @@ Public Class frmMain
         '\\
 
         Try
-            If Me.dgvMediaList.Columns.Count > 0 Then
-                Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            End If
-
             If Me.Created Then
                 Me.MoveMPAA()
                 Me.MoveGenres()
@@ -3119,8 +3105,6 @@ Public Class frmMain
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMediaList.RowCount > 0 Then
-                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                     Me.SetControlsEnabled(True)
                     Me.dgvMediaList.Focus()
                 End If
@@ -3135,18 +3119,7 @@ Public Class frmMain
                 Me.ApplyTheme(Theming.ThemeType.Show)
                 If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-                If Me.dgvTVEpisodes.RowCount > 0 Then
-                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                End If
-                If Me.dgvTVSeasons.RowCount > 0 Then
-                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                End If
                 If Me.dgvTVShows.RowCount > 0 Then
-                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-
                     If Me.currShowRow = -1 Then
                         Me.dgvTVShows.ClearSelection()
                         Me.dgvTVShows.Rows(0).Selected = True
@@ -6626,9 +6599,7 @@ doCancel:
 
                         .dgvMediaList.Columns(0).ValueType = GetType(Int32)
 
-                        'Trick to autosize the first column, but still allow resizing by user
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                        .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
@@ -6683,9 +6654,7 @@ doCancel:
 
                         .dgvTVShows.Columns(0).ValueType = GetType(Int32)
 
-                        'Trick to autosize the first column, but still allow resizing by user
                         .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                        .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                         .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
@@ -6896,9 +6865,7 @@ doCancel:
 
                 .dgvTVSeasons.Columns(0).ValueType = GetType(Int32)
 
-                'Trick to autosize the first column, but still allow resizing by user
                 .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
@@ -6958,9 +6925,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(0).ValueType = GetType(Int32)
                 .dgvTVEpisodes.Columns(11).ValueType = GetType(Int32)
 
-                'Trick to autosize the first column, but still allow resizing by user
                 .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(11), ComponentModel.ListSortDirection.Ascending)
 
