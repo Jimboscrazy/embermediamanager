@@ -38,14 +38,37 @@ Public Class MediaInfo
         Text
     End Enum
 
-    Private Declare Unicode Function MediaInfo_New Lib "Bin\MediaInfo.DLL" () As IntPtr
-    Private Declare Unicode Sub MediaInfo_Delete Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
-    Private Declare Unicode Function MediaInfo_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
-    Private Declare Unicode Function MediaInfoA_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
-    Private Declare Unicode Sub MediaInfo_Close Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
-    Private Declare Unicode Function MediaInfo_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
-    Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
-    Private Declare Unicode Function MediaInfoA_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_New() As IntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Sub MediaInfo_Delete(ByVal Handle As IntPtr)
+    End Sub
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfoA_Open(ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Sub MediaInfo_Close(ByVal Handle As IntPtr)
+    End Sub
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Count_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfoA_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    End Function
 
     Private Handle As IntPtr
     Private UseAnsi As Boolean
