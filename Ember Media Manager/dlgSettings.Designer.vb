@@ -6710,11 +6710,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
@@ -6722,6 +6717,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTrailers)
         Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlXBMCCom)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
