@@ -3337,17 +3337,41 @@ Public Class frmMain
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
                     If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+                        Dim setMark As Boolean = False
+                        Dim setLock As Boolean = False
+
                         Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditEpisode.Visible = False
+                        Me.ToolStripSeparator9.Visible = False
 
+                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
+                                setMark = True
+                                If setLock Then Exit For
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not Convert.ToBoolean(sRow.Cells(10).Value) Then
+                                setLock = True
+                                If setMark Then Exit For
+                            End If
+                        Next
+
+                        Me.cmnuMarkEp.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuLockEp.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     Else
                         Me.cmnuEditEpisode.Visible = True
+                        Me.ToolStripSeparator9.Visible = True
 
                         If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
                             Me.mnuEpisodes.Enabled = False
                         End If
 
                         cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(2, dgvHTI.RowIndex).Value, " <<")
+                        Me.cmnuMarkEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuLockEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(10, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
 
@@ -7292,10 +7316,11 @@ doCancel:
     Private Sub cmnuReloadShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadShow.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
+            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
 
             Dim doFill As Boolean = False
-            Dim doBatch As Boolean = Me.dgvTVShows.SelectedRows.Count > 1
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
@@ -7305,6 +7330,8 @@ doCancel:
             End Using
 
             Me.dgvTVShows.Cursor = Cursors.Default
+            Me.dgvTVSeasons.Cursor = Cursors.Default
+            Me.dgvTVEpisodes.Cursor = Cursors.Default
             Me.SetControlsEnabled(True, True)
 
             If doFill Then FillList(0)
@@ -7404,6 +7431,110 @@ doCancel:
             End Using
 
             Me.dgvTVShows.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadEp.Click
+        Try
+            Me.dgvTVShows.Cursor = Cursors.WaitCursor
+            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+            Me.SetControlsEnabled(False, True)
+
+            Dim doFill As Boolean = False
+            Dim doBatch As Boolean = Me.dgvTVEpisodes.SelectedRows.Count > 1
+            Dim iID As Integer = -1
+            Dim iSeason As Integer = -1
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    doFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), doBatch)
+                    iID = Convert.ToInt32(sRow.Cells(0).Value)
+                    iSeason = Convert.ToInt32(sRow.Cells(11).Value)
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVShows.Cursor = Cursors.Default
+            Me.dgvTVSeasons.Cursor = Cursors.Default
+            Me.dgvTVEpisodes.Cursor = Cursors.Default
+            Me.SetControlsEnabled(True, True)
+
+            If doFill Then FillEpisodes(iID, iSeason)
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuMarkEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkEp.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        parMark.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(7).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(7).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuLockEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockEp.Click
+        Try
+            Dim setLock As Boolean = False
+            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    'if any one item is set as unlocked, set menu to lock
+                    'else they are all locked so set menu to unlock
+                    If Not Convert.ToBoolean(sRow.Cells(10).Value) Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVShows SET lock = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        parLock.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(10).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(10).Value = parLock.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
