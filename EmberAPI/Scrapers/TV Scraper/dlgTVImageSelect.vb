@@ -30,6 +30,8 @@
 'TODO: Check if we have information for a show or episode when first scanning in
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: Setting for the APIKey to save to the nfo.
+'TODO: Delete Show/Season/Episode
+'TODO: Remove Show/Season/Episode from DB
 'TODO: ?????
 'TODO: PROFIT!!!!
 
