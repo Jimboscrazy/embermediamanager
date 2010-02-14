@@ -5878,9 +5878,13 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
                     Application.DoEvents()
                     Dim cTrailer As New Trailers
-                    Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename, Master.currMovie.Movie.Trailer)
-                    If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
-                        Master.currMovie.Movie.Trailer = tURL
+                    If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
+                        Using dTrailer As New dlgTrailer
+                            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
+                            If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
+                                Master.currMovie.Movie.Trailer = tURL
+                            End If
+                        End Using
                     End If
                     cTrailer = Nothing
                 End If

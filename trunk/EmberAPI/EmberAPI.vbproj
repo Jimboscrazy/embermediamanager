@@ -150,6 +150,8 @@
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIThumbGenerator.vb" />
     <Compile Include="clsAPIModules.vb" />
+    <Compile Include="clsAPIRenamer.vb" />
+    <Compile Include="clsAPITrailers.vb" />
     <Compile Include="dlgModuleSettings.designer.vb">
       <DependentUpon>dlgModuleSettings.vb</DependentUpon>
     </Compile>
