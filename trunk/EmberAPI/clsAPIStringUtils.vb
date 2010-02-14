@@ -391,7 +391,6 @@ Public Class StringUtils
     Public Class Wildcard
 
         Public Shared Function IsMatch(ByVal ExpressionToMatch As String, ByVal FilterExpression As String, Optional ByVal IgnoreCase As Boolean = True) As Boolean
-            'TODO: include the [charlist] and [!charlist] functionality?
             If FilterExpression.Contains("*") _
                 OrElse FilterExpression.Contains("?") _
                 OrElse FilterExpression.Contains("#") Then
