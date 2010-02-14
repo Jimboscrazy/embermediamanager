@@ -1039,7 +1039,16 @@ Public Class frmMain
         Try
             If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
                 If File.Exists(Me.txtFilePath.Text) Then
-                    System.Diagnostics.Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
+                    If Master.isWindows Then
+                        System.Diagnostics.Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
+                    Else
+                        Using Explorer As New Diagnostics.Process
+                            Explorer.StartInfo.FileName = "xdg-open"
+                            Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
+                            Explorer.Start()
+                        End Using
+                    End If
+
                 End If
             End If
         Catch ex As Exception
@@ -2490,8 +2499,14 @@ Public Class frmMain
         If doOpen Then
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                 Using Explorer As New Diagnostics.Process
-                    Explorer.StartInfo.FileName = "explorer.exe"
-                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
+
+                    If Master.isWindows Then
+                        Explorer.StartInfo.FileName = "explorer.exe"
+                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
+                    Else
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = String.Format("""{0}""", Path.GetDirectoryName(sRow.Cells(1).Value.ToString))
+                    End If
                     Explorer.Start()
                 End Using
             Next
