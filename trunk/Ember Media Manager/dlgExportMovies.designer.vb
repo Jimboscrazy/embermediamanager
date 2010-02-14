@@ -72,6 +72,7 @@ Partial Class dlgExportMovies
         '
         Me.Save_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Save_Button.Enabled = False
+        Me.Save_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Save_Button.Location = New System.Drawing.Point(3, 3)
         Me.Save_Button.Name = "Save_Button"
         Me.Save_Button.Size = New System.Drawing.Size(67, 23)
@@ -82,6 +83,7 @@ Partial Class dlgExportMovies
         '
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Close_Button.Location = New System.Drawing.Point(76, 3)
         Me.Close_Button.Name = "Close_Button"
         Me.Close_Button.Size = New System.Drawing.Size(67, 23)
@@ -114,6 +116,7 @@ Partial Class dlgExportMovies
         'cbTemplate
         '
         Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTemplate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTemplate.FormattingEnabled = True
         Me.cbTemplate.Location = New System.Drawing.Point(68, 13)
         Me.cbTemplate.Name = "cbTemplate"
@@ -138,6 +141,7 @@ Partial Class dlgExportMovies
         'cbFilterSource
         '
         Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbFilterSource.FormattingEnabled = True
         Me.cbFilterSource.Location = New System.Drawing.Point(74, 4)
         Me.cbFilterSource.Name = "cbFilterSource"
@@ -148,6 +152,7 @@ Partial Class dlgExportMovies
         'Reset_Button
         '
         Me.Reset_Button.Enabled = False
+        Me.Reset_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Reset_Button.Location = New System.Drawing.Point(416, 2)
         Me.Reset_Button.Name = "Reset_Button"
         Me.Reset_Button.Size = New System.Drawing.Size(67, 23)
@@ -167,6 +172,7 @@ Partial Class dlgExportMovies
         'Search_Button
         '
         Me.Search_Button.Enabled = False
+        Me.Search_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Search_Button.Location = New System.Drawing.Point(343, 2)
         Me.Search_Button.Name = "Search_Button"
         Me.Search_Button.Size = New System.Drawing.Size(67, 23)
@@ -186,6 +192,7 @@ Partial Class dlgExportMovies
         'cbSearch
         '
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbSearch.FormattingEnabled = True
         Me.cbSearch.Location = New System.Drawing.Point(243, 3)
         Me.cbSearch.Name = "cbSearch"

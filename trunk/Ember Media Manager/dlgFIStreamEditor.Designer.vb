@@ -74,6 +74,7 @@ Partial Class dlgFIStreamEditor
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -84,6 +85,7 @@ Partial Class dlgFIStreamEditor
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
@@ -106,6 +108,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.txtHeight)
         Me.GroupBox1.Controls.Add(Me.txtWidth)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(8, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(191, 194)
@@ -129,6 +132,7 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbVideoLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.cbVideoLanguage.DropDownWidth = 120
+        Me.cbVideoLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbVideoLanguage.FormattingEnabled = True
         Me.cbVideoLanguage.Location = New System.Drawing.Point(76, 165)
         Me.cbVideoLanguage.Name = "cbVideoLanguage"
@@ -147,9 +151,10 @@ Partial Class dlgFIStreamEditor
         '
         'txtARatio
         '
+        Me.txtARatio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtARatio.Location = New System.Drawing.Point(76, 115)
         Me.txtARatio.Name = "txtARatio"
-        Me.txtARatio.Size = New System.Drawing.Size(48, 20)
+        Me.txtARatio.Size = New System.Drawing.Size(48, 22)
         Me.txtARatio.TabIndex = 6
         '
         'rbInterlaced
@@ -190,6 +195,7 @@ Partial Class dlgFIStreamEditor
         'cbVideoCodec
         '
         Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbVideoCodec.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbVideoCodec.FormattingEnabled = True
         Me.cbVideoCodec.Location = New System.Drawing.Point(76, 19)
         Me.cbVideoCodec.Name = "cbVideoCodec"
@@ -208,9 +214,10 @@ Partial Class dlgFIStreamEditor
         '
         'txtDuration
         '
+        Me.txtDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtDuration.Location = New System.Drawing.Point(76, 139)
         Me.txtDuration.Name = "txtDuration"
-        Me.txtDuration.Size = New System.Drawing.Size(68, 20)
+        Me.txtDuration.Size = New System.Drawing.Size(68, 22)
         Me.txtDuration.TabIndex = 7
         '
         'Label2
@@ -235,16 +242,18 @@ Partial Class dlgFIStreamEditor
         '
         'txtHeight
         '
+        Me.txtHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtHeight.Location = New System.Drawing.Point(76, 91)
         Me.txtHeight.Name = "txtHeight"
-        Me.txtHeight.Size = New System.Drawing.Size(48, 20)
+        Me.txtHeight.Size = New System.Drawing.Size(48, 22)
         Me.txtHeight.TabIndex = 5
         '
         'txtWidth
         '
+        Me.txtWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtWidth.Location = New System.Drawing.Point(76, 68)
         Me.txtWidth.Name = "txtWidth"
-        Me.txtWidth.Size = New System.Drawing.Size(48, 20)
+        Me.txtWidth.Size = New System.Drawing.Size(48, 22)
         Me.txtWidth.TabIndex = 4
         '
         'GroupBox2

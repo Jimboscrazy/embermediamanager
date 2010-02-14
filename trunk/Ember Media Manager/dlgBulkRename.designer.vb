@@ -62,7 +62,8 @@ Partial Class dlgBulkRenamer
         'Close_Button
         '
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.Close_Button.Location = New System.Drawing.Point(898, 442)
+        Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Close_Button.Location = New System.Drawing.Point(898, 457)
         Me.Close_Button.Name = "Close_Button"
         Me.Close_Button.Size = New System.Drawing.Size(80, 23)
         Me.Close_Button.TabIndex = 0
@@ -188,7 +189,8 @@ Partial Class dlgBulkRenamer
         '
         Me.Rename_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Rename_Button.Enabled = False
-        Me.Rename_Button.Location = New System.Drawing.Point(812, 442)
+        Me.Rename_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Rename_Button.Location = New System.Drawing.Point(812, 457)
         Me.Rename_Button.Name = "Rename_Button"
         Me.Rename_Button.Size = New System.Drawing.Size(80, 23)
         Me.Rename_Button.TabIndex = 67
@@ -273,26 +275,29 @@ Partial Class dlgBulkRenamer
         '
         'txtFile
         '
+        Me.txtFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFile.Location = New System.Drawing.Point(668, 398)
         Me.txtFile.Name = "txtFile"
-        Me.txtFile.Size = New System.Drawing.Size(224, 20)
+        Me.txtFile.Size = New System.Drawing.Size(224, 22)
         Me.txtFile.TabIndex = 72
         Me.txtFile.Text = "$T"
         '
         'txtFolder
         '
+        Me.txtFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFolder.Location = New System.Drawing.Point(316, 398)
         Me.txtFolder.Name = "txtFolder"
-        Me.txtFolder.Size = New System.Drawing.Size(200, 20)
+        Me.txtFolder.Size = New System.Drawing.Size(200, 22)
         Me.txtFolder.TabIndex = 73
         Me.txtFolder.Text = "$T ($Y)"
         '
         'lblLabel
         '
-        Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblLabel.Location = New System.Drawing.Point(13, 447)
+        Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblLabel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblLabel.Location = New System.Drawing.Point(13, 453)
         Me.lblLabel.Name = "lblLabel"
-        Me.lblLabel.Size = New System.Drawing.Size(793, 30)
+        Me.lblLabel.Size = New System.Drawing.Size(793, 26)
         Me.lblLabel.TabIndex = 74
         Me.lblLabel.Tag = ""
         Me.lblLabel.Text = "Label"
@@ -300,16 +305,17 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderNotSingle
         '
-        Me.txtFolderNotSingle.Location = New System.Drawing.Point(316, 419)
+        Me.txtFolderNotSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFolderNotSingle.Location = New System.Drawing.Point(316, 424)
         Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
-        Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
+        Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 22)
         Me.txtFolderNotSingle.TabIndex = 76
         Me.txtFolderNotSingle.Text = "$D"
         '
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(12, 422)
+        Me.Label1.Location = New System.Drawing.Point(12, 427)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(296, 13)
         Me.Label1.TabIndex = 75
@@ -319,9 +325,10 @@ Partial Class dlgBulkRenamer
         'chkRenamedOnly
         '
         Me.chkRenamedOnly.AutoSize = True
+        Me.chkRenamedOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRenamedOnly.Location = New System.Drawing.Point(668, 424)
         Me.chkRenamedOnly.Name = "chkRenamedOnly"
-        Me.chkRenamedOnly.Size = New System.Drawing.Size(231, 17)
+        Me.chkRenamedOnly.Size = New System.Drawing.Size(244, 17)
         Me.chkRenamedOnly.TabIndex = 77
         Me.chkRenamedOnly.Text = "Display Only Movies That Will Be Renamed"
         Me.chkRenamedOnly.UseVisualStyleBackColor = True
@@ -331,7 +338,7 @@ Partial Class dlgBulkRenamer
         Me.AcceptButton = Me.Close_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(992, 477)
+        Me.ClientSize = New System.Drawing.Size(992, 486)
         Me.Controls.Add(Me.txtFolderNotSingle)
         Me.Controls.Add(Me.chkRenamedOnly)
         Me.Controls.Add(Me.lblLabel)
