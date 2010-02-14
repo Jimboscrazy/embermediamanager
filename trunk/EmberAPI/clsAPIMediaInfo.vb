@@ -47,7 +47,7 @@ Public Class MediaInfo
     End Sub
 
     <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
+    Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal FileName As String) As UIntPtr
     End Function
 
     <DllImport("Bin\MediaInfo.DLL")> _
@@ -59,7 +59,7 @@ Public Class MediaInfo
     End Sub
 
     <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
     End Function
 
     <DllImport("Bin\MediaInfo.DLL")> _
