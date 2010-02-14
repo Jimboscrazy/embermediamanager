@@ -459,10 +459,7 @@ Namespace TVDB
             Else
                 tImage = DirectCast(sender, PictureBox).Image
             End If
-
-            Using dImgView As New dlgImgView
-                dImgView.ShowDialog(tImage)
-            End Using
+            Scraper.sObject.PassEvent(Scraper.EventType.ImageView, 0, tImage)
         End Sub
 
         Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
