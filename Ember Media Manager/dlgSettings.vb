@@ -2564,7 +2564,11 @@ Public Class dlgSettings
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
-            Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
+            If Not IsNothing(Me.cbTVLanguage.SelectedValue) Then
+                Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
+            Else
+                Master.eSettings.TVDBLanguage = "en"
+            End If
             Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of Containers.TVLanguage))
             If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
                 Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)

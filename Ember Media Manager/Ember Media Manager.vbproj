@@ -165,10 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="clsRenamer.vb" />
-    <Compile Include="clsSorter.vb" />
     <Compile Include="clsTheming.vb" />
-    <Compile Include="clsTrailers.vb" />
+    <Compile Include="clsSorter.vb" />
     <Compile Include="dlgEditEpisode.Designer.vb">
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>
     </Compile>

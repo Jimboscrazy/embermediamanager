@@ -217,17 +217,6 @@ Public Class Trailers
         End If
     End Function
 
-    Public Function ShowTDialog(ByVal IMDBID As String, ByVal sPath As String, ByVal currNfoTrailer As String) As String
-        If IsAllowedToDownload(sPath, True, currNfoTrailer) Then
-            Using dTrailer As New dlgTrailer
-                Dim tURL As String = dTrailer.ShowDialog(IMDBID, sPath)
-                Return tURL
-            End Using
-        Else
-            Return String.Empty
-        End If
-    End Function
-
     Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
         Dim parPath As String = Directory.GetParent(sPath).FullName
         Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
