@@ -7143,7 +7143,8 @@ doCancel:
                 If(Master.eSettings.MovieFanartCol, 0, 20) - _
                 If(Master.eSettings.MovieInfoCol, 0, 20) - _
                 If(Master.eSettings.MovieTrailerCol, 0, 20) - _
-                If(Master.eSettings.MovieExtraCol, 0, 20)
+                If(Master.eSettings.MovieExtraCol, 0, 20) - _
+                If(Me.dgvMediaList.DisplayRectangle.Height > Me.dgvMediaList.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
     End Sub
@@ -7154,20 +7155,23 @@ doCancel:
                 Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width - _
                 If(Master.eSettings.ShowPosterCol, 0, 20) - _
                 If(Master.eSettings.ShowFanartCol, 0, 20) - _
-                If(Master.eSettings.ShowNfoCol, 0, 20)
+                If(Master.eSettings.ShowNfoCol, 0, 20) - _
+                If(Me.dgvTVShows.DisplayRectangle.Height > Me.dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If Me.dgvTVSeasons.ColumnCount > 0 Then
                 Me.dgvTVSeasons.Columns(2).Width = Me.dgvTVSeasons.Width - _
                 If(Master.eSettings.SeasonPosterCol, 0, 20) - _
-                If(Master.eSettings.SeasonFanartCol, 0, 20)
+                If(Master.eSettings.SeasonFanartCol, 0, 20) - _
+                If(Me.dgvTVSeasons.DisplayRectangle.Height > Me.dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If Me.dgvTVEpisodes.ColumnCount > 0 Then
                 Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVShows.Width - _
                 If(Master.eSettings.EpisodePosterCol, 0, 20) - _
                 If(Master.eSettings.EpisodeFanartCol, 0, 20) - _
-                If(Master.eSettings.EpisodeNfoCol, 0, 20)
+                If(Master.eSettings.EpisodeNfoCol, 0, 20) - _
+                If(Me.dgvTVEpisodes.DisplayRectangle.Height > Me.dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
     End Sub
