@@ -283,6 +283,7 @@ Public Class Settings
     Private _tvdblanguage As String
     Private _tvdblanguages As New List(Of Containers.TVLanguage)
     Private _emberModules As New List(Of ModulesManager._XMLEmberModuleClass)
+    Private _externaltvdbapikey As String
 
     Public Property Version() As String
         Get
@@ -2617,6 +2618,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ExternalTVDBAPIKey() As String
+        Get
+            Return Me._externaltvdbapikey
+        End Get
+        Set(ByVal value As String)
+            Me._externaltvdbapikey = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2881,6 +2891,7 @@ Public Class Settings
         Me._tvdblanguage = "en"
         Me._tvdblanguages = New List(Of Containers.TVLanguage)
         Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
+        Me._externaltvdbapikey = String.Empty
     End Sub
 
     Public Sub Save()
