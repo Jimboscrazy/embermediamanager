@@ -72,6 +72,8 @@ Namespace TVDB
             Dim Langs As List(Of Containers.TVLanguage)
             Dim Mirror As String
             Dim Lang As String
+            Dim iEpisode As Integer
+            Dim iSeason As Integer
         End Structure
 
         Public Sub New()
@@ -561,6 +563,10 @@ Namespace TVDB
             sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .Mirror = sMirror, .Lang = sLang, .Langs = Langs})
         End Sub
 
+        Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal sMirror As String, ByVal sLang As String, ByVal Langs As List(Of Containers.TVLanguage), ByVal iEpisode As Integer, ByVal iSeason As Integer)
+            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .Mirror = sMirror, .Lang = sLang, .Langs = Langs, .iEpisode = iEpisode, .iSeason = iSeason})
+        End Sub
+
         Public Sub Cancel()
             sObject.CancelAsync()
         End Sub
@@ -683,26 +689,28 @@ Namespace TVDB
                         Dim xdShow As XDocument = XDocument.Parse(sXML)
                         Dim xS = From xShow In xdShow.Descendants("Series")
                         If xS.Count > 0 Then
-                            With tmpTVDBShow.Show.TVShow
-                                sID = xS(0).Element("id").Value
-                                .ID = sID
-                                .Title = xS(0).Element("SeriesName").Value
-                                .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
-                                .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
-                                .MPAA = xS(0).Element("ContentRating").Value
-                                .Plot = xS(0).Element("Overview").Value
-                                .Premiered = xS(0).Element("FirstAired").Value
-                                .Rating = xS(0).Element("Rating").Value
-                                .Studio = xS(0).Element("Network").Value
-                                .Actors = Actors
-                            End With
+                            If Not IsNothing(tmpTVDBShow.Show.TVShow) Then
+                                With tmpTVDBShow.Show.TVShow
+                                    sID = xS(0).Element("id").Value
+                                    .ID = sID
+                                    .Title = xS(0).Element("SeriesName").Value
+                                    .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
+                                    .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
+                                    .MPAA = xS(0).Element("ContentRating").Value
+                                    .Plot = xS(0).Element("Overview").Value
+                                    .Premiered = xS(0).Element("FirstAired").Value
+                                    .Rating = xS(0).Element("Rating").Value
+                                    .Studio = xS(0).Element("Network").Value
+                                    .Actors = Actors
+                                End With
+                            End If
 
                             For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
 
-                                Episode.TVShow = tmpTVDBShow.Show.TVShow
+                                If Not IsNothing(tmpTVDBShow.Show.TVShow) Then Episode.TVShow = tmpTVDBShow.Show.TVShow
 
                                 Dim xE As XElement = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
                                 If Not IsNothing(xE) Then
@@ -731,38 +739,40 @@ Namespace TVDB
 
                 'and finally the images
                 Try
-                    If Not String.IsNullOrEmpty(bXML) Then
-                        Dim xdImage As XDocument = XDocument.Parse(bXML)
-                        Dim xI = From xImage In xdImage.Descendants("Banner")
-                        For Each tImage As XElement In xI
-                            If Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value) Then
-                                Select Case tImage.Element("BannerType").Value
-                                    Case "fanart"
-                                        tmpTVDBShow.Fanart.Add(New TVDBFanart With { _
-                                                             .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                             .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
-                                                             .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
-                                                             .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                             .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
-                                    Case "poster"
-                                        tmpTVDBShow.Posters.Add(New TVDBPoster With { _
-                                                              .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
-                                    Case "season"
-                                        tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
-                                                                .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                                .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
-                                                                .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
-                                    Case "series"
-                                        tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
-                                                              .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
-                                End Select
-                            End If
-                        Next
+                    If Not IsNothing(tmpTVDBShow.Show.TVShow) Then
+                        If Not String.IsNullOrEmpty(bXML) Then
+                            Dim xdImage As XDocument = XDocument.Parse(bXML)
+                            Dim xI = From xImage In xdImage.Descendants("Banner")
+                            For Each tImage As XElement In xI
+                                If Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value) Then
+                                    Select Case tImage.Element("BannerType").Value
+                                        Case "fanart"
+                                            tmpTVDBShow.Fanart.Add(New TVDBFanart With { _
+                                                                 .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                 .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
+                                                                 .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                                 .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
+                                                                 .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
+                                        Case "poster"
+                                            tmpTVDBShow.Posters.Add(New TVDBPoster With { _
+                                                                  .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                  .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                                  .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
+                                        Case "season"
+                                            tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
+                                                                    .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                    .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
+                                                                    .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
+                                        Case "series"
+                                            tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
+                                                                  .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                  .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                                  .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
+                                    End Select
+                                End If
+                            Next
+                        End If
                     End If
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -879,36 +889,8 @@ Namespace TVDB
             End Sub
 
             Public Sub StartSingleScraper(ByVal sInfo As ScrapeInfo)
-                If String.IsNullOrEmpty(sInfo.TVDBID) Then
-                    RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
-                    Using dTVDBSearch As New dlgTVDBSearchResults
-                        If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
-                            Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
-                            RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
-                            Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                    RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
-                                Else
-                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
-                                End If
-                            End Using
-                        Else
-                            RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
-                        End If
-                    End Using
-                Else
-                    DownloadSeries(sInfo.TVDBID)
-                    If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
-                        Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
-                        RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
-                        Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
-                            Else
-                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
-                            End If
-                        End Using
-                    Else
+                Try
+                    If String.IsNullOrEmpty(sInfo.TVDBID) Then
                         RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
@@ -925,8 +907,99 @@ Namespace TVDB
                                 RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
                             End If
                         End Using
+                    Else
+                        DownloadSeries(sInfo.TVDBID)
+                        If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
+                            Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
+                            RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
+                            Using dTVImageSel As New dlgTVImageSelect
+                                If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
+                                    RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
+                                Else
+                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                End If
+                            End Using
+                        Else
+                            RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                            Using dTVDBSearch As New dlgTVDBSearchResults
+                                If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                                    Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
+                                    RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
+                                    Using dTVImageSel As New dlgTVImageSelect
+                                        If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
+                                            RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
+                                        Else
+                                            RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                        End If
+                                    End Using
+                                Else
+                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                End If
+                            End Using
+                        End If
                     End If
-                End If
+                Catch ex As Exception
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            End Sub
+
+            Public Sub ScrapeEpisode(ByVal sInfo As ScrapeInfo)
+
+                Try
+                    tmpTVDBShow = New TVDBShow
+                    tmpTVDBShow.Episodes.Add(Master.currShow)
+
+                    If String.IsNullOrEmpty(sInfo.TVDBID) Then
+                        RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                        Using dTVDBSearch As New dlgTVDBSearchResults
+                            If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                                Master.currShow = tmpTVDBShow.Episodes(0)
+                                If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                                    Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                    Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                    Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                End If
+                                Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                                If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+                                RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                            Else
+                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                            End If
+                        End Using
+                    Else
+                        DownloadSeries(sInfo.TVDBID)
+                        If tmpTVDBShow.Episodes(0).TVShow.ID.Length > 0 Then
+                            Master.currShow = tmpTVDBShow.Episodes(0)
+                            If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                                Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                            End If
+                            Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                            If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+                            RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                        Else
+                            RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                            Using dTVDBSearch As New dlgTVDBSearchResults
+                                If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
+                                    Master.currShow = tmpTVDBShow.Episodes(0)
+                                    If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                                        Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                        Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                        Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                    End If
+                                    Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                                    If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+                                    RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                                Else
+                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                End If
+                            End Using
+                        End If
+                    End If
+                Catch ex As Exception
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
             End Sub
 
             Public Sub CancelAsync()

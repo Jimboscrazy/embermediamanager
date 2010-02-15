@@ -25,7 +25,6 @@
 'TODO: Enable/Disable scraper info fields
 'TODO: Fall back to episode title when trying to match scraper episodes and no season or episode # is available
 'TODO: TV Show renaming
-'TODO: Scrape individual episode
 'TODO: Change season images
 'TODO: Check if we have information for a show or episode when first scanning in
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
