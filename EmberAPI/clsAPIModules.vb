@@ -153,15 +153,32 @@ Public Class ModulesManager
                             _externalScraperModule.AssemblyName = Path.GetFileName(file)
                             _externalScraperModule.IsScraper = ProcessorModule.IsScraper
                             _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
+                            Dim found As Boolean = False
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ScraperEnabled = i.ScraperEnabled
                                 _externalScraperModule.PostScraperEnabled = i.PostScraperEnabled
+                                _externalScraperModule.ScraperOrder = i.ScraperOrder
+                                _externalScraperModule.PostScraperOrder = i.PostScraperOrder
+                                found = True
                             Next
+                            If Not found Then
+                                _externalScraperModule.ScraperOrder = 999
+                                _externalScraperModule.PostScraperOrder = 999
+                            End If
                             externalScrapersModules.Add(_externalScraperModule)
                         End If
                     Catch ex As Exception
                     End Try
                 Next
+            Next
+            Dim c As Integer = 0
+            For Each ext As _externalScraperModuleClass In externalScrapersModules.Where(Function(x) x.ScraperEnabled)
+                ext.ScraperOrder = c
+                c += 1
+            Next
+            For Each ext As _externalScraperModuleClass In externalScrapersModules.Where(Function(x) x.PostScraperEnabled)
+                ext.PostScraperOrder = c
+                c += 1
             Next
         End If
     End Sub
@@ -205,14 +222,16 @@ Public Class ModulesManager
             li.SubItems.Add(If(_externalProcessorModule.Enabled, "Enabled", "Disabled"))
             li.Tag = _externalProcessorModule.AssemblyName
         Next
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             Dim liS As New ListViewItem
-            Dim liPS As New ListViewItem
             If _externalScraperModule.IsScraper Then
                 liS = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
-                liS.SubItems.Add(If(_externalScraperModule.PostScraperEnabled, "Enabled", "Disabled"))
+                liS.SubItems.Add(If(_externalScraperModule.ScraperEnabled, "Enabled", "Disabled"))
                 liS.Tag = _externalScraperModule.AssemblyName
             End If
+        Next
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.PostScraperOrder)
+            Dim liPS As New ListViewItem
             If _externalScraperModule.IsPostScraper Then
                 liPS = modulesSetup.lstPostScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
                 liPS.SubItems.Add(If(_externalScraperModule.PostScraperEnabled, "Enabled", "Disabled"))
@@ -242,6 +261,26 @@ Public Class ModulesManager
             End If
         Next
     End Sub
+    Public Sub SetScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ScraperEnabled = value
+        Next
+    End Sub
+    Public Sub SetPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.PostScraperEnabled = value
+        Next
+    End Sub
+    Public Sub SetScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ScraperOrder = value
+        Next
+    End Sub
+    Public Sub SetPostScraperorder(ByVal ModuleAssembly As String, ByVal value As Integer)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.PostScraperOrder = value
+        Next
+    End Sub
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)
 
@@ -254,7 +293,10 @@ Public Class ModulesManager
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalScraperModule.AssemblyName
-            t.Enabled = _externalScraperModule.ScraperEnabled
+            t.PostScraperEnabled = _externalScraperModule.PostScraperEnabled
+            t.ScraperEnabled = _externalScraperModule.ScraperEnabled
+            t.PostScraperOrder = _externalScraperModule.PostScraperOrder
+            t.ScraperOrder = _externalScraperModule.ScraperOrder
             tmpForXML.Add(t)
         Next
         Master.eSettings.EmberModules = tmpForXML
