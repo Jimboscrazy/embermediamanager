@@ -38,35 +38,59 @@ Partial Class dlgModuleSettings
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.tabGenreic = New System.Windows.Forms.TabPage
-        Me.btnDown = New System.Windows.Forms.Button
-        Me.btnUp = New System.Windows.Forms.Button
-        Me.btnEditSet = New System.Windows.Forms.Button
-        Me.btnRemoveSet = New System.Windows.Forms.Button
-        Me.btnNewSet = New System.Windows.Forms.Button
+        Me.btnGenericDown = New System.Windows.Forms.Button
+        Me.btnGenericUp = New System.Windows.Forms.Button
+        Me.btnGenericSetup = New System.Windows.Forms.Button
+        Me.btnGenericDisable = New System.Windows.Forms.Button
+        Me.btnGenericEnable = New System.Windows.Forms.Button
         Me.tabScraper = New System.Windows.Forms.TabPage
+        Me.btnPostScraperDown = New System.Windows.Forms.Button
+        Me.btnPostScraperUp = New System.Windows.Forms.Button
+        Me.btnPostScraperSetup = New System.Windows.Forms.Button
+        Me.btnPostScraperDisable = New System.Windows.Forms.Button
+        Me.btnPostScraperEnable = New System.Windows.Forms.Button
+        Me.lstPostScrapers = New System.Windows.Forms.ListView
+        Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader6 = New System.Windows.Forms.ColumnHeader
+        Me.btnScraperDown = New System.Windows.Forms.Button
+        Me.btnScraperUp = New System.Windows.Forms.Button
+        Me.btnScraperSetup = New System.Windows.Forms.Button
+        Me.btnScraperDisable = New System.Windows.Forms.Button
+        Me.btnScraperEnable = New System.Windows.Forms.Button
         Me.Label3 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
         Me.lstScrapers = New System.Windows.Forms.ListView
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.Button5 = New System.Windows.Forms.Button
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button9 = New System.Windows.Forms.Button
-        Me.Button10 = New System.Windows.Forms.Button
-        Me.lstPostScrapers = New System.Windows.Forms.ListView
-        Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
-        Me.ColumnHeader6 = New System.Windows.Forms.ColumnHeader
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Button11 = New System.Windows.Forms.Button
+        Me.Button12 = New System.Windows.Forms.Button
+        Me.Button13 = New System.Windows.Forms.Button
+        Me.Button14 = New System.Windows.Forms.Button
+        Me.Button15 = New System.Windows.Forms.Button
+        Me.ListView1 = New System.Windows.Forms.ListView
+        Me.ColumnHeader11 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader12 = New System.Windows.Forms.ColumnHeader
+        Me.Button16 = New System.Windows.Forms.Button
+        Me.Button17 = New System.Windows.Forms.Button
+        Me.Button18 = New System.Windows.Forms.Button
+        Me.Button19 = New System.Windows.Forms.Button
+        Me.Button20 = New System.Windows.Forms.Button
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.ListView2 = New System.Windows.Forms.ListView
+        Me.ColumnHeader13 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader14 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader7 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader8 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader9 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader10 = New System.Windows.Forms.ColumnHeader
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.tabGenreic.SuspendLayout()
         Me.tabScraper.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ilSettings
@@ -170,6 +194,7 @@ Partial Class dlgModuleSettings
         '
         Me.TabControl1.Controls.Add(Me.tabGenreic)
         Me.TabControl1.Controls.Add(Me.tabScraper)
+        Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Location = New System.Drawing.Point(0, 63)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -178,11 +203,11 @@ Partial Class dlgModuleSettings
         '
         'tabGenreic
         '
-        Me.tabGenreic.Controls.Add(Me.btnDown)
-        Me.tabGenreic.Controls.Add(Me.btnUp)
-        Me.tabGenreic.Controls.Add(Me.btnEditSet)
-        Me.tabGenreic.Controls.Add(Me.btnRemoveSet)
-        Me.tabGenreic.Controls.Add(Me.btnNewSet)
+        Me.tabGenreic.Controls.Add(Me.btnGenericDown)
+        Me.tabGenreic.Controls.Add(Me.btnGenericUp)
+        Me.tabGenreic.Controls.Add(Me.btnGenericSetup)
+        Me.tabGenreic.Controls.Add(Me.btnGenericDisable)
+        Me.tabGenreic.Controls.Add(Me.btnGenericEnable)
         Me.tabGenreic.Controls.Add(Me.lstModules)
         Me.tabGenreic.Location = New System.Drawing.Point(4, 22)
         Me.tabGenreic.Name = "tabGenreic"
@@ -192,78 +217,78 @@ Partial Class dlgModuleSettings
         Me.tabGenreic.Text = "Generic"
         Me.tabGenreic.UseVisualStyleBackColor = True
         '
-        'btnDown
+        'btnGenericDown
         '
-        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDown.Enabled = False
-        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(509, 138)
-        Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnDown.TabIndex = 70
-        Me.btnDown.UseVisualStyleBackColor = True
+        Me.btnGenericDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGenericDown.Enabled = False
+        Me.btnGenericDown.Image = CType(resources.GetObject("btnGenericDown.Image"), System.Drawing.Image)
+        Me.btnGenericDown.Location = New System.Drawing.Point(509, 138)
+        Me.btnGenericDown.Name = "btnGenericDown"
+        Me.btnGenericDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenericDown.TabIndex = 70
+        Me.btnGenericDown.UseVisualStyleBackColor = True
         '
-        'btnUp
+        'btnGenericUp
         '
-        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnUp.Enabled = False
-        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(509, 109)
-        Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnUp.TabIndex = 69
-        Me.btnUp.UseVisualStyleBackColor = True
+        Me.btnGenericUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGenericUp.Enabled = False
+        Me.btnGenericUp.Image = CType(resources.GetObject("btnGenericUp.Image"), System.Drawing.Image)
+        Me.btnGenericUp.Location = New System.Drawing.Point(509, 109)
+        Me.btnGenericUp.Name = "btnGenericUp"
+        Me.btnGenericUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenericUp.TabIndex = 69
+        Me.btnGenericUp.UseVisualStyleBackColor = True
         '
-        'btnEditSet
+        'btnGenericSetup
         '
-        Me.btnEditSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnEditSet.Enabled = False
-        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
-        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSet.Location = New System.Drawing.Point(510, 80)
-        Me.btnEditSet.Name = "btnEditSet"
-        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditSet.TabIndex = 67
-        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditSet.UseVisualStyleBackColor = True
+        Me.btnGenericSetup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGenericSetup.Enabled = False
+        Me.btnGenericSetup.Image = CType(resources.GetObject("btnGenericSetup.Image"), System.Drawing.Image)
+        Me.btnGenericSetup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGenericSetup.Location = New System.Drawing.Point(510, 80)
+        Me.btnGenericSetup.Name = "btnGenericSetup"
+        Me.btnGenericSetup.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenericSetup.TabIndex = 67
+        Me.btnGenericSetup.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGenericSetup.UseVisualStyleBackColor = True
         '
-        'btnRemoveSet
+        'btnGenericDisable
         '
-        Me.btnRemoveSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRemoveSet.Enabled = False
-        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
-        Me.btnRemoveSet.Location = New System.Drawing.Point(510, 51)
-        Me.btnRemoveSet.Name = "btnRemoveSet"
-        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveSet.TabIndex = 68
-        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        Me.btnGenericDisable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGenericDisable.Enabled = False
+        Me.btnGenericDisable.Image = CType(resources.GetObject("btnGenericDisable.Image"), System.Drawing.Image)
+        Me.btnGenericDisable.Location = New System.Drawing.Point(510, 51)
+        Me.btnGenericDisable.Name = "btnGenericDisable"
+        Me.btnGenericDisable.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenericDisable.TabIndex = 68
+        Me.btnGenericDisable.UseVisualStyleBackColor = True
         '
-        'btnNewSet
+        'btnGenericEnable
         '
-        Me.btnNewSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewSet.Enabled = False
-        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
-        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(510, 22)
-        Me.btnNewSet.Name = "btnNewSet"
-        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnNewSet.TabIndex = 66
-        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnNewSet.UseVisualStyleBackColor = True
+        Me.btnGenericEnable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGenericEnable.Enabled = False
+        Me.btnGenericEnable.Image = CType(resources.GetObject("btnGenericEnable.Image"), System.Drawing.Image)
+        Me.btnGenericEnable.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGenericEnable.Location = New System.Drawing.Point(510, 22)
+        Me.btnGenericEnable.Name = "btnGenericEnable"
+        Me.btnGenericEnable.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenericEnable.TabIndex = 66
+        Me.btnGenericEnable.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGenericEnable.UseVisualStyleBackColor = True
         '
         'tabScraper
         '
-        Me.tabScraper.Controls.Add(Me.Button6)
-        Me.tabScraper.Controls.Add(Me.Button7)
-        Me.tabScraper.Controls.Add(Me.Button8)
-        Me.tabScraper.Controls.Add(Me.Button9)
-        Me.tabScraper.Controls.Add(Me.Button10)
+        Me.tabScraper.Controls.Add(Me.btnPostScraperDown)
+        Me.tabScraper.Controls.Add(Me.btnPostScraperUp)
+        Me.tabScraper.Controls.Add(Me.btnPostScraperSetup)
+        Me.tabScraper.Controls.Add(Me.btnPostScraperDisable)
+        Me.tabScraper.Controls.Add(Me.btnPostScraperEnable)
         Me.tabScraper.Controls.Add(Me.lstPostScrapers)
-        Me.tabScraper.Controls.Add(Me.Button1)
-        Me.tabScraper.Controls.Add(Me.Button2)
-        Me.tabScraper.Controls.Add(Me.Button3)
-        Me.tabScraper.Controls.Add(Me.Button4)
-        Me.tabScraper.Controls.Add(Me.Button5)
+        Me.tabScraper.Controls.Add(Me.btnScraperDown)
+        Me.tabScraper.Controls.Add(Me.btnScraperUp)
+        Me.tabScraper.Controls.Add(Me.btnScraperSetup)
+        Me.tabScraper.Controls.Add(Me.btnScraperDisable)
+        Me.tabScraper.Controls.Add(Me.btnScraperEnable)
         Me.tabScraper.Controls.Add(Me.Label3)
         Me.tabScraper.Controls.Add(Me.Label1)
         Me.tabScraper.Controls.Add(Me.lstScrapers)
@@ -272,8 +297,149 @@ Partial Class dlgModuleSettings
         Me.tabScraper.Padding = New System.Windows.Forms.Padding(3)
         Me.tabScraper.Size = New System.Drawing.Size(538, 314)
         Me.tabScraper.TabIndex = 1
-        Me.tabScraper.Text = "Scrapers"
+        Me.tabScraper.Text = "Movies Scrapers"
         Me.tabScraper.UseVisualStyleBackColor = True
+        '
+        'btnPostScraperDown
+        '
+        Me.btnPostScraperDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnPostScraperDown.Enabled = False
+        Me.btnPostScraperDown.Image = CType(resources.GetObject("btnPostScraperDown.Image"), System.Drawing.Image)
+        Me.btnPostScraperDown.Location = New System.Drawing.Point(511, 284)
+        Me.btnPostScraperDown.Name = "btnPostScraperDown"
+        Me.btnPostScraperDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnPostScraperDown.TabIndex = 81
+        Me.btnPostScraperDown.UseVisualStyleBackColor = True
+        '
+        'btnPostScraperUp
+        '
+        Me.btnPostScraperUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnPostScraperUp.Enabled = False
+        Me.btnPostScraperUp.Image = CType(resources.GetObject("btnPostScraperUp.Image"), System.Drawing.Image)
+        Me.btnPostScraperUp.Location = New System.Drawing.Point(511, 258)
+        Me.btnPostScraperUp.Name = "btnPostScraperUp"
+        Me.btnPostScraperUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnPostScraperUp.TabIndex = 80
+        Me.btnPostScraperUp.UseVisualStyleBackColor = True
+        '
+        'btnPostScraperSetup
+        '
+        Me.btnPostScraperSetup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnPostScraperSetup.Enabled = False
+        Me.btnPostScraperSetup.Image = CType(resources.GetObject("btnPostScraperSetup.Image"), System.Drawing.Image)
+        Me.btnPostScraperSetup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPostScraperSetup.Location = New System.Drawing.Point(511, 233)
+        Me.btnPostScraperSetup.Name = "btnPostScraperSetup"
+        Me.btnPostScraperSetup.Size = New System.Drawing.Size(23, 23)
+        Me.btnPostScraperSetup.TabIndex = 78
+        Me.btnPostScraperSetup.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnPostScraperSetup.UseVisualStyleBackColor = True
+        '
+        'btnPostScraperDisable
+        '
+        Me.btnPostScraperDisable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnPostScraperDisable.Enabled = False
+        Me.btnPostScraperDisable.Image = CType(resources.GetObject("btnPostScraperDisable.Image"), System.Drawing.Image)
+        Me.btnPostScraperDisable.Location = New System.Drawing.Point(511, 208)
+        Me.btnPostScraperDisable.Name = "btnPostScraperDisable"
+        Me.btnPostScraperDisable.Size = New System.Drawing.Size(23, 23)
+        Me.btnPostScraperDisable.TabIndex = 79
+        Me.btnPostScraperDisable.UseVisualStyleBackColor = True
+        '
+        'btnPostScraperEnable
+        '
+        Me.btnPostScraperEnable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnPostScraperEnable.Enabled = False
+        Me.btnPostScraperEnable.Image = CType(resources.GetObject("btnPostScraperEnable.Image"), System.Drawing.Image)
+        Me.btnPostScraperEnable.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPostScraperEnable.Location = New System.Drawing.Point(511, 183)
+        Me.btnPostScraperEnable.Name = "btnPostScraperEnable"
+        Me.btnPostScraperEnable.Size = New System.Drawing.Size(23, 23)
+        Me.btnPostScraperEnable.TabIndex = 77
+        Me.btnPostScraperEnable.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnPostScraperEnable.UseVisualStyleBackColor = True
+        '
+        'lstPostScrapers
+        '
+        Me.lstPostScrapers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader5, Me.ColumnHeader6})
+        Me.lstPostScrapers.FullRowSelect = True
+        Me.lstPostScrapers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lstPostScrapers.HideSelection = False
+        Me.lstPostScrapers.Location = New System.Drawing.Point(4, 182)
+        Me.lstPostScrapers.Name = "lstPostScrapers"
+        Me.lstPostScrapers.Size = New System.Drawing.Size(501, 126)
+        Me.lstPostScrapers.TabIndex = 76
+        Me.lstPostScrapers.UseCompatibleStateImageBehavior = False
+        Me.lstPostScrapers.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Module"
+        Me.ColumnHeader5.Width = 399
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Status"
+        Me.ColumnHeader6.Width = 73
+        '
+        'btnScraperDown
+        '
+        Me.btnScraperDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnScraperDown.Enabled = False
+        Me.btnScraperDown.Image = CType(resources.GetObject("btnScraperDown.Image"), System.Drawing.Image)
+        Me.btnScraperDown.Location = New System.Drawing.Point(509, 120)
+        Me.btnScraperDown.Name = "btnScraperDown"
+        Me.btnScraperDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnScraperDown.TabIndex = 75
+        Me.btnScraperDown.UseVisualStyleBackColor = True
+        '
+        'btnScraperUp
+        '
+        Me.btnScraperUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnScraperUp.Enabled = False
+        Me.btnScraperUp.Image = CType(resources.GetObject("btnScraperUp.Image"), System.Drawing.Image)
+        Me.btnScraperUp.Location = New System.Drawing.Point(509, 94)
+        Me.btnScraperUp.Name = "btnScraperUp"
+        Me.btnScraperUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnScraperUp.TabIndex = 74
+        Me.btnScraperUp.UseVisualStyleBackColor = True
+        '
+        'btnScraperSetup
+        '
+        Me.btnScraperSetup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnScraperSetup.Enabled = False
+        Me.btnScraperSetup.Image = CType(resources.GetObject("btnScraperSetup.Image"), System.Drawing.Image)
+        Me.btnScraperSetup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnScraperSetup.Location = New System.Drawing.Point(509, 69)
+        Me.btnScraperSetup.Name = "btnScraperSetup"
+        Me.btnScraperSetup.Size = New System.Drawing.Size(23, 23)
+        Me.btnScraperSetup.TabIndex = 72
+        Me.btnScraperSetup.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnScraperSetup.UseVisualStyleBackColor = True
+        '
+        'btnScraperDisable
+        '
+        Me.btnScraperDisable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnScraperDisable.Enabled = False
+        Me.btnScraperDisable.Image = CType(resources.GetObject("btnScraperDisable.Image"), System.Drawing.Image)
+        Me.btnScraperDisable.Location = New System.Drawing.Point(509, 44)
+        Me.btnScraperDisable.Name = "btnScraperDisable"
+        Me.btnScraperDisable.Size = New System.Drawing.Size(23, 23)
+        Me.btnScraperDisable.TabIndex = 73
+        Me.btnScraperDisable.UseVisualStyleBackColor = True
+        '
+        'btnScraperEnable
+        '
+        Me.btnScraperEnable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnScraperEnable.Enabled = False
+        Me.btnScraperEnable.Image = CType(resources.GetObject("btnScraperEnable.Image"), System.Drawing.Image)
+        Me.btnScraperEnable.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnScraperEnable.Location = New System.Drawing.Point(509, 19)
+        Me.btnScraperEnable.Name = "btnScraperEnable"
+        Me.btnScraperEnable.Size = New System.Drawing.Size(23, 23)
+        Me.btnScraperEnable.TabIndex = 71
+        Me.btnScraperEnable.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnScraperEnable.UseVisualStyleBackColor = True
         '
         'Label3
         '
@@ -316,146 +482,230 @@ Partial Class dlgModuleSettings
         Me.ColumnHeader4.Text = "Status"
         Me.ColumnHeader4.Width = 73
         '
-        'Button1
+        'TabPage1
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Enabled = False
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(509, 120)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(23, 23)
-        Me.Button1.TabIndex = 75
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.TabPage1.Controls.Add(Me.Button11)
+        Me.TabPage1.Controls.Add(Me.Button12)
+        Me.TabPage1.Controls.Add(Me.Button13)
+        Me.TabPage1.Controls.Add(Me.Button14)
+        Me.TabPage1.Controls.Add(Me.Button15)
+        Me.TabPage1.Controls.Add(Me.ListView1)
+        Me.TabPage1.Controls.Add(Me.Button16)
+        Me.TabPage1.Controls.Add(Me.Button17)
+        Me.TabPage1.Controls.Add(Me.Button18)
+        Me.TabPage1.Controls.Add(Me.Button19)
+        Me.TabPage1.Controls.Add(Me.Button20)
+        Me.TabPage1.Controls.Add(Me.Label5)
+        Me.TabPage1.Controls.Add(Me.Label6)
+        Me.TabPage1.Controls.Add(Me.ListView2)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Size = New System.Drawing.Size(538, 314)
+        Me.TabPage1.TabIndex = 2
+        Me.TabPage1.Text = "TV Scrapers"
+        Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'Button2
+        'Button11
         '
-        Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button2.Enabled = False
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(509, 94)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(23, 23)
-        Me.Button2.TabIndex = 74
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button11.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button11.Enabled = False
+        Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
+        Me.Button11.Location = New System.Drawing.Point(511, 284)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(23, 23)
+        Me.Button11.TabIndex = 95
+        Me.Button11.UseVisualStyleBackColor = True
         '
-        'Button3
+        'Button12
         '
-        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button3.Enabled = False
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(509, 69)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(23, 23)
-        Me.Button3.TabIndex = 72
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.Button12.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button12.Enabled = False
+        Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
+        Me.Button12.Location = New System.Drawing.Point(511, 258)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(23, 23)
+        Me.Button12.TabIndex = 94
+        Me.Button12.UseVisualStyleBackColor = True
         '
-        'Button4
+        'Button13
         '
-        Me.Button4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button4.Enabled = False
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.Location = New System.Drawing.Point(509, 44)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(23, 23)
-        Me.Button4.TabIndex = 73
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.Button13.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button13.Enabled = False
+        Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
+        Me.Button13.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button13.Location = New System.Drawing.Point(511, 233)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(23, 23)
+        Me.Button13.TabIndex = 92
+        Me.Button13.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button13.UseVisualStyleBackColor = True
         '
-        'Button5
+        'Button14
         '
-        Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button5.Enabled = False
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(509, 19)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(23, 23)
-        Me.Button5.TabIndex = 71
-        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button5.UseVisualStyleBackColor = True
+        Me.Button14.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button14.Enabled = False
+        Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
+        Me.Button14.Location = New System.Drawing.Point(511, 208)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(23, 23)
+        Me.Button14.TabIndex = 93
+        Me.Button14.UseVisualStyleBackColor = True
         '
-        'Button6
+        'Button15
         '
-        Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button6.Enabled = False
-        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(511, 284)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(23, 23)
-        Me.Button6.TabIndex = 81
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.Button15.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button15.Enabled = False
+        Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
+        Me.Button15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button15.Location = New System.Drawing.Point(511, 183)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(23, 23)
+        Me.Button15.TabIndex = 91
+        Me.Button15.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button15.UseVisualStyleBackColor = True
         '
-        'Button7
+        'ListView1
         '
-        Me.Button7.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button7.Enabled = False
-        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(511, 258)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(23, 23)
-        Me.Button7.TabIndex = 80
-        Me.Button7.UseVisualStyleBackColor = True
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader11, Me.ColumnHeader12})
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(4, 182)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(501, 126)
+        Me.ListView1.TabIndex = 90
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
         '
-        'Button8
+        'ColumnHeader11
         '
-        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button8.Enabled = False
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button8.Location = New System.Drawing.Point(511, 233)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(23, 23)
-        Me.Button8.TabIndex = 78
-        Me.Button8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button8.UseVisualStyleBackColor = True
+        Me.ColumnHeader11.Text = "Module"
+        Me.ColumnHeader11.Width = 399
         '
-        'Button9
+        'ColumnHeader12
         '
-        Me.Button9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button9.Enabled = False
-        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(511, 208)
-        Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(23, 23)
-        Me.Button9.TabIndex = 79
-        Me.Button9.UseVisualStyleBackColor = True
+        Me.ColumnHeader12.Text = "Status"
+        Me.ColumnHeader12.Width = 73
         '
-        'Button10
+        'Button16
         '
-        Me.Button10.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button10.Enabled = False
-        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
-        Me.Button10.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button10.Location = New System.Drawing.Point(511, 183)
-        Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(23, 23)
-        Me.Button10.TabIndex = 77
-        Me.Button10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button10.UseVisualStyleBackColor = True
+        Me.Button16.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button16.Enabled = False
+        Me.Button16.Image = CType(resources.GetObject("Button16.Image"), System.Drawing.Image)
+        Me.Button16.Location = New System.Drawing.Point(509, 120)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(23, 23)
+        Me.Button16.TabIndex = 89
+        Me.Button16.UseVisualStyleBackColor = True
         '
-        'lstPostScrapers
+        'Button17
         '
-        Me.lstPostScrapers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader5, Me.ColumnHeader6})
-        Me.lstPostScrapers.FullRowSelect = True
-        Me.lstPostScrapers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.lstPostScrapers.HideSelection = False
-        Me.lstPostScrapers.Location = New System.Drawing.Point(4, 182)
-        Me.lstPostScrapers.Name = "lstPostScrapers"
-        Me.lstPostScrapers.Size = New System.Drawing.Size(501, 126)
-        Me.lstPostScrapers.TabIndex = 76
-        Me.lstPostScrapers.UseCompatibleStateImageBehavior = False
-        Me.lstPostScrapers.View = System.Windows.Forms.View.Details
+        Me.Button17.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button17.Enabled = False
+        Me.Button17.Image = CType(resources.GetObject("Button17.Image"), System.Drawing.Image)
+        Me.Button17.Location = New System.Drawing.Point(509, 94)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(23, 23)
+        Me.Button17.TabIndex = 88
+        Me.Button17.UseVisualStyleBackColor = True
         '
-        'ColumnHeader5
+        'Button18
         '
-        Me.ColumnHeader5.Text = "Module"
-        Me.ColumnHeader5.Width = 399
+        Me.Button18.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button18.Enabled = False
+        Me.Button18.Image = CType(resources.GetObject("Button18.Image"), System.Drawing.Image)
+        Me.Button18.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button18.Location = New System.Drawing.Point(509, 69)
+        Me.Button18.Name = "Button18"
+        Me.Button18.Size = New System.Drawing.Size(23, 23)
+        Me.Button18.TabIndex = 86
+        Me.Button18.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button18.UseVisualStyleBackColor = True
         '
-        'ColumnHeader6
+        'Button19
         '
-        Me.ColumnHeader6.Text = "Status"
-        Me.ColumnHeader6.Width = 73
+        Me.Button19.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button19.Enabled = False
+        Me.Button19.Image = CType(resources.GetObject("Button19.Image"), System.Drawing.Image)
+        Me.Button19.Location = New System.Drawing.Point(509, 44)
+        Me.Button19.Name = "Button19"
+        Me.Button19.Size = New System.Drawing.Size(23, 23)
+        Me.Button19.TabIndex = 87
+        Me.Button19.UseVisualStyleBackColor = True
+        '
+        'Button20
+        '
+        Me.Button20.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button20.Enabled = False
+        Me.Button20.Image = CType(resources.GetObject("Button20.Image"), System.Drawing.Image)
+        Me.Button20.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button20.Location = New System.Drawing.Point(509, 19)
+        Me.Button20.Name = "Button20"
+        Me.Button20.Size = New System.Drawing.Size(23, 23)
+        Me.Button20.TabIndex = 85
+        Me.Button20.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button20.UseVisualStyleBackColor = True
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(3, 166)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(73, 13)
+        Me.Label5.TabIndex = 84
+        Me.Label5.Text = "Post Scrapers"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(1, 2)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(49, 13)
+        Me.Label6.TabIndex = 83
+        Me.Label6.Text = "Scrapers"
+        '
+        'ListView2
+        '
+        Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader13, Me.ColumnHeader14})
+        Me.ListView2.FullRowSelect = True
+        Me.ListView2.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.ListView2.HideSelection = False
+        Me.ListView2.Location = New System.Drawing.Point(2, 18)
+        Me.ListView2.Name = "ListView2"
+        Me.ListView2.Size = New System.Drawing.Size(501, 126)
+        Me.ListView2.TabIndex = 82
+        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.ListView2.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Text = "Module"
+        Me.ColumnHeader13.Width = 399
+        '
+        'ColumnHeader14
+        '
+        Me.ColumnHeader14.Text = "Status"
+        Me.ColumnHeader14.Width = 73
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Module"
+        Me.ColumnHeader7.Width = 399
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Status"
+        Me.ColumnHeader8.Width = 73
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Module"
+        Me.ColumnHeader9.Width = 399
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Status"
+        Me.ColumnHeader10.Width = 73
         '
         'dlgModuleSettings
         '
@@ -480,6 +730,8 @@ Partial Class dlgModuleSettings
         Me.tabGenreic.ResumeLayout(False)
         Me.tabScraper.ResumeLayout(False)
         Me.tabScraper.PerformLayout()
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -501,24 +753,47 @@ Partial Class dlgModuleSettings
     Friend WithEvents lstScrapers As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents btnDown As System.Windows.Forms.Button
-    Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents btnEditSet As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
-    Friend WithEvents btnNewSet As System.Windows.Forms.Button
+    Friend WithEvents btnGenericDown As System.Windows.Forms.Button
+    Friend WithEvents btnGenericUp As System.Windows.Forms.Button
+    Friend WithEvents btnGenericSetup As System.Windows.Forms.Button
+    Friend WithEvents btnGenericDisable As System.Windows.Forms.Button
+    Friend WithEvents btnGenericEnable As System.Windows.Forms.Button
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Button6 As System.Windows.Forms.Button
-    Friend WithEvents Button7 As System.Windows.Forms.Button
-    Friend WithEvents Button8 As System.Windows.Forms.Button
-    Friend WithEvents Button9 As System.Windows.Forms.Button
-    Friend WithEvents Button10 As System.Windows.Forms.Button
+    Friend WithEvents btnPostScraperDown As System.Windows.Forms.Button
+    Friend WithEvents btnPostScraperUp As System.Windows.Forms.Button
+    Friend WithEvents btnPostScraperSetup As System.Windows.Forms.Button
+    Friend WithEvents btnPostScraperDisable As System.Windows.Forms.Button
+    Friend WithEvents btnPostScraperEnable As System.Windows.Forms.Button
     Friend WithEvents lstPostScrapers As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents Button4 As System.Windows.Forms.Button
-    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents btnScraperDown As System.Windows.Forms.Button
+    Friend WithEvents btnScraperUp As System.Windows.Forms.Button
+    Friend WithEvents btnScraperSetup As System.Windows.Forms.Button
+    Friend WithEvents btnScraperDisable As System.Windows.Forms.Button
+    Friend WithEvents btnScraperEnable As System.Windows.Forms.Button
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents Button11 As System.Windows.Forms.Button
+    Friend WithEvents Button12 As System.Windows.Forms.Button
+    Friend WithEvents Button13 As System.Windows.Forms.Button
+    Friend WithEvents Button14 As System.Windows.Forms.Button
+    Friend WithEvents Button15 As System.Windows.Forms.Button
+    Friend WithEvents ListView1 As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader12 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents Button16 As System.Windows.Forms.Button
+    Friend WithEvents Button17 As System.Windows.Forms.Button
+    Friend WithEvents Button18 As System.Windows.Forms.Button
+    Friend WithEvents Button19 As System.Windows.Forms.Button
+    Friend WithEvents Button20 As System.Windows.Forms.Button
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents ListView2 As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader13 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader14 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader9 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
 End Class

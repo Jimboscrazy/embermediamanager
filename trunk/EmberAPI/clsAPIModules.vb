@@ -165,8 +165,6 @@ Public Class ModulesManager
             Next
         End If
     End Sub
-    'TODO : Bellow functions should go to Background worker ?
-
     ''' <summary>
     ''' Entry point to Scrape and Post Scrape .. will run all modules enabled
     ''' </summary>
@@ -200,7 +198,6 @@ Public Class ModulesManager
         loadScrapersModules()
     End Sub
 
-
     Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
@@ -228,6 +225,11 @@ Public Class ModulesManager
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.ProcessorModule.Setup()
+        Next
+    End Sub
+    Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ProcessorModule.Setup()
         Next
     End Sub
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
