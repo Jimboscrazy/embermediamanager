@@ -390,9 +390,9 @@
   <string id="388">Modifiers</string>
   <string id="389">Begin</string>
   <string id="390">Options</string>
-  <string id="391">Other Crew</string>
-  <string id="392">Music By</string>
-  <string id="393">Producers</string>
+  <string id="391">Other Crew*</string>
+  <string id="392">Music By*</string>
+  <string id="393">Producers*</string>
   <string id="394">Writers</string>
   <string id="395">Studio</string>
   <string id="396">Runtime</string>
@@ -458,7 +458,7 @@
   <string id="456">Do Not Display Poster</string>
   <string id="457">Display Image Dimensions</string>
   <string id="458">*New movies will still display in green if not checked.</string>
-  <string id="459">Mark New Movies</string>
+  <string id="459">Mark New Movies*</string>
   <string id="460">Media List Options</string>
   <string id="461">Mismatch Tolerance:</string>
   <string id="462">Check Title Match Confidence</string>
@@ -549,8 +549,8 @@
   <string id="547">Caching</string>
   <string id="548">Use Cache for Scrapers</string>
   <string id="549">*When enabled, the cache will be available between sessions</string>
-  <string id="550">Persistent Image Cache*</string>
-  <string id="551">Use Image Cache</string>
+  <string id="550">Persistent Image Cache**</string>
+  <string id="551">Use Image Cache*</string>
   <string id="552">Select the folder where you wish to store your backdrops.</string>
   <string id="553">File System</string>
   <string id="554">XBMC Communication</string>
