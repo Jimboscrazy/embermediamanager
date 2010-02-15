@@ -8,7 +8,7 @@
     <ProjectGuid>{76117695-CBC1-488C-878A-6DAC7FFEBF29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EmberScraperModule</RootNamespace>
-    <AssemblyName>EmberScraperModule</AssemblyName>
+    <AssemblyName>scraper.Cine-Passion</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -23,7 +23,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
-    <DocumentationFile>EmberScraperModule.xml</DocumentationFile>
+    <DocumentationFile>scraper.Cine-Passion.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Ember Media Manager\bin\x86\Release\Modules\</OutputPath>
-    <DocumentationFile>EmberScraperModule.xml</DocumentationFile>
+    <DocumentationFile>scraper.Cine-Passion.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
