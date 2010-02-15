@@ -85,14 +85,14 @@ Public Class dlgModuleSettings
         btnScraperEnable.Enabled = False
         btnScraperDisable.Enabled = True
         lstScrapers.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
-        ModulesManager.SetModuleEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, True)
+        ModulesManager.SetScraperEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, True)
     End Sub
 
     Private Sub btnScraperDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperDisable.Click
         btnScraperDisable.Enabled = False
         btnScraperEnable.Enabled = True
         lstScrapers.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
-        ModulesManager.SetModuleEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, False)
+        ModulesManager.SetScraperEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, False)
     End Sub
 
     Private Sub btnGenericUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericUp.Click
@@ -120,6 +120,8 @@ Public Class dlgModuleSettings
                 btnScraperEnable.Enabled = True
                 btnScraperDisable.Enabled = False
             End If
+            btnScraperUp.Enabled = If(lstScrapers.SelectedItems.Item(0).Index > 0, True, False)
+            btnScraperDown.Enabled = If(lstScrapers.SelectedItems.Item(0).Index < lstScrapers.Items.Count - 1, True, False)
         Else
             btnScraperDisable.Enabled = False
             btnScraperEnable.Enabled = True
@@ -138,10 +140,72 @@ Public Class dlgModuleSettings
                 btnPostScraperEnable.Enabled = True
                 btnPostScraperDisable.Enabled = False
             End If
+            btnPostScraperUp.Enabled = If(lstPostScrapers.SelectedItems.Item(0).Index > 0, True, False)
+            btnPostScraperDown.Enabled = If(lstPostScrapers.SelectedItems.Item(0).Index < lstPostScrapers.Items.Count - 1, True, False)
         Else
             btnPostScraperDisable.Enabled = False
             btnPostScraperEnable.Enabled = True
             btnPostScraperSetup.Enabled = True
         End If
+    End Sub
+
+    Private Sub btnPostScraperEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperEnable.Click
+        btnPostScraperEnable.Enabled = False
+        btnPostScraperDisable.Enabled = True
+        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
+        ModulesManager.SetPostScraperEnable(lstPostScrapers.SelectedItems.Item(0).Tag().ToString, True)
+    End Sub
+
+    Private Sub btnPostScraperDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperDisable.Click
+        btnPostScraperDisable.Enabled = False
+        btnPostScraperEnable.Enabled = True
+        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
+        ModulesManager.SetPostScraperEnable(lstPostScrapers.SelectedItems.Item(0).Tag().ToString, False)
+    End Sub
+
+    Private Sub btnPostScraperSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperSetup.Click
+        If lstPostScrapers.SelectedItems.Count > 0 Then
+            ModulesManager.RunScraperSetup(lstPostScrapers.SelectedItems.Item(0).Tag().ToString)
+        End If
+    End Sub
+
+    Private Sub btnScraperUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperUp.Click
+        Dim li As ListViewItem = lstScrapers.SelectedItems.Item(0)
+        Dim index As Integer = li.Index - 1
+        lstScrapers.Items.Remove(li)
+        lstScrapers.Items.Insert(index, li)
+        For Each x As ListViewItem In lstScrapers.Items
+            ModulesManager.SetScraperOrder(x.Tag().ToString, x.Index)
+        Next
+    End Sub
+
+    Private Sub btnScraperDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperDown.Click
+        Dim li As ListViewItem = lstScrapers.SelectedItems.Item(0)
+        Dim index As Integer = li.Index + 1
+        lstScrapers.Items.Remove(li)
+        lstScrapers.Items.Insert(index, li)
+        For Each x As ListViewItem In lstScrapers.Items
+            ModulesManager.SetScraperOrder(x.Tag().ToString, x.Index)
+        Next
+    End Sub
+
+    Private Sub btnPostScraperUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperUp.Click
+        Dim li As ListViewItem = lstPostScrapers.SelectedItems.Item(0)
+        Dim index As Integer = li.Index - 1
+        lstPostScrapers.Items.Remove(li)
+        lstPostScrapers.Items.Insert(index, li)
+        For Each x As ListViewItem In lstPostScrapers.Items
+            ModulesManager.SetPostScraperorder(x.Tag().ToString, x.Index)
+        Next
+    End Sub
+
+    Private Sub btnPostScraperDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperDown.Click
+        Dim li As ListViewItem = lstPostScrapers.SelectedItems.Item(0)
+        Dim index As Integer = li.Index + 1
+        lstPostScrapers.Items.Remove(li)
+        lstPostScrapers.Items.Insert(index, li)
+        For Each x As ListViewItem In lstPostScrapers.Items
+            ModulesManager.SetPostScraperorder(x.Tag().ToString, x.Index)
+        Next
     End Sub
 End Class
