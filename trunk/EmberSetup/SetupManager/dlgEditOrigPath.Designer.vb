@@ -135,7 +135,7 @@ Partial Class dlgEditOrigPath
         '
         Me.cbPlatform.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPlatform.FormattingEnabled = True
-        Me.cbPlatform.Items.AddRange(New Object() {"Common", "x86", "x64"})
+        Me.cbPlatform.Items.AddRange(New Object() {"Common", "x86", "x64", "Mono"})
         Me.cbPlatform.Location = New System.Drawing.Point(100, 4)
         Me.cbPlatform.Name = "cbPlatform"
         Me.cbPlatform.Size = New System.Drawing.Size(84, 21)

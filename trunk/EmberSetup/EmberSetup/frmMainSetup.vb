@@ -33,7 +33,7 @@ Imports System.ComponentModel
 
 
 Public Class frmMainSetup
-    Public DEBUG As Boolean = True  ' So I can Debug without a Web Server
+    Public DEBUG As Boolean = False  ' So I can Debug without a Web Server
     Public emberPath As String
     Public emberAllFounds As New List(Of String)
     Public Final As Boolean = False
@@ -140,7 +140,9 @@ Public Class frmMainSetup
             Return String.Empty
         End Try
     End Function
-
+    Public Shared Function CheckIfWindows() As Boolean
+        Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
+    End Function
     Public Function GetEmberVersion(ByVal fpath As String) As String
         If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
         Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
@@ -190,14 +192,14 @@ Public Class frmMainSetup
                 Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
             Else
                 ' So I can Debug without a Web Server
-                Try
-                    File.Copy(Path.Combine(AppPath, String.Concat("site\", url.Replace("/", "\"))), localfile)
-                Catch ex As Exception
-                End Try
+                'Try
+                'File.Copy(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, url.Replace("/", "\"))), localfile)
+                'Catch ex As Exception
+                'End Try
 
                 Return True
                 'Now I have a local Web Server
-                'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
+                Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
             End If
         Catch ex As Exception
             LogWrite(String.Format("+++ GetURL Error: {0}", ex.Message))
@@ -261,9 +263,9 @@ Public Class frmMainSetup
 
     Public Sub LoadVersions()
         EmberVersions.VersionList.Clear()
-        If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), "updates\versionlist.xml")) Then
+        If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
             Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
-            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), "updates\versionlist.xml"))
+            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml")))
                 EmberVersions = xmlSer.Deserialize(xmlSW)
             End Using
         End If
@@ -280,7 +282,7 @@ Public Class frmMainSetup
     End Sub
 
     Private Sub bwFindeEmber_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFF.DoWork
-        FindFile("c:\", "ember media manager.exe")
+        FindFile(Path.GetPathRoot(Application.StartupPath), "Ember Media Manager.exe")
     End Sub
 
     Private Sub FindFile(ByVal SourcePath As String, ByVal filename As String)
@@ -405,6 +407,22 @@ Public Class frmMainSetup
             lblInfo.Text = txt
             pbFiles.Value = progress
         End If
+        If e.ProgressPercentage = 11 Then
+            Dim progress As Integer = e.UserState(0) 'This is true progress %
+            lblStatus.TextAlign = ContentAlignment.MiddleCenter
+            lblStatus.ForeColor = Color.Blue
+            lblStatus.Font = New Font("Arial", 12, FontStyle.Bold)
+            lblStatus.Text = e.UserState(1).ToString
+            lblInfo.TextAlign = ContentAlignment.MiddleCenter
+            lblInfo.ForeColor = Color.Red
+            lblInfo.Font = New Font("Arial", 11, FontStyle.Bold)
+            lblInfo.Text = e.UserState(2).ToString
+            btnInstall.Visible = False
+            btnOptions.Visible = False
+            btnRunEmber.Visible = False
+            pnlProgress.Visible = False
+            pbFiles.Visible = False
+        End If
     End Sub
 
     Private Sub bwDoInstall_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoInstall.RunWorkerCompleted
@@ -447,7 +465,7 @@ Public Class frmMainSetup
                     If emberPath = String.Empty Then
                         emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")
                         If emberPath = String.Empty Then
-                            emberPath = "C:\Ember Media Manager"
+                            emberPath = Path.Combine(Path.GetPathRoot(Application.StartupPath), "Ember Media Manager")
                         End If
                     End If
                 End If
@@ -474,7 +492,7 @@ Public Class frmMainSetup
                     If Not Directory.Exists(Path.GetDirectoryName(emberPath)) OrElse NoArgs Then
                         CreateSetupFolders(Path.GetDirectoryName(emberPath))
                     End If
-                    If Not GetURLFile("versionlist.xml", Path.Combine(Path.GetDirectoryName(emberPath), "updates\versionlist.xml")) Then
+                    If Not GetURLFile("versionlist.xml", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
                         ' Cant get Version List ... Abort
                         LogWrite(String.Format("*** Main: No Versions List, SITE DOWN? ABORT"))
                         Me.bwDoInstall.ReportProgress(2, "Ember Download Site is Not Available." & vbCrLf & "Please try again later.") '  Error
@@ -500,7 +518,7 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Version Files"})
                         LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
                         Dim getFile As String = String.Format("version_{0}.xml", InstallVersion)
-                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))) Then
+                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                             ' Cant get Version # ... Abort
                             LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
                             CurrentEmberVersion = String.Empty
@@ -509,7 +527,7 @@ Public Class frmMainSetup
                         End If
                         If Not CurrentEmberVersion = String.Empty Then
                             getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
-                            If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))) Then
+                            If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                                 ' Cant get Current Version  ... Special Situation, Will Force Full Installation
                                 LogWrite(String.Format("--- Main: No Version File for: {0}", CurrentEmberVersion))
                                 CurrentEmberVersion = String.Empty
@@ -521,7 +539,7 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Update Script Files"})
                         LogWrite(String.Format("--- Main: Downloading Update Script Files ({0})", Now))
                         getFile = String.Format("commands_base.xml")
-                        If GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))) Then
+                        If GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                             ' Found it ...
                         End If
                         If Not CurrentEmberVersion = String.Empty Then
@@ -531,7 +549,7 @@ Public Class frmMainSetup
                                     Count_Versions += 1
                                     'Get Commands fro every version from the current to the new
                                     getFile = String.Format("commands_{0}.xml", v.Version)
-                                    If GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))) Then
+                                    If GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                                         ' Found it ...
                                     End If
                                 End If
@@ -545,7 +563,7 @@ Public Class frmMainSetup
                         Dim xmlSer As XmlSerializer
                         getFile = String.Format("version_{0}.xml", InstallVersion)
                         xmlSer = New XmlSerializer(GetType(FilesList))
-                        Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile)))
+                        Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
                             _NewFiles = xmlSer.Deserialize(xmlSW)
                         End Using
                         '###################################################################################
@@ -557,7 +575,7 @@ Public Class frmMainSetup
                             LogWrite(String.Format("--- Main: Checking Installed Files ({0})", Now))
                             getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
                             xmlSer = New XmlSerializer(GetType(FilesList))
-                            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile)))
+                            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
                                 _CurrentFiles = xmlSer.Deserialize(xmlSW)
                             End Using
                         End If
@@ -597,7 +615,7 @@ Public Class frmMainSetup
                                     Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
                                     'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename))) Then
                                     'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))) Then
-                                    If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.emm", f.Hash))) Then
+                                    If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))) Then
                                         ' Error Downloading File... Abort
                                         LogWrite(String.Format("+++ Main: Error downloading: {0}", f.Filename))
                                         Me.bwDoInstall.ReportProgress(7, String.Format("Error downloading: {0}", f.Filename))
@@ -636,7 +654,7 @@ Public Class frmMainSetup
                                     hash = GetHash(spath)
                                     If Not hash = f.Hash Then
                                         LogWrite(String.Format("*** Main: WARNING File Hash Not Correct : {0}", dpath))
-                                        Me.bwDoInstall.ReportProgress(0, New Object() {3, String.Format("WARNING File Hash Not Correct : {0}", dpath)})
+                                        Me.bwDoInstall.ReportProgress(0, New Object() {3, "WARNING File Hash Not Correct", dpath})
                                         Return True
                                     End If
                                     If File.Exists(dpath) Then
@@ -654,7 +672,7 @@ Public Class frmMainSetup
                                         Else
                                             'Dont Need backup, but File could be Locked...
                                             'Also, .exe files can be locked by the Load Assenbly (get Ember Version and Platform)
-                                            'In this cases Move will succed,
+                                            'In this cases Move will succedd,
                                             'Let's try Move it so we can Install the New File
                                             If File.Exists(String.Format("{0}.old", dpath)) Then
                                                 Try
@@ -669,7 +687,7 @@ Public Class frmMainSetup
                                             Catch ex As Exception
                                                 LogWrite(String.Format("--- Main: Locked File on Move: {0}", String.Format("{0}", dpath)))
                                                 'Ignore this , Possible locked by Assembly Load
-                                                'Install will possibly fail, but dont abort now.. let it happen later
+                                                'Install will possible fail, but dont abort now.. let it happen later
                                             End Try
                                             Try
                                                 If File.Exists(String.Format("{0}.old", dpath)) Then
@@ -678,7 +696,7 @@ Public Class frmMainSetup
                                             Catch ex As Exception
                                                 LogWrite(String.Format("--- Main: Locked File on Delete: {0}", String.Format("{0}.old", dpath)))
                                                 'Ignore this , Possible locked by Assembly Load
-                                                'File is locked, but installation will succed
+                                                'File is locked, but installation will succedd
                                             End Try
                                         End If
                                     End If
@@ -711,9 +729,9 @@ Public Class frmMainSetup
             Me.bwDoInstall.ReportProgress(5, "")
             '###################################################################################
             'Time to Run Version Commands
-            'Will Run on another Class so It Can Load SQLite DLL on Demand 
-            'After Setup restart when it is in the Ember folder
-            'This is needed because Assembly Manager dont allow to load DLL's from radom folder 
+            'Will Run on another Class so It Can Load SQLite DLL on Demand ...
+            '... after Setup restart when it is in the Ember folder
+            'This is needed because Assembly Manager dont allow to load DLL's from random folder 
             Try
                 If bwDoInstall.CancellationPending Then Return False
                 Me.bwDoInstall.ReportProgress(0, New Object() {2, "Preparing For Ember Configuration"})
@@ -771,9 +789,9 @@ Public Class frmMainSetup
                 Dim xmlSer As XmlSerializer
                 Dim _cmds As New InstallCommands
                 getFile = "commands_base.xml"
-                If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))) Then
+                If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                     xmlSer = New XmlSerializer(GetType(InstallCommands))
-                    Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile)))
+                    Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
                         _cmds = xmlSer.Deserialize(xmlSW)
                     End Using
                     Me.bwDoInstall.ReportProgress(5, "Creating Database")

@@ -32,8 +32,13 @@ Partial Class frmMainManager
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.Button2 = New System.Windows.Forms.Button
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtEMMVersion = New System.Windows.Forms.TextBox
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.btnSaveVersion = New System.Windows.Forms.Button
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.btnRescan = New System.Windows.Forms.Button
         Me.btnRefresh = New System.Windows.Forms.Button
@@ -64,10 +69,12 @@ Partial Class frmMainManager
         Me.ColumnHeader7 = New System.Windows.Forms.ColumnHeader
         Me.pnlWork = New System.Windows.Forms.Panel
         Me.Label4 = New System.Windows.Forms.Label
-        Me.btnSaveVersion = New System.Windows.Forms.Button
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.Label11 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -154,7 +161,7 @@ Partial Class frmMainManager
         '
         Me.cbPlatform.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPlatform.FormattingEnabled = True
-        Me.cbPlatform.Items.AddRange(New Object() {"x86", "x64"})
+        Me.cbPlatform.Items.AddRange(New Object() {"x86", "x64", "Mono"})
         Me.cbPlatform.Location = New System.Drawing.Point(314, 369)
         Me.cbPlatform.Name = "cbPlatform"
         Me.cbPlatform.Size = New System.Drawing.Size(84, 21)
@@ -162,6 +169,13 @@ Partial Class frmMainManager
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label11)
+        Me.GroupBox1.Controls.Add(Me.TextBox3)
+        Me.GroupBox1.Controls.Add(Me.Label10)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Controls.Add(Me.TextBox2)
+        Me.GroupBox1.Controls.Add(Me.TextBox1)
+        Me.GroupBox1.Controls.Add(Me.Button2)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.txtEMMVersion)
         Me.GroupBox1.Controls.Add(Me.Button1)
@@ -172,6 +186,29 @@ Partial Class frmMainManager
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Ember Information"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(764, 19)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(66, 20)
+        Me.TextBox2.TabIndex = 9
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(628, 19)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(66, 20)
+        Me.TextBox1.TabIndex = 8
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(444, 17)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(121, 23)
+        Me.Button2.TabIndex = 7
+        Me.Button2.Text = "Upload Files"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -190,6 +227,25 @@ Partial Class frmMainManager
         Me.txtEMMVersion.Size = New System.Drawing.Size(78, 20)
         Me.txtEMMVersion.TabIndex = 0
         Me.txtEMMVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(308, 17)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(121, 23)
+        Me.Button1.TabIndex = 6
+        Me.Button1.Text = "Pack Version Files"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'btnSaveVersion
+        '
+        Me.btnSaveVersion.Enabled = False
+        Me.btnSaveVersion.Location = New System.Drawing.Point(182, 17)
+        Me.btnSaveVersion.Name = "btnSaveVersion"
+        Me.btnSaveVersion.Size = New System.Drawing.Size(121, 23)
+        Me.btnSaveVersion.TabIndex = 0
+        Me.btnSaveVersion.Text = "Save Version"
+        Me.btnSaveVersion.UseVisualStyleBackColor = True
         '
         'CheckBox1
         '
@@ -257,30 +313,30 @@ Partial Class frmMainManager
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllwaysExcludeFileToolStripMenuItem, Me.RemoveExclusionToolStripMenuItem, Me.AllwaysExcludeFolderToolStripMenuItem, Me.RemoveFolderExclusionToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(205, 92)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(206, 92)
         '
         'AllwaysExcludeFileToolStripMenuItem
         '
         Me.AllwaysExcludeFileToolStripMenuItem.Name = "AllwaysExcludeFileToolStripMenuItem"
-        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.AllwaysExcludeFileToolStripMenuItem.Text = "Allways Exclude File"
         '
         'RemoveExclusionToolStripMenuItem
         '
         Me.RemoveExclusionToolStripMenuItem.Name = "RemoveExclusionToolStripMenuItem"
-        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.RemoveExclusionToolStripMenuItem.Text = "Remove File Exclusion"
         '
         'AllwaysExcludeFolderToolStripMenuItem
         '
         Me.AllwaysExcludeFolderToolStripMenuItem.Name = "AllwaysExcludeFolderToolStripMenuItem"
-        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.AllwaysExcludeFolderToolStripMenuItem.Text = "Allways Exclude Folder"
         '
         'RemoveFolderExclusionToolStripMenuItem
         '
         Me.RemoveFolderExclusionToolStripMenuItem.Name = "RemoveFolderExclusionToolStripMenuItem"
-        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.RemoveFolderExclusionToolStripMenuItem.Text = "Remove Folder Exclusion"
         '
         'TabPage2
@@ -448,16 +504,6 @@ Partial Class frmMainManager
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "Please Wait"
         '
-        'btnSaveVersion
-        '
-        Me.btnSaveVersion.Enabled = False
-        Me.btnSaveVersion.Location = New System.Drawing.Point(182, 17)
-        Me.btnSaveVersion.Name = "btnSaveVersion"
-        Me.btnSaveVersion.Size = New System.Drawing.Size(121, 23)
-        Me.btnSaveVersion.TabIndex = 0
-        Me.btnSaveVersion.Text = "Save Version"
-        Me.btnSaveVersion.UseVisualStyleBackColor = True
-        '
         'btnOriginPath
         '
         Me.btnOriginPath.Location = New System.Drawing.Point(3, 435)
@@ -476,14 +522,39 @@ Partial Class frmMainManager
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         '
-        'Button1
+        'Label9
         '
-        Me.Button1.Location = New System.Drawing.Point(308, 17)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(121, 23)
-        Me.Button1.TabIndex = 6
-        Me.Button1.Text = "Pack Version Files"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(593, 22)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(29, 13)
+        Me.Label9.TabIndex = 10
+        Me.Label9.Text = "User"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(715, 22)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(53, 13)
+        Me.Label10.TabIndex = 11
+        Me.Label10.Text = "Password"
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(628, 45)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(202, 20)
+        Me.TextBox3.TabIndex = 12
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(593, 48)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(29, 13)
+        Me.Label11.TabIndex = 13
+        Me.Label11.Text = "Host"
         '
         'frmMainManager
         '
@@ -561,5 +632,12 @@ Partial Class frmMainManager
     Friend WithEvents txtCommand As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
 
 End Class
