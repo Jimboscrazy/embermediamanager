@@ -27,19 +27,19 @@ Public Class dlgModuleSettings
 
     Private Sub lstModules_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstModules.SelectedIndexChanged
         If lstModules.SelectedItems.Count > 0 Then
-            btnEditSet.Enabled = True
-            btnNewSet.Enabled = True
+            btnGenericSetup.Enabled = True
+            btnGenericEnable.Enabled = True
             If lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled" Then
-                btnNewSet.Enabled = False
-                btnRemoveSet.Enabled = True
+                btnGenericEnable.Enabled = False
+                btnGenericDisable.Enabled = True
             Else
-                btnNewSet.Enabled = True
-                btnRemoveSet.Enabled = False
+                btnGenericEnable.Enabled = True
+                btnGenericDisable.Enabled = False
             End If
         Else
-            btnRemoveSet.Enabled = False
-            btnNewSet.Enabled = True
-            btnEditSet.Enabled = True
+            btnGenericDisable.Enabled = False
+            btnGenericEnable.Enabled = True
+            btnGenericSetup.Enabled = True
         End If
     End Sub
 
@@ -54,31 +54,94 @@ Public Class dlgModuleSettings
 
     End Sub
 
-    Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
+    Private Sub btnGenericSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericSetup.Click
         If lstModules.SelectedItems.Count > 0 Then
             ModulesManager.RunModuleSetup(lstModules.SelectedItems.Item(0).Tag().ToString)
         End If
     End Sub
 
-    Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
+    Private Sub btnGenericEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericEnable.Click
 
-        btnNewSet.Enabled = False
-        btnRemoveSet.Enabled = True
+        btnGenericEnable.Enabled = False
+        btnGenericDisable.Enabled = True
         lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
         ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, True)
 
     End Sub
 
-    Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
-
-        btnRemoveSet.Enabled = False
-        btnNewSet.Enabled = True
+    Private Sub btnGenericDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericDisable.Click
+        btnGenericDisable.Enabled = False
+        btnGenericEnable.Enabled = True
         lstModules.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
         ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
-
     End Sub
 
     Private Sub tabScraper_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabScraper.Click
 
+    End Sub
+
+    Private Sub btnScraperEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperEnable.Click
+
+        btnScraperEnable.Enabled = False
+        btnScraperDisable.Enabled = True
+        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
+        ModulesManager.SetModuleEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, True)
+    End Sub
+
+    Private Sub btnScraperDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperDisable.Click
+        btnScraperDisable.Enabled = False
+        btnScraperEnable.Enabled = True
+        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
+        ModulesManager.SetModuleEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, False)
+    End Sub
+
+    Private Sub btnGenericUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericUp.Click
+
+    End Sub
+
+    Private Sub btnGenericDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericDown.Click
+
+    End Sub
+
+    Private Sub btnScraperSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperSetup.Click
+        If lstScrapers.SelectedItems.Count > 0 Then
+            ModulesManager.RunScraperSetup(lstScrapers.SelectedItems.Item(0).Tag().ToString)
+        End If
+    End Sub
+
+    Private Sub lstScrapers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstScrapers.SelectedIndexChanged
+        If lstScrapers.SelectedItems.Count > 0 Then
+            btnScraperSetup.Enabled = True
+            btnScraperEnable.Enabled = True
+            If lstScrapers.SelectedItems.Item(0).SubItems(1).Text = "Enabled" Then
+                btnScraperEnable.Enabled = False
+                btnScraperDisable.Enabled = True
+            Else
+                btnScraperEnable.Enabled = True
+                btnScraperDisable.Enabled = False
+            End If
+        Else
+            btnScraperDisable.Enabled = False
+            btnScraperEnable.Enabled = True
+            btnScraperSetup.Enabled = True
+        End If
+    End Sub
+
+    Private Sub lstPostScrapers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstPostScrapers.SelectedIndexChanged
+        If lstPostScrapers.SelectedItems.Count > 0 Then
+            btnPostScraperSetup.Enabled = True
+            btnPostScraperEnable.Enabled = True
+            If lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = "Enabled" Then
+                btnPostScraperEnable.Enabled = False
+                btnPostScraperDisable.Enabled = True
+            Else
+                btnPostScraperEnable.Enabled = True
+                btnPostScraperDisable.Enabled = False
+            End If
+        Else
+            btnPostScraperDisable.Enabled = False
+            btnPostScraperEnable.Enabled = True
+            btnPostScraperSetup.Enabled = True
+        End If
     End Sub
 End Class
