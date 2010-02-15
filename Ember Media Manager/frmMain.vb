@@ -58,6 +58,7 @@ Public Class frmMain
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private tmpTitle As String = String.Empty
+    Private tmpTVDB As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private IMDB As New IMDB.Scraper
     Private fScanner As New Scanner
@@ -857,6 +858,8 @@ Public Class frmMain
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
             If Me.dgvTVShows.RowCount > 0 Then
+                Me.tmpTitle = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
+                Me.tmpTVDB = Me.dgvTVShows.SelectedRows(0).Cells(9).Value.ToString
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                 ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
@@ -3230,6 +3233,9 @@ Public Class frmMain
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    Me.tmpTitle = Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value.ToString
+                    Me.tmpTVDB = Me.dgvTVShows.Item(9, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -6871,6 +6877,8 @@ doCancel:
     Private Sub SelectShowRow(ByVal iRow As Integer)
 
         Try
+            Me.tmpTitle = Me.dgvTVShows.Item(1, iRow).Value.ToString
+            Me.tmpTVDB = Me.dgvTVShows.Item(9, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
@@ -7203,15 +7211,30 @@ doCancel:
             Case TVDB.Scraper.EventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Show:")
-                Me.tspbLoading.Visible = True
-                Me.tslLoading.Visible = True
 
-                Using dEditShow As New dlgEditShow
-                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                        Master.TVScraper.SaveImages()
-                    End If
-                End Using
+                Select Case iProgress
+                    Case 0 ' show
+                        Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Show:")
+                        Me.tspbLoading.Visible = True
+                        Me.tslLoading.Visible = True
+                        Using dEditShow As New dlgEditShow
+                            If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                                Master.TVScraper.SaveImages()
+                            End If
+                        End Using
+                    Case 1 ' season
+                    Case 2 ' episode
+                        Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Episode:")
+                        Me.tspbLoading.Visible = True
+                        Me.tslLoading.Visible = True
+                        Using dEditEp As New dlgEditEpisode
+                            If dEditEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                                Me.RefreshEpisode(Master.currShow.EpID)
+                            End If
+                        End Using
+                        Me.tspbLoading.Visible = False
+                        Me.tslLoading.Visible = False
+                End Select
 
             Case TVDB.Scraper.EventType.Progress
                 Select Case Parameter.ToString
@@ -7540,6 +7563,10 @@ doCancel:
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
+        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages, Convert.ToInt32(Me.dgvTVEpisodes.Item(11, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
     End Sub
 End Class
 
