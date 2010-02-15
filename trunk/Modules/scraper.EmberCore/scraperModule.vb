@@ -23,12 +23,12 @@ Imports EmberAPI
 Public Class TestEmberScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
     Private Enabled As Boolean = False
-    Private _Name As String = "Teste Scraper"
+    Private _Name As String = "Ember Native Scraper"
     Private _Version As String = "1.0"
 
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
-            Return False
+            Return True
         End Get
     End Property
     ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper

@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EmberScraperModule")> 
+<Assembly: AssemblyTitle("scraper.EmberCore")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("EmberScraperModule")> 
+<Assembly: AssemblyProduct("scraper.EmberCore")> 
 <Assembly: AssemblyCopyright("Copyright ©  2010")> 
 <Assembly: AssemblyTrademark("")> 
 
