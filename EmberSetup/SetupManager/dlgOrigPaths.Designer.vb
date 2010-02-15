@@ -35,8 +35,8 @@ Partial Class dlgOrigPaths
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(505, 178)
+        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.OK_Button.Location = New System.Drawing.Point(505, 241)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -48,7 +48,7 @@ Partial Class dlgOrigPaths
         Me.ListView1.FullRowSelect = True
         Me.ListView1.Location = New System.Drawing.Point(5, 5)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(755, 168)
+        Me.ListView1.Size = New System.Drawing.Size(755, 230)
         Me.ListView1.TabIndex = 1
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -74,8 +74,8 @@ Partial Class dlgOrigPaths
         '
         'Button1
         '
-        Me.Button1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Button1.Location = New System.Drawing.Point(199, 178)
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button1.Location = New System.Drawing.Point(199, 241)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(67, 23)
         Me.Button1.TabIndex = 2
@@ -83,9 +83,9 @@ Partial Class dlgOrigPaths
         '
         'Button2
         '
-        Me.Button2.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Button2.Enabled = False
-        Me.Button2.Location = New System.Drawing.Point(345, 178)
+        Me.Button2.Location = New System.Drawing.Point(345, 241)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(67, 23)
         Me.Button2.TabIndex = 3
@@ -93,8 +93,8 @@ Partial Class dlgOrigPaths
         '
         'Button3
         '
-        Me.Button3.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Button3.Location = New System.Drawing.Point(272, 178)
+        Me.Button3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button3.Location = New System.Drawing.Point(272, 241)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(67, 23)
         Me.Button3.TabIndex = 4
@@ -105,7 +105,7 @@ Partial Class dlgOrigPaths
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(772, 213)
+        Me.ClientSize = New System.Drawing.Size(772, 276)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)

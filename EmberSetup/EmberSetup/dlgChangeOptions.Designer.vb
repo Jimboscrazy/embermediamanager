@@ -29,6 +29,7 @@ Partial Class dlgChangeOptions
         Me.btnGetEMMPath = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.pnlCancel = New System.Windows.Forms.Panel
+        Me.btnCancel = New System.Windows.Forms.Button
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbCancel = New System.Windows.Forms.ProgressBar
         Me.cbCreateFolder = New System.Windows.Forms.CheckBox
@@ -38,7 +39,6 @@ Partial Class dlgChangeOptions
         Me.rbX64 = New System.Windows.Forms.RadioButton
         Me.rbX86 = New System.Windows.Forms.RadioButton
         Me.lblInfo = New System.Windows.Forms.Label
-        Me.btnCancel = New System.Windows.Forms.Button
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
@@ -122,6 +122,17 @@ Partial Class dlgChangeOptions
         Me.pnlCancel.TabIndex = 5
         Me.pnlCancel.Visible = False
         '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Location = New System.Drawing.Point(88, 35)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 25)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
         'lblStatus
         '
         Me.lblStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -202,23 +213,12 @@ Partial Class dlgChangeOptions
         '
         'lblInfo
         '
-        Me.lblInfo.AutoSize = True
-        Me.lblInfo.Location = New System.Drawing.Point(184, 157)
+        Me.lblInfo.Location = New System.Drawing.Point(165, 157)
         Me.lblInfo.Name = "lblInfo"
-        Me.lblInfo.Size = New System.Drawing.Size(45, 13)
+        Me.lblInfo.Size = New System.Drawing.Size(90, 13)
         Me.lblInfo.TabIndex = 7
         Me.lblInfo.Text = "Platform"
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(88, 35)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(75, 25)
-        Me.btnCancel.TabIndex = 2
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnCancel.UseVisualStyleBackColor = True
+        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'dlgChangeOptions
         '

@@ -27,6 +27,7 @@ Imports System.Reflection
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.IO.Compression
+Imports System.Net
 
 Public Class frmMainManager
     Public MasterDB As New DB
@@ -410,7 +411,7 @@ Public Class frmMainManager
                         i.SubItems.Add(o.FTI.Platform)
                         i.Checked = o.UseFile
                         lstFiles.Items.Add(i)
-                        If o.FTI.EmberPath = "\" AndAlso o.FTI.Filename = "Ember Media Manager.exe" Then
+                        If o.FTI.EmberPath = Path.DirectorySeparatorChar AndAlso o.FTI.Filename = "Ember Media Manager.exe" Then
                             If File.Exists(Path.Combine(o.FTI.OriginalPath, "Ember Media Manager.exe")) Then
                                 CurrentEmberVersion = GetEmberVersion(o.FTI.OriginalPath)
                                 CurrentEmberPlatform = GetEmberPlatform(o.FTI.OriginalPath)
@@ -488,9 +489,12 @@ Public Class frmMainManager
                     If Convert.ToBoolean(SQLreader("UseFile")) Then
                         Dim srcFile As String = Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)
                         'Dim dstFile As String = Path.Combine(Path.Combine(AppPath, "Site\Files"), SQLreader("Filename").ToString) ' & ".gz")
-                        Dim dstFile As String = Path.Combine(Path.Combine(AppPath, "Site\Files"), String.Concat(SQLreader("Hash").ToString, ".emm"))
-                        If File.Exists(dstFile) Then File.Delete(dstFile)
-                        File.Copy(srcFile, dstFile)
+                        Dim dstFile As String = Path.Combine(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")), String.Concat(SQLreader("Hash").ToString, ".emm"))
+                        Try
+                            If File.Exists(dstFile) Then File.Delete(dstFile)
+                            File.Copy(srcFile, dstFile)
+                        Catch ex As Exception
+                        End Try
                         'CompressFile(srcFile, dstFile)
                     End If
                 End While
@@ -612,18 +616,18 @@ Public Class frmMainManager
         If Not found Then
             EmberVersions.VersionList.Add(v)
         End If
-        EmberVersions.Save(Path.Combine(AppPath, "site\versionlist.xml"))
+        EmberVersions.Save(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml")))
         Dim _files As New FilesList
         _files.Files = New List(Of FileOfList)
         PopulateFileList(_files)
-        _files.Save(Path.Combine(AppPath, String.Format("site\version_{0}.xml", v.Version)))
+        _files.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "version_{0}.xml"), v.Version)))
         Dim _cmds As New InstallCommands
         _cmds.Command = New List(Of InstallCommand)
-        If Not File.Exists(Path.Combine(AppPath, String.Format("site\commands_base.xml"))) Then
+        If Not File.Exists(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml")))) Then
             For Each s As String In DefaultStrings.Tables
                 _cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = s})
             Next
-            _cmds.Save(Path.Combine(AppPath, String.Format("site\commands_base.xml")))
+            _cmds.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml"))))
             _cmds.Command.Clear()
         End If
 
@@ -648,15 +652,15 @@ Public Class frmMainManager
 
     Private Sub frmMainManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
-        Directory.CreateDirectory(Path.Combine(AppPath, "Site\Files"))
+        Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
         MasterDB.Connect()
         LoadOPaths()
         cbPlatform.SelectedIndex = 0
         LoadExcludes()
         EmberVersions.VersionList.Clear()
-        If File.Exists(Path.Combine(AppPath, "site\versionlist.xml")) Then
+        If File.Exists(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
             Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
-            Using xmlSW As New StreamReader(Path.Combine(AppPath, "site\versionlist.xml"))
+            Using xmlSW As New StreamReader(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml")))
                 EmberVersions = xmlSer.Deserialize(xmlSW)
             End Using
             LoadVersions()
@@ -757,8 +761,8 @@ Public Class frmMainManager
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         pnlWork.Visible = True
         Application.DoEvents()
-        DeleteDirectory(Path.Combine(AppPath, "Site\Files"))
-        Directory.CreateDirectory(Path.Combine(AppPath, "Site\Files"))
+        DeleteDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
+        Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
         PackFiles()
         pnlWork.Visible = False
     End Sub
@@ -936,5 +940,61 @@ Public Class frmMainManager
             ShowCommands()
         End If
         AddCommand = False
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        ' Dim state = New FtpState
+        Dim ftp As New FTPClass
+        Dim dlg As New Uploading
+        Try
+            dlg.TopMost = True
+            dlg.Show()
+            dlg.Label1.Text = "Uploading Configuration"
+            Application.DoEvents()
+            ftp.setRemoteHost(TextBox3.Text)
+            ftp.setRemoteUser(TextBox1.Text)
+            ftp.setRemotePass(TextBox2.Text)
+            ftp.setRemotePath("/opt/redmine/redmine-0.8.7/public/Updates/")
+            ftp.login()
+            Dim dirRoot As String()
+            Dim dirFiles As String()
+            'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
+            'ftp.cmdPasv2Port()
+            dirRoot = ftp.getFileList("")
+            If Not dirRoot.Contains("Files") Then
+                ftp.mkdir("Files")
+            End If
+
+            For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
+                ftp.upload(s)
+                ftp.chmod("644", Path.GetFileName(s))
+            Next
+            ftp.chdir("Files")
+            dirFiles = ftp.getFileList("")
+            Dim inDisk As Integer = Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files"))).Count
+            Dim done As Integer = 0
+            Dim skiped As Integer = 0
+
+
+            For Each s In Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
+                Try
+                    If Not dirFiles.Contains(Path.GetFileName(s)) Then
+                        ftp.upload(s)
+                        ftp.chmod("644", Path.GetFileName(s))
+                        done += 1
+                    Else
+                        skiped += 1
+                    End If
+                    dlg.Label1.Text = String.Format(" File {0} of {1} - Uploaded {2} , Skiped {3}", done + skiped, inDisk, done, skiped)
+                    dlg.Refresh()
+                    Application.DoEvents()
+                Catch ex As Exception
+                End Try
+            Next
+            ftp.close()
+        Catch ex As Exception
+        End Try
+        dlg.Close()
+
     End Sub
 End Class
