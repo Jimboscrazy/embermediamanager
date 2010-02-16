@@ -43,7 +43,7 @@ Public Class frmMain
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
-    Private ExternalModulesManager As ModulesManager
+    'Private ExternalModulesManager As ModulesManager
     Private bsMedia As New BindingSource
     Private bsShows As New BindingSource
     Private bsSeasons As New BindingSource
@@ -363,10 +363,10 @@ Public Class frmMain
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
         'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
-        ExternalModulesManager = New ModulesManager
-        ExternalModulesManager.RuntimeObjects.MenuMediaList = Me.mnuMediaList
-        ExternalModulesManager.RuntimeObjects.MediaList = Me.dgvMediaList
-        ExternalModulesManager.LoadAllModules()
+        'ExternalModulesManager = New ModulesManager
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.mnuMediaList
+        ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMediaList
+        ModulesManager.Instance.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -2541,8 +2541,9 @@ Public Class frmMain
 
         If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
+        If Me.bwNewScraper.IsBusy Then Me.bwNewScraper.CancelAsync()
 
-        While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+        While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy
             Application.DoEvents()
         End While
     End Sub
@@ -5675,18 +5676,40 @@ doCancel:
     'Move this to Top when finished
     Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
     Private MediaListScraperIndex As Integer = -1
-    Private Sub NewScrapeDataStart()
-        Me.tslLoading.Visible = True
-        Me.tspbLoading.Visible = True
+    Private Sub NewScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tspbLoading.Style = ProgressBarStyle.Continuous
-        Application.DoEvents()
         Me.SetControlsEnabled(False)
-        Me.tslLoading.Text = "New Scraper Test Only"
-        bwNewScraper.RunWorkerAsync()
+        Me.tspbLoading.Value = Me.tspbLoading.Minimum
+        Me.tspbLoading.Maximum = Me.dgvMediaList.SelectedRows.Count
+        Select Case sType
+            Case Enums.ScrapeType.FullAsk
+                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+            Case Enums.ScrapeType.FullAuto
+                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.CleanFolders
+                Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
+            Case Enums.ScrapeType.CopyBD
+                Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
+            Case Enums.ScrapeType.UpdateAuto
+                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+            Case Enums.ScrapeType.UpdateAsk
+                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        End Select
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+        Application.DoEvents()
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        bwNewScraper.WorkerSupportsCancellation = True
+        bwNewScraper.WorkerReportsProgress = True
+        bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
     End Sub
     Private Sub NewScrapeDataEnd()
         Me.tslLoading.Visible = False
@@ -5698,29 +5721,40 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
+        'Will Need to make a cleanup on Arguments when old scraper code is removed
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        'We gonna use MediaList selected items from now on ... no need to mark movies anymore ... but maybe we still can use it!?
         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+            If bwNewScraper.CancellationPending Then Exit For
+            bwNewScraper.ReportProgress(1)
             Dim indX As Integer = sRow.Index
             MediaListScraperIndex = indX
             Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
-            AddHandler ExternalModulesManager.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-            ExternalModulesManager.ScrapeOnly(DBScrapeMovie.Movie, Master.DefaultOptions)
-            ExternalModulesManager.PostScrapeOnly(DBScrapeMovie, Enums.ScrapeType.FullAsk)
-            RemoveHandler ExternalModulesManager.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-            Dim filename As String = DBScrapeMovie.Movie.Title
+            AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+            ModulesManager.Instance.ScrapeOnly(DBScrapeMovie.Movie, Args.Options)
+            ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+            RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
             Master.currMovie = DBScrapeMovie
-            Using dEditMovie As New dlgEditMovie
-                Select Case dEditMovie.ShowDialog()
-                End Select
-            End Using
+            If bwNewScraper.CancellationPending Then Exit For
+            If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
+                OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                'Any Non Auto open EditMovie
+                Using dEditMovie As New dlgEditMovie
+                    Select Case dEditMovie.ShowDialog()
+                    End Select
+                End Using
+            End If
         Next
+    End Sub
+    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
+        Me.tspbLoading.Value += e.ProgressPercentage
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
         NewScrapeDataEnd()
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
         Me.dgvMediaList.Rows(MediaListScraperIndex).Cells(col).Value = v
-        Me.dgvMediaList.Refresh()
     End Sub
 
     Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
@@ -5935,7 +5969,7 @@ doCancel:
         ' TODO TODO TODO
         'this is the current proposed replacement for IMDB.GetMovieInfoAsync
         'need to become async? ....
-        ExternalModulesManager.FullScrape(IMDBMovie, Options)
+        ModulesManager.Instance.FullScrape(IMDBMovie, Options)
     End Sub
 
     Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
@@ -7313,7 +7347,7 @@ doCancel:
     End Sub
 
     Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
-        ExternalModulesManager.Setup()
+        ModulesManager.Instance.Setup()
     End Sub
 
     Private Sub SetAVImages(ByVal aImage As Image())
@@ -7623,7 +7657,7 @@ doCancel:
     End Sub
 
     Private Sub ScrapingTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScrapingTestToolStripMenuItem.Click
-        NewScrapeDataStart()
+        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
