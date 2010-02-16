@@ -30,6 +30,9 @@
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: Delete Season
 'TODO: Remove Seasonfrom DB
+'TODO: Option to not filter episode titles
+'TODO: "Change Episode" - popup list of known episodes to select from
+'TODO: Automatic scrapers
 'TODO: ?????
 'TODO: PROFIT!!!!
 
