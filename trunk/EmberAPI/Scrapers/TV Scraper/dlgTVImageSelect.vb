@@ -33,6 +33,7 @@
 'TODO: Option to not filter episode titles
 'TODO: "Change Episode" - popup list of known episodes to select from
 'TODO: Automatic scrapers
+'TODO: Handle missing episodes
 'TODO: ?????
 'TODO: PROFIT!!!!
 

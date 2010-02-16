@@ -865,9 +865,11 @@ Namespace TVDB
                             cResult = New TVSearchResults
                             cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                             cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                            If Not IsNothing(xS.Element("language")) Then
+                            If Not IsNothing(xS.Element("language")) AndAlso sInfo.Langs.Count > 0 Then
                                 sLang = xS.Element("language").Value
                                 cResult.Language = sInfo.Langs.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            Else
+                                cResult.Language = New Containers.TVLanguage With {.LongLang = "Unknown", .ShortLang = "?"}
                             End If
                             cResult.Aired = If(Not IsNothing(xS.Element("FirstAired")), xS.Element("FirstAired").Value, String.Empty)
                             cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value, String.Empty)
@@ -1152,7 +1154,7 @@ qExit:
                         Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                    SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", _ID, ";")
+                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, ";")
                                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                         While SQLReader.Read
                                             If Not Convert.ToBoolean(SQLReader("Lock")) Then tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
