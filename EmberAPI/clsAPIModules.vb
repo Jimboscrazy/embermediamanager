@@ -32,7 +32,19 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Public Class ModulesManager
+    'Singleton Instace for module manager .. allways use this one
+    Private Shared Singleton As ModulesManager = Nothing
+    Public Shared ReadOnly Property Instance() As ModulesManager
+        Get
+            If (Singleton Is Nothing) Then
+                Singleton = New ModulesManager()
+            End If
+            Return Singleton
+        End Get
+    End Property
+
     Class EmberRuntimeObjects
+
         'all runtime object (not classes or shared methods) that need to be exposed to Modules
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView

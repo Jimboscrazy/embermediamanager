@@ -258,6 +258,7 @@ Partial Class dlgSettings
         Me.pnlSources = New System.Windows.Forms.Panel
         Me.btnEditSource = New System.Windows.Forms.Button
         Me.GroupBox19 = New System.Windows.Forms.GroupBox
+        Me.chkScanOrderModify = New System.Windows.Forms.CheckBox
         Me.chkSortBeforeScan = New System.Windows.Forms.CheckBox
         Me.chkIgnoreLastScan = New System.Windows.Forms.CheckBox
         Me.chkCleanDB = New System.Windows.Forms.CheckBox
@@ -322,6 +323,7 @@ Partial Class dlgSettings
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.gbMiscTVSourceOpts = New System.Windows.Forms.GroupBox
+        Me.chkTVScanOrderModify = New System.Windows.Forms.CheckBox
         Me.chkTVIgnoreLastScan = New System.Windows.Forms.CheckBox
         Me.chkTVCleanDB = New System.Windows.Forms.CheckBox
         Me.btnAddTVSource = New System.Windows.Forms.Button
@@ -574,8 +576,6 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.chkTVScanOrderModify = New System.Windows.Forms.CheckBox
-        Me.chkScanOrderModify = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -3215,6 +3215,18 @@ Partial Class dlgSettings
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
         '
+        'chkScanOrderModify
+        '
+        Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 179)
+        Me.chkScanOrderModify.Name = "chkScanOrderModify"
+        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 19)
+        Me.chkScanOrderModify.TabIndex = 74
+        Me.chkScanOrderModify.Text = "Scan in order of last write time."
+        Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScanOrderModify.UseVisualStyleBackColor = True
+        '
         'chkSortBeforeScan
         '
         Me.chkSortBeforeScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3526,8 +3538,8 @@ Partial Class dlgSettings
         '
         'TabControl2
         '
-        Me.TabControl2.Controls.Add(Me.TabPage3)
         Me.TabControl2.Controls.Add(Me.TabPage4)
+        Me.TabControl2.Controls.Add(Me.TabPage3)
         Me.TabControl2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.TabControl2.Location = New System.Drawing.Point(0, 3)
         Me.TabControl2.Name = "TabControl2"
@@ -3930,6 +3942,18 @@ Partial Class dlgSettings
         Me.gbMiscTVSourceOpts.TabIndex = 5
         Me.gbMiscTVSourceOpts.TabStop = False
         Me.gbMiscTVSourceOpts.Text = "Miscellaneous Options"
+        '
+        'chkTVScanOrderModify
+        '
+        Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(6, 61)
+        Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
+        Me.chkTVScanOrderModify.Size = New System.Drawing.Size(142, 43)
+        Me.chkTVScanOrderModify.TabIndex = 73
+        Me.chkTVScanOrderModify.Text = "Scan in order of last write time."
+        Me.chkTVScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVScanOrderModify.UseVisualStyleBackColor = True
         '
         'chkTVIgnoreLastScan
         '
@@ -6735,30 +6759,6 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'chkTVScanOrderModify
-        '
-        Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(6, 61)
-        Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
-        Me.chkTVScanOrderModify.Size = New System.Drawing.Size(142, 43)
-        Me.chkTVScanOrderModify.TabIndex = 73
-        Me.chkTVScanOrderModify.Text = "Scan in order of last write time."
-        Me.chkTVScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVScanOrderModify.UseVisualStyleBackColor = True
-        '
-        'chkScanOrderModify
-        '
-        Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 179)
-        Me.chkScanOrderModify.Name = "chkScanOrderModify"
-        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 19)
-        Me.chkScanOrderModify.TabIndex = 74
-        Me.chkScanOrderModify.Text = "Scan in order of last write time."
-        Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScanOrderModify.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6773,6 +6773,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTrailers)
@@ -6784,7 +6785,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
