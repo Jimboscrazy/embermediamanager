@@ -716,8 +716,10 @@ Namespace TVDB
                                 If Not IsNothing(xE) Then
                                     With Episode.TVEp
                                         .Title = xE.Element("EpisodeName").Value
-                                        .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
-                                        .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
+                                        'we already have the season and episode numbers
+                                        'will need this when implementing search by title
+                                        '.Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
+                                        '.Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
                                         .Aired = xE.Element("FirstAired").Value
                                         .Rating = xE.Element("Rating").Value
                                         .Plot = xE.Element("Overview").Value
