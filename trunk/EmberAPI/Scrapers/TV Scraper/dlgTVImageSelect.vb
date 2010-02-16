@@ -28,8 +28,8 @@
 'TODO: Change season images
 'TODO: Check if we have information for a show or episode when first scanning in
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
-'TODO: Delete Show/Season/Episode
-'TODO: Remove Show/Season/Episode from DB
+'TODO: Delete Season
+'TODO: Remove Seasonfrom DB
 'TODO: ?????
 'TODO: PROFIT!!!!
 

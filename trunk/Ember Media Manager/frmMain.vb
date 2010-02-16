@@ -1238,6 +1238,7 @@ Public Class frmMain
                 e.Handled = True
 
             End If
+
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2596,6 +2597,7 @@ Public Class frmMain
 
     Private Sub RemoveFromDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveFromDatabaseToolStripMenuItem.Click
         Try
+            Me.ClearInfo()
 
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                 Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value))
@@ -7074,10 +7076,11 @@ doCancel:
 
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(11), ComponentModel.ListSortDirection.Ascending)
 
+                .dgvTVEpisodes.SelectedRows(0).Selected = False
+
             End With
         End If
 
-        Me.dgvTVEpisodes.SelectedRows(0).Selected = False
         Me.dgvTVEpisodes.Enabled = True
     End Sub
 
@@ -7567,6 +7570,81 @@ doCancel:
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
         Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages, Convert.ToInt32(Me.dgvTVEpisodes.Item(11, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
+    End Sub
+
+    Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
+        Me.ClearInfo()
+
+        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+            Next
+            SQLTrans.Commit()
+        End Using
+
+        Me.FillList(0)
+    End Sub
+
+    Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVShow.Click
+        'TODO: Add method for confirmation dialog
+        If MsgBox(Master.eLang.GetString(999, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(999, "Are you sure?")) = MsgBoxResult.Yes Then
+            Me.ClearInfo()
+
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    FileUtils.Delete.DeleteDirectory(sRow.Cells(7).Value.ToString)
+                    Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                Next
+                SQLTrans.Commit()
+            End Using
+
+            Me.FillList(0)
+        End If
+    End Sub
+
+    Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVEp.Click
+        Me.ClearInfo()
+
+        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+            Next
+            SQLTrans.Commit()
+        End Using
+
+        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, Me.currSeasonRow).Value))
+    End Sub
+
+    Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVEp.Click
+        'TODO: Add method for confirmation dialog
+        If MsgBox(Master.eLang.GetString(999, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(999, "Are you sure?")) = MsgBoxResult.Yes Then
+            Dim ePath As String = String.Empty
+
+            Me.ClearInfo()
+
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(8).Value.ToString, ";")
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                            If SQLReader.HasRows Then
+                                ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
+                                File.Delete(SQLReader("TVEpPath").ToString)
+                                File.Delete(String.Concat(ePath, ".nfo"))
+                                File.Delete(String.Concat(ePath, ".tbn"))
+                                File.Delete(String.Concat(ePath, ".jpg"))
+                                File.Delete(String.Concat(ePath, "-fanart.jpg"))
+                                File.Delete(String.Concat(ePath, ".fanart.jpg"))
+                                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                            End If
+                        End Using
+                    Next
+                End Using
+                SQLTrans.Commit()
+            End Using
+
+            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, Me.currSeasonRow).Value))
+        End If
     End Sub
 End Class
 

@@ -457,6 +457,8 @@ Namespace FileUtils
         ''' <param name="sPath">Full path of directory to delete</param>
         Public Shared Sub DeleteDirectory(ByVal sPath As String)
             Try
+                If String.IsNullOrEmpty(sPath) Then Return
+
                 If Directory.Exists(sPath) Then
 
                     Dim Dirs As New List(Of String)

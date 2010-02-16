@@ -466,16 +466,6 @@ Partial Class dlgSettings
         Me.cbTVLanguage = New System.Windows.Forms.ComboBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.cbForce = New System.Windows.Forms.ComboBox
-        Me.chkForceTitle = New System.Windows.Forms.CheckBox
-        Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
-        Me.chkCastWithImg = New System.Windows.Forms.CheckBox
-        Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
-        Me.chkFullCast = New System.Windows.Forms.CheckBox
-        Me.chkFullCrew = New System.Windows.Forms.CheckBox
-        Me.cbCert = New System.Windows.Forms.ComboBox
-        Me.chkCert = New System.Windows.Forms.CheckBox
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.Label46 = New System.Windows.Forms.Label
         Me.chkTop250 = New System.Windows.Forms.CheckBox
@@ -527,6 +517,16 @@ Partial Class dlgSettings
         Me.chkLockRating = New System.Windows.Forms.CheckBox
         Me.chkLockTagline = New System.Windows.Forms.CheckBox
         Me.chkLockTitle = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.cbForce = New System.Windows.Forms.ComboBox
+        Me.chkForceTitle = New System.Windows.Forms.CheckBox
+        Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
+        Me.chkCastWithImg = New System.Windows.Forms.CheckBox
+        Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
+        Me.chkFullCast = New System.Windows.Forms.CheckBox
+        Me.chkFullCrew = New System.Windows.Forms.CheckBox
+        Me.cbCert = New System.Windows.Forms.ComboBox
+        Me.chkCert = New System.Windows.Forms.CheckBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox30 = New System.Windows.Forms.GroupBox
         Me.Label18 = New System.Windows.Forms.Label
@@ -660,12 +660,12 @@ Partial Class dlgSettings
         Me.gbLanguage.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox26.SuspendLayout()
         Me.GroupBox28.SuspendLayout()
         Me.gbRTFormat.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
@@ -5514,129 +5514,6 @@ Partial Class dlgSettings
         Me.TabPage1.Text = "General"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.cbForce)
-        Me.GroupBox1.Controls.Add(Me.chkForceTitle)
-        Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
-        Me.GroupBox1.Controls.Add(Me.chkCastWithImg)
-        Me.GroupBox1.Controls.Add(Me.chkUseCertForMPAA)
-        Me.GroupBox1.Controls.Add(Me.chkFullCast)
-        Me.GroupBox1.Controls.Add(Me.chkFullCrew)
-        Me.GroupBox1.Controls.Add(Me.cbCert)
-        Me.GroupBox1.Controls.Add(Me.chkCert)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(306, 168)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(289, 192)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Miscellaneous"
-        '
-        'cbForce
-        '
-        Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbForce.Enabled = False
-        Me.cbForce.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbForce.FormattingEnabled = True
-        Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbForce.Location = New System.Drawing.Point(139, 118)
-        Me.cbForce.Name = "cbForce"
-        Me.cbForce.Size = New System.Drawing.Size(144, 21)
-        Me.cbForce.Sorted = True
-        Me.cbForce.TabIndex = 65
-        '
-        'chkForceTitle
-        '
-        Me.chkForceTitle.AutoSize = True
-        Me.chkForceTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkForceTitle.Location = New System.Drawing.Point(6, 119)
-        Me.chkForceTitle.Name = "chkForceTitle"
-        Me.chkForceTitle.Size = New System.Drawing.Size(135, 17)
-        Me.chkForceTitle.TabIndex = 64
-        Me.chkForceTitle.Text = "Force Title Language:"
-        Me.chkForceTitle.UseVisualStyleBackColor = True
-        '
-        'chkOutlineForPlot
-        '
-        Me.chkOutlineForPlot.AutoSize = True
-        Me.chkOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 67)
-        Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
-        Me.chkOutlineForPlot.Size = New System.Drawing.Size(206, 17)
-        Me.chkOutlineForPlot.TabIndex = 3
-        Me.chkOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
-        Me.chkOutlineForPlot.UseVisualStyleBackColor = True
-        '
-        'chkCastWithImg
-        '
-        Me.chkCastWithImg.AutoSize = True
-        Me.chkCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 35)
-        Me.chkCastWithImg.Name = "chkCastWithImg"
-        Me.chkCastWithImg.Size = New System.Drawing.Size(189, 17)
-        Me.chkCastWithImg.TabIndex = 1
-        Me.chkCastWithImg.Text = "Scrape Only Actors With Images"
-        Me.chkCastWithImg.UseVisualStyleBackColor = True
-        '
-        'chkUseCertForMPAA
-        '
-        Me.chkUseCertForMPAA.AutoSize = True
-        Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(13, 101)
-        Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
-        Me.chkUseCertForMPAA.Size = New System.Drawing.Size(162, 17)
-        Me.chkUseCertForMPAA.TabIndex = 6
-        Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
-        Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
-        '
-        'chkFullCast
-        '
-        Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCast.Location = New System.Drawing.Point(6, 19)
-        Me.chkFullCast.Name = "chkFullCast"
-        Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
-        Me.chkFullCast.TabIndex = 0
-        Me.chkFullCast.Text = "Scrape Full Cast"
-        Me.chkFullCast.UseVisualStyleBackColor = True
-        '
-        'chkFullCrew
-        '
-        Me.chkFullCrew.AutoSize = True
-        Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCrew.Location = New System.Drawing.Point(6, 51)
-        Me.chkFullCrew.Name = "chkFullCrew"
-        Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
-        Me.chkFullCrew.TabIndex = 2
-        Me.chkFullCrew.Text = "Scrape Full Crew"
-        Me.chkFullCrew.UseVisualStyleBackColor = True
-        '
-        'cbCert
-        '
-        Me.cbCert.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbCert.Enabled = False
-        Me.cbCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbCert.FormattingEnabled = True
-        Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(175, 84)
-        Me.cbCert.Name = "cbCert"
-        Me.cbCert.Size = New System.Drawing.Size(108, 21)
-        Me.cbCert.Sorted = True
-        Me.cbCert.TabIndex = 5
-        '
-        'chkCert
-        '
-        Me.chkCert.AutoSize = True
-        Me.chkCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCert.Location = New System.Drawing.Point(6, 85)
-        Me.chkCert.Name = "chkCert"
-        Me.chkCert.Size = New System.Drawing.Size(168, 17)
-        Me.chkCert.TabIndex = 4
-        Me.chkCert.Text = "Use Certification Language:"
-        Me.chkCert.UseVisualStyleBackColor = True
-        '
         'gbOptions
         '
         Me.gbOptions.Controls.Add(Me.Label46)
@@ -6230,6 +6107,129 @@ Partial Class dlgSettings
         Me.chkLockTitle.Text = "Lock Title"
         Me.chkLockTitle.UseVisualStyleBackColor = True
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.cbForce)
+        Me.GroupBox1.Controls.Add(Me.chkForceTitle)
+        Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
+        Me.GroupBox1.Controls.Add(Me.chkCastWithImg)
+        Me.GroupBox1.Controls.Add(Me.chkUseCertForMPAA)
+        Me.GroupBox1.Controls.Add(Me.chkFullCast)
+        Me.GroupBox1.Controls.Add(Me.chkFullCrew)
+        Me.GroupBox1.Controls.Add(Me.cbCert)
+        Me.GroupBox1.Controls.Add(Me.chkCert)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(306, 168)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(289, 192)
+        Me.GroupBox1.TabIndex = 0
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Miscellaneous"
+        '
+        'cbForce
+        '
+        Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbForce.Enabled = False
+        Me.cbForce.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbForce.FormattingEnabled = True
+        Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForce.Location = New System.Drawing.Point(139, 118)
+        Me.cbForce.Name = "cbForce"
+        Me.cbForce.Size = New System.Drawing.Size(144, 21)
+        Me.cbForce.Sorted = True
+        Me.cbForce.TabIndex = 65
+        '
+        'chkForceTitle
+        '
+        Me.chkForceTitle.AutoSize = True
+        Me.chkForceTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkForceTitle.Location = New System.Drawing.Point(6, 119)
+        Me.chkForceTitle.Name = "chkForceTitle"
+        Me.chkForceTitle.Size = New System.Drawing.Size(135, 17)
+        Me.chkForceTitle.TabIndex = 64
+        Me.chkForceTitle.Text = "Force Title Language:"
+        Me.chkForceTitle.UseVisualStyleBackColor = True
+        '
+        'chkOutlineForPlot
+        '
+        Me.chkOutlineForPlot.AutoSize = True
+        Me.chkOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 67)
+        Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
+        Me.chkOutlineForPlot.Size = New System.Drawing.Size(206, 17)
+        Me.chkOutlineForPlot.TabIndex = 3
+        Me.chkOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
+        Me.chkOutlineForPlot.UseVisualStyleBackColor = True
+        '
+        'chkCastWithImg
+        '
+        Me.chkCastWithImg.AutoSize = True
+        Me.chkCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 35)
+        Me.chkCastWithImg.Name = "chkCastWithImg"
+        Me.chkCastWithImg.Size = New System.Drawing.Size(189, 17)
+        Me.chkCastWithImg.TabIndex = 1
+        Me.chkCastWithImg.Text = "Scrape Only Actors With Images"
+        Me.chkCastWithImg.UseVisualStyleBackColor = True
+        '
+        'chkUseCertForMPAA
+        '
+        Me.chkUseCertForMPAA.AutoSize = True
+        Me.chkUseCertForMPAA.Enabled = False
+        Me.chkUseCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(13, 101)
+        Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
+        Me.chkUseCertForMPAA.Size = New System.Drawing.Size(162, 17)
+        Me.chkUseCertForMPAA.TabIndex = 6
+        Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
+        Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
+        '
+        'chkFullCast
+        '
+        Me.chkFullCast.AutoSize = True
+        Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFullCast.Location = New System.Drawing.Point(6, 19)
+        Me.chkFullCast.Name = "chkFullCast"
+        Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
+        Me.chkFullCast.TabIndex = 0
+        Me.chkFullCast.Text = "Scrape Full Cast"
+        Me.chkFullCast.UseVisualStyleBackColor = True
+        '
+        'chkFullCrew
+        '
+        Me.chkFullCrew.AutoSize = True
+        Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFullCrew.Location = New System.Drawing.Point(6, 51)
+        Me.chkFullCrew.Name = "chkFullCrew"
+        Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
+        Me.chkFullCrew.TabIndex = 2
+        Me.chkFullCrew.Text = "Scrape Full Crew"
+        Me.chkFullCrew.UseVisualStyleBackColor = True
+        '
+        'cbCert
+        '
+        Me.cbCert.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbCert.Enabled = False
+        Me.cbCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbCert.FormattingEnabled = True
+        Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbCert.Location = New System.Drawing.Point(175, 84)
+        Me.cbCert.Name = "cbCert"
+        Me.cbCert.Size = New System.Drawing.Size(108, 21)
+        Me.cbCert.Sorted = True
+        Me.cbCert.TabIndex = 5
+        '
+        'chkCert
+        '
+        Me.chkCert.AutoSize = True
+        Me.chkCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCert.Location = New System.Drawing.Point(6, 85)
+        Me.chkCert.Name = "chkCert"
+        Me.chkCert.Size = New System.Drawing.Size(168, 17)
+        Me.chkCert.TabIndex = 4
+        Me.chkCert.Text = "Use Certification Language:"
+        Me.chkCert.UseVisualStyleBackColor = True
+        '
         'TabPage2
         '
         Me.TabPage2.Controls.Add(Me.GroupBox30)
@@ -6745,6 +6745,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlImages)
@@ -6756,7 +6757,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6901,8 +6901,6 @@ Partial Class dlgSettings
         Me.gbLanguage.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.GroupBox26.ResumeLayout(False)
@@ -6912,6 +6910,8 @@ Partial Class dlgSettings
         Me.gbRTFormat.ResumeLayout(False)
         Me.gbRTFormat.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox30.ResumeLayout(False)
         Me.GroupBox30.PerformLayout()
