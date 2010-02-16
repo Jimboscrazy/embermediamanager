@@ -25,7 +25,7 @@ Public Class EmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
     Private _Version As String = "1.0"
-    Public Event ScraperUpdateMediaList(ByVal col As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
+    Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
             Return True
@@ -57,7 +57,9 @@ Public Class EmberScraperModule
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
         Dim Poster As New EmberAPI.Images
+        Dim Fanart As New EmberAPI.Images
         Dim pResults As EmberAPI.Containers.ImgResult
+        Dim fResults As EmberAPI.Containers.ImgResult
         Poster.Clear()
         If Poster.IsAllowedToDownload(DBMovie, Enums.ImageType.Posters) Then
             pResults = New Containers.ImgResult
@@ -67,11 +69,12 @@ Public Class EmberScraperModule
                     If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                         DBMovie.PosterPath = pResults.ImagePath
                         'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
+                        RaiseEvent ScraperUpdateMediaList(4, True)
+                        Application.DoEvents() 'for debug
                         If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                             DBMovie.Movie.Thumb = pResults.Posters
                         End If
                     End If
-                    RaiseEvent ScraperUpdateMediaList(1)
                 ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk Then
                     MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                     Using dImgSelect As New dlgImgSelect
@@ -79,8 +82,41 @@ Public Class EmberScraperModule
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                             DBMovie.PosterPath = pResults.ImagePath
                             'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
+                            RaiseEvent ScraperUpdateMediaList(4, True)
+                            Application.DoEvents() 'for debug
                             If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                 DBMovie.Movie.Thumb = pResults.Posters
+                            End If
+                        End If
+                    End Using
+                End If
+            End If
+        End If
+        Dim didEts As Boolean
+        Fanart.Clear()
+        If Fanart.IsAllowedToDownload(DBMovie, Enums.ImageType.Fanart) Then
+            fResults = New Containers.ImgResult
+            didEts = True
+            If Fanart.GetPreferredImage(DBMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, DBMovie.Filename, Master.GlobalScrapeMod.Extra, If(ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
+                If Not IsNothing(Fanart.Image) Then
+                    fResults.ImagePath = Fanart.SaveAsFanart(DBMovie)
+                    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                        DBMovie.FanartPath = fResults.ImagePath
+                        'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                            DBMovie.Movie.Fanart = fResults.Fanart
+                        End If
+                    End If
+                ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk Then
+                    MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
+
+                    Using dImgSelect As New dlgImgSelect
+                        fResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Fanart)
+                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                            DBMovie.FanartPath = fResults.ImagePath
+                            'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                DBMovie.Movie.Fanart = fResults.Fanart
                             End If
                         End If
                     End Using

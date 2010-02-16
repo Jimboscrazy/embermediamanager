@@ -114,6 +114,10 @@ Partial Class frmMain
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrapeShow = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuChangeShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator
+        Me.RemoveShowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRemoveTVShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuDeleteTVShow = New System.Windows.Forms.ToolStripMenuItem
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
         Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -128,6 +132,10 @@ Partial Class frmMain
         Me.cmnuEditEpisode = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrapeEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator
+        Me.RemoveEpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRemoveTVEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuDeleteTVEp = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlListTop = New System.Windows.Forms.Panel
         Me.btnMarkAll = New System.Windows.Forms.Button
         Me.pnlSearch = New System.Windows.Forms.Panel
@@ -334,14 +342,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator
-        Me.RemoveShowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuDeleteTVShow = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRemoveTVShow = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator
-        Me.RemoveEpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRemoveTVEp = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuDeleteTVEp = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1146,6 +1146,33 @@ Partial Class frmMain
         Me.cmnuChangeShow.Size = New System.Drawing.Size(175, 22)
         Me.cmnuChangeShow.Text = "Change Show"
         '
+        'ToolStripSeparator11
+        '
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(172, 6)
+        '
+        'RemoveShowToolStripMenuItem
+        '
+        Me.RemoveShowToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVShow, Me.cmnuDeleteTVShow})
+        Me.RemoveShowToolStripMenuItem.Image = CType(resources.GetObject("RemoveShowToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveShowToolStripMenuItem.Name = "RemoveShowToolStripMenuItem"
+        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
+        Me.RemoveShowToolStripMenuItem.Text = "Remove"
+        '
+        'cmnuRemoveTVShow
+        '
+        Me.cmnuRemoveTVShow.Image = CType(resources.GetObject("cmnuRemoveTVShow.Image"), System.Drawing.Image)
+        Me.cmnuRemoveTVShow.Name = "cmnuRemoveTVShow"
+        Me.cmnuRemoveTVShow.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuRemoveTVShow.Text = "Remove from Database"
+        '
+        'cmnuDeleteTVShow
+        '
+        Me.cmnuDeleteTVShow.Image = CType(resources.GetObject("cmnuDeleteTVShow.Image"), System.Drawing.Image)
+        Me.cmnuDeleteTVShow.Name = "cmnuDeleteTVShow"
+        Me.cmnuDeleteTVShow.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuDeleteTVShow.Text = "Delete TV Show"
+        '
         'SplitContainer2
         '
         Me.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill
@@ -1226,8 +1253,7 @@ Partial Class frmMain
         '
         Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.ToolStripSeparator12, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 154)
-        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 204)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 182)
         '
         'cmnuEpTitle
         '
@@ -1285,6 +1311,33 @@ Partial Class frmMain
         Me.cmnuRescrapeEp.Name = "cmnuRescrapeEp"
         Me.cmnuRescrapeEp.Size = New System.Drawing.Size(175, 22)
         Me.cmnuRescrapeEp.Text = "Re-scrape theTVDB"
+        '
+        'ToolStripSeparator12
+        '
+        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(172, 6)
+        '
+        'RemoveEpToolStripMenuItem
+        '
+        Me.RemoveEpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVEp, Me.cmnuDeleteTVEp})
+        Me.RemoveEpToolStripMenuItem.Image = CType(resources.GetObject("RemoveEpToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveEpToolStripMenuItem.Name = "RemoveEpToolStripMenuItem"
+        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
+        Me.RemoveEpToolStripMenuItem.Text = "Remove"
+        '
+        'cmnuRemoveTVEp
+        '
+        Me.cmnuRemoveTVEp.Image = CType(resources.GetObject("cmnuRemoveTVEp.Image"), System.Drawing.Image)
+        Me.cmnuRemoveTVEp.Name = "cmnuRemoveTVEp"
+        Me.cmnuRemoveTVEp.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuRemoveTVEp.Text = "Remove from Database"
+        '
+        'cmnuDeleteTVEp
+        '
+        Me.cmnuDeleteTVEp.Image = CType(resources.GetObject("cmnuDeleteTVEp.Image"), System.Drawing.Image)
+        Me.cmnuDeleteTVEp.Name = "cmnuDeleteTVEp"
+        Me.cmnuDeleteTVEp.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuDeleteTVEp.Text = "Delete Episode"
         '
         'pnlListTop
         '
@@ -3132,60 +3185,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'ToolStripSeparator11
-        '
-        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(172, 6)
-        '
-        'RemoveShowToolStripMenuItem
-        '
-        Me.RemoveShowToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVShow, Me.cmnuDeleteTVShow})
-        Me.RemoveShowToolStripMenuItem.Image = CType(resources.GetObject("RemoveShowToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RemoveShowToolStripMenuItem.Name = "RemoveShowToolStripMenuItem"
-        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
-        Me.RemoveShowToolStripMenuItem.Text = "Remove"
-        '
-        'cmnuDeleteTVShow
-        '
-        Me.cmnuDeleteTVShow.Image = CType(resources.GetObject("cmnuDeleteTVShow.Image"), System.Drawing.Image)
-        Me.cmnuDeleteTVShow.Name = "cmnuDeleteTVShow"
-        Me.cmnuDeleteTVShow.Size = New System.Drawing.Size(197, 22)
-        Me.cmnuDeleteTVShow.Text = "Delete TV Show"
-        '
-        'cmnuRemoveTVShow
-        '
-        Me.cmnuRemoveTVShow.Image = CType(resources.GetObject("cmnuRemoveTVShow.Image"), System.Drawing.Image)
-        Me.cmnuRemoveTVShow.Name = "cmnuRemoveTVShow"
-        Me.cmnuRemoveTVShow.Size = New System.Drawing.Size(197, 22)
-        Me.cmnuRemoveTVShow.Text = "Remove from Database"
-        '
-        'ToolStripSeparator12
-        '
-        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(172, 6)
-        '
-        'RemoveEpToolStripMenuItem
-        '
-        Me.RemoveEpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVEp, Me.cmnuDeleteTVEp})
-        Me.RemoveEpToolStripMenuItem.Image = CType(resources.GetObject("RemoveEpToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RemoveEpToolStripMenuItem.Name = "RemoveEpToolStripMenuItem"
-        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
-        Me.RemoveEpToolStripMenuItem.Text = "Remove"
-        '
-        'cmnuRemoveTVEp
-        '
-        Me.cmnuRemoveTVEp.Image = CType(resources.GetObject("cmnuRemoveTVEp.Image"), System.Drawing.Image)
-        Me.cmnuRemoveTVEp.Name = "cmnuRemoveTVEp"
-        Me.cmnuRemoveTVEp.Size = New System.Drawing.Size(197, 22)
-        Me.cmnuRemoveTVEp.Text = "Remove from Database"
-        '
-        'cmnuDeleteTVEp
-        '
-        Me.cmnuDeleteTVEp.Image = CType(resources.GetObject("cmnuDeleteTVEp.Image"), System.Drawing.Image)
-        Me.cmnuDeleteTVEp.Name = "cmnuDeleteTVEp"
-        Me.cmnuDeleteTVEp.Size = New System.Drawing.Size(197, 22)
-        Me.cmnuDeleteTVEp.Text = "Delete Episode"
         '
         'frmMain
         '

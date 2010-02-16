@@ -20,6 +20,6 @@
         ReadOnly Property ModuleVersion() As String
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
-        Event ScraperUpdateMediaList(ByVal col As Integer)
+        Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
     End Interface
 End Class
