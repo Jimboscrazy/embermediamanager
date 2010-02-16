@@ -24,18 +24,18 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
-        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14})
-        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Trailers", 8, 8)
-        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode16, TreeNode17, TreeNode18, TreeNode19})
-        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode21, TreeNode22, TreeNode23})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Trailers", 8, 8)
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6, TreeNode7})
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode9, TreeNode10, TreeNode11})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.btnRemoveCom = New System.Windows.Forms.Button
@@ -574,6 +574,8 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
+        Me.chkTVScanOrderModify = New System.Windows.Forms.CheckBox
+        Me.chkScanOrderModify = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -2454,67 +2456,67 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode13.ImageIndex = 4
-        TreeNode13.Name = "nExts"
-        TreeNode13.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode13.SelectedImageIndex = 4
-        TreeNode13.Text = "File System"
-        TreeNode14.ImageIndex = 1
-        TreeNode14.Name = "nXBMCCom"
-        TreeNode14.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode14.SelectedImageIndex = 1
-        TreeNode14.Text = "Communication"
-        TreeNode15.ImageIndex = 0
-        TreeNode15.Name = "nGeneral"
-        TreeNode15.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode15.SelectedImageIndex = 0
-        TreeNode15.Text = "General"
-        TreeNode16.ImageIndex = 5
-        TreeNode16.Name = "nSources"
-        TreeNode16.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode16.SelectedImageIndex = 5
-        TreeNode16.Text = "Files and Sources"
-        TreeNode17.ImageIndex = 3
-        TreeNode17.Name = "nScraper"
-        TreeNode17.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode17.SelectedImageIndex = 3
-        TreeNode17.Text = "Scraper - Data"
-        TreeNode18.ImageIndex = 6
-        TreeNode18.Name = "nImages"
-        TreeNode18.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode18.SelectedImageIndex = 6
-        TreeNode18.Text = "Scraper - Images"
-        TreeNode19.ImageIndex = 8
-        TreeNode19.Name = "nTrailers"
-        TreeNode19.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode19.SelectedImageIndex = 8
-        TreeNode19.Text = "Scraper - Trailers"
-        TreeNode20.ImageIndex = 2
-        TreeNode20.Name = "nMovies"
-        TreeNode20.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode20.SelectedImageIndex = 2
-        TreeNode20.Text = "Movies"
-        TreeNode21.ImageIndex = 5
-        TreeNode21.Name = "nTVSources"
-        TreeNode21.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode21.SelectedImageIndex = 5
-        TreeNode21.Text = "Files and Sources"
-        TreeNode22.ImageIndex = 3
-        TreeNode22.Name = "nTVScraper"
-        TreeNode22.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode22.SelectedImageIndex = 3
-        TreeNode22.Text = "Scraper - Data"
-        TreeNode23.ImageIndex = 6
-        TreeNode23.Name = "nTVImages"
-        TreeNode23.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode23.SelectedImageIndex = 6
-        TreeNode23.Text = "Scraper - Images"
-        TreeNode24.ImageIndex = 7
-        TreeNode24.Name = "nTV"
-        TreeNode24.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode24.SelectedImageIndex = 7
-        TreeNode24.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode20, TreeNode24})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 8
+        TreeNode7.Name = "nTrailers"
+        TreeNode7.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode7.SelectedImageIndex = 8
+        TreeNode7.Text = "Scraper - Trailers"
+        TreeNode8.ImageIndex = 2
+        TreeNode8.Name = "nMovies"
+        TreeNode8.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 2
+        TreeNode8.Text = "Movies"
+        TreeNode9.ImageIndex = 5
+        TreeNode9.Name = "nTVSources"
+        TreeNode9.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode9.SelectedImageIndex = 5
+        TreeNode9.Text = "Files and Sources"
+        TreeNode10.ImageIndex = 3
+        TreeNode10.Name = "nTVScraper"
+        TreeNode10.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode10.SelectedImageIndex = 3
+        TreeNode10.Text = "Scraper - Data"
+        TreeNode11.ImageIndex = 6
+        TreeNode11.Name = "nTVImages"
+        TreeNode11.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 6
+        TreeNode11.Text = "Scraper - Images"
+        TreeNode12.ImageIndex = 7
+        TreeNode12.Name = "nTV"
+        TreeNode12.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 7
+        TreeNode12.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode8, TreeNode12})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2907,9 +2909,9 @@ Partial Class dlgSettings
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
         Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(5, 332)
+        Me.GroupBox16.Location = New System.Drawing.Point(5, 349)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(604, 59)
+        Me.GroupBox16.Size = New System.Drawing.Size(604, 44)
         Me.GroupBox16.TabIndex = 6
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Backdrops Folder"
@@ -2918,7 +2920,7 @@ Partial Class dlgSettings
         '
         Me.chkAutoBD.AutoSize = True
         Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(337, 25)
+        Me.chkAutoBD.Location = New System.Drawing.Point(337, 20)
         Me.chkAutoBD.Name = "chkAutoBD"
         Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
         Me.chkAutoBD.TabIndex = 2
@@ -2928,7 +2930,7 @@ Partial Class dlgSettings
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(306, 21)
+        Me.btnBrowse.Location = New System.Drawing.Point(306, 16)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 1
@@ -2938,7 +2940,7 @@ Partial Class dlgSettings
         'txtBDPath
         '
         Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBDPath.Location = New System.Drawing.Point(7, 22)
+        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
         Me.txtBDPath.Name = "txtBDPath"
         Me.txtBDPath.Size = New System.Drawing.Size(295, 22)
         Me.txtBDPath.TabIndex = 0
@@ -3196,6 +3198,7 @@ Partial Class dlgSettings
         '
         'GroupBox19
         '
+        Me.GroupBox19.Controls.Add(Me.chkScanOrderModify)
         Me.GroupBox19.Controls.Add(Me.chkSortBeforeScan)
         Me.GroupBox19.Controls.Add(Me.chkIgnoreLastScan)
         Me.GroupBox19.Controls.Add(Me.chkCleanDB)
@@ -3207,7 +3210,7 @@ Partial Class dlgSettings
         Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(233, 207)
+        Me.GroupBox19.Size = New System.Drawing.Size(233, 233)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -3238,7 +3241,7 @@ Partial Class dlgSettings
         '
         Me.chkCleanDB.AutoSize = True
         Me.chkCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanDB.Location = New System.Drawing.Point(5, 182)
+        Me.chkCleanDB.Location = New System.Drawing.Point(5, 197)
         Me.chkCleanDB.Name = "chkCleanDB"
         Me.chkCleanDB.Size = New System.Drawing.Size(218, 17)
         Me.chkCleanDB.TabIndex = 71
@@ -3917,6 +3920,7 @@ Partial Class dlgSettings
         '
         'gbMiscTVSourceOpts
         '
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVScanOrderModify)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVIgnoreLastScan)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVCleanDB)
         Me.gbMiscTVSourceOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -3933,7 +3937,7 @@ Partial Class dlgSettings
         Me.chkTVIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 19)
         Me.chkTVIgnoreLastScan.Name = "chkTVIgnoreLastScan"
-        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(142, 34)
+        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(142, 43)
         Me.chkTVIgnoreLastScan.TabIndex = 72
         Me.chkTVIgnoreLastScan.Text = "Ignore last scan time when updating library"
         Me.chkTVIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3943,9 +3947,9 @@ Partial Class dlgSettings
         '
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVCleanDB.Location = New System.Drawing.Point(6, 52)
+        Me.chkTVCleanDB.Location = New System.Drawing.Point(5, 103)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
-        Me.chkTVCleanDB.Size = New System.Drawing.Size(138, 43)
+        Me.chkTVCleanDB.Size = New System.Drawing.Size(142, 43)
         Me.chkTVCleanDB.TabIndex = 71
         Me.chkTVCleanDB.Text = "Clean database after updating library"
         Me.chkTVCleanDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -6731,6 +6735,30 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
+        'chkTVScanOrderModify
+        '
+        Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(6, 61)
+        Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
+        Me.chkTVScanOrderModify.Size = New System.Drawing.Size(142, 43)
+        Me.chkTVScanOrderModify.TabIndex = 73
+        Me.chkTVScanOrderModify.Text = "Scan in order of last write time."
+        Me.chkTVScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVScanOrderModify.UseVisualStyleBackColor = True
+        '
+        'chkScanOrderModify
+        '
+        Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 179)
+        Me.chkScanOrderModify.Name = "chkScanOrderModify"
+        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 19)
+        Me.chkScanOrderModify.TabIndex = 74
+        Me.chkScanOrderModify.Text = "Scan in order of last write time."
+        Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScanOrderModify.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6745,10 +6773,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTrailers)
@@ -6757,6 +6781,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -7463,4 +7491,6 @@ Partial Class dlgSettings
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtAPIKey As System.Windows.Forms.TextBox
     Friend WithEvents Label48 As System.Windows.Forms.Label
+    Friend WithEvents chkTVScanOrderModify As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScanOrderModify As System.Windows.Forms.CheckBox
 End Class

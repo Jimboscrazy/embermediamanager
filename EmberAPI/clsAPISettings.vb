@@ -284,6 +284,8 @@ Public Class Settings
     Private _tvdblanguages As New List(Of Containers.TVLanguage)
     Private _emberModules As New List(Of ModulesManager._XMLEmberModuleClass)
     Private _externaltvdbapikey As String
+    Private _scanordermodify As Boolean
+    Private _tvscanordermodify As Boolean
 
     Public Property Version() As String
         Get
@@ -2627,6 +2629,23 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ScanOrderModify() As Boolean
+        Get
+            Return Me._scanordermodify
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scanordermodify = value
+        End Set
+    End Property
+
+    Public Property TVScanOrderModify() As Boolean
+        Get
+            Return Me._tvscanordermodify
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscanordermodify = value
+        End Set
+    End Property
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2892,6 +2911,8 @@ Public Class Settings
         Me._tvdblanguages = New List(Of Containers.TVLanguage)
         Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
         Me._externaltvdbapikey = String.Empty
+        Me._scanordermodify = False
+        Me._tvscanordermodify = False
     End Sub
 
     Public Sub Save()
