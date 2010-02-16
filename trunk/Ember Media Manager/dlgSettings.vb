@@ -2217,6 +2217,14 @@ Public Class dlgSettings
     Private Sub txtAPIKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAPIKey.TextChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkTVScanOrderModify_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScanOrderModify.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScanOrderModify_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanOrderModify.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2596,6 +2604,8 @@ Public Class dlgSettings
             End If
 
             Master.eSettings.ExternalTVDBAPIKey = Me.txtAPIKey.Text
+            Master.eSettings.ScanOrderModify = Me.chkScanOrderModify.Checked
+            Master.eSettings.TVScanOrderModify = Me.chkTVScanOrderModify.Checked
 
             Master.eSettings.Save()
 
@@ -2931,6 +2941,8 @@ Public Class dlgSettings
                 End If
             End If
             Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
+            Me.chkScanOrderModify.Checked = Master.eSettings.ScanOrderModify
+            Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
 
             Me.RefreshSources()
             Me.RefreshTVSources()

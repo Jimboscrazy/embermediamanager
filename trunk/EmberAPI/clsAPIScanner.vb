@@ -377,13 +377,26 @@ Public Class Scanner
             End Try
 
             Dim dInfo As New DirectoryInfo(sPath)
+            Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
 
             Try
 
                 'check if there are any movies in the parent folder
                 If doScan Then ScanForFiles(sPath, sSource, bUseFolder, bSingle)
 
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.Name)
+                If Master.eSettings.ScanOrderModify Then
+                    Try
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.LastWriteTime)
+                    Catch
+                    End Try
+                Else
+                    Try
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.Name)
+                    Catch
+                    End Try
+                End If
+
+                For Each inDir As DirectoryInfo In dList
 
                     If Me.bwPrelim.CancellationPending Then Return
                     ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
@@ -914,6 +927,7 @@ Public Class Scanner
             Dim currShowContainer As TVShowContainer
             Dim dInfo As New DirectoryInfo(sPath)
             Dim inInfo As DirectoryInfo
+            Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
 
             Try
                 'first check if user added a show folder as a source
@@ -924,7 +938,19 @@ Public Class Scanner
                     currShowContainer.Source = sSource
                     Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
 
-                    For Each sDirs As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                    If Master.eSettings.TVScanOrderModify Then
+                        Try
+                            inList = dInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.LastWriteTime)
+                        Catch
+                        End Try
+                    Else
+                        Try
+                            inList = dInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                        Catch
+                        End Try
+                    End If
+
+                    For Each sDirs As DirectoryInfo In inList
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
@@ -939,7 +965,19 @@ Public Class Scanner
 
                         inInfo = New DirectoryInfo(inDir.FullName)
 
-                        For Each sDirs As DirectoryInfo In inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                        If Master.eSettings.TVScanOrderModify Then
+                            Try
+                                inList = inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.LastWriteTime)
+                            Catch
+                            End Try
+                        Else
+                            Try
+                                inList = inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                            Catch
+                            End Try
+                        End If
+
+                        For Each sDirs As DirectoryInfo In inList
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         Next
 
