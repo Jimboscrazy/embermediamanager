@@ -5672,6 +5672,37 @@ doCancel:
         End Try
 
     End Sub
+    'Move this to Top when finished
+    Private MediaListScraperIndex As Integer = -1
+    Private Sub NewScrapeData()
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+        Me.tspbLoading.Style = ProgressBarStyle.Continuous
+        Me.tslLoading.Text = "New Scraper Test Only"
+        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+            Dim indX As Integer = sRow.Index 'Me.dgvMediaList.SelectedRows(0).Index
+            Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
+
+            'Me.tmpTitle = sRow.Cells(15).Value.ToString
+            'filename = sRow.Cells(1).Value.ToString
+            Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
+            AddHandler ExternalModulesManager.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+            ExternalModulesManager.ScrapeOnly(DBScrapeMovie.Movie, Master.DefaultOptions)
+            ExternalModulesManager.PostScrapeOnly(DBScrapeMovie, Enums.ScrapeType.FullAsk)
+            RemoveHandler ExternalModulesManager.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+            Dim filename As String = DBScrapeMovie.Movie.Title
+            Master.currMovie = DBScrapeMovie
+            Using dEditMovie As New dlgEditMovie
+                Select Case dEditMovie.ShowDialog()
+                End Select
+            End Using
+        Next
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+    End Sub
+    Private Sub ScraperUpdateMediaList(ByVal col As Integer)
+
+    End Sub
 
     Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
 
@@ -7570,6 +7601,10 @@ doCancel:
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
         Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages, Convert.ToInt32(Me.dgvTVEpisodes.Item(11, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
+    End Sub
+
+    Private Sub ScrapingTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScrapingTestToolStripMenuItem.Click
+        NewScrapeData()
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click

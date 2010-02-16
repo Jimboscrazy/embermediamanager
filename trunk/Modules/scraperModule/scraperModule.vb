@@ -25,7 +25,7 @@ Public Class TestEmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Teste Scraper"
     Private _Version As String = "1.0"
-
+    Public Event ScraperUpdateMediaList(ByVal col As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
             Return False
@@ -44,7 +44,7 @@ Public Class TestEmberScraperModule
 
         Return True
     End Function
-    Function PostScraper(ByRef Movie As EmberAPI.MediaContainers.Movie) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
+    Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
         Return True
     End Function
     ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName

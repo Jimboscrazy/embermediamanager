@@ -100,6 +100,7 @@ Partial Class frmMain
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ScrapingTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -830,9 +831,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem, Me.ScrapingTestToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 348)
         '
         'cmnuTitle
         '
@@ -1021,6 +1022,12 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
         Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
+        '
+        'ScrapingTestToolStripMenuItem
+        '
+        Me.ScrapingTestToolStripMenuItem.Name = "ScrapingTestToolStripMenuItem"
+        Me.ScrapingTestToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.ScrapingTestToolStripMenuItem.Text = "Scraping Test"
         '
         'scTV
         '
@@ -1219,6 +1226,7 @@ Partial Class frmMain
         '
         Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.ToolStripSeparator12, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
+        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 154)
         Me.mnuEpisodes.Size = New System.Drawing.Size(176, 204)
         '
         'cmnuEpTitle
@@ -3579,6 +3587,7 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuRescrapeEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ScrapingTestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents RemoveShowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuDeleteTVShow As System.Windows.Forms.ToolStripMenuItem
