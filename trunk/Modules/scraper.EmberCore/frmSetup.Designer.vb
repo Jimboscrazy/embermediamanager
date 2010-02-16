@@ -72,7 +72,6 @@ Partial Class frmSetup
         Me.Label1 = New System.Windows.Forms.Label
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
@@ -82,10 +81,12 @@ Partial Class frmSetup
         Me.chkLockRating = New System.Windows.Forms.CheckBox
         Me.chkLockTagline = New System.Windows.Forms.CheckBox
         Me.chkLockTitle = New System.Windows.Forms.CheckBox
-        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
+        Me.lblVersion = New System.Windows.Forms.Label
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
@@ -94,8 +95,8 @@ Partial Class frmSetup
         Me.GroupBox2.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -681,22 +682,6 @@ Partial Class frmSetup
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Scrape Info"
         '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage2.Controls.Add(Me.CheckBox1)
-        Me.TabPage2.Controls.Add(Me.chkAutoThumbs)
-        Me.TabPage2.Controls.Add(Me.chkSingleScrapeImages)
-        Me.TabPage2.Controls.Add(Me.chkDownloadTrailer)
-        Me.TabPage2.Controls.Add(Me.GroupBox9)
-        Me.TabPage2.Controls.Add(Me.GroupBox2)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(518, 347)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Scrape Media"
-        '
         'GroupBox10
         '
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
@@ -795,16 +780,33 @@ Partial Class frmSetup
         Me.chkLockTitle.Text = "Lock Title"
         Me.chkLockTitle.UseVisualStyleBackColor = True
         '
-        'chkDownloadTrailer
+        'TabPage2
         '
-        Me.chkDownloadTrailer.AutoSize = True
-        Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(13, 68)
-        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
-        Me.chkDownloadTrailer.TabIndex = 73
-        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
-        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
+        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
+        Me.TabPage2.Controls.Add(Me.CheckBox1)
+        Me.TabPage2.Controls.Add(Me.chkAutoThumbs)
+        Me.TabPage2.Controls.Add(Me.chkSingleScrapeImages)
+        Me.TabPage2.Controls.Add(Me.chkDownloadTrailer)
+        Me.TabPage2.Controls.Add(Me.GroupBox9)
+        Me.TabPage2.Controls.Add(Me.GroupBox2)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(518, 347)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Scrape Media"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.CheckBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox1.Location = New System.Drawing.Point(13, 26)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(173, 15)
+        Me.CheckBox1.TabIndex = 76
+        Me.CheckBox1.Text = "Get Fanart"
+        Me.CheckBox1.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'chkAutoThumbs
         '
@@ -830,17 +832,24 @@ Partial Class frmSetup
         Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'chkDownloadTrailer
         '
-        Me.CheckBox1.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.CheckBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(13, 26)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(173, 15)
-        Me.CheckBox1.TabIndex = 76
-        Me.CheckBox1.Text = "Get Fanart"
-        Me.CheckBox1.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.chkDownloadTrailer.AutoSize = True
+        Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(13, 68)
+        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
+        Me.chkDownloadTrailer.TabIndex = 73
+        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
+        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
+        '
+        'lblVersion
+        '
+        Me.lblVersion.Location = New System.Drawing.Point(286, 393)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(90, 16)
+        Me.lblVersion.TabIndex = 74
+        Me.lblVersion.Text = "Version:"
         '
         'frmSetup
         '
@@ -849,6 +858,7 @@ Partial Class frmSetup
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(532, 410)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox1)
@@ -870,9 +880,9 @@ Partial Class frmSetup
         Me.GroupBox2.ResumeLayout(False)
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
+        Me.GroupBox10.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
-        Me.GroupBox10.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -939,5 +949,6 @@ Partial Class frmSetup
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
+    Friend WithEvents lblVersion As System.Windows.Forms.Label
 
 End Class
