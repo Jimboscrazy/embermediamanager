@@ -548,7 +548,6 @@ Partial Class dlgWizard
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgWizard"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Ember Startup Wizard"
         Me.Panel1.ResumeLayout(False)

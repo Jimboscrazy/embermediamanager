@@ -165,7 +165,7 @@ Public Class dlgModuleSettings
 
     Private Sub btnPostScraperSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperSetup.Click
         If lstPostScrapers.SelectedItems.Count > 0 Then
-            ModulesManager.RunScraperSetup(lstPostScrapers.SelectedItems.Item(0).Tag().ToString)
+            ModulesManager.RunPostScraperSetup(lstPostScrapers.SelectedItems.Item(0).Tag().ToString)
         End If
     End Sub
 

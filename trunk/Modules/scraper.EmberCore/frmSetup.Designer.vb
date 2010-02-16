@@ -64,7 +64,6 @@ Partial Class frmSetup
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
-        Me.Label47 = New System.Windows.Forms.Label
         Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.chkUseTMDB = New System.Windows.Forms.CheckBox
         Me.chkUseIMPA = New System.Windows.Forms.CheckBox
@@ -577,7 +576,6 @@ Partial Class frmSetup
         '
         'GroupBox9
         '
-        Me.GroupBox9.Controls.Add(Me.Label47)
         Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
         Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
         Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
@@ -587,23 +585,13 @@ Partial Class frmSetup
         Me.GroupBox9.Size = New System.Drawing.Size(184, 100)
         Me.GroupBox9.TabIndex = 71
         Me.GroupBox9.TabStop = False
-        Me.GroupBox9.Text = "Images"
-        '
-        'Label47
-        '
-        Me.Label47.AutoSize = True
-        Me.Label47.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label47.Location = New System.Drawing.Point(4, 19)
-        Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(96, 13)
-        Me.Label47.TabIndex = 50
-        Me.Label47.Text = "Get Images From:"
+        Me.GroupBox9.Text = "Get Images From:"
         '
         'chkUseMPDB
         '
         Me.chkUseMPDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseMPDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseMPDB.Location = New System.Drawing.Point(29, 76)
+        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 56)
         Me.chkUseMPDB.Name = "chkUseMPDB"
         Me.chkUseMPDB.Size = New System.Drawing.Size(150, 22)
         Me.chkUseMPDB.TabIndex = 2
@@ -615,7 +603,7 @@ Partial Class frmSetup
         '
         Me.chkUseTMDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseTMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseTMDB.Location = New System.Drawing.Point(29, 38)
+        Me.chkUseTMDB.Location = New System.Drawing.Point(6, 18)
         Me.chkUseTMDB.Name = "chkUseTMDB"
         Me.chkUseTMDB.Size = New System.Drawing.Size(149, 19)
         Me.chkUseTMDB.TabIndex = 0
@@ -627,7 +615,7 @@ Partial Class frmSetup
         '
         Me.chkUseIMPA.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseIMPA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseIMPA.Location = New System.Drawing.Point(29, 57)
+        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 37)
         Me.chkUseIMPA.Name = "chkUseIMPA"
         Me.chkUseIMPA.Size = New System.Drawing.Size(149, 20)
         Me.chkUseIMPA.TabIndex = 1
@@ -649,11 +637,10 @@ Partial Class frmSetup
         'lbTrailerSites
         '
         Me.lbTrailerSites.CheckOnClick = True
-        Me.lbTrailerSites.Enabled = False
         Me.lbTrailerSites.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(6, 15)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(6, 18)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(149, 72)
         Me.lbTrailerSites.TabIndex = 9
@@ -812,7 +799,7 @@ Partial Class frmSetup
         '
         Me.chkDownloadTrailer.AutoSize = True
         Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 68)
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(13, 68)
         Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
         Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
         Me.chkDownloadTrailer.TabIndex = 73
@@ -823,9 +810,9 @@ Partial Class frmSetup
         '
         Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 46)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(13, 46)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
-        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 24)
+        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
         Me.chkAutoThumbs.TabIndex = 75
         Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs"
         Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -835,7 +822,7 @@ Partial Class frmSetup
         '
         Me.chkSingleScrapeImages.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 6)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(13, 6)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 15)
         Me.chkSingleScrapeImages.TabIndex = 74
@@ -847,7 +834,7 @@ Partial Class frmSetup
         '
         Me.CheckBox1.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.CheckBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(6, 26)
+        Me.CheckBox1.Location = New System.Drawing.Point(13, 26)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(173, 15)
         Me.CheckBox1.TabIndex = 76
@@ -880,7 +867,6 @@ Partial Class frmSetup
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox9.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
@@ -931,7 +917,6 @@ Partial Class frmSetup
     Friend WithEvents cbCert As System.Windows.Forms.ComboBox
     Friend WithEvents chkCert As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label47 As System.Windows.Forms.Label
     Friend WithEvents chkUseMPDB As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseTMDB As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseIMPA As System.Windows.Forms.CheckBox

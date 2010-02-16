@@ -10,7 +10,7 @@
     End Interface
 
     Public Interface EmberScraperModule
-        Sub Setup()
+        Sub Setup(ByVal tScraper As Integer)
         'Title or Id must be field in
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
