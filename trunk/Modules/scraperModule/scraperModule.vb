@@ -25,7 +25,7 @@ Public Class TestEmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Teste Scraper"
     Private _Version As String = "1.0"
-    Public Event ScraperUpdateMediaList(ByVal col As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
+    Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
             Return False

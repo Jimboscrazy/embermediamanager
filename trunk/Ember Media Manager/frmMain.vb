@@ -5673,18 +5673,35 @@ doCancel:
 
     End Sub
     'Move this to Top when finished
+    Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
     Private MediaListScraperIndex As Integer = -1
-    Private Sub NewScrapeData()
+    Private Sub NewScrapeDataStart()
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
+        btnCancel.Visible = True
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = True
         Me.tspbLoading.Style = ProgressBarStyle.Continuous
+        Application.DoEvents()
+        Me.SetControlsEnabled(False)
         Me.tslLoading.Text = "New Scraper Test Only"
+        bwNewScraper.RunWorkerAsync()
+    End Sub
+    Private Sub NewScrapeDataEnd()
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        btnCancel.Visible = False
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = False
+        Me.SetControlsEnabled(True)
+    End Sub
+    Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-            Dim indX As Integer = sRow.Index 'Me.dgvMediaList.SelectedRows(0).Index
+            Dim indX As Integer = sRow.Index
+            MediaListScraperIndex = indX
             Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
-
-            'Me.tmpTitle = sRow.Cells(15).Value.ToString
-            'filename = sRow.Cells(1).Value.ToString
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
             AddHandler ExternalModulesManager.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
             ExternalModulesManager.ScrapeOnly(DBScrapeMovie.Movie, Master.DefaultOptions)
@@ -5697,11 +5714,13 @@ doCancel:
                 End Select
             End Using
         Next
-        Me.tslLoading.Visible = False
-        Me.tspbLoading.Visible = False
     End Sub
-    Private Sub ScraperUpdateMediaList(ByVal col As Integer)
-
+    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
+        NewScrapeDataEnd()
+    End Sub
+    Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
+        Me.dgvMediaList.Rows(MediaListScraperIndex).Cells(col).Value = v
+        Me.dgvMediaList.Refresh()
     End Sub
 
     Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
@@ -7604,7 +7623,7 @@ doCancel:
     End Sub
 
     Private Sub ScrapingTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScrapingTestToolStripMenuItem.Click
-        NewScrapeData()
+        NewScrapeDataStart()
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click

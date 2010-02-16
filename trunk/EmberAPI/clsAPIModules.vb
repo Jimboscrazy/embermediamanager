@@ -209,10 +209,10 @@ Public Class ModulesManager
         Next
         Return True
     End Function
-    Event ScraperUpdateMediaList(ByVal col As Integer)
+    Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
 
-    Public Sub Handler_ScraperUpdateMediaList(ByVal col As Integer)
-        RaiseEvent ScraperUpdateMediaList(col)
+    Public Sub Handler_ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
+        RaiseEvent ScraperUpdateMediaList(col, v)
     End Sub
 
     Sub New()
