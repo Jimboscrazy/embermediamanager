@@ -36,7 +36,7 @@ Public Class TestEmberScraperModule
             Return True
         End Get
     End Property
-    Sub Setup() Implements EmberAPI.Interfaces.EmberScraperModule.Setup
+    Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
         Dim _setup As New frmSetup
         _setup.ShowDialog()
     End Sub

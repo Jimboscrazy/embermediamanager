@@ -268,9 +268,15 @@ Public Class ModulesManager
     End Sub
     Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.Setup()
+            _externalScraperModule.ProcessorModule.Setup(0)
         Next
     End Sub
+    Public Sub RunPostScraperSetup(ByVal ModuleAssembly As String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ProcessorModule.Setup(1)
+        Next
+    End Sub
+
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.Enabled = value
