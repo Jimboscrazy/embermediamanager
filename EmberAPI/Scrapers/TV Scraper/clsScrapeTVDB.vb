@@ -1153,7 +1153,7 @@ qExit:
                                     SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", _ID, ";")
                                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                         While SQLReader.Read
-                                            tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
+                                            If Not Convert.ToBoolean(SQLReader("Lock")) Then tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
                                         End While
                                     End Using
                                 End Using

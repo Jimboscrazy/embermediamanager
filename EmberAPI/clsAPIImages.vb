@@ -370,7 +370,12 @@ Public Class Images : Implements IDisposable
             Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
                 Dim tPath As String = String.Empty
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
-                tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+
+                Try
+                    tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                Catch
+                End Try
+
                 If Not String.IsNullOrEmpty(tPath) Then
                     If Master.eSettings.SeasonPosterTBN Then
                         pPath = Path.Combine(tPath, "Poster.tbn")
@@ -674,7 +679,11 @@ Public Class Images : Implements IDisposable
                 Dim tPath As String = String.Empty
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
-                tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                Try
+                    tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                Catch
+                End Try
+
                 If Not String.IsNullOrEmpty(tPath) Then
                     If Master.eSettings.SeasonDotFanart Then
                         pPath = Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".fanart.jpg"))
