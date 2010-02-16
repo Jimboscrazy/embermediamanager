@@ -119,7 +119,7 @@ Public Class ModulesManager
                             'Add the activated module to the arraylist
                             Dim _externalProcessorModule As New _externalProcessorModuleClass
                             _externalProcessorModule.ProcessorModule = ProcessorModule
-                            _externalProcessorModule.AssemblyName = Path.GetFileName(file)
+                            _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
                             For Each i In Master.eSettings.EmberModules
                                 If i.AssemblyName = _externalProcessorModule.AssemblyName Then
                                     _externalProcessorModule.Enabled = i.Enabled
@@ -162,7 +162,7 @@ Public Class ModulesManager
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
-                            _externalScraperModule.AssemblyName = Path.GetFileName(file)
+                            _externalScraperModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
                             _externalScraperModule.IsScraper = ProcessorModule.IsScraper
                             _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
                             Dim found As Boolean = False

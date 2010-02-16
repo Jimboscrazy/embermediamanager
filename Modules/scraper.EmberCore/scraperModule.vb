@@ -19,13 +19,73 @@
 ' ################################################################################
 
 Imports EmberAPI
+Public Class EmberXMLScraperModule
+    Implements EmberAPI.Interfaces.EmberScraperModule
 
-Public Class EmberScraperModule
+    Public ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
+        Get
+            Return "Ember XML Scraper"
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
+        Get
+            Return "none"
+        End Get
+    End Property
+
+    Public Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
+
+    End Function
+
+    Public Function Scraper(ByRef Movie As EmberAPI.MediaContainers.Movie, ByRef Options As EmberAPI.Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+
+    End Function
+
+    Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
+
+    Public Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
+
+    End Sub
+End Class
+
+
+''' <summary>
+''' Native Scraper
+''' </summary>
+''' <remarks></remarks>
+Public Class EmberNativeScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
     Private _Version As String = "1.0"
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
+
+    ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
+        Get
+            Return _Name
+        End Get
+    End Property
+    ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
+        Get
+            Dim FVI As FileVersionInfo
+            FVI = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location)
+            _Version = FVI.FilePrivatePart.ToString
+            Return _Version
+        End Get
+    End Property
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
             Return True
@@ -38,6 +98,7 @@ Public Class EmberScraperModule
     End Property
     Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
         Dim _setup As New frmSetup
+        _setup.lblVersion.Text = ModuleVersion
         _setup.TabControl1.SelectTab(tScraper)
         _setup.ShowDialog()
     End Sub
@@ -130,16 +191,7 @@ Public Class EmberScraperModule
         End If
         Return True
     End Function
-    ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
-        Get
-            Return _Name
-        End Get
-    End Property
-    ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
-        Get
-            Return _Version
-        End Get
-    End Property
+
 End Class
 
 
