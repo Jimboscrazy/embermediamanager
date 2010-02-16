@@ -351,6 +351,25 @@ Public Class dlgEditMovie
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Private Sub EditActor()
+        Try
+            Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
+            Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+            Using dAddEditActor As New dlgAddEditActor
+                eActor = dAddEditActor.ShowDialog(False, eActor)
+            End Using
+            If Not IsNothing(eActor) Then
+                lvwItem.Text = eActor.Name
+                lvwItem.SubItems(1).Text = eActor.Role
+                lvwItem.SubItems(2).Text = eActor.Thumb
+                lvwItem.Selected = True
+                lvwItem.EnsureVisible()
+            End If
+            eActor = Nothing
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
         ' Determine if the clicked column is already the column that is 
@@ -405,23 +424,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
-        Try
-            Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-            Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
-            Using dAddEditActor As New dlgAddEditActor
-                eActor = dAddEditActor.ShowDialog(False, eActor)
-            End Using
-            If Not IsNothing(eActor) Then
-                lvwItem.Text = eActor.Name
-                lvwItem.SubItems(1).Text = eActor.Role
-                lvwItem.SubItems(2).Text = eActor.Thumb
-                lvwItem.Selected = True
-                lvwItem.EnsureVisible()
-            End If
-            eActor = Nothing
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        EditActor()
     End Sub
 
     Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
@@ -1565,6 +1568,10 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvActors.DoubleClick
+        EditActor()
     End Sub
 
     Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvActors.KeyDown
