@@ -191,7 +191,7 @@ Public Class ModulesManager
     Public Function FullScrape(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
         'AndAlso? Only return true if both complete successfully?
 
-        Return ScrapeOnly(movie, Options) OrElse PostScrapeOnly(movie)
+        Return ScrapeOnly(movie, Options) 'OrElse PostScrapeOnly(movie)
     End Function
 
     Public Function ScrapeOnly(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
@@ -200,12 +200,20 @@ Public Class ModulesManager
         Next
         Return True
     End Function
-    Public Function PostScrapeOnly(ByRef movie As MediaContainers.Movie) As Boolean
+    Public Function PostScrapeOnly(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
-            If Not _externalScraperModule.ProcessorModule.PostScraper(movie) Then Exit For
+            AddHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
+            Dim ret As Boolean = _externalScraperModule.ProcessorModule.PostScraper(DBMovie, ScrapeType)
+            RemoveHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
+            If Not ret Then Exit For
         Next
         Return True
     End Function
+    Event ScraperUpdateMediaList(ByVal col As Integer)
+
+    Public Sub Handler_ScraperUpdateMediaList(ByVal col As Integer)
+        RaiseEvent ScraperUpdateMediaList(col)
+    End Sub
 
     Sub New()
     End Sub
