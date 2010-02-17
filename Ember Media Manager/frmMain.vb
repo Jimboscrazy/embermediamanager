@@ -5678,16 +5678,26 @@ doCancel:
     End Sub
     'Move this to Top when finished
     Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
-    Private MediaListScraperIndex As Integer = -1
     Private dScrapeRow As DataRow
+    Private scrapeRunningIdx As Integer
+    Structure RunList
+        Dim idx As Integer
+        Dim Id As Integer
+    End Structure
+    Dim MovieIds As New List(Of RunList)
 
     Private Sub NewScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
+        MovieIds.Clear()
+        'create snapshoot list of selected movies
+        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+            MovieIds.Add(New RunList With {.Id = Convert.ToInt32(sRow.Cells(0).Value), .idx = sRow.Index})
+        Next
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tspbLoading.Style = ProgressBarStyle.Continuous
-        Me.SetControlsEnabled(False)
+        Me.SetControlsEnabled(False, False)
         Me.tspbLoading.Value = Me.tspbLoading.Minimum
         Me.tspbLoading.Maximum = Me.dgvMediaList.SelectedRows.Count
         Select Case sType
@@ -5730,13 +5740,15 @@ doCancel:
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         'We gonna use MediaList selected items from now on ... no need to mark movies anymore ... but maybe we still can use Mark !?
-        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-            If bwNewScraper.CancellationPending Then Exit For
-            bwNewScraper.ReportProgress(1)
-            Dim indX As Integer = sRow.Index
 
-            MediaListScraperIndex = indX
-            Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
+        'For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+        For Each rl As RunList In MovieIds
+            If bwNewScraper.CancellationPending Then Exit For
+
+            'Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
+            Dim MovieId As Integer = rl.Id
+            scrapeRunningIdx = rl.idx
+
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
@@ -5757,6 +5769,7 @@ doCancel:
             If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
                 OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                 'Any Non Auto open EditMovie
+                Master.currMovie = DBScrapeMovie
                 Using dEditMovie As New dlgEditMovie
                     Select Case dEditMovie.ShowDialog()
                     End Select
@@ -5769,17 +5782,19 @@ doCancel:
             Else
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
             End If
-
+            bwNewScraper.ReportProgress(1)
         Next
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
+        Me.FillList(scrapeRunningIdx)
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
         NewScrapeDataEnd()
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
         dScrapeRow.Item(col) = v
+        Application.DoEvents()
     End Sub
 
     Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
