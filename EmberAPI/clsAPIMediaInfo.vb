@@ -816,4 +816,37 @@ Public Class MediaInfo
         Next
         Return Nothing
     End Function
+    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
+        Try
+            'clear it out
+            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
+
+            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
+            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
+                Dim MI As New MediaInfo
+                MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
+                If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+
+                    If Not String.IsNullOrEmpty(tVid.Duration) Then
+                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
+                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+                        miMovie.Movie.Runtime = If(Master.eSettings.UseHMForRuntime, String.Format("{0} hrs {1} mins", sHour, sMin), String.Format("{0} mins", (sHour * 60) + sMin))
+                    End If
+
+                End If
+                MI = Nothing
+            End If
+            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                Dim _mi As MediaInfo.Fileinfo
+                _mi = MediaInfo.ApplyDefaults(pExt)
+                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
 End Class

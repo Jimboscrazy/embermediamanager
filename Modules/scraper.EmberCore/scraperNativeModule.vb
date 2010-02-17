@@ -52,14 +52,14 @@ Public Class EmberNativeScraperModule
     Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
-
-        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-            IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)
-        Else
-            'Movie = IMDB.GetSearchMovieInfo(Movie.Title, Movie, Enums.ScrapeType.SingleScrape, Options)
-            DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, Enums.ScrapeType.FullAsk, Options)
+        If Master.GlobalScrapeMod.NFO Then
+            If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+                IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)
+            Else
+                'Movie = IMDB.GetSearchMovieInfo(Movie.Title, Movie, Enums.ScrapeType.SingleScrape, Options)
+                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, Enums.ScrapeType.FullAsk, Options)
+            End If
         End If
-
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
             tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
@@ -85,6 +85,9 @@ Public Class EmberNativeScraperModule
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
         RaiseEvent ScraperUpdateMediaList(6, True)
+        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
+            EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
+        End If
         ' I removed it to main form .. scraper should NOT save db or rename files!!! ???
         'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
         'FileFolderRenamer.RenameSingle(DBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID), False)

@@ -339,6 +339,8 @@ Partial Class frmMain
         Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.CustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
+        Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectedMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -375,8 +377,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
-        Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -3237,6 +3237,18 @@ Partial Class frmMain
         Me.CustomUpdaterToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.CustomUpdaterToolStripMenuItem.Text = "Custom Scraper..."
         '
+        'ToolStripSeparator13
+        '
+        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
+        Me.ToolStripSeparator13.Size = New System.Drawing.Size(222, 6)
+        '
+        'ToolStripMenuItem6
+        '
+        Me.ToolStripMenuItem6.Enabled = False
+        Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(225, 22)
+        Me.ToolStripMenuItem6.Text = "Below are new Scrapers (Test)"
+        '
         'SelectedMoviesToolStripMenuItem
         '
         Me.SelectedMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem4, Me.ToolStripMenuItem26})
@@ -3457,18 +3469,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'ToolStripSeparator13
-        '
-        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
-        Me.ToolStripSeparator13.Size = New System.Drawing.Size(222, 6)
-        '
-        'ToolStripMenuItem6
-        '
-        Me.ToolStripMenuItem6.Enabled = False
-        Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
-        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(225, 22)
-        Me.ToolStripMenuItem6.Text = "Below are new Scrapers (Test)"
         '
         'frmMain
         '
