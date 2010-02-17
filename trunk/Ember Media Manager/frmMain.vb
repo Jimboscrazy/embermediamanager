@@ -3436,7 +3436,7 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Try
-            Me.UpdateMediaInfo(Args.Movie)
+            MediaInfo.UpdateMediaInfo(Args.Movie)
             Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
 
             If Me.bwMediaInfo.CancellationPending Then
@@ -3873,7 +3873,7 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
-                                        UpdateMediaInfo(scrapeMovie)
+                                        MediaInfo.UpdateMediaInfo(scrapeMovie)
                                         doSave = True
                                     End If
 
@@ -4050,7 +4050,7 @@ Public Class frmMain
                                         End If
 
                                         If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
-                                            UpdateMediaInfo(scrapeMovie)
+                                            MediaInfo.UpdateMediaInfo(scrapeMovie)
                                             doSave = True
                                         End If
 
@@ -5684,14 +5684,39 @@ doCancel:
         Dim idx As Integer
         Dim Id As Integer
     End Structure
-    Dim MovieIds As New List(Of RunList)
+    Dim MovieIds As New List(Of RunList) 'Movies to scrape (db id and MediaList idx)
 
-    Private Sub NewScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
+    Private Sub NewScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
         MovieIds.Clear()
-        'create snapshoot list of selected movies
-        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-            MovieIds.Add(New RunList With {.Id = Convert.ToInt32(sRow.Cells(0).Value), .idx = sRow.Index})
-        Next
+        If selected Then
+            'create snapshoot list of selected movies
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                MovieIds.Add(New RunList With {.Id = Convert.ToInt32(sRow.Cells(0).Value), .idx = sRow.Index})
+            Next
+        Else
+            'create list of movies acording to scrapetype
+            For Each drvRow As DataRow In Me.dtMedia.Rows
+                Select Case sType
+                    Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.FullAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
+                        Select Case sType
+                            Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
+                                If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                            Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
+                                If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                            Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
+                                Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
+                                If Not index >= 0 Then Continue For
+                        End Select
+                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
+                        If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+                End Select
+
+                Dim MovieId As Integer = Convert.ToInt32(drvRow.Item(0))
+                Dim idx As Integer = DirectCast(DirectCast((From dRow In dgvMediaList.Rows Where Convert.ToInt64(DirectCast(dRow, DataGridViewRow).Cells(0).Value) = MovieId Select dRow)(0), DataGridViewRow).Index, Integer)
+                MovieIds.Add(New RunList With {.Id = MovieId, .idx = idx})
+            Next
+        End If
+
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
@@ -5705,10 +5730,6 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
             Case Enums.ScrapeType.FullAuto
                 Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.CleanFolders
-                Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-            Case Enums.ScrapeType.CopyBD
-                Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
             Case Enums.ScrapeType.UpdateAuto
                 Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
             Case Enums.ScrapeType.UpdateAsk
@@ -5739,15 +5760,12 @@ doCancel:
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        'We gonna use MediaList selected items from now on ... no need to mark movies anymore ... but maybe we still can use Mark !?
 
-        'For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
         For Each rl As RunList In MovieIds
             If bwNewScraper.CancellationPending Then Exit For
 
-            'Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
             Dim MovieId As Integer = rl.Id
-            scrapeRunningIdx = rl.idx
+            scrapeRunningIdx = rl.idx 'So we can update MediaList
 
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
@@ -5762,9 +5780,6 @@ doCancel:
             RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
 
             If bwNewScraper.CancellationPending Then Exit For
-            If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
-                UpdateMediaInfo(DBScrapeMovie)
-            End If
 
             If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
                 OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -5921,7 +5936,7 @@ doCancel:
 
                             If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
                                 If Master.eSettings.ScanMediaInfo Then
-                                    UpdateMediaInfo(Master.currMovie)
+                                    MediaInfo.UpdateMediaInfo(Master.currMovie)
                                 End If
 
                                 If Poster.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters) Then
@@ -6005,39 +6020,7 @@ doCancel:
         End Try
 
     End Sub
-    Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
-        Try
-            'clear it out
-            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
 
-            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
-               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
-                Dim MI As New MediaInfo
-                MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
-                If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
-
-                    If Not String.IsNullOrEmpty(tVid.Duration) Then
-                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
-                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                        miMovie.Movie.Runtime = If(Master.eSettings.UseHMForRuntime, String.Format("{0} hrs {1} mins", sHour, sMin), String.Format("{0} mins", (sHour * 60) + sMin))
-                    End If
-
-                End If
-                MI = Nothing
-            End If
-            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                Dim _mi As MediaInfo.Fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
-                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
-            End If
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
 
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
@@ -6057,7 +6040,7 @@ doCancel:
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 25
                     Application.DoEvents()
-                    Me.UpdateMediaInfo(Master.currMovie)
+                    MediaInfo.UpdateMediaInfo(Master.currMovie)
                 End If
 
                 If Master.eSettings.SingleScrapeImages Then
@@ -7763,11 +7746,11 @@ doCancel:
         End If
     End Sub
     Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
-        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
-        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 End Class
 
