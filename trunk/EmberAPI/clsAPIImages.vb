@@ -421,9 +421,9 @@ Public Class Images : Implements IDisposable
 
             If Master.eSettings.SeasonX Then
                 If mShow.TVEp.Season = 0 Then
-                    pPath = Path.Combine(mShow.ShowPath, "Season-Specials.tbn")
+                    pPath = Path.Combine(mShow.ShowPath, "season-specials.tbn")
                 Else
-                    pPath = Path.Combine(mShow.ShowPath, String.Format("Season{0}.tbn", mShow.TVEp.Season))
+                    pPath = Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season))
                 End If
                 If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
                     Save(pPath, Master.eSettings.SeasonPosterQuality)
@@ -433,9 +433,9 @@ Public Class Images : Implements IDisposable
 
             If Master.eSettings.SeasonXX Then
                 If mShow.TVEp.Season = 0 Then
-                    pPath = Path.Combine(mShow.ShowPath, "Season-Specials.tbn")
+                    pPath = Path.Combine(mShow.ShowPath, "season-specials.tbn")
                 Else
-                    pPath = Path.Combine(mShow.ShowPath, String.Format("Season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0"))))
+                    pPath = Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0"))))
                 End If
                 If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
                     Save(pPath, Master.eSettings.SeasonPosterQuality)
