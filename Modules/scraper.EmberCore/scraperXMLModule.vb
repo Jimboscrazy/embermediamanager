@@ -57,7 +57,8 @@ Public Class EmberXMLScraperModule
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
 
     Public Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
-
+        Dim _setup As New frmXMLSetup
+        _setup.ShowDialog()
     End Sub
 End Class
 

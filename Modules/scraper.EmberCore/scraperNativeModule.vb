@@ -1,4 +1,5 @@
-﻿
+﻿Imports System.IO
+Imports EmberAPI
 ''' <summary>
 ''' Native Scraper
 ''' </summary>
