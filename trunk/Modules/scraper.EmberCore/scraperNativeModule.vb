@@ -25,11 +25,19 @@ Public Class EmberNativeScraperModule
             Return True
         End Get
     End Property
+    ReadOnly Property IsTVScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsTVScraper
+        Get
+            Return False
+        End Get
+    End Property
     ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
         Get
             Return True
         End Get
     End Property
+    Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
+        Return True
+    End Function
     Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
         Dim _setup As New frmNativeSetup
         _setup.lblVersion.Text = ModuleVersion
