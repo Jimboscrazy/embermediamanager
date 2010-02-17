@@ -11,10 +11,9 @@
 
     Public Interface EmberScraperModule
         Sub Setup(ByVal tScraper As Integer)
-        'Title or Id must be field in
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
-        Function Scraper(ByRef Movie As EmberAPI.MediaContainers.Movie, ByRef Options As Structures.ScrapeOptions) As Boolean
+        Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean
         Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String

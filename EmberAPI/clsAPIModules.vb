@@ -106,36 +106,40 @@ Public Class ModulesManager
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
-                'Load the assembly
-                assembly = System.Reflection.Assembly.LoadFile(file)
-                'Loop through each of the assemeblies type
-                For Each fileType As Type In assembly.GetTypes
-                    Try
-                        'Activate the located module
-                        Dim t As Type = fileType.GetInterface("EmberExternalModule")
-                        If Not t Is Nothing Then
-                            Dim ProcessorModule As Interfaces.EmberExternalModule 'Object
-                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberExternalModule)
-                            'Add the activated module to the arraylist
-                            Dim _externalProcessorModule As New _externalProcessorModuleClass
-                            _externalProcessorModule.ProcessorModule = ProcessorModule
-                            _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
-                            For Each i In Master.eSettings.EmberModules
-                                If i.AssemblyName = _externalProcessorModule.AssemblyName Then
-                                    _externalProcessorModule.Enabled = i.Enabled
+                Try
+
+                    'Load the assembly
+                    assembly = System.Reflection.Assembly.LoadFile(file)
+                    'Loop through each of the assemeblies type
+                    For Each fileType As Type In assembly.GetTypes
+                        Try
+                            'Activate the located module
+                            Dim t As Type = fileType.GetInterface("EmberExternalModule")
+                            If Not t Is Nothing Then
+                                Dim ProcessorModule As Interfaces.EmberExternalModule 'Object
+                                ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberExternalModule)
+                                'Add the activated module to the arraylist
+                                Dim _externalProcessorModule As New _externalProcessorModuleClass
+                                _externalProcessorModule.ProcessorModule = ProcessorModule
+                                _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
+                                For Each i In Master.eSettings.EmberModules
+                                    If i.AssemblyName = _externalProcessorModule.AssemblyName Then
+                                        _externalProcessorModule.Enabled = i.Enabled
+                                    End If
+                                Next
+                                externalProcessorModules.Add(_externalProcessorModule)
+                                ProcessorModule.Init(RuntimeObjects)
+                                If _externalProcessorModule.Enabled Then
+                                    ProcessorModule.Enable()
+                                Else
+                                    ProcessorModule.Disable()
                                 End If
-                            Next
-                            externalProcessorModules.Add(_externalProcessorModule)
-                            ProcessorModule.Init(RuntimeObjects)
-                            If _externalProcessorModule.Enabled Then
-                                ProcessorModule.Enable()
-                            Else
-                                ProcessorModule.Disable()
                             End If
-                        End If
-                    Catch ex As Exception
-                    End Try
-                Next
+                        Catch ex As Exception
+                        End Try
+                    Next
+                Catch ex As Exception
+                End Try
             Next
         End If
     End Sub
@@ -200,15 +204,15 @@ Public Class ModulesManager
     ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
     ''' <param Options="movie">ScrapeOptions Structure defining user scrape options</param>
     ''' <returns>boolean success</returns>
-    Public Function FullScrape(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
+    Public Function FullScrape(ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions) As Boolean
         'AndAlso? Only return true if both complete successfully?
 
-        Return ScrapeOnly(movie, Options) 'OrElse PostScrapeOnly(movie)
+        Return ScrapeOnly(DBMovie, Options) 'OrElse PostScrapeOnly(movie)
     End Function
 
-    Public Function ScrapeOnly(ByRef movie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions) As Boolean
+    Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions) As Boolean
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            If Not _externalScraperModule.ProcessorModule.Scraper(movie, Options) Then Exit For
+            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, Options) Then Exit For
         Next
         Return True
     End Function
