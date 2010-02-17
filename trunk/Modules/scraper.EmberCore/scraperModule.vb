@@ -264,7 +264,6 @@ Public Class EmberNativeScraperModule
         'Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
         'Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
 
-
         Return True
     End Function
 
