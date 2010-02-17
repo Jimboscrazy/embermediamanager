@@ -24,10 +24,10 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -101,6 +101,22 @@ Partial Class frmMain
         Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ScrapingTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectAllAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem7 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem8 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem9 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem10 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem11 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem12 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem13 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectAllAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem15 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem16 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem17 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem18 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem19 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem20 = New System.Windows.Forms.ToolStripMenuItem
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -323,6 +339,23 @@ Partial Class frmMain
         Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.CustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectedMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem14 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem21 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem22 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem23 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem24 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem25 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem26 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectAllAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem28 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem29 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem30 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem31 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem32 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem33 = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
         Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
@@ -342,6 +375,8 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
+        Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -815,8 +850,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1032,9 +1067,115 @@ Partial Class frmMain
         '
         'ScrapingTestToolStripMenuItem
         '
+        Me.ScrapingTestToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
         Me.ScrapingTestToolStripMenuItem.Name = "ScrapingTestToolStripMenuItem"
         Me.ScrapingTestToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.ScrapingTestToolStripMenuItem.Text = "Scraping Test"
+        Me.ScrapingTestToolStripMenuItem.Text = "Scrape Selected Movies"
+        '
+        'ToolStripMenuItem5
+        '
+        Me.ToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAutoToolStripMenuItem, Me.ToolStripMenuItem7, Me.ToolStripMenuItem8, Me.ToolStripMenuItem9, Me.ToolStripMenuItem10, Me.ToolStripMenuItem11, Me.ToolStripMenuItem12})
+        Me.ToolStripMenuItem5.Enabled = False
+        Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(271, 22)
+        Me.ToolStripMenuItem5.Text = "Automatic (Force Best Match)"
+        '
+        'SelectAllAutoToolStripMenuItem
+        '
+        Me.SelectAllAutoToolStripMenuItem.Name = "SelectAllAutoToolStripMenuItem"
+        Me.SelectAllAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.SelectAllAutoToolStripMenuItem.Text = "All Items"
+        '
+        'ToolStripMenuItem7
+        '
+        Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
+        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem7.Text = "NFO Only"
+        '
+        'ToolStripMenuItem8
+        '
+        Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
+        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem8.Text = "Poster Only"
+        '
+        'ToolStripMenuItem9
+        '
+        Me.ToolStripMenuItem9.Name = "ToolStripMenuItem9"
+        Me.ToolStripMenuItem9.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem9.Text = "Fanart Only"
+        '
+        'ToolStripMenuItem10
+        '
+        Me.ToolStripMenuItem10.Name = "ToolStripMenuItem10"
+        Me.ToolStripMenuItem10.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem10.Text = "Extrathumbs Only"
+        '
+        'ToolStripMenuItem11
+        '
+        Me.ToolStripMenuItem11.Name = "ToolStripMenuItem11"
+        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem11.Text = "Trailer Only"
+        '
+        'ToolStripMenuItem12
+        '
+        Me.ToolStripMenuItem12.Name = "ToolStripMenuItem12"
+        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem12.Text = "Meta Data Only"
+        '
+        'ToolStripMenuItem13
+        '
+        Me.ToolStripMenuItem13.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskToolStripMenuItem, Me.ToolStripMenuItem15, Me.ToolStripMenuItem16, Me.ToolStripMenuItem17, Me.ToolStripMenuItem18, Me.ToolStripMenuItem19, Me.ToolStripMenuItem20})
+        Me.ToolStripMenuItem13.Name = "ToolStripMenuItem13"
+        Me.ToolStripMenuItem13.Size = New System.Drawing.Size(271, 22)
+        Me.ToolStripMenuItem13.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'SelectAllAskToolStripMenuItem
+        '
+        Me.SelectAllAskToolStripMenuItem.Name = "SelectAllAskToolStripMenuItem"
+        Me.SelectAllAskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.SelectAllAskToolStripMenuItem.Text = "All Items"
+        '
+        'ToolStripMenuItem15
+        '
+        Me.ToolStripMenuItem15.Enabled = False
+        Me.ToolStripMenuItem15.Name = "ToolStripMenuItem15"
+        Me.ToolStripMenuItem15.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem15.Text = "NFO Only"
+        '
+        'ToolStripMenuItem16
+        '
+        Me.ToolStripMenuItem16.Enabled = False
+        Me.ToolStripMenuItem16.Name = "ToolStripMenuItem16"
+        Me.ToolStripMenuItem16.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem16.Text = "Poster Only"
+        '
+        'ToolStripMenuItem17
+        '
+        Me.ToolStripMenuItem17.Enabled = False
+        Me.ToolStripMenuItem17.Name = "ToolStripMenuItem17"
+        Me.ToolStripMenuItem17.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem17.Text = "Fanart Only"
+        '
+        'ToolStripMenuItem18
+        '
+        Me.ToolStripMenuItem18.Enabled = False
+        Me.ToolStripMenuItem18.Name = "ToolStripMenuItem18"
+        Me.ToolStripMenuItem18.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem18.Text = "Extrathumbs Only"
+        '
+        'ToolStripMenuItem19
+        '
+        Me.ToolStripMenuItem19.Enabled = False
+        Me.ToolStripMenuItem19.Name = "ToolStripMenuItem19"
+        Me.ToolStripMenuItem19.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem19.Text = "Trailer Only"
+        '
+        'ToolStripMenuItem20
+        '
+        Me.ToolStripMenuItem20.Enabled = False
+        Me.ToolStripMenuItem20.Name = "ToolStripMenuItem20"
+        Me.ToolStripMenuItem20.Size = New System.Drawing.Size(168, 22)
+        Me.ToolStripMenuItem20.Text = "Meta Data Only"
         '
         'scTV
         '
@@ -1061,8 +1202,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1204,8 +1345,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1235,8 +1376,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1520,7 +1661,7 @@ Partial Class frmMain
         Me.btnClearFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 158)
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 157)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
         Me.btnClearFilters.TabIndex = 4
@@ -1617,9 +1758,9 @@ Partial Class frmMain
         '
         Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterFileSource.FormattingEnabled = True
-        Me.cbFilterFileSource.Location = New System.Drawing.Point(72, 104)
+        Me.cbFilterFileSource.Location = New System.Drawing.Point(70, 104)
         Me.cbFilterFileSource.Name = "cbFilterFileSource"
-        Me.cbFilterFileSource.Size = New System.Drawing.Size(144, 21)
+        Me.cbFilterFileSource.Size = New System.Drawing.Size(146, 21)
         Me.cbFilterFileSource.TabIndex = 7
         '
         'chkFilterLock
@@ -1636,9 +1777,9 @@ Partial Class frmMain
         '
         Me.GroupBox2.Controls.Add(Me.rbFilterAnd)
         Me.GroupBox2.Controls.Add(Me.rbFilterOr)
-        Me.GroupBox2.Location = New System.Drawing.Point(148, 10)
+        Me.GroupBox2.Location = New System.Drawing.Point(158, 10)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(68, 43)
+        Me.GroupBox2.Size = New System.Drawing.Size(58, 43)
         Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Modifier"
@@ -1680,7 +1821,7 @@ Partial Class frmMain
         Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterYear.FormattingEnabled = True
         Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
-        Me.cbFilterYear.Location = New System.Drawing.Point(135, 81)
+        Me.cbFilterYear.Location = New System.Drawing.Point(130, 80)
         Me.cbFilterYear.Name = "cbFilterYear"
         Me.cbFilterYear.Size = New System.Drawing.Size(69, 21)
         Me.cbFilterYear.TabIndex = 6
@@ -1700,7 +1841,7 @@ Partial Class frmMain
         Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterYearMod.FormattingEnabled = True
         Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
-        Me.cbFilterYearMod.Location = New System.Drawing.Point(72, 81)
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 80)
         Me.cbFilterYearMod.Name = "cbFilterYearMod"
         Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
         Me.cbFilterYearMod.TabIndex = 5
@@ -1708,7 +1849,7 @@ Partial Class frmMain
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(6, 84)
+        Me.Label5.Location = New System.Drawing.Point(6, 83)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(31, 13)
         Me.Label5.TabIndex = 33
@@ -1717,7 +1858,7 @@ Partial Class frmMain
         'txtFilterGenre
         '
         Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 56)
+        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 58)
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
         Me.txtFilterGenre.Size = New System.Drawing.Size(166, 22)
@@ -1735,7 +1876,7 @@ Partial Class frmMain
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 58)
+        Me.Label3.Location = New System.Drawing.Point(6, 60)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(41, 13)
         Me.Label3.TabIndex = 31
@@ -2569,7 +2710,7 @@ Partial Class frmMain
         '
         'tsbAutoPilot
         '
-        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.NewMoviesToolStripMenuItem, Me.MarkedMoviesToolStripMenuItem, Me.CurrentFilterToolStripMenuItem, Me.CustomUpdaterToolStripMenuItem})
+        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.NewMoviesToolStripMenuItem, Me.MarkedMoviesToolStripMenuItem, Me.CurrentFilterToolStripMenuItem, Me.CustomUpdaterToolStripMenuItem, Me.ToolStripSeparator13, Me.ToolStripMenuItem6, Me.SelectedMoviesToolStripMenuItem})
         Me.tsbAutoPilot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
@@ -2581,7 +2722,7 @@ Partial Class frmMain
         '
         Me.FullToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullAutoToolStripMenuItem, Me.FullAskToolStripMenuItem})
         Me.FullToolStripMenuItem.Name = "FullToolStripMenuItem"
-        Me.FullToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.FullToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.FullToolStripMenuItem.Text = "All Movies"
         '
         'FullAutoToolStripMenuItem
@@ -2686,7 +2827,7 @@ Partial Class frmMain
         '
         Me.UpdateOnlyToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UpdateAutoToolStripMenuItem, Me.UpdateAskToolStripMenuItem})
         Me.UpdateOnlyToolStripMenuItem.Name = "UpdateOnlyToolStripMenuItem"
-        Me.UpdateOnlyToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.UpdateOnlyToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.UpdateOnlyToolStripMenuItem.Text = "Movies Missing Items"
         '
         'UpdateAutoToolStripMenuItem
@@ -2779,7 +2920,7 @@ Partial Class frmMain
         '
         Me.NewMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem, Me.AskRequireInputToolStripMenuItem})
         Me.NewMoviesToolStripMenuItem.Name = "NewMoviesToolStripMenuItem"
-        Me.NewMoviesToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.NewMoviesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.NewMoviesToolStripMenuItem.Text = "New Movies"
         '
         'AutomaticForceBestMatchToolStripMenuItem
@@ -2884,7 +3025,7 @@ Partial Class frmMain
         '
         Me.MarkedMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem1, Me.AskRequireInputIfNoExactMatchToolStripMenuItem})
         Me.MarkedMoviesToolStripMenuItem.Name = "MarkedMoviesToolStripMenuItem"
-        Me.MarkedMoviesToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.MarkedMoviesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.MarkedMoviesToolStripMenuItem.Text = "Marked Movies"
         '
         'AutomaticForceBestMatchToolStripMenuItem1
@@ -2989,7 +3130,7 @@ Partial Class frmMain
         '
         Me.CurrentFilterToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem2, Me.AskRequireInputIfNoExactMatchToolStripMenuItem1})
         Me.CurrentFilterToolStripMenuItem.Name = "CurrentFilterToolStripMenuItem"
-        Me.CurrentFilterToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.CurrentFilterToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.CurrentFilterToolStripMenuItem.Text = "Current Filter"
         '
         'AutomaticForceBestMatchToolStripMenuItem2
@@ -3093,8 +3234,120 @@ Partial Class frmMain
         'CustomUpdaterToolStripMenuItem
         '
         Me.CustomUpdaterToolStripMenuItem.Name = "CustomUpdaterToolStripMenuItem"
-        Me.CustomUpdaterToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.CustomUpdaterToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.CustomUpdaterToolStripMenuItem.Text = "Custom Scraper..."
+        '
+        'SelectedMoviesToolStripMenuItem
+        '
+        Me.SelectedMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem4, Me.ToolStripMenuItem26})
+        Me.SelectedMoviesToolStripMenuItem.Name = "SelectedMoviesToolStripMenuItem"
+        Me.SelectedMoviesToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.SelectedMoviesToolStripMenuItem.Text = "Selected Movies"
+        '
+        'ToolStripMenuItem4
+        '
+        Me.ToolStripMenuItem4.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem, Me.ToolStripMenuItem14, Me.ToolStripMenuItem21, Me.ToolStripMenuItem22, Me.ToolStripMenuItem23, Me.ToolStripMenuItem24, Me.ToolStripMenuItem25})
+        Me.ToolStripMenuItem4.Enabled = False
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(264, 22)
+        Me.ToolStripMenuItem4.Text = "Automatic (Force Best Match)"
+        '
+        'ToolStripMenuItem
+        '
+        Me.ToolStripMenuItem.Name = "ToolStripMenuItem"
+        Me.ToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem.Text = "All Items"
+        '
+        'ToolStripMenuItem14
+        '
+        Me.ToolStripMenuItem14.Name = "ToolStripMenuItem14"
+        Me.ToolStripMenuItem14.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem14.Text = "NFO Only"
+        '
+        'ToolStripMenuItem21
+        '
+        Me.ToolStripMenuItem21.Name = "ToolStripMenuItem21"
+        Me.ToolStripMenuItem21.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem21.Text = "Poster Only"
+        '
+        'ToolStripMenuItem22
+        '
+        Me.ToolStripMenuItem22.Name = "ToolStripMenuItem22"
+        Me.ToolStripMenuItem22.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem22.Text = "Fanart Only"
+        '
+        'ToolStripMenuItem23
+        '
+        Me.ToolStripMenuItem23.Name = "ToolStripMenuItem23"
+        Me.ToolStripMenuItem23.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem23.Text = "Extrathumbs Only"
+        '
+        'ToolStripMenuItem24
+        '
+        Me.ToolStripMenuItem24.Name = "ToolStripMenuItem24"
+        Me.ToolStripMenuItem24.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem24.Text = "Trailer Only"
+        '
+        'ToolStripMenuItem25
+        '
+        Me.ToolStripMenuItem25.Name = "ToolStripMenuItem25"
+        Me.ToolStripMenuItem25.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem25.Text = "Meta Data Only"
+        '
+        'ToolStripMenuItem26
+        '
+        Me.ToolStripMenuItem26.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskMenuToolStripMenuItem, Me.ToolStripMenuItem28, Me.ToolStripMenuItem29, Me.ToolStripMenuItem30, Me.ToolStripMenuItem31, Me.ToolStripMenuItem32, Me.ToolStripMenuItem33})
+        Me.ToolStripMenuItem26.Name = "ToolStripMenuItem26"
+        Me.ToolStripMenuItem26.Size = New System.Drawing.Size(264, 22)
+        Me.ToolStripMenuItem26.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'SelectAllAskMenuToolStripMenuItem
+        '
+        Me.SelectAllAskMenuToolStripMenuItem.Name = "SelectAllAskMenuToolStripMenuItem"
+        Me.SelectAllAskMenuToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.SelectAllAskMenuToolStripMenuItem.Text = "All Items"
+        '
+        'ToolStripMenuItem28
+        '
+        Me.ToolStripMenuItem28.Enabled = False
+        Me.ToolStripMenuItem28.Name = "ToolStripMenuItem28"
+        Me.ToolStripMenuItem28.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem28.Text = "NFO Only"
+        '
+        'ToolStripMenuItem29
+        '
+        Me.ToolStripMenuItem29.Enabled = False
+        Me.ToolStripMenuItem29.Name = "ToolStripMenuItem29"
+        Me.ToolStripMenuItem29.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem29.Text = "Poster Only"
+        '
+        'ToolStripMenuItem30
+        '
+        Me.ToolStripMenuItem30.Enabled = False
+        Me.ToolStripMenuItem30.Name = "ToolStripMenuItem30"
+        Me.ToolStripMenuItem30.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem30.Text = "Fanart Only"
+        '
+        'ToolStripMenuItem31
+        '
+        Me.ToolStripMenuItem31.Enabled = False
+        Me.ToolStripMenuItem31.Name = "ToolStripMenuItem31"
+        Me.ToolStripMenuItem31.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem31.Text = "Extrathumbs Only"
+        '
+        'ToolStripMenuItem32
+        '
+        Me.ToolStripMenuItem32.Enabled = False
+        Me.ToolStripMenuItem32.Name = "ToolStripMenuItem32"
+        Me.ToolStripMenuItem32.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem32.Text = "Trailer Only"
+        '
+        'ToolStripMenuItem33
+        '
+        Me.ToolStripMenuItem33.Enabled = False
+        Me.ToolStripMenuItem33.Name = "ToolStripMenuItem33"
+        Me.ToolStripMenuItem33.Size = New System.Drawing.Size(165, 22)
+        Me.ToolStripMenuItem33.Text = "Meta Data Only"
         '
         'tsbRefreshMedia
         '
@@ -3204,6 +3457,18 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
+        '
+        'ToolStripSeparator13
+        '
+        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
+        Me.ToolStripSeparator13.Size = New System.Drawing.Size(222, 6)
+        '
+        'ToolStripMenuItem6
+        '
+        Me.ToolStripMenuItem6.Enabled = False
+        Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(225, 22)
+        Me.ToolStripMenuItem6.Text = "Below are new Scrapers (Test)"
         '
         'frmMain
         '
@@ -3614,4 +3879,39 @@ Partial Class frmMain
     Friend WithEvents RemoveEpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuRemoveTVEp As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuDeleteTVEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem5 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectAllAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem7 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem8 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem9 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem10 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem11 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem12 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem13 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectAllAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem15 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem16 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem17 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem18 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem19 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem20 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectedMoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem14 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem21 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem22 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem23 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem24 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem25 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem26 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectAllAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem28 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem29 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem30 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem31 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem32 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem33 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
 End Class

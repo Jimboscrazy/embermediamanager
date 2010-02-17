@@ -7673,11 +7673,6 @@ doCancel:
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
         Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages, Convert.ToInt32(Me.dgvTVEpisodes.Item(11, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
     End Sub
-
-    Private Sub ScrapingTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScrapingTestToolStripMenuItem.Click
-        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
         Me.ClearInfo()
 
@@ -7751,6 +7746,13 @@ doCancel:
 
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, Me.currSeasonRow).Value))
         End If
+    End Sub
+    Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
+        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
+        NewScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 End Class
 
