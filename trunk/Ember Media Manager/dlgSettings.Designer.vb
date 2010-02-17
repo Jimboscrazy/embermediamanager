@@ -24,18 +24,18 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
-        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14})
-        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Trailers", 8, 8)
-        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode16, TreeNode17, TreeNode18, TreeNode19})
-        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode21, TreeNode22, TreeNode23})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Trailers", 8, 8)
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6, TreeNode7})
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode9, TreeNode10, TreeNode11})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.btnRemoveCom = New System.Windows.Forms.Button
@@ -288,25 +288,6 @@ Partial Class dlgSettings
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlTVSources = New System.Windows.Forms.Panel
         Me.TabControl2 = New System.Windows.Forms.TabControl
-        Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.gbShowRegex = New System.Windows.Forms.GroupBox
-        Me.lblSeasonMatch = New System.Windows.Forms.Label
-        Me.btnAddShowRegex = New System.Windows.Forms.Button
-        Me.txtSeasonRegex = New System.Windows.Forms.TextBox
-        Me.lblEpisodeRetrieve = New System.Windows.Forms.Label
-        Me.cboSeasonRetrieve = New System.Windows.Forms.ComboBox
-        Me.lblSeasonRetrieve = New System.Windows.Forms.Label
-        Me.txtEpRegex = New System.Windows.Forms.TextBox
-        Me.lblEpisodeMatch = New System.Windows.Forms.Label
-        Me.cboEpRetrieve = New System.Windows.Forms.ComboBox
-        Me.btnEditShowRegex = New System.Windows.Forms.Button
-        Me.btnRemoveShowRegex = New System.Windows.Forms.Button
-        Me.lvShowRegex = New System.Windows.Forms.ListView
-        Me.colRegID = New System.Windows.Forms.ColumnHeader
-        Me.colSeason = New System.Windows.Forms.ColumnHeader
-        Me.colSeasonApply = New System.Windows.Forms.ColumnHeader
-        Me.colEpisode = New System.Windows.Forms.ColumnHeader
-        Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.gbTVNaming = New System.Windows.Forms.GroupBox
         Me.lblInsideSeason = New System.Windows.Forms.Label
@@ -348,6 +329,25 @@ Partial Class dlgSettings
         Me.btnAddTVSource = New System.Windows.Forms.Button
         Me.btnEditTVSource = New System.Windows.Forms.Button
         Me.btnRemTVSource = New System.Windows.Forms.Button
+        Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.gbShowRegex = New System.Windows.Forms.GroupBox
+        Me.lblSeasonMatch = New System.Windows.Forms.Label
+        Me.btnAddShowRegex = New System.Windows.Forms.Button
+        Me.txtSeasonRegex = New System.Windows.Forms.TextBox
+        Me.lblEpisodeRetrieve = New System.Windows.Forms.Label
+        Me.cboSeasonRetrieve = New System.Windows.Forms.ComboBox
+        Me.lblSeasonRetrieve = New System.Windows.Forms.Label
+        Me.txtEpRegex = New System.Windows.Forms.TextBox
+        Me.lblEpisodeMatch = New System.Windows.Forms.Label
+        Me.cboEpRetrieve = New System.Windows.Forms.ComboBox
+        Me.btnEditShowRegex = New System.Windows.Forms.Button
+        Me.btnRemoveShowRegex = New System.Windows.Forms.Button
+        Me.lvShowRegex = New System.Windows.Forms.ListView
+        Me.colRegID = New System.Windows.Forms.ColumnHeader
+        Me.colSeason = New System.Windows.Forms.ColumnHeader
+        Me.colSeasonApply = New System.Windows.Forms.ColumnHeader
+        Me.colEpisode = New System.Windows.Forms.ColumnHeader
+        Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.pnlShows = New System.Windows.Forms.Panel
         Me.gbTVListOptions = New System.Windows.Forms.GroupBox
         Me.gbEpisodeListOptions = New System.Windows.Forms.GroupBox
@@ -621,8 +621,6 @@ Partial Class dlgSettings
         Me.GroupBox17.SuspendLayout()
         Me.pnlTVSources.SuspendLayout()
         Me.TabControl2.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
-        Me.gbShowRegex.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.gbTVNaming.SuspendLayout()
         Me.gbEpisodeFanart.SuspendLayout()
@@ -632,6 +630,8 @@ Partial Class dlgSettings
         Me.gbShowFanart.SuspendLayout()
         Me.gbShowPosters.SuspendLayout()
         Me.gbMiscTVSourceOpts.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
+        Me.gbShowRegex.SuspendLayout()
         Me.pnlShows.SuspendLayout()
         Me.gbTVListOptions.SuspendLayout()
         Me.gbEpisodeListOptions.SuspendLayout()
@@ -858,7 +858,7 @@ Partial Class dlgSettings
         Me.GroupBox4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox4.Location = New System.Drawing.Point(210, 3)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(206, 388)
+        Me.GroupBox4.Size = New System.Drawing.Size(206, 344)
         Me.GroupBox4.TabIndex = 2
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
@@ -978,23 +978,22 @@ Partial Class dlgSettings
         Me.GroupBox29.Controls.Add(Me.Label3)
         Me.GroupBox29.Controls.Add(Me.cbTVShowTheme)
         Me.GroupBox29.Controls.Add(Me.Label1)
-        Me.GroupBox29.Controls.Add(Me.Label36)
         Me.GroupBox29.Controls.Add(Me.cbMovieTheme)
         Me.GroupBox29.Controls.Add(Me.Label35)
         Me.GroupBox29.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox29.Location = New System.Drawing.Point(8, 61)
         Me.GroupBox29.Name = "GroupBox29"
-        Me.GroupBox29.Size = New System.Drawing.Size(181, 198)
+        Me.GroupBox29.Size = New System.Drawing.Size(181, 166)
         Me.GroupBox29.TabIndex = 21
         Me.GroupBox29.TabStop = False
-        Me.GroupBox29.Text = "Themes"
+        Me.GroupBox29.Text = "Themes*"
         '
         'cbEpTheme
         '
         Me.cbEpTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpTheme.FormattingEnabled = True
-        Me.cbEpTheme.Location = New System.Drawing.Point(9, 153)
+        Me.cbEpTheme.Location = New System.Drawing.Point(9, 129)
         Me.cbEpTheme.Name = "cbEpTheme"
         Me.cbEpTheme.Size = New System.Drawing.Size(162, 21)
         Me.cbEpTheme.TabIndex = 24
@@ -1003,7 +1002,7 @@ Partial Class dlgSettings
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(7, 138)
+        Me.Label3.Location = New System.Drawing.Point(7, 114)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(87, 13)
         Me.Label3.TabIndex = 25
@@ -1014,7 +1013,7 @@ Partial Class dlgSettings
         Me.cbTVShowTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVShowTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTVShowTheme.FormattingEnabled = True
-        Me.cbTVShowTheme.Location = New System.Drawing.Point(9, 107)
+        Me.cbTVShowTheme.Location = New System.Drawing.Point(9, 83)
         Me.cbTVShowTheme.Name = "cbTVShowTheme"
         Me.cbTVShowTheme.Size = New System.Drawing.Size(162, 21)
         Me.cbTVShowTheme.TabIndex = 22
@@ -1023,7 +1022,7 @@ Partial Class dlgSettings
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(7, 92)
+        Me.Label1.Location = New System.Drawing.Point(7, 68)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(90, 13)
         Me.Label1.TabIndex = 23
@@ -1032,11 +1031,11 @@ Partial Class dlgSettings
         'Label36
         '
         Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(11, 16)
+        Me.Label36.Location = New System.Drawing.Point(2, 357)
         Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(159, 24)
+        Me.Label36.Size = New System.Drawing.Size(247, 15)
         Me.Label36.TabIndex = 21
-        Me.Label36.Text = "You must restart Ember before changes will take effect."
+        Me.Label36.Text = "*You must restart Ember before changes will take effect."
         Me.Label36.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'cbMovieTheme
@@ -1044,7 +1043,7 @@ Partial Class dlgSettings
         Me.cbMovieTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbMovieTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbMovieTheme.FormattingEnabled = True
-        Me.cbMovieTheme.Location = New System.Drawing.Point(9, 62)
+        Me.cbMovieTheme.Location = New System.Drawing.Point(9, 38)
         Me.cbMovieTheme.Name = "cbMovieTheme"
         Me.cbMovieTheme.Size = New System.Drawing.Size(162, 21)
         Me.cbMovieTheme.TabIndex = 19
@@ -1053,7 +1052,7 @@ Partial Class dlgSettings
         '
         Me.Label35.AutoSize = True
         Me.Label35.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.Location = New System.Drawing.Point(7, 47)
+        Me.Label35.Location = New System.Drawing.Point(7, 23)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(77, 13)
         Me.Label35.TabIndex = 20
@@ -1064,9 +1063,9 @@ Partial Class dlgSettings
         Me.btnDLTrans.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnDLTrans.Image = CType(resources.GetObject("btnDLTrans.Image"), System.Drawing.Image)
         Me.btnDLTrans.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnDLTrans.Location = New System.Drawing.Point(17, 315)
+        Me.btnDLTrans.Location = New System.Drawing.Point(17, 266)
         Me.btnDLTrans.Name = "btnDLTrans"
-        Me.btnDLTrans.Size = New System.Drawing.Size(162, 63)
+        Me.btnDLTrans.Size = New System.Drawing.Size(162, 68)
         Me.btnDLTrans.TabIndex = 18
         Me.btnDLTrans.Text = "Download Addons"
         Me.btnDLTrans.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -1616,7 +1615,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(243, 113)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(366, 207)
+        Me.GroupBox8.Size = New System.Drawing.Size(366, 225)
         Me.GroupBox8.TabIndex = 5
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -2456,67 +2455,67 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode13.ImageIndex = 4
-        TreeNode13.Name = "nExts"
-        TreeNode13.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode13.SelectedImageIndex = 4
-        TreeNode13.Text = "File System"
-        TreeNode14.ImageIndex = 1
-        TreeNode14.Name = "nXBMCCom"
-        TreeNode14.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode14.SelectedImageIndex = 1
-        TreeNode14.Text = "Communication"
-        TreeNode15.ImageIndex = 0
-        TreeNode15.Name = "nGeneral"
-        TreeNode15.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode15.SelectedImageIndex = 0
-        TreeNode15.Text = "General"
-        TreeNode16.ImageIndex = 5
-        TreeNode16.Name = "nSources"
-        TreeNode16.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode16.SelectedImageIndex = 5
-        TreeNode16.Text = "Files and Sources"
-        TreeNode17.ImageIndex = 3
-        TreeNode17.Name = "nScraper"
-        TreeNode17.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode17.SelectedImageIndex = 3
-        TreeNode17.Text = "Scraper - Data"
-        TreeNode18.ImageIndex = 6
-        TreeNode18.Name = "nImages"
-        TreeNode18.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode18.SelectedImageIndex = 6
-        TreeNode18.Text = "Scraper - Images"
-        TreeNode19.ImageIndex = 8
-        TreeNode19.Name = "nTrailers"
-        TreeNode19.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode19.SelectedImageIndex = 8
-        TreeNode19.Text = "Scraper - Trailers"
-        TreeNode20.ImageIndex = 2
-        TreeNode20.Name = "nMovies"
-        TreeNode20.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode20.SelectedImageIndex = 2
-        TreeNode20.Text = "Movies"
-        TreeNode21.ImageIndex = 5
-        TreeNode21.Name = "nTVSources"
-        TreeNode21.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode21.SelectedImageIndex = 5
-        TreeNode21.Text = "Files and Sources"
-        TreeNode22.ImageIndex = 3
-        TreeNode22.Name = "nTVScraper"
-        TreeNode22.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        TreeNode22.SelectedImageIndex = 3
-        TreeNode22.Text = "Scraper - Data"
-        TreeNode23.ImageIndex = 6
-        TreeNode23.Name = "nTVImages"
-        TreeNode23.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode23.SelectedImageIndex = 6
-        TreeNode23.Text = "Scraper - Images"
-        TreeNode24.ImageIndex = 7
-        TreeNode24.Name = "nTV"
-        TreeNode24.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode24.SelectedImageIndex = 7
-        TreeNode24.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode20, TreeNode24})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 8
+        TreeNode7.Name = "nTrailers"
+        TreeNode7.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode7.SelectedImageIndex = 8
+        TreeNode7.Text = "Scraper - Trailers"
+        TreeNode8.ImageIndex = 2
+        TreeNode8.Name = "nMovies"
+        TreeNode8.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 2
+        TreeNode8.Text = "Movies"
+        TreeNode9.ImageIndex = 5
+        TreeNode9.Name = "nTVSources"
+        TreeNode9.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode9.SelectedImageIndex = 5
+        TreeNode9.Text = "Files and Sources"
+        TreeNode10.ImageIndex = 3
+        TreeNode10.Name = "nTVScraper"
+        TreeNode10.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        TreeNode10.SelectedImageIndex = 3
+        TreeNode10.Text = "Scraper - Data"
+        TreeNode11.ImageIndex = 6
+        TreeNode11.Name = "nTVImages"
+        TreeNode11.NodeFont = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 6
+        TreeNode11.Text = "Scraper - Images"
+        TreeNode12.ImageIndex = 7
+        TreeNode12.Name = "nTV"
+        TreeNode12.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 7
+        TreeNode12.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode8, TreeNode12})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2529,6 +2528,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
+        Me.pnlGeneral.Controls.Add(Me.Label36)
         Me.pnlGeneral.Location = New System.Drawing.Point(188, 96)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
@@ -2543,7 +2543,7 @@ Partial Class dlgSettings
         Me.gbInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbInterface.Location = New System.Drawing.Point(7, 3)
         Me.gbInterface.Name = "gbInterface"
-        Me.gbInterface.Size = New System.Drawing.Size(198, 388)
+        Me.gbInterface.Size = New System.Drawing.Size(198, 344)
         Me.gbInterface.TabIndex = 4
         Me.gbInterface.TabStop = False
         Me.gbInterface.Text = "Interface"
@@ -2909,7 +2909,7 @@ Partial Class dlgSettings
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
         Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(5, 349)
+        Me.GroupBox16.Location = New System.Drawing.Point(5, 346)
         Me.GroupBox16.Name = "GroupBox16"
         Me.GroupBox16.Size = New System.Drawing.Size(604, 44)
         Me.GroupBox16.TabIndex = 6
@@ -3210,7 +3210,7 @@ Partial Class dlgSettings
         Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(233, 233)
+        Me.GroupBox19.Size = New System.Drawing.Size(233, 225)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -3547,208 +3547,14 @@ Partial Class dlgSettings
         Me.TabControl2.Size = New System.Drawing.Size(612, 392)
         Me.TabControl2.TabIndex = 6
         '
-        'TabPage4
-        '
-        Me.TabPage4.Controls.Add(Me.gbShowRegex)
-        Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
-        Me.TabPage4.Controls.Add(Me.btnRemoveShowRegex)
-        Me.TabPage4.Controls.Add(Me.lvShowRegex)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(604, 366)
-        Me.TabPage4.TabIndex = 1
-        Me.TabPage4.Text = "Regex"
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'gbShowRegex
-        '
-        Me.gbShowRegex.Controls.Add(Me.lblSeasonMatch)
-        Me.gbShowRegex.Controls.Add(Me.btnAddShowRegex)
-        Me.gbShowRegex.Controls.Add(Me.txtSeasonRegex)
-        Me.gbShowRegex.Controls.Add(Me.lblEpisodeRetrieve)
-        Me.gbShowRegex.Controls.Add(Me.cboSeasonRetrieve)
-        Me.gbShowRegex.Controls.Add(Me.lblSeasonRetrieve)
-        Me.gbShowRegex.Controls.Add(Me.txtEpRegex)
-        Me.gbShowRegex.Controls.Add(Me.lblEpisodeMatch)
-        Me.gbShowRegex.Controls.Add(Me.cboEpRetrieve)
-        Me.gbShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbShowRegex.Location = New System.Drawing.Point(6, 169)
-        Me.gbShowRegex.Name = "gbShowRegex"
-        Me.gbShowRegex.Size = New System.Drawing.Size(592, 194)
-        Me.gbShowRegex.TabIndex = 15
-        Me.gbShowRegex.TabStop = False
-        Me.gbShowRegex.Text = "Show Match Regex"
-        '
-        'lblSeasonMatch
-        '
-        Me.lblSeasonMatch.AutoSize = True
-        Me.lblSeasonMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSeasonMatch.Location = New System.Drawing.Point(8, 25)
-        Me.lblSeasonMatch.Name = "lblSeasonMatch"
-        Me.lblSeasonMatch.Size = New System.Drawing.Size(116, 13)
-        Me.lblSeasonMatch.TabIndex = 11
-        Me.lblSeasonMatch.Text = "Season Match Regex:"
-        '
-        'btnAddShowRegex
-        '
-        Me.btnAddShowRegex.Enabled = False
-        Me.btnAddShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnAddShowRegex.Image = CType(resources.GetObject("btnAddShowRegex.Image"), System.Drawing.Image)
-        Me.btnAddShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddShowRegex.Location = New System.Drawing.Point(482, 117)
-        Me.btnAddShowRegex.Name = "btnAddShowRegex"
-        Me.btnAddShowRegex.Size = New System.Drawing.Size(104, 23)
-        Me.btnAddShowRegex.TabIndex = 4
-        Me.btnAddShowRegex.Text = "Add Regex"
-        Me.btnAddShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddShowRegex.UseVisualStyleBackColor = True
-        '
-        'txtSeasonRegex
-        '
-        Me.txtSeasonRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSeasonRegex.Location = New System.Drawing.Point(10, 40)
-        Me.txtSeasonRegex.Name = "txtSeasonRegex"
-        Me.txtSeasonRegex.Size = New System.Drawing.Size(417, 22)
-        Me.txtSeasonRegex.TabIndex = 7
-        '
-        'lblEpisodeRetrieve
-        '
-        Me.lblEpisodeRetrieve.AutoSize = True
-        Me.lblEpisodeRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEpisodeRetrieve.Location = New System.Drawing.Point(441, 69)
-        Me.lblEpisodeRetrieve.Name = "lblEpisodeRetrieve"
-        Me.lblEpisodeRetrieve.Size = New System.Drawing.Size(54, 13)
-        Me.lblEpisodeRetrieve.TabIndex = 14
-        Me.lblEpisodeRetrieve.Text = "Apply To:"
-        '
-        'cboSeasonRetrieve
-        '
-        Me.cboSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboSeasonRetrieve.FormattingEnabled = True
-        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name"})
-        Me.cboSeasonRetrieve.Location = New System.Drawing.Point(443, 40)
-        Me.cboSeasonRetrieve.Name = "cboSeasonRetrieve"
-        Me.cboSeasonRetrieve.Size = New System.Drawing.Size(135, 21)
-        Me.cboSeasonRetrieve.TabIndex = 8
-        '
-        'lblSeasonRetrieve
-        '
-        Me.lblSeasonRetrieve.AutoSize = True
-        Me.lblSeasonRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSeasonRetrieve.Location = New System.Drawing.Point(441, 25)
-        Me.lblSeasonRetrieve.Name = "lblSeasonRetrieve"
-        Me.lblSeasonRetrieve.Size = New System.Drawing.Size(54, 13)
-        Me.lblSeasonRetrieve.TabIndex = 13
-        Me.lblSeasonRetrieve.Text = "Apply To:"
-        '
-        'txtEpRegex
-        '
-        Me.txtEpRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEpRegex.Location = New System.Drawing.Point(10, 84)
-        Me.txtEpRegex.Name = "txtEpRegex"
-        Me.txtEpRegex.Size = New System.Drawing.Size(417, 22)
-        Me.txtEpRegex.TabIndex = 9
-        '
-        'lblEpisodeMatch
-        '
-        Me.lblEpisodeMatch.AutoSize = True
-        Me.lblEpisodeMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEpisodeMatch.Location = New System.Drawing.Point(8, 69)
-        Me.lblEpisodeMatch.Name = "lblEpisodeMatch"
-        Me.lblEpisodeMatch.Size = New System.Drawing.Size(120, 13)
-        Me.lblEpisodeMatch.TabIndex = 12
-        Me.lblEpisodeMatch.Text = "Episode Match Regex:"
-        '
-        'cboEpRetrieve
-        '
-        Me.cboEpRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboEpRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboEpRetrieve.FormattingEnabled = True
-        Me.cboEpRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name", "Season Result"})
-        Me.cboEpRetrieve.Location = New System.Drawing.Point(443, 84)
-        Me.cboEpRetrieve.Name = "cboEpRetrieve"
-        Me.cboEpRetrieve.Size = New System.Drawing.Size(135, 21)
-        Me.cboEpRetrieve.TabIndex = 10
-        '
-        'btnEditShowRegex
-        '
-        Me.btnEditShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEditShowRegex.Image = CType(resources.GetObject("btnEditShowRegex.Image"), System.Drawing.Image)
-        Me.btnEditShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditShowRegex.Location = New System.Drawing.Point(1, 140)
-        Me.btnEditShowRegex.Name = "btnEditShowRegex"
-        Me.btnEditShowRegex.Size = New System.Drawing.Size(104, 23)
-        Me.btnEditShowRegex.TabIndex = 5
-        Me.btnEditShowRegex.Text = "Edit Regex"
-        Me.btnEditShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditShowRegex.UseVisualStyleBackColor = True
-        '
-        'btnRemoveShowRegex
-        '
-        Me.btnRemoveShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnRemoveShowRegex.Image = CType(resources.GetObject("btnRemoveShowRegex.Image"), System.Drawing.Image)
-        Me.btnRemoveShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveShowRegex.Location = New System.Drawing.Point(494, 140)
-        Me.btnRemoveShowRegex.Name = "btnRemoveShowRegex"
-        Me.btnRemoveShowRegex.Size = New System.Drawing.Size(104, 23)
-        Me.btnRemoveShowRegex.TabIndex = 6
-        Me.btnRemoveShowRegex.Text = "Remove"
-        Me.btnRemoveShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveShowRegex.UseVisualStyleBackColor = True
-        '
-        'lvShowRegex
-        '
-        Me.lvShowRegex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colRegID, Me.colSeason, Me.colSeasonApply, Me.colEpisode, Me.colEpApply})
-        Me.lvShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lvShowRegex.FullRowSelect = True
-        Me.lvShowRegex.HideSelection = False
-        Me.lvShowRegex.Location = New System.Drawing.Point(0, 1)
-        Me.lvShowRegex.Name = "lvShowRegex"
-        Me.lvShowRegex.Size = New System.Drawing.Size(598, 135)
-        Me.lvShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvShowRegex.TabIndex = 1
-        Me.lvShowRegex.UseCompatibleStateImageBehavior = False
-        Me.lvShowRegex.View = System.Windows.Forms.View.Details
-        '
-        'colRegID
-        '
-        Me.colRegID.DisplayIndex = 4
-        Me.colRegID.Width = 0
-        '
-        'colSeason
-        '
-        Me.colSeason.DisplayIndex = 0
-        Me.colSeason.Text = "Season Regex"
-        Me.colSeason.Width = 224
-        '
-        'colSeasonApply
-        '
-        Me.colSeasonApply.DisplayIndex = 1
-        Me.colSeasonApply.Text = "Apply To"
-        Me.colSeasonApply.Width = 70
-        '
-        'colEpisode
-        '
-        Me.colEpisode.DisplayIndex = 2
-        Me.colEpisode.Text = "Episode Regex"
-        Me.colEpisode.Width = 219
-        '
-        'colEpApply
-        '
-        Me.colEpApply.DisplayIndex = 3
-        Me.colEpApply.Text = "Apply To"
-        Me.colEpApply.Width = 70
-        '
         'TabPage3
         '
-        Me.TabPage3.Controls.Add(Me.gbTVNaming)
         Me.TabPage3.Controls.Add(Me.lvTVSources)
         Me.TabPage3.Controls.Add(Me.gbMiscTVSourceOpts)
         Me.TabPage3.Controls.Add(Me.btnAddTVSource)
         Me.TabPage3.Controls.Add(Me.btnEditTVSource)
         Me.TabPage3.Controls.Add(Me.btnRemTVSource)
+        Me.TabPage3.Controls.Add(Me.gbTVNaming)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
@@ -3781,7 +3587,7 @@ Partial Class dlgSettings
         Me.lblInsideSeason.Name = "lblInsideSeason"
         Me.lblInsideSeason.Size = New System.Drawing.Size(144, 15)
         Me.lblInsideSeason.TabIndex = 7
-        Me.lblInsideSeason.Text = " * - Inside Season directory"
+        Me.lblInsideSeason.Text = " * Inside Season directory"
         Me.lblInsideSeason.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'gbEpisodeFanart
@@ -4211,6 +4017,200 @@ Partial Class dlgSettings
         Me.btnRemTVSource.Text = "Remove"
         Me.btnRemTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnRemTVSource.UseVisualStyleBackColor = True
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.gbShowRegex)
+        Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
+        Me.TabPage4.Controls.Add(Me.btnRemoveShowRegex)
+        Me.TabPage4.Controls.Add(Me.lvShowRegex)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(604, 366)
+        Me.TabPage4.TabIndex = 1
+        Me.TabPage4.Text = "Regex"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'gbShowRegex
+        '
+        Me.gbShowRegex.Controls.Add(Me.lblSeasonMatch)
+        Me.gbShowRegex.Controls.Add(Me.btnAddShowRegex)
+        Me.gbShowRegex.Controls.Add(Me.txtSeasonRegex)
+        Me.gbShowRegex.Controls.Add(Me.lblEpisodeRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.cboSeasonRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.lblSeasonRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.txtEpRegex)
+        Me.gbShowRegex.Controls.Add(Me.lblEpisodeMatch)
+        Me.gbShowRegex.Controls.Add(Me.cboEpRetrieve)
+        Me.gbShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbShowRegex.Location = New System.Drawing.Point(6, 169)
+        Me.gbShowRegex.Name = "gbShowRegex"
+        Me.gbShowRegex.Size = New System.Drawing.Size(592, 194)
+        Me.gbShowRegex.TabIndex = 15
+        Me.gbShowRegex.TabStop = False
+        Me.gbShowRegex.Text = "Show Match Regex"
+        '
+        'lblSeasonMatch
+        '
+        Me.lblSeasonMatch.AutoSize = True
+        Me.lblSeasonMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeasonMatch.Location = New System.Drawing.Point(8, 25)
+        Me.lblSeasonMatch.Name = "lblSeasonMatch"
+        Me.lblSeasonMatch.Size = New System.Drawing.Size(116, 13)
+        Me.lblSeasonMatch.TabIndex = 11
+        Me.lblSeasonMatch.Text = "Season Match Regex:"
+        '
+        'btnAddShowRegex
+        '
+        Me.btnAddShowRegex.Enabled = False
+        Me.btnAddShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnAddShowRegex.Image = CType(resources.GetObject("btnAddShowRegex.Image"), System.Drawing.Image)
+        Me.btnAddShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddShowRegex.Location = New System.Drawing.Point(482, 117)
+        Me.btnAddShowRegex.Name = "btnAddShowRegex"
+        Me.btnAddShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnAddShowRegex.TabIndex = 4
+        Me.btnAddShowRegex.Text = "Add Regex"
+        Me.btnAddShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddShowRegex.UseVisualStyleBackColor = True
+        '
+        'txtSeasonRegex
+        '
+        Me.txtSeasonRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSeasonRegex.Location = New System.Drawing.Point(10, 40)
+        Me.txtSeasonRegex.Name = "txtSeasonRegex"
+        Me.txtSeasonRegex.Size = New System.Drawing.Size(417, 22)
+        Me.txtSeasonRegex.TabIndex = 7
+        '
+        'lblEpisodeRetrieve
+        '
+        Me.lblEpisodeRetrieve.AutoSize = True
+        Me.lblEpisodeRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEpisodeRetrieve.Location = New System.Drawing.Point(441, 69)
+        Me.lblEpisodeRetrieve.Name = "lblEpisodeRetrieve"
+        Me.lblEpisodeRetrieve.Size = New System.Drawing.Size(54, 13)
+        Me.lblEpisodeRetrieve.TabIndex = 14
+        Me.lblEpisodeRetrieve.Text = "Apply To:"
+        '
+        'cboSeasonRetrieve
+        '
+        Me.cboSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboSeasonRetrieve.FormattingEnabled = True
+        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name"})
+        Me.cboSeasonRetrieve.Location = New System.Drawing.Point(443, 40)
+        Me.cboSeasonRetrieve.Name = "cboSeasonRetrieve"
+        Me.cboSeasonRetrieve.Size = New System.Drawing.Size(135, 21)
+        Me.cboSeasonRetrieve.TabIndex = 8
+        '
+        'lblSeasonRetrieve
+        '
+        Me.lblSeasonRetrieve.AutoSize = True
+        Me.lblSeasonRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeasonRetrieve.Location = New System.Drawing.Point(441, 25)
+        Me.lblSeasonRetrieve.Name = "lblSeasonRetrieve"
+        Me.lblSeasonRetrieve.Size = New System.Drawing.Size(54, 13)
+        Me.lblSeasonRetrieve.TabIndex = 13
+        Me.lblSeasonRetrieve.Text = "Apply To:"
+        '
+        'txtEpRegex
+        '
+        Me.txtEpRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtEpRegex.Location = New System.Drawing.Point(10, 84)
+        Me.txtEpRegex.Name = "txtEpRegex"
+        Me.txtEpRegex.Size = New System.Drawing.Size(417, 22)
+        Me.txtEpRegex.TabIndex = 9
+        '
+        'lblEpisodeMatch
+        '
+        Me.lblEpisodeMatch.AutoSize = True
+        Me.lblEpisodeMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEpisodeMatch.Location = New System.Drawing.Point(8, 69)
+        Me.lblEpisodeMatch.Name = "lblEpisodeMatch"
+        Me.lblEpisodeMatch.Size = New System.Drawing.Size(120, 13)
+        Me.lblEpisodeMatch.TabIndex = 12
+        Me.lblEpisodeMatch.Text = "Episode Match Regex:"
+        '
+        'cboEpRetrieve
+        '
+        Me.cboEpRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEpRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboEpRetrieve.FormattingEnabled = True
+        Me.cboEpRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name", "Season Result"})
+        Me.cboEpRetrieve.Location = New System.Drawing.Point(443, 84)
+        Me.cboEpRetrieve.Name = "cboEpRetrieve"
+        Me.cboEpRetrieve.Size = New System.Drawing.Size(135, 21)
+        Me.cboEpRetrieve.TabIndex = 10
+        '
+        'btnEditShowRegex
+        '
+        Me.btnEditShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnEditShowRegex.Image = CType(resources.GetObject("btnEditShowRegex.Image"), System.Drawing.Image)
+        Me.btnEditShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditShowRegex.Location = New System.Drawing.Point(1, 140)
+        Me.btnEditShowRegex.Name = "btnEditShowRegex"
+        Me.btnEditShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnEditShowRegex.TabIndex = 5
+        Me.btnEditShowRegex.Text = "Edit Regex"
+        Me.btnEditShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditShowRegex.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowRegex
+        '
+        Me.btnRemoveShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveShowRegex.Image = CType(resources.GetObject("btnRemoveShowRegex.Image"), System.Drawing.Image)
+        Me.btnRemoveShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveShowRegex.Location = New System.Drawing.Point(494, 140)
+        Me.btnRemoveShowRegex.Name = "btnRemoveShowRegex"
+        Me.btnRemoveShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnRemoveShowRegex.TabIndex = 6
+        Me.btnRemoveShowRegex.Text = "Remove"
+        Me.btnRemoveShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveShowRegex.UseVisualStyleBackColor = True
+        '
+        'lvShowRegex
+        '
+        Me.lvShowRegex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colRegID, Me.colSeason, Me.colSeasonApply, Me.colEpisode, Me.colEpApply})
+        Me.lvShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvShowRegex.FullRowSelect = True
+        Me.lvShowRegex.HideSelection = False
+        Me.lvShowRegex.Location = New System.Drawing.Point(0, 1)
+        Me.lvShowRegex.Name = "lvShowRegex"
+        Me.lvShowRegex.Size = New System.Drawing.Size(598, 135)
+        Me.lvShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvShowRegex.TabIndex = 1
+        Me.lvShowRegex.UseCompatibleStateImageBehavior = False
+        Me.lvShowRegex.View = System.Windows.Forms.View.Details
+        '
+        'colRegID
+        '
+        Me.colRegID.DisplayIndex = 4
+        Me.colRegID.Width = 0
+        '
+        'colSeason
+        '
+        Me.colSeason.DisplayIndex = 0
+        Me.colSeason.Text = "Season Regex"
+        Me.colSeason.Width = 224
+        '
+        'colSeasonApply
+        '
+        Me.colSeasonApply.DisplayIndex = 1
+        Me.colSeasonApply.Text = "Apply To"
+        Me.colSeasonApply.Width = 70
+        '
+        'colEpisode
+        '
+        Me.colEpisode.DisplayIndex = 2
+        Me.colEpisode.Text = "Episode Regex"
+        Me.colEpisode.Width = 219
+        '
+        'colEpApply
+        '
+        Me.colEpApply.DisplayIndex = 3
+        Me.colEpApply.Text = "Apply To"
+        Me.colEpApply.Width = 70
         '
         'pnlShows
         '
@@ -5519,8 +5519,8 @@ Partial Class dlgSettings
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(3, 3)
         Me.TabControl1.Name = "TabControl1"
@@ -6371,7 +6371,7 @@ Partial Class dlgSettings
         Me.GroupBox20.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox20.Location = New System.Drawing.Point(6, 4)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(581, 137)
+        Me.GroupBox20.Size = New System.Drawing.Size(602, 137)
         Me.GroupBox20.TabIndex = 3
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
@@ -6382,7 +6382,7 @@ Partial Class dlgSettings
         Me.cbTrailerQuality.Enabled = False
         Me.cbTrailerQuality.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTrailerQuality.FormattingEnabled = True
-        Me.cbTrailerQuality.Location = New System.Drawing.Point(460, 28)
+        Me.cbTrailerQuality.Location = New System.Drawing.Point(483, 28)
         Me.cbTrailerQuality.Name = "cbTrailerQuality"
         Me.cbTrailerQuality.Size = New System.Drawing.Size(106, 21)
         Me.cbTrailerQuality.TabIndex = 65
@@ -6391,7 +6391,7 @@ Partial Class dlgSettings
         '
         Me.lblPreferredQuality.AutoSize = True
         Me.lblPreferredQuality.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPreferredQuality.Location = New System.Drawing.Point(458, 13)
+        Me.lblPreferredQuality.Location = New System.Drawing.Point(481, 13)
         Me.lblPreferredQuality.Name = "lblPreferredQuality"
         Me.lblPreferredQuality.Size = New System.Drawing.Size(97, 13)
         Me.lblPreferredQuality.TabIndex = 66
@@ -6453,7 +6453,7 @@ Partial Class dlgSettings
         '
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(331, 111)
+        Me.Label23.Location = New System.Drawing.Point(354, 111)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(51, 13)
         Me.Label23.TabIndex = 64
@@ -6463,7 +6463,7 @@ Partial Class dlgSettings
         '
         Me.txtTimeout.Enabled = False
         Me.txtTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTimeout.Location = New System.Drawing.Point(392, 107)
+        Me.txtTimeout.Location = New System.Drawing.Point(415, 107)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(50, 22)
         Me.txtTimeout.TabIndex = 7
@@ -6486,7 +6486,7 @@ Partial Class dlgSettings
         '
         Me.Label22.AutoSize = True
         Me.Label22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(291, 13)
+        Me.Label22.Location = New System.Drawing.Point(314, 13)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(126, 13)
         Me.Label22.TabIndex = 2
@@ -6499,7 +6499,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(293, 28)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(316, 28)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(149, 72)
         Me.lbTrailerSites.TabIndex = 6
@@ -6773,6 +6773,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -6781,10 +6785,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTrailers)
         Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6867,9 +6867,6 @@ Partial Class dlgSettings
         Me.GroupBox17.PerformLayout()
         Me.pnlTVSources.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
-        Me.TabPage4.ResumeLayout(False)
-        Me.gbShowRegex.ResumeLayout(False)
-        Me.gbShowRegex.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.gbTVNaming.ResumeLayout(False)
         Me.gbEpisodeFanart.ResumeLayout(False)
@@ -6885,6 +6882,9 @@ Partial Class dlgSettings
         Me.gbShowPosters.ResumeLayout(False)
         Me.gbShowPosters.PerformLayout()
         Me.gbMiscTVSourceOpts.ResumeLayout(False)
+        Me.TabPage4.ResumeLayout(False)
+        Me.gbShowRegex.ResumeLayout(False)
+        Me.gbShowRegex.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
         Me.gbTVListOptions.ResumeLayout(False)
         Me.gbEpisodeListOptions.ResumeLayout(False)
