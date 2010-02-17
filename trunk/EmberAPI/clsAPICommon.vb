@@ -274,6 +274,9 @@ Public Class Structures
 End Class
 
 Public Class Functions
+    Public Shared Function EmberAPIVersion() As String
+        Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+    End Function
     ''' <summary>
     ''' Force of habit
     ''' </summary>

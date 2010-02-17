@@ -4199,7 +4199,7 @@ Public Class frmMain
                                 iCount += 1
 
                             Next
-
+                            ' above 2 arent scraper.. will need to relocate it
                         Case Enums.ScrapeType.CleanFolders
                             Dim fDeleter As New FileUtils.Delete
                             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -4216,6 +4216,9 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If
                             Next
+
+
+
                         Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -5720,6 +5723,7 @@ doCancel:
         Me.pnlCancel.Visible = False
         Me.SetControlsEnabled(True)
     End Sub
+    Private dScrapeRow As DataRow
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -5728,14 +5732,25 @@ doCancel:
             If bwNewScraper.CancellationPending Then Exit For
             bwNewScraper.ReportProgress(1)
             Dim indX As Integer = sRow.Index
+
             MediaListScraperIndex = indX
             Dim MovieId As Integer = Convert.ToInt32(sRow.Cells(0).Value)
+            'Do this where so will not need do everytime that row need's updates
+            dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
             AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-            ModulesManager.Instance.ScrapeOnly(DBScrapeMovie.Movie, Args.Options)
+            ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.Options)
+            dScrapeRow.Item(6) = True
             ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
             RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
             Master.currMovie = DBScrapeMovie
+            ' Dupe in scraper + need to think over this save thing here
+            If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+            Else
+                Master.DB.SaveMovieToDB(DBScrapeMovie, False, True, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+            End If
+
             If bwNewScraper.CancellationPending Then Exit For
             If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
                 OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -5754,7 +5769,8 @@ doCancel:
         NewScrapeDataEnd()
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
-        Me.dgvMediaList.Rows(MediaListScraperIndex).Cells(col).Value = v
+        dScrapeRow.Item(col) = v
+        'Me.dgvMediaList.Rows(MediaListScraperIndex).Cells(col).Value = v
     End Sub
 
     Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
@@ -5965,11 +5981,11 @@ doCancel:
         End Try
 
     End Sub
-    Private Sub ScrapeMovieWithModules(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions)
+    Private Sub ScrapeMovieWithModules(ByVal imdbID As String, ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions)
         ' TODO TODO TODO
         'this is the current proposed replacement for IMDB.GetMovieInfoAsync
         'need to become async? ....
-        ModulesManager.Instance.FullScrape(IMDBMovie, Options)
+        ModulesManager.Instance.FullScrape(DBMovie, Options)
     End Sub
 
     Private Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)

@@ -17,7 +17,7 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
+Imports System.IO
 Imports EmberAPI
 Public Class EmberXMLScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
@@ -42,7 +42,7 @@ Public Class EmberXMLScraperModule
 
     Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
         Get
-            Return "none"
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
 
@@ -50,7 +50,7 @@ Public Class EmberXMLScraperModule
 
     End Function
 
-    Public Function Scraper(ByRef Movie As EmberAPI.MediaContainers.Movie, ByRef Options As EmberAPI.Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
 
     End Function
 
@@ -70,7 +70,6 @@ Public Class EmberNativeScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
-    Private _Version As String = "1.0"
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
 
     ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
@@ -80,10 +79,7 @@ Public Class EmberNativeScraperModule
     End Property
     ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
         Get
-            Dim FVI As FileVersionInfo
-            FVI = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location)
-            _Version = FVI.FilePrivatePart.ToString
-            Return _Version
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
@@ -107,14 +103,48 @@ Public Class EmberNativeScraperModule
     ''' </summary>
     ''' <remarks></remarks>
     Private IMDB As New IMDB.Scraper
-    Function Scraper(ByRef Movie As EmberAPI.MediaContainers.Movie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
-        If Not String.IsNullOrEmpty(Movie.IMDBID) Then
-            IMDB.GetMovieInfo(Movie.IMDBID, Movie, Options.bFullCrew, Options.bFullCast, False, Options)
+    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+        Dim tTitle As String = String.Empty
+        Dim OldTitle As String = String.Empty
+
+        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+            IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)
         Else
             'Movie = IMDB.GetSearchMovieInfo(Movie.Title, Movie, Enums.ScrapeType.SingleScrape, Options)
-            Movie = IMDB.GetSearchMovieInfo(Movie.Title, Movie, Enums.ScrapeType.FullAsk, Options)
+            DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, Enums.ScrapeType.FullAsk, Options)
         End If
 
+        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+            tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
+            If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
+            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+                DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
+            Else
+                DBMovie.ListTitle = tTitle
+            End If
+        Else
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            Else
+                'NOTE.NOTE.NOTE what is Row 46 ??????????
+                'If Convert.ToBoolean(drvRow.Item(46)) AndAlso DBMovie.isSingle Then
+                If True AndAlso DBMovie.isSingle Then
+                    DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
+                Else
+                    DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                End If
+            End If
+            If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
+        End If
+        RaiseEvent ScraperUpdateMediaList(6, True)
+        ' I removed it to main form .. scraper should NOT save db or rename files!!! ???
+        'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+        'FileFolderRenamer.RenameSingle(DBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID), False)
+        'Else
+        'Master.DB.SaveMovieToDB(DBMovie, False, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID))
+        'End If
         Return True
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
@@ -122,6 +152,9 @@ Public Class EmberNativeScraperModule
         Dim Fanart As New EmberAPI.Images
         Dim pResults As EmberAPI.Containers.ImgResult
         Dim fResults As EmberAPI.Containers.ImgResult
+        Dim tURL As String = String.Empty
+        Dim Trailer As New Trailers
+        Dim doSave As Boolean = False
         If Master.GlobalScrapeMod.Poster Then
             Poster.Clear()
             If Poster.IsAllowedToDownload(DBMovie, Enums.ImageType.Posters) Then
@@ -168,6 +201,7 @@ Public Class EmberNativeScraperModule
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             DBMovie.FanartPath = fResults.ImagePath
                             'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                            RaiseEvent ScraperUpdateMediaList(5, True)
                             If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                 DBMovie.Movie.Fanart = fResults.Fanart
                             End If
@@ -180,6 +214,7 @@ Public Class EmberNativeScraperModule
                             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                 DBMovie.FanartPath = fResults.ImagePath
                                 'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                                RaiseEvent ScraperUpdateMediaList(5, True)
                                 If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                     DBMovie.Movie.Fanart = fResults.Fanart
                                 End If
@@ -189,6 +224,47 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
+        If Master.GlobalScrapeMod.Trailer Then
+            tURL = Trailer.DownloadSingleTrailer(DBMovie.Filename, DBMovie.Movie.IMDBID, DBMovie.isSingle, DBMovie.Movie.Trailer)
+            If Not String.IsNullOrEmpty(tURL) Then
+                If tURL.Substring(0, 7) = "http://" Then
+                    DBMovie.Movie.Trailer = tURL
+                    'doSave = True
+                Else
+                    DBMovie.TrailerPath = tURL
+                    'Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
+                    RaiseEvent ScraperUpdateMediaList(7, True)
+                End If
+            End If
+        End If
+        If Master.GlobalScrapeMod.Extra Then
+            If Master.eSettings.AutoET AndAlso Not didEts Then
+                Fanart.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
+            End If
+            If Master.eSettings.AutoThumbs > 0 AndAlso DBMovie.isSingle Then
+                Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBMovie, Master.eSettings.AutoThumbs, False)
+                If Not String.IsNullOrEmpty(ETasFA) Then
+                    'Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
+                    RaiseEvent ScraperUpdateMediaList(9, True)
+                    DBMovie.ExtraPath = "TRUE"
+                    If Not ETasFA = "TRUE" Then
+                        'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                        RaiseEvent ScraperUpdateMediaList(5, True)
+                        DBMovie.FanartPath = ETasFA
+                    End If
+                End If
+            End If
+        End If
+        If doSave Then
+            'NOTE to Nuno: Why this way... no other way to do this
+            'Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
+            RaiseEvent ScraperUpdateMediaList(6, True)
+        End If
+        ' need event for this or better move it out of here
+        'Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
+        'Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
+
+
         Return True
     End Function
 
