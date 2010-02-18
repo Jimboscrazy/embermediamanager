@@ -171,9 +171,10 @@ Public Class Enums
 
     Public Enum TVUpdateTime As Integer
         Week = 0
-        Month = 1
-        Always = 2
-        Never = 3
+        BiWeekly = 1
+        Month = 2
+        Always = 3
+        Never = 4
     End Enum
 End Class
 
