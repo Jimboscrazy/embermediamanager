@@ -286,6 +286,7 @@ Public Class Settings
     Private _externaltvdbapikey As String
     Private _scanordermodify As Boolean
     Private _tvscanordermodify As Boolean
+    Private _tvupdatetime As Enums.TVUpdateTime
 
     Public Property Version() As String
         Get
@@ -2646,6 +2647,16 @@ Public Class Settings
             Me._tvscanordermodify = value
         End Set
     End Property
+
+    Public Property TVUpdateTime() As Enums.TVUpdateTime
+        Get
+            Return Me._tvupdatetime
+        End Get
+        Set(ByVal value As Enums.TVUpdateTime)
+            Me._tvupdatetime = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2913,6 +2924,7 @@ Public Class Settings
         Me._externaltvdbapikey = String.Empty
         Me._scanordermodify = False
         Me._tvscanordermodify = False
+        Me._tvupdatetime = Enums.TVUpdateTime.Week
     End Sub
 
     Public Sub Save()

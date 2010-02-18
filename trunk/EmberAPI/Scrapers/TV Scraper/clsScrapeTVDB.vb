@@ -608,22 +608,37 @@ Namespace TVDB
 
             Private Sub DownloadSeries(ByVal sID As String)
                 Try
-                    If Not File.Exists(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))) Then
+                    Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))
+                    Dim fExists As Boolean = File.Exists(fPath)
+                    Dim doDownload As Boolean = False
+
+                    Select Case Master.eSettings.TVUpdateTime
+                        Case Enums.TVUpdateTime.Always
+                            doDownload = True
+                        Case Enums.TVUpdateTime.Never
+                            doDownload = False
+                        Case Enums.TVUpdateTime.Week
+                            If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Now Then doDownload = True
+                        Case Enums.TVUpdateTime.Month
+                            If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Now Then doDownload = True
+                    End Select
+
+                    If doDownload OrElse Not fExists Then
                         Dim sHTTP As New HTTP
                         Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage))
                         sHTTP = Nothing
 
                         If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
                             'save it to the temp dir
-                            Directory.CreateDirectory(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID)))
-                            Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Create, FileAccess.Write)
+                            Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
+                            Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
                                 fStream.Write(xZip, 0, xZip.Length)
                             End Using
 
                             Me.ProcessTVDBZip(xZip)
                         End If
                     Else
-                        Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Open, FileAccess.Read)
+                        Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
                             Me.ProcessTVDBZip(fZip)
                         End Using
