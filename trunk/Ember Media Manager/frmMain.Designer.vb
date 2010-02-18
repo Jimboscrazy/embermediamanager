@@ -882,7 +882,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem, Me.ScrapingTestToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 348)
         '
         'cmnuTitle
         '
@@ -1094,42 +1094,36 @@ Partial Class frmMain
         '
         'SelectNfoAutoToolStripMenuItem
         '
-        Me.SelectNfoAutoToolStripMenuItem.Enabled = False
         Me.SelectNfoAutoToolStripMenuItem.Name = "SelectNfoAutoToolStripMenuItem"
         Me.SelectNfoAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectNfoAutoToolStripMenuItem.Text = "NFO Only"
         '
         'SelectPosterAutoToolStripMenuItem
         '
-        Me.SelectPosterAutoToolStripMenuItem.Enabled = False
         Me.SelectPosterAutoToolStripMenuItem.Name = "SelectPosterAutoToolStripMenuItem"
         Me.SelectPosterAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectPosterAutoToolStripMenuItem.Text = "Poster Only"
         '
         'SelectFanartAutoToolStripMenuItem
         '
-        Me.SelectFanartAutoToolStripMenuItem.Enabled = False
         Me.SelectFanartAutoToolStripMenuItem.Name = "SelectFanartAutoToolStripMenuItem"
         Me.SelectFanartAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectFanartAutoToolStripMenuItem.Text = "Fanart Only"
         '
         'SelectExtraAutoToolStripMenuItem
         '
-        Me.SelectExtraAutoToolStripMenuItem.Enabled = False
         Me.SelectExtraAutoToolStripMenuItem.Name = "SelectExtraAutoToolStripMenuItem"
         Me.SelectExtraAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectExtraAutoToolStripMenuItem.Text = "Extrathumbs Only"
         '
         'SelectTrailerAutoToolStripMenuItem
         '
-        Me.SelectTrailerAutoToolStripMenuItem.Enabled = False
         Me.SelectTrailerAutoToolStripMenuItem.Name = "SelectTrailerAutoToolStripMenuItem"
         Me.SelectTrailerAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectTrailerAutoToolStripMenuItem.Text = "Trailer Only"
         '
         'SelectMetaAutoToolStripMenuItem
         '
-        Me.SelectMetaAutoToolStripMenuItem.Enabled = False
         Me.SelectMetaAutoToolStripMenuItem.Name = "SelectMetaAutoToolStripMenuItem"
         Me.SelectMetaAutoToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectMetaAutoToolStripMenuItem.Text = "Meta Data Only"
@@ -1155,35 +1149,30 @@ Partial Class frmMain
         '
         'SelectPosterÃskToolStripMenuItem
         '
-        Me.SelectPosterÃskToolStripMenuItem.Enabled = False
         Me.SelectPosterÃskToolStripMenuItem.Name = "SelectPosterÃskToolStripMenuItem"
         Me.SelectPosterÃskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectPosterÃskToolStripMenuItem.Text = "Poster Only"
         '
         'SelectFanartAskToolStripMenuItem
         '
-        Me.SelectFanartAskToolStripMenuItem.Enabled = False
         Me.SelectFanartAskToolStripMenuItem.Name = "SelectFanartAskToolStripMenuItem"
         Me.SelectFanartAskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectFanartAskToolStripMenuItem.Text = "Fanart Only"
         '
         'SelectExtraAskToolStripMenuItem
         '
-        Me.SelectExtraAskToolStripMenuItem.Enabled = False
         Me.SelectExtraAskToolStripMenuItem.Name = "SelectExtraAskToolStripMenuItem"
         Me.SelectExtraAskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectExtraAskToolStripMenuItem.Text = "Extrathumbs Only"
         '
         'ToolStripAskMenuItem19
         '
-        Me.ToolStripAskMenuItem19.Enabled = False
         Me.ToolStripAskMenuItem19.Name = "ToolStripAskMenuItem19"
         Me.ToolStripAskMenuItem19.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripAskMenuItem19.Text = "Trailer Only"
         '
         'SelectMeEtaAskToolStripMenuItem
         '
-        Me.SelectMeEtaAskToolStripMenuItem.Enabled = False
         Me.SelectMeEtaAskToolStripMenuItem.Name = "SelectMeEtaAskToolStripMenuItem"
         Me.SelectMeEtaAskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectMeEtaAskToolStripMenuItem.Text = "Meta Data Only"

@@ -39,7 +39,6 @@ Public Class frmMain
     Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadEpInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
@@ -232,7 +231,6 @@ Public Class frmMain
             If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-            If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
             If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
@@ -245,7 +243,7 @@ Public Class frmMain
             Me.Refresh()
 
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
-            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
             OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Master.TVScraper.IsBusy
                 Application.DoEvents()
@@ -312,7 +310,7 @@ Public Class frmMain
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
                             If Not Me.fScanner.IsBusy Then
-                                While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 End While
                                 Me.RefreshAllMovies()
@@ -320,14 +318,14 @@ Public Class frmMain
                         End If
                         If dResult.NeedsUpdate Then
                             If Not Me.fScanner.IsBusy Then
-                                While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 End While
                                 Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                             End If
                         End If
                     Else
-                        If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                        If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwNewScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                             Me.FillList(0)
                         End If
                     End If
@@ -904,7 +902,7 @@ Public Class frmMain
 
         Try
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -1751,7 +1749,7 @@ Public Class frmMain
                 Next
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+                Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -2592,11 +2590,11 @@ Public Class frmMain
         lblCanceling.Visible = True
         pbCanceling.Visible = True
 
-        If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
+        If Me.bwNewScraper.IsBusy Then Me.bwNewScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
         If Me.bwNewScraper.IsBusy Then Me.bwNewScraper.CancelAsync()
 
-        While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy
+        While Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy
             Application.DoEvents()
         End While
     End Sub
@@ -2765,7 +2763,7 @@ Public Class frmMain
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             End While
 
@@ -3263,7 +3261,7 @@ Public Class frmMain
 
         Try
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -3371,7 +3369,7 @@ Public Class frmMain
 
         Try
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -3861,66 +3859,63 @@ Public Class frmMain
 
 
 
-    Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
-        If Not isCL Then
-            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
-                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                    Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
-                End If
-            Else
-                Me.SetStatus(e.UserState.ToString)
-                Me.tspbLoading.Value = e.ProgressPercentage
-            End If
-        End If
+    'Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
+    'If Not isCL Then
+    'If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
+    'If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+    'Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+    'End If
+    'Else
+    'Me.SetStatus(e.UserState.ToString)
+    'Me.tspbLoading.Value = e.ProgressPercentage
+    'End If
+    'End If
 
-        Me.dgvMediaList.Invalidate()
-    End Sub
+    'Me.dgvMediaList.Invalidate()
+    'End Sub
 
-    Private Sub bwScraper_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwScraper.RunWorkerCompleted
+    'Private Sub bwScraper_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwScraper.RunWorkerCompleted
+    '//
+    ' Thread finished: re-fill media list and load info for first item
+    '\\
+    'Try
+    'If isCL Then
+    'Me.ScraperDone = True
+    'Else
+    'Me.pnlCancel.Visible = False
+    'If DirectCast(e.Result, Enums.ScrapeType) = Enums.ScrapeType.CleanFolders Then
+    'only rescan media if expert cleaner and videos are not whitelisted 
+    'since the db is updated during cleaner now.
+    'If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
+    'Me.LoadMedia(New Structures.Scans With {.Movies = True})
+    'Else
+    'Me.FillList(0)
+    'End If
+    'Else
+    'If Me.dgvMediaList.SelectedRows.Count > 0 Then
+    'Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
+    'Else
+    'Me.FillList(0)
+    'End If
+    'End If
+    'End If
+    'Me.tslLoading.Visible = False
+    'Me.tspbLoading.Visible = False
+    'Me.SetStatus(String.Empty)
 
-        '//
-        ' Thread finished: re-fill media list and load info for first item
-        '\\
+    'Me.SetControlsEnabled(True, True)
+    'Me.EnableFilters(True)
 
-        Try
-            If isCL Then
-                Me.ScraperDone = True
-            Else
-                Me.pnlCancel.Visible = False
-
-                If DirectCast(e.Result, Enums.ScrapeType) = Enums.ScrapeType.CleanFolders Then
-                    'only rescan media if expert cleaner and videos are not whitelisted 
-                    'since the db is updated during cleaner now.
-                    If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
-                        Me.LoadMedia(New Structures.Scans With {.Movies = True})
-                    Else
-                        Me.FillList(0)
-                    End If
-                Else
-                    If Me.dgvMediaList.SelectedRows.Count > 0 Then
-                        Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
-                    Else
-                        Me.FillList(0)
-                    End If
-                End If
-            End If
-            Me.tslLoading.Visible = False
-            Me.tspbLoading.Visible = False
-            Me.SetStatus(String.Empty)
-
-            Me.SetControlsEnabled(True, True)
-            Me.EnableFilters(True)
-
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+    '        Catch ex As Exception
+    'ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    'End Try
+    'End Sub
 
     Private Sub bwRefreshMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovies.DoWork
         Dim iCount As Integer = 0
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataRow In Me.dtMedia.Rows
-                If Me.bwScraper.CancellationPending Then Return
+                If Me.bwNewScraper.CancellationPending Then Return
                 Me.bwRefreshMovies.ReportProgress(iCount, sRow.Item(1))
                 Me.RefreshMovie(Convert.ToInt64(sRow.Item(0)), True)
                 iCount += 1
@@ -4715,7 +4710,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters(True)
             End If
@@ -4849,7 +4844,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -4982,7 +4977,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -5115,7 +5110,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -7194,6 +7189,61 @@ Public Class frmMain
     Private Sub SelectMetaAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoMenuToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterÃskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterÃskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub ToolStripAskMenuItem19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripAskMenuItem19.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectExtraAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectTrailerAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectMetaAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectMeEtaAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMeEtaAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+
     End Sub
 End Class
 
