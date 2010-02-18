@@ -817,7 +817,7 @@ Public Class frmMain
                 Case 2
                     If Me.pnlInfoPanel.Height = Me.IPUp Then
                         Me.tmrAni.Stop()
-                        'Me.btnUp.Enabled = False
+                        Me.btnUp.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnMid.Enabled = True
                     End If
