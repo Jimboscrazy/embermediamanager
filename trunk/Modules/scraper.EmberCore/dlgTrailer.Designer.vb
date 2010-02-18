@@ -189,7 +189,7 @@ Partial Class dlgTrailer
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Enabled = False
-        Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlayTrailer.Image = Nothing ' *** Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
         Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 334)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"

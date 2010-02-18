@@ -118,7 +118,7 @@ Public Class EmberNativeScraperModule
             Poster.Clear()
             If Poster.IsAllowedToDownload(DBMovie, Enums.ImageType.Posters) Then
                 pResults = New Containers.ImgResult
-                If Poster.GetPreferredImage(DBMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, DBMovie.Filename, False, If(ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
+                If ScrapeImages.GetPreferredImage(Poster, DBMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, DBMovie.Filename, False, If(ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
                     If Not IsNothing(Poster.Image) Then
                         pResults.ImagePath = Poster.SaveAsPoster(DBMovie)
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -130,7 +130,7 @@ Public Class EmberNativeScraperModule
                                 DBMovie.Movie.Thumb = pResults.Posters
                             End If
                         End If
-                    ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk Then
+                    ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
                         MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                         Using dImgSelect As New dlgImgSelect
                             pResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Posters)
@@ -154,7 +154,7 @@ Public Class EmberNativeScraperModule
             If Fanart.IsAllowedToDownload(DBMovie, Enums.ImageType.Fanart) Then
                 fResults = New Containers.ImgResult
                 didEts = True
-                If Fanart.GetPreferredImage(DBMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, DBMovie.Filename, Master.GlobalScrapeMod.Extra, If(ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
+                If ScrapeImages.GetPreferredImage(Fanart, DBMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, DBMovie.Filename, Master.GlobalScrapeMod.Extra, If(ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
                     If Not IsNothing(Fanart.Image) Then
                         fResults.ImagePath = Fanart.SaveAsFanart(DBMovie)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
@@ -165,7 +165,7 @@ Public Class EmberNativeScraperModule
                                 DBMovie.Movie.Fanart = fResults.Fanart
                             End If
                         End If
-                    ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk Then
+                    ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
                         MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
 
                         Using dImgSelect As New dlgImgSelect
@@ -213,10 +213,6 @@ Public Class EmberNativeScraperModule
                     End If
                 End If
             End If
-        End If
-        If doSave Then
-            'NOTE to Nuno: Why this way... no other way to do this
-            'Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
         End If
         ' need event for this or better move it out of here
         'Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})

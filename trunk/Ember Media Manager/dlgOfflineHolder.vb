@@ -26,7 +26,7 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
 Public Class dlgOfflineHolder
-    Private IMDB As New IMDB.Scraper
+    ' *** Private IMDB As New IMDB.Scraper
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private FileName As String = Path.Combine(WorkingPath, "PlaceHolder.avi")
     Private destPath As String
@@ -130,8 +130,8 @@ Public Class dlgOfflineHolder
                 End Using
             End Using
 
-            AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
-            AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
+            ' *** AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
+            ' *** AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
                 FileUtils.Delete.DeleteDirectory(WorkingPath)
             End If
@@ -186,23 +186,23 @@ Public Class dlgOfflineHolder
 
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
-            Using dSearch As New dlgIMDBSearchResults
-                Master.tmpMovie.Clear()
-                tMovie.Movie.Clear()
-                If dSearch.ShowDialog(txtMovieName.Text) = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
-                        Me.pbProgress.Value = 100
-                        Me.pbProgress.Style = ProgressBarStyle.Marquee
-                        Me.pbProgress.MarqueeAnimationSpeed = 25
-                        Me.pbProgress.Visible = True
-                        'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
-                        Me.GetIMDB_Button.Enabled = False
-                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions)
-                        ' Note: possible place to invoke scrape modules
-                        ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-                    End If
-                End If
-            End Using
+            ' *** Using dSearch As New dlgIMDBSearchResults
+            ' *** Master.tmpMovie.Clear()
+            ' *** tMovie.Movie.Clear()
+            ' *** If dSearch.ShowDialog(txtMovieName.Text) = Windows.Forms.DialogResult.OK Then
+            ' *** If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+            ' *** Me.pbProgress.Value = 100
+            ' *** Me.pbProgress.Style = ProgressBarStyle.Marquee
+            ' *** Me.pbProgress.MarqueeAnimationSpeed = 25
+            ' *** Me.pbProgress.Visible = True
+            'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
+            ' *** Me.GetIMDB_Button.Enabled = False
+            ' *** IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions)
+            ' *** ' Note: possible place to invoke scrape modules
+            ' *** ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
+            ' *** End If
+            ' *** End If
+            ' *** End Using
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -214,23 +214,23 @@ Public Class dlgOfflineHolder
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
                     If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Posters) Then
-                        Using dImgSelect As New dlgImgSelect
-                            Dim dResultsP As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Posters)
-                            If Not String.IsNullOrEmpty(dResultsP.ImagePath) Then
-                                tMovie.PosterPath = dResultsP.ImagePath
-                                If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Thumb = dResultsP.Posters
-                            End If
-                        End Using
+                        ' *** Using dImgSelect As New dlgImgSelect
+                        ' *** Dim dResultsP As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Posters)
+                        ' *** If Not String.IsNullOrEmpty(dResultsP.ImagePath) Then
+                        ' *** tMovie.PosterPath = dResultsP.ImagePath
+                        ' *** If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Thumb = dResultsP.Posters
+                        ' *** End If
+                        ' *** End Using
                     End If
 
                     If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Fanart) Then
-                        Using dImgSelect As New dlgImgSelect
-                            Dim dResultsF As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Fanart)
-                            If Not String.IsNullOrEmpty(dResultsF.ImagePath) Then
-                                tMovie.FanartPath = dResultsF.ImagePath
-                                If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = dResultsF.Fanart
-                            End If
-                        End Using
+                        ' *** Using dImgSelect As New dlgImgSelect
+                        ' *** Dim dResultsF As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Fanart)
+                        ' *** If Not String.IsNullOrEmpty(dResultsF.ImagePath) Then
+                        ' *** tMovie.FanartPath = dResultsF.ImagePath
+                        ' *** If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = dResultsF.Fanart
+                        ' *** End If
+                        ' *** End Using
                     End If
 
                     tmpImages.Dispose()
