@@ -104,20 +104,20 @@ Partial Class frmMain
         Me.ScrapingTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectAllAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem7 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem8 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem9 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem10 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem11 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem12 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectNfoAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectPosterAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectFanartAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectExtraAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectTrailerAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectMetaAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem13 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectAllAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem15 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem16 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem17 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem18 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem19 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem20 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectNfoAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectPosterÃskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectFanartAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectExtraAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripAskMenuItem19 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectMeEtaAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -344,21 +344,21 @@ Partial Class frmMain
         Me.ToolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectedMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem14 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem21 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem22 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem23 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem24 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem25 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectAllAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectNfoAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectPosterAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectFanartAutoiMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectExtraAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectTrailerAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectMetaAutoMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem26 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectAllAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem28 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem29 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem30 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem31 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem32 = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem33 = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectNfoAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectPosterAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectFanartAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectExtraAskMEnuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectTrailerAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SelectMetaAskMenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
         Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
@@ -1081,7 +1081,7 @@ Partial Class frmMain
         '
         'ToolStripMenuItem5
         '
-        Me.ToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAutoToolStripMenuItem, Me.ToolStripMenuItem7, Me.ToolStripMenuItem8, Me.ToolStripMenuItem9, Me.ToolStripMenuItem10, Me.ToolStripMenuItem11, Me.ToolStripMenuItem12})
+        Me.ToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAutoToolStripMenuItem, Me.SelectNfoAutoToolStripMenuItem, Me.SelectPosterAutoToolStripMenuItem, Me.SelectFanartAutoToolStripMenuItem, Me.SelectExtraAutoToolStripMenuItem, Me.SelectTrailerAutoToolStripMenuItem, Me.SelectMetaAutoToolStripMenuItem})
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(268, 22)
         Me.ToolStripMenuItem5.Text = "Automatic (Force Best Match)"
@@ -1092,51 +1092,51 @@ Partial Class frmMain
         Me.SelectAllAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
         Me.SelectAllAutoToolStripMenuItem.Text = "All Items"
         '
-        'ToolStripMenuItem7
+        'SelectNfoAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem7.Enabled = False
-        Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
-        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem7.Text = "NFO Only"
+        Me.SelectNfoAutoToolStripMenuItem.Enabled = False
+        Me.SelectNfoAutoToolStripMenuItem.Name = "SelectNfoAutoToolStripMenuItem"
+        Me.SelectNfoAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectNfoAutoToolStripMenuItem.Text = "NFO Only"
         '
-        'ToolStripMenuItem8
+        'SelectPosterAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem8.Enabled = False
-        Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
-        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem8.Text = "Poster Only"
+        Me.SelectPosterAutoToolStripMenuItem.Enabled = False
+        Me.SelectPosterAutoToolStripMenuItem.Name = "SelectPosterAutoToolStripMenuItem"
+        Me.SelectPosterAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectPosterAutoToolStripMenuItem.Text = "Poster Only"
         '
-        'ToolStripMenuItem9
+        'SelectFanartAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem9.Enabled = False
-        Me.ToolStripMenuItem9.Name = "ToolStripMenuItem9"
-        Me.ToolStripMenuItem9.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem9.Text = "Fanart Only"
+        Me.SelectFanartAutoToolStripMenuItem.Enabled = False
+        Me.SelectFanartAutoToolStripMenuItem.Name = "SelectFanartAutoToolStripMenuItem"
+        Me.SelectFanartAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectFanartAutoToolStripMenuItem.Text = "Fanart Only"
         '
-        'ToolStripMenuItem10
+        'SelectExtraAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem10.Enabled = False
-        Me.ToolStripMenuItem10.Name = "ToolStripMenuItem10"
-        Me.ToolStripMenuItem10.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem10.Text = "Extrathumbs Only"
+        Me.SelectExtraAutoToolStripMenuItem.Enabled = False
+        Me.SelectExtraAutoToolStripMenuItem.Name = "SelectExtraAutoToolStripMenuItem"
+        Me.SelectExtraAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectExtraAutoToolStripMenuItem.Text = "Extrathumbs Only"
         '
-        'ToolStripMenuItem11
+        'SelectTrailerAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem11.Enabled = False
-        Me.ToolStripMenuItem11.Name = "ToolStripMenuItem11"
-        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem11.Text = "Trailer Only"
+        Me.SelectTrailerAutoToolStripMenuItem.Enabled = False
+        Me.SelectTrailerAutoToolStripMenuItem.Name = "SelectTrailerAutoToolStripMenuItem"
+        Me.SelectTrailerAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectTrailerAutoToolStripMenuItem.Text = "Trailer Only"
         '
-        'ToolStripMenuItem12
+        'SelectMetaAutoToolStripMenuItem
         '
-        Me.ToolStripMenuItem12.Enabled = False
-        Me.ToolStripMenuItem12.Name = "ToolStripMenuItem12"
-        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem12.Text = "Meta Data Only"
+        Me.SelectMetaAutoToolStripMenuItem.Enabled = False
+        Me.SelectMetaAutoToolStripMenuItem.Name = "SelectMetaAutoToolStripMenuItem"
+        Me.SelectMetaAutoToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectMetaAutoToolStripMenuItem.Text = "Meta Data Only"
         '
         'ToolStripMenuItem13
         '
-        Me.ToolStripMenuItem13.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskToolStripMenuItem, Me.ToolStripMenuItem15, Me.ToolStripMenuItem16, Me.ToolStripMenuItem17, Me.ToolStripMenuItem18, Me.ToolStripMenuItem19, Me.ToolStripMenuItem20})
+        Me.ToolStripMenuItem13.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskToolStripMenuItem, Me.SelectNfoAskToolStripMenuItem, Me.SelectPosterÃskToolStripMenuItem, Me.SelectFanartAskToolStripMenuItem, Me.SelectExtraAskToolStripMenuItem, Me.ToolStripAskMenuItem19, Me.SelectMeEtaAskToolStripMenuItem})
         Me.ToolStripMenuItem13.Name = "ToolStripMenuItem13"
         Me.ToolStripMenuItem13.Size = New System.Drawing.Size(268, 22)
         Me.ToolStripMenuItem13.Text = "Ask (Require Input If No Exact Match)"
@@ -1147,46 +1147,46 @@ Partial Class frmMain
         Me.SelectAllAskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
         Me.SelectAllAskToolStripMenuItem.Text = "All Items"
         '
-        'ToolStripMenuItem15
+        'SelectNfoAskToolStripMenuItem
         '
-        Me.ToolStripMenuItem15.Name = "ToolStripMenuItem15"
-        Me.ToolStripMenuItem15.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem15.Text = "NFO Only"
+        Me.SelectNfoAskToolStripMenuItem.Name = "SelectNfoAskToolStripMenuItem"
+        Me.SelectNfoAskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectNfoAskToolStripMenuItem.Text = "NFO Only"
         '
-        'ToolStripMenuItem16
+        'SelectPosterÃskToolStripMenuItem
         '
-        Me.ToolStripMenuItem16.Enabled = False
-        Me.ToolStripMenuItem16.Name = "ToolStripMenuItem16"
-        Me.ToolStripMenuItem16.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem16.Text = "Poster Only"
+        Me.SelectPosterÃskToolStripMenuItem.Enabled = False
+        Me.SelectPosterÃskToolStripMenuItem.Name = "SelectPosterÃskToolStripMenuItem"
+        Me.SelectPosterÃskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectPosterÃskToolStripMenuItem.Text = "Poster Only"
         '
-        'ToolStripMenuItem17
+        'SelectFanartAskToolStripMenuItem
         '
-        Me.ToolStripMenuItem17.Enabled = False
-        Me.ToolStripMenuItem17.Name = "ToolStripMenuItem17"
-        Me.ToolStripMenuItem17.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem17.Text = "Fanart Only"
+        Me.SelectFanartAskToolStripMenuItem.Enabled = False
+        Me.SelectFanartAskToolStripMenuItem.Name = "SelectFanartAskToolStripMenuItem"
+        Me.SelectFanartAskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectFanartAskToolStripMenuItem.Text = "Fanart Only"
         '
-        'ToolStripMenuItem18
+        'SelectExtraAskToolStripMenuItem
         '
-        Me.ToolStripMenuItem18.Enabled = False
-        Me.ToolStripMenuItem18.Name = "ToolStripMenuItem18"
-        Me.ToolStripMenuItem18.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem18.Text = "Extrathumbs Only"
+        Me.SelectExtraAskToolStripMenuItem.Enabled = False
+        Me.SelectExtraAskToolStripMenuItem.Name = "SelectExtraAskToolStripMenuItem"
+        Me.SelectExtraAskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectExtraAskToolStripMenuItem.Text = "Extrathumbs Only"
         '
-        'ToolStripMenuItem19
+        'ToolStripAskMenuItem19
         '
-        Me.ToolStripMenuItem19.Enabled = False
-        Me.ToolStripMenuItem19.Name = "ToolStripMenuItem19"
-        Me.ToolStripMenuItem19.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem19.Text = "Trailer Only"
+        Me.ToolStripAskMenuItem19.Enabled = False
+        Me.ToolStripAskMenuItem19.Name = "ToolStripAskMenuItem19"
+        Me.ToolStripAskMenuItem19.Size = New System.Drawing.Size(171, 22)
+        Me.ToolStripAskMenuItem19.Text = "Trailer Only"
         '
-        'ToolStripMenuItem20
+        'SelectMeEtaAskToolStripMenuItem
         '
-        Me.ToolStripMenuItem20.Enabled = False
-        Me.ToolStripMenuItem20.Name = "ToolStripMenuItem20"
-        Me.ToolStripMenuItem20.Size = New System.Drawing.Size(171, 22)
-        Me.ToolStripMenuItem20.Text = "Meta Data Only"
+        Me.SelectMeEtaAskToolStripMenuItem.Enabled = False
+        Me.SelectMeEtaAskToolStripMenuItem.Name = "SelectMeEtaAskToolStripMenuItem"
+        Me.SelectMeEtaAskToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SelectMeEtaAskToolStripMenuItem.Text = "Meta Data Only"
         '
         'scTV
         '
@@ -3269,57 +3269,57 @@ Partial Class frmMain
         '
         'ToolStripMenuItem4
         '
-        Me.ToolStripMenuItem4.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem, Me.ToolStripMenuItem14, Me.ToolStripMenuItem21, Me.ToolStripMenuItem22, Me.ToolStripMenuItem23, Me.ToolStripMenuItem24, Me.ToolStripMenuItem25})
+        Me.ToolStripMenuItem4.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAutoMenuToolStripMenuItem, Me.SelectNfoAutoMenuToolStripMenuItem, Me.SelectPosterAutoMenuToolStripMenuItem, Me.SelectFanartAutoiMenuToolStripMenuItem, Me.SelectExtraAutoMenuToolStripMenuItem, Me.SelectTrailerAutoMenuToolStripMenuItem, Me.SelectMetaAutoMenuToolStripMenuItem})
         Me.ToolStripMenuItem4.Enabled = False
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
         Me.ToolStripMenuItem4.Size = New System.Drawing.Size(271, 22)
         Me.ToolStripMenuItem4.Text = "Automatic (Force Best Match)"
         '
-        'ToolStripMenuItem
+        'SelectAllAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem.Name = "ToolStripMenuItem"
-        Me.ToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem.Text = "All Items"
+        Me.SelectAllAutoMenuToolStripMenuItem.Name = "SelectAllAutoMenuToolStripMenuItem"
+        Me.SelectAllAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectAllAutoMenuToolStripMenuItem.Text = "All Items"
         '
-        'ToolStripMenuItem14
+        'SelectNfoAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem14.Name = "ToolStripMenuItem14"
-        Me.ToolStripMenuItem14.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem14.Text = "NFO Only"
+        Me.SelectNfoAutoMenuToolStripMenuItem.Name = "SelectNfoAutoMenuToolStripMenuItem"
+        Me.SelectNfoAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectNfoAutoMenuToolStripMenuItem.Text = "NFO Only"
         '
-        'ToolStripMenuItem21
+        'SelectPosterAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem21.Name = "ToolStripMenuItem21"
-        Me.ToolStripMenuItem21.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem21.Text = "Poster Only"
+        Me.SelectPosterAutoMenuToolStripMenuItem.Name = "SelectPosterAutoMenuToolStripMenuItem"
+        Me.SelectPosterAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectPosterAutoMenuToolStripMenuItem.Text = "Poster Only"
         '
-        'ToolStripMenuItem22
+        'SelectFanartAutoiMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem22.Name = "ToolStripMenuItem22"
-        Me.ToolStripMenuItem22.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem22.Text = "Fanart Only"
+        Me.SelectFanartAutoiMenuToolStripMenuItem.Name = "SelectFanartAutoiMenuToolStripMenuItem"
+        Me.SelectFanartAutoiMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectFanartAutoiMenuToolStripMenuItem.Text = "Fanart Only"
         '
-        'ToolStripMenuItem23
+        'SelectExtraAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem23.Name = "ToolStripMenuItem23"
-        Me.ToolStripMenuItem23.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem23.Text = "Extrathumbs Only"
+        Me.SelectExtraAutoMenuToolStripMenuItem.Name = "SelectExtraAutoMenuToolStripMenuItem"
+        Me.SelectExtraAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectExtraAutoMenuToolStripMenuItem.Text = "Extrathumbs Only"
         '
-        'ToolStripMenuItem24
+        'SelectTrailerAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem24.Name = "ToolStripMenuItem24"
-        Me.ToolStripMenuItem24.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem24.Text = "Trailer Only"
+        Me.SelectTrailerAutoMenuToolStripMenuItem.Name = "SelectTrailerAutoMenuToolStripMenuItem"
+        Me.SelectTrailerAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectTrailerAutoMenuToolStripMenuItem.Text = "Trailer Only"
         '
-        'ToolStripMenuItem25
+        'SelectMetaAutoMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem25.Name = "ToolStripMenuItem25"
-        Me.ToolStripMenuItem25.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem25.Text = "Meta Data Only"
+        Me.SelectMetaAutoMenuToolStripMenuItem.Name = "SelectMetaAutoMenuToolStripMenuItem"
+        Me.SelectMetaAutoMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectMetaAutoMenuToolStripMenuItem.Text = "Meta Data Only"
         '
         'ToolStripMenuItem26
         '
-        Me.ToolStripMenuItem26.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskMenuToolStripMenuItem, Me.ToolStripMenuItem28, Me.ToolStripMenuItem29, Me.ToolStripMenuItem30, Me.ToolStripMenuItem31, Me.ToolStripMenuItem32, Me.ToolStripMenuItem33})
+        Me.ToolStripMenuItem26.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAskMenuToolStripMenuItem, Me.SelectNfoAskMenuToolStripMenuItem, Me.SelectPosterAskMenuToolStripMenuItem, Me.SelectFanartAskMenuToolStripMenuItem, Me.SelectExtraAskMEnuToolStripMenuItem, Me.SelectTrailerAskMenuToolStripMenuItem, Me.SelectMetaAskMenuToolStripMenuItem})
         Me.ToolStripMenuItem26.Name = "ToolStripMenuItem26"
         Me.ToolStripMenuItem26.Size = New System.Drawing.Size(271, 22)
         Me.ToolStripMenuItem26.Text = "Ask (Require Input If No Exact Match)"
@@ -3330,47 +3330,47 @@ Partial Class frmMain
         Me.SelectAllAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.SelectAllAskMenuToolStripMenuItem.Text = "All Items"
         '
-        'ToolStripMenuItem28
+        'SelectNfoAskMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem28.Enabled = False
-        Me.ToolStripMenuItem28.Name = "ToolStripMenuItem28"
-        Me.ToolStripMenuItem28.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem28.Text = "NFO Only"
+        Me.SelectNfoAskMenuToolStripMenuItem.Enabled = False
+        Me.SelectNfoAskMenuToolStripMenuItem.Name = "SelectNfoAskMenuToolStripMenuItem"
+        Me.SelectNfoAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectNfoAskMenuToolStripMenuItem.Text = "NFO Only"
         '
-        'ToolStripMenuItem29
+        'SelectPosterAskMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem29.Enabled = False
-        Me.ToolStripMenuItem29.Name = "ToolStripMenuItem29"
-        Me.ToolStripMenuItem29.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem29.Text = "Poster Only"
+        Me.SelectPosterAskMenuToolStripMenuItem.Enabled = False
+        Me.SelectPosterAskMenuToolStripMenuItem.Name = "SelectPosterAskMenuToolStripMenuItem"
+        Me.SelectPosterAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectPosterAskMenuToolStripMenuItem.Text = "Poster Only"
         '
-        'ToolStripMenuItem30
+        'SelectFanartAskMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem30.Enabled = False
-        Me.ToolStripMenuItem30.Name = "ToolStripMenuItem30"
-        Me.ToolStripMenuItem30.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem30.Text = "Fanart Only"
+        Me.SelectFanartAskMenuToolStripMenuItem.Enabled = False
+        Me.SelectFanartAskMenuToolStripMenuItem.Name = "SelectFanartAskMenuToolStripMenuItem"
+        Me.SelectFanartAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectFanartAskMenuToolStripMenuItem.Text = "Fanart Only"
         '
-        'ToolStripMenuItem31
+        'SelectExtraAskMEnuToolStripMenuItem
         '
-        Me.ToolStripMenuItem31.Enabled = False
-        Me.ToolStripMenuItem31.Name = "ToolStripMenuItem31"
-        Me.ToolStripMenuItem31.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem31.Text = "Extrathumbs Only"
+        Me.SelectExtraAskMEnuToolStripMenuItem.Enabled = False
+        Me.SelectExtraAskMEnuToolStripMenuItem.Name = "SelectExtraAskMEnuToolStripMenuItem"
+        Me.SelectExtraAskMEnuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectExtraAskMEnuToolStripMenuItem.Text = "Extrathumbs Only"
         '
-        'ToolStripMenuItem32
+        'SelectTrailerAskMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem32.Enabled = False
-        Me.ToolStripMenuItem32.Name = "ToolStripMenuItem32"
-        Me.ToolStripMenuItem32.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem32.Text = "Trailer Only"
+        Me.SelectTrailerAskMenuToolStripMenuItem.Enabled = False
+        Me.SelectTrailerAskMenuToolStripMenuItem.Name = "SelectTrailerAskMenuToolStripMenuItem"
+        Me.SelectTrailerAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectTrailerAskMenuToolStripMenuItem.Text = "Trailer Only"
         '
-        'ToolStripMenuItem33
+        'SelectMetaAskMenuToolStripMenuItem
         '
-        Me.ToolStripMenuItem33.Enabled = False
-        Me.ToolStripMenuItem33.Name = "ToolStripMenuItem33"
-        Me.ToolStripMenuItem33.Size = New System.Drawing.Size(172, 22)
-        Me.ToolStripMenuItem33.Text = "Meta Data Only"
+        Me.SelectMetaAskMenuToolStripMenuItem.Enabled = False
+        Me.SelectMetaAskMenuToolStripMenuItem.Name = "SelectMetaAskMenuToolStripMenuItem"
+        Me.SelectMetaAskMenuToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.SelectMetaAskMenuToolStripMenuItem.Text = "Meta Data Only"
         '
         'tsbRefreshMedia
         '
@@ -3892,37 +3892,37 @@ Partial Class frmMain
     Friend WithEvents cmnuDeleteTVEp As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem5 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SelectAllAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem7 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem8 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem9 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem10 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem11 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem12 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectNfoAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectPosterAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectFanartAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectExtraAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectTrailerAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectMetaAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem13 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SelectAllAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem15 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem16 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem17 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem18 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem19 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem20 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectNfoAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectPosterÃskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectFanartAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectExtraAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripAskMenuItem19 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectMeEtaAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SelectedMoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem14 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem21 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem22 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem23 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem24 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem25 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectAllAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectNfoAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectPosterAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectFanartAutoiMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectExtraAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectTrailerAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectMetaAutoMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem26 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SelectAllAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem28 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem29 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem30 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem31 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem32 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem33 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectNfoAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectPosterAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectFanartAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectExtraAskMEnuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectTrailerAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SelectMetaAskMenuToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VersionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
