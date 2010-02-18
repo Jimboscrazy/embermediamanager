@@ -2160,6 +2160,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2167,6 +2168,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2174,6 +2176,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2181,6 +2184,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2188,6 +2192,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2195,6 +2200,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2202,6 +2208,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2209,6 +2216,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2216,6 +2224,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2223,6 +2232,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2230,6 +2240,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2237,6 +2248,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2244,6 +2256,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2251,6 +2264,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2258,6 +2272,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2265,6 +2280,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2279,6 +2295,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2286,6 +2303,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2293,6 +2311,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2300,6 +2319,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2307,6 +2327,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2314,6 +2335,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2321,6 +2343,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2328,6 +2351,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2335,6 +2359,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2342,6 +2367,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2350,12 +2376,14 @@ Public Class frmMain
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2363,6 +2391,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2370,6 +2399,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2377,6 +2407,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2384,6 +2415,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2391,6 +2423,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2398,6 +2431,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2405,6 +2439,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2412,6 +2447,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2419,6 +2455,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2426,6 +2463,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2433,6 +2471,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2440,6 +2479,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2447,6 +2487,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2454,6 +2495,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2461,6 +2503,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2468,6 +2511,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2475,6 +2519,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2482,6 +2527,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
@@ -2489,6 +2535,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2496,6 +2543,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2503,6 +2551,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2510,6 +2559,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2517,6 +2567,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2524,6 +2575,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2531,6 +2583,7 @@ Public Class frmMain
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -7761,13 +7814,73 @@ doCancel:
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub ToolStripMenuItem15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem15.Click
+    Private Sub SelectNfoAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectAllAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectNfoAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAskMEnuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskMEnuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectTrailerAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectMetaAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectNfoAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAutoiMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoiMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectTrailerAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectMetaAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
         NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 End Class
