@@ -84,10 +84,10 @@ Public Class EmberNativeScraperModule
             End If
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
-        RaiseEvent ScraperUpdateMediaList(6, True)
         If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
             EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
         End If
+        RaiseEvent ScraperUpdateMediaList(6, True)
         ' I removed it to main form .. scraper should NOT save db or rename files!!! ???
         'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
         'FileFolderRenamer.RenameSingle(DBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID), False)
@@ -207,7 +207,6 @@ Public Class EmberNativeScraperModule
         If doSave Then
             'NOTE to Nuno: Why this way... no other way to do this
             'Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-            RaiseEvent ScraperUpdateMediaList(6, True)
         End If
         ' need event for this or better move it out of here
         'Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
