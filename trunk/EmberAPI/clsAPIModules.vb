@@ -291,12 +291,12 @@ Public Class ModulesManager
     End Sub
     Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.Setup(0)
+            _externalScraperModule.ProcessorModule.SetupScraper()
         Next
     End Sub
     Public Sub RunPostScraperSetup(ByVal ModuleAssembly As String)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.Setup(1)
+            _externalScraperModule.ProcessorModule.SetupPostScraper()
         Next
     End Sub
 

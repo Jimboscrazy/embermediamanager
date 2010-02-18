@@ -64,10 +64,21 @@ Public Class EmberXMLScraperModule
 
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
 
-    Public Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
+    Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
         Dim _setup As New frmXMLSetup
         _setup.ShowDialog()
     End Sub
+    Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupPostScraper
+
+    End Sub
+    Sub SetupTVScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVScraper
+
+    End Sub
+    Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
+    End Sub
+    Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
+
+    End Function
 End Class
 
 

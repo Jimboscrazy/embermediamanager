@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmNativeSetup
+Partial Class frmNativeSetupInfo
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,11 +22,22 @@ Partial Class frmNativeSetup
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNativeSetup))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNativeSetupInfo))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.lblVersion = New System.Windows.Forms.Label
+        Me.GroupBox10 = New System.Windows.Forms.GroupBox
+        Me.chkLockOutline = New System.Windows.Forms.CheckBox
+        Me.chkLockPlot = New System.Windows.Forms.CheckBox
+        Me.chkLockTrailer = New System.Windows.Forms.CheckBox
+        Me.chkLockGenre = New System.Windows.Forms.CheckBox
+        Me.chkLockRealStudio = New System.Windows.Forms.CheckBox
+        Me.chkLockRating = New System.Windows.Forms.CheckBox
+        Me.chkLockTagline = New System.Windows.Forms.CheckBox
+        Me.chkLockTitle = New System.Windows.Forms.CheckBox
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.Label46 = New System.Windows.Forms.Label
         Me.chkTop250 = New System.Windows.Forms.CheckBox
@@ -63,40 +74,11 @@ Partial Class frmNativeSetup
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
-        Me.GroupBox9 = New System.Windows.Forms.GroupBox
-        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
-        Me.chkUseTMDB = New System.Windows.Forms.CheckBox
-        Me.chkUseIMPA = New System.Windows.Forms.CheckBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.GroupBox10 = New System.Windows.Forms.GroupBox
-        Me.chkLockOutline = New System.Windows.Forms.CheckBox
-        Me.chkLockPlot = New System.Windows.Forms.CheckBox
-        Me.chkLockTrailer = New System.Windows.Forms.CheckBox
-        Me.chkLockGenre = New System.Windows.Forms.CheckBox
-        Me.chkLockRealStudio = New System.Windows.Forms.CheckBox
-        Me.chkLockRating = New System.Windows.Forms.CheckBox
-        Me.chkLockTagline = New System.Windows.Forms.CheckBox
-        Me.chkLockTitle = New System.Windows.Forms.CheckBox
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
-        Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
-        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
-        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
-        Me.lblVersion = New System.Windows.Forms.Label
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox10.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox9.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.GroupBox10.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -107,7 +89,7 @@ Partial Class frmNativeSetup
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(382, 379)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(360, 343)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -137,12 +119,131 @@ Partial Class frmNativeSetup
         '
         Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 376)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 340)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 1
         Me.PictureBox1.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Blue
+        Me.Label1.Location = New System.Drawing.Point(37, 342)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(225, 31)
+        Me.Label1.TabIndex = 24
+        Me.Label1.Text = "This are Module specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember G" & _
+            "lobal Setting also."
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblVersion
+        '
+        Me.lblVersion.Location = New System.Drawing.Point(286, 393)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(90, 16)
+        Me.lblVersion.TabIndex = 74
+        Me.lblVersion.Text = "Version:"
+        '
+        'GroupBox10
+        '
+        Me.GroupBox10.Controls.Add(Me.chkLockOutline)
+        Me.GroupBox10.Controls.Add(Me.chkLockPlot)
+        Me.GroupBox10.Controls.Add(Me.chkLockTrailer)
+        Me.GroupBox10.Controls.Add(Me.chkLockGenre)
+        Me.GroupBox10.Controls.Add(Me.chkLockRealStudio)
+        Me.GroupBox10.Controls.Add(Me.chkLockRating)
+        Me.GroupBox10.Controls.Add(Me.chkLockTagline)
+        Me.GroupBox10.Controls.Add(Me.chkLockTitle)
+        Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox10.Location = New System.Drawing.Point(307, 2)
+        Me.GroupBox10.Name = "GroupBox10"
+        Me.GroupBox10.Size = New System.Drawing.Size(198, 181)
+        Me.GroupBox10.TabIndex = 76
+        Me.GroupBox10.TabStop = False
+        Me.GroupBox10.Text = "Locks (Do not allow UPDATES during scraping)"
+        '
+        'chkLockOutline
+        '
+        Me.chkLockOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockOutline.Location = New System.Drawing.Point(6, 60)
+        Me.chkLockOutline.Name = "chkLockOutline"
+        Me.chkLockOutline.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockOutline.TabIndex = 1
+        Me.chkLockOutline.Text = "Lock Outline"
+        Me.chkLockOutline.UseVisualStyleBackColor = True
+        '
+        'chkLockPlot
+        '
+        Me.chkLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockPlot.Location = New System.Drawing.Point(6, 44)
+        Me.chkLockPlot.Name = "chkLockPlot"
+        Me.chkLockPlot.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockPlot.TabIndex = 0
+        Me.chkLockPlot.Text = "Lock Plot"
+        Me.chkLockPlot.UseVisualStyleBackColor = True
+        '
+        'chkLockTrailer
+        '
+        Me.chkLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockTrailer.Location = New System.Drawing.Point(6, 140)
+        Me.chkLockTrailer.Name = "chkLockTrailer"
+        Me.chkLockTrailer.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTrailer.TabIndex = 46
+        Me.chkLockTrailer.Text = "Lock Trailer"
+        Me.chkLockTrailer.UseVisualStyleBackColor = True
+        '
+        'chkLockGenre
+        '
+        Me.chkLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockGenre.Location = New System.Drawing.Point(6, 124)
+        Me.chkLockGenre.Name = "chkLockGenre"
+        Me.chkLockGenre.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockGenre.TabIndex = 7
+        Me.chkLockGenre.Text = "Lock Genre"
+        Me.chkLockGenre.UseVisualStyleBackColor = True
+        '
+        'chkLockRealStudio
+        '
+        Me.chkLockRealStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 108)
+        Me.chkLockRealStudio.Name = "chkLockRealStudio"
+        Me.chkLockRealStudio.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockRealStudio.TabIndex = 5
+        Me.chkLockRealStudio.Text = "Lock Studio"
+        Me.chkLockRealStudio.UseVisualStyleBackColor = True
+        '
+        'chkLockRating
+        '
+        Me.chkLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockRating.Location = New System.Drawing.Point(6, 92)
+        Me.chkLockRating.Name = "chkLockRating"
+        Me.chkLockRating.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockRating.TabIndex = 4
+        Me.chkLockRating.Text = "Lock Rating"
+        Me.chkLockRating.UseVisualStyleBackColor = True
+        '
+        'chkLockTagline
+        '
+        Me.chkLockTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockTagline.Location = New System.Drawing.Point(6, 76)
+        Me.chkLockTagline.Name = "chkLockTagline"
+        Me.chkLockTagline.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTagline.TabIndex = 3
+        Me.chkLockTagline.Text = "Lock Tagline"
+        Me.chkLockTagline.UseVisualStyleBackColor = True
+        '
+        'chkLockTitle
+        '
+        Me.chkLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkLockTitle.Location = New System.Drawing.Point(6, 28)
+        Me.chkLockTitle.Name = "chkLockTitle"
+        Me.chkLockTitle.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTitle.TabIndex = 2
+        Me.chkLockTitle.Text = "Lock Title"
+        Me.chkLockTitle.UseVisualStyleBackColor = True
         '
         'gbOptions
         '
@@ -172,10 +273,10 @@ Partial Class frmNativeSetup
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(7, 6)
+        Me.gbOptions.Location = New System.Drawing.Point(0, 2)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(302, 181)
-        Me.gbOptions.TabIndex = 70
+        Me.gbOptions.TabIndex = 77
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
         '
@@ -464,10 +565,10 @@ Partial Class frmNativeSetup
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(7, 190)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 186)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(289, 151)
-        Me.GroupBox1.TabIndex = 68
+        Me.GroupBox1.TabIndex = 75
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
@@ -575,314 +676,34 @@ Partial Class frmNativeSetup
         Me.chkCert.Text = "Use Certification Language:"
         Me.chkCert.UseVisualStyleBackColor = True
         '
-        'GroupBox9
-        '
-        Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
-        Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
-        Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
-        Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox9.Location = New System.Drawing.Point(6, 91)
-        Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(184, 100)
-        Me.GroupBox9.TabIndex = 71
-        Me.GroupBox9.TabStop = False
-        Me.GroupBox9.Text = "Get Images From:"
-        '
-        'chkUseMPDB
-        '
-        Me.chkUseMPDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseMPDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 56)
-        Me.chkUseMPDB.Name = "chkUseMPDB"
-        Me.chkUseMPDB.Size = New System.Drawing.Size(150, 22)
-        Me.chkUseMPDB.TabIndex = 2
-        Me.chkUseMPDB.Text = "MoviePostersDB"
-        Me.chkUseMPDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseMPDB.UseVisualStyleBackColor = True
-        '
-        'chkUseTMDB
-        '
-        Me.chkUseTMDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseTMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseTMDB.Location = New System.Drawing.Point(6, 18)
-        Me.chkUseTMDB.Name = "chkUseTMDB"
-        Me.chkUseTMDB.Size = New System.Drawing.Size(149, 19)
-        Me.chkUseTMDB.TabIndex = 0
-        Me.chkUseTMDB.Text = "themoviedb.org"
-        Me.chkUseTMDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseTMDB.UseVisualStyleBackColor = True
-        '
-        'chkUseIMPA
-        '
-        Me.chkUseIMPA.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseIMPA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 37)
-        Me.chkUseIMPA.Name = "chkUseIMPA"
-        Me.chkUseIMPA.Size = New System.Drawing.Size(149, 20)
-        Me.chkUseIMPA.TabIndex = 1
-        Me.chkUseIMPA.Text = "IMPAwards"
-        Me.chkUseIMPA.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseIMPA.UseVisualStyleBackColor = True
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.lbTrailerSites)
-        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(196, 91)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(161, 100)
-        Me.GroupBox2.TabIndex = 72
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Supported Trailer Sites:"
-        '
-        'lbTrailerSites
-        '
-        Me.lbTrailerSites.CheckOnClick = True
-        Me.lbTrailerSites.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbTrailerSites.FormattingEnabled = True
-        Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(6, 18)
-        Me.lbTrailerSites.Name = "lbTrailerSites"
-        Me.lbTrailerSites.Size = New System.Drawing.Size(149, 72)
-        Me.lbTrailerSites.TabIndex = 9
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 378)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 24
-        Me.Label1.Text = "This are Module specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember G" & _
-            "lobal Setting also."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'TabControl1
-        '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(2, 2)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(526, 373)
-        Me.TabControl1.TabIndex = 73
-        '
-        'TabPage1
-        '
-        Me.TabPage1.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage1.Controls.Add(Me.GroupBox10)
-        Me.TabPage1.Controls.Add(Me.gbOptions)
-        Me.TabPage1.Controls.Add(Me.GroupBox1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(518, 347)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Scrape Info"
-        '
-        'GroupBox10
-        '
-        Me.GroupBox10.Controls.Add(Me.chkLockOutline)
-        Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Controls.Add(Me.chkLockTrailer)
-        Me.GroupBox10.Controls.Add(Me.chkLockGenre)
-        Me.GroupBox10.Controls.Add(Me.chkLockRealStudio)
-        Me.GroupBox10.Controls.Add(Me.chkLockRating)
-        Me.GroupBox10.Controls.Add(Me.chkLockTagline)
-        Me.GroupBox10.Controls.Add(Me.chkLockTitle)
-        Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox10.Location = New System.Drawing.Point(314, 6)
-        Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(198, 181)
-        Me.GroupBox10.TabIndex = 70
-        Me.GroupBox10.TabStop = False
-        Me.GroupBox10.Text = "Locks (Do not allow UPDATES during scraping)"
-        '
-        'chkLockOutline
-        '
-        Me.chkLockOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockOutline.Location = New System.Drawing.Point(6, 60)
-        Me.chkLockOutline.Name = "chkLockOutline"
-        Me.chkLockOutline.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockOutline.TabIndex = 1
-        Me.chkLockOutline.Text = "Lock Outline"
-        Me.chkLockOutline.UseVisualStyleBackColor = True
-        '
-        'chkLockPlot
-        '
-        Me.chkLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockPlot.Location = New System.Drawing.Point(6, 44)
-        Me.chkLockPlot.Name = "chkLockPlot"
-        Me.chkLockPlot.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockPlot.TabIndex = 0
-        Me.chkLockPlot.Text = "Lock Plot"
-        Me.chkLockPlot.UseVisualStyleBackColor = True
-        '
-        'chkLockTrailer
-        '
-        Me.chkLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockTrailer.Location = New System.Drawing.Point(6, 140)
-        Me.chkLockTrailer.Name = "chkLockTrailer"
-        Me.chkLockTrailer.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockTrailer.TabIndex = 46
-        Me.chkLockTrailer.Text = "Lock Trailer"
-        Me.chkLockTrailer.UseVisualStyleBackColor = True
-        '
-        'chkLockGenre
-        '
-        Me.chkLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockGenre.Location = New System.Drawing.Point(6, 124)
-        Me.chkLockGenre.Name = "chkLockGenre"
-        Me.chkLockGenre.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockGenre.TabIndex = 7
-        Me.chkLockGenre.Text = "Lock Genre"
-        Me.chkLockGenre.UseVisualStyleBackColor = True
-        '
-        'chkLockRealStudio
-        '
-        Me.chkLockRealStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 108)
-        Me.chkLockRealStudio.Name = "chkLockRealStudio"
-        Me.chkLockRealStudio.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockRealStudio.TabIndex = 5
-        Me.chkLockRealStudio.Text = "Lock Studio"
-        Me.chkLockRealStudio.UseVisualStyleBackColor = True
-        '
-        'chkLockRating
-        '
-        Me.chkLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockRating.Location = New System.Drawing.Point(6, 92)
-        Me.chkLockRating.Name = "chkLockRating"
-        Me.chkLockRating.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockRating.TabIndex = 4
-        Me.chkLockRating.Text = "Lock Rating"
-        Me.chkLockRating.UseVisualStyleBackColor = True
-        '
-        'chkLockTagline
-        '
-        Me.chkLockTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockTagline.Location = New System.Drawing.Point(6, 76)
-        Me.chkLockTagline.Name = "chkLockTagline"
-        Me.chkLockTagline.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockTagline.TabIndex = 3
-        Me.chkLockTagline.Text = "Lock Tagline"
-        Me.chkLockTagline.UseVisualStyleBackColor = True
-        '
-        'chkLockTitle
-        '
-        Me.chkLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLockTitle.Location = New System.Drawing.Point(6, 28)
-        Me.chkLockTitle.Name = "chkLockTitle"
-        Me.chkLockTitle.Size = New System.Drawing.Size(177, 17)
-        Me.chkLockTitle.TabIndex = 2
-        Me.chkLockTitle.Text = "Lock Title"
-        Me.chkLockTitle.UseVisualStyleBackColor = True
-        '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage2.Controls.Add(Me.CheckBox1)
-        Me.TabPage2.Controls.Add(Me.chkAutoThumbs)
-        Me.TabPage2.Controls.Add(Me.chkSingleScrapeImages)
-        Me.TabPage2.Controls.Add(Me.chkDownloadTrailer)
-        Me.TabPage2.Controls.Add(Me.GroupBox9)
-        Me.TabPage2.Controls.Add(Me.GroupBox2)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(518, 347)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Scrape Media"
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.CheckBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(13, 26)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(173, 15)
-        Me.CheckBox1.TabIndex = 76
-        Me.CheckBox1.Text = "Get Fanart"
-        Me.CheckBox1.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'chkAutoThumbs
-        '
-        Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(13, 46)
-        Me.chkAutoThumbs.Name = "chkAutoThumbs"
-        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
-        Me.chkAutoThumbs.TabIndex = 75
-        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs"
-        Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.UseVisualStyleBackColor = True
-        '
-        'chkSingleScrapeImages
-        '
-        Me.chkSingleScrapeImages.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkSingleScrapeImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(13, 6)
-        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
-        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 15)
-        Me.chkSingleScrapeImages.TabIndex = 74
-        Me.chkSingleScrapeImages.Text = "Get Posters"
-        Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
-        '
-        'chkDownloadTrailer
-        '
-        Me.chkDownloadTrailer.AutoSize = True
-        Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(13, 68)
-        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
-        Me.chkDownloadTrailer.TabIndex = 73
-        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
-        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
-        '
-        'lblVersion
-        '
-        Me.lblVersion.Location = New System.Drawing.Point(286, 393)
-        Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(90, 16)
-        Me.lblVersion.TabIndex = 74
-        Me.lblVersion.Text = "Version:"
-        '
-        'frmSetup
+        'frmNativeSetupInfo
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(532, 410)
+        Me.ClientSize = New System.Drawing.Size(510, 374)
+        Me.Controls.Add(Me.GroupBox10)
+        Me.Controls.Add(Me.gbOptions)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.lblVersion)
-        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSetup"
+        Me.Name = "frmNativeSetupInfo"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox10.ResumeLayout(False)
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.GroupBox10.ResumeLayout(False)
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -890,6 +711,17 @@ Partial Class frmNativeSetup
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblVersion As System.Windows.Forms.Label
+    Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkLockOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockRealStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockTagline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockTitle As System.Windows.Forms.CheckBox
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
     Friend WithEvents Label46 As System.Windows.Forms.Label
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
@@ -926,29 +758,5 @@ Partial Class frmNativeSetup
     Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
     Friend WithEvents cbCert As System.Windows.Forms.ComboBox
     Friend WithEvents chkCert As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkUseMPDB As System.Windows.Forms.CheckBox
-    Friend WithEvents chkUseTMDB As System.Windows.Forms.CheckBox
-    Friend WithEvents chkUseIMPA As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents lbTrailerSites As System.Windows.Forms.CheckedListBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkLockOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockRealStudio As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockTagline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkLockTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
-    Friend WithEvents lblVersion As System.Windows.Forms.Label
 
 End Class

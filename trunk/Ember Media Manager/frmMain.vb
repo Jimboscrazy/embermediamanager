@@ -5717,6 +5717,8 @@ doCancel:
             Next
         End If
 
+
+
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
