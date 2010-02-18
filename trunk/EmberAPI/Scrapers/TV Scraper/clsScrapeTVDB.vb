@@ -669,6 +669,9 @@ Namespace TVDB
                 Dim sID As String = String.Empty
                 Dim iEp As Integer = -1
                 Dim iSeas As Integer = -1
+                Dim sTitle As String = String.Empty
+                Dim byTitle As Boolean = False
+                Dim xE As XElement = Nothing
 
                 'get the actors first
                 Try
@@ -709,17 +712,25 @@ Namespace TVDB
 
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
+                                sTitle = Episode.TVEp.Title
+                                byTitle = False
 
                                 If Not IsNothing(tmpTVDBShow.Show.TVShow) Then Episode.TVShow = tmpTVDBShow.Show.TVShow
 
-                                Dim xE As XElement = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+                                xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
+
+                                If IsNothing(xE) Then
+                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) StringUtils.ComputeLevenshtein(e.Element("EpisodeName").Value, sTitle) < 5)
+                                    byTitle = True
+                                End If
+
                                 If Not IsNothing(xE) Then
                                     With Episode.TVEp
                                         .Title = xE.Element("EpisodeName").Value
-                                        'we already have the season and episode numbers
-                                        'will need this when implementing search by title
-                                        '.Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
-                                        '.Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
+                                        If byTitle Then
+                                            .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
+                                            .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
+                                        End If
                                         .Aired = xE.Element("FirstAired").Value
                                         .Rating = xE.Element("Rating").Value
                                         .Plot = xE.Element("Overview").Value

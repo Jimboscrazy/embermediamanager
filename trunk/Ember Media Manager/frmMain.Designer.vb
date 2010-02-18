@@ -40,6 +40,7 @@ Partial Class frmMain
         Me.ModuleSettingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.VersionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip = New System.Windows.Forms.StatusStrip
         Me.tslStatus = New System.Windows.Forms.ToolStripStatusLabel
         Me.tsSpring = New System.Windows.Forms.ToolStripStatusLabel
@@ -377,7 +378,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.VersionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -527,8 +527,14 @@ Partial Class frmMain
         '
         Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.AboutToolStripMenuItem.Text = "&About..."
+        '
+        'VersionsToolStripMenuItem
+        '
+        Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
+        Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.VersionsToolStripMenuItem.Text = "Versions"
         '
         'StatusStrip
         '
@@ -876,7 +882,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem, Me.ScrapingTestToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 348)
         '
         'cmnuTitle
         '
@@ -3474,12 +3480,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'VersionsToolStripMenuItem
-        '
-        Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
-        Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.VersionsToolStripMenuItem.Text = "Versions"
         '
         'frmMain
         '
