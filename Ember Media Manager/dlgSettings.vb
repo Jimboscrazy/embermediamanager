@@ -3452,7 +3452,7 @@ Public Class dlgSettings
         Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Poster"), Master.eLang.GetString(558, "Wide")})
         Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
-        Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(999, "Week"), Master.eLang.GetString(999, "Month"), Master.eLang.GetString(999, "Never"), Master.eLang.GetString(999, "Always")})
+        Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(999, "Week"), Master.eLang.GetString(999, "Bi-Weekly"), Master.eLang.GetString(999, "Month"), Master.eLang.GetString(999, "Never"), Master.eLang.GetString(999, "Always")})
 
         LoadTrailerQualities()
     End Sub

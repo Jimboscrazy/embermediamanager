@@ -619,6 +619,8 @@ Namespace TVDB
                             doDownload = False
                         Case Enums.TVUpdateTime.Week
                             If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Now Then doDownload = True
+                        Case Enums.TVUpdateTime.BiWeekly
+                            If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Now Then doDownload = True
                         Case Enums.TVUpdateTime.Month
                             If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Now Then doDownload = True
                     End Select
