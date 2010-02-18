@@ -36,13 +36,13 @@ Public Class dlgStudioSelect
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
 
-        Dim IMDB As New IMDB.Scraper
-        Dim alStudio As List(Of String) = IMDB.GetMovieStudios(Me._imdbid)
+        ' *** Dim IMDB As New IMDB.Scraper
+        ' *** Dim alStudio As List(Of String) = IMDB.GetMovieStudios(Me._imdbid)
 
-        For i As Integer = 0 To alStudio.Count - 1
-            ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
-            Dim lvItem As ListViewItem = lvStudios.Items.Add(alStudio(i).ToString, i)
-        Next
+        ' *** For i As Integer = 0 To alStudio.Count - 1
+        ' *** ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
+        ' *** Dim lvItem As ListViewItem = lvStudios.Items.Add(alStudio(i).ToString, i)
+        ' *** Next
 
     End Sub
 

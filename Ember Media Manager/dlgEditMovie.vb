@@ -844,17 +844,17 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
-            Using dImgSelect As New dlgImgSelect
-                pResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
-                If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+            ' *** Using dImgSelect As New dlgImgSelect
+            ' *** pResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
+            ' *** If Not String.IsNullOrEmpty(pResults.ImagePath) Then
 
-                    Poster.FromFile(sPath)
-                    pbPoster.Image = Poster.Image
+            ' *** Poster.FromFile(sPath)
+            ' *** pbPoster.Image = Poster.Image
 
-                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                    Me.lblPosterSize.Visible = True
-                End If
-            End Using
+            ' *** Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+            ' *** Me.lblPosterSize.Visible = True
+            ' *** End If
+            ' *** End Using
 
             If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
@@ -868,18 +868,18 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
-            Using dImgSelect As New dlgImgSelect
-                fResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, True)
-                If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+            ' *** Using dImgSelect As New dlgImgSelect
+            ' *** fResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, True)
+            ' *** If Not String.IsNullOrEmpty(fResults.ImagePath) Then
 
-                    Fanart.FromFile(sPath)
-                    pbFanart.Image = Fanart.Image
+            ' *** Fanart.FromFile(sPath)
+            ' *** pbFanart.Image = Fanart.Image
 
-                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                    Me.lblFanartSize.Visible = True
+            ' *** Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            ' *** Me.lblFanartSize.Visible = True
 
-                End If
-            End Using
+            ' *** End If
+            ' *** End Using
 
             If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
@@ -1368,18 +1368,18 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        Using dTrailer As New dlgTrailer
-            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
-            If Not String.IsNullOrEmpty(tURL) Then
-                Me.btnPlayTrailer.Enabled = True
-                If tURL.Substring(0, 7) = "http://" Then
-                    Me.txtTrailer.Text = tURL
-                Else
-                    Master.currMovie.TrailerPath = tURL
-                    Me.lblLocalTrailer.Visible = True
-                End If
-            End If
-        End Using
+        ' *** Using dTrailer As New dlgTrailer
+        ' *** Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
+        ' *** If Not String.IsNullOrEmpty(tURL) Then
+        ' *** Me.btnPlayTrailer.Enabled = True
+        ' *** If tURL.Substring(0, 7) = "http://" Then
+        ' *** Me.txtTrailer.Text = tURL
+        ' *** Else
+        ' *** Master.currMovie.TrailerPath = tURL
+        ' *** Me.lblLocalTrailer.Visible = True
+        ' *** End If
+        ' *** End If
+        ' *** End Using
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged

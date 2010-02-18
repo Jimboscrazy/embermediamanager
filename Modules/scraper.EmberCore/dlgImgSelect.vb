@@ -97,7 +97,7 @@ Public Class dlgImgSelect
                 Select Case True
                     Case Me.rbXLarge.Checked
                         If Master.eSettings.UseImgCache Then
-                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
+                            tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
                         Else
                             Me.tmpImage.FromWeb(Me.rbXLarge.Tag.ToString)
                         End If
@@ -203,7 +203,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelect_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        Me.tmpImage.Dispose()
+        'Me.tmpImage.Dispose()
 
         IMPA = Nothing
         MPDB = Nothing

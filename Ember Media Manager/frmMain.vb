@@ -60,7 +60,7 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private tmpTVDB As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
-    Private IMDB As New IMDB.Scraper
+    ' *** Private IMDB As New IMDB.Scraper
     Private fScanner As New Scanner
     Private dtMedia As New DataTable
     Private dtShows As New DataTable
@@ -373,8 +373,8 @@ Public Class frmMain
         Me.pnlGenre(0) = New Panel()
         Me.pbGenre(0) = New PictureBox()
 
-        AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
-        AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
+        ' *** AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
+        ' *** AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
         AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
@@ -499,7 +499,7 @@ Public Class frmMain
                         While Not Me.LoadingDone
                             Application.DoEvents()
                         End While
-                        ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
+                        ' *** ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                     Catch ex As Exception
                         ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
@@ -561,7 +561,7 @@ Public Class frmMain
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
-                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
+                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
                         End If
@@ -919,9 +919,9 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
@@ -1594,7 +1594,7 @@ Public Class frmMain
                 End If
             End With
             If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Me.ScrapeData(Enums.ScrapeType.CleanFolders, Nothing, Nothing)
+                'Me.ScrapeData(Enums.ScrapeType.CleanFolders, Nothing, Nothing)
             End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1769,9 +1769,9 @@ Public Class frmMain
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
-                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
-                            Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
@@ -2035,7 +2035,7 @@ Public Class frmMain
         ' Begin the process to scrape IMDB with the current ID
         '\\
 
-        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
+        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
@@ -2044,7 +2044,7 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
 
-        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
+        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -2062,9 +2062,9 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
+                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
@@ -2159,431 +2159,431 @@ Public Class frmMain
     Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoMI.Click
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTrailer.Click
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuFilterAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskMI.Click
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
-        'Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
 
@@ -2669,7 +2669,7 @@ Public Class frmMain
         ' Copy all existing fanart to the backdrops folder
         '\\
 
-        Me.ScrapeData(Enums.ScrapeType.CopyBD, Nothing, Nothing)
+        'Me.ScrapeData(Enums.ScrapeType.CopyBD, Nothing, Nothing)
     End Sub
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
@@ -2795,42 +2795,42 @@ Public Class frmMain
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click
@@ -2838,39 +2838,39 @@ Public Class frmMain
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
-                Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Options)
+                'Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Options)
             End If
         End Using
     End Sub
 
     Private Sub mnuAllAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
@@ -3859,485 +3859,7 @@ Public Class frmMain
         drow.Item(i) = v
     End Sub
 
-    Private Sub bwScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwScraper.DoWork
 
-        '//
-        ' Thread to handle scraping
-        '\\
-
-        Dim myDelegate As MydtMediaUpdate = New MydtMediaUpdate(AddressOf dtMediaUpdate)
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Dim TMDB As New TMDB.Scraper
-        Dim IMPA As New IMPA.Scraper
-        Dim Trailer As New Trailers
-        Dim iCount As Integer = 0
-        Dim tURL As String = String.Empty
-        Dim Poster As New Images
-        Dim Fanart As New Images
-        Dim scrapeMovie As New Structures.DBMovie
-        Dim doSave As Boolean = False
-        Dim pResults As New Containers.ImgResult
-        Dim fResults As New Containers.ImgResult
-        Dim didEts As Boolean = False
-        Dim tTitle As String = String.Empty
-        Dim OldTitle As String = String.Empty
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-
-            Try
-                If Me.dtMedia.Rows.Count > 0 Then
-
-                    Select Case Args.scrapeType
-                        Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.FullAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
-
-                                Select Case Args.scrapeType
-                                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
-                                        If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
-                                        If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
-                                        Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
-                                        If Not index >= 0 Then Continue For
-                                End Select
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
-
-                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
-
-                                doSave = False
-
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-
-                                OldTitle = scrapeMovie.Movie.Title
-
-                                If Master.GlobalScrapeMod.NFO Then
-                                    If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
-                                        IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options)
-                                    Else
-                                        scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New MediaContainers.Movie, Args.scrapeType, Args.Options)
-                                    End If
-                                    doSave = True
-                                End If
-
-                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
-                                        MediaInfo.UpdateMediaInfo(scrapeMovie)
-                                        doSave = True
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.GlobalScrapeMod.Poster Then
-                                        Poster.Clear()
-                                        If Poster.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Posters) Then
-                                            pResults = New Containers.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
-                                                If Not IsNothing(Poster.Image) Then
-                                                    pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                                                        scrapeMovie.PosterPath = pResults.ImagePath
-                                                        Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            scrapeMovie.Movie.Thumb = pResults.Posters
-                                                        End If
-                                                    End If
-                                                ElseIf Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk Then
-                                                    MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
-                                                    Using dImgSelect As New dlgImgSelect
-                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Posters)
-                                                        If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                                                            scrapeMovie.PosterPath = pResults.ImagePath
-                                                            Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                                scrapeMovie.Movie.Thumb = pResults.Posters
-                                                            End If
-                                                        End If
-                                                    End Using
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    didEts = False
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.GlobalScrapeMod.Fanart Then
-                                        Fanart.Clear()
-                                        If Fanart.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Fanart) Then
-                                            fResults = New Containers.ImgResult
-                                            didEts = True
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk, True, False)) Then
-                                                If Not IsNothing(Fanart.Image) Then
-                                                    fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                                                        scrapeMovie.FanartPath = fResults.ImagePath
-                                                        Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            scrapeMovie.Movie.Fanart = fResults.Fanart
-                                                        End If
-                                                    End If
-                                                ElseIf Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk Then
-                                                    MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
-
-                                                    Using dImgSelect As New dlgImgSelect
-                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Fanart)
-                                                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                                                            scrapeMovie.FanartPath = fResults.ImagePath
-                                                            Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                                scrapeMovie.Movie.Fanart = fResults.Fanart
-                                                            End If
-                                                        End If
-                                                    End Using
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.GlobalScrapeMod.Trailer Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, Convert.ToBoolean(drvRow.Item(2)), scrapeMovie.Movie.Trailer)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            If tURL.Substring(0, 7) = "http://" Then
-                                                scrapeMovie.Movie.Trailer = tURL
-                                                doSave = True
-                                            Else
-                                                scrapeMovie.TrailerPath = tURL
-                                                Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
-                                            End If
-                                        End If
-                                    End If
-
-                                End If
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                If Master.GlobalScrapeMod.Extra Then
-                                    If Master.eSettings.AutoET AndAlso Not didEts Then
-                                        Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
-                                    End If
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                        Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
-                                        If Not String.IsNullOrEmpty(ETasFA) Then
-                                            Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                            scrapeMovie.ExtraPath = "TRUE"
-                                            If Not ETasFA = "TRUE" Then
-                                                Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                scrapeMovie.FanartPath = ETasFA
-                                            End If
-                                        End If
-                                    End If
-                                End If
-
-                                If doSave Then
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                End If
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                    tTitle = StringUtils.FilterTokens(scrapeMovie.Movie.Title)
-                                    If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
-                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
-                                    Else
-                                        scrapeMovie.ListTitle = tTitle
-                                    End If
-                                Else
-                                    If FileUtils.Common.isVideoTS(drvRow.Item(1).ToString) Then
-                                        scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                    ElseIf FileUtils.Common.isBDRip(drvRow.Item(1).ToString) Then
-                                        scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
-                                    Else
-                                        If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
-                                        Else
-                                            scrapeMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
-                                        End If
-                                    End If
-                                    If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
-                                End If
-
-                                Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
-                                Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
-
-                                If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                                    FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID), False)
-                                Else
-                                    Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
-                                End If
-
-                                'use this one to check for need of load info
-                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                iCount += 1
-                            Next
-
-                        Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
-
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
-
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
-
-                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If (Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Master.GlobalScrapeMod.Poster) OrElse (Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Master.GlobalScrapeMod.Fanart) OrElse _
-                                (Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Master.GlobalScrapeMod.Trailer) OrElse _
-                                (Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra) Then
-
-                                    doSave = False
-
-                                    scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-
-                                    OldTitle = scrapeMovie.Movie.Title
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                    If Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO Then
-
-                                        If String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) OrElse Not IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options) Then
-                                            scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New MediaContainers.Movie, Args.scrapeType, Args.Options)
-                                            doSave = True
-                                        End If
-
-                                        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
-                                            MediaInfo.UpdateMediaInfo(scrapeMovie)
-                                            doSave = True
-                                        End If
-
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
-                                        Poster.Clear()
-                                        If Poster.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Posters) Then
-                                            pResults = New Containers.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
-                                                If Not IsNothing(Poster.Image) Then
-                                                    pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                                                        scrapeMovie.PosterPath = pResults.ImagePath
-                                                        Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            scrapeMovie.Movie.Thumb = pResults.Posters
-                                                        End If
-                                                    End If
-                                                ElseIf Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                                    MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
-                                                    Using dImgSelect As New dlgImgSelect
-                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Posters)
-                                                        If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                                                            scrapeMovie.PosterPath = pResults.ImagePath
-                                                            Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                                scrapeMovie.Movie.Thumb = pResults.Posters
-                                                            End If
-                                                        End If
-                                                    End Using
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    didEts = False
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
-                                        Fanart.Clear()
-                                        If Fanart.IsAllowedToDownload(scrapeMovie, Enums.ImageType.Fanart) Then
-                                            fResults = New Containers.ImgResult
-                                            didEts = True
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Enums.ScrapeType.UpdateAsk, True, False)) Then
-                                                If Not IsNothing(Fanart.Image) Then
-                                                    fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                                                        scrapeMovie.FanartPath = fResults.ImagePath
-                                                        Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            scrapeMovie.Movie.Fanart = fResults.Fanart
-                                                        End If
-                                                    End If
-                                                ElseIf Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                                    MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
-                                                    Using dImgSelect As New dlgImgSelect
-                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Enums.ImageType.Fanart)
-                                                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                                                            scrapeMovie.FanartPath = fResults.ImagePath
-                                                            Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                                scrapeMovie.Movie.Fanart = fResults.Fanart
-                                                            End If
-                                                        End If
-                                                    End Using
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Trailer Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, Convert.ToBoolean(drvRow.Item(2)), scrapeMovie.Movie.Trailer)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            If tURL.Substring(0, 7) = "http://" Then
-                                                scrapeMovie.Movie.Trailer = tURL
-                                                doSave = True
-                                            Else
-                                                scrapeMovie.TrailerPath = tURL
-                                                Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
-                                            End If
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                    If Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                        If Master.eSettings.AutoET AndAlso Not didEts Then
-                                            Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
-                                        End If
-
-                                        If Master.eSettings.AutoThumbs > 0 Then
-                                            Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
-                                            If Not String.IsNullOrEmpty(ETasFA) Then
-
-                                                Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                                scrapeMovie.ExtraPath = "TRUE"
-                                                If Not ETasFA = "TRUE" Then
-                                                    Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                    scrapeMovie.FanartPath = ETasFA
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                        tTitle = StringUtils.FilterTokens(scrapeMovie.Movie.Title)
-                                        If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
-                                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                            scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
-                                        Else
-                                            scrapeMovie.ListTitle = tTitle
-                                        End If
-                                    Else
-                                        If FileUtils.Common.isVideoTS(drvRow.Item(1).ToString) Then
-                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                        ElseIf FileUtils.Common.isBDRip(drvRow.Item(1).ToString) Then
-                                            scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
-                                        Else
-                                            If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
-                                                scrapeMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
-                                            Else
-                                                scrapeMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
-                                            End If
-                                        End If
-                                        If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
-                                    End If
-
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
-                                    If doSave Then Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                    If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                                        FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave, False)
-                                    Else
-                                        Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
-                                    End If
-
-                                End If
-
-                                'use this one to check for need of load info
-                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                iCount += 1
-
-                            Next
-                            ' above 2 arent scraper.. will need to relocate it
-                        Case Enums.ScrapeType.CleanFolders
-                            Dim fDeleter As New FileUtils.Delete
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
-
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15))
-                                iCount += 1
-                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-                                If fDeleter.DeleteFiles(True, scrapeMovie) Then
-                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
-                                    Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                End If
-                            Next
-
-
-
-                        Case Enums.ScrapeType.CopyBD
-                            Dim sPath As String = String.Empty
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
-
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
-                                iCount += 1
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                sPath = drvRow.Item(40).ToString
-                                If Not String.IsNullOrEmpty(sPath) Then
-                                    If FileUtils.Common.isVideoTS(sPath) Then
-                                        If Master.eSettings.VideoTSParent Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
-                                        Else
-                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
-                                            Else
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                            End If
-                                        End If
-                                    ElseIf FileUtils.Common.isBDRip(sPath) Then
-                                        If Master.eSettings.VideoTSParent Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
-                                        Else
-                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
-                                            Else
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                            End If
-                                        End If
-                                    Else
-                                        If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
-                                        Else
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                        End If
-
-                                    End If
-                                End If
-                            Next
-                    End Select
-                End If
-
-            Catch ex As Exception
-                ScraperDone = True
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-doCancel:
-            If Not Args.scrapeType = Enums.ScrapeType.CopyBD Then
-                SQLtransaction.Commit()
-            End If
-        End Using
-        e.Result = Args.scrapeType
-
-        pResults = Nothing
-        fResults = Nothing
-
-        TMDB = Nothing
-        IMPA = Nothing
-        Poster.Dispose()
-        Poster = Nothing
-
-        Fanart.Dispose()
-        Fanart = Nothing
-    End Sub
 
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         If Not isCL Then
@@ -5866,216 +5388,6 @@ doCancel:
         Application.DoEvents()
     End Sub
 
-    Private Sub ScrapeData(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
-
-        Try
-            Dim chkCount As Integer = 0
-            Dim nfoPath As String = String.Empty
-
-            If Not isCL Then
-                Me.SetStatus(String.Empty) 'clear status for scrapers that do not report
-                Me.SetControlsEnabled(False)
-                Me.tspbLoading.Style = ProgressBarStyle.Continuous
-                Me.EnableFilters(False)
-
-                If Not sType = Enums.ScrapeType.SingleScrape Then
-                    Select Case sType
-                        Case Enums.ScrapeType.CleanFolders
-                            lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
-                            btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
-                        Case Enums.ScrapeType.CopyBD
-                            lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
-                            btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
-                        Case Else
-                            lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
-                            btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
-                    End Select
-                    btnCancel.Visible = True
-                    lblCanceling.Visible = False
-                    pbCanceling.Visible = False
-                    Me.pnlCancel.Visible = True
-                End If
-            End If
-
-            Select Case sType
-                Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.FullAuto, Enums.ScrapeType.CleanFolders, Enums.ScrapeType.CopyBD, Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
-                    Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Select Case sType
-                        Case Enums.ScrapeType.FullAsk
-                            Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                        Case Enums.ScrapeType.FullAuto
-                            Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                        Case Enums.ScrapeType.CleanFolders
-                            Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-                        Case Enums.ScrapeType.CopyBD
-                            Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
-                        Case Enums.ScrapeType.UpdateAuto
-                            Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                        Case Enums.ScrapeType.UpdateAsk
-                            Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                        Case Enums.ScrapeType.FilterAsk
-                            Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                        Case Enums.ScrapeType.FilterAuto
-                            Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                    End Select
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-
-                    bwScraper.WorkerReportsProgress = True
-                    bwScraper.WorkerSupportsCancellation = True
-                    bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
-
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
-                    For Each drvRow As DataRow In Me.dtMedia.Rows
-                        If Convert.ToBoolean(drvRow.Item(10)) AndAlso (sType = Enums.ScrapeType.NewAsk OrElse sType = Enums.ScrapeType.NewAuto) Then
-                            chkCount += 1
-                        End If
-                        If Convert.ToBoolean(drvRow.Item(11)) AndAlso (sType = Enums.ScrapeType.MarkAsk OrElse sType = Enums.ScrapeType.MarkAuto) Then
-                            chkCount += 1
-                        End If
-                    Next
-
-                    If chkCount > 0 Then
-                        Select Case sType
-                            Case Enums.ScrapeType.NewAsk
-                                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                            Case Enums.ScrapeType.NewAuto
-                                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                            Case Enums.ScrapeType.MarkAsk
-                                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                            Case Enums.ScrapeType.MarkAuto
-                                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                        End Select
-                        Me.tspbLoading.Maximum = chkCount
-                        Me.tslLoading.Visible = True
-                        Me.tspbLoading.Visible = True
-
-                        bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.WorkerReportsProgress = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
-                    Else
-                        If isCL Then
-                            Me.ScraperDone = True
-                        Else
-                            Me.tslLoading.Visible = False
-                            Me.tspbLoading.Visible = False
-                            Me.SetStatus(String.Empty)
-                            Me.SetControlsEnabled(True, True)
-                            Me.EnableFilters(True)
-                            Me.pnlCancel.Visible = False
-                        End If
-                    End If
-                Case Enums.ScrapeType.SingleScrape
-                    Me.ClearInfo()
-                    Me.SetStatus(String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.currMovie.Movie.Title))
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-                    Me.tspbLoading.Maximum = 13
-                    Me.ReportDownloadPercent = True
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-                    Me.SetControlsEnabled(False, True)
-
-                    If isCL AndAlso doSearch = False Then
-                        Dim Poster As New Images
-                        Dim Fanart As New Images
-                        Dim fResults As New Containers.ImgResult
-                        Dim pResults As New Containers.ImgResult
-
-                        Try
-                            If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
-                                IMDB.GetMovieInfo(Master.tmpMovie.IMDBID, Master.currMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Master.DefaultOptions)
-                            Else
-                                Master.currMovie.Movie = IMDB.GetSearchMovieInfo(Me.tmpTitle, Master.tmpMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
-                            End If
-
-                            If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
-                                If Master.eSettings.ScanMediaInfo Then
-                                    MediaInfo.UpdateMediaInfo(Master.currMovie)
-                                End If
-
-                                If Poster.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters) Then
-                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Enums.ImageType.Posters, pResults, Master.currMovie.Filename, False) Then
-                                        If Not IsNothing(Poster.Image) Then
-                                            Master.currMovie.PosterPath = Poster.SaveAsPoster(Master.currMovie)
-                                            If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Thumb = pResults.Posters
-                                        End If
-                                    End If
-                                End If
-                                pResults = Nothing
-
-                                If Fanart.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart) Then
-                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Enums.ImageType.Fanart, fResults, Master.currMovie.Filename, True) Then
-                                        If Not IsNothing(Fanart.Image) Then
-                                            Master.currMovie.FanartPath = Fanart.SaveAsFanart(Master.currMovie)
-                                            If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Fanart = fResults.Fanart
-                                        End If
-                                    End If
-                                End If
-                                fResults = Nothing
-
-                                Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
-                            End If
-
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, False)
-                            End If
-                        Catch
-                        End Try
-                        Me.ScraperDone = True
-                    Else
-                        Master.tmpMovie.Clear()
-                        If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso doSearch = False Then
-                            Master.tmpMovie = Master.currMovie.Movie
-                            IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-                            ' Note: possible place to invoke scrape modules
-                            ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-                        Else
-                            Using dSearch As New dlgIMDBSearchResults
-                                If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
-                                    If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
-                                        Me.ClearInfo()
-                                        Me.SetStatus(String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.tmpMovie.Title))
-                                        Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-                                        Me.tspbLoading.Maximum = 13
-                                        Me.tspbLoading.Style = ProgressBarStyle.Continuous
-                                        Me.ReportDownloadPercent = True
-                                        Me.tslLoading.Visible = True
-                                        Me.tspbLoading.Visible = True
-                                        Master.currMovie.ClearExtras = True
-                                        Master.currMovie.PosterPath = String.Empty
-                                        Master.currMovie.FanartPath = String.Empty
-                                        Master.currMovie.TrailerPath = String.Empty
-                                        Master.currMovie.ExtraPath = String.Empty
-                                        Master.currMovie.SubPath = String.Empty
-                                        Master.currMovie.NfoPath = String.Empty
-                                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-                                        ' Note: possible place to invoke scrape modules
-                                        ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-                                    End If
-                                Else
-                                    If isCL Then
-                                        Me.ScraperDone = True
-                                    Else
-                                        Me.tslLoading.Visible = False
-                                        Me.tspbLoading.Visible = False
-                                        Me.SetStatus(String.Empty)
-                                        Me.SetControlsEnabled(True, True)
-                                        Me.EnableFilters(True)
-                                        Me.LoadInfo(ID, Master.currMovie.Filename, True, False)
-                                    End If
-                                End If
-                            End Using
-                        End If
-                    End If
-            End Select
-        Catch ex As Exception
-            ScraperDone = True
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
             Me.tspbLoading.Value = iPercent
@@ -6099,54 +5411,54 @@ doCancel:
 
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    Using dImgSelectFanart As New dlgImgSelect
-                        Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
+                    ' *** Using dImgSelectFanart As New dlgImgSelect
+                    ' *** Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                        If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
+                    ' *** If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                        If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
-                            Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
-                            Application.DoEvents()
-                            Using dImgSelect As New dlgImgSelect
-                                Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
-                                If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                                    Master.currMovie.PosterPath = pResults.ImagePath
-                                    If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
-                                End If
-                                pResults = Nothing
-                            End Using
-                        End If
-
-                        If AllowFA Then
-                            Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
-                            Application.DoEvents()
-                            Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
-                            If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                                Master.currMovie.FanartPath = fResults.ImagePath
-                                If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
-                            End If
-                            fResults = Nothing
-                        End If
-
-                    End Using
-                    tmpImages.Dispose()
-                    tmpImages = Nothing
+                    ' *** If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
+                    ' *** Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
+                    ' *** Application.DoEvents()
+                    ' *** Using dImgSelect As New dlgImgSelect
+                    ' *** Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
+                    ' *** If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                    ' *** Master.currMovie.PosterPath = pResults.ImagePath
+                    ' *** If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                    ' *** End If
+                    ' *** pResults = Nothing
+                    ' *** End Using
                 End If
 
-                If Master.eSettings.SingleScrapeTrailer Then
-                    Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
-                    Application.DoEvents()
-                    Dim cTrailer As New Trailers
-                    If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
-                        Using dTrailer As New dlgTrailer
-                            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
-                            If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
-                                Master.currMovie.Movie.Trailer = tURL
-                            End If
-                        End Using
-                    End If
-                    cTrailer = Nothing
-                End If
+                ' *** If AllowFA Then
+                ' *** Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
+                ' *** Application.DoEvents()
+                ' *** Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
+                ' *** If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                ' *** Master.currMovie.FanartPath = fResults.ImagePath
+                ' *** If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
+                ' *** End If
+                ' *** fResults = Nothing
+                ' *** End If
+
+                ' *** End Using
+                ' *** tmpImages.Dispose()
+                ' *** tmpImages = Nothing
+                ' ***  End If
+
+                ' *** If Master.eSettings.SingleScrapeTrailer Then
+                ' *** Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
+                ' *** Application.DoEvents()
+                ' *** Dim cTrailer As New Trailers
+                ' *** If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
+                ' *** Using dTrailer As New dlgTrailer
+                ' *** Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
+                ' *** If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
+                ' *** Master.currMovie.Movie.Trailer = tURL
+                ' *** End If
+                ' *** End Using
+                ' *** End If
+                ' *** cTrailer = Nothing
+                ' *** End If
 
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
                     Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
@@ -6174,10 +5486,10 @@ doCancel:
                                 End If
                             Case Windows.Forms.DialogResult.Retry
                                 Master.currMovie.ClearExtras = False
-                                Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
+                                'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
                                 Master.currMovie.ClearExtras = False
-                                Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                                'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                             Case Else
                                 If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                         End Select
