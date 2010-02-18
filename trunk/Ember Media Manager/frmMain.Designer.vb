@@ -377,6 +377,7 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.VersionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -516,7 +517,7 @@ Partial Class frmMain
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem, Me.VersionsToolStripMenuItem})
         Me.HelpToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
@@ -526,7 +527,7 @@ Partial Class frmMain
         '
         Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(115, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AboutToolStripMenuItem.Text = "&About..."
         '
         'StatusStrip
@@ -1075,7 +1076,6 @@ Partial Class frmMain
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SelectAllAutoToolStripMenuItem, Me.ToolStripMenuItem7, Me.ToolStripMenuItem8, Me.ToolStripMenuItem9, Me.ToolStripMenuItem10, Me.ToolStripMenuItem11, Me.ToolStripMenuItem12})
-        Me.ToolStripMenuItem5.Enabled = False
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
         Me.ToolStripMenuItem5.Size = New System.Drawing.Size(271, 22)
         Me.ToolStripMenuItem5.Text = "Automatic (Force Best Match)"
@@ -1088,36 +1088,42 @@ Partial Class frmMain
         '
         'ToolStripMenuItem7
         '
+        Me.ToolStripMenuItem7.Enabled = False
         Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
         Me.ToolStripMenuItem7.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem7.Text = "NFO Only"
         '
         'ToolStripMenuItem8
         '
+        Me.ToolStripMenuItem8.Enabled = False
         Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
         Me.ToolStripMenuItem8.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem8.Text = "Poster Only"
         '
         'ToolStripMenuItem9
         '
+        Me.ToolStripMenuItem9.Enabled = False
         Me.ToolStripMenuItem9.Name = "ToolStripMenuItem9"
         Me.ToolStripMenuItem9.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem9.Text = "Fanart Only"
         '
         'ToolStripMenuItem10
         '
+        Me.ToolStripMenuItem10.Enabled = False
         Me.ToolStripMenuItem10.Name = "ToolStripMenuItem10"
         Me.ToolStripMenuItem10.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem10.Text = "Extrathumbs Only"
         '
         'ToolStripMenuItem11
         '
+        Me.ToolStripMenuItem11.Enabled = False
         Me.ToolStripMenuItem11.Name = "ToolStripMenuItem11"
         Me.ToolStripMenuItem11.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem11.Text = "Trailer Only"
         '
         'ToolStripMenuItem12
         '
+        Me.ToolStripMenuItem12.Enabled = False
         Me.ToolStripMenuItem12.Name = "ToolStripMenuItem12"
         Me.ToolStripMenuItem12.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem12.Text = "Meta Data Only"
@@ -1137,7 +1143,6 @@ Partial Class frmMain
         '
         'ToolStripMenuItem15
         '
-        Me.ToolStripMenuItem15.Enabled = False
         Me.ToolStripMenuItem15.Name = "ToolStripMenuItem15"
         Me.ToolStripMenuItem15.Size = New System.Drawing.Size(168, 22)
         Me.ToolStripMenuItem15.Text = "NFO Only"
@@ -3470,6 +3475,12 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
+        'VersionsToolStripMenuItem
+        '
+        Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
+        Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.VersionsToolStripMenuItem.Text = "Versions"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3914,4 +3925,5 @@ Partial Class frmMain
     Friend WithEvents ToolStripMenuItem33 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents VersionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

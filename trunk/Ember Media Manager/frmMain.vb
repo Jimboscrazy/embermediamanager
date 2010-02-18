@@ -5742,7 +5742,6 @@ doCancel:
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
         Application.DoEvents()
-        Functions.SetScraperMod(Enums.ModType.All, True)
         bwNewScraper.WorkerSupportsCancellation = True
         bwNewScraper.WorkerReportsProgress = True
         bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
@@ -7745,12 +7744,29 @@ doCancel:
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, Me.currSeasonRow).Value))
         End If
     End Sub
+
+    Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
+        EmberAPI.ModulesManager.Instance.GetVersions()
+    End Sub
+
     Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub ToolStripMenuItem15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem15.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectAllAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 End Class
 

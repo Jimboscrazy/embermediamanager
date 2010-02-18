@@ -265,6 +265,25 @@ Public Class ModulesManager
         modulesSetup.ModulesManager = Me
         modulesSetup.ShowDialog()
     End Sub
+
+    Public Sub GetVersions()
+        Dim dlgVersions As New dlgVersions
+        Dim li As ListViewItem
+        li = dlgVersions.lstVersions.Items.Add("Ember Application")
+        li.SubItems.Add(My.Application.Info.Version.Revision.ToString)
+        li = dlgVersions.lstVersions.Items.Add("Ember API")
+        li.SubItems.Add(EmberAPI.Functions.EmberAPIVersion())
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
+            li = dlgVersions.lstVersions.Items.Add(_externalScraperModule.ProcessorModule.ModuleName)
+            li.SubItems.Add(_externalScraperModule.ProcessorModule.ModuleVersion)
+        Next
+        For Each _externalModule As _externalProcessorModuleClass In externalProcessorModules
+            li = dlgVersions.lstVersions.Items.Add(_externalModule.ProcessorModule.ModuleName)
+            li.SubItems.Add(_externalModule.ProcessorModule.ModuleVersion)
+        Next
+        dlgVersions.ShowDialog()
+    End Sub
+
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.ProcessorModule.Setup()
