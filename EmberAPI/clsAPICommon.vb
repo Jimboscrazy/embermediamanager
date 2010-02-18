@@ -168,6 +168,13 @@ Public Class Enums
         Meta = 5
         All = 6
     End Enum
+
+    Public Enum TVUpdateTime As Integer
+        Week = 0
+        Month = 1
+        Always = 2
+        Never = 3
+    End Enum
 End Class
 
 Public Class Structures

@@ -2225,6 +2225,10 @@ Public Class dlgSettings
     Private Sub chkScanOrderModify_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanOrderModify.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub cboTVUpdate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTVUpdate.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2606,6 +2610,7 @@ Public Class dlgSettings
             Master.eSettings.ExternalTVDBAPIKey = Me.txtAPIKey.Text
             Master.eSettings.ScanOrderModify = Me.chkScanOrderModify.Checked
             Master.eSettings.TVScanOrderModify = Me.chkTVScanOrderModify.Checked
+            Master.eSettings.TVUpdateTime = DirectCast(Me.cboTVUpdate.SelectedIndex, Enums.TVUpdateTime)
 
             Master.eSettings.Save()
 
@@ -2943,6 +2948,7 @@ Public Class dlgSettings
             Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
             Me.chkScanOrderModify.Checked = Master.eSettings.ScanOrderModify
             Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
+            Me.cboTVUpdate.SelectedIndex = Master.eSettings.TVUpdateTime
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3437,14 +3443,16 @@ Public Class dlgSettings
         Me.TabPage7.Text = Master.eLang.GetString(999, "TV Season")
         Me.TabPage7.Text = Master.eLang.GetString(701, "TV Episode")
 
-        Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-        Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbShowPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Blank"), Master.eLang.GetString(999, "Graphical"), Master.eLang.GetString(999, "Text")})
-        Me.cbShowFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbEpFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbSeaPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Poster"), Master.eLang.GetString(558, "Wide")})
-        Me.cbSeaFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        Me.cbFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbAutoETSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Blank"), Master.eLang.GetString(999, "Graphical"), Master.eLang.GetString(999, "Text")})
+        Me.cbShowFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Poster"), Master.eLang.GetString(558, "Wide")})
+        Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+
+        Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(999, "Week"), Master.eLang.GetString(999, "Month"), Master.eLang.GetString(999, "Never"), Master.eLang.GetString(999, "Always")})
 
         LoadTrailerQualities()
     End Sub
