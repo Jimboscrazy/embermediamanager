@@ -35,15 +35,25 @@ Public Class EmberNativeScraperModule
             Return True
         End Get
     End Property
+
+    Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
+        Dim _setup As New frmNativeSetupInfo
+        _setup.ShowDialog()
+    End Sub
+    Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupPostScraper
+        Dim _setup As New frmNativeSetupMedia
+        _setup.ShowDialog()
+    End Sub
+    Sub SetupTVScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVScraper
+
+    End Sub
+    Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
+    End Sub
     Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
         Return True
     End Function
-    Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
-        Dim _setup As New frmNativeSetup
-        _setup.lblVersion.Text = ModuleVersion
-        _setup.TabControl1.SelectTab(tScraper)
-        _setup.ShowDialog()
-    End Sub
+
+
     ''' <summary>
     ''' Scraping Here
     ''' </summary>
@@ -214,7 +224,9 @@ Public Class EmberNativeScraperModule
 
         Return True
     End Function
+    Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
 
+    End Function
 End Class
 
 

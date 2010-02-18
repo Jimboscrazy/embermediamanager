@@ -69,6 +69,12 @@
   <ItemGroup>
     <Compile Include="clsMovie.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
+    <Compile Include="frmNativeSetupMedia.Designer.vb">
+      <DependentUpon>frmNativeSetupMedia.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmNativeSetupMedia.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgIMDBSearchResults.Designer.vb">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
     </Compile>
@@ -108,16 +114,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmNativeSetup.Designer.vb">
-      <DependentUpon>frmNativeSetup.vb</DependentUpon>
+    <Compile Include="frmNativeSetupInfo.Designer.vb">
+      <DependentUpon>frmNativeSetupInfo.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmNativeSetup.vb">
+    <Compile Include="frmNativeSetupInfo.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="scraperNativeModule.vb" />
     <Compile Include="scraperXMLModule.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmNativeSetupMedia.resx">
+      <DependentUpon>frmNativeSetupMedia.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgIMDBSearchResults.resx">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -130,8 +140,8 @@
       <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmNativeSetup.resx">
-      <DependentUpon>frmNativeSetup.vb</DependentUpon>
+    <EmbeddedResource Include="frmNativeSetupInfo.resx">
+      <DependentUpon>frmNativeSetupInfo.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmXMLSetup.resx">

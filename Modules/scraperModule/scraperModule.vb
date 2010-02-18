@@ -42,9 +42,17 @@ Public Class TestEmberScraperModule
             Return True
         End Get
     End Property
-    Sub Setup(ByVal tScraper As Integer) Implements EmberAPI.Interfaces.EmberScraperModule.Setup
+    Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
         Dim _setup As New frmSetup
         _setup.ShowDialog()
+    End Sub
+    Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupPostScraper
+
+    End Sub
+    Sub SetupTVScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVScraper
+
+    End Sub
+    Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
     End Sub
     Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
 
@@ -55,6 +63,9 @@ Public Class TestEmberScraperModule
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
         Return True
+    End Function
+    Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
+
     End Function
     ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
         Get
