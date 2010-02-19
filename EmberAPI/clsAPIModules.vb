@@ -46,10 +46,28 @@ Public Class ModulesManager
     Class EmberRuntimeObjects
 
         'all runtime object (not classes or shared methods) that need to be exposed to Modules
+        Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
+        Private _MainTool As System.Windows.Forms.ToolStrip
         Sub New()
         End Sub
+        Public Property MainTool() As System.Windows.Forms.ToolStrip
+            Get
+                Return _MainTool
+            End Get
+            Set(ByVal value As System.Windows.Forms.ToolStrip)
+                _MainTool = value
+            End Set
+        End Property
+        Public Property TopMenu() As System.Windows.Forms.MenuStrip
+            Get
+                Return _TopMenu
+            End Get
+            Set(ByVal value As System.Windows.Forms.MenuStrip)
+                _TopMenu = value
+            End Set
+        End Property
         Public Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
             Get
                 Return _MenuMediaList

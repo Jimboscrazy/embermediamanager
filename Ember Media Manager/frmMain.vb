@@ -166,6 +166,15 @@ Public Class frmMain
         End Set
     End Property
 
+    Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
+    Private dScrapeRow As DataRow
+    Private scrapeRunningIdx As Integer
+    Structure RunList
+        Dim idx As Integer
+        Dim Id As Integer
+    End Structure
+    Dim MovieIds As New List(Of RunList) 'Movies to scrape (db id and MediaList idx)
+
 #End Region '*** Declarations
 
 
@@ -2486,7 +2495,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2494,7 +2502,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2502,7 +2509,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2510,7 +2516,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2518,7 +2523,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoMI.Click
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2526,7 +2530,6 @@ Public Class frmMain
     Private Sub mnuFilterAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2534,7 +2537,6 @@ Public Class frmMain
     Private Sub mnuFilterAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2542,7 +2544,6 @@ Public Class frmMain
     Private Sub mnuFilterAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2550,7 +2551,6 @@ Public Class frmMain
     Private Sub mnuFilterAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2558,7 +2558,6 @@ Public Class frmMain
     Private Sub mnuFilterAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2566,7 +2565,6 @@ Public Class frmMain
     Private Sub mnuFilterAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTrailer.Click
 
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -2574,7 +2572,6 @@ Public Class frmMain
     Private Sub mnuFilterAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskMI.Click
 
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
         Me.NewScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultOptions)
 
     End Sub
@@ -5344,15 +5341,7 @@ doCancel:
         Me.pnlCancel.Visible = False
         Me.SetControlsEnabled(True)
     End Sub
-    'Move this to Top when finished
-    Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
-    Private dScrapeRow As DataRow
-    Private scrapeRunningIdx As Integer
-    Structure RunList
-        Dim idx As Integer
-        Dim Id As Integer
-    End Structure
-    Dim MovieIds As New List(Of RunList) 'Movies to scrape (db id and MediaList idx)
+
 
     Private Sub NewScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
         MovieIds.Clear()
