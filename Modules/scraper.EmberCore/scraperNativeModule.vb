@@ -66,7 +66,7 @@ Public Class EmberNativeScraperModule
     End Sub
     Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
     End Sub
-    Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
+    Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
         Return True
     End Function
 
@@ -76,7 +76,7 @@ Public Class EmberNativeScraperModule
     ''' </summary>
     ''' <remarks></remarks>
     Private IMDB As New IMDB.Scraper
-    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
@@ -88,6 +88,10 @@ Public Class EmberNativeScraperModule
             End If
         End If
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+            Select Case ScrapeType
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                    Return False
+            End Select
             Using dSearch As New dlgIMDBSearchResults
                 If dSearch.ShowDialog(DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then

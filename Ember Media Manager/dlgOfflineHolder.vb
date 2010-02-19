@@ -201,9 +201,11 @@ Public Class dlgOfflineHolder
             ' *** End If
             ' *** End Using
             Dim DBMovie As New EmberAPI.Structures.DBMovie
+            DBMovie.Movie = New EmberAPI.MediaContainers.Movie
+            DBMovie.Movie.Title = txtMovieName.Text
             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, False)
-            If Not ModulesManager.Instance.ScrapeOnly(DBMovie, Master.DefaultOptions) Then
+            If Not ModulesManager.Instance.ScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
 
             End If
         Catch ex As Exception

@@ -5417,33 +5417,34 @@ doCancel:
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
 
             AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-            If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.Options) Then Return
-            dScrapeRow.Item(6) = True
+            If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
+                dScrapeRow.Item(6) = True
 
-            If bwNewScraper.CancellationPending Then Exit For
-            ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-            RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+                If bwNewScraper.CancellationPending Then Exit For
+                ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+                RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
 
-            If bwNewScraper.CancellationPending Then Exit For
+                If bwNewScraper.CancellationPending Then Exit For
 
-            If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
-                OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                'Any Non Auto open EditMovie
-                Master.currMovie = DBScrapeMovie
-                Using dEditMovie As New dlgEditMovie
-                    Select Case dEditMovie.ShowDialog()
-                    End Select
-                End Using
+                If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
+                    OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                    'Any Non Auto open EditMovie
+                    Master.currMovie = DBScrapeMovie
+                    Using dEditMovie As New dlgEditMovie
+                        Select Case dEditMovie.ShowDialog()
+                        End Select
+                    End Using
+                End If
+                If bwNewScraper.CancellationPending Then Exit For
+                'For debuf unComment this
+                'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                'FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+                'Else
+                'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                'End If
+                Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                bwNewScraper.ReportProgress(1)
             End If
-            If bwNewScraper.CancellationPending Then Exit For
-            'For debuf unComment this
-            'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-            'FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
-            'Else
-            'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-            'End If
-            Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-            bwNewScraper.ReportProgress(1)
         Next
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
