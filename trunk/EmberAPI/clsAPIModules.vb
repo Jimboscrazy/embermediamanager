@@ -234,15 +234,15 @@ Public Class ModulesManager
     ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
     ''' <param Options="movie">ScrapeOptions Structure defining user scrape options</param>
     ''' <returns>boolean success</returns>
-    Public Function FullScrape(ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions) As Boolean
+    Public Function FullScrape(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
         'AndAlso? Only return true if both complete successfully?
 
-        Return ScrapeOnly(DBMovie, Options) 'OrElse PostScrapeOnly(movie)
+        Return ScrapeOnly(DBMovie, ScrapeType, Options) 'OrElse PostScrapeOnly(movie)
     End Function
 
-    Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions) As Boolean
+    Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, Options) Then Return False
+            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options) Then Return False
         Next
         Return True
     End Function
