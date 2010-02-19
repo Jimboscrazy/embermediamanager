@@ -44,6 +44,10 @@ Public Class EmberXMLScraperModule
             Return "Ember XML Scraper"
         End Get
     End Property
+    Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sStudio As List(Of String)) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.GetMovieStudio
+        Return False
+    End Function
+
     Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.DownloadTrailer
 
         Return False

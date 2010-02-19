@@ -26,7 +26,6 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
 Public Class dlgOfflineHolder
-    ' *** Private IMDB As New IMDB.Scraper
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private FileName As String = Path.Combine(WorkingPath, "PlaceHolder.avi")
     Private destPath As String
@@ -130,8 +129,6 @@ Public Class dlgOfflineHolder
                 End Using
             End Using
 
-            ' *** AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
-            ' *** AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
                 FileUtils.Delete.DeleteDirectory(WorkingPath)
             End If

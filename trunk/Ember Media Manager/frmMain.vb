@@ -59,7 +59,6 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private tmpTVDB As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
-    ' *** Private IMDB As New IMDB.Scraper
     Private fScanner As New Scanner
     Private dtMedia As New DataTable
     Private dtShows As New DataTable
@@ -371,8 +370,6 @@ Public Class frmMain
         Me.pnlGenre(0) = New Panel()
         Me.pbGenre(0) = New PictureBox()
 
-        ' *** AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
-        ' *** AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
         AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
@@ -497,6 +494,7 @@ Public Class frmMain
                         While Not Me.LoadingDone
                             Application.DoEvents()
                         End While
+                        ' *** TODO command line scraping - need to work on this later
                         ' *** ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                     Catch ex As Exception
                         ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1592,7 +1590,7 @@ Public Class frmMain
                 End If
             End With
             If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                'Me.ScrapeData(Enums.ScrapeType.CleanFolders, Nothing, Nothing)
+                Me.NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
             End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2053,9 +2051,12 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
+                        Functions.SetScraperMod(Enums.ModType.All, True)
+                        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
@@ -5239,6 +5240,109 @@ Public Class frmMain
         End Try
 
     End Sub
+
+    Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
+
+
+    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
+        btnCancel.Visible = True
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = True
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+
+        bwNonScrape.WorkerReportsProgress = True
+        bwNonScrape.WorkerSupportsCancellation = True
+        bwNonScrape.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+    End Sub
+    Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
+        'Will Need to make a cleanup on Arguments when old scraper code is removed
+        Dim scrapeMovie As EmberAPI.Structures.DBMovie
+        Dim iCount As Integer = 0
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+
+            Try
+                If Me.dtMedia.Rows.Count > 0 Then
+
+                    Select Case Args.scrapeType
+                        Case Enums.ScrapeType.CleanFolders
+                            Dim fDeleter As New FileUtils.Delete
+                            For Each drvRow As DataRow In Me.dtMedia.Rows
+
+                                Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
+                                iCount += 1
+                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+
+                                If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
+                                If fDeleter.DeleteFiles(True, scrapeMovie) Then
+                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
+                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                End If
+                            Next
+                        Case Enums.ScrapeType.CopyBD
+                            Dim sPath As String = String.Empty
+                            For Each drvRow As DataRow In Me.dtMedia.Rows
+
+                                Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
+                                iCount += 1
+
+                                If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+                                sPath = drvRow.Item(40).ToString
+                                If Not String.IsNullOrEmpty(sPath) Then
+                                    If FileUtils.Common.isVideoTS(sPath) Then
+                                        If Master.eSettings.VideoTSParent Then
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                        Else
+                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                            Else
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                            End If
+                                        End If
+                                    ElseIf FileUtils.Common.isBDRip(sPath) Then
+                                        If Master.eSettings.VideoTSParent Then
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
+                                        Else
+                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
+                                            Else
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                            End If
+                                        End If
+                                    Else
+                                        If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
+                                        Else
+                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                        End If
+
+                                    End If
+                                End If
+                            Next
+                    End Select
+
+doCancel:
+                    If Not Args.scrapeType = Enums.ScrapeType.CopyBD Then
+                        SQLtransaction.Commit()
+                    End If
+                End If
+            Catch ex As Exception
+            End Try
+        End Using
+    End Sub
+    Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        btnCancel.Visible = False
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = False
+        Me.SetControlsEnabled(True)
+    End Sub
     'Move this to Top when finished
     Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
     Private dScrapeRow As DataRow
@@ -5280,12 +5384,6 @@ Public Class frmMain
             Next
         End If
 
-
-
-        btnCancel.Visible = True
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
-        Me.pnlCancel.Visible = True
         Me.tspbLoading.Style = ProgressBarStyle.Continuous
         Me.SetControlsEnabled(False, False)
         Me.tspbLoading.Value = Me.tspbLoading.Minimum
@@ -5304,21 +5402,16 @@ Public Class frmMain
             Case Enums.ScrapeType.FilterAuto
                 Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
         End Select
+        btnCancel.Visible = True
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
         Application.DoEvents()
         bwNewScraper.WorkerSupportsCancellation = True
         bwNewScraper.WorkerReportsProgress = True
         bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
-    End Sub
-    Private Sub NewScrapeDataEnd()
-        Me.tslLoading.Visible = False
-        Me.tspbLoading.Visible = False
-        btnCancel.Visible = False
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
-        Me.pnlCancel.Visible = False
-        Me.SetControlsEnabled(True)
     End Sub
 
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
@@ -5336,7 +5429,7 @@ Public Class frmMain
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
 
             AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-            ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.Options)
+            If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.Options) Then Return
             dScrapeRow.Item(6) = True
 
             If bwNewScraper.CancellationPending Then Exit For
@@ -5355,12 +5448,13 @@ Public Class frmMain
                 End Using
             End If
             If bwNewScraper.CancellationPending Then Exit For
-
-            If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
-            Else
-                Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-            End If
+            'For debuf unComment this
+            'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+            'FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+            'Else
+            'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+            'End If
+            Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
             bwNewScraper.ReportProgress(1)
         Next
     End Sub
@@ -5369,7 +5463,13 @@ Public Class frmMain
         Me.FillList(scrapeRunningIdx)
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
-        NewScrapeDataEnd()
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        btnCancel.Visible = False
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = False
+        Me.SetControlsEnabled(True)
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
         dScrapeRow.Item(col) = v
@@ -5382,134 +5482,6 @@ Public Class frmMain
             Me.Refresh()
         End If
     End Sub
-
-    Private Sub MovieInfoDownloaded(ByVal bSuccess As Boolean)
-
-        Try
-            If bSuccess AndAlso Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
-                Master.currMovie.Movie = Master.tmpMovie
-                If Master.eSettings.ScanMediaInfo Then
-                    Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
-                    Me.tspbLoading.Value = Me.tspbLoading.Maximum
-                    Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                    Me.tspbLoading.MarqueeAnimationSpeed = 25
-                    Application.DoEvents()
-                    MediaInfo.UpdateMediaInfo(Master.currMovie)
-                End If
-
-                If Master.eSettings.SingleScrapeImages Then
-                    Dim tmpImages As New Images
-                    ' *** Using dImgSelectFanart As New dlgImgSelect
-                    ' *** Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
-
-                    ' *** If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
-
-                    ' *** If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
-                    ' *** Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
-                    ' *** Application.DoEvents()
-                    ' *** Using dImgSelect As New dlgImgSelect
-                    ' *** Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
-                    ' *** If Not String.IsNullOrEmpty(pResults.ImagePath) Then
-                    ' *** Master.currMovie.PosterPath = pResults.ImagePath
-                    ' *** If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
-                    ' *** End If
-                    ' *** pResults = Nothing
-                    ' *** End Using
-                End If
-
-                ' *** If AllowFA Then
-                ' *** Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
-                ' *** Application.DoEvents()
-                ' *** Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
-                ' *** If Not String.IsNullOrEmpty(fResults.ImagePath) Then
-                ' *** Master.currMovie.FanartPath = fResults.ImagePath
-                ' *** If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
-                ' *** End If
-                ' *** fResults = Nothing
-                ' *** End If
-
-                ' *** End Using
-                ' *** tmpImages.Dispose()
-                ' *** tmpImages = Nothing
-                ' ***  End If
-
-                ' *** If Master.eSettings.SingleScrapeTrailer Then
-                ' *** Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
-                ' *** Application.DoEvents()
-                ' *** Dim cTrailer As New Trailers
-                ' *** If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
-                ' *** Using dTrailer As New dlgTrailer
-                ' *** Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
-                ' *** If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
-                ' *** Master.currMovie.Movie.Trailer = tURL
-                ' *** End If
-                ' *** End Using
-                ' *** End If
-                ' *** cTrailer = Nothing
-                ' *** End If
-
-                If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                    Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
-                    Application.DoEvents()
-                    ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
-                End If
-
-                If Not isCL Then
-                    Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                    Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-                    Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
-
-                    Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
-                    Application.DoEvents()
-
-                    Using dEditMovie As New dlgEditMovie
-                        Select Case dEditMovie.ShowDialog()
-                            Case Windows.Forms.DialogResult.OK
-                                If Master.eSettings.AutoRenameSingle Then
-                                    FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
-                                End If
-                                Me.SetListItemAfterEdit(ID, indX)
-                                If Me.RefreshMovie(ID) Then
-                                    Me.FillList(0)
-                                End If
-                            Case Windows.Forms.DialogResult.Retry
-                                Master.currMovie.ClearExtras = False
-                                'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID)
-                            Case Windows.Forms.DialogResult.Abort
-                                Master.currMovie.ClearExtras = False
-                                'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
-                            Case Else
-                                If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
-                        End Select
-                    End Using
-
-                Else
-                    If Master.eSettings.AutoRenameSingle Then
-                        FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, True, False)
-                    Else
-                        Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
-                    End If
-                End If
-            Else
-                MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
-            End If
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        Master.currMovie.ClearExtras = False
-
-        If isCL Then
-            Me.ScraperDone = True
-        Else
-            Me.tslLoading.Visible = False
-            Me.tspbLoading.Visible = False
-            Me.SetStatus(String.Empty)
-            Me.SetControlsEnabled(True, True)
-            Me.EnableFilters(True)
-        End If
-    End Sub
-
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpMovie As New MediaContainers.Movie
@@ -6318,7 +6290,7 @@ Public Class frmMain
                 Me.ShowNoInfo(True, 0)
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwNewScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.mnuMediaList.Enabled = True
                 End If
             Else

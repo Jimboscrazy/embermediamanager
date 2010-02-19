@@ -188,7 +188,7 @@ Public Class dlgEditMovie
         Me.Label3.Text = Master.eLang.GetString(261, "Extracting Frame...")
         Me.btnFrameLoad.Text = Master.eLang.GetString(263, "Load Movie")
         Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
-        Me.btnRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
+        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-scrape")
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         Me.btnClearCache.Text = Master.eLang.GetString(264, "Clear Cache")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
@@ -844,8 +844,6 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
-            ' *** Using dImgSelect As New dlgImgSelect
-            ' *** pResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
             ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True)
             If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                 Poster.FromFile(sPath)
@@ -853,7 +851,6 @@ Public Class dlgEditMovie
                 Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
             End If
-            ' *** End Using
 
             If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
@@ -867,8 +864,6 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
-            ' *** Using dImgSelect As New dlgImgSelect
-            ' *** fResults = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, True)
             ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, pResults, True)
             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                 Fanart.FromFile(sPath)
@@ -877,7 +872,6 @@ Public Class dlgEditMovie
                 Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                 Me.lblFanartSize.Visible = True
             End If
-            ' *** End Using
 
             If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
@@ -1366,8 +1360,6 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        ' *** Using dTrailer As New dlgTrailer
-        ' *** Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
         Dim tURL As String = ModulesManager.Instance.ScraperDownlaodTrailer(Master.currMovie)
         If Not String.IsNullOrEmpty(tURL) Then
             Me.btnPlayTrailer.Enabled = True
@@ -1378,7 +1370,6 @@ Public Class dlgEditMovie
                 Me.lblLocalTrailer.Visible = True
             End If
         End If
-        ' *** End Using
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
