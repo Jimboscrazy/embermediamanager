@@ -84,7 +84,7 @@ Public Class EmberNativeScraperModule
                 IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)
             Else
                 'Movie = IMDB.GetSearchMovieInfo(Movie.Title, Movie, Enums.ScrapeType.SingleScrape, Options)
-                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, Enums.ScrapeType.FullAuto, Options)
+                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, ScrapeType, Options)
             End If
         End If
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
