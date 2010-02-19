@@ -167,6 +167,8 @@ Public Class ModulesManager
     ''' </summary>
 
     Public Sub loadScrapersModules()
+        Dim ScraperAnyEnabled As Boolean = False
+        Dim PostScraperAnyEnabled As Boolean = False
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -190,7 +192,9 @@ Public Class ModulesManager
                             Dim found As Boolean = False
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ScraperEnabled = i.ScraperEnabled
+                                ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
                                 _externalScraperModule.PostScraperEnabled = i.PostScraperEnabled
+                                PostScraperAnyEnabled = PostScraperAnyEnabled Or i.PostScraperEnabled
                                 _externalScraperModule.ScraperOrder = i.ScraperOrder
                                 _externalScraperModule.PostScraperOrder = i.PostScraperOrder
                                 found = True
@@ -214,6 +218,14 @@ Public Class ModulesManager
                 ext.PostScraperOrder = c
                 c += 1
             Next
+            If Not ScraperAnyEnabled Then
+                SetScraperEnable("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", True)
+                SetScraperOrder("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", 1)
+            End If
+            If Not PostScraperAnyEnabled Then
+                SetPostScraperEnable("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", True)
+                SetPostScraperOrder("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", 1)
+            End If
         End If
     End Sub
     ''' <summary>
@@ -343,7 +355,7 @@ Public Class ModulesManager
             _externalScraperModule.ScraperOrder = value
         Next
     End Sub
-    Public Sub SetPostScraperorder(ByVal ModuleAssembly As String, ByVal value As Integer)
+    Public Sub SetPostScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalScraperModule.PostScraperOrder = value
         Next
