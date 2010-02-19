@@ -330,6 +330,25 @@ Public Class ModulesManager
             _externalScraperModule.PostScraperOrder = value
         Next
     End Sub
+    Function ScraperSelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean
+        Dim ret As Boolean
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+            ret = _externalScraperModule.ProcessorModule.SelectImageOfType(DBMovie, _DLType, pResults, _isEdit)
+            If ret Then Exit For
+        Next
+        Return ret
+    End Function
+
+    Function ScraperDownlaodTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie) As String
+        Dim ret As Boolean
+        Dim sURL As String = String.Empty
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+            ret = _externalScraperModule.ProcessorModule.DownloadTrailer(DBMovie, sURL)
+            If ret Then Exit For
+        Next
+        Return sURL
+    End Function
+
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)
 

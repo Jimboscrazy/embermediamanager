@@ -42,6 +42,15 @@ Public Class TestEmberScraperModule
             Return True
         End Get
     End Property
+
+    Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.SelectImageOfType
+        Return False
+    End Function
+    Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.DownloadTrailer
+
+        Return False
+    End Function
+
     Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
         Dim _setup As New frmSetup
         _setup.ShowDialog()
