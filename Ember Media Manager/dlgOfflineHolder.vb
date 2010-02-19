@@ -200,6 +200,12 @@ Public Class dlgOfflineHolder
             ' *** End If
             ' *** End If
             ' *** End Using
+            Dim DBMovie As New EmberAPI.Structures.DBMovie
+            Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+            Functions.SetScraperMod(Enums.ModType.NFO, False)
+            If Not ModulesManager.Instance.ScrapeOnly(DBMovie, Master.DefaultOptions) Then
+
+            End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
