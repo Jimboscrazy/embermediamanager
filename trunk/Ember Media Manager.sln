@@ -4,7 +4,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Ember Media Manager", "Embe
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.SampleExternalModule", "Modules\ExternalModuleSample\generic.SampleExternalModule.vbproj", "{179AF51D-B069-48B4-99D7-19E6C389F0B1}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.MediaFileManagerModule", "Modules\MediaFileManagerModule\generic.MediaFileManagerModule.vbproj", "{45362A8A-6DAB-4CFA-AE9C-DF5B323D19A6}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore", "Modules\MediaFileManagerModule\generic.EmberCore.vbproj", "{45362A8A-6DAB-4CFA-AE9C-DF5B323D19A6}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.SampleModule", "Modules\scraperModule\scraper.SampleModule.vbproj", "{77ED0D1A-96C6-435E-92AA-76DB392F4BBB}"
 EndProject
