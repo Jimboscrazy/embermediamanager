@@ -2787,42 +2787,42 @@ Public Class frmMain
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click
@@ -2830,6 +2830,7 @@ Public Class frmMain
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
+                Me.NewScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
                 'Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Options)
             End If
         End Using
@@ -2837,32 +2838,32 @@ Public Class frmMain
 
     Private Sub mnuAllAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskMI.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
+        Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
