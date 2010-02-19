@@ -67,19 +67,18 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAPITrailers.vb" />
-    <Compile Include="clsMovie.vb" />
-    <Compile Include="clsScrapeImages.vb" />
-    <Compile Include="dlgTrailer.Designer.vb">
+    <Compile Include="Native\clsAPITrailers.vb" />
+    <Compile Include="Native\clsScrapeImages.vb" />
+    <Compile Include="Native\dlgTrailer.Designer.vb">
       <DependentUpon>dlgTrailer.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTrailer.vb">
+    <Compile Include="Native\dlgTrailer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTrailerFormat.Designer.vb">
+    <Compile Include="Native\dlgTrailerFormat.Designer.vb">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTrailerFormat.vb">
+    <Compile Include="Native\dlgTrailerFormat.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmNativeSetupMedia.Designer.vb">
@@ -88,16 +87,16 @@
     <Compile Include="frmNativeSetupMedia.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgSelect.Designer.vb">
+    <Compile Include="Native\dlgImgSelect.Designer.vb">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgImgSelect.vb">
+    <Compile Include="Native\dlgImgSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgView.Designer.vb">
+    <Compile Include="Native\dlgImgView.Designer.vb">
       <DependentUpon>dlgImgView.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgImgView.vb">
+    <Compile Include="Native\dlgImgView.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmXMLSetup.Designer.vb">
@@ -128,27 +127,27 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="scraperNativeModule.vb" />
-    <Compile Include="Scrapers\clsScrapeAllHTPC.vb" />
-    <Compile Include="Scrapers\clsScrapeIMDB.vb" />
-    <Compile Include="Scrapers\clsScrapeIMPA.vb" />
-    <Compile Include="Scrapers\clsScrapeMPDB.vb" />
-    <Compile Include="Scrapers\clsScrapeOFDB.vb" />
-    <Compile Include="Scrapers\clsScrapeTMDB.vb" />
-    <Compile Include="Scrapers\clsScrapeYouTube.vb" />
-    <Compile Include="Scrapers\dlgIMDBSearchResults.Designer.vb">
+    <Compile Include="Scrapers\Native\clsScrapeAllHTPC.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeIMDB.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeIMPA.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeMPDB.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeOFDB.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeTMDB.vb" />
+    <Compile Include="Scrapers\Native\clsScrapeYouTube.vb" />
+    <Compile Include="Scrapers\Native\dlgIMDBSearchResults.Designer.vb">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Scrapers\dlgIMDBSearchResults.vb">
+    <Compile Include="Scrapers\Native\dlgIMDBSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="scraperXMLModule.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgTrailer.resx">
+    <EmbeddedResource Include="Native\dlgTrailer.resx">
       <DependentUpon>dlgTrailer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTrailerFormat.resx">
+    <EmbeddedResource Include="Native\dlgTrailerFormat.resx">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -156,11 +155,11 @@
       <DependentUpon>frmNativeSetupMedia.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgSelect.resx">
+    <EmbeddedResource Include="Native\dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgView.resx">
+    <EmbeddedResource Include="Native\dlgImgView.resx">
       <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -178,7 +177,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scrapers\dlgIMDBSearchResults.resx">
+    <EmbeddedResource Include="Scrapers\Native\dlgIMDBSearchResults.resx">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
