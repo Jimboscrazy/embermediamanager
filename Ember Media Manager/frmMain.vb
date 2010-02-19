@@ -5375,7 +5375,7 @@ doCancel:
         Me.tspbLoading.Style = ProgressBarStyle.Continuous
         Me.SetControlsEnabled(False, False)
         Me.tspbLoading.Value = Me.tspbLoading.Minimum
-        Me.tspbLoading.Maximum = Me.dgvMediaList.SelectedRows.Count
+        Me.tspbLoading.Maximum = MovieIds.Count
         Select Case sType
             Case Enums.ScrapeType.FullAsk
                 Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
@@ -5406,6 +5406,7 @@ doCancel:
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
+        AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
         For Each rl As RunList In MovieIds
             If bwNewScraper.CancellationPending Then Exit For
 
@@ -5415,17 +5416,13 @@ doCancel:
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
-
-            AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
             If ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
+                RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
                 dScrapeRow.Item(6) = True
-                Application.DoEvents()
+                'Application.DoEvents()
                 If bwNewScraper.CancellationPending Then Exit For
                 ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-                RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-
                 If bwNewScraper.CancellationPending Then Exit For
-
                 If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
                     OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                     'Any Non Auto open EditMovie
@@ -5436,7 +5433,7 @@ doCancel:
                     End Using
                 End If
                 If bwNewScraper.CancellationPending Then Exit For
-                'For debuf unComment this
+                'For debug unComment this
                 'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
                 'FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                 'Else
@@ -5445,10 +5442,14 @@ doCancel:
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 bwNewScraper.ReportProgress(1)
             End If
+            RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
         Next
+
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
+        'Me.tspbLoading.Invalidate()
+        'Application.DoEvents()
         'Me.FillList(scrapeRunningIdx)
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted

@@ -205,8 +205,10 @@ Public Class dlgOfflineHolder
             DBMovie.Movie.Title = txtMovieName.Text
             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, False)
-            If Not ModulesManager.Instance.ScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
-
+            If ModulesManager.Instance.ScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
+                ModulesManager.Instance.PostScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk)
+                tMovie.PosterPath = DBMovie.PosterPath
+                tMovie.FanartPath = DBMovie.FanartPath
             End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
