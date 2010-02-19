@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("MediaFileManagerModule")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("generic.EmberCore")> 
+<Assembly: AssemblyDescription("www.embermm.com")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("MediaFileManagerModule")> 
+<Assembly: AssemblyProduct("generic.EmberCore")> 
 <Assembly: AssemblyCopyright("Copyright ©  2010")> 
 <Assembly: AssemblyTrademark("")> 
 

@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("cube3 Studios")> 
 <Assembly: AssemblyProduct("Ember Setup")> 
-<Assembly: AssemblyCopyright("Copyright © cube3 Studios 2009")> 
+<Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

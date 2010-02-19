@@ -53,6 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="EmberAPI" />
+    <Import Include="EmberAPI.FileUtils" />
+    <Import Include="EmberAPI.MediaContainers" />
+    <Import Include="EmberAPI.TVDB" />
+    <Import Include="EmberScraperModule" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -64,7 +68,6 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsMovie.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -112,7 +115,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
+    <ProjectReference Include="..\..\..\EmberAPI\EmberAPI.vbproj">
       <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
