@@ -5419,7 +5419,7 @@ doCancel:
             AddHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
             If ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 dScrapeRow.Item(6) = True
-
+                Application.DoEvents()
                 If bwNewScraper.CancellationPending Then Exit For
                 ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
                 RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
@@ -5449,7 +5449,7 @@ doCancel:
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
-        Me.FillList(scrapeRunningIdx)
+        'Me.FillList(scrapeRunningIdx)
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
         Me.tslLoading.Visible = False
