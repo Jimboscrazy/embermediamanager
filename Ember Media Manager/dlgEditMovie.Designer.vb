@@ -1331,11 +1331,11 @@ Partial Class dlgEditMovie
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(286, 554)
+        Me.btnRescrape.Location = New System.Drawing.Point(310, 554)
         Me.btnRescrape.Name = "btnRescrape"
-        Me.btnRescrape.Size = New System.Drawing.Size(122, 23)
+        Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 58
-        Me.btnRescrape.Text = "Re-scrape IMDB"
+        Me.btnRescrape.Text = "Re-scrape"
         Me.btnRescrape.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnRescrape.UseVisualStyleBackColor = True
         '
@@ -1344,9 +1344,9 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
         Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeMovie.Location = New System.Drawing.Point(414, 554)
+        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 554)
         Me.btnChangeMovie.Name = "btnChangeMovie"
-        Me.btnChangeMovie.Size = New System.Drawing.Size(122, 23)
+        Me.btnChangeMovie.Size = New System.Drawing.Size(107, 23)
         Me.btnChangeMovie.TabIndex = 59
         Me.btnChangeMovie.Text = "Change Movie"
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight

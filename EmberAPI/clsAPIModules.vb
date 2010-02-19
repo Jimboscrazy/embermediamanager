@@ -212,7 +212,7 @@ Public Class ModulesManager
 
     Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal Options As Structures.ScrapeOptions) As Boolean
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, Options) Then Exit For
+            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, Options) Then Return False
         Next
         Return True
     End Function
@@ -348,6 +348,17 @@ Public Class ModulesManager
         Next
         Return sURL
     End Function
+
+    Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie) As List(Of String)
+        Dim ret As Boolean
+        Dim sStudio As New List(Of String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+            ret = _externalScraperModule.ProcessorModule.GetMovieStudio(DBMovie, sStudio)
+            If ret Then Exit For
+        Next
+        Return sStudio
+    End Function
+
 
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)

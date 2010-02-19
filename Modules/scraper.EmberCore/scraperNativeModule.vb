@@ -20,7 +20,11 @@ Public Class EmberNativeScraperModule
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
-
+    Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef studio As List(Of String)) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.GetMovieStudio
+        Dim IMDB As New IMDB.Scraper
+        studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
+        Return True
+    End Function
     Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.SelectImageOfType
         Using dImgSelect As New dlgImgSelect
             pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
@@ -87,6 +91,8 @@ Public Class EmberNativeScraperModule
                     DBMovie.NfoPath = String.Empty
                     IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, Options)
                 End If
+            Else
+                Return False
             End If
         End Using
         If Master.GlobalScrapeMod.NFO Then
