@@ -75,6 +75,20 @@ Public Class EmberNativeScraperModule
     Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
+        Using dSearch As New dlgIMDBSearchResults
+            If dSearch.ShowDialog(DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+                    DBMovie.ClearExtras = True
+                    DBMovie.PosterPath = String.Empty
+                    DBMovie.FanartPath = String.Empty
+                    DBMovie.TrailerPath = String.Empty
+                    DBMovie.ExtraPath = String.Empty
+                    DBMovie.SubPath = String.Empty
+                    DBMovie.NfoPath = String.Empty
+                    IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, Options)
+                End If
+            End If
+        End Using
         If Master.GlobalScrapeMod.NFO Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                 IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)

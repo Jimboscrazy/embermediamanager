@@ -2027,21 +2027,14 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
-
-        '//
-        ' Begin the process to scrape IMDB with the current ID
-        '\\
-
-        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
-    End Sub
-
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
 
         '//
         ' Begin the process to search IMDB for data
         '\\
-
+        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType.All, False)
+        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
         'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
 
@@ -2086,7 +2079,7 @@ Public Class frmMain
 
                         Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditMovie.Visible = False
-                        Me.cmnuRescrape.Visible = False
+                        Me.ScrapingToolStripMenuItem.Visible = False
                         Me.cmnuSearchNew.Visible = False
                         Me.cmuRenamer.Visible = False
                         Me.cmnuMetaData.Visible = False
@@ -2118,7 +2111,7 @@ Public Class frmMain
                         Me.RemoveGenreToolStripMenuItem.Enabled = False
                     Else
                         Me.cmnuEditMovie.Visible = True
-                        Me.cmnuRescrape.Visible = True
+                        Me.ScrapingToolStripMenuItem.Visible = True
                         Me.cmnuSearchNew.Visible = True
                         Me.cmuRenamer.Visible = True
                         Me.cmnuMetaData.Visible = True
@@ -4092,7 +4085,7 @@ Public Class frmMain
                 .AddGenreToolStripMenuItem.Text = Master.eLang.GetString(28, "Add")
                 .SetGenreToolStripMenuItem.Text = Master.eLang.GetString(29, "Set")
                 .RemoveGenreToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
+                .ScrapingToolStripMenuItem.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .cmnuSearchNew.Text = Master.eLang.GetString(32, "Change Movie")
                 .OpenContainingFolderToolStripMenuItem.Text = Master.eLang.GetString(33, "Open Containing Folder")
                 .RemoveToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")

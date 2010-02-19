@@ -89,19 +89,7 @@ Partial Class frmMain
         Me.SetGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSep = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuRescrape = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator
-        Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmuRenamer = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRenameAuto = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRenameManual = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ScrapingTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ScrapingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectAllAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectNfoAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -118,6 +106,17 @@ Partial Class frmMain
         Me.SelectExtraAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripAskMenuItem19 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectMeEtaAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator
+        Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmuRenamer = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRenameAuto = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRenameManual = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -880,9 +879,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem, Me.ScrapingTestToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 348)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
         '
         'cmnuTitle
         '
@@ -988,96 +987,13 @@ Partial Class frmMain
         Me.cmnuSep.Name = "cmnuSep"
         Me.cmnuSep.Size = New System.Drawing.Size(241, 6)
         '
-        'cmnuRescrape
+        'ScrapingToolStripMenuItem
         '
-        Me.cmnuRescrape.Image = CType(resources.GetObject("cmnuRescrape.Image"), System.Drawing.Image)
-        Me.cmnuRescrape.Name = "cmnuRescrape"
-        Me.cmnuRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuRescrape.Size = New System.Drawing.Size(244, 22)
-        Me.cmnuRescrape.Text = "Re-scrape IMDB"
-        '
-        'cmnuSearchNew
-        '
-        Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
-        Me.cmnuSearchNew.Name = "cmnuSearchNew"
-        Me.cmnuSearchNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuSearchNew.Size = New System.Drawing.Size(244, 22)
-        Me.cmnuSearchNew.Text = "Change Movie"
-        '
-        'cmnuSep2
-        '
-        Me.cmnuSep2.Name = "cmnuSep2"
-        Me.cmnuSep2.Size = New System.Drawing.Size(241, 6)
-        '
-        'OpenContainingFolderToolStripMenuItem
-        '
-        Me.OpenContainingFolderToolStripMenuItem.Image = CType(resources.GetObject("OpenContainingFolderToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.OpenContainingFolderToolStripMenuItem.Name = "OpenContainingFolderToolStripMenuItem"
-        Me.OpenContainingFolderToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(241, 6)
-        '
-        'cmuRenamer
-        '
-        Me.cmuRenamer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRenameAuto, Me.cmnuRenameManual})
-        Me.cmuRenamer.Image = CType(resources.GetObject("cmuRenamer.Image"), System.Drawing.Image)
-        Me.cmuRenamer.Name = "cmuRenamer"
-        Me.cmuRenamer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        Me.cmuRenamer.Size = New System.Drawing.Size(244, 22)
-        Me.cmuRenamer.Text = "Rename"
-        '
-        'cmnuRenameAuto
-        '
-        Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
-        Me.cmnuRenameAuto.Size = New System.Drawing.Size(114, 22)
-        Me.cmnuRenameAuto.Text = "Auto"
-        '
-        'cmnuRenameManual
-        '
-        Me.cmnuRenameManual.Name = "cmnuRenameManual"
-        Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
-        Me.cmnuRenameManual.Text = "Manual"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(241, 6)
-        '
-        'RemoveToolStripMenuItem
-        '
-        Me.RemoveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveFromDatabaseToolStripMenuItem, Me.DeleteMovieToolStripMenuItem})
-        Me.RemoveToolStripMenuItem.Image = CType(resources.GetObject("RemoveToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
-        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.RemoveToolStripMenuItem.Text = "Remove"
-        '
-        'RemoveFromDatabaseToolStripMenuItem
-        '
-        Me.RemoveFromDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RemoveFromDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RemoveFromDatabaseToolStripMenuItem.Name = "RemoveFromDatabaseToolStripMenuItem"
-        Me.RemoveFromDatabaseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.RemoveFromDatabaseToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
-        Me.RemoveFromDatabaseToolStripMenuItem.Text = "Remove from Database"
-        '
-        'DeleteMovieToolStripMenuItem
-        '
-        Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
-        Me.DeleteMovieToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
-        Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
-        '
-        'ScrapingTestToolStripMenuItem
-        '
-        Me.ScrapingTestToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
-        Me.ScrapingTestToolStripMenuItem.Name = "ScrapingTestToolStripMenuItem"
-        Me.ScrapingTestToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.ScrapingTestToolStripMenuItem.Text = "Scrape Selected Movies"
+        Me.ScrapingToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
+        Me.ScrapingToolStripMenuItem.Image = CType(resources.GetObject("ScrapingToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.ScrapingToolStripMenuItem.Name = "ScrapingToolStripMenuItem"
+        Me.ScrapingToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.ScrapingToolStripMenuItem.Text = "(Re)Scrape Selected Movies"
         '
         'ToolStripMenuItem5
         '
@@ -1176,6 +1092,82 @@ Partial Class frmMain
         Me.SelectMeEtaAskToolStripMenuItem.Name = "SelectMeEtaAskToolStripMenuItem"
         Me.SelectMeEtaAskToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SelectMeEtaAskToolStripMenuItem.Text = "Meta Data Only"
+        '
+        'cmnuSearchNew
+        '
+        Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
+        Me.cmnuSearchNew.Name = "cmnuSearchNew"
+        Me.cmnuSearchNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.cmnuSearchNew.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSearchNew.Text = "Change Movie"
+        '
+        'cmnuSep2
+        '
+        Me.cmnuSep2.Name = "cmnuSep2"
+        Me.cmnuSep2.Size = New System.Drawing.Size(241, 6)
+        '
+        'OpenContainingFolderToolStripMenuItem
+        '
+        Me.OpenContainingFolderToolStripMenuItem.Image = CType(resources.GetObject("OpenContainingFolderToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.OpenContainingFolderToolStripMenuItem.Name = "OpenContainingFolderToolStripMenuItem"
+        Me.OpenContainingFolderToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(241, 6)
+        '
+        'cmuRenamer
+        '
+        Me.cmuRenamer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRenameAuto, Me.cmnuRenameManual})
+        Me.cmuRenamer.Image = CType(resources.GetObject("cmuRenamer.Image"), System.Drawing.Image)
+        Me.cmuRenamer.Name = "cmuRenamer"
+        Me.cmuRenamer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        Me.cmuRenamer.Size = New System.Drawing.Size(244, 22)
+        Me.cmuRenamer.Text = "Rename"
+        '
+        'cmnuRenameAuto
+        '
+        Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
+        Me.cmnuRenameAuto.Size = New System.Drawing.Size(114, 22)
+        Me.cmnuRenameAuto.Text = "Auto"
+        '
+        'cmnuRenameManual
+        '
+        Me.cmnuRenameManual.Name = "cmnuRenameManual"
+        Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
+        Me.cmnuRenameManual.Text = "Manual"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(241, 6)
+        '
+        'RemoveToolStripMenuItem
+        '
+        Me.RemoveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveFromDatabaseToolStripMenuItem, Me.DeleteMovieToolStripMenuItem})
+        Me.RemoveToolStripMenuItem.Image = CType(resources.GetObject("RemoveToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
+        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveToolStripMenuItem.Text = "Remove"
+        '
+        'RemoveFromDatabaseToolStripMenuItem
+        '
+        Me.RemoveFromDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RemoveFromDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveFromDatabaseToolStripMenuItem.Name = "RemoveFromDatabaseToolStripMenuItem"
+        Me.RemoveFromDatabaseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
+        Me.RemoveFromDatabaseToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.RemoveFromDatabaseToolStripMenuItem.Text = "Remove from Database"
+        '
+        'DeleteMovieToolStripMenuItem
+        '
+        Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
+        Me.DeleteMovieToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
+        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
         '
         'scTV
         '
@@ -3665,7 +3657,6 @@ Partial Class frmMain
     Friend WithEvents mnuMediaList As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents cmnuMark As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents cmnuRescrape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSearchNew As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
@@ -3863,7 +3854,7 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuRescrapeEp As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ScrapingTestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ScrapingToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents RemoveShowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuDeleteTVShow As System.Windows.Forms.ToolStripMenuItem

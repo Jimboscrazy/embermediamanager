@@ -167,6 +167,7 @@ Public Class Enums
         Trailer = 4
         Meta = 5
         All = 6
+        DoSearch = 7
     End Enum
 
     Public Enum TVUpdateTime As Integer
@@ -272,6 +273,7 @@ Public Class Structures
         Dim Extra As Boolean
         Dim Trailer As Boolean
         Dim Meta As Boolean
+        Dim DoSearch As Boolean
     End Structure
 
     Public Structure CustomUpdaterStruct
@@ -399,6 +401,7 @@ Public Class Functions
                 .NFO = False
                 .Poster = False
                 .Trailer = False
+                .DoSearch = False
             End If
 
             Select Case MType
@@ -421,6 +424,8 @@ Public Class Functions
                     .Poster = MValue
                 Case Enums.ModType.Trailer
                     .Trailer = MValue
+                Case Enums.ModType.DoSearch
+                    .DoSearch = MValue
             End Select
 
         End With
