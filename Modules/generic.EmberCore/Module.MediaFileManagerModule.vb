@@ -31,7 +31,6 @@ Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private _Name As String = "Media File Manager"
-    Private _Version As String = "0.1"
 
     Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
     Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
@@ -93,7 +92,7 @@ Public Class FileManagerExternalModule
     End Property
     ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleVersion
         Get
-            Return _Version
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
 
