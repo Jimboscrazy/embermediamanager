@@ -88,7 +88,9 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="ApplicationEvents.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="clsXLS.vb" />
     <Compile Include="dlgChangeOptions.Designer.vb">
       <DependentUpon>dlgChangeOptions.vb</DependentUpon>

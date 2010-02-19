@@ -372,6 +372,8 @@ Public Class frmMain
         'ExternalModulesManager = New ModulesManager
         ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.mnuMediaList
         ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMediaList
+        ModulesManager.Instance.RuntimeObjects.TopMenu = Me.MenuStrip
+        ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
         ModulesManager.Instance.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
@@ -494,7 +496,7 @@ Public Class frmMain
             APIXML.CacheXMLs()
             Master.DB.Connect(False, False)
             If clExport = True Then
-                dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
+                'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
             End If
             If Not IsNothing(clScrapeType) Then
                 If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2682,13 +2684,6 @@ Public Class frmMain
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
-        Using dExportMovies As New dlgExportMovies
-            dExportMovies.ShowDialog()
-        End Using
-    End Sub
-
     Private Sub SetsManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetsManagerToolStripMenuItem.Click
         Using dSetsManager As New dlgSetsManager
             dSetsManager.ShowDialog()
@@ -4064,7 +4059,6 @@ Public Class frmMain
                 .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
                 .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .OfflineMediaManagerToolStripMenuItem.Text = Master.eLang.GetString(15, "&Offline Media Manager")
-                .ExportMoviesListToolStripMenuItem.Text = Master.eLang.GetString(16, "&Export Movies List")
                 .ClearAllCachesToolStripMenuItem.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .RefreshAllMoviesToolStripMenuItem.Text = Master.eLang.GetString(18, "Re&load All Movies")
                 .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
