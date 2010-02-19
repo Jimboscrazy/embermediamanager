@@ -30,7 +30,7 @@
   <string id="28">Add</string>
   <string id="29">Set</string>
   <string id="30">Remove</string>
-  <string id="31">Re-scrape IMDB</string>
+  <string id="31">(Re)Scrape Selected Movies</string>
   <string id="32">Change Movie</string>
   <string id="33">Open Containing Folder</string>
   <string id="34">Delete Movie</string>
