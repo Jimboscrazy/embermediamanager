@@ -299,7 +299,7 @@ Public Class frmMain
                 Dim dResult As Structures.SettingsResult = dSettings.ShowDialog
                 If Not dResult.DidCancel Then
 
-                    Me.SetUp(False)
+                    Me.SetUp(True)
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -4243,7 +4243,11 @@ Public Class frmMain
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
 
-                If doTheme Then .ApplyTheme(Theming.ThemeType.Movies)
+                If doTheme Then
+                    Me.tTheme = New Theming
+                    .ApplyTheme(Theming.ThemeType.Movies)
+                End If
+
 
             End With
         Catch ex As Exception
