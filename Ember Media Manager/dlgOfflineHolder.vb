@@ -200,71 +200,24 @@ Public Class dlgOfflineHolder
             ' *** End If
             ' *** End If
             ' *** End Using
-            Dim DBMovie As New EmberAPI.Structures.DBMovie
-            DBMovie.Movie = New EmberAPI.MediaContainers.Movie
-            DBMovie.Movie.Title = txtMovieName.Text
+            tMovie.Movie.Title = txtMovieName.Text
             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType.NFO, False)
-            If ModulesManager.Instance.ScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
-                ModulesManager.Instance.PostScrapeOnly(DBMovie, Enums.ScrapeType.FullAsk)
-                tMovie.PosterPath = DBMovie.PosterPath
-                tMovie.FanartPath = DBMovie.FanartPath
-            End If
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub MovieInfoDownloaded(ByVal bSuccess As Boolean)
-        Try
-            If bSuccess Then
-                If Master.eSettings.SingleScrapeImages Then
-                    Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Posters) Then
-                        ' *** Using dImgSelect As New dlgImgSelect
-                        ' *** Dim dResultsP As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Posters)
-                        ' *** If Not String.IsNullOrEmpty(dResultsP.ImagePath) Then
-                        ' *** tMovie.PosterPath = dResultsP.ImagePath
-                        ' *** If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Thumb = dResultsP.Posters
-                        ' *** End If
-                        ' *** End Using
-                    End If
-
-                    If tmpImages.IsAllowedToDownload(tMovie, Enums.ImageType.Fanart) Then
-                        ' *** Using dImgSelect As New dlgImgSelect
-                        ' *** Dim dResultsF As Containers.ImgResult = dImgSelect.ShowDialog(tMovie, Enums.ImageType.Fanart)
-                        ' *** If Not String.IsNullOrEmpty(dResultsF.ImagePath) Then
-                        ' *** tMovie.FanartPath = dResultsF.ImagePath
-                        ' *** If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = dResultsF.Fanart
-                        ' *** End If
-                        ' *** End Using
-                    End If
-
-                    tmpImages.Dispose()
-                    tmpImages = Nothing
+            Functions.SetScraperMod(Enums.ModType.NFO, True, False)
+            Functions.SetScraperMod(Enums.ModType.Poster, True, False)
+            Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
+            If ModulesManager.Instance.ScrapeOnly(tMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
+                Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
+                Dim fResults As New Containers.ImgResult
+                ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
+                If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                    tMovie.FanartPath = fResults.ImagePath
+                    If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
                 End If
-                ' Apply default pattern to the Folder Name
-                Dim ff As New FileFolderRenamer.FileRename
-                ff.Title = tMovie.Movie.Title
-                ff.ListTitle = tMovie.ListTitle
-                ff.Year = tMovie.Movie.Year
-                ff.FileName = ""
-                Me.txtMovieName.Text = String.Concat(FileFolderRenamer.ProccessPattern(ff, Master.eSettings.FoldersPattern), " [Offline]")
-                'Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
-            Else
-                MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
             End If
+            CheckConditions()
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Me.pbProgress.Visible = False
-        Me.GetIMDB_Button.Enabled = True
-        CheckConditions()
-    End Sub
-
-    Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
-        Me.pbProgress.Value = iPercent
-        Me.Refresh()
     End Sub
 
     Private Sub cbSources_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSources.SelectedIndexChanged

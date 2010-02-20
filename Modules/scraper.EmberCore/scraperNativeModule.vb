@@ -94,6 +94,9 @@ Public Class EmberNativeScraperModule
             End Select
             Using dSearch As New dlgIMDBSearchResults
                 If dSearch.ShowDialog(DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+                        DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
+                    End If
                     If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                         DBMovie.ClearExtras = True
                         DBMovie.PosterPath = String.Empty
