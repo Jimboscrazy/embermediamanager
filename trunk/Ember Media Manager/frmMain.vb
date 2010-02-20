@@ -382,6 +382,7 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMediaList
         ModulesManager.Instance.RuntimeObjects.TopMenu = Me.MenuStrip
         ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
+        ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
         ModulesManager.Instance.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)

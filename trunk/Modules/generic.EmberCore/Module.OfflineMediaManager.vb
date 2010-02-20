@@ -67,7 +67,7 @@ Public Class OfflineHolderModule
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                'Me.LoadMedia(New Structures.Scans With {.Movies = True})
+                emmRuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
             End If
         End Using
     End Sub

@@ -32,7 +32,7 @@ Public Class BulkRenamerModule
         If Not enabled Then
             Dim tmpBulkRenamer As New dlgBulkRenamer
             MyMenu.Image = tmpBulkRenamer.Icon.ToBitmap.Clone
-            MyMenu.Text = "Bulk Renamer"
+            MyMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
             '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
             Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
             tsi.DropDownItems.Add(MyMenu)
@@ -68,7 +68,7 @@ Public Class BulkRenamerModule
         Using dBulkRename As New dlgBulkRenamer
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    'Me.LoadMedia(New Structures.Scans With {.Movies = True})
+                    emmRuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                 End If
             Catch ex As Exception
             End Try
