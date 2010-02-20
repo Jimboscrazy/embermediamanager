@@ -5417,7 +5417,6 @@ doCancel:
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
             If ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
                 dScrapeRow.Item(6) = True
                 'Application.DoEvents()
                 If bwNewScraper.CancellationPending Then Exit For
@@ -5442,15 +5441,14 @@ doCancel:
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 bwNewScraper.ReportProgress(1)
             End If
-            RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+
         Next
+        RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
 
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
-        'Me.tspbLoading.Invalidate()
-        'Application.DoEvents()
-        'Me.FillList(scrapeRunningIdx)
+        Application.DoEvents()
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
         Me.tslLoading.Visible = False
@@ -5463,7 +5461,7 @@ doCancel:
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
         dScrapeRow.Item(col) = v
-        Application.DoEvents()
+        'Application.DoEvents()
     End Sub
 
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
