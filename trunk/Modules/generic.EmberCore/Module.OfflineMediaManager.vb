@@ -22,6 +22,7 @@ Imports EmberAPI
 Public Class OfflineHolderModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
+
     Private enabled As Boolean = False
     Private _Name As String = "Offline Media Manager"
     Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
@@ -30,11 +31,14 @@ Public Class OfflineHolderModule
     End Sub
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
+            Dim tmpOfflineHolder As New dlgOfflineHolder
+            MyMenu.Image = tmpOfflineHolder.Icon.ToBitmap.Clone
             MyMenu.Text = "Offline Media Manager"
             '= Master.eLang.GetString(15, "&Offline Media Manager")
             Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
+            tmpOfflineHolder.Dispose()
         End If
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
@@ -67,6 +71,5 @@ Public Class OfflineHolderModule
                 'Me.LoadMedia(New Structures.Scans With {.Movies = True})
             End If
         End Using
-
     End Sub
 End Class

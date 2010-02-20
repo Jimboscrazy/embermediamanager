@@ -7198,5 +7198,11 @@ doCancel:
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
+
+    Private Sub ReScrapeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReScrapeToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType.All, False)
+        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+    End Sub
 End Class
 
