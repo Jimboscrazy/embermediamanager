@@ -66,14 +66,14 @@ Public Class dlgEditMovie
 
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
         Me.CleanUp()
-
+        ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
     End Sub
 
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
         Me.CleanUp()
-
+        ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Abort
         Me.Close()
     End Sub

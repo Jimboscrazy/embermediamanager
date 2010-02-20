@@ -30,10 +30,13 @@ Public Class MovieExporterModule
     End Sub
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
+            Dim tmpExportMovies As New dlgExportMovies
+            MyMenu.Image = tmpExportMovies.Icon.ToBitmap.Clone
             MyMenu.Text = "Export Movie List"
             Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
+            tmpExportMovies.Dispose()
         End If
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
