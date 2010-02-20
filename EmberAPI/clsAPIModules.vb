@@ -47,7 +47,15 @@ Public Class ModulesManager
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         Private _MainTool As System.Windows.Forms.ToolStrip
+        Private _LoadMedia As LoadMedia
+        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
         Sub New()
+        End Sub
+        Public Sub DelegateLoadMedia(ByRef lm As LoadMedia)
+            _LoadMedia = lm
+        End Sub
+        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+            _LoadMedia.Invoke(Scan, SourceName)
         End Sub
         Public Property MainTool() As System.Windows.Forms.ToolStrip
             Get
