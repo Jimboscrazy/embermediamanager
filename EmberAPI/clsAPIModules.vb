@@ -20,9 +20,6 @@
 
 ' Nuno Reminders:
 ' TODO: Need to do "strings" on all this stuff..
-' TODO: Need to background work some of the functions
-' TODO: Need to change names of some of the buttons
-'
 '
 
 'Option Strict Off
@@ -142,13 +139,19 @@ Public Class ModulesManager
                                 'Add the activated module to the arraylist
                                 Dim _externalProcessorModule As New _externalProcessorModuleClass
                                 _externalProcessorModule.ProcessorModule = ProcessorModule
-                                _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
+                                _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
+                                Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
                                         _externalProcessorModule.Enabled = i.Enabled
+                                        found = True
                                     End If
                                 Next
+                                If Not found AndAlso Path.GetFileNameWithoutExtension(file) = "generic.EmberCore" Then
+                                    _externalProcessorModule.Enabled = True
+                                    SetModuleEnable(_externalProcessorModule.AssemblyName, True)
+                                End If
                                 externalProcessorModules.Add(_externalProcessorModule)
                                 ProcessorModule.Init(RuntimeObjects)
                                 If _externalProcessorModule.Enabled Then
@@ -191,7 +194,7 @@ Public Class ModulesManager
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
-                            _externalScraperModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
+                            _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
                             _externalScraperModule.IsScraper = ProcessorModule.IsScraper
                             _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
@@ -226,12 +229,12 @@ Public Class ModulesManager
                 c += 1
             Next
             If Not ScraperAnyEnabled Then
-                SetScraperEnable("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", True)
-                SetScraperOrder("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", 1)
+                SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
+                SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
             If Not PostScraperAnyEnabled Then
-                SetPostScraperEnable("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", True)
-                SetPostScraperOrder("scraper.EmberCore.dll.EmberScraperModule.EmberNativeScraperModule", 1)
+                SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
+                SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
         End If
     End Sub

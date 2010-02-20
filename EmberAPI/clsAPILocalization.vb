@@ -17,7 +17,8 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
+Imports System.Xml.Linq
+Imports System.IO.IsolatedStorage
 
 
 Imports System.IO
@@ -28,6 +29,7 @@ Public Class Localization
     Structure Locs
         Dim AssenblyName As String
         Dim htStrings As Hashtable
+        Dim FileName As String
     End Structure
 
     Private Shared htStrings As New Hashtable
@@ -78,11 +80,11 @@ Public Class Localization
         Me.Clear()
         Try
             If Not String.IsNullOrEmpty(Language) Then
-                Dim Assembly As String = Path.GetFileName(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 Dim lPath As String
                 htStrings = New Hashtable
                 htStrings.Clear()
-                If Assembly = "Ember Media Manager.exe" OrElse Assembly = "EmberAPI.dll" Then
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "EmberCORE"
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                 Else
@@ -98,7 +100,7 @@ Public Class Localization
                         For i As Integer = 0 To xLanguage.Count - 1
                             htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
                         Next
-                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings}
+                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath}
                         htArrayStrings.Add(_loc)
                         _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
@@ -119,16 +121,43 @@ Public Class Localization
     End Sub
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
-        Dim Assembly As String = Path.GetFileName(System.Reflection.Assembly.GetCallingAssembly().Location)
-        If Assembly = "Ember Media Manager.exe" OrElse Assembly = "EmberAPI.dll" Then
+        Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+        If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
             Assembly = "EmberCORE"
         End If
         htStrings = htArrayStrings.Where(Function(x) x.AssenblyName = Assembly)(0).htStrings
+        If htStrings Is Nothing Then Return strDefault
         If htStrings.ContainsKey(ID) Then
             Return htStrings.Item(ID).ToString
         Else
+            '*****************************************************************************************
+            ' this will add strings not found *** Dev propose only, should not go to release version
+            Try
+
+                Dim lPath As String
+                Dim Language As String = Master.eSettings.Language
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "EmberCORE" Then
+                    lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                Else
+                    lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
+                End If
+                AddNotExist(lPath, ID.ToString, strDefault)
+            Catch ex As Exception
+            End Try
+            '*****************************************************************************************
             Return strDefault
         End If
     End Function
+    Sub AddNotExist(ByVal lpath As String, ByVal id As String, ByVal value As String)
+        Dim xdoc As New XmlDocument()
+        xdoc.Load(lpath)
+        Dim elem As XmlElement = xdoc.CreateElement("string")
+        Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "id", "id", "")
+        attr.Value = id
+        elem.Attributes.SetNamedItem(attr)
+        elem.InnerText = value
+        xdoc.DocumentElement.AppendChild(elem)
+        xdoc.Save(lpath)
+    End Sub
 
 End Class

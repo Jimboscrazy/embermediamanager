@@ -771,7 +771,7 @@ Public Class Images : Implements IDisposable
 
     Public Sub GetPreferredFAasET(ByVal IMDBID As String, ByVal sPath As String)
         If Master.eSettings.UseTMDB Then
-            ' *** Dim TMDB As New TMDB.Scraper
+
             Dim tmpListTMDB As New List(Of MediaContainers.Image)
             Dim ETHashes As New List(Of String)
 

@@ -183,29 +183,13 @@ Public Class dlgOfflineHolder
 
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
-            ' *** Using dSearch As New dlgIMDBSearchResults
-            ' *** Master.tmpMovie.Clear()
-            ' *** tMovie.Movie.Clear()
-            ' *** If dSearch.ShowDialog(txtMovieName.Text) = Windows.Forms.DialogResult.OK Then
-            ' *** If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
-            ' *** Me.pbProgress.Value = 100
-            ' *** Me.pbProgress.Style = ProgressBarStyle.Marquee
-            ' *** Me.pbProgress.MarqueeAnimationSpeed = 25
-            ' *** Me.pbProgress.Visible = True
-            'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
-            ' *** Me.GetIMDB_Button.Enabled = False
-            ' *** IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions)
-            ' *** ' Note: possible place to invoke scrape modules
-            ' *** ' ScrapeMovieWithModules(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions)
-            ' *** End If
-            ' *** End If
-            ' *** End Using
             tMovie.Movie.Title = txtMovieName.Text
             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, True, False)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
             If ModulesManager.Instance.ScrapeOnly(tMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
+                Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
                 Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
                 Dim fResults As New Containers.ImgResult
                 ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
@@ -391,7 +375,7 @@ Public Class dlgOfflineHolder
         Dim stringSize As SizeF = newGraphics.MeasureString(drawString, drawFont)
         newGraphics.Dispose()
         Me.bwCreateHolder.ReportProgress(1, Master.eLang.GetString(357, "Creating Movie"))
-        'Let cycle
+        'Let's cycle
         Dim f As Integer = 1
         For c As Integer = Video_Width To Convert.ToInt32(-stringSize.Width) Step -2
             imgTemp = New Bitmap(imgFinal)
@@ -576,7 +560,7 @@ Public Class dlgOfflineHolder
         Dim grPreview As Graphics = Graphics.FromImage(pbPreview.Image)
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
         Dim backgroundBrush As New SolidBrush(Color.FromArgb(180, btnBackgroundColor.BackColor.R, btnBackgroundColor.BackColor.G, btnBackgroundColor.BackColor.B))
-        'End If
+
         Dim iLeft As Integer = Convert.ToInt32((bmCloneOriginal.Width - textHeight.Width) / 2)
         If chkBackground.Checked AndAlso chkUseFanart.Checked Then
             grOriginal.FillRectangle(backgroundBrush, 0, txtTopPos - 5, bmCloneOriginal.Width, textHeight.Height + 10)
@@ -611,8 +595,6 @@ Public Class dlgOfflineHolder
             Me.CheckConditions()
         Else
             e.Handled = False
-            'Me.tmrTopWait.Enabled = False
-            'Me.tmrTopWait.Enabled = True
         End If
     End Sub
 
@@ -637,7 +619,6 @@ Public Class dlgOfflineHolder
 
     Private Sub chkBackground_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBackground.CheckedChanged
         Me.CreatePreview()
-        'CheckConditions()
     End Sub
 
     Private Sub chkOverlay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverlay.CheckedChanged
@@ -645,7 +626,6 @@ Public Class dlgOfflineHolder
             Overlay.FromFile(OverlayPath)
         End If
         Me.CreatePreview()
-        'CheckConditions()
     End Sub
 
     Private Sub cbFormat_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFormat.SelectedIndexChanged
@@ -661,20 +641,15 @@ Public Class dlgOfflineHolder
                 Video_Height = 576
         End Select
         SetPreview(Not chkUseFanart.Checked, String.Empty)
-        'tbTagLine.Maximum = Preview.Height - textHeight.Height
         If Not chkUseFanart.Checked AndAlso Not IsNothing(Preview) Then
             txtTop.Text = Convert.ToUInt16((Preview.Height - 150 / (1280 / Video_Width))).ToString
-            'txtTopPos = Convert.ToUInt16(txtTop.Text)
         End If
-        'tbTagLine.Value = tbTagLine.Maximum - txtTop.Text
         CreatePreview()
-        'Me.CheckConditions()
     End Sub
 
     Private Sub txtTop_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTop.TextChanged
         Try
             txtTopPos = Convert.ToUInt16(txtTop.Text)
-            '            tbTagLine.Value = tbTagLine.Maximum - txtTop.Text
             CreatePreview()
         Catch ex As Exception
         End Try

@@ -5446,6 +5446,8 @@ doCancel:
                 'Else
                 'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 'End If
+                dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
+                dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 bwNewScraper.ReportProgress(1)
             End If

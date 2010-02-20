@@ -259,10 +259,6 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
-        ' need event for this or better move it out of here
-        'Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
-        'Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
-
         Return True
     End Function
     Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
