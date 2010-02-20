@@ -14,6 +14,7 @@
         Sub SetupPostScraper()
         Sub SetupTVScraper()
         Sub SetupTVPostScraper()
+        Sub Init()
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
         Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean

@@ -91,6 +91,7 @@ Public Class ModulesManager
         Public ScraperEnabled As Boolean
         Public PostScraperEnabled As Boolean
         Public AssemblyName As String
+        Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
     End Class
@@ -98,12 +99,14 @@ Public Class ModulesManager
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
+        Public AssemblyFileName As String
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Interfaces.EmberScraperModule 'Object
         Public ScraperEnabled As Boolean
         Public PostScraperEnabled As Boolean
         Public AssemblyName As String
+        Public AssemblyFileName As String
         Public IsScraper As Boolean
         Public IsPostScraper As Boolean
         Public ScraperOrder As Integer
@@ -140,6 +143,7 @@ Public Class ModulesManager
                                 Dim _externalProcessorModule As New _externalProcessorModuleClass
                                 _externalProcessorModule.ProcessorModule = ProcessorModule
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
+                                _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
                                         _externalProcessorModule.Enabled = i.Enabled
@@ -176,8 +180,9 @@ Public Class ModulesManager
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
-                For Each fileType As Type In assembly.GetTypes
-                    Try
+                Try
+                    For Each fileType As Type In assembly.GetTypes
+
                         'Activate the located module
                         Dim t As Type = fileType.GetInterface("EmberScraperModule")
                         If Not t Is Nothing Then
@@ -187,6 +192,7 @@ Public Class ModulesManager
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
                             _externalScraperModule.AssemblyName = String.Concat(Path.GetFileName(file), ".", fileType.FullName)
+                            _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
                             _externalScraperModule.IsScraper = ProcessorModule.IsScraper
                             _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
                             Dim found As Boolean = False
@@ -204,10 +210,11 @@ Public Class ModulesManager
                                 _externalScraperModule.PostScraperOrder = 999
                             End If
                             externalScrapersModules.Add(_externalScraperModule)
+                            _externalScraperModule.ProcessorModule.Init()
                         End If
-                    Catch ex As Exception
-                    End Try
-                Next
+                    Next
+                Catch ex As Exception
+                End Try
             Next
             Dim c As Integer = 0
             For Each ext As _externalScraperModuleClass In externalScrapersModules.Where(Function(x) x.ScraperEnabled)
@@ -396,12 +403,14 @@ Public Class ModulesManager
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalProcessorModule.AssemblyName
+            t.AssemblyFileName = _externalProcessorModule.AssemblyFileName
             t.Enabled = _externalProcessorModule.Enabled
             tmpForXML.Add(t)
         Next
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalScraperModule.AssemblyName
+            t.AssemblyFileName = _externalScraperModule.AssemblyFileName
             t.PostScraperEnabled = _externalScraperModule.PostScraperEnabled
             t.ScraperEnabled = _externalScraperModule.ScraperEnabled
             t.PostScraperOrder = _externalScraperModule.PostScraperOrder

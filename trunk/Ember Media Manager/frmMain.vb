@@ -358,7 +358,15 @@ Public Class frmMain
             FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
         End If
-
+        'Create Modules Folders
+        sPath = String.Concat(Functions.AppPath, "Modules")
+        If Not Directory.Exists(sPath) Then
+            Directory.CreateDirectory(sPath)
+        End If
+        sPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs")
+        If Not Directory.Exists(sPath) Then
+            Directory.CreateDirectory(sPath)
+        End If
         Master.eSettings.Load()
         Master.eLang.LoadLanguage(Master.eSettings.Language)
         Functions.CreateDefaultOptions()
@@ -592,7 +600,7 @@ Public Class frmMain
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
-
+                ' Checks for new Ember Version
                 If Master.eSettings.CheckUpdates Then
                     Dim tmpNew As Integer = Functions.CheckUpdate
                     If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
