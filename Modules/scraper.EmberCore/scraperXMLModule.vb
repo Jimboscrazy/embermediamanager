@@ -21,7 +21,9 @@ Imports System.IO
 Imports EmberAPI
 Public Class EmberXMLScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
+    Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
 
+    End Sub
     Public ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
         Get
             Return False

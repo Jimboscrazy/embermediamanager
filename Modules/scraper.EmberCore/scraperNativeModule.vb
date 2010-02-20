@@ -9,7 +9,9 @@ Public Class EmberNativeScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
-
+    Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
+        Master.eLang.LoadLanguage(Master.eSettings.Language)
+    End Sub
     ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleName
         Get
             Return _Name

@@ -507,7 +507,6 @@ Public Class Functions
                 Next
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return False
     End Function

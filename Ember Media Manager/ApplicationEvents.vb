@@ -37,6 +37,9 @@ Namespace My
                 Functions.TestMediaInfoDLL()
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                MsgBox(String.Concat("Ember Media Manager requires .NET Framework version 3.5 or higher.", vbNewLine, vbNewLine, _
+                    "Please install .NET Framework version 3.5 or higher before attempting to use Ember."), MsgBoxStyle.Critical, "Unsupported .NET Version")
+                End
             End Try
         End Sub
 

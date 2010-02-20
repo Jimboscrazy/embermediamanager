@@ -921,7 +921,6 @@ Public Class Images : Implements IDisposable
     End Sub
 
     Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
-
         Try
             Select Case fType
                 Case Enums.ImageType.Fanart

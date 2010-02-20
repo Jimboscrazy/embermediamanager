@@ -25,8 +25,13 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Public Class Localization
-    Private Shared htStrings As New Hashtable
+    Structure Locs
+        Dim AssenblyName As String
+        Dim htStrings As Hashtable
+    End Structure
 
+    Private Shared htStrings As New Hashtable
+    Private Shared htArrayStrings As New List(Of Locs)
     Private _all As String
     Private _none As String
     Private _disabled As String
@@ -69,12 +74,23 @@ Public Class Localization
     End Sub
 
     Public Sub LoadLanguage(ByVal Language As String)
-        htStrings.Clear()
         Dim _old_all As String = _all
         Me.Clear()
         Try
             If Not String.IsNullOrEmpty(Language) Then
-                Dim lPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
+                Dim Assembly As String = Path.GetFileName(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Dim lPath As String
+                htStrings = New Hashtable
+                htStrings.Clear()
+                If Assembly = "Ember Media Manager.exe" OrElse Assembly = "EmberAPI.dll" Then
+                    Assembly = "EmberCORE"
+                    lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                Else
+                    lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
+                    If Not File.Exists(lPath) Then 'Fallback, maybe not good idea, but needed for now
+                        lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                    End If
+                End If
                 If File.Exists(lPath) Then
                     Dim LangXML As XDocument = XDocument.Load(lPath)
                     Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
@@ -82,7 +98,8 @@ Public Class Localization
                         For i As Integer = 0 To xLanguage.Count - 1
                             htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
                         Next
-
+                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings}
+                        htArrayStrings.Add(_loc)
                         _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
@@ -102,6 +119,11 @@ Public Class Localization
     End Sub
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
+        Dim Assembly As String = Path.GetFileName(System.Reflection.Assembly.GetCallingAssembly().Location)
+        If Assembly = "Ember Media Manager.exe" OrElse Assembly = "EmberAPI.dll" Then
+            Assembly = "EmberCORE"
+        End If
+        htStrings = htArrayStrings.Where(Function(x) x.AssenblyName = Assembly)(0).htStrings
         If htStrings.ContainsKey(ID) Then
             Return htStrings.Item(ID).ToString
         Else
