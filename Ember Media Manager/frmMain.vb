@@ -2776,15 +2776,6 @@ Public Class frmMain
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
-        Using dOfflineHolder As New dlgOfflineHolder
-            If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Me.LoadMedia(New Structures.Scans With {.Movies = True})
-            End If
-        End Using
-    End Sub
-
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.NewScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
@@ -4066,7 +4057,6 @@ Public Class frmMain
                 .CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
                 .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
                 .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
-                .OfflineMediaManagerToolStripMenuItem.Text = Master.eLang.GetString(15, "&Offline Media Manager")
                 .ClearAllCachesToolStripMenuItem.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .RefreshAllMoviesToolStripMenuItem.Text = Master.eLang.GetString(18, "Re&load All Movies")
                 .lblGFilClose.Text = Master.eLang.GetString(19, "Close")

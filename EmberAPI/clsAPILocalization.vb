@@ -85,7 +85,7 @@ Public Class Localization
                 htStrings = New Hashtable
                 htStrings.Clear()
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                    Assembly = "EmberCORE"
+                    Assembly = "*EmberCORE"
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                 Else
                     lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
@@ -123,7 +123,7 @@ Public Class Localization
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
         If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-            Assembly = "EmberCORE"
+            Assembly = "*EmberCORE"
         End If
         htStrings = htArrayStrings.Where(Function(x) x.AssenblyName = Assembly)(0).htStrings
         If htStrings Is Nothing Then Return strDefault
@@ -136,7 +136,7 @@ Public Class Localization
 
                 Dim lPath As String
                 Dim Language As String = Master.eSettings.Language
-                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "EmberCORE" Then
+                If Assembly = "*EmberCORE" Then
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                 Else
                     lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")

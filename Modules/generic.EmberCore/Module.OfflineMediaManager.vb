@@ -19,18 +19,19 @@
 ' ################################################################################
 Imports EmberAPI
 
-Public Class MovieExporterModule
+Public Class OfflineHolderModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private enabled As Boolean = False
-    Private _Name As String = "Movie List Exporter"
+    Private _Name As String = "Offline Media Manager"
     Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
         'Dim _setup As New frmSetup
         '_setup.ShowDialog()
     End Sub
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
-            MyMenu.Text = "Export Movie List"
+            MyMenu.Text = "Offline Media Manager"
+            '= Master.eLang.GetString(15, "&Offline Media Manager")
             Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
@@ -61,8 +62,11 @@ Public Class MovieExporterModule
     'Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Dim WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
-        Using dExportMovies As New dlgExportMovies
-            dExportMovies.ShowDialog()
+        Using dOfflineHolder As New dlgOfflineHolder
+            If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                'Me.LoadMedia(New Structures.Scans With {.Movies = True})
+            End If
         End Using
+
     End Sub
 End Class
