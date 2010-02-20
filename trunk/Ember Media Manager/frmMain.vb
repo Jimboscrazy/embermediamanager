@@ -2099,7 +2099,6 @@ Public Class frmMain
 
                         Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditMovie.Visible = False
-                        Me.ScrapingToolStripMenuItem.Visible = False
                         Me.cmnuSearchNew.Visible = False
                         Me.cmuRenamer.Visible = False
                         Me.cmnuMetaData.Visible = False
@@ -2856,18 +2855,6 @@ Public Class frmMain
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
-
-    Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
-        Using dBulkRename As New dlgBulkRenamer
-            Try
-                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Me.LoadMedia(New Structures.Scans With {.Movies = True})
-                End If
-            Catch ex As Exception
-            End Try
-        End Using
-    End Sub
-
     Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
         Try
             Me.dgvMediaList.Cursor = Cursors.WaitCursor
@@ -4055,7 +4042,6 @@ Public Class frmMain
                 .CleanFoldersToolStripMenuItem.Text = Master.eLang.GetString(9, "&Clean Files")
                 .ConvertFileSourceToFolderSourceToolStripMenuItem.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
-                .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
                 .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .ClearAllCachesToolStripMenuItem.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .RefreshAllMoviesToolStripMenuItem.Text = Master.eLang.GetString(18, "Re&load All Movies")
@@ -7203,6 +7189,11 @@ doCancel:
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, False)
         Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 End Class
 

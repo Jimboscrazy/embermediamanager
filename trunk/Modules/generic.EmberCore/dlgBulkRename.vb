@@ -27,7 +27,7 @@ Public Class dlgBulkRenamer
     Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
     Private bsMovies As New BindingSource
     Private isLoaded As Boolean = False
-    Private FFRenamer As New FileFolderRenamer
+    Private FFRenamer As FileFolderRenamer
     Private DoneRename As Boolean = False
     Private CancelRename As Boolean = False
     Private run_once As Boolean = True
@@ -372,7 +372,7 @@ Public Class dlgBulkRenamer
         Me.SetUp()
 
         Dim frmToolTip As New ToolTip()
-
+        FFRenamer = New FileFolderRenamer
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
             g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)

@@ -19,25 +19,25 @@
 ' ################################################################################
 Imports EmberAPI
 
-Public Class OfflineHolderModule
+Public Class BulkRenamerModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
-
     Private enabled As Boolean = False
-    Private _Name As String = "Offline Media Manager"
+    Private _Name As String = "Bulk Renamer"
     Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
         'Dim _setup As New frmSetup
         '_setup.ShowDialog()
     End Sub
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
-            Dim tmpOfflineHolder As New dlgOfflineHolder
-            MyMenu.Image = tmpOfflineHolder.Icon.ToBitmap.Clone
-            MyMenu.Text = "Offline Media Manager"
+            Dim tmpBulkRenamer As New dlgBulkRenamer
+            MyMenu.Image = tmpBulkRenamer.Icon.ToBitmap.Clone
+            MyMenu.Text = "Bulk Renamer"
+            '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
             Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
-            tmpOfflineHolder.Dispose()
+            tmpBulkRenamer.Dispose()
         End If
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
@@ -65,10 +65,13 @@ Public Class OfflineHolderModule
     'Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Dim WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
-        Using dOfflineHolder As New dlgOfflineHolder
-            If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                'Me.LoadMedia(New Structures.Scans With {.Movies = True})
-            End If
+        Using dBulkRename As New dlgBulkRenamer
+            Try
+                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    'Me.LoadMedia(New Structures.Scans With {.Movies = True})
+                End If
+            Catch ex As Exception
+            End Try
         End Using
     End Sub
 End Class
