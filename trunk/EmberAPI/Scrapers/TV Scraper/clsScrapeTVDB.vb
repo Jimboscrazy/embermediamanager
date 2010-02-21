@@ -783,9 +783,10 @@ Namespace TVDB
                     If Not IsNothing(tmpTVDBShow.Show.TVShow) Then
                         If Not String.IsNullOrEmpty(bXML) Then
                             Dim xdImage As XDocument = XDocument.Parse(bXML)
-                            Dim xI = From xImage In xdImage.Descendants("Banner")
-                            For Each tImage As XElement In xI
-                                If Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value) Then
+                            For Each tImage As XElement In xdImage.Descendants("Banner")
+                                If (Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value)) AndAlso _
+                                   (Not Master.eSettings.OnlyGetTVImagesForSelectedLanguage OrElse ((Not IsNothing(tImage.Element("Language")) AndAlso tImage.Element("Language").Value = Master.eSettings.TVDBLanguage) OrElse _
+                                   ((IsNothing(tImage.Element("Language")) OrElse tImage.Element("Language").Value = "en") AndAlso Master.eSettings.AlwaysGetEnglishTVImages))) Then
                                     Select Case tImage.Element("BannerType").Value
                                         Case "fanart"
                                             tmpTVDBShow.Fanart.Add(New TVDBFanart With { _

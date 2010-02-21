@@ -2241,6 +2241,18 @@ Public Class dlgSettings
         Me.btnEpFilterDown.Enabled = Not Me.chkNoFilterEpisode.Checked
         Me.btnRemoveEpFilter.Enabled = Not Me.chkNoFilterEpisode.Checked
     End Sub
+
+    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
+
+        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
+    End Sub
+
+    Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2624,6 +2636,8 @@ Public Class dlgSettings
             Master.eSettings.TVScanOrderModify = Me.chkTVScanOrderModify.Checked
             Master.eSettings.TVUpdateTime = DirectCast(Me.cboTVUpdate.SelectedIndex, Enums.TVUpdateTime)
             Master.eSettings.NoFilterEpisode = Me.chkNoFilterEpisode.Checked
+            Master.eSettings.OnlyGetTVImagesForSelectedLanguage = Me.chkOnlyTVImagesLanguage.Checked
+            Master.eSettings.AlwaysGetEnglishTVImages = Me.chkGetEnglishImages.Checked
 
             Master.eSettings.Save()
 
@@ -2963,6 +2977,8 @@ Public Class dlgSettings
             Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
             Me.cboTVUpdate.SelectedIndex = Master.eSettings.TVUpdateTime
             Me.chkNoFilterEpisode.Checked = Master.eSettings.NoFilterEpisode
+            Me.chkOnlyTVImagesLanguage.Checked = Master.eSettings.OnlyGetTVImagesForSelectedLanguage
+            Me.chkGetEnglishImages.Checked = Master.eSettings.AlwaysGetEnglishTVImages
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3690,5 +3706,6 @@ Public Class dlgSettings
         Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class
