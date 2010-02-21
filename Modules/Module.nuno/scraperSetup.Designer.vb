@@ -25,8 +25,14 @@ Partial Class scraperSetup
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.cLanguage = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.tOutline = New System.Windows.Forms.CheckBox
+        Me.tPlot = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.TableLayoutPanel1.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -37,7 +43,7 @@ Partial Class scraperSetup
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(277, 133)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(247, 167)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -63,15 +69,67 @@ Partial Class scraperSetup
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
-        'ComboBox1
+        'cLanguage
         '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(123, 42)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(198, 21)
-        Me.ComboBox1.Sorted = True
-        Me.ComboBox1.TabIndex = 1
+        Me.cLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cLanguage.FormattingEnabled = True
+        Me.cLanguage.Location = New System.Drawing.Point(137, 19)
+        Me.cLanguage.Name = "cLanguage"
+        Me.cLanguage.Size = New System.Drawing.Size(146, 21)
+        Me.cLanguage.Sorted = True
+        Me.cLanguage.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(68, 22)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(63, 13)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Translate to"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(297, 23)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(84, 12)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "(Using Google API)"
+        '
+        'tOutline
+        '
+        Me.tOutline.AutoSize = True
+        Me.tOutline.Location = New System.Drawing.Point(3, 12)
+        Me.tOutline.Name = "tOutline"
+        Me.tOutline.Size = New System.Drawing.Size(59, 17)
+        Me.tOutline.TabIndex = 4
+        Me.tOutline.Text = "Outline"
+        Me.tOutline.UseVisualStyleBackColor = True
+        '
+        'tPlot
+        '
+        Me.tPlot.AutoSize = True
+        Me.tPlot.Location = New System.Drawing.Point(3, 32)
+        Me.tPlot.Name = "tPlot"
+        Me.tPlot.Size = New System.Drawing.Size(44, 17)
+        Me.tPlot.TabIndex = 5
+        Me.tPlot.Text = "Plot"
+        Me.tPlot.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.cLanguage)
+        Me.GroupBox1.Controls.Add(Me.tPlot)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.tOutline)
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Location = New System.Drawing.Point(5, 2)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(396, 54)
+        Me.GroupBox1.TabIndex = 6
+        Me.GroupBox1.TabStop = False
         '
         'scraperSetup
         '
@@ -79,8 +137,8 @@ Partial Class scraperSetup
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 174)
-        Me.Controls.Add(Me.ComboBox1)
+        Me.ClientSize = New System.Drawing.Size(405, 208)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -88,14 +146,21 @@ Partial Class scraperSetup
         Me.Name = "scraperSetup"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "scraperSetup"
+        Me.Text = "Setup"
         Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents cLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents tPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
 
 End Class

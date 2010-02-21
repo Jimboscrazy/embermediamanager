@@ -1,5 +1,14 @@
-﻿Public Class NunoScraperModule
+﻿Imports System.IO
+Imports System.Xml.Serialization
+Imports System.Net
+Imports System.Web
+
+
+Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
+
+    Private MyPath As String
+    Private codLang As String
     Public Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.DownloadTrailer
         Return False
     End Function
@@ -7,15 +16,18 @@
         Return False
     End Function
     Public Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
+        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        MyPath = Path.Combine(Functions.AppPath, "Modules")
+        Load()
     End Sub
     Public ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
         Get
-            Return True
+            Return False
         End Get
     End Property
     Public ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
-            Return False
+            Return True
         End Get
     End Property
     Public ReadOnly Property IsTVScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsTVScraper
@@ -30,7 +42,7 @@
     End Property
     Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberScraperModule.ModuleVersion
         Get
-            Return "1"
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
     Public Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
@@ -38,6 +50,9 @@
         Return True
     End Function
     Public Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As EmberAPI.Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+        codLang = Localization.ISOLangGetCodeByLang(eMySettings.Language)
+        DBMovie.Movie.Outline = Translate(codLang, DBMovie.Movie.Outline)
+        DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
         Return True
     End Function
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
@@ -45,11 +60,15 @@
         Return False
     End Function
     Public Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupPostScraper
-        Using frmSetup As New scraperSetup
-            frmSetup.ShowDialog()
-        End Using
     End Sub
     Public Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
+        Using frmSetup As New scraperSetup
+            frmSetup.preferedLanguage = eMySettings.Language
+            If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                eMySettings.Language = frmSetup.cLanguage.Text
+                Save()
+            End If
+        End Using
     End Sub
     Public Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
     End Sub
@@ -61,6 +80,84 @@
     Public Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As EmberAPI.Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
         Return True
     End Function
+    Private eMySettings As New MySettings
+    Public Sub Save()
+        Try
+            Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+            Dim xmlWriter As New StreamWriter(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".Settings.xml")))
+            xmlSerial.Serialize(xmlWriter, eMySettings)
+            xmlWriter.Close()
+        Catch ex As Exception
+            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub Load()
+        Try
+            Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+            If File.Exists(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".Settings.xml"))) Then
+                Dim strmReader As New StreamReader(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".Settings.xml")))
+                eMySettings = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
+                strmReader.Close()
+            Else
+                eMySettings = New MySettings
+            End If
+        Catch ex As Exception
+            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            eMySettings = New MySettings
+        End Try
+    End Sub
+
+    Class MySettings
+        Private _Language As String
+        Public Property Language() As String
+            Get
+                Return _Language
+            End Get
+            Set(ByVal value As String)
+                _Language = value
+            End Set
+        End Property
+
+    End Class
+
+
+    Public Shared Function Translate(ByVal codLang As String, ByVal txt As String)
+        Dim ret As String = ""
+        Try
+            txt = Web.HttpUtility.UrlEncode(txt)
+            'txt = txt.Replace(" ", "%20")
+            Dim url As String = String.Concat("http://ajax.googleapis.com/ajax/services/language/translate?langpair=%7C", codLang, "&v=1.0&q=", txt)
+            Dim wrRequest As WebRequest = HttpWebRequest.Create(url)
+            Dim sResponse As String = String.Empty
+            wrRequest.Method = WebRequestMethods.Http.Get
+            wrRequest.Timeout = 10000
+            Dim wrResponse As WebResponse = wrRequest.GetResponse()
+            Dim contentEncoding As String = String.Empty
+            'wrResponse = wrRequest.GetResponse()
+            Using Ms As Stream = wrResponse.GetResponseStream
+                sResponse = New StreamReader(Ms).ReadToEnd '.Replace("""", "")
+                'sResponse = sResponse.Replace(" ", "")
+            End Using
+            wrResponse.Close()
+            Dim t As String()
+            t = sResponse.Split(New Char() {"{", "}"})
+            If t.Count >= 2 Then
+                t = t(2).Split(":")
+                If t.Count >= 2 Then
+                    If t(0).Replace("""", "") = "translatedText" Then
+                        ret = t(1).Replace(",""detectedSourceLanguage""", "")
+                        If ret.Length > 2 Then ret = ret.Substring(1, ret.Length - 2)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+
+        Return ret
+    End Function
+
+
 End Class
 
 

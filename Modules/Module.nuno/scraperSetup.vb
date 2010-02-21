@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 
 Public Class scraperSetup
-
+    Public preferedLanguage As String = String.Empty
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -13,7 +13,7 @@ Public Class scraperSetup
     End Sub
 
     Private Sub scraperSetup_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        ComboBox1.Items.AddRange(EmberAPI.Localization.ISOLangGetLanguages.ToArray)
-        If ComboBox1.Items.Count > 0 Then ComboBox1.SelectedIndex = ComboBox1.FindString("English")
+        cLanguage.Items.AddRange(EmberAPI.Localization.ISOLangGetLanguages.ToArray)
+        If cLanguage.Items.Count > 0 Then cLanguage.SelectedIndex = cLanguage.FindString(preferedLanguage)
     End Sub
 End Class
