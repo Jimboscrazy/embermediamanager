@@ -1012,7 +1012,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property TVDBSpecified() As Boolean
+        Public ReadOnly Property IDSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._id)
             End Get

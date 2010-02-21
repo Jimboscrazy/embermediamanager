@@ -568,6 +568,10 @@ Namespace TVDB
             Return sObject.ChangeEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID})
         End Function
 
+        Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer) As MediaContainers.EpisodeDetails
+            Return sObject.GetSingleEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode})
+        End Function
+
         Public Sub Cancel()
             sObject.CancelAsync()
         End Sub
@@ -1056,6 +1060,16 @@ Namespace TVDB
                 End Try
 
                 Return Nothing
+            End Function
+
+            Public Function GetSingleEpisode(ByVal sInfo As ScrapeInfo) As MediaContainers.EpisodeDetails
+                Try
+                    Return Me.GetListOfKnownEpisodes(sInfo).SingleOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                Catch ex As Exception
+                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+
+                Return New MediaContainers.EpisodeDetails
             End Function
 
             Public Function GetListOfKnownEpisodes(ByVal sInfo As ScrapeInfo) As List(Of MediaContainers.EpisodeDetails)

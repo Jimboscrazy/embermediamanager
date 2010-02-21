@@ -28,6 +28,7 @@
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: Automatic scrapers
 'TODO: Handle missing episodes
+'TODO: Handle non-conforming nfos
 'TODO: ?????
 'TODO: PROFIT!!!!
 

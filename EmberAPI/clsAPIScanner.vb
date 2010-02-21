@@ -1403,6 +1403,7 @@ Public Class Scanner
 
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
+        Dim toNfo As Boolean = False
         Try
             If TVContainer.Episodes.Count > 0 Then
                 If Not htTVShows.ContainsKey(TVContainer.ShowPath.ToLower) Then
@@ -1455,13 +1456,36 @@ Public Class Scanner
                             For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
                                 For Each i As Integer In sSeasons.Episodes
 
+                                    toNfo = False
+
                                     tmpTVDB.Filename = Episode.Filename
 
                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
                                         tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
                                     Else
-                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, sSeasons.Season, i)
-                                    End If
+                                        If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
+                                            tmpTVDB.TVEp = Master.TVScraper.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i)
+                                            toNfo = True
+
+                                            If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
+                                                If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
+                                                    tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
+                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                        tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsEpPoster(tmpTVDB)
+                                                    End If
+                                                ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
+                                                    tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
+                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                        Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
+                                                        tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
+                                                        tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsEpPoster(tmpTVDB)
+                                                    End If
+                                                End If
+                                            End If
+                                        Else
+                                            tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, sSeasons.Season, i)
+                                        End If
+                                        End If
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
@@ -1481,7 +1505,7 @@ Public Class Scanner
                                     If String.IsNullOrEmpty(tmpTVDB.SeasonPosterPath) OrElse String.IsNullOrEmpty(tmpTVDB.SeasonFanartPath) Then Me.GetSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
 
                                     'Do the Save
-                                    Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True)
+                                    Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
 
                                     Me.bwPrelim.ReportProgress(1, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
                                 Next
