@@ -2721,25 +2721,25 @@ Public Class Settings
         Me._fanartprefsizeonly = False
         Me._posterQuality = 0
         Me._fanartQuality = 0
-        Me._overwritePoster = False
-        Me._overwriteFanart = False
+        Me._overwritePoster = True
+        Me._overwriteFanart = True
         Me._showposterQuality = 0
         Me._showfanartQuality = 0
-        Me._overwriteShowPoster = False
-        Me._overwriteShowFanart = False
+        Me._overwriteShowPoster = True
+        Me._overwriteShowFanart = True
         Me._epposterQuality = 0
         Me._epfanartQuality = 0
-        Me._overwriteEpPoster = False
-        Me._overwriteEpFanart = False
+        Me._overwriteEpPoster = True
+        Me._overwriteEpFanart = True
         Me._seasonposterQuality = 0
         Me._seasonfanartQuality = 0
-        Me._overwriteSeasonPoster = False
-        Me._overwriteSeasonFanart = False
+        Me._overwriteSeasonPoster = True
+        Me._overwriteSeasonFanart = True
         Me._logerrors = True
         Me._properCase = True
         Me._showproperCase = True
         Me._epproperCase = True
-        Me._overwritenfo = False
+        Me._overwritenfo = True
         Me._validexts.Clear()
         Me._nostackexts.Clear()
         Me._movietbn = True
