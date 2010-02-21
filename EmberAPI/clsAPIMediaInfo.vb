@@ -772,6 +772,7 @@ Public Class MediaInfo
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
         Private _subs_type As String = String.Empty
+        Private _subs_path As String = String.Empty
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -815,7 +816,15 @@ Public Class MediaInfo
                 _subs_type = value
             End Set
         End Property
-
+        <XmlIgnore()> _
+        Public Property SubsPath() As String
+            Get
+                Return _subs_path
+            End Get
+            Set(ByVal value As String)
+                _subs_path = value
+            End Set
+        End Property
     End Class
 
     Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
