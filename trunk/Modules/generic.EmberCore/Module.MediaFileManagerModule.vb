@@ -172,7 +172,7 @@ Public Class FileManagerExternalModule
     Public Sub Load()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            If File.Exists(Path.Combine(MyPath, "FileManager.xml")) Then
+            If File.Exists(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml"))) Then
                 Dim strmReader As New StreamReader(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml")))
                 eSettings = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
                 strmReader.Close()
