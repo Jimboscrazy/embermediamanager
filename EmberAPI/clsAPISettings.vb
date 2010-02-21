@@ -245,7 +245,8 @@ Public Class Settings
     Private _tvcleandb As Boolean
     Private _tvignorelastscan As Boolean
     Private _tvshowregexes As New List(Of TVShowRegEx)
-    Private _showseasonall As Boolean
+    Private _seasonalltbn As Boolean
+    Private _seasonalljpg As Boolean
     Private _showfolderjpg As Boolean
     Private _showpostertbn As Boolean
     Private _showposterjpg As Boolean
@@ -2280,12 +2281,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ShowSeasonAll() As Boolean
+    Public Property SeasonAllTBN() As Boolean
         Get
-            Return Me._showseasonall
+            Return Me._seasonalltbn
         End Get
         Set(ByVal value As Boolean)
-            Me._showseasonall = value
+            Me._seasonalltbn = value
+        End Set
+    End Property
+
+    Public Property SeasonAllJPG() As Boolean
+        Get
+            Return Me._seasonalljpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._seasonalljpg = value
         End Set
     End Property
 
@@ -2913,8 +2923,9 @@ Public Class Settings
         Me._tvcleandb = True
         Me._tvignorelastscan = True
         Me._tvshowregexes = New List(Of TVShowRegEx)
-        Me._showseasonall = True
-        Me._showfolderjpg = False
+        Me._seasonalltbn = True
+        Me._seasonalljpg = False
+        Me._showfolderjpg = True
         Me._showpostertbn = False
         Me._showposterjpg = False
         Me._showfanartjpg = True
@@ -3280,4 +3291,7 @@ Public Class Settings
         Return Me._episodedashfanart OrElse Me._episodedotfanart
     End Function
 
+    Public Function AllSeasonPosterEnabled() As Boolean
+        Return Me._seasonalltbn OrElse Me._seasonalljpg
+    End Function
 End Class

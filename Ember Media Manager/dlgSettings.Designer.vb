@@ -328,7 +328,7 @@ Partial Class dlgSettings
         Me.chkShowPosterJPG = New System.Windows.Forms.CheckBox
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
-        Me.chkShowSeasonAll = New System.Windows.Forms.CheckBox
+        Me.chkSeasonAllTBN = New System.Windows.Forms.CheckBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.gbShowRegex = New System.Windows.Forms.GroupBox
         Me.lblSeasonMatch = New System.Windows.Forms.Label
@@ -383,6 +383,9 @@ Partial Class dlgSettings
         Me.lstShowFilters = New System.Windows.Forms.ListBox
         Me.pnlTVImages = New System.Windows.Forms.Panel
         Me.TabControl3 = New System.Windows.Forms.TabControl
+        Me.TabPage8 = New System.Windows.Forms.TabPage
+        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox
+        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.gbShowPosterOpts = New System.Windows.Forms.GroupBox
         Me.txtShowPosterWidth = New System.Windows.Forms.TextBox
@@ -579,9 +582,8 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.TabPage8 = New System.Windows.Forms.TabPage
-        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox
+        Me.gbAllSeasonPoster = New System.Windows.Forms.GroupBox
+        Me.chkSeasonAllJPG = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -648,6 +650,7 @@ Partial Class dlgSettings
         Me.gbShowFilter.SuspendLayout()
         Me.pnlTVImages.SuspendLayout()
         Me.TabControl3.SuspendLayout()
+        Me.TabPage8.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.gbShowPosterOpts.SuspendLayout()
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -682,7 +685,7 @@ Partial Class dlgSettings
         Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage8.SuspendLayout()
+        Me.gbAllSeasonPoster.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -3688,6 +3691,7 @@ Partial Class dlgSettings
         '
         'gbTVNaming
         '
+        Me.gbTVNaming.Controls.Add(Me.gbAllSeasonPoster)
         Me.gbTVNaming.Controls.Add(Me.lblInsideSeason)
         Me.gbTVNaming.Controls.Add(Me.gbEpisodeFanart)
         Me.gbTVNaming.Controls.Add(Me.gbEpisodePosters)
@@ -3927,7 +3931,7 @@ Partial Class dlgSettings
         Me.gbShowFanart.Controls.Add(Me.chkShowDashFanart)
         Me.gbShowFanart.Controls.Add(Me.chkShowFanartJPG)
         Me.gbShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbShowFanart.Location = New System.Drawing.Point(5, 98)
+        Me.gbShowFanart.Location = New System.Drawing.Point(5, 82)
         Me.gbShowFanart.Name = "gbShowFanart"
         Me.gbShowFanart.Size = New System.Drawing.Size(133, 70)
         Me.gbShowFanart.TabIndex = 2
@@ -3972,11 +3976,10 @@ Partial Class dlgSettings
         Me.gbShowPosters.Controls.Add(Me.chkShowPosterJPG)
         Me.gbShowPosters.Controls.Add(Me.chkShowPosterTBN)
         Me.gbShowPosters.Controls.Add(Me.chkShowFolderJPG)
-        Me.gbShowPosters.Controls.Add(Me.chkShowSeasonAll)
         Me.gbShowPosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowPosters.Location = New System.Drawing.Point(5, 15)
         Me.gbShowPosters.Name = "gbShowPosters"
-        Me.gbShowPosters.Size = New System.Drawing.Size(133, 83)
+        Me.gbShowPosters.Size = New System.Drawing.Size(133, 66)
         Me.gbShowPosters.TabIndex = 0
         Me.gbShowPosters.TabStop = False
         Me.gbShowPosters.Text = "Show Posters"
@@ -3985,7 +3988,7 @@ Partial Class dlgSettings
         '
         Me.chkShowPosterJPG.AutoSize = True
         Me.chkShowPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowPosterJPG.Location = New System.Drawing.Point(6, 63)
+        Me.chkShowPosterJPG.Location = New System.Drawing.Point(6, 47)
         Me.chkShowPosterJPG.Name = "chkShowPosterJPG"
         Me.chkShowPosterJPG.Size = New System.Drawing.Size(79, 17)
         Me.chkShowPosterJPG.TabIndex = 3
@@ -3996,7 +3999,7 @@ Partial Class dlgSettings
         '
         Me.chkShowPosterTBN.AutoSize = True
         Me.chkShowPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowPosterTBN.Location = New System.Drawing.Point(6, 47)
+        Me.chkShowPosterTBN.Location = New System.Drawing.Point(6, 31)
         Me.chkShowPosterTBN.Name = "chkShowPosterTBN"
         Me.chkShowPosterTBN.Size = New System.Drawing.Size(80, 17)
         Me.chkShowPosterTBN.TabIndex = 2
@@ -4007,23 +4010,23 @@ Partial Class dlgSettings
         '
         Me.chkShowFolderJPG.AutoSize = True
         Me.chkShowFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowFolderJPG.Location = New System.Drawing.Point(6, 31)
+        Me.chkShowFolderJPG.Location = New System.Drawing.Point(6, 15)
         Me.chkShowFolderJPG.Name = "chkShowFolderJPG"
         Me.chkShowFolderJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkShowFolderJPG.TabIndex = 1
         Me.chkShowFolderJPG.Text = "folder.jpg"
         Me.chkShowFolderJPG.UseVisualStyleBackColor = True
         '
-        'chkShowSeasonAll
+        'chkSeasonAllTBN
         '
-        Me.chkShowSeasonAll.AutoSize = True
-        Me.chkShowSeasonAll.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowSeasonAll.Location = New System.Drawing.Point(6, 15)
-        Me.chkShowSeasonAll.Name = "chkShowSeasonAll"
-        Me.chkShowSeasonAll.Size = New System.Drawing.Size(99, 17)
-        Me.chkShowSeasonAll.TabIndex = 0
-        Me.chkShowSeasonAll.Text = "season-all.tbn"
-        Me.chkShowSeasonAll.UseVisualStyleBackColor = True
+        Me.chkSeasonAllTBN.AutoSize = True
+        Me.chkSeasonAllTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonAllTBN.Location = New System.Drawing.Point(6, 18)
+        Me.chkSeasonAllTBN.Name = "chkSeasonAllTBN"
+        Me.chkSeasonAllTBN.Size = New System.Drawing.Size(99, 17)
+        Me.chkSeasonAllTBN.TabIndex = 0
+        Me.chkSeasonAllTBN.Text = "season-all.tbn"
+        Me.chkSeasonAllTBN.UseVisualStyleBackColor = True
         '
         'TabPage4
         '
@@ -4601,6 +4604,40 @@ Partial Class dlgSettings
         Me.TabControl3.SelectedIndex = 0
         Me.TabControl3.Size = New System.Drawing.Size(609, 394)
         Me.TabControl3.TabIndex = 4
+        '
+        'TabPage8
+        '
+        Me.TabPage8.Controls.Add(Me.chkGetEnglishImages)
+        Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
+        Me.TabPage8.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage8.Name = "TabPage8"
+        Me.TabPage8.Size = New System.Drawing.Size(601, 368)
+        Me.TabPage8.TabIndex = 3
+        Me.TabPage8.Text = "General"
+        Me.TabPage8.UseVisualStyleBackColor = True
+        '
+        'chkGetEnglishImages
+        '
+        Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Enabled = False
+        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkGetEnglishImages.Location = New System.Drawing.Point(21, 32)
+        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
+        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
+        Me.chkGetEnglishImages.TabIndex = 1
+        Me.chkGetEnglishImages.Text = "Also Get English Images"
+        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
+        '
+        'chkOnlyTVImagesLanguage
+        '
+        Me.chkOnlyTVImagesLanguage.AutoSize = True
+        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(8, 14)
+        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
+        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
+        Me.chkOnlyTVImagesLanguage.TabIndex = 0
+        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
+        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
         '
         'TabPage5
         '
@@ -6800,39 +6837,28 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'TabPage8
+        'gbAllSeasonPoster
         '
-        Me.TabPage8.Controls.Add(Me.chkGetEnglishImages)
-        Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(601, 368)
-        Me.TabPage8.TabIndex = 3
-        Me.TabPage8.Text = "General"
-        Me.TabPage8.UseVisualStyleBackColor = True
+        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllJPG)
+        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllTBN)
+        Me.gbAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbAllSeasonPoster.Location = New System.Drawing.Point(5, 153)
+        Me.gbAllSeasonPoster.Name = "gbAllSeasonPoster"
+        Me.gbAllSeasonPoster.Size = New System.Drawing.Size(133, 68)
+        Me.gbAllSeasonPoster.TabIndex = 8
+        Me.gbAllSeasonPoster.TabStop = False
+        Me.gbAllSeasonPoster.Text = "All Season Posters"
         '
-        'chkOnlyTVImagesLanguage
+        'chkSeasonAllJPG
         '
-        Me.chkOnlyTVImagesLanguage.AutoSize = True
-        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(8, 14)
-        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
-        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
-        Me.chkOnlyTVImagesLanguage.TabIndex = 0
-        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
-        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.chkGetEnglishImages.Enabled = False
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(21, 32)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
-        Me.chkGetEnglishImages.TabIndex = 1
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
+        Me.chkSeasonAllJPG.AutoSize = True
+        Me.chkSeasonAllJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonAllJPG.Location = New System.Drawing.Point(6, 34)
+        Me.chkSeasonAllJPG.Name = "chkSeasonAllJPG"
+        Me.chkSeasonAllJPG.Size = New System.Drawing.Size(98, 17)
+        Me.chkSeasonAllJPG.TabIndex = 1
+        Me.chkSeasonAllJPG.Text = "season-all.jpg"
+        Me.chkSeasonAllJPG.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -6848,6 +6874,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlImages)
@@ -6859,7 +6886,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6976,6 +7002,8 @@ Partial Class dlgSettings
         Me.gbShowFilter.PerformLayout()
         Me.pnlTVImages.ResumeLayout(False)
         Me.TabControl3.ResumeLayout(False)
+        Me.TabPage8.ResumeLayout(False)
+        Me.TabPage8.PerformLayout()
         Me.TabPage5.ResumeLayout(False)
         Me.gbShowPosterOpts.ResumeLayout(False)
         Me.gbShowPosterOpts.PerformLayout()
@@ -7025,8 +7053,8 @@ Partial Class dlgSettings
         Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage8.ResumeLayout(False)
-        Me.TabPage8.PerformLayout()
+        Me.gbAllSeasonPoster.ResumeLayout(False)
+        Me.gbAllSeasonPoster.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -7352,7 +7380,7 @@ Partial Class dlgSettings
     Friend WithEvents chkShowPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkShowSeasonAll As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonAllTBN As System.Windows.Forms.CheckBox
     Friend WithEvents gbSeasonPosters As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonPosterTBN As System.Windows.Forms.CheckBox
@@ -7576,4 +7604,6 @@ Partial Class dlgSettings
     Friend WithEvents TabPage8 As System.Windows.Forms.TabPage
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
+    Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
 End Class

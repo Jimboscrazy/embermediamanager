@@ -1150,6 +1150,32 @@ Public Class Database
     End Function
 
     ''' <summary>
+    ''' Get the posterpath for the all seasons entry.
+    ''' </summary>
+    ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
+    ''' <returns>Structures.DBTV object</returns>
+    Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long) As Structures.DBTV
+        Dim _TVDB As New Structures.DBTV
+        Try
+            _TVDB.ShowID = ShowID
+            _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
+
+            Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommandTVSeason.CommandText = String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = 999;")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
+                    If SQLReader.HasRows Then
+                        If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
+                    End If
+                End Using
+            End Using
+
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return _TVDB
+    End Function
+
+    ''' <summary>
     ''' Load all the information for a TV Episode (by episode path)
     ''' </summary>
     ''' <param name="sPath">Full path to the episode file</param>

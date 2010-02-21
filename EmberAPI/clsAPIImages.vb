@@ -307,10 +307,36 @@ Public Class Images : Implements IDisposable
                 End If
             End If
 
-            If Master.eSettings.ShowSeasonAll Then
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+
+    Public Function SaveAsAllSeasonPoster(ByVal mShow As Structures.DBTV) As String
+
+        Dim strReturn As String = String.Empty
+
+        Try
+            Dim pPath As String = String.Empty
+
+            If Master.eSettings.ResizeSeasonPoster AndAlso (_image.Width > Master.eSettings.SeasonPosterWidth OrElse _image.Height > Master.eSettings.SeasonPosterHeight) Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.SeasonPosterWidth, Master.eSettings.SeasonPosterHeight)
+            End If
+
+            If Master.eSettings.SeasonAllJPG Then
+                pPath = Path.Combine(mShow.ShowPath, "season-all.jpg")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
+                    Save(pPath, Master.eSettings.SeasonPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+            If Master.eSettings.SeasonAllTBN Then
                 pPath = Path.Combine(mShow.ShowPath, "season-all.tbn")
-                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
-                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
+                    Save(pPath, Master.eSettings.SeasonPosterQuality)
                     strReturn = pPath
                 End If
             End If

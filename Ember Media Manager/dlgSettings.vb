@@ -1811,7 +1811,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkShowSeasonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowSeasonAll.CheckedChanged
+    Private Sub chkSeasonAllTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonAllTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonAllJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonAllJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2572,7 +2576,8 @@ Public Class dlgSettings
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
             Master.eSettings.TVShowRegexes = Me.ShowRegex
             Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
-            Master.eSettings.ShowSeasonAll = Me.chkShowSeasonAll.Checked
+            Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
+            Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
             Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
             Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
             Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
@@ -2921,7 +2926,8 @@ Public Class dlgSettings
             Me.ShowRegex = Master.eSettings.TVShowRegexes
             Me.LoadShowRegex()
             Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
-            Me.chkShowSeasonAll.Checked = Master.eSettings.ShowSeasonAll
+            Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
+            Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
             Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
             Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
             Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG

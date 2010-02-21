@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-'TODO: Image Selection - filters
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
 'TODO: TV Show renaming
@@ -70,6 +69,7 @@ Namespace TVDB
             Try
                 Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Show Poster"), .Tag = "showp"})
                 Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Show Fanart"), .Tag = "showf"})
+                If Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "All Seasons Poster"), .Tag = "allp"})
 
                 Dim TnS As TreeNode
                 For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
@@ -229,7 +229,7 @@ Namespace TVDB
             Dim tSea As Scraper.TVDBSeasonPoster
 
             Try
-                Me.bwLoadImages.ReportProgress(Scraper.TVDBImages.SeasonImageList.Count + Scraper.tmpTVDBShow.Episodes.Count + 2, "defaults")
+                Me.bwLoadImages.ReportProgress(Scraper.TVDBImages.SeasonImageList.Count + Scraper.tmpTVDBShow.Episodes.Count + 3, "defaults")
 
                 If IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
                     Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
@@ -266,6 +266,20 @@ Namespace TVDB
                     Return True
                 End If
                 Me.bwLoadImages.ReportProgress(2, "progress")
+
+                If Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
+                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                    If Not IsNothing(tSP) Then
+                        Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
+                        Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSP.LocalFile
+                        Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
+                    End If
+                End If
+
+                If Me.bwLoadImages.CancellationPending Then
+                    Return True
+                End If
+                Me.bwLoadImages.ReportProgress(3, "progress")
 
                 For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
                     Try
@@ -351,6 +365,18 @@ Namespace TVDB
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                         For i = 0 To FanartList.Count - 1
                             Me.AddImage(FanartList(i).Image.Image, String.Format("{0}x{1}", FanartList(i).Image.Image.Width, FanartList(i).Image.Image.Height), i, New ImageTag With {.URL = FanartList(i).URL, .Path = FanartList(i).LocalFile, .isFanart = True})
+                        Next
+                    ElseIf e.Node.Tag.ToString = "allp" Then
+                        Me.SelSeason = 999
+                        Me.SelIsPoster = True
+                        Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonPoster.Image.Image
+                        iCount = ShowPosterList.Count
+                        For i = 0 To iCount - 1
+                            Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
+                        Next
+
+                        For i = 0 To GenericPosterList.Count - 1
+                            Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
                         Next
                     Else
                         Dim tMatch As Match = Regex.Match(e.Node.Tag.ToString, "(?<type>f|p)(?<num>[0-9]+)")
@@ -518,6 +544,7 @@ Namespace TVDB
             'initialize the struct
             Scraper.TVDBImages.ShowPoster = New Scraper.TVDBShowPoster
             Scraper.TVDBImages.ShowFanart = New Scraper.TVDBFanart
+            Scraper.TVDBImages.AllSeasonPoster = New Scraper.TVDBShowPoster
             Scraper.TVDBImages.SeasonImageList = New List(Of Scraper.TVDBSeasonImage)
 
             If Me.bwLoadData.CancellationPending Then
@@ -538,6 +565,16 @@ Namespace TVDB
             If Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowFanartPath) Then
                 Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowFanartPath)
                 Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.ShowFanartPath
+            End If
+
+            If Me.bwLoadData.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Master.eSettings.AllSeasonPosterEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath) Then
+                Scraper.TVDBImages.AllSeasonPoster.Image.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath)
+                Scraper.TVDBImages.AllSeasonPoster.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath
             End If
 
             If Me.bwLoadData.CancellationPending Then
@@ -771,6 +808,11 @@ Namespace TVDB
                     Scraper.TVDBImages.ShowFanart.URL = DefaultImages.ShowFanart.URL
                     Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                 End If
+            ElseIf Me.SelSeason = 999 Then
+                Scraper.TVDBImages.AllSeasonPoster.Image.Image = DefaultImages.AllSeasonPoster.Image.Image
+                Scraper.TVDBImages.AllSeasonPoster.LocalFile = DefaultImages.AllSeasonPoster.LocalFile
+                Scraper.TVDBImages.AllSeasonPoster.URL = DefaultImages.AllSeasonPoster.URL
+                Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonPoster.Image.Image
             Else
                 If Me.SelIsPoster Then
                     Dim dSPost As Image = DefaultImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster.Image
@@ -801,6 +843,10 @@ Namespace TVDB
                     Scraper.TVDBImages.ShowFanart.LocalFile = SelTag.Path
                     Scraper.TVDBImages.ShowFanart.URL = SelTag.URL
                 End If
+            ElseIf Me.SelSeason = 999 Then
+                Scraper.TVDBImages.AllSeasonPoster.Image.Image = SelImage
+                Scraper.TVDBImages.AllSeasonPoster.LocalFile = SelTag.Path
+                Scraper.TVDBImages.AllSeasonPoster.URL = SelTag.URL
             Else
                 If Me.SelIsPoster Then
                     Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster.Image = SelImage

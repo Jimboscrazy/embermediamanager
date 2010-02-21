@@ -5057,6 +5057,10 @@ Public Class frmMain
                 Me.BuildStars(tmpRating)
             End If
 
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            End If
+
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
                 Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
             Else
@@ -6353,10 +6357,10 @@ doCancel:
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
 
         Try
+            Me.ClearInfo()
             If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
                String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(3, iRow).Value) AndAlso _
                Not Convert.ToBoolean(Me.dgvTVSeasons.Item(4, iRow).Value) Then
-                Me.ClearInfo()
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, 1)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value))
@@ -6426,7 +6430,7 @@ doCancel:
 
         Me.dgvTVSeasons.Enabled = False
 
-        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " ORDER BY Season COLLATE NOCASE;"))
+        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season <> 999 ORDER BY Season COLLATE NOCASE;"))
 
         If Me.dtSeasons.Rows.Count > 0 Then
 
@@ -6625,7 +6629,9 @@ doCancel:
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
 
+        Me.SetControlsEnabled(False)
         Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
+        Me.SetControlsEnabled(True)
 
     End Sub
 
