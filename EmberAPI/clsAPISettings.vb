@@ -288,6 +288,8 @@ Public Class Settings
     Private _tvscanordermodify As Boolean
     Private _tvupdatetime As Enums.TVUpdateTime
     Private _nofilterepisode As Boolean
+    Private _onlytvimagesforselectedlangauge As Boolean
+    Private _alwaysgetenglishtvimages As Boolean
 
     Public Property Version() As String
         Get
@@ -2666,6 +2668,25 @@ Public Class Settings
             Me._nofilterepisode = value
         End Set
     End Property
+
+    Public Property OnlyGetTVImagesForSelectedLanguage() As Boolean
+        Get
+            Return Me._onlytvimagesforselectedlangauge
+        End Get
+        Set(ByVal value As Boolean)
+            Me._onlytvimagesforselectedlangauge = value
+        End Set
+    End Property
+
+    Public Property AlwaysGetEnglishTVImages() As Boolean
+        Get
+            Return Me._alwaysgetenglishtvimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._alwaysgetenglishtvimages = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2935,6 +2956,8 @@ Public Class Settings
         Me._tvscanordermodify = False
         Me._tvupdatetime = Enums.TVUpdateTime.Week
         Me._nofilterepisode = False
+        Me._onlytvimagesforselectedlangauge = True
+        Me._alwaysgetenglishtvimages = True
     End Sub
 
     Public Sub Save()

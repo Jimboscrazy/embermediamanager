@@ -19,7 +19,6 @@
 ' ################################################################################
 
 'TODO: Image Selection - filters
-'TODO: Add setting to only get posters for the specified language and default to english posters if posters are not available in the selected language
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
 'TODO: TV Show renaming

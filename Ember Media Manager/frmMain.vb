@@ -734,6 +734,7 @@ Public Class frmMain
         ' Begin animation to raise panel all the way up
         '\\
 
+        Me.tabsMain.Focus()
         If Me.tabsMain.SelectedIndex = 0 Then
             Me.aniType = 2
         Else
@@ -751,6 +752,7 @@ Public Class frmMain
         ' Begin animation to raise/lower panel to mid point
         '\\
 
+        Me.tabsMain.Focus()
         If Me.pnlInfoPanel.Height = Me.IPUp Then
             Me.aniRaise = False
         Else
@@ -773,6 +775,7 @@ Public Class frmMain
         ' Begin animation to lower panel all the way down
         '\\
 
+        Me.tabsMain.Focus()
         If Me.tabsMain.SelectedIndex = 0 Then
             Me.aniType = 0
         Else
