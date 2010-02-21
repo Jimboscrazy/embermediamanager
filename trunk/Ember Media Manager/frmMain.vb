@@ -6622,7 +6622,7 @@ doCancel:
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
 
-        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages)
+        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
 
     End Sub
 
@@ -7251,7 +7251,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages, Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(13, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
+        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(13, Me.dgvTVEpisodes.SelectedRows(0).Index).Value))
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
@@ -7622,6 +7622,19 @@ doCancel:
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
+        Dim tEpisode As MediaContainers.EpisodeDetails = Master.TVScraper.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB)
+
+        If Not IsNothing(tEpisode) Then
+            Master.currShow.TVEp = tEpisode
+            Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsEpPoster(Master.currShow)
+
+            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
+
+            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
+        End If
     End Sub
 End Class
 
