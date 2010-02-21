@@ -27,6 +27,10 @@ Imports System.Xml.Serialization
 
 Public Class Localization
     Private Shared _ISOLanguages As New Hashtable
+    ' ************************************************************************************************
+    ' This are functions for country/Language codes under ISO639 Alpha-2 (ie: Used by DVD)
+    ' TODO: move APIXML Languages to here also, as they are ISO693 Alpha-3
+    ' TODO: Move Dictionary Setup to XML and make it load as in APIXML
     Shared Function ISOLangGetLangByCode(ByVal code As String) As String
         Return _ISOLanguages.Item(code).ToString()
     End Function
@@ -39,6 +43,7 @@ Public Class Localization
     Public Shared Function ISOLangGetLanguages() As ArrayList
         Return New ArrayList(_ISOLanguages.Values)
     End Function
+    ' ************************************************************************************************
     Structure Locs
         Dim AssenblyName As String
         Dim htStrings As Hashtable

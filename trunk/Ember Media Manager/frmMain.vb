@@ -5521,7 +5521,7 @@ doCancel:
                     Else
                         tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
                     End If
-                    'subsType and subsPath not in NFO , try to laod it from DB
+                    'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count
                         If Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
                             tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
