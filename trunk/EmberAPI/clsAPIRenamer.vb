@@ -455,7 +455,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "A", f.Audio)
+                    strCond = ApplyPattern(strCond, "A", If(Not f.Audio Is Nothing, f.Audio.Replace("dca", "dts"), String.Empty)) '*** dam hack)
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -481,7 +481,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "A", f.Audio)
+            pattern = ApplyPattern(pattern, "A", If(Not f.Audio Is Nothing, f.Audio.Replace("dca", "dts"), String.Empty)) '*** dam hack
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
