@@ -24,10 +24,10 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -135,6 +135,20 @@ Partial Class frmMain
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
         Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmnuSeasonTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator17 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuReloadSeason = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuMarkSeason = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuLockSeason = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator16 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSeasonChangePoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuSeasonChangeFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSeasonRescrape = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSeasonRemove = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRemoveSeasonFromDB = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuDeleteSeason = New System.Windows.Forms.ToolStripMenuItem
         Me.dgvTVEpisodes = New System.Windows.Forms.DataGridView
         Me.mnuEpisodes = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuEpTitle = New System.Windows.Forms.ToolStripMenuItem
@@ -146,6 +160,7 @@ Partial Class frmMain
         Me.cmnuEditEpisode = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrapeEp = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuChangeEp = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator
         Me.RemoveEpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRemoveTVEp = New System.Windows.Forms.ToolStripMenuItem
@@ -393,6 +408,7 @@ Partial Class frmMain
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
         CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuSeasons.SuspendLayout()
         CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuEpisodes.SuspendLayout()
         Me.pnlListTop.SuspendLayout()
@@ -827,8 +843,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1171,8 +1187,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1314,8 +1330,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1337,16 +1353,109 @@ Partial Class frmMain
         '
         'mnuSeasons
         '
+        Me.mnuSeasons.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuReloadSeason, Me.cmnuMarkSeason, Me.cmnuLockSeason, Me.ToolStripSeparator16, Me.cmnuSeasonChangePoster, Me.cmnuSeasonChangeFanart, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonRemove})
         Me.mnuSeasons.Name = "mnuSeasons"
-        Me.mnuSeasons.Size = New System.Drawing.Size(61, 4)
+        Me.mnuSeasons.Size = New System.Drawing.Size(176, 204)
+        '
+        'cmnuSeasonTitle
+        '
+        Me.cmnuSeasonTitle.Enabled = False
+        Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"), System.Drawing.Image)
+        Me.cmnuSeasonTitle.Name = "cmnuSeasonTitle"
+        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonTitle.Text = "Title"
+        '
+        'ToolStripSeparator17
+        '
+        Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
+        Me.ToolStripSeparator17.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuReloadSeason
+        '
+        Me.cmnuReloadSeason.Image = CType(resources.GetObject("cmnuReloadSeason.Image"), System.Drawing.Image)
+        Me.cmnuReloadSeason.Name = "cmnuReloadSeason"
+        Me.cmnuReloadSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuReloadSeason.Text = "Reload"
+        '
+        'cmnuMarkSeason
+        '
+        Me.cmnuMarkSeason.Image = CType(resources.GetObject("cmnuMarkSeason.Image"), System.Drawing.Image)
+        Me.cmnuMarkSeason.Name = "cmnuMarkSeason"
+        Me.cmnuMarkSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuMarkSeason.Text = "Mark"
+        '
+        'cmnuLockSeason
+        '
+        Me.cmnuLockSeason.Image = CType(resources.GetObject("cmnuLockSeason.Image"), System.Drawing.Image)
+        Me.cmnuLockSeason.Name = "cmnuLockSeason"
+        Me.cmnuLockSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuLockSeason.Text = "Lock"
+        '
+        'ToolStripSeparator16
+        '
+        Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
+        Me.ToolStripSeparator16.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuSeasonChangePoster
+        '
+        Me.cmnuSeasonChangePoster.Image = CType(resources.GetObject("cmnuSeasonChangePoster.Image"), System.Drawing.Image)
+        Me.cmnuSeasonChangePoster.Name = "cmnuSeasonChangePoster"
+        Me.cmnuSeasonChangePoster.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonChangePoster.Text = "Change Poster"
+        '
+        'cmnuSeasonChangeFanart
+        '
+        Me.cmnuSeasonChangeFanart.Image = CType(resources.GetObject("cmnuSeasonChangeFanart.Image"), System.Drawing.Image)
+        Me.cmnuSeasonChangeFanart.Name = "cmnuSeasonChangeFanart"
+        Me.cmnuSeasonChangeFanart.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonChangeFanart.Text = "Change Fanart"
+        '
+        'ToolStripSeparator14
+        '
+        Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
+        Me.ToolStripSeparator14.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuSeasonRescrape
+        '
+        Me.cmnuSeasonRescrape.Image = CType(resources.GetObject("cmnuSeasonRescrape.Image"), System.Drawing.Image)
+        Me.cmnuSeasonRescrape.Name = "cmnuSeasonRescrape"
+        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonRescrape.Text = "Re-scrape theTVDB"
+        '
+        'ToolStripSeparator15
+        '
+        Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
+        Me.ToolStripSeparator15.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuSeasonRemove
+        '
+        Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuDeleteSeason})
+        Me.cmnuSeasonRemove.Image = CType(resources.GetObject("cmnuSeasonRemove.Image"), System.Drawing.Image)
+        Me.cmnuSeasonRemove.Name = "cmnuSeasonRemove"
+        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonRemove.Text = "Remove"
+        '
+        'cmnuRemoveSeasonFromDB
+        '
+        Me.cmnuRemoveSeasonFromDB.Image = CType(resources.GetObject("cmnuRemoveSeasonFromDB.Image"), System.Drawing.Image)
+        Me.cmnuRemoveSeasonFromDB.Name = "cmnuRemoveSeasonFromDB"
+        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuRemoveSeasonFromDB.Text = "Remove from Database"
+        '
+        'cmnuDeleteSeason
+        '
+        Me.cmnuDeleteSeason.Image = CType(resources.GetObject("cmnuDeleteSeason.Image"), System.Drawing.Image)
+        Me.cmnuDeleteSeason.Name = "cmnuDeleteSeason"
+        Me.cmnuDeleteSeason.Size = New System.Drawing.Size(197, 22)
+        Me.cmnuDeleteSeason.Text = "Delete Season"
         '
         'dgvTVEpisodes
         '
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1368,9 +1477,9 @@ Partial Class frmMain
         '
         'mnuEpisodes
         '
-        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.ToolStripSeparator12, Me.RemoveEpToolStripMenuItem})
+        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.cmnuChangeEp, Me.ToolStripSeparator12, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 182)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 226)
         '
         'cmnuEpTitle
         '
@@ -1425,9 +1534,17 @@ Partial Class frmMain
         '
         'cmnuRescrapeEp
         '
+        Me.cmnuRescrapeEp.Image = CType(resources.GetObject("cmnuRescrapeEp.Image"), System.Drawing.Image)
         Me.cmnuRescrapeEp.Name = "cmnuRescrapeEp"
         Me.cmnuRescrapeEp.Size = New System.Drawing.Size(175, 22)
         Me.cmnuRescrapeEp.Text = "Re-scrape theTVDB"
+        '
+        'cmnuChangeEp
+        '
+        Me.cmnuChangeEp.Image = CType(resources.GetObject("cmnuChangeEp.Image"), System.Drawing.Image)
+        Me.cmnuChangeEp.Name = "cmnuChangeEp"
+        Me.cmnuChangeEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuChangeEp.Text = "Change Episode"
         '
         'ToolStripSeparator12
         '
@@ -3469,6 +3586,7 @@ Partial Class frmMain
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
         CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuSeasons.ResumeLayout(False)
         CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.mnuEpisodes.ResumeLayout(False)
         Me.pnlListTop.ResumeLayout(False)
@@ -3874,4 +3992,19 @@ Partial Class frmMain
     Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VersionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ReScrapeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuSeasonChangePoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuSeasonChangeFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator14 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuSeasonRescrape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator15 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuSeasonRemove As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuReloadSeason As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuLockSeason As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMarkSeason As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator16 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuRemoveSeasonFromDB As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuDeleteSeason As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuChangeEp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuSeasonTitle As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator17 As System.Windows.Forms.ToolStripSeparator
 End Class

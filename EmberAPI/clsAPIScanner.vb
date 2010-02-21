@@ -1022,7 +1022,7 @@ Public Class Scanner
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Dim mPath As String = String.Empty
-            Master.DB.SaveMovieList()
+            Master.DB.ClearNew()
 
             If Args.Scan.Movies Then
                 MoviePaths.Clear()
@@ -1435,7 +1435,7 @@ Public Class Scanner
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 
                 Else
-                    tmpTVDB.ShowID = Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower))
+                    tmpTVDB = Master.DB.LoadTVShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))
                 End If
                 If tmpTVDB.ShowID > -1 Then
                     For Each Episode In TVContainer.Episodes
@@ -1448,13 +1448,14 @@ Public Class Scanner
                             tmpTVDB.IsNewEp = True
                             tmpTVDB.IsLockEp = False
                             tmpTVDB.IsMarkEp = Master.eSettings.MarkNew
+                            tmpTVDB.IsNewSeason = True
+                            tmpTVDB.IsLockSeason = False
+                            tmpTVDB.IsMarkSeason = tmpTVDB.IsMarkEp
 
                             For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
                                 For Each i As Integer In sSeasons.Episodes
 
                                     tmpTVDB.Filename = Episode.Filename
-
-                                    tmpTVDB.TVEp = New MediaContainers.EpisodeDetails
 
                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
                                         tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
@@ -1480,7 +1481,7 @@ Public Class Scanner
                                     If String.IsNullOrEmpty(tmpTVDB.SeasonPosterPath) OrElse String.IsNullOrEmpty(tmpTVDB.SeasonFanartPath) Then Me.GetSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
 
                                     'Do the Save
-                                    Master.DB.SaveTVEpToDB(tmpTVDB, True, True)
+                                    Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True)
 
                                     Me.bwPrelim.ReportProgress(1, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
                                 Next

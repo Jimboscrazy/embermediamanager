@@ -352,6 +352,7 @@ Public Class Database
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVEps(" & _
                                             "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                             "TVShowID INTEGER NOT NULL, " & _
+                                            "Episode INTEGER, " & _
                                             "Title TEXT, " & _
                                             "HasPoster BOOL NOT NULL DEFAULT False, " & _
                                             "HasFanart BOOL NOT NULL DEFAULT False, " & _
@@ -362,7 +363,6 @@ Public Class Database
                                             "Source TEXT NOT NULL, " & _
                                             "Lock BOOL NOT NULL DEFAULT False, " & _
                                             "Season INTEGER, " & _
-                                            "Episode INTEGER, " & _
                                             "Rating TEXT, " & _
                                             "Plot TEXT, " & _
                                             "Aired TEXT, " & _
@@ -400,14 +400,16 @@ Public Class Database
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSeason(" & _
                                 "TVShowID INTEGER NOT NULL, " & _
-                                "TVEpID INTEGER NOT NULL, " & _
                                 "SeasonText TEXT, " & _
                                 "Season INTEGER NOT NULL, " & _
                                 "HasPoster BOOL NOT NULL DEFAULT False, " & _
                                 "HasFanart BOOL NOT NULL DEFAULT False, " & _
                                 "PosterPath TEXT, " & _
                                 "FanartPath TEXT, " & _
-                                "PRIMARY KEY (TVShowID,TVEpID)" & _
+                                "Lock BOOL NOT NULL DEFAULT False, " & _
+                                "Mark BOOL NOT NULL DEFAULT False, " & _
+                                "New BOOL NOT NULL DEFAULT False, " & _
+                                "PRIMARY KEY (TVShowID,Season)" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
@@ -1098,16 +1100,7 @@ Public Class Database
 
             If _TVDB.ShowID > -1 AndAlso WithShow Then
                 FillTVShowFromDB(_TVDB)
-
-                Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                    SQLcommandTVSeason.CommandText = String.Concat("SELECT PosterPath, FanartPath FROM TVSeason WHERE TVShowID = ", _TVDB.ShowID, " AND TVEpID = ", EpID, ";")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
-                        If SQLReader.HasRows Then
-                            If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
-                            If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
-                        End If
-                    End Using
-                End Using
+                FillTVSeasonFromDB(_TVDB, _TVDB.TVEp.Season)
             End If
 
         Catch ex As Exception
@@ -1123,18 +1116,21 @@ Public Class Database
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="iSeason">Number of the season to load, as stored in the database</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Long) As Structures.DBTV
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Long, ByVal WithShow As Boolean) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
         Try
             _TVDB.ShowID = ShowID
-            FillTVShowFromDB(_TVDB)
+            If WithShow Then FillTVShowFromDB(_TVDB)
 
             Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommandTVSeason.CommandText = String.Concat("SELECT PosterPath, FanartPath FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
+                SQLcommandTVSeason.CommandText = String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                     If SQLReader.HasRows Then
                         If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
+                        _TVDB.IsLockSeason = Convert.ToBoolean(SQLReader("Lock"))
+                        _TVDB.IsMarkSeason = Convert.ToBoolean(SQLReader("Mark"))
+                        _TVDB.IsNewSeason = Convert.ToBoolean(SQLReader("New"))
                     End If
                 End Using
             End Using
@@ -1188,6 +1184,16 @@ Public Class Database
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
+    Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)
+        Dim _tmpTVDB As New Structures.DBTV
+        _tmpTVDB = LoadTVSeasonFromDB(_TVDB.ShowID, iSeason, False)
+
+        _TVDB.IsLockSeason = _tmpTVDB.IsLockSeason
+        _TVDB.IsMarkSeason = _tmpTVDB.IsMarkSeason
+        _TVDB.IsNewSeason = _tmpTVDB.IsNewSeason
+        _TVDB.SeasonPosterPath = _tmpTVDB.SeasonPosterPath
+        _TVDB.SeasonFanartPath = _tmpTVDB.SeasonFanartPath
+    End Sub
     ''' <summary>
     ''' Load all the information for a TV Show.
     ''' </summary>
@@ -1254,7 +1260,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Sub SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+    Public Sub SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
 
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
@@ -1467,31 +1473,8 @@ Public Class Database
                                 SQLcommandTVSubs.ExecuteNonQuery()
                             Next
                         End Using
-                        Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                            SQLcommandTVSeason.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVEpID = ", _TVEpDB.EpID, ";")
-                            SQLcommandTVSeason.ExecuteNonQuery()
 
-                            SQLcommandTVSeason.CommandText = String.Concat("INSERT OR REPLACE INTO TVSeason (", _
-                                    "TVShowID, TVEpID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath", _
-                                    ") VALUES (?,?,?,?,?,?,?,?);")
-                            Dim parSeasonShowID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonShowID", DbType.UInt64, 0, "TVShowID")
-                            Dim parSeasonEpID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonEpID", DbType.UInt64, 0, "TVEpID")
-                            Dim parSeasonSeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeasonText", DbType.String, 0, "SeasonText")
-                            Dim parSeasonSeason As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeason", DbType.Int32, 0, "Season")
-                            Dim parSeasonHasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasPoster", DbType.Boolean, 0, "HasPoster")
-                            Dim parSeasonHasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasFanart", DbType.Boolean, 0, "HasFanart")
-                            Dim parSeasonPosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonPosterPath", DbType.String, 0, "PosterPath")
-                            Dim parSeasonFanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonFanartPath", DbType.String, 0, "FanartPath")
-                            parSeasonShowID.Value = _TVEpDB.ShowID
-                            parSeasonEpID.Value = _TVEpDB.EpID
-                            parSeasonSeasonText.Value = StringUtils.FormatSeasonText(_TVEpDB.TVEp.Season)
-                            parSeasonSeason.Value = _TVEpDB.TVEp.Season
-                            parSeasonHasPoster.Value = Not String.IsNullOrEmpty(_TVEpDB.SeasonPosterPath)
-                            parSeasonHasFanart.Value = Not String.IsNullOrEmpty(_TVEpDB.SeasonFanartPath)
-                            parSeasonPosterPath.Value = _TVEpDB.SeasonPosterPath
-                            parSeasonFanartPath.Value = _TVEpDB.SeasonFanartPath
-                            SQLcommandTVSeason.ExecuteNonQuery()
-                        End Using
+                        If WithSeason Then SaveTVSeasonToDB(_TVEpDB, IsNew, True)
                     End If
                 End Using
             End If
@@ -1500,6 +1483,41 @@ Public Class Database
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+
+        Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
+            SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO TVSeason (", _
+                    "TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New", _
+                    ") VALUES (?,?,?,?,?,?,?,?,?,?);")
+            Dim parSeasonShowID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonShowID", DbType.UInt64, 0, "TVShowID")
+            Dim parSeasonSeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeasonText", DbType.String, 0, "SeasonText")
+            Dim parSeasonSeason As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeason", DbType.Int32, 0, "Season")
+            Dim parSeasonHasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasPoster", DbType.Boolean, 0, "HasPoster")
+            Dim parSeasonHasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasFanart", DbType.Boolean, 0, "HasFanart")
+            Dim parSeasonPosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonPosterPath", DbType.String, 0, "PosterPath")
+            Dim parSeasonFanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonFanartPath", DbType.String, 0, "FanartPath")
+            Dim parSeasonLock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLock", DbType.Boolean, 0, "Lock")
+            Dim parSeasonMark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonMark", DbType.Boolean, 0, "Mark")
+            Dim parSeasonNew As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
+            parSeasonShowID.Value = _TVSeasonDB.ShowID
+            parSeasonSeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+            parSeasonSeason.Value = _TVSeasonDB.TVEp.Season
+            parSeasonHasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
+            parSeasonHasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
+            parSeasonPosterPath.Value = _TVSeasonDB.SeasonPosterPath
+            parSeasonFanartPath.Value = _TVSeasonDB.SeasonFanartPath
+            parSeasonLock.Value = _TVSeasonDB.IsLockSeason
+            parSeasonMark.Value = _TVSeasonDB.IsMarkSeason
+            parSeasonNew.Value = _TVSeasonDB.IsNewSeason
+            SQLcommandTVSeason.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+
     End Sub
 
     ''' <summary>
@@ -1743,6 +1761,35 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Remove all information related to a TV season from the database.
+    ''' </summary>
+    ''' <param name="ID">ID of the tvshow to remove, as stored in the database.</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteTVSeasonFromDB(ByVal ID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, " AND Season = ", iSeason, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLReader.Read
+                        Master.DB.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                    End While
+                End Using
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ID, " AND Season = ", iSeason, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -1756,12 +1803,24 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVEpFromDBByPathID(ByVal PathID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
+            Dim tID As Integer = -1
+            Dim tSeason As Integer = -999
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WEHRE TVEpPathID = ", PathID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT ID WEHRE TVEpPathID = ", PathID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
                     While SQLreader.Read
+                        Using SQLECommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLECommand.CommandText = String.Concat("SELECT TVShowID, Season FROM TVEps WHERE TVEpPathID = ", SQLreader("ID"), ";")
+                            Using SQLEReader As SQLite.SQLiteDataReader = SQLECommand.ExecuteReader
+                                While SQLEReader.Read
+                                    tID = Convert.ToInt32(SQLEReader("TVShowID"))
+                                    tSeason = Convert.ToInt32(SQLEReader("Season"))
+                                End While
+                            End Using
+                        End Using
+
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVEpPathID = ", SQLreader("ID"), ";")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", SQLreader("ID"), ";")
@@ -1772,13 +1831,23 @@ Public Class Database
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", SQLreader("ID"), ";")
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVEpID = ", SQLreader("ID"), ";")
-                        SQLcommand.ExecuteNonQuery()
+
+                        SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
+                        Using SQLSeasonReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
+                            If Not SQLSeasonReader.HasRows Then
+                                'no more episodes for this season, delete the season
+                                Using SQLSeasonCommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                                    SQLSeasonCommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
+                                    SQLSeasonCommand.ExecuteNonQuery()
+                                End Using
+                            End If
+                        End Using
                     End While
                 End Using
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -1792,9 +1861,18 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVEpFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
+            Dim tID As Integer = -1
+            Dim tSeason As Integer = -999
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT TVShowID, Season FROM TVEps WHERE ID = ", ID, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
+                    While SQLReader.Read
+                        tID = Convert.ToInt32(SQLReader("TVShowID"))
+                        tSeason = Convert.ToInt32(SQLReader("Season"))
+                    End While
+                End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
@@ -1807,17 +1885,27 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVEpID = ", ID, ";")
-                SQLcommand.ExecuteNonQuery()
+
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
+                Using SQLSeasonReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
+                    If Not SQLSeasonReader.HasRows Then
+                        'no more episodes for this season, delete the season
+                        Using SQLSeasonCommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLSeasonCommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
+                            SQLSeasonCommand.ExecuteNonQuery()
+                        End Using
+                    End If
+                End Using
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
     End Function
 
-    Public Sub SaveMovieList()
+    Public Sub ClearNew()
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1825,6 +1913,24 @@ Public Class Database
                     Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
                     parNew.Value = False
                     SQLcommand.ExecuteNonQuery()
+                End Using
+                Using SQLShowcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLShowcommand.CommandText = "UPDATE TVShows SET new = (?);"
+                    Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "new")
+                    parShowNew.Value = False
+                    SQLShowcommand.ExecuteNonQuery()
+                End Using
+                Using SQLSeasoncommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLSeasoncommand.CommandText = "UPDATE TVSeason SET new = (?);"
+                    Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "new")
+                    parSeasonNew.Value = False
+                    SQLSeasoncommand.ExecuteNonQuery()
+                End Using
+                Using SQLEpcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLEpcommand.CommandText = "UPDATE TVEps SET new = (?);"
+                    Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "new")
+                    parEpNew.Value = False
+                    SQLEpcommand.ExecuteNonQuery()
                 End Using
                 SQLtransaction.Commit()
             End Using

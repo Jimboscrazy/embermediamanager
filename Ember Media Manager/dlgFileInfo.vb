@@ -249,7 +249,7 @@ Public Class dlgFileInfo
                 End If
                 If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
                     If _isEpisode Then
-                        Master.DB.SaveTVEpToDB(Master.currShow, False, False, True)
+                        Master.DB.SaveTVEpToDB(Master.currShow, False, False, False, True)
                     Else
                         Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
                     End If
