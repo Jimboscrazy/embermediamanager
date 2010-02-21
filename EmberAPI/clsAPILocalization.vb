@@ -105,7 +105,9 @@ Public Class Localization
                         _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
-
+                    Else
+                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath}
+                        htArrayStrings.Add(_loc)
                     End If
                 Else
                     MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
@@ -141,7 +143,7 @@ Public Class Localization
                 Else
                     lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
                 End If
-                AddNotExist(lPath, ID.ToString, strDefault)
+                'AddNotExist(lPath, ID.ToString, strDefault)
             Catch ex As Exception
             End Try
             '*****************************************************************************************

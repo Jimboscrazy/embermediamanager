@@ -81,6 +81,7 @@ Public Class FileManagerExternalModule
     End Sub
     Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmRuntimeObjects = emm
+        Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
         Load()
     End Sub
@@ -160,7 +161,7 @@ Public Class FileManagerExternalModule
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(MyPath, "FileManager.xml"))
+            Dim xmlWriter As New StreamWriter(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml")))
             xmlSerial.Serialize(xmlWriter, eSettings)
             xmlWriter.Close()
         Catch ex As Exception
@@ -172,7 +173,7 @@ Public Class FileManagerExternalModule
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
             If File.Exists(Path.Combine(MyPath, "FileManager.xml")) Then
-                Dim strmReader As New StreamReader(Path.Combine(MyPath, "FileManager.xml"))
+                Dim strmReader As New StreamReader(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml")))
                 eSettings = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
                 strmReader.Close()
             Else

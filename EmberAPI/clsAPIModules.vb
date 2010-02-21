@@ -42,7 +42,7 @@ Public Class ModulesManager
 
     Class EmberRuntimeObjects
 
-        'all runtime object (not classes or shared methods) that need to be exposed to Modules
+        'all runtime object including Function (delegate) that need to be exposed to Modules
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
@@ -51,10 +51,10 @@ Public Class ModulesManager
         Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
         Sub New()
         End Sub
-        Public Sub DelegateLoadMedia(ByRef lm As LoadMedia)
+        Public Sub DelegateLoadMedia(ByRef lm As LoadMedia) 'Setup from EmberAPP
             _LoadMedia = lm
         End Sub
-        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String) 'Invoked from Modules
             _LoadMedia.Invoke(Scan, SourceName)
         End Sub
         Public Property MainTool() As System.Windows.Forms.ToolStrip
