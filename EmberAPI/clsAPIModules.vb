@@ -291,14 +291,14 @@ Public Class ModulesManager
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
-            li.SubItems.Add(If(_externalProcessorModule.Enabled, "Enabled", "Disabled"))
+            li.SubItems.Add(If(_externalProcessorModule.Enabled, Master.eLang.GetString(999, "Enabled"), Master.eLang.GetString(999, "Disabled")))
             li.Tag = _externalProcessorModule.AssemblyName
         Next
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             Dim liS As New ListViewItem
             If _externalScraperModule.IsScraper Then
                 liS = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
-                liS.SubItems.Add(If(_externalScraperModule.ScraperEnabled, "Enabled", "Disabled"))
+                liS.SubItems.Add(If(_externalScraperModule.ScraperEnabled, Master.eLang.GetString(999, "Enabled"), Master.eLang.GetString(999, "Disabled")))
                 liS.Tag = _externalScraperModule.AssemblyName
             End If
         Next
@@ -306,7 +306,7 @@ Public Class ModulesManager
             Dim liPS As New ListViewItem
             If _externalScraperModule.IsPostScraper Then
                 liPS = modulesSetup.lstPostScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
-                liPS.SubItems.Add(If(_externalScraperModule.PostScraperEnabled, "Enabled", "Disabled"))
+                liPS.SubItems.Add(If(_externalScraperModule.PostScraperEnabled, Master.eLang.GetString(999, "Enabled"), Master.eLang.GetString(999, "Disabled")))
                 liPS.Tag = _externalScraperModule.AssemblyName
             End If
         Next
