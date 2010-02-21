@@ -660,20 +660,19 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Me.isCL Then
-            Me.SetUp()
-            Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
-            For Each i As DirectoryInfo In di.GetDirectories
-                If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
-                    cbTemplate.Items.Add(i.Name)
-                End If
-            Next
-            If cbTemplate.Items.Count > 0 Then
-                RemoveHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
-                cbTemplate.SelectedIndex = 0
-                base_template = cbTemplate.Text
-                AddHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
+
+        Me.SetUp()
+        Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
+        For Each i As DirectoryInfo In di.GetDirectories
+            If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
+                cbTemplate.Items.Add(i.Name)
             End If
+        Next
+        If cbTemplate.Items.Count > 0 Then
+            RemoveHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
+            cbTemplate.SelectedIndex = 0
+            base_template = cbTemplate.Text
+            AddHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
         End If
     End Sub
 
