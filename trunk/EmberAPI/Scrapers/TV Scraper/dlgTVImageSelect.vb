@@ -20,15 +20,12 @@
 
 'TODO: Image Selection - filters
 'TODO: Add setting to only get posters for the specified language and default to english posters if posters are not available in the selected language
-'TODO: Season Locking and Marking
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
 'TODO: TV Show renaming
 'TODO: Change season images
 'TODO: Check if we have information for a show or episode when first scanning in
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
-'TODO: Delete Season
-'TODO: Remove Season from DB
 'TODO: Option to not filter episode titles
 'TODO: "Change Episode" - popup list of known episodes to select from
 'TODO: Automatic scrapers

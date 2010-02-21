@@ -227,6 +227,9 @@ Public Class Structures
         Dim ShowPath As String
         Dim SeasonPosterPath As String
         Dim SeasonFanartPath As String
+        Dim IsNewSeason As Boolean
+        Dim IsMarkSeason As Boolean
+        Dim IsLockSeason As Boolean
     End Structure
 
     Public Structure Scans

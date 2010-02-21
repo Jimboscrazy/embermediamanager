@@ -30,7 +30,7 @@ Public Class dlgEditEpisode
         Try
             Me.SetInfo()
 
-            Master.DB.SaveTVEpToDB(Master.currShow, False, False, True)
+            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
             Me.CleanUp()
 
