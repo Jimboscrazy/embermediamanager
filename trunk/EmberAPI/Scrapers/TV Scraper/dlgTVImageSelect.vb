@@ -26,7 +26,6 @@
 'TODO: Change season images
 'TODO: Check if we have information for a show or episode when first scanning in
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
-'TODO: Option to not filter episode titles
 'TODO: "Change Episode" - popup list of known episodes to select from
 'TODO: Automatic scrapers
 'TODO: Handle missing episodes

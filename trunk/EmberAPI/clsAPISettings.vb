@@ -287,6 +287,7 @@ Public Class Settings
     Private _scanordermodify As Boolean
     Private _tvscanordermodify As Boolean
     Private _tvupdatetime As Enums.TVUpdateTime
+    Private _nofilterepisode As Boolean
 
     Public Property Version() As String
         Get
@@ -2657,6 +2658,14 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property NoFilterEpisode() As Boolean
+        Get
+            Return Me._nofilterepisode
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nofilterepisode = value
+        End Set
+    End Property
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2925,6 +2934,7 @@ Public Class Settings
         Me._scanordermodify = False
         Me._tvscanordermodify = False
         Me._tvupdatetime = Enums.TVUpdateTime.Week
+        Me._nofilterepisode = False
     End Sub
 
     Public Sub Save()
