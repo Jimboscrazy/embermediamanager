@@ -50,6 +50,7 @@ Namespace TVDB
         Public Structure TVImages
             Dim ShowPoster As TVDBShowPoster
             Dim ShowFanart As TVDBFanart
+            Dim AllSeasonPoster As TVDBShowPoster
             Dim SeasonImageList As List(Of TVDBSeasonImage)
 
             Public Function Clone() As TVImages
@@ -83,6 +84,7 @@ Namespace TVDB
 
         Public Class TVDBShow
             Private _show As Structures.DBTV
+            Private _allseason As Structures.DBTV
             Private _episodes As New List(Of Structures.DBTV)
             Private _fanart As New List(Of TVDBFanart)
             Private _showposters As New List(Of TVDBShowPoster)
@@ -95,6 +97,15 @@ Namespace TVDB
                 End Get
                 Set(ByVal value As Structures.DBTV)
                     Me._show = value
+                End Set
+            End Property
+
+            Public Property AllSeason() As Structures.DBTV
+                Get
+                    Return Me._allseason
+                End Get
+                Set(ByVal value As Structures.DBTV)
+                    Me._allseason = value
                 End Set
             End Property
 
@@ -149,6 +160,7 @@ Namespace TVDB
 
             Public Sub Clear()
                 Me._show = New Structures.DBTV
+                Me._allseason = New Structures.DBTV
                 Me._episodes = New List(Of Structures.DBTV)
                 Me._fanart = New List(Of TVDBFanart)
                 Me._showposters = New List(Of TVDBShowPoster)
@@ -860,7 +872,7 @@ Namespace TVDB
                 Try
                     If Not bwTVDB.IsBusy Then
                         RaiseEvent ScraperEvent(EventType.StartingDownload, 0, Nothing)
-                        bwTVDB.WorkerReportsProgress = False
+                        bwTVDB.WorkerReportsProgress = True
                         bwTVDB.WorkerSupportsCancellation = True
                         bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = iID.ToString})
                     End If
@@ -872,7 +884,7 @@ Namespace TVDB
             Public Sub GetSearchResultsAsync(ByVal sInfo As ScrapeInfo)
                 Try
                     If Not bwTVDB.IsBusy Then
-                        bwTVDB.WorkerReportsProgress = False
+                        bwTVDB.WorkerReportsProgress = True
                         bwTVDB.WorkerSupportsCancellation = True
                         bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                     End If
@@ -1064,8 +1076,12 @@ Namespace TVDB
             End Function
 
             Public Function GetSingleEpisode(ByVal sInfo As ScrapeInfo) As MediaContainers.EpisodeDetails
+                Dim tEp As New MediaContainers.EpisodeDetails
                 Try
-                    Return Me.GetListOfKnownEpisodes(sInfo).SingleOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                    If Not IsNothing(tEp) Then
+                        Return tEp
+                    End If
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
@@ -1203,6 +1219,13 @@ Namespace TVDB
 
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Try
+                        If Master.eSettings.AllSeasonPosterEnabled AndAlso Not IsNothing(TVDBImages.AllSeasonPoster.Image.Image) Then
+                            Dim aSeason As New Structures.DBTV
+                            aSeason = tmpTVDBShow.AllSeason
+                            aSeason.SeasonPosterPath = TVDBImages.AllSeasonPoster.Image.SaveAsAllSeasonPoster(tmpTVDBShow.Show)
+                            Master.DB.SaveTVSeasonToDB(aSeason, False, True)
+                        End If
+
                         For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                             Try
@@ -1272,6 +1295,7 @@ qExit:
                     tmpTVDBShow = New TVDBShow
 
                     tmpTVDBShow.Show = Master.DB.LoadTVShowFromDB(_ID)
+                    tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
                     Using SQLCount As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, ";")

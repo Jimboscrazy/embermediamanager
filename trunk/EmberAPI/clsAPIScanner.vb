@@ -197,59 +197,69 @@ Public Class Scanner
         Private _poster As String
         Private _fanart As String
         Private _nfo As String
+        Private _allseasonposter As String
         Private _episodes As New List(Of EpisodeContainer)
 
         Public Property ShowPath() As String
             Get
-                Return _showpath
+                Return Me._showpath
             End Get
             Set(ByVal value As String)
-                _showpath = value
+                Me._showpath = value
             End Set
         End Property
 
         Public Property Source() As String
             Get
-                Return _source
+                Return Me._source
             End Get
             Set(ByVal value As String)
-                _source = value
+                Me._source = value
             End Set
         End Property
 
         Public Property Poster() As String
             Get
-                Return _poster
+                Return Me._poster
             End Get
             Set(ByVal value As String)
-                _poster = value
+                Me._poster = value
             End Set
         End Property
 
         Public Property Fanart() As String
             Get
-                Return _fanart
+                Return Me._fanart
             End Get
             Set(ByVal value As String)
-                _fanart = value
+                Me._fanart = value
             End Set
         End Property
 
         Public Property Nfo() As String
             Get
-                Return _nfo
+                Return Me._nfo
             End Get
             Set(ByVal value As String)
-                _nfo = value
+                Me._nfo = value
+            End Set
+        End Property
+
+        Public Property AllSeasonPoster() As String
+            Get
+                Return Me._allseasonposter
+            End Get
+            Set(ByVal value As String)
+                Me._allseasonposter = value
             End Set
         End Property
 
         Public Property Episodes() As List(Of EpisodeContainer)
             Get
-                Return _episodes
+                Return Me._episodes
             End Get
             Set(ByVal value As List(Of EpisodeContainer))
-                _episodes = value
+                Me._episodes = value
             End Set
         End Property
 
@@ -258,12 +268,12 @@ Public Class Scanner
         End Sub
 
         Public Sub Clear()
-            _showpath = String.Empty
-            _source = String.Empty
-            _poster = String.Empty
-            _fanart = String.Empty
-            _nfo = String.Empty
-            _episodes.Clear()
+            Me._showpath = String.Empty
+            Me._source = String.Empty
+            Me._poster = String.Empty
+            Me._fanart = String.Empty
+            Me._nfo = String.Empty
+            Me._episodes.Clear()
         End Sub
     End Class
 
@@ -838,9 +848,14 @@ Public Class Scanner
             Catch
             End Try
 
-            If Master.eSettings.ShowSeasonAll Then
+            If Master.eSettings.SeasonAllJPG Then
+                fName = Path.Combine(parPath, "season-all.jpg")
+                tShow.AllSeasonPoster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+            End If
+
+            If Master.eSettings.SeasonAllTBN Then
                 fName = Path.Combine(parPath, "season-all.tbn")
-                tShow.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                tShow.AllSeasonPoster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
             End If
 
             If String.IsNullOrEmpty(tShow.Poster) AndAlso Master.eSettings.ShowFolderJPG Then
@@ -1403,6 +1418,7 @@ Public Class Scanner
 
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
+        Dim tmpAllSeason As New Structures.DBTV
         Dim toNfo As Boolean = False
         Try
             If TVContainer.Episodes.Count > 0 Then
@@ -1506,6 +1522,12 @@ Public Class Scanner
 
                                     'Do the Save
                                     Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
+
+                                    'Save the All Seasons entry
+                                    tmpAllSeason = New Structures.DBTV
+                                    tmpAllSeason.SeasonPosterPath = TVContainer.AllSeasonPoster
+                                    tmpAllSeason.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
+                                    Master.DB.SaveTVSeasonToDB(tmpAllSeason, True, True)
 
                                     Me.bwPrelim.ReportProgress(1, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
                                 Next
