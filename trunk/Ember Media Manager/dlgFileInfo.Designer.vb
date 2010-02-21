@@ -117,6 +117,7 @@ Partial Class dlgFileInfo
         'ColumnHeader8
         '
         Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.ColumnHeader8.Width = 65
         '
         'btnRemoveSet
         '

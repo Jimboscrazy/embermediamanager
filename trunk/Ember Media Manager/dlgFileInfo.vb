@@ -160,6 +160,7 @@ Public Class dlgFileInfo
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
                         i.Text = c.ToString
                         i.SubItems.Add(s.LongLanguage)
+                        i.SubItems.Add(s.SubsType)
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
                     End If
