@@ -222,6 +222,7 @@ Public Class Database
                                 "Subs_Language TEXT, " & _
                                 "Subs_LongLanguage TEXT, " & _
                                 "Subs_Type TEXT, " & _
+                                "Subs_Path TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
@@ -581,6 +582,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                         If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
                     End While
                 End Using
@@ -904,19 +906,21 @@ Public Class Database
                         SQLcommandMoviesSubs.ExecuteNonQuery()
 
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                                 "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type", _
-                                 ") VALUES (?,?,?,?,?);")
+                                 "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path", _
+                                 ") VALUES (?,?,?,?,?,?);")
                         Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                         Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                         Dim parSubs_Type As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
+                        Dim parSubs_Path As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Path", DbType.String, 0, "Subs_Path")
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
                             parSubs_MovieID.Value = _movieDB.ID
                             parSubs_StreamID.Value = i
                             parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
                             parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
                             parSubs_Type.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsType
+                            parSubs_Path.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).SubsPath
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
                     End Using
