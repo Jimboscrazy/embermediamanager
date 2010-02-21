@@ -171,6 +171,7 @@ Public Class MediaInfo
                         If Not String.IsNullOrEmpty(sLang) Then
                             miSubtitle.LongLanguage = sLang
                             miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
+                            miSubtitle.SubsType = "Embedded"
                             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                             End If
@@ -351,6 +352,7 @@ Public Class MediaInfo
                     If Not String.IsNullOrEmpty(sLang) Then
                         miSubtitle.LongLanguage = sLang
                         miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
+                        miSubtitle.SubsType = "Embedded"
                     End If
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                         fiOut.StreamDetails.Subtitle.Add(miSubtitle)
@@ -769,6 +771,7 @@ Public Class MediaInfo
 
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
+        Private _subs_type As String = String.Empty
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -802,6 +805,15 @@ Public Class MediaInfo
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
+        End Property
+        <XmlIgnore()> _
+        Public Property SubsType() As String
+            Get
+                Return _subs_type
+            End Get
+            Set(ByVal value As String)
+                _subs_type = value
+            End Set
         End Property
 
     End Class

@@ -1231,7 +1231,7 @@ Public Class dlgEditMovie
                     Me.lbMPAA.TopIndex = 0
 
                     txtMPAADesc.Enabled = False
-                Else
+                ElseIf Me.lbMPAA.Items.Count >= 6 Then
                     Dim strMPAA As String = Master.currMovie.Movie.MPAA
                     If strMPAA.ToLower.StartsWith("rated g") Then
                         Me.lbMPAA.SelectedIndex = 1
