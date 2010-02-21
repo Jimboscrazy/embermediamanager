@@ -458,6 +458,8 @@ Partial Class dlgSettings
         Me.pnlTVScraper = New System.Windows.Forms.Panel
         Me.Label48 = New System.Windows.Forms.Label
         Me.gbTVScraperOptions = New System.Windows.Forms.GroupBox
+        Me.lblTVUpdate = New System.Windows.Forms.Label
+        Me.cboTVUpdate = New System.Windows.Forms.ComboBox
         Me.lblAPIKey = New System.Windows.Forms.Label
         Me.lblTVDBMirror = New System.Windows.Forms.Label
         Me.txtAPIKey = New System.Windows.Forms.TextBox
@@ -576,8 +578,7 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.cboTVUpdate = New System.Windows.Forms.ComboBox
-        Me.lblTVUpdate = New System.Windows.Forms.Label
+        Me.chkNoFilterEpisode = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -4400,6 +4401,7 @@ Partial Class dlgSettings
         '
         'gbEpFilter
         '
+        Me.gbEpFilter.Controls.Add(Me.chkNoFilterEpisode)
         Me.gbEpFilter.Controls.Add(Me.btnEpFilterDown)
         Me.gbEpFilter.Controls.Add(Me.btnEpFilterUp)
         Me.gbEpFilter.Controls.Add(Me.chkEpProperCase)
@@ -4408,9 +4410,9 @@ Partial Class dlgSettings
         Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
         Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
         Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpFilter.Location = New System.Drawing.Point(416, 201)
+        Me.gbEpFilter.Location = New System.Drawing.Point(416, 184)
         Me.gbEpFilter.Name = "gbEpFilter"
-        Me.gbEpFilter.Size = New System.Drawing.Size(193, 190)
+        Me.gbEpFilter.Size = New System.Drawing.Size(193, 207)
         Me.gbEpFilter.TabIndex = 1
         Me.gbEpFilter.TabStop = False
         Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
@@ -4418,7 +4420,7 @@ Partial Class dlgSettings
         'btnEpFilterDown
         '
         Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
-        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 159)
+        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 176)
         Me.btnEpFilterDown.Name = "btnEpFilterDown"
         Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterDown.TabIndex = 5
@@ -4427,7 +4429,7 @@ Partial Class dlgSettings
         'btnEpFilterUp
         '
         Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
-        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 159)
+        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 176)
         Me.btnEpFilterUp.Name = "btnEpFilterUp"
         Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterUp.TabIndex = 4
@@ -4437,7 +4439,7 @@ Partial Class dlgSettings
         '
         Me.chkEpProperCase.AutoSize = True
         Me.chkEpProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 14)
+        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 47)
         Me.chkEpProperCase.Name = "chkEpProperCase"
         Me.chkEpProperCase.Size = New System.Drawing.Size(181, 17)
         Me.chkEpProperCase.TabIndex = 0
@@ -4447,7 +4449,7 @@ Partial Class dlgSettings
         'btnRemoveEpFilter
         '
         Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 159)
+        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 176)
         Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
         Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveEpFilter.TabIndex = 6
@@ -4456,7 +4458,7 @@ Partial Class dlgSettings
         'btnAddEpFilter
         '
         Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
-        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 159)
+        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 176)
         Me.btnAddEpFilter.Name = "btnAddEpFilter"
         Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddEpFilter.TabIndex = 3
@@ -4465,7 +4467,7 @@ Partial Class dlgSettings
         'txtEpFilter
         '
         Me.txtEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEpFilter.Location = New System.Drawing.Point(6, 160)
+        Me.txtEpFilter.Location = New System.Drawing.Point(6, 177)
         Me.txtEpFilter.Name = "txtEpFilter"
         Me.txtEpFilter.Size = New System.Drawing.Size(61, 22)
         Me.txtEpFilter.TabIndex = 2
@@ -4474,10 +4476,10 @@ Partial Class dlgSettings
         '
         Me.lstEpFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstEpFilters.FormattingEnabled = True
-        Me.lstEpFilters.Location = New System.Drawing.Point(6, 31)
+        Me.lstEpFilters.Location = New System.Drawing.Point(6, 64)
         Me.lstEpFilters.Name = "lstEpFilters"
         Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstEpFilters.Size = New System.Drawing.Size(180, 121)
+        Me.lstEpFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstEpFilters.TabIndex = 1
         '
         'gbShowFilter
@@ -4492,7 +4494,7 @@ Partial Class dlgSettings
         Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowFilter.Location = New System.Drawing.Point(416, 6)
         Me.gbShowFilter.Name = "gbShowFilter"
-        Me.gbShowFilter.Size = New System.Drawing.Size(193, 190)
+        Me.gbShowFilter.Size = New System.Drawing.Size(193, 172)
         Me.gbShowFilter.TabIndex = 0
         Me.gbShowFilter.TabStop = False
         Me.gbShowFilter.Text = "Show Folder/File Name Filters"
@@ -4500,7 +4502,7 @@ Partial Class dlgSettings
         'btnShowFilterDown
         '
         Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
-        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 159)
+        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 142)
         Me.btnShowFilterDown.Name = "btnShowFilterDown"
         Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterDown.TabIndex = 5
@@ -4509,7 +4511,7 @@ Partial Class dlgSettings
         'btnShowFilterUp
         '
         Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
-        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 159)
+        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 142)
         Me.btnShowFilterUp.Name = "btnShowFilterUp"
         Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterUp.TabIndex = 4
@@ -4529,7 +4531,7 @@ Partial Class dlgSettings
         'btnRemoveShowFilter
         '
         Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 159)
+        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 142)
         Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
         Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveShowFilter.TabIndex = 6
@@ -4538,7 +4540,7 @@ Partial Class dlgSettings
         'btnAddShowFilter
         '
         Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
-        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 159)
+        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 142)
         Me.btnAddShowFilter.Name = "btnAddShowFilter"
         Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddShowFilter.TabIndex = 3
@@ -4547,7 +4549,7 @@ Partial Class dlgSettings
         'txtShowFilter
         '
         Me.txtShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtShowFilter.Location = New System.Drawing.Point(6, 160)
+        Me.txtShowFilter.Location = New System.Drawing.Point(6, 143)
         Me.txtShowFilter.Name = "txtShowFilter"
         Me.txtShowFilter.Size = New System.Drawing.Size(61, 22)
         Me.txtShowFilter.TabIndex = 2
@@ -4559,7 +4561,7 @@ Partial Class dlgSettings
         Me.lstShowFilters.Location = New System.Drawing.Point(6, 31)
         Me.lstShowFilters.Name = "lstShowFilters"
         Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstShowFilters.Size = New System.Drawing.Size(180, 121)
+        Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstShowFilters.TabIndex = 1
         '
         'pnlTVImages
@@ -5441,6 +5443,26 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.TabIndex = 0
         Me.gbTVScraperOptions.TabStop = False
         Me.gbTVScraperOptions.Text = "Options"
+        '
+        'lblTVUpdate
+        '
+        Me.lblTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVUpdate.Location = New System.Drawing.Point(5, 217)
+        Me.lblTVUpdate.Name = "lblTVUpdate"
+        Me.lblTVUpdate.Size = New System.Drawing.Size(190, 31)
+        Me.lblTVUpdate.TabIndex = 5
+        Me.lblTVUpdate.Text = "Re-download Show Information Every:"
+        Me.lblTVUpdate.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cboTVUpdate
+        '
+        Me.cboTVUpdate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cboTVUpdate.FormattingEnabled = True
+        Me.cboTVUpdate.Location = New System.Drawing.Point(17, 248)
+        Me.cboTVUpdate.Name = "cboTVUpdate"
+        Me.cboTVUpdate.Size = New System.Drawing.Size(166, 21)
+        Me.cboTVUpdate.TabIndex = 3
         '
         'lblAPIKey
         '
@@ -6763,25 +6785,15 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'cboTVUpdate
+        'chkNoFilterEpisode
         '
-        Me.cboTVUpdate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cboTVUpdate.FormattingEnabled = True
-        Me.cboTVUpdate.Location = New System.Drawing.Point(17, 248)
-        Me.cboTVUpdate.Name = "cboTVUpdate"
-        Me.cboTVUpdate.Size = New System.Drawing.Size(166, 21)
-        Me.cboTVUpdate.TabIndex = 3
-        '
-        'lblTVUpdate
-        '
-        Me.lblTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVUpdate.Location = New System.Drawing.Point(5, 217)
-        Me.lblTVUpdate.Name = "lblTVUpdate"
-        Me.lblTVUpdate.Size = New System.Drawing.Size(190, 31)
-        Me.lblTVUpdate.TabIndex = 5
-        Me.lblTVUpdate.Text = "Re-download Show Information Every:"
-        Me.lblTVUpdate.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.chkNoFilterEpisode.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoFilterEpisode.Location = New System.Drawing.Point(6, 15)
+        Me.chkNoFilterEpisode.Name = "chkNoFilterEpisode"
+        Me.chkNoFilterEpisode.Size = New System.Drawing.Size(180, 30)
+        Me.chkNoFilterEpisode.TabIndex = 7
+        Me.chkNoFilterEpisode.Text = "Build Episode Title Instead of Filtering"
+        Me.chkNoFilterEpisode.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -6797,6 +6809,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
@@ -6805,10 +6821,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -7519,4 +7531,5 @@ Partial Class dlgSettings
     Friend WithEvents chkScanOrderModify As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVUpdate As System.Windows.Forms.Label
     Friend WithEvents cboTVUpdate As System.Windows.Forms.ComboBox
+    Friend WithEvents chkNoFilterEpisode As System.Windows.Forms.CheckBox
 End Class

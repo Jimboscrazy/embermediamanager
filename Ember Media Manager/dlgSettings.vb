@@ -2229,6 +2229,18 @@ Public Class dlgSettings
     Private Sub cboTVUpdate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTVUpdate.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkNoFilterEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoFilterEpisode.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkEpProperCase.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.lstEpFilters.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.txtEpFilter.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.btnAddEpFilter.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.btnEpFilterUp.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.btnEpFilterDown.Enabled = Not Me.chkNoFilterEpisode.Checked
+        Me.btnRemoveEpFilter.Enabled = Not Me.chkNoFilterEpisode.Checked
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2611,6 +2623,7 @@ Public Class dlgSettings
             Master.eSettings.ScanOrderModify = Me.chkScanOrderModify.Checked
             Master.eSettings.TVScanOrderModify = Me.chkTVScanOrderModify.Checked
             Master.eSettings.TVUpdateTime = DirectCast(Me.cboTVUpdate.SelectedIndex, Enums.TVUpdateTime)
+            Master.eSettings.NoFilterEpisode = Me.chkNoFilterEpisode.Checked
 
             Master.eSettings.Save()
 
@@ -2949,6 +2962,7 @@ Public Class dlgSettings
             Me.chkScanOrderModify.Checked = Master.eSettings.ScanOrderModify
             Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
             Me.cboTVUpdate.SelectedIndex = Master.eSettings.TVUpdateTime
+            Me.chkNoFilterEpisode.Checked = Master.eSettings.NoFilterEpisode
 
             Me.RefreshSources()
             Me.RefreshTVSources()
