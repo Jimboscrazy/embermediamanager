@@ -75,7 +75,13 @@ Public Class dlgFIStreamEditor
                 cbSubsLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbSubsLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
+                    If movie.StreamDetails.Subtitle(idx).SubsType = "Embedded" Then
+                        rbEmbedded.Checked = True
+                    Else
+                        rbExternal.Checked = True
+                    End If
                 End If
+
             End If
 
             If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -100,6 +106,9 @@ Public Class dlgFIStreamEditor
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem.ToString)
+                    If Not cbSubsLanguage.SelectedItem Is Nothing Then
+                        stream_s.SubsType = If(rbEmbedded.Checked, "Embedded", "External")
+                    End If
                     Return stream_s
                 End If
                 Return Nothing

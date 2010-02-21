@@ -28,8 +28,9 @@ Imports System.Xml.Serialization
 Public Class Localization
     Private Shared _ISOLanguages As New Hashtable
     ' ************************************************************************************************
-    ' This are functions for country/Language codes under ISO639 Alpha-2 (ie: Used by DVD)
-    ' TODO: move APIXML Languages to here also, as they are ISO693 Alpha-3
+    ' This are functions for country/Language codes under ISO639 Alpha-2 (ie: Used by DVD/GoogleAPI)
+    ' TODO: Change APIDVD so it use this functions and remove from APIDVD the language Code)
+    ' TODO: Move APIXML Languages to here also, as they are ISO693 Alpha-3
     ' TODO: Move Dictionary Setup to XML and make it load as in APIXML
     Shared Function ISOLangGetLangByCode(ByVal code As String) As String
         Return _ISOLanguages.Item(code).ToString()
@@ -164,6 +165,8 @@ Public Class Localization
             Return strDefault
         End If
     End Function
+    '*****************************************************************************************
+    ' this will add strings not found *** Dev propose only, should not go to release version
     Sub AddNotExist(ByVal lpath As String, ByVal id As String, ByVal value As String)
         Dim xdoc As New XmlDocument()
         xdoc.Load(lpath)
@@ -175,8 +178,10 @@ Public Class Localization
         xdoc.DocumentElement.AppendChild(elem)
         xdoc.Save(lpath)
     End Sub
+    '*****************************************************************************************
     Public Sub New()
         Me.Clear()
+        ' SEE NOTES AT TOP
         _ISOLanguages.Add("aa", "Afar")
         _ISOLanguages.Add("ab", "Abkhazian")
         _ISOLanguages.Add("af", "Afrikaans")
@@ -361,5 +366,6 @@ Public Class Localization
         _ISOLanguages.Add("za", "Zhuang")
         _ISOLanguages.Add("zh", "Chinese")
         _ISOLanguages.Add("zu", "Zulu")
+        ' SEE NOTES AT TOP
     End Sub
 End Class

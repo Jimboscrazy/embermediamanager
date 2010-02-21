@@ -50,6 +50,8 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.Label10 = New System.Windows.Forms.Label
         Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
+        Me.rbExternal = New System.Windows.Forms.RadioButton
+        Me.rbEmbedded = New System.Windows.Forms.RadioButton
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -64,7 +66,7 @@ Partial Class dlgFIStreamEditor
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(53, 212)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(87, 212)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -109,7 +111,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.Controls.Add(Me.txtHeight)
         Me.GroupBox1.Controls.Add(Me.txtWidth)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(8, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(24, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(191, 194)
         Me.GroupBox1.TabIndex = 4
@@ -264,7 +266,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
-        Me.GroupBox2.Location = New System.Drawing.Point(8, 12)
+        Me.GroupBox2.Location = New System.Drawing.Point(24, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(191, 194)
         Me.GroupBox2.TabIndex = 5
@@ -331,9 +333,11 @@ Partial Class dlgFIStreamEditor
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.rbExternal)
+        Me.GroupBox3.Controls.Add(Me.rbEmbedded)
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
-        Me.GroupBox3.Location = New System.Drawing.Point(8, 12)
+        Me.GroupBox3.Location = New System.Drawing.Point(24, 12)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(191, 194)
         Me.GroupBox3.TabIndex = 6
@@ -362,17 +366,42 @@ Partial Class dlgFIStreamEditor
         Me.cbSubsLanguage.Sorted = True
         Me.cbSubsLanguage.TabIndex = 21
         '
+        'rbExternal
+        '
+        Me.rbExternal.AutoSize = True
+        Me.rbExternal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbExternal.Location = New System.Drawing.Point(94, 46)
+        Me.rbExternal.Name = "rbExternal"
+        Me.rbExternal.Size = New System.Drawing.Size(67, 17)
+        Me.rbExternal.TabIndex = 24
+        Me.rbExternal.TabStop = True
+        Me.rbExternal.Text = "External"
+        Me.rbExternal.UseVisualStyleBackColor = True
+        '
+        'rbEmbedded
+        '
+        Me.rbEmbedded.AutoSize = True
+        Me.rbEmbedded.Checked = True
+        Me.rbEmbedded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbEmbedded.Location = New System.Drawing.Point(8, 46)
+        Me.rbEmbedded.Name = "rbEmbedded"
+        Me.rbEmbedded.Size = New System.Drawing.Size(81, 17)
+        Me.rbEmbedded.TabIndex = 23
+        Me.rbEmbedded.TabStop = True
+        Me.rbEmbedded.Text = "Embedded"
+        Me.rbEmbedded.UseVisualStyleBackColor = True
+        '
         'dlgFIStreamEditor
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(207, 247)
+        Me.ClientSize = New System.Drawing.Size(241, 247)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -385,6 +414,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -416,5 +446,7 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents cbVideoLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents rbExternal As System.Windows.Forms.RadioButton
+    Friend WithEvents rbEmbedded As System.Windows.Forms.RadioButton
 
 End Class
