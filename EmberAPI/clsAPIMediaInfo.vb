@@ -837,6 +837,7 @@ Public Class MediaInfo
         Next
         Return Nothing
     End Function
+
     Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
         Try
             'clear it out
@@ -864,6 +865,30 @@ Public Class MediaInfo
                 Dim _mi As MediaInfo.Fileinfo
                 _mi = MediaInfo.ApplyDefaults(pExt)
                 If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Structures.DBTV)
+        Try
+            'clear it out
+            miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
+
+            Dim pExt As String = Path.GetExtension(miTV.Filename).ToLower
+            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
+                Dim MI As New MediaInfo
+                MI.GetMovieMIFromPath(miTV.TVEp.FileInfo, miTV.Filename)
+                MI = Nothing
+            End If
+            If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                Dim _mi As MediaInfo.Fileinfo
+                'TODO: Defaults for TV fileinfo
+                _mi = MediaInfo.ApplyDefaults(pExt)
+                If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
