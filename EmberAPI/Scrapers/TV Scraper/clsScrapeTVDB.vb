@@ -1276,6 +1276,8 @@ Namespace TVDB
 
                                 If Me.bwTVDB.CancellationPending Then GoTo qExit
 
+                                If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Episode)
+
                                 Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
 
                                 If Me.bwTVDB.CancellationPending Then GoTo qExit

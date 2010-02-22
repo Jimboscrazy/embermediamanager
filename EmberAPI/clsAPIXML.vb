@@ -37,7 +37,7 @@ Public Class APIXML
     Public Shared RatingXML As New XDocument
     Public Shared LanguageXML As New XDocument
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean) As Image()
 
         '//
         ' Parse the Flags XML and set the proper images
@@ -55,7 +55,7 @@ Public Class APIXML
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
                 Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
+                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
                 Dim sourceCheck As String = String.Empty
 
                 If FileUtils.Common.isVideoTS(fName) Then

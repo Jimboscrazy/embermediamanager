@@ -219,7 +219,7 @@ Public Class dlgExportMovies
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
                 Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
+                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
                 Dim sourceCheck As String = String.Empty
 
                 If FileUtils.Common.isVideoTS(AVMovie.Filename) Then
@@ -396,7 +396,7 @@ Public Class dlgExportMovies
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
+                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
                         _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
                     End If
                 End If

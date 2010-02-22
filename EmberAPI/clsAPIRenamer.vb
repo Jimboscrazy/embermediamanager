@@ -714,7 +714,7 @@ Public Class FileFolderRenamer
         Dim MovieFile As New FileRename
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
             If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = NFO.GetResFromDimensions(NFO.GetBestVideo(_tmpMovie.Movie.FileInfo))
-            If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo).Codec
+            If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False).Codec
         End If
 
         MovieFile.Title = _tmpMovie.Movie.Title

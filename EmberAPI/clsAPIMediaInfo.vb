@@ -112,7 +112,7 @@ Public Class MediaInfo
         End If
     End Function
 
-    Public Sub GetMovieMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String)
+    Public Sub GetMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String, ByVal ForTV As Boolean)
 
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             Dim sExt As String = Path.GetExtension(sPath).ToLower
@@ -228,7 +228,7 @@ Public Class MediaInfo
                             tInfo = ScanMI(File)
 
                             tVideo = NFO.GetBestVideo(tInfo)
-                            tAudio = NFO.GetBestAudio(tInfo)
+                            tAudio = NFO.GetBestAudio(tInfo, ForTV)
 
                             If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
                                 If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
@@ -847,7 +847,7 @@ Public Class MediaInfo
             If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
                 Dim MI As New MediaInfo
-                MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
+                MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
                 If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
 
@@ -881,7 +881,7 @@ Public Class MediaInfo
             If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
                 Dim MI As New MediaInfo
-                MI.GetMovieMIFromPath(miTV.TVEp.FileInfo, miTV.Filename)
+                MI.GetMIFromPath(miTV.TVEp.FileInfo, miTV.Filename, True)
                 MI = Nothing
             End If
             If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
