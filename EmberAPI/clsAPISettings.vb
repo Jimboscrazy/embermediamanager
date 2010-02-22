@@ -291,6 +291,7 @@ Public Class Settings
     Private _nofilterepisode As Boolean
     Private _onlytvimagesforselectedlangauge As Boolean
     Private _alwaysgetenglishtvimages As Boolean
+    Private _displaymissingepisodes As Boolean
 
     Public Property Version() As String
         Get
@@ -2697,6 +2698,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property DisplayMissingEpisodes() As Boolean
+        Get
+            Return Me._displaymissingepisodes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._displaymissingepisodes = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2969,6 +2979,7 @@ Public Class Settings
         Me._nofilterepisode = False
         Me._onlytvimagesforselectedlangauge = True
         Me._alwaysgetenglishtvimages = True
+        Me._displaymissingepisodes = False
     End Sub
 
     Public Sub Save()

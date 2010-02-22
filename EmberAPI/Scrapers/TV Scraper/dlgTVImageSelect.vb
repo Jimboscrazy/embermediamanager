@@ -18,14 +18,17 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+'TODO: Scrape Show/Episode Poster/Fanart from editors
+'TODO: Scan metadata for Episodes
+'TODO: Frame extraction for Episodes
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
 'TODO: TV Show renaming
 'TODO: Change season images
 'TODO: Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: Automatic scrapers
-'TODO: Handle missing episodes
 'TODO: Handle non-conforming nfos
+'TODO: Localization strings for all TV stuff
 'TODO: ?????
 'TODO: PROFIT!!!!
 

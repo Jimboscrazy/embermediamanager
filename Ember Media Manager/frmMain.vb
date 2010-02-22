@@ -299,6 +299,18 @@ Public Class frmMain
                 Dim dResult As Structures.SettingsResult = dSettings.ShowDialog
                 If Not dResult.DidCancel Then
 
+                    If Not Master.eSettings.DisplayMissingEpisodes Then
+                        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                                SQLCommand.CommandText = "DELETE FROM TVEps WHERE Missing = 1"
+                                SQLCommand.ExecuteNonQuery()
+
+                                Master.DB.CleanSeasons(True)
+                            End Using
+                            SQLTrans.Commit()
+                        End Using
+                    End If
+
                     Me.SetUp(True)
 
                     If Me.dgvMediaList.RowCount > 0 Then
@@ -923,6 +935,8 @@ Public Class frmMain
 
         Try
 
+            If e.RowIndex < 0 Then Exit Sub
+
             If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -1307,7 +1321,7 @@ Public Class frmMain
                 e.Handled = True
             End If
 
-            If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
+            If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3) AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
                     e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
@@ -1323,9 +1337,14 @@ Public Class frmMain
                 End If
             End If
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 6 AndAlso e.RowIndex >= 0 Then
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 6 AndAlso e.RowIndex >= 0 Then
 
-                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
+                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
+                    e.CellStyle.ForeColor = Color.Gray
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Regular)
+                    e.CellStyle.BackColor = Color.White
+                    e.CellStyle.SelectionBackColor = Color.DarkGray
+                ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
                 Else
@@ -3265,6 +3284,8 @@ Public Class frmMain
 
         Try
 
+            If e.RowIndex < 0 Then Exit Sub
+
             If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
@@ -3380,6 +3401,8 @@ Public Class frmMain
 
         Try
 
+            If e.RowIndex < 0 Then Exit Sub
+
             If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
@@ -3406,6 +3429,13 @@ Public Class frmMain
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        If Convert.ToBoolean(sRow.Cells(22).Value) Then
+                            Me.mnuEpisodes.Enabled = False
+                            Exit Sub
+                        End If
+                    Next
 
                     If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -3436,6 +3466,7 @@ Public Class frmMain
                         Me.cmnuMarkEp.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                         Me.cmnuLockEp.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     Else
+
                         Me.cmnuEditEpisode.Visible = True
                         Me.ToolStripSeparator9.Visible = True
                         Me.cmnuRescrapeEp.Visible = True
@@ -5661,13 +5692,15 @@ doCancel:
 
                 If WithEpisodes Then
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, ";")
+                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, " AND Missing = 0;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 Me.RefreshEpisode(Convert.ToInt64(SQLReader("ID")), True)
                             End While
                         End Using
                     End Using
+
+                    Master.DB.CleanSeasons(True)
                 End If
 
             Else
@@ -6386,7 +6419,7 @@ doCancel:
                 Me.ShowNoInfo(True, 2)
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.mnuEpisodes.Enabled = True
                 End If
             Else
@@ -6574,7 +6607,7 @@ doCancel:
             SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM TVShows"
             ShowCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
 
-            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM TVEps"
+            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM TVEps WHERE Missing = 0"
             EpCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
         End Using
 
@@ -6971,7 +7004,7 @@ doCancel:
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
+                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, " AND Missing = 0;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 tFill = Me.RefreshEpisode(Convert.ToInt64(SQLReader("ID")), True)
@@ -6980,6 +7013,9 @@ doCancel:
                         End Using
                     End Using
                 Next
+
+                Master.DB.CleanSeasons(True)
+
                 SQLTrans.Commit()
             End Using
         End If
@@ -7111,6 +7147,9 @@ doCancel:
                     tFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True)
                     If tFill Then doFill = True
                 Next
+
+                Master.DB.CleanSeasons(True)
+
                 SQLtransaction.Commit()
             End Using
 
@@ -7304,6 +7343,9 @@ doCancel:
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
             Next
+
+            Master.DB.CleanSeasons(True)
+
             SQLTrans.Commit()
         End Using
 
@@ -7339,6 +7381,9 @@ doCancel:
                             End Using
                         Next
                     End Using
+
+                    Master.DB.CleanSeasons()
+
                     SQLTrans.Commit()
                 End Using
 
@@ -7645,5 +7690,6 @@ doCancel:
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
     End Sub
+
 End Class
 

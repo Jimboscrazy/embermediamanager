@@ -27,6 +27,7 @@ Namespace TVDB
         Public Const APIKey As String = "7B090234F418D074"
         Public Shared TVDBImages As New TVImages
         Public Shared tmpTVDBShow As New TVDBShow
+        Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
 
         Public Event ScraperEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Public Shared WithEvents sObject As New ScraperObject
@@ -1169,6 +1170,7 @@ Namespace TVDB
                             Me.DownloadSeries(Args.Parameter.ToString)
                             e.Result = New Results With {.Type = Args.Type}
                         Case 2 'load episodes
+                            If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, ScrapeInfo))
                             LoadAllEpisodes(DirectCast(Args.Parameter, ScrapeInfo).ShowID)
                             e.Result = New Results With {.Type = Args.Type, .Result = Args.Parameter}
                         Case 3 'save
@@ -1214,6 +1216,8 @@ Namespace TVDB
                 Dim iSea As Integer = -1
                 Dim iProgress As Integer = 1
 
+                Dim tShow As New Structures.DBTV
+                Dim tEpisode As New MediaContainers.EpisodeDetails
 
                 Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
@@ -1233,6 +1237,13 @@ Namespace TVDB
 
                                 iEp = Episode.TVEp.Episode
                                 iSea = Episode.TVEp.Season
+
+                                'remove it from tepisodes since it's a real episode
+                                If Master.eSettings.DisplayMissingEpisodes Then
+                                    tEpisode = tEpisodes.FirstOrDefault(Function(e) e.Episode = iEp AndAlso e.Season = iSea)
+                                    If Not IsNothing(tEpisode) Then tEpisodes.Remove(tEpisode)
+                                    tShow = Episode
+                                End If
 
                                 If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
 
@@ -1276,6 +1287,24 @@ Namespace TVDB
                             End Try
                         Next
 
+                        'now save all missing episodes
+                        If Master.eSettings.DisplayMissingEpisodes Then
+                            tShow.Filename = String.Empty
+                            tShow.EpFanartPath = String.Empty
+                            tShow.EpPosterPath = String.Empty
+                            tShow.EpNfoPath = String.Empty
+                            tShow.IsLockEp = False
+                            tShow.IsMarkEp = False
+                            tShow.IsNewEp = False
+                            tShow.EpID = -1
+                            If tEpisodes.Count > 0 Then
+                                For Each Episode As MediaContainers.EpisodeDetails In tEpisodes
+                                    tShow.TVEp = Episode
+                                    Master.DB.SaveTVEpToDB(tShow, True, True, True)
+                                Next
+                            End If
+                        End If
+
                         If Me.bwTVDB.CancellationPending Then GoTo qExit
 
                         SQLTrans.Commit()
@@ -1298,11 +1327,11 @@ qExit:
                     tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
                     Using SQLCount As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, ";")
+                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                         Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, ";")
+                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                         While SQLReader.Read
                                             If Not Convert.ToBoolean(SQLReader("Lock")) Then tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))

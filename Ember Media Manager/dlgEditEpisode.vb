@@ -507,4 +507,5 @@ Public Class dlgEditEpisode
         Me.TabPage5.Text = Master.eLang.GetString(59, "Meta Data")
 
     End Sub
+
 End Class

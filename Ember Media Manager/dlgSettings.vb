@@ -2257,6 +2257,10 @@ Public Class dlgSettings
     Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkDisplayMissingEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayMissingEpisodes.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2643,6 +2647,7 @@ Public Class dlgSettings
             Master.eSettings.NoFilterEpisode = Me.chkNoFilterEpisode.Checked
             Master.eSettings.OnlyGetTVImagesForSelectedLanguage = Me.chkOnlyTVImagesLanguage.Checked
             Master.eSettings.AlwaysGetEnglishTVImages = Me.chkGetEnglishImages.Checked
+            Master.eSettings.DisplayMissingEpisodes = Me.chkDisplayMissingEpisodes.Checked
 
             Master.eSettings.Save()
 
@@ -2985,6 +2990,7 @@ Public Class dlgSettings
             Me.chkNoFilterEpisode.Checked = Master.eSettings.NoFilterEpisode
             Me.chkOnlyTVImagesLanguage.Checked = Master.eSettings.OnlyGetTVImagesForSelectedLanguage
             Me.chkGetEnglishImages.Checked = Master.eSettings.AlwaysGetEnglishTVImages
+            Me.chkDisplayMissingEpisodes.Checked = Master.eSettings.DisplayMissingEpisodes
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3712,6 +3718,5 @@ Public Class dlgSettings
         Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

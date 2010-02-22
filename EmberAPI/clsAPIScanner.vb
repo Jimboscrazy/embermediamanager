@@ -1155,7 +1155,7 @@ Public Class Scanner
             End If
 
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
+            'Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
