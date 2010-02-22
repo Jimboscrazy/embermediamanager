@@ -25,9 +25,9 @@ Imports System.Xml.Serialization
 <Serializable()> _
 Public Class Settings
     Private _version As String
-    Private _filterCustom As New List(Of String)
-    Private _showfiltercustom As New List(Of String)
-    Private _epfiltercustom As New List(Of String)
+    Private _filterCustom As List(Of String)
+    Private _showfiltercustom As List(Of String)
+    Private _epfiltercustom As List(Of String)
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
     Private _showratingregion As String
@@ -59,7 +59,7 @@ Public Class Settings
     Private _cleanextrathumbs As Boolean
     Private _expertcleaner As Boolean
     Private _cleanwhitelistvideo As Boolean
-    Private _cleanwhitelistexts As New List(Of String)
+    Private _cleanwhitelistexts As List(Of String)
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
     Private _useMPDB As Boolean
@@ -94,8 +94,8 @@ Public Class Settings
     Private _showproperCase As Boolean
     Private _epproperCase As Boolean
     Private _overwritenfo As Boolean
-    Private _validexts As New List(Of String)
-    Private _nostackexts As New List(Of String)
+    Private _validexts As List(Of String)
+    Private _nostackexts As List(Of String)
     Private _movietbn As Boolean
     Private _movienametbn As Boolean
     Private _moviejpg As Boolean
@@ -180,19 +180,19 @@ Public Class Settings
     Private _trailertimeout As Integer
     Private _overwritetrailer As Boolean
     Private _deletealltrailers As Boolean
-    Private _trailersites As New List(Of Enums.TrailerPages)
+    Private _trailersites As List(Of Enums.TrailerPages)
     Private _nosaveimagestonfo As Boolean
     Private _showdims As Boolean
     Private _nodisplayposter As Boolean
     Private _nodisplayfanart As Boolean
     Private _outlineforplot As Boolean
-    Private _xbmccoms As New List(Of XBMCCom)
+    Private _xbmccoms As List(Of XBMCCom)
     Private _defaultfolderspattern As String
     Private _defaultfilespattern As String
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
-    Private _sorttokens As New List(Of String)
+    Private _sorttokens As List(Of String)
     Private _etnative As Boolean
     Private _etwidth As Integer
     Private _etheight As Integer
@@ -239,14 +239,15 @@ Public Class Settings
     Private _movietheme As String
     Private _tvshowtheme As String
     Private _tveptheme As String
-    Private _metadatapertype As New List(Of MetadataPerType)
+    Private _metadatapertype As List(Of MetadataPerType)
+    Private _tvmetadatapertype As List(Of MetadataPerType)
     Private _enableifoscan As Boolean
     Private _yamjsetscompatible As Boolean
     Private _cleandb As Boolean
     Private _ignorelastscan As Boolean
     Private _tvcleandb As Boolean
     Private _tvignorelastscan As Boolean
-    Private _tvshowregexes As New List(Of TVShowRegEx)
+    Private _tvshowregexes As List(Of TVShowRegEx)
     Private _seasonalltbn As Boolean
     Private _seasonalljpg As Boolean
     Private _showfolderjpg As Boolean
@@ -279,13 +280,13 @@ Public Class Settings
     Private _episodenfocol As Boolean
     Private _proxyuri As String
     Private _proxyport As Integer
-    Private _proxycredentials As New NetworkCredential
+    Private _proxycredentials As NetworkCredential
     Private _sourcefromfolder As Boolean
     Private _sortbeforescan As Boolean
     Private _tvdbmirror As String
     Private _tvdblanguage As String
-    Private _tvdblanguages As New List(Of Containers.TVLanguage)
-    Private _emberModules As New List(Of ModulesManager._XMLEmberModuleClass)
+    Private _tvdblanguages As List(Of Containers.TVLanguage)
+    Private _emberModules As List(Of ModulesManager._XMLEmberModuleClass)
     Private _externaltvdbapikey As String
     Private _scanordermodify As Boolean
     Private _tvscanordermodify As Boolean
@@ -2239,6 +2240,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVMetadataperFileType() As List(Of MetadataPerType)
+        Get
+            Return Me._tvmetadatapertype
+        End Get
+        Set(ByVal value As List(Of MetadataPerType))
+            Me._tvmetadatapertype = value
+        End Set
+    End Property
+
     Public Property EnableIFOScan() As Boolean
         Get
             Return Me._enableifoscan
@@ -2733,9 +2743,9 @@ Public Class Settings
 
     Public Sub Clear()
         Me._version = String.Empty
-        Me._filterCustom.Clear()
-        Me._showfiltercustom.Clear()
-        Me._epfiltercustom.Clear()
+        Me._filterCustom = New List(Of String)
+        Me._showfiltercustom = New List(Of String)
+        Me._epfiltercustom = New List(Of String)
         Me._forcetitle = String.Empty
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
@@ -2767,7 +2777,7 @@ Public Class Settings
         Me._cleanextrathumbs = False
         Me._expertcleaner = False
         Me._cleanwhitelistvideo = False
-        Me._cleanwhitelistexts.Clear()
+        Me._cleanwhitelistexts = New List(Of String)
         Me._useTMDB = True
         Me._useIMPA = False
         Me._useMPDB = False
@@ -2802,8 +2812,8 @@ Public Class Settings
         Me._showproperCase = True
         Me._epproperCase = True
         Me._overwritenfo = True
-        Me._validexts.Clear()
-        Me._nostackexts.Clear()
+        Me._validexts = New List(Of String)
+        Me._nostackexts = New List(Of String)
         Me._movietbn = True
         Me._movienametbn = True
         Me._moviejpg = False
@@ -2887,8 +2897,8 @@ Public Class Settings
         Me._trailertimeout = 2
         Me._overwritetrailer = False
         Me._deletealltrailers = False
-        Me._trailersites.Clear()
-        Me._sets.Clear()
+        Me._trailersites = New List(Of Enums.TrailerPages)
+        Me._sets = New List(Of String)
         Me._nosaveimagestonfo = False
         Me._showdims = False
         Me._nodisplayposter = False
@@ -2896,11 +2906,11 @@ Public Class Settings
         Me._outlineforplot = False
         Me._defaultfolderspattern = "$T {($Y)}"
         Me._defaultfilespattern = "$T{.$S}"
-        Me._xbmccoms.Clear()
+        Me._xbmccoms = New List(Of XBMCCom)
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
-        Me._sorttokens.Clear()
+        Me._sorttokens = New List(Of String)
         Me._etnative = True
         Me._etwidth = 0
         Me._etheight = 0
@@ -2947,7 +2957,8 @@ Public Class Settings
         Me._movietheme = "Default"
         Me._tvshowtheme = "Default"
         Me._tveptheme = "Default"
-        Me._metadatapertype.Clear()
+        Me._metadatapertype = New List(Of MetadataPerType)
+        Me._tvmetadatapertype = New List(Of MetadataPerType)
         Me._enableifoscan = True
         Me._yamjsetscompatible = False
         Me._cleandb = True
