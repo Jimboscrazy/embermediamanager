@@ -19,6 +19,9 @@
 ' ################################################################################
 Imports EmberAPI
 
+
+' TODO update the tooltip and label with all the new settings
+
 Public Class BulkRenamerModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects

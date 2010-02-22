@@ -455,7 +455,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "A", If(Not f.Audio Is Nothing, f.Audio.Replace("dca", "dts"), String.Empty)) '*** dam hack)
+                    pattern = ApplyPattern(pattern, "A", If(Not f.Audio Is Nothing, If(AdvancedSettings.GetBooleanSetting("Renamer.UseDTSInAudioChannel"), f.Audio.Replace("dca", "dts"), f.Audio), String.Empty)) '*** dam hack
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -481,7 +481,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "A", If(Not f.Audio Is Nothing, f.Audio.Replace("dca", "dts"), String.Empty)) '*** dam hack
+            pattern = ApplyPattern(pattern, "A", If(Not f.Audio Is Nothing, If(AdvancedSettings.GetBooleanSetting("Renamer.UseDTSInAudioChannel"), f.Audio.Replace("dca", "dts"), f.Audio), String.Empty)) '*** dam hack
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -534,22 +534,32 @@ Public Class FileFolderRenamer
         If Not v = String.Empty Then
             pattern = pattern.Replace(String.Concat("$-", flag), v)
             pattern = pattern.Replace(String.Concat("$+", flag), v)
+            pattern = pattern.Replace(String.Concat("$^", flag), v)
+
         Else
             Dim pos = -1
             Dim size = 3
-            Dim nextC = pattern.IndexOf(String.Concat("$-", flag))
+            Dim nextC = pattern.IndexOf(String.Concat("$+", flag))
             If nextC >= 0 Then
                 If nextC + 3 < pattern.Length Then size += 1
                 pos = nextC
             End If
-            Dim prevC = pattern.IndexOf(String.Concat("$+", flag))
+            Dim prevC = pattern.IndexOf(String.Concat("$-", flag))
             If prevC >= 0 Then
                 If prevC + 3 < pattern.Length Then size += 1
                 If prevC > 0 Then
-                    size += 1
                     prevC -= 1
                 End If
                 pos = prevC
+            End If
+            Dim bothC = pattern.IndexOf(String.Concat("$^", flag))
+            If bothC >= 0 Then
+                If bothC + 3 < pattern.Length Then size += 1
+                If bothC > 0 Then
+                    size += 1
+                    bothC -= 1
+                End If
+                pos = bothC
             End If
 
             If Not pos = -1 Then pattern = pattern.Remove(pos, size)
