@@ -1018,6 +1018,9 @@ Namespace TVDB
                                 End If
                                 Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
                                 If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+
+                                If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
+
                                 RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
                             Else
                                 RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
@@ -1034,6 +1037,9 @@ Namespace TVDB
                             End If
                             Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
                             If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+
+                            If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
+
                             RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
                         Else
                             RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
@@ -1047,6 +1053,9 @@ Namespace TVDB
                                     End If
                                     Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
                                     If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
+
+                                    If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
+
                                     RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
                                 Else
                                     RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
