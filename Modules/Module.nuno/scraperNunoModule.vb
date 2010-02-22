@@ -70,8 +70,8 @@ Public Class NunoScraperModule
             frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot")
             If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 AdvancedSettings.SetSetting("Language", frmSetup.cLanguage.Text)
-                AdvancedSettings.SetSetting("Do.Outline", Convert.ToString(frmSetup.tOutline.Checked))
-                AdvancedSettings.SetSetting("Do.Plot", Convert.ToString(frmSetup.tPlot.Checked))
+                AdvancedSettings.SetBooleanSetting("Do.Outline", frmSetup.tOutline.Checked)
+                AdvancedSettings.SetBooleanSetting("Do.Plot", frmSetup.tPlot.Checked)
             End If
         End Using
     End Sub
