@@ -28,6 +28,12 @@ Imports System.Linq
 
 <Serializable()> _
 Public Class AdvancedSettings
+    Private Shared Sub SetDefaults()
+        _DoNotSave = True
+        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
+        _DoNotSave = False
+    End Sub
+    ' ******************************************************************************
     Private Class SettingItem
         Public Section As String
         Public Name As String
@@ -96,11 +102,6 @@ Public Class AdvancedSettings
         If Not _DoNotSave Then Save()
         Return True
     End Function
-    Private Shared Sub SetDefaults()
-        _DoNotSave = True
-        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
-        _DoNotSave = False
-    End Sub
     Public Shared Sub Save()
         If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
             File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
@@ -108,7 +109,7 @@ Public Class AdvancedSettings
         Dim xdoc As New XmlDocument()
         xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
         Dim count As Integer = 0
-        For Each i As SettingItem In _AdvancedSettings.Where(Function(x) x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value)
+        For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
             Dim elem As XmlElement = xdoc.CreateElement("Setting")
             Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
             attr.Value = i.Section
