@@ -2,6 +2,8 @@
 
 Public Class Master
     Public Shared eSettings As New Settings
+    Public Shared eAdvancedSettings As New AdvancedSettings
+
     Public Shared eLang As New Localization
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")

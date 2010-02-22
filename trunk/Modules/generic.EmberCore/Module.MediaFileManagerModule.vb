@@ -50,10 +50,7 @@ Public Class FileManagerExternalModule
         _setup.ShowDialog()
         eSettings.ModuleSettings.Clear()
         For Each i As ListViewItem In _setup.ListView1.Items
-            Dim s As New SettingItem
-            s.Name = i.SubItems(0).Text
-            s.FolderPath = i.SubItems(1).Text
-            eSettings.ModuleSettings.Add(s)
+            eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
         Next
         Save()
         'PopulateFolders()
@@ -159,30 +156,22 @@ Public Class FileManagerExternalModule
 
     Private eSettings As New Settings
     Public Sub Save()
-        Try
-            Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml")))
-            xmlSerial.Serialize(xmlWriter, eSettings)
-            xmlWriter.Close()
-        Catch ex As Exception
-            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        Dim Names As String = String.Empty
+        Dim Paths As String = String.Empty
+        For Each i As SettingItem In eSettings.ModuleSettings
+            Names += String.Concat(If(String.IsNullOrEmpty(Names), String.Empty, "|"), i.Name)
+            Paths += String.Concat(If(String.IsNullOrEmpty(Paths), String.Empty, "|"), i.FolderPath)
+        Next
+        AdvancedSettings.SetSetting("Names", Names)
+        AdvancedSettings.SetSetting("Paths", Paths)
     End Sub
 
     Public Sub Load()
-        Try
-            Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            If File.Exists(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml"))) Then
-                Dim strmReader As New StreamReader(Path.Combine(MyPath, String.Concat(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location), ".FileManager.xml")))
-                eSettings = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
-                strmReader.Close()
-            Else
-                eSettings = New Settings
-            End If
-        Catch ex As Exception
-            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            eSettings = New Settings
-        End Try
+        Dim Names As String() = AdvancedSettings.GetSetting("Names").Split("|")
+        Dim Paths As String() = AdvancedSettings.GetSetting("Paths").Split("|")
+        For n = 0 To Names.Count - 1
+            eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
+        Next
     End Sub
     Class SettingItem
         Public Name As String

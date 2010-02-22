@@ -16,4 +16,8 @@ Public Class scraperSetup
         cLanguage.Items.AddRange(EmberAPI.Localization.ISOLangGetLanguages.ToArray)
         If cLanguage.Items.Count > 0 Then cLanguage.SelectedIndex = cLanguage.FindString(preferedLanguage)
     End Sub
+
+    Private Sub cAddSubMetadata_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cAddSubMetadata.CheckedChanged
+        cCheckSubsLanguage.Enabled = cAddSubMetadata.Checked
+    End Sub
 End Class
