@@ -276,7 +276,11 @@ Public Class dlgFileInfo
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, _FileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
-                            Master.currMovie.Movie.FileInfo = _FileInfo
+                            If _isEpisode Then
+                                Master.currShow.TVEp.FileInfo = _FileInfo
+                            Else
+                                Master.currMovie.Movie.FileInfo = _FileInfo
+                            End If
                         End If
                         If i.Tag.ToString = Master.eLang.GetString(595, "Video Stream") Then
                             _FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Video)

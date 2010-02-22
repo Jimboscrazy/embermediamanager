@@ -2540,7 +2540,7 @@ Public Class dlgSettings
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
-            Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
+            Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
             If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
