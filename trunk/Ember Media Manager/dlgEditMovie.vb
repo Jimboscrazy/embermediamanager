@@ -938,7 +938,6 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-
     Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
         If tbFrame.Value <> PreviousFrameValue Then
             GrabTheFrame()

@@ -19,7 +19,6 @@
 ' ################################################################################
 
 'TODO: Scrape Show/Episode Poster/Fanart from editors
-'TODO: Frame extraction for Episodes
 'TODO: Show and Episode field locks
 'TODO: Enable/Disable scraper info fields
 'TODO: Change season images
