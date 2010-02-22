@@ -25,7 +25,6 @@
 'TODO: Automatic scrapers
 'TODO: Handle non-conforming nfos
 'TODO: Localization strings for all TV stuff
-'TODO: Fix whackiness when exiting settings
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: ?????
