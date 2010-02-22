@@ -28,6 +28,7 @@ Public Class dlgSettings
     Private sResult As New Structures.SettingsResult
     Private XComs As List(Of Settings.XBMCCom)
     Private Meta As List(Of Settings.MetadataPerType)
+    Private TVMeta As List(Of Settings.MetadataPerType)
     Private LangChanged As Boolean = False
     Private ShowRegex As List(Of Settings.TVShowRegEx)
 
@@ -1570,7 +1571,7 @@ Public Class dlgSettings
         If lstMetaData.SelectedItems.Count > 0 Then
             btnEditMetaDataFT.Enabled = True
             btnRemoveMetaDataFT.Enabled = True
-            txtDefFIExt.Text = ""
+            txtDefFIExt.Text = String.Empty
         Else
             btnEditMetaDataFT.Enabled = False
             btnRemoveMetaDataFT.Enabled = False
@@ -2271,11 +2272,105 @@ Public Class dlgSettings
         If Not Me.chkTVScanMetaData.Checked Then
             Me.cboTVMetaDataOverlay.SelectedIndex = 0
         End If
+
     End Sub
 
     Private Sub cboTVMetaDataOverlay_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTVMetaDataOverlay.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub txtTVDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDefFIExt.TextChanged
+        btnNewTVMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtTVDefFIExt.Text) AndAlso Not Me.lstTVMetaData.Items.Contains(If(txtTVDefFIExt.Text.StartsWith("."), txtTVDefFIExt.Text, String.Concat(".", txtTVDefFIExt.Text)))
+        If btnNewTVMetaDataFT.Enabled Then
+            btnEditTVMetaDataFT.Enabled = False
+            btnRemoveTVMetaDataFT.Enabled = False
+        End If
+    End Sub
+
+    Private Sub btnNewTVMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewTVMetaDataFT.Click
+        If Not txtTVDefFIExt.Text.StartsWith(".") Then txtTVDefFIExt.Text = String.Concat(".", txtTVDefFIExt.Text)
+        Using dEditMeta As New dlgFileInfo
+            Dim fi As New MediaInfo.Fileinfo
+            fi = dEditMeta.ShowDialog(fi, True)
+            If Not fi Is Nothing Then
+                Dim m As New Settings.MetadataPerType
+                m.FileType = txtTVDefFIExt.Text
+                m.MetaData = New MediaInfo.Fileinfo
+                m.MetaData = fi
+                TVMeta.Add(m)
+                LoadTVMetadata()
+                Me.SetApplyButton(True)
+                Me.txtTVDefFIExt.Text = String.Empty
+                Me.txtTVDefFIExt.Focus()
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnEditTVMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditTVMetaDataFT.Click
+        Using dEditMeta As New dlgFileInfo
+            Dim fi As New MediaInfo.Fileinfo
+            For Each x As Settings.MetadataPerType In TVMeta
+                If x.FileType = lstTVMetaData.SelectedItems(0).ToString Then
+                    fi = dEditMeta.ShowDialog(x.MetaData, True)
+                    If Not fi Is Nothing Then
+                        TVMeta.Remove(x)
+                        Dim m As New Settings.MetadataPerType
+                        m.FileType = x.FileType
+                        m.MetaData = New MediaInfo.Fileinfo
+                        m.MetaData = fi
+                        TVMeta.Add(m)
+                        LoadTVMetadata()
+                        Me.SetApplyButton(True)
+                    End If
+                    Exit For
+                End If
+            Next
+        End Using
+    End Sub
+
+    Private Sub btnRemoveTVMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTVMetaDataFT.Click
+        Me.RemoveTVMetaData()
+    End Sub
+
+    Private Sub lstTVMetaData_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstTVMetaData.DoubleClick
+        If Me.lstTVMetaData.SelectedItems.Count > 0 Then
+            Using dEditMeta As New dlgFileInfo
+                Dim fi As New MediaInfo.Fileinfo
+                For Each x As Settings.MetadataPerType In TVMeta
+                    If x.FileType = lstTVMetaData.SelectedItems(0).ToString Then
+                        fi = dEditMeta.ShowDialog(x.MetaData, True)
+                        If Not fi Is Nothing Then
+                            TVMeta.Remove(x)
+                            Dim m As New Settings.MetadataPerType
+                            m.FileType = x.FileType
+                            m.MetaData = New MediaInfo.Fileinfo
+                            m.MetaData = fi
+                            TVMeta.Add(m)
+                            LoadTVMetadata()
+                            Me.SetApplyButton(True)
+                        End If
+                        Exit For
+                    End If
+                Next
+            End Using
+        End If
+    End Sub
+
+    Private Sub lstTVMetaData_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVMetaData.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVMetaData()
+    End Sub
+
+    Private Sub lstTVMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstTVMetaData.SelectedIndexChanged
+        If lstTVMetaData.SelectedItems.Count > 0 Then
+            btnEditTVMetaDataFT.Enabled = True
+            btnRemoveTVMetaDataFT.Enabled = True
+            txtTVDefFIExt.Text = String.Empty
+        Else
+            btnEditTVMetaDataFT.Enabled = False
+            btnRemoveTVMetaDataFT.Enabled = False
+        End If
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2590,6 +2685,8 @@ Public Class dlgSettings
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
             Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
+            Master.eSettings.MetadataPerFileType = Me.Meta
+            Master.eSettings.TVMetadataperFileType = Me.TVMeta
             Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
             Master.eSettings.CleanDB = Me.chkCleanDB.Checked
             Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
@@ -2942,6 +3039,8 @@ Public Class dlgSettings
             Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             Me.Meta = Master.eSettings.MetadataPerFileType
             Me.LoadMetadata()
+            Me.TVMeta = Master.eSettings.TVMetadataPerFileType
+            Me.LoadTVMetadata()
             Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
             Me.chkCleanDB.Checked = Master.eSettings.CleanDB
             Me.chkIgnoreLastScan.Checked = Master.eSettings.IgnoreLastScan
@@ -3115,6 +3214,13 @@ Public Class dlgSettings
         Me.lstMetaData.Items.Clear()
         For Each x As Settings.MetadataPerType In Meta
             Me.lstMetaData.Items.Add(x.FileType)
+        Next
+    End Sub
+
+    Private Sub LoadTVMetadata()
+        Me.lstTVMetaData.Items.Clear()
+        For Each x As Settings.MetadataPerType In TVMeta
+            Me.lstTVMetaData.Items.Add(x.FileType)
         Next
     End Sub
 
@@ -3601,6 +3707,19 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub RemoveTVMetaData()
+        If Me.lstTVMetaData.SelectedItems.Count > 0 Then
+            For Each x As Settings.MetadataPerType In TVMeta
+                If x.FileType = lstTVMetaData.SelectedItems(0).ToString Then
+                    TVMeta.Remove(x)
+                    LoadTVMetadata()
+                    Me.SetApplyButton(True)
+                    Exit For
+                End If
+            Next
+        End If
+    End Sub
+
     Private Sub RemoveMovieSource()
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
@@ -3739,6 +3858,5 @@ Public Class dlgSettings
         Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

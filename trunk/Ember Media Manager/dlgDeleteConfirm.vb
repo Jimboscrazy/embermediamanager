@@ -253,7 +253,7 @@ Public Class dlgDeleteConfirm
                     lblNodeSelected.Text = e.Node.Tag.ToString
             End Select
         Catch ex As Exception
-            lblNodeSelected.Text = ""
+            lblNodeSelected.Text = String.Empty
         End Try
     End Sub
 

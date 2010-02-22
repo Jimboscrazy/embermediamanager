@@ -78,7 +78,7 @@ Public Class dlgFileInfo
                 'i.UseItemStyleForSubItems = False
                 i.ForeColor = Color.DarkBlue
                 i.Tag = "Header"
-                i.Text = ""
+                i.Text = String.Empty
                 i.SubItems.Add(Master.eLang.GetString(604, "Codec"))
                 i.SubItems.Add(Master.eLang.GetString(605, "Scan Type"))
                 i.SubItems.Add(Master.eLang.GetString(606, "Width"))
@@ -118,7 +118,7 @@ Public Class dlgFileInfo
                 'i.UseItemStyleForSubItems = False
                 i.ForeColor = Color.DarkBlue
                 i.Tag = "Header"
-                i.Text = ""
+                i.Text = String.Empty
                 i.SubItems.Add(Master.eLang.GetString(604, "Codec"))
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
                 i.SubItems.Add(Master.eLang.GetString(611, "Channels"))
@@ -149,7 +149,7 @@ Public Class dlgFileInfo
                 'i.UseItemStyleForSubItems = False
                 i.ForeColor = Color.DarkBlue
                 i.Tag = "Header"
-                i.Text = ""
+                i.Text = String.Empty
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
@@ -249,14 +249,14 @@ Public Class dlgFileInfo
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
                     _FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
                 End If
-                If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
+                If Cancel_Button.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                     If _isEpisode Then
                         Master.DB.SaveTVEpToDB(Master.currShow, False, False, False, True)
                     Else
                         Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
                     End If
-                    NeedToRefresh = True
                 End If
+                NeedToRefresh = True
                 LoadInfo()
             End If
         Catch ex As Exception
@@ -291,10 +291,14 @@ Public Class dlgFileInfo
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
                             _FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
-                        If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                            Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
-                            NeedToRefresh = True
+                        If Cancel_Button.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
+                            If _isEpisode Then
+                                Master.DB.SaveTVEpToDB(Master.currShow, False, False, False, True)
+                            Else
+                                Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                            End If
                         End If
+                        NeedToRefresh = True
                         LoadInfo()
                     End If
                 End Using
@@ -312,7 +316,11 @@ Public Class dlgFileInfo
                     stream = dEditStream.ShowDialog(cbStreamType.SelectedItem.ToString, Nothing, 0)
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
-                            Master.currMovie.Movie.FileInfo = _FileInfo
+                            If _isEpisode Then
+                                Master.currShow.TVEp.FileInfo = _FileInfo
+                            Else
+                                Master.currMovie.Movie.FileInfo = _FileInfo
+                            End If
                         End If
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(595, "Video Stream") Then
                             _FileInfo.StreamDetails.Video.Add(DirectCast(stream, MediaInfo.Video))
@@ -323,10 +331,14 @@ Public Class dlgFileInfo
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
                             _FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream, MediaInfo.Subtitle))
                         End If
-                        If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                            Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
-                            NeedToRefresh = True
+                        If Cancel_Button.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
+                            If _isEpisode Then
+                                Master.DB.SaveTVEpToDB(Master.currShow, False, False, False, True)
+                            Else
+                                Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                            End If
                         End If
+                        NeedToRefresh = True
                         LoadInfo()
                     End If
                 End Using

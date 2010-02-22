@@ -838,6 +838,17 @@ Public Class MediaInfo
         Return Nothing
     End Function
 
+    Public Shared Function ApplyTVDefaults(ByVal ext As String) As Fileinfo
+        Dim fi As New Fileinfo
+        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataPerFileType
+            If m.FileType = ext Then
+                fi = m.MetaData
+                Return fi
+            End If
+        Next
+        Return Nothing
+    End Function
+
     Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
         Try
             'clear it out
@@ -886,8 +897,7 @@ Public Class MediaInfo
             End If
             If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaInfo.Fileinfo
-                'TODO: Defaults for TV fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
+                _mi = MediaInfo.ApplyTVDefaults(pExt)
                 If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception

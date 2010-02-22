@@ -463,6 +463,17 @@ Partial Class dlgSettings
         Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
+        Me.GroupBox31 = New System.Windows.Forms.GroupBox
+        Me.gbTVMIDefaults = New System.Windows.Forms.GroupBox
+        Me.lstTVMetaData = New System.Windows.Forms.ListBox
+        Me.txtTVDefFIExt = New System.Windows.Forms.TextBox
+        Me.Label49 = New System.Windows.Forms.Label
+        Me.btnRemoveTVMetaDataFT = New System.Windows.Forms.Button
+        Me.btnEditTVMetaDataFT = New System.Windows.Forms.Button
+        Me.btnNewTVMetaDataFT = New System.Windows.Forms.Button
+        Me.cboTVMetaDataOverlay = New System.Windows.Forms.ComboBox
+        Me.Label50 = New System.Windows.Forms.Label
+        Me.chkTVScanMetaData = New System.Windows.Forms.CheckBox
         Me.Label48 = New System.Windows.Forms.Label
         Me.gbTVScraperOptions = New System.Windows.Forms.GroupBox
         Me.lblTVUpdate = New System.Windows.Forms.Label
@@ -585,17 +596,6 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.GroupBox31 = New System.Windows.Forms.GroupBox
-        Me.GroupBox32 = New System.Windows.Forms.GroupBox
-        Me.ListBox1 = New System.Windows.Forms.ListBox
-        Me.TextBox5 = New System.Windows.Forms.TextBox
-        Me.Label49 = New System.Windows.Forms.Label
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.cboTVMetaDataOverlay = New System.Windows.Forms.ComboBox
-        Me.Label50 = New System.Windows.Forms.Label
-        Me.chkTVScanMetaData = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -680,6 +680,8 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVScraper.SuspendLayout()
+        Me.GroupBox31.SuspendLayout()
+        Me.gbTVMIDefaults.SuspendLayout()
         Me.gbTVScraperOptions.SuspendLayout()
         Me.gbLanguage.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -698,8 +700,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox31.SuspendLayout()
-        Me.GroupBox32.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -5518,6 +5518,129 @@ Partial Class dlgSettings
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
         '
+        'GroupBox31
+        '
+        Me.GroupBox31.Controls.Add(Me.gbTVMIDefaults)
+        Me.GroupBox31.Controls.Add(Me.cboTVMetaDataOverlay)
+        Me.GroupBox31.Controls.Add(Me.Label50)
+        Me.GroupBox31.Controls.Add(Me.chkTVScanMetaData)
+        Me.GroupBox31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox31.Location = New System.Drawing.Point(211, 6)
+        Me.GroupBox31.Name = "GroupBox31"
+        Me.GroupBox31.Size = New System.Drawing.Size(401, 160)
+        Me.GroupBox31.TabIndex = 65
+        Me.GroupBox31.TabStop = False
+        Me.GroupBox31.Text = "Meta Data"
+        '
+        'gbTVMIDefaults
+        '
+        Me.gbTVMIDefaults.Controls.Add(Me.lstTVMetaData)
+        Me.gbTVMIDefaults.Controls.Add(Me.txtTVDefFIExt)
+        Me.gbTVMIDefaults.Controls.Add(Me.Label49)
+        Me.gbTVMIDefaults.Controls.Add(Me.btnRemoveTVMetaDataFT)
+        Me.gbTVMIDefaults.Controls.Add(Me.btnEditTVMetaDataFT)
+        Me.gbTVMIDefaults.Controls.Add(Me.btnNewTVMetaDataFT)
+        Me.gbTVMIDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVMIDefaults.Location = New System.Drawing.Point(210, 11)
+        Me.gbTVMIDefaults.Name = "gbTVMIDefaults"
+        Me.gbTVMIDefaults.Size = New System.Drawing.Size(183, 144)
+        Me.gbTVMIDefaults.TabIndex = 8
+        Me.gbTVMIDefaults.TabStop = False
+        Me.gbTVMIDefaults.Text = "Meta Data Defaults by File Type"
+        '
+        'lstTVMetaData
+        '
+        Me.lstTVMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVMetaData.FormattingEnabled = True
+        Me.lstTVMetaData.Location = New System.Drawing.Point(10, 16)
+        Me.lstTVMetaData.Name = "lstTVMetaData"
+        Me.lstTVMetaData.Size = New System.Drawing.Size(165, 95)
+        Me.lstTVMetaData.TabIndex = 34
+        '
+        'txtTVDefFIExt
+        '
+        Me.txtTVDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVDefFIExt.Location = New System.Drawing.Point(73, 116)
+        Me.txtTVDefFIExt.Name = "txtTVDefFIExt"
+        Me.txtTVDefFIExt.Size = New System.Drawing.Size(35, 22)
+        Me.txtTVDefFIExt.TabIndex = 33
+        '
+        'Label49
+        '
+        Me.Label49.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label49.Location = New System.Drawing.Point(8, 116)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(66, 19)
+        Me.Label49.TabIndex = 32
+        Me.Label49.Text = "File Type"
+        Me.Label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'btnRemoveTVMetaDataFT
+        '
+        Me.btnRemoveTVMetaDataFT.Enabled = False
+        Me.btnRemoveTVMetaDataFT.Image = CType(resources.GetObject("btnRemoveTVMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnRemoveTVMetaDataFT.Location = New System.Drawing.Point(153, 115)
+        Me.btnRemoveTVMetaDataFT.Name = "btnRemoveTVMetaDataFT"
+        Me.btnRemoveTVMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveTVMetaDataFT.TabIndex = 31
+        Me.btnRemoveTVMetaDataFT.UseVisualStyleBackColor = True
+        '
+        'btnEditTVMetaDataFT
+        '
+        Me.btnEditTVMetaDataFT.Enabled = False
+        Me.btnEditTVMetaDataFT.Image = CType(resources.GetObject("btnEditTVMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnEditTVMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditTVMetaDataFT.Location = New System.Drawing.Point(130, 115)
+        Me.btnEditTVMetaDataFT.Name = "btnEditTVMetaDataFT"
+        Me.btnEditTVMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditTVMetaDataFT.TabIndex = 30
+        Me.btnEditTVMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditTVMetaDataFT.UseVisualStyleBackColor = True
+        '
+        'btnNewTVMetaDataFT
+        '
+        Me.btnNewTVMetaDataFT.Enabled = False
+        Me.btnNewTVMetaDataFT.Image = CType(resources.GetObject("btnNewTVMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnNewTVMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewTVMetaDataFT.Location = New System.Drawing.Point(108, 115)
+        Me.btnNewTVMetaDataFT.Name = "btnNewTVMetaDataFT"
+        Me.btnNewTVMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewTVMetaDataFT.TabIndex = 29
+        Me.btnNewTVMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewTVMetaDataFT.UseVisualStyleBackColor = True
+        '
+        'cboTVMetaDataOverlay
+        '
+        Me.cboTVMetaDataOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTVMetaDataOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cboTVMetaDataOverlay.FormattingEnabled = True
+        Me.cboTVMetaDataOverlay.Location = New System.Drawing.Point(6, 63)
+        Me.cboTVMetaDataOverlay.Name = "cboTVMetaDataOverlay"
+        Me.cboTVMetaDataOverlay.Size = New System.Drawing.Size(174, 21)
+        Me.cboTVMetaDataOverlay.Sorted = True
+        Me.cboTVMetaDataOverlay.TabIndex = 17
+        '
+        'Label50
+        '
+        Me.Label50.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label50.Location = New System.Drawing.Point(4, 35)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(202, 29)
+        Me.Label50.TabIndex = 16
+        Me.Label50.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
+        Me.Label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkTVScanMetaData
+        '
+        Me.chkTVScanMetaData.AutoSize = True
+        Me.chkTVScanMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVScanMetaData.Location = New System.Drawing.Point(5, 16)
+        Me.chkTVScanMetaData.Name = "chkTVScanMetaData"
+        Me.chkTVScanMetaData.Size = New System.Drawing.Size(106, 17)
+        Me.chkTVScanMetaData.TabIndex = 7
+        Me.chkTVScanMetaData.Text = "Scan Meta Data"
+        Me.chkTVScanMetaData.UseVisualStyleBackColor = True
+        '
         'Label48
         '
         Me.Label48.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -5988,9 +6111,9 @@ Partial Class dlgSettings
         Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
         Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox26.Location = New System.Drawing.Point(204, 5)
+        Me.GroupBox26.Location = New System.Drawing.Point(196, 5)
         Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(391, 160)
+        Me.GroupBox26.Size = New System.Drawing.Size(399, 160)
         Me.GroupBox26.TabIndex = 63
         Me.GroupBox26.TabStop = False
         Me.GroupBox26.Text = "Meta Data"
@@ -6006,7 +6129,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox28.Location = New System.Drawing.Point(210, 11)
         Me.GroupBox28.Name = "GroupBox28"
-        Me.GroupBox28.Size = New System.Drawing.Size(176, 144)
+        Me.GroupBox28.Size = New System.Drawing.Size(183, 144)
         Me.GroupBox28.TabIndex = 8
         Me.GroupBox28.TabStop = False
         Me.GroupBox28.Text = "Meta Data Defaults by File Type"
@@ -6015,7 +6138,7 @@ Partial Class dlgSettings
         '
         Me.lstMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstMetaData.FormattingEnabled = True
-        Me.lstMetaData.Location = New System.Drawing.Point(6, 15)
+        Me.lstMetaData.Location = New System.Drawing.Point(9, 15)
         Me.lstMetaData.Name = "lstMetaData"
         Me.lstMetaData.Size = New System.Drawing.Size(165, 95)
         Me.lstMetaData.TabIndex = 34
@@ -6023,7 +6146,7 @@ Partial Class dlgSettings
         'txtDefFIExt
         '
         Me.txtDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDefFIExt.Location = New System.Drawing.Point(69, 115)
+        Me.txtDefFIExt.Location = New System.Drawing.Point(72, 115)
         Me.txtDefFIExt.Name = "txtDefFIExt"
         Me.txtDefFIExt.Size = New System.Drawing.Size(35, 22)
         Me.txtDefFIExt.TabIndex = 33
@@ -6031,7 +6154,7 @@ Partial Class dlgSettings
         'Label34
         '
         Me.Label34.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(4, 115)
+        Me.Label34.Location = New System.Drawing.Point(7, 115)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(66, 19)
         Me.Label34.TabIndex = 32
@@ -6042,7 +6165,7 @@ Partial Class dlgSettings
         '
         Me.btnRemoveMetaDataFT.Enabled = False
         Me.btnRemoveMetaDataFT.Image = CType(resources.GetObject("btnRemoveMetaDataFT.Image"), System.Drawing.Image)
-        Me.btnRemoveMetaDataFT.Location = New System.Drawing.Point(149, 114)
+        Me.btnRemoveMetaDataFT.Location = New System.Drawing.Point(152, 114)
         Me.btnRemoveMetaDataFT.Name = "btnRemoveMetaDataFT"
         Me.btnRemoveMetaDataFT.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveMetaDataFT.TabIndex = 31
@@ -6053,7 +6176,7 @@ Partial Class dlgSettings
         Me.btnEditMetaDataFT.Enabled = False
         Me.btnEditMetaDataFT.Image = CType(resources.GetObject("btnEditMetaDataFT.Image"), System.Drawing.Image)
         Me.btnEditMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditMetaDataFT.Location = New System.Drawing.Point(126, 114)
+        Me.btnEditMetaDataFT.Location = New System.Drawing.Point(129, 114)
         Me.btnEditMetaDataFT.Name = "btnEditMetaDataFT"
         Me.btnEditMetaDataFT.Size = New System.Drawing.Size(23, 23)
         Me.btnEditMetaDataFT.TabIndex = 30
@@ -6065,7 +6188,7 @@ Partial Class dlgSettings
         Me.btnNewMetaDataFT.Enabled = False
         Me.btnNewMetaDataFT.Image = CType(resources.GetObject("btnNewMetaDataFT.Image"), System.Drawing.Image)
         Me.btnNewMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewMetaDataFT.Location = New System.Drawing.Point(104, 114)
+        Me.btnNewMetaDataFT.Location = New System.Drawing.Point(107, 114)
         Me.btnNewMetaDataFT.Name = "btnNewMetaDataFT"
         Me.btnNewMetaDataFT.Size = New System.Drawing.Size(23, 23)
         Me.btnNewMetaDataFT.TabIndex = 29
@@ -6178,7 +6301,7 @@ Partial Class dlgSettings
         Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox10.Location = New System.Drawing.Point(1, 5)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(200, 160)
+        Me.GroupBox10.Size = New System.Drawing.Size(191, 160)
         Me.GroupBox10.TabIndex = 1
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Global Locks (Do not allow updates during scraping)"
@@ -6887,130 +7010,6 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'GroupBox31
-        '
-        Me.GroupBox31.Controls.Add(Me.GroupBox32)
-        Me.GroupBox31.Controls.Add(Me.cboTVMetaDataOverlay)
-        Me.GroupBox31.Controls.Add(Me.Label50)
-        Me.GroupBox31.Controls.Add(Me.chkTVScanMetaData)
-        Me.GroupBox31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox31.Location = New System.Drawing.Point(215, 6)
-        Me.GroupBox31.Name = "GroupBox31"
-        Me.GroupBox31.Size = New System.Drawing.Size(391, 160)
-        Me.GroupBox31.TabIndex = 65
-        Me.GroupBox31.TabStop = False
-        Me.GroupBox31.Text = "Meta Data"
-        '
-        'GroupBox32
-        '
-        Me.GroupBox32.Controls.Add(Me.ListBox1)
-        Me.GroupBox32.Controls.Add(Me.TextBox5)
-        Me.GroupBox32.Controls.Add(Me.Label49)
-        Me.GroupBox32.Controls.Add(Me.Button1)
-        Me.GroupBox32.Controls.Add(Me.Button2)
-        Me.GroupBox32.Controls.Add(Me.Button3)
-        Me.GroupBox32.Enabled = False
-        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox32.Location = New System.Drawing.Point(210, 11)
-        Me.GroupBox32.Name = "GroupBox32"
-        Me.GroupBox32.Size = New System.Drawing.Size(176, 144)
-        Me.GroupBox32.TabIndex = 8
-        Me.GroupBox32.TabStop = False
-        Me.GroupBox32.Text = "Meta Data Defaults by File Type"
-        '
-        'ListBox1
-        '
-        Me.ListBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(6, 15)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(165, 95)
-        Me.ListBox1.TabIndex = 34
-        '
-        'TextBox5
-        '
-        Me.TextBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.Location = New System.Drawing.Point(69, 115)
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(35, 22)
-        Me.TextBox5.TabIndex = 33
-        '
-        'Label49
-        '
-        Me.Label49.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label49.Location = New System.Drawing.Point(4, 115)
-        Me.Label49.Name = "Label49"
-        Me.Label49.Size = New System.Drawing.Size(66, 19)
-        Me.Label49.TabIndex = 32
-        Me.Label49.Text = "File Type"
-        Me.Label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Button1
-        '
-        Me.Button1.Enabled = False
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(149, 114)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(23, 23)
-        Me.Button1.TabIndex = 31
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Enabled = False
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(126, 114)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(23, 23)
-        Me.Button2.TabIndex = 30
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button2.UseVisualStyleBackColor = True
-        '
-        'Button3
-        '
-        Me.Button3.Enabled = False
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(104, 114)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(23, 23)
-        Me.Button3.TabIndex = 29
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'cboTVMetaDataOverlay
-        '
-        Me.cboTVMetaDataOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTVMetaDataOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cboTVMetaDataOverlay.FormattingEnabled = True
-        Me.cboTVMetaDataOverlay.Location = New System.Drawing.Point(6, 63)
-        Me.cboTVMetaDataOverlay.Name = "cboTVMetaDataOverlay"
-        Me.cboTVMetaDataOverlay.Size = New System.Drawing.Size(174, 21)
-        Me.cboTVMetaDataOverlay.Sorted = True
-        Me.cboTVMetaDataOverlay.TabIndex = 17
-        '
-        'Label50
-        '
-        Me.Label50.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label50.Location = New System.Drawing.Point(4, 35)
-        Me.Label50.Name = "Label50"
-        Me.Label50.Size = New System.Drawing.Size(202, 29)
-        Me.Label50.TabIndex = 16
-        Me.Label50.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
-        Me.Label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'chkTVScanMetaData
-        '
-        Me.chkTVScanMetaData.AutoSize = True
-        Me.chkTVScanMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScanMetaData.Location = New System.Drawing.Point(5, 16)
-        Me.chkTVScanMetaData.Name = "chkTVScanMetaData"
-        Me.chkTVScanMetaData.Size = New System.Drawing.Size(106, 17)
-        Me.chkTVScanMetaData.TabIndex = 7
-        Me.chkTVScanMetaData.Text = "Scan Meta Data"
-        Me.chkTVScanMetaData.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7180,6 +7179,10 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTVScraper.ResumeLayout(False)
+        Me.GroupBox31.ResumeLayout(False)
+        Me.GroupBox31.PerformLayout()
+        Me.gbTVMIDefaults.ResumeLayout(False)
+        Me.gbTVMIDefaults.PerformLayout()
         Me.gbTVScraperOptions.ResumeLayout(False)
         Me.gbTVScraperOptions.PerformLayout()
         Me.gbLanguage.ResumeLayout(False)
@@ -7207,10 +7210,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox31.ResumeLayout(False)
-        Me.GroupBox31.PerformLayout()
-        Me.GroupBox32.ResumeLayout(False)
-        Me.GroupBox32.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -7764,13 +7763,13 @@ Partial Class dlgSettings
     Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkDisplayMissingEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox31 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
-    Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
-    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
+    Friend WithEvents gbTVMIDefaults As System.Windows.Forms.GroupBox
+    Friend WithEvents lstTVMetaData As System.Windows.Forms.ListBox
+    Friend WithEvents txtTVDefFIExt As System.Windows.Forms.TextBox
     Friend WithEvents Label49 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveTVMetaDataFT As System.Windows.Forms.Button
+    Friend WithEvents btnEditTVMetaDataFT As System.Windows.Forms.Button
+    Friend WithEvents btnNewTVMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents cboTVMetaDataOverlay As System.Windows.Forms.ComboBox
     Friend WithEvents Label50 As System.Windows.Forms.Label
     Friend WithEvents chkTVScanMetaData As System.Windows.Forms.CheckBox
