@@ -35,10 +35,10 @@ Public Class AdvancedSettings
         Public DefaultValue As String
     End Class
     Private Shared _AdvancedSettings As New List(Of SettingItem)
-
+    Private Shared _DoNotSave As Boolean = False
     Public Sub New()
-        Load()
         SetDefaults()
+        Load()
     End Sub
     Public Shared Function GetSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As String
         Dim Assembly As String = cAssembly
@@ -76,11 +76,30 @@ Public Class AdvancedSettings
                 _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = value
             End If
         End If
-        Save()
+        If Not _DoNotSave Then Save()
+        Return True
+    End Function
+    Public Shared Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "") As Boolean
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberCORE"
+            End If
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v(0) Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberCORE", Convert.ToString(value), "")})
+            Else
+                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = Convert.ToString(value)
+            End If
+        End If
+        If Not _DoNotSave Then Save()
         Return True
     End Function
     Private Shared Sub SetDefaults()
-        SetSetting("Use.DTSInAudioChannel.InExporter", "1")
+        _DoNotSave = True
+        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
+        _DoNotSave = False
     End Sub
     Public Shared Sub Save()
         If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
@@ -104,6 +123,7 @@ Public Class AdvancedSettings
         If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
     End Sub
     Public Shared Sub Load()
+        _DoNotSave = True
         If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
             Dim xdoc As New XDocument
             xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
@@ -111,5 +131,6 @@ Public Class AdvancedSettings
                 _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
             Next
         End If
+        _DoNotSave = False
     End Sub
 End Class

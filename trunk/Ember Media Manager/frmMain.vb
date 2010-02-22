@@ -967,10 +967,13 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        'TODO: -- Re-enable --
-                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
@@ -1849,10 +1852,13 @@ Public Class frmMain
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
-                            'TODO: -- Re-enable --
-                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                            'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                            Functions.SetScraperMod(Enums.ModType.All, False)
+                            Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
-                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
+                            Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                            Functions.SetScraperMod(Enums.ModType.All, False)
+                            Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
@@ -2136,8 +2142,9 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Functions.SetScraperMod(Enums.ModType.All, True)
-                        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
                         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                         Functions.SetScraperMod(Enums.ModType.All, False)
