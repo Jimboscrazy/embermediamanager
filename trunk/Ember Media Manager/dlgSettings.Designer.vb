@@ -301,6 +301,9 @@ Partial Class dlgSettings
         Me.btnEditTVSource = New System.Windows.Forms.Button
         Me.btnRemTVSource = New System.Windows.Forms.Button
         Me.gbTVNaming = New System.Windows.Forms.GroupBox
+        Me.gbAllSeasonPoster = New System.Windows.Forms.GroupBox
+        Me.chkSeasonAllJPG = New System.Windows.Forms.CheckBox
+        Me.chkSeasonAllTBN = New System.Windows.Forms.CheckBox
         Me.lblInsideSeason = New System.Windows.Forms.Label
         Me.gbEpisodeFanart = New System.Windows.Forms.GroupBox
         Me.chkEpisodeDotFanart = New System.Windows.Forms.CheckBox
@@ -328,7 +331,6 @@ Partial Class dlgSettings
         Me.chkShowPosterJPG = New System.Windows.Forms.CheckBox
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
-        Me.chkSeasonAllTBN = New System.Windows.Forms.CheckBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.gbShowRegex = New System.Windows.Forms.GroupBox
         Me.lblSeasonMatch = New System.Windows.Forms.Label
@@ -582,8 +584,7 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.gbAllSeasonPoster = New System.Windows.Forms.GroupBox
-        Me.chkSeasonAllJPG = New System.Windows.Forms.CheckBox
+        Me.chkDisplayMissingEpisodes = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -632,6 +633,7 @@ Partial Class dlgSettings
         Me.TabPage3.SuspendLayout()
         Me.gbMiscTVSourceOpts.SuspendLayout()
         Me.gbTVNaming.SuspendLayout()
+        Me.gbAllSeasonPoster.SuspendLayout()
         Me.gbEpisodeFanart.SuspendLayout()
         Me.gbEpisodePosters.SuspendLayout()
         Me.gbSeasonFanart.SuspendLayout()
@@ -685,7 +687,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbAllSeasonPoster.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -3707,6 +3708,40 @@ Partial Class dlgSettings
         Me.gbTVNaming.TabStop = False
         Me.gbTVNaming.Text = "File Naming"
         '
+        'gbAllSeasonPoster
+        '
+        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllJPG)
+        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllTBN)
+        Me.gbAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbAllSeasonPoster.Location = New System.Drawing.Point(5, 153)
+        Me.gbAllSeasonPoster.Name = "gbAllSeasonPoster"
+        Me.gbAllSeasonPoster.Size = New System.Drawing.Size(133, 68)
+        Me.gbAllSeasonPoster.TabIndex = 8
+        Me.gbAllSeasonPoster.TabStop = False
+        Me.gbAllSeasonPoster.Text = "All Season Posters"
+        '
+        'chkSeasonAllJPG
+        '
+        Me.chkSeasonAllJPG.AutoSize = True
+        Me.chkSeasonAllJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonAllJPG.Location = New System.Drawing.Point(6, 34)
+        Me.chkSeasonAllJPG.Name = "chkSeasonAllJPG"
+        Me.chkSeasonAllJPG.Size = New System.Drawing.Size(98, 17)
+        Me.chkSeasonAllJPG.TabIndex = 1
+        Me.chkSeasonAllJPG.Text = "season-all.jpg"
+        Me.chkSeasonAllJPG.UseVisualStyleBackColor = True
+        '
+        'chkSeasonAllTBN
+        '
+        Me.chkSeasonAllTBN.AutoSize = True
+        Me.chkSeasonAllTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonAllTBN.Location = New System.Drawing.Point(6, 18)
+        Me.chkSeasonAllTBN.Name = "chkSeasonAllTBN"
+        Me.chkSeasonAllTBN.Size = New System.Drawing.Size(99, 17)
+        Me.chkSeasonAllTBN.TabIndex = 0
+        Me.chkSeasonAllTBN.Text = "season-all.tbn"
+        Me.chkSeasonAllTBN.UseVisualStyleBackColor = True
+        '
         'lblInsideSeason
         '
         Me.lblInsideSeason.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -4017,17 +4052,6 @@ Partial Class dlgSettings
         Me.chkShowFolderJPG.Text = "folder.jpg"
         Me.chkShowFolderJPG.UseVisualStyleBackColor = True
         '
-        'chkSeasonAllTBN
-        '
-        Me.chkSeasonAllTBN.AutoSize = True
-        Me.chkSeasonAllTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonAllTBN.Location = New System.Drawing.Point(6, 18)
-        Me.chkSeasonAllTBN.Name = "chkSeasonAllTBN"
-        Me.chkSeasonAllTBN.Size = New System.Drawing.Size(99, 17)
-        Me.chkSeasonAllTBN.TabIndex = 0
-        Me.chkSeasonAllTBN.Text = "season-all.tbn"
-        Me.chkSeasonAllTBN.UseVisualStyleBackColor = True
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.gbShowRegex)
@@ -4237,6 +4261,7 @@ Partial Class dlgSettings
         '
         'gbTVListOptions
         '
+        Me.gbTVListOptions.Controls.Add(Me.chkDisplayMissingEpisodes)
         Me.gbTVListOptions.Controls.Add(Me.gbEpisodeListOptions)
         Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
         Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
@@ -4381,7 +4406,7 @@ Partial Class dlgSettings
         Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVMisc.Location = New System.Drawing.Point(6, 6)
         Me.gbTVMisc.Name = "gbTVMisc"
-        Me.gbTVMisc.Size = New System.Drawing.Size(180, 100)
+        Me.gbTVMisc.Size = New System.Drawing.Size(180, 385)
         Me.gbTVMisc.TabIndex = 2
         Me.gbTVMisc.TabStop = False
         Me.gbTVMisc.Text = "Miscellaneous"
@@ -6837,28 +6862,16 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'gbAllSeasonPoster
+        'chkDisplayMissingEpisodes
         '
-        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllJPG)
-        Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllTBN)
-        Me.gbAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbAllSeasonPoster.Location = New System.Drawing.Point(5, 153)
-        Me.gbAllSeasonPoster.Name = "gbAllSeasonPoster"
-        Me.gbAllSeasonPoster.Size = New System.Drawing.Size(133, 68)
-        Me.gbAllSeasonPoster.TabIndex = 8
-        Me.gbAllSeasonPoster.TabStop = False
-        Me.gbAllSeasonPoster.Text = "All Season Posters"
-        '
-        'chkSeasonAllJPG
-        '
-        Me.chkSeasonAllJPG.AutoSize = True
-        Me.chkSeasonAllJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonAllJPG.Location = New System.Drawing.Point(6, 34)
-        Me.chkSeasonAllJPG.Name = "chkSeasonAllJPG"
-        Me.chkSeasonAllJPG.Size = New System.Drawing.Size(98, 17)
-        Me.chkSeasonAllJPG.TabIndex = 1
-        Me.chkSeasonAllJPG.Text = "season-all.jpg"
-        Me.chkSeasonAllJPG.UseVisualStyleBackColor = True
+        Me.chkDisplayMissingEpisodes.AutoSize = True
+        Me.chkDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
+        Me.chkDisplayMissingEpisodes.Name = "chkDisplayMissingEpisodes"
+        Me.chkDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
+        Me.chkDisplayMissingEpisodes.TabIndex = 4
+        Me.chkDisplayMissingEpisodes.Text = "Display Missing Episodes"
+        Me.chkDisplayMissingEpisodes.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -6874,6 +6887,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -6884,8 +6899,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6971,6 +6984,8 @@ Partial Class dlgSettings
         Me.TabPage3.ResumeLayout(False)
         Me.gbMiscTVSourceOpts.ResumeLayout(False)
         Me.gbTVNaming.ResumeLayout(False)
+        Me.gbAllSeasonPoster.ResumeLayout(False)
+        Me.gbAllSeasonPoster.PerformLayout()
         Me.gbEpisodeFanart.ResumeLayout(False)
         Me.gbEpisodeFanart.PerformLayout()
         Me.gbEpisodePosters.ResumeLayout(False)
@@ -6988,6 +7003,7 @@ Partial Class dlgSettings
         Me.gbShowRegex.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
         Me.gbTVListOptions.ResumeLayout(False)
+        Me.gbTVListOptions.PerformLayout()
         Me.gbEpisodeListOptions.ResumeLayout(False)
         Me.gbEpisodeListOptions.PerformLayout()
         Me.gbSeasonListOptions.ResumeLayout(False)
@@ -7053,8 +7069,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbAllSeasonPoster.ResumeLayout(False)
-        Me.gbAllSeasonPoster.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -7606,4 +7620,5 @@ Partial Class dlgSettings
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDisplayMissingEpisodes As System.Windows.Forms.CheckBox
 End Class
