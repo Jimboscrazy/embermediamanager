@@ -4343,7 +4343,7 @@ Public Class frmMain
 
                 If doTheme Then
                     Me.tTheme = New Theming
-                    .ApplyTheme(Theming.ThemeType.Movies)
+                    .ApplyTheme(If(Me.tabsMain.SelectedIndex = 0, Theming.ThemeType.Movies, Theming.ThemeType.Show))
                 End If
 
 
