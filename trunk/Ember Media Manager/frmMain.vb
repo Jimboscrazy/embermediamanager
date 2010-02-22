@@ -967,6 +967,7 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
+                        'TODO: -- Re-enable --
                         'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
                         'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
@@ -1848,6 +1849,7 @@ Public Class frmMain
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
+                            'TODO: -- Re-enable --
                             'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
                             'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
