@@ -88,6 +88,7 @@ Public Class dlgFileInfo
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
+
                 Dim v As MediaInfo.Video
                 For c = 0 To _FileInfo.StreamDetails.Video.Count - 1
                     v = _FileInfo.StreamDetails.Video(c)

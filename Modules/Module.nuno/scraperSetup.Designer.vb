@@ -31,8 +31,12 @@ Partial Class scraperSetup
         Me.tOutline = New System.Windows.Forms.CheckBox
         Me.tPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.cCheckSubsLanguage = New System.Windows.Forms.CheckBox
+        Me.cAddSubMetadata = New System.Windows.Forms.CheckBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -131,6 +135,38 @@ Partial Class scraperSetup
         Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.cCheckSubsLanguage)
+        Me.GroupBox2.Controls.Add(Me.cAddSubMetadata)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 62)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(396, 71)
+        Me.GroupBox2.TabIndex = 7
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "*** Still Disabled"
+        '
+        'cCheckSubsLanguage
+        '
+        Me.cCheckSubsLanguage.AutoSize = True
+        Me.cCheckSubsLanguage.Enabled = False
+        Me.cCheckSubsLanguage.Location = New System.Drawing.Point(18, 42)
+        Me.cCheckSubsLanguage.Name = "cCheckSubsLanguage"
+        Me.cCheckSubsLanguage.Size = New System.Drawing.Size(197, 17)
+        Me.cCheckSubsLanguage.TabIndex = 6
+        Me.cCheckSubsLanguage.Text = "Retrieve Language from subtitle files"
+        Me.cCheckSubsLanguage.UseVisualStyleBackColor = True
+        '
+        'cAddSubMetadata
+        '
+        Me.cAddSubMetadata.AutoSize = True
+        Me.cAddSubMetadata.Location = New System.Drawing.Point(7, 19)
+        Me.cAddSubMetadata.Name = "cAddSubMetadata"
+        Me.cAddSubMetadata.Size = New System.Drawing.Size(186, 17)
+        Me.cAddSubMetadata.TabIndex = 6
+        Me.cAddSubMetadata.Text = "Add external subtitle to Meta Data"
+        Me.cAddSubMetadata.UseVisualStyleBackColor = True
+        '
         'scraperSetup
         '
         Me.AcceptButton = Me.OK_Button
@@ -138,6 +174,7 @@ Partial Class scraperSetup
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(405, 208)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -150,6 +187,8 @@ Partial Class scraperSetup
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -162,5 +201,8 @@ Partial Class scraperSetup
     Friend WithEvents tOutline As System.Windows.Forms.CheckBox
     Friend WithEvents tPlot As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents cCheckSubsLanguage As System.Windows.Forms.CheckBox
+    Friend WithEvents cAddSubMetadata As System.Windows.Forms.CheckBox
 
 End Class
