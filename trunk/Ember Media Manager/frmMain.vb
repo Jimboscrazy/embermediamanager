@@ -106,8 +106,10 @@ Public Class frmMain
         Dim fileInfo As String
         Dim setEnabled As Boolean
         Dim Movie As Structures.DBMovie
+        Dim TVShow As Structures.DBTV
         Dim Path As String
         Dim Result As Image
+        Dim IsTV As Boolean
     End Structure
 
     Private Structure Arguments
@@ -117,8 +119,10 @@ Public Class frmMain
         Dim pURL As String
         Dim Path As String
         Dim Movie As Structures.DBMovie
+        Dim TVShow As Structures.DBTV
         Dim ID As Integer
         Dim Season As Integer
+        Dim IsTV As Boolean
     End Structure
 
     Public Property PosterMaxWidth() As Integer
@@ -867,6 +871,17 @@ Public Class frmMain
 
         If Me.tabsMain.SelectedIndex = 0 Then
             Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
+        Else
+            Me.SetControlsEnabled(False)
+
+            If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
+
+            Me.txtMetaData.Clear()
+            Me.pbMILoading.Visible = True
+
+            Me.bwMediaInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwMediaInfo.WorkerSupportsCancellation = True
+            Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
         End If
 
     End Sub
@@ -3535,15 +3550,21 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Try
-            MediaInfo.UpdateMediaInfo(Args.Movie)
-            Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
+            If Args.IsTV Then
+                MediaInfo.UpdateTVMediaInfo(Args.TVShow)
+                Master.DB.SaveTVEpToDB(Args.TVShow, False, False, False, True)
+                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
+            Else
+                MediaInfo.UpdateMediaInfo(Args.Movie)
+                Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
+                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
+            End If
 
             If Me.bwMediaInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
-            e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
@@ -3564,17 +3585,25 @@ Public Class frmMain
                 If Not Res.fileInfo = "error" Then
                     Me.pbMILoading.Visible = False
                     Me.txtMetaData.Text = Res.fileInfo
-                    If Master.eSettings.ScanMediaInfo Then
-                        Me.SetAVImages(APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename))
+
+                    If Res.IsTV Then
+                        Me.SetAVImages(APIXML.GetAVImages(Res.TVShow.TVEp.FileInfo, Res.TVShow.Filename))
                         Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                         Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                     Else
-                        Me.pnlInfoIcons.Width = pbStudio.Width + 1
-                        Me.pbStudio.Left = 0
-                    End If
-                    If Master.eSettings.UseMIDuration Then
-                        If Not String.IsNullOrEmpty(Res.Movie.Movie.Runtime) Then
-                            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), Res.Movie.Movie.Runtime)
+                        If Master.eSettings.ScanMediaInfo Then
+                            Me.SetAVImages(APIXML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename))
+                            Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
+                            Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
+                        Else
+                            Me.pnlInfoIcons.Width = pbStudio.Width + 1
+                            Me.pbStudio.Left = 0
+                        End If
+
+                        If Master.eSettings.UseMIDuration Then
+                            If Not String.IsNullOrEmpty(Res.Movie.Movie.Runtime) Then
+                                Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), Res.Movie.Movie.Runtime)
+                            End If
                         End If
                     End If
                     Me.btnMetaDataRefresh.Focus()
@@ -3586,7 +3615,8 @@ Public Class frmMain
             If Res.setEnabled Then
                 Me.tabsMain.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
-                If Me.dgvMediaList.RowCount > 0 Then
+                If (Me.tabsMain.SelectedIndex = 0 AndAlso Me.dgvMediaList.RowCount > 0) OrElse _
+                   (Me.tabsMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
                     Me.SetControlsEnabled(True)
                 End If
             End If
@@ -4090,6 +4120,7 @@ Public Class frmMain
 
         Me.pbActLoad.Visible = False
         Me.pbActors.Image = My.Resources.actor_silhouette
+        Me.pbMILoading.Visible = False
 
         Me.pnlInfoPanel.ResumeLayout()
     End Sub

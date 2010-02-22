@@ -156,6 +156,14 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
 
+	<object name="pbMILoading">
+      <width>41</width>
+      <height>39</height>
+      <left>txtMetaData.Left + (txtMetaData.Width / 2) - 20</left>
+      <top>txtMetaData.Top + (txtMetaData.Height / 2) - 20</top>
+      <anchor>9</anchor>
+    </object>
+	
     <object name="pnlActors">
       <width>302</width>
       <height>250</height>
