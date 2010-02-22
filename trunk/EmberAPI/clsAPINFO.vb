@@ -408,7 +408,7 @@ Public Class NFO
 
     End Function
 
-    Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo) As MediaInfo.Audio
+    Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo, ByVal ForTV As Boolean) As MediaInfo.Audio
 
         '//
         ' Get the highest values from file info
@@ -434,7 +434,11 @@ Public Class NFO
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Master.eSettings.FlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.FlagLang.ToLower Then fiaOut.HasPreferred = True
+                If ForTV Then
+                    If Not String.IsNullOrEmpty(Master.eSettings.TVFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVFlagLang.ToLower Then fiaOut.HasPreferred = True
+                Else
+                    If Not String.IsNullOrEmpty(Master.eSettings.FlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.FlagLang.ToLower Then fiaOut.HasPreferred = True
+                End If
             Next
 
         Catch ex As Exception

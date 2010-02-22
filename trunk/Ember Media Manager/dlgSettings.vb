@@ -182,12 +182,13 @@ Public Class dlgSettings
         Me.RemoveEpFilter()
     End Sub
 
-    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
+    Private Sub chkScanMediaInfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
         Me.SetApplyButton(True)
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
         Me.cbLanguages.Enabled = Me.chkScanMediaInfo.Checked
         Me.chkIFOScan.Enabled = Me.chkScanMediaInfo.Checked
         If Not Me.chkScanMediaInfo.Checked Then
+            Me.cbLanguages.SelectedIndex = 0
             Me.chkUseMIDuration.Checked = False
             Me.gbRTFormat.Enabled = False
             Me.rbMins.Checked = True
@@ -2261,6 +2262,20 @@ Public Class dlgSettings
     Private Sub chkDisplayMissingEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayMissingEpisodes.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkTVScanMetaData_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScanMetaData.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.cboTVMetaDataOverlay.Enabled = Me.chkTVScanMetaData.Checked
+
+        If Not Me.chkTVScanMetaData.Checked Then
+            Me.cboTVMetaDataOverlay.SelectedIndex = 0
+        End If
+    End Sub
+
+    Private Sub cboTVMetaDataOverlay_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTVMetaDataOverlay.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2342,6 +2357,7 @@ Public Class dlgSettings
             End If
             Master.eSettings.ForceTitle = Me.cbForce.Text
             Master.eSettings.ScanMediaInfo = Me.chkScanMediaInfo.Checked
+            Master.eSettings.ScanTVMediaInfo = Me.chkTVScanMetaData.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
             Master.eSettings.FullCrew = Me.chkFullCrew.Checked
             Master.eSettings.CastImagesOnly = Me.chkCastWithImg.Checked
@@ -2524,6 +2540,7 @@ Public Class dlgSettings
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
+            Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
@@ -2707,6 +2724,7 @@ Public Class dlgSettings
                 Me.cbForce.Text = Master.eSettings.ForceTitle
             End If
             Me.chkScanMediaInfo.Checked = Master.eSettings.ScanMediaInfo
+            Me.chkTVScanMetaData.Checked = Master.eSettings.ScanTVMediaInfo
             Me.chkFullCast.Checked = Master.eSettings.FullCast
             Me.chkFullCrew.Checked = Master.eSettings.FullCrew
             Me.chkCastWithImg.Checked = Master.eSettings.CastImagesOnly
@@ -2882,6 +2900,7 @@ Public Class dlgSettings
             End If
             Me.chkAutoDetectVTS.Checked = Master.eSettings.AutoDetectVTS
             Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), Master.eLang.Disabled, Master.eSettings.FlagLang)
+            Me.cboTVMetaDataOverlay.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.TVFlagLang), Master.eLang.Disabled, Master.eSettings.TVFlagLang)
             Me.cbIntLang.SelectedItem = Master.eSettings.Language
 
             Me.chkTitle.Checked = Master.eSettings.FieldTitle
@@ -3043,6 +3062,8 @@ Public Class dlgSettings
 
         Me.cbLanguages.Items.Add(Master.eLang.Disabled)
         Me.cbLanguages.Items.AddRange(APIXML.GetLanguageList)
+        Me.cboTVMetaDataOverlay.Items.Add(Master.eLang.Disabled)
+        Me.cboTVMetaDataOverlay.Items.AddRange(APIXML.GetLanguageList)
 
     End Sub
 
@@ -3718,5 +3739,6 @@ Public Class dlgSettings
         Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class

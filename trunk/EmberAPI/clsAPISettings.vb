@@ -33,6 +33,7 @@ Public Class Settings
     Private _showratingregion As String
     Private _forcetitle As String
     Private _scanmediainfo As Boolean
+    Private _scantvmediainfo As Boolean
     Private _imdburl As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
@@ -203,6 +204,7 @@ Public Class Settings
     Private _levtolerance As Integer
     Private _autodetectvts As Boolean
     Private _flaglang As String
+    Private _tvflaglang As String
     Private _language As String
     Private _fieldtitle As Boolean
     Private _fieldyear As Boolean
@@ -371,6 +373,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._scanmediainfo = value
+        End Set
+    End Property
+
+    Public Property ScanTVMediaInfo() As Boolean
+        Get
+            Return Me._scantvmediainfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scantvmediainfo = value
         End Set
     End Property
 
@@ -1904,6 +1915,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVFlagLang() As String
+        Get
+            Return Me._tvflaglang
+        End Get
+        Set(ByVal value As String)
+            Me._tvflaglang = value
+        End Set
+    End Property
+
     Public Property Language() As String
         Get
             Return Me._language
@@ -2721,6 +2741,7 @@ Public Class Settings
         Me._usecertformpaa = False
         Me._showratingregion = "usa"
         Me._scanmediainfo = True
+        Me._scantvmediainfo = True
         Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
         Me._fullcrew = False
@@ -2891,6 +2912,7 @@ Public Class Settings
         Me._levtolerance = 0
         Me._autodetectvts = True
         Me._flaglang = String.Empty
+        Me._tvflaglang = String.Empty
         Me._language = "English_(en_US)"
         Me._fieldtitle = True
         Me._fieldyear = True

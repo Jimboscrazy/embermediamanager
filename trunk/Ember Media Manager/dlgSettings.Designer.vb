@@ -352,6 +352,7 @@ Partial Class dlgSettings
         Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.pnlShows = New System.Windows.Forms.Panel
         Me.gbTVListOptions = New System.Windows.Forms.GroupBox
+        Me.chkDisplayMissingEpisodes = New System.Windows.Forms.CheckBox
         Me.gbEpisodeListOptions = New System.Windows.Forms.GroupBox
         Me.chkEpisodeNfoCol = New System.Windows.Forms.CheckBox
         Me.chkEpisodeFanartCol = New System.Windows.Forms.CheckBox
@@ -584,7 +585,17 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.chkDisplayMissingEpisodes = New System.Windows.Forms.CheckBox
+        Me.GroupBox31 = New System.Windows.Forms.GroupBox
+        Me.GroupBox32 = New System.Windows.Forms.GroupBox
+        Me.ListBox1 = New System.Windows.Forms.ListBox
+        Me.TextBox5 = New System.Windows.Forms.TextBox
+        Me.Label49 = New System.Windows.Forms.Label
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.cboTVMetaDataOverlay = New System.Windows.Forms.ComboBox
+        Me.Label50 = New System.Windows.Forms.Label
+        Me.chkTVScanMetaData = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -687,6 +698,8 @@ Partial Class dlgSettings
         Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox31.SuspendLayout()
+        Me.GroupBox32.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -4273,6 +4286,17 @@ Partial Class dlgSettings
         Me.gbTVListOptions.TabStop = False
         Me.gbTVListOptions.Text = "Media List Options"
         '
+        'chkDisplayMissingEpisodes
+        '
+        Me.chkDisplayMissingEpisodes.AutoSize = True
+        Me.chkDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
+        Me.chkDisplayMissingEpisodes.Name = "chkDisplayMissingEpisodes"
+        Me.chkDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
+        Me.chkDisplayMissingEpisodes.TabIndex = 4
+        Me.chkDisplayMissingEpisodes.Text = "Display Missing Episodes"
+        Me.chkDisplayMissingEpisodes.UseVisualStyleBackColor = True
+        '
         'gbEpisodeListOptions
         '
         Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeNfoCol)
@@ -5485,6 +5509,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVScraper.BackColor = System.Drawing.Color.White
         Me.pnlTVScraper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVScraper.Controls.Add(Me.GroupBox31)
         Me.pnlTVScraper.Controls.Add(Me.Label48)
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
         Me.pnlTVScraper.Location = New System.Drawing.Point(188, 96)
@@ -6862,16 +6887,129 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'chkDisplayMissingEpisodes
+        'GroupBox31
         '
-        Me.chkDisplayMissingEpisodes.AutoSize = True
-        Me.chkDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
-        Me.chkDisplayMissingEpisodes.Name = "chkDisplayMissingEpisodes"
-        Me.chkDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
-        Me.chkDisplayMissingEpisodes.TabIndex = 4
-        Me.chkDisplayMissingEpisodes.Text = "Display Missing Episodes"
-        Me.chkDisplayMissingEpisodes.UseVisualStyleBackColor = True
+        Me.GroupBox31.Controls.Add(Me.GroupBox32)
+        Me.GroupBox31.Controls.Add(Me.cboTVMetaDataOverlay)
+        Me.GroupBox31.Controls.Add(Me.Label50)
+        Me.GroupBox31.Controls.Add(Me.chkTVScanMetaData)
+        Me.GroupBox31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox31.Location = New System.Drawing.Point(215, 6)
+        Me.GroupBox31.Name = "GroupBox31"
+        Me.GroupBox31.Size = New System.Drawing.Size(391, 160)
+        Me.GroupBox31.TabIndex = 65
+        Me.GroupBox31.TabStop = False
+        Me.GroupBox31.Text = "Meta Data"
+        '
+        'GroupBox32
+        '
+        Me.GroupBox32.Controls.Add(Me.ListBox1)
+        Me.GroupBox32.Controls.Add(Me.TextBox5)
+        Me.GroupBox32.Controls.Add(Me.Label49)
+        Me.GroupBox32.Controls.Add(Me.Button1)
+        Me.GroupBox32.Controls.Add(Me.Button2)
+        Me.GroupBox32.Controls.Add(Me.Button3)
+        Me.GroupBox32.Enabled = False
+        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox32.Location = New System.Drawing.Point(210, 11)
+        Me.GroupBox32.Name = "GroupBox32"
+        Me.GroupBox32.Size = New System.Drawing.Size(176, 144)
+        Me.GroupBox32.TabIndex = 8
+        Me.GroupBox32.TabStop = False
+        Me.GroupBox32.Text = "Meta Data Defaults by File Type"
+        '
+        'ListBox1
+        '
+        Me.ListBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.Location = New System.Drawing.Point(6, 15)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(165, 95)
+        Me.ListBox1.TabIndex = 34
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox5.Location = New System.Drawing.Point(69, 115)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(35, 22)
+        Me.TextBox5.TabIndex = 33
+        '
+        'Label49
+        '
+        Me.Label49.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label49.Location = New System.Drawing.Point(4, 115)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(66, 19)
+        Me.Label49.TabIndex = 32
+        Me.Label49.Text = "File Type"
+        Me.Label49.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Button1
+        '
+        Me.Button1.Enabled = False
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(149, 114)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(23, 23)
+        Me.Button1.TabIndex = 31
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Enabled = False
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(126, 114)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(23, 23)
+        Me.Button2.TabIndex = 30
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Enabled = False
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button3.Location = New System.Drawing.Point(104, 114)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(23, 23)
+        Me.Button3.TabIndex = 29
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'cboTVMetaDataOverlay
+        '
+        Me.cboTVMetaDataOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTVMetaDataOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cboTVMetaDataOverlay.FormattingEnabled = True
+        Me.cboTVMetaDataOverlay.Location = New System.Drawing.Point(6, 63)
+        Me.cboTVMetaDataOverlay.Name = "cboTVMetaDataOverlay"
+        Me.cboTVMetaDataOverlay.Size = New System.Drawing.Size(174, 21)
+        Me.cboTVMetaDataOverlay.Sorted = True
+        Me.cboTVMetaDataOverlay.TabIndex = 17
+        '
+        'Label50
+        '
+        Me.Label50.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label50.Location = New System.Drawing.Point(4, 35)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(202, 29)
+        Me.Label50.TabIndex = 16
+        Me.Label50.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
+        Me.Label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkTVScanMetaData
+        '
+        Me.chkTVScanMetaData.AutoSize = True
+        Me.chkTVScanMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVScanMetaData.Location = New System.Drawing.Point(5, 16)
+        Me.chkTVScanMetaData.Name = "chkTVScanMetaData"
+        Me.chkTVScanMetaData.Size = New System.Drawing.Size(106, 17)
+        Me.chkTVScanMetaData.TabIndex = 7
+        Me.chkTVScanMetaData.Text = "Scan Meta Data"
+        Me.chkTVScanMetaData.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -6887,10 +7025,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
@@ -6899,6 +7033,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -7069,6 +7207,10 @@ Partial Class dlgSettings
         Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox31.ResumeLayout(False)
+        Me.GroupBox31.PerformLayout()
+        Me.GroupBox32.ResumeLayout(False)
+        Me.GroupBox32.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -7621,4 +7763,15 @@ Partial Class dlgSettings
     Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkDisplayMissingEpisodes As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox31 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
+    Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
+    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
+    Friend WithEvents Label49 As System.Windows.Forms.Label
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents cboTVMetaDataOverlay As System.Windows.Forms.ComboBox
+    Friend WithEvents Label50 As System.Windows.Forms.Label
+    Friend WithEvents chkTVScanMetaData As System.Windows.Forms.CheckBox
 End Class

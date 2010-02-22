@@ -139,7 +139,7 @@ Public Class dlgBulkRenamer
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
+                                                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
                                                         MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
                                                     End If
                                                 Catch ex As Exception
