@@ -26,9 +26,9 @@ Public Class dlgSettings
 
     Private didApply As Boolean = False
     Private sResult As New Structures.SettingsResult
-    Private XComs As List(Of Settings.XBMCCom)
-    Private Meta As List(Of Settings.MetadataPerType)
-    Private TVMeta As List(Of Settings.MetadataPerType)
+    Private XComs As New List(Of Settings.XBMCCom)
+    Private Meta As New List(Of Settings.MetadataPerType)
+    Private TVMeta As New List(Of Settings.MetadataPerType)
     Private LangChanged As Boolean = False
     Private ShowRegex As List(Of Settings.TVShowRegEx)
 
@@ -2436,7 +2436,8 @@ Public Class dlgSettings
             End If
             Master.eSettings.LogErrors = Me.chkLogErrors.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
-            Master.eSettings.XBMCComs = Me.XComs
+            Master.eSettings.XBMCComs.Clear()
+            Master.eSettings.XBMCComs.AddRange(Me.XComs)
             Master.eSettings.ValidExts.Clear()
             Master.eSettings.ValidExts.AddRange(lstMovieExts.Items.OfType(Of String).ToList)
             Master.eSettings.NoStackExts.Clear()
@@ -2685,8 +2686,10 @@ Public Class dlgSettings
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
             Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
-            Master.eSettings.MetadataPerFileType = Me.Meta
-            Master.eSettings.TVMetadataperFileType = Me.TVMeta
+            Master.eSettings.MetadataPerFileType.Clear()
+            Master.eSettings.MetadataPerFileType.AddRange(Me.Meta)
+            Master.eSettings.TVMetadataperFileType.Clear()
+            Master.eSettings.TVMetadataperFileType.AddRange(Me.TVMeta)
             Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
             Master.eSettings.CleanDB = Me.chkCleanDB.Checked
             Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
@@ -2799,7 +2802,7 @@ Public Class dlgSettings
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
             Me.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
 
-            Me.XComs = Master.eSettings.XBMCComs
+            Me.XComs.AddRange(Master.eSettings.XBMCComs)
             Me.LoadXComs()
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
@@ -3037,9 +3040,9 @@ Public Class dlgSettings
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
             Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
-            Me.Meta = Master.eSettings.MetadataPerFileType
+            Me.Meta.AddRange(Master.eSettings.MetadataPerFileType)
             Me.LoadMetadata()
-            Me.TVMeta = Master.eSettings.TVMetadataPerFileType
+            Me.TVMeta.AddRange(Master.eSettings.TVMetadataperFileType)
             Me.LoadTVMetadata()
             Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
             Me.chkCleanDB.Checked = Master.eSettings.CleanDB
