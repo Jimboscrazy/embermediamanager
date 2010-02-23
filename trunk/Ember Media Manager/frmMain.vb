@@ -2122,7 +2122,8 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-        Functions.SetScraperMod(Enums.ModType.All, False)
+        Functions.SetScraperMod(Enums.ModType.All, True, False)
+
         Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
         'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
@@ -7582,8 +7583,8 @@ doCancel:
     End Sub
 
     Private Sub ReScrapeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReScrapeToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-        Functions.SetScraperMod(Enums.ModType.All, False)
+        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType.All, True, False)
         Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
     End Sub
 

@@ -89,6 +89,9 @@ Public Class EmberNativeScraperModule
                 DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, ScrapeType, Options)
             End If
         End If
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+            DBMovie.Movie.IMDBID = String.Empty
+        End If
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
