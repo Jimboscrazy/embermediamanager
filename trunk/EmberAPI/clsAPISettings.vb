@@ -295,6 +295,32 @@ Public Class Settings
     Private _onlytvimagesforselectedlangauge As Boolean
     Private _alwaysgetenglishtvimages As Boolean
     Private _displaymissingepisodes As Boolean
+    Private _showlocktitle As Boolean
+    Private _showlockplot As Boolean
+    Private _showlockrating As Boolean
+    Private _showlockgenre As Boolean
+    Private _showlockstudio As Boolean
+    Private _eplocktitle As Boolean
+    Private _eplockplot As Boolean
+    Private _eplockrating As Boolean
+    Private _scrapershowtitle As Boolean
+    Private _scrapershowegu As Boolean
+    Private _scrapershowgenre As Boolean
+    Private _scrapershowmpaa As Boolean
+    Private _scrapershowplot As Boolean
+    Private _scrapershowpremiered As Boolean
+    Private _scrapershowrating As Boolean
+    Private _scrapershowstudio As Boolean
+    Private _scrapershowactors As Boolean
+    Private _scrapereptitle As Boolean
+    Private _scraperepseason As Boolean
+    Private _scraperepepisode As Boolean
+    Private _scraperepaired As Boolean
+    Private _scrapereprating As Boolean
+    Private _scraperepplot As Boolean
+    Private _scraperepdirector As Boolean
+    Private _scraperepcredits As Boolean
+    Private _scraperepactors As Boolean
 
     Public Property Version() As String
         Get
@@ -2737,6 +2763,240 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ShowLockTitle() As Boolean
+        Get
+            Return Me._showlocktitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showlocktitle = value
+        End Set
+    End Property
+
+    Public Property ShowLockPlot() As Boolean
+        Get
+            Return Me._showlockplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showlockplot = value
+        End Set
+    End Property
+
+    Public Property ShowLockRating() As Boolean
+        Get
+            Return Me._showlockrating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showlockrating = value
+        End Set
+    End Property
+
+    Public Property ShowLockGenre() As Boolean
+        Get
+            Return Me._showlockgenre
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showlockgenre = value
+        End Set
+    End Property
+
+    Public Property ShowLockStudio() As Boolean
+        Get
+            Return Me._showlockstudio
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showlockstudio = value
+        End Set
+    End Property
+
+    Public Property EpLockTitle() As Boolean
+        Get
+            Return Me._eplocktitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._eplocktitle = value
+        End Set
+    End Property
+
+    Public Property EpLockPlot() As Boolean
+        Get
+            Return Me._eplockplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._eplockplot = value
+        End Set
+    End Property
+
+    Public Property EpLockRating() As Boolean
+        Get
+            Return Me._eplockrating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._eplockrating = value
+        End Set
+    End Property
+
+    Public Property ScraperShowTitle() As Boolean
+        Get
+            Return Me._scrapershowtitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowtitle = value
+        End Set
+    End Property
+
+    Public Property ScraperShowEGU() As Boolean
+        Get
+            Return Me._scrapershowegu
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowegu = value
+        End Set
+    End Property
+
+    Public Property ScraperShowGenre() As Boolean
+        Get
+            Return Me._scrapershowgenre
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowgenre = value
+        End Set
+    End Property
+
+    Public Property ScraperShowMPAA() As Boolean
+        Get
+            Return Me._scrapershowmpaa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowmpaa = value
+        End Set
+    End Property
+
+    Public Property ScraperShowPlot() As Boolean
+        Get
+            Return Me._scrapershowplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowplot = value
+        End Set
+    End Property
+
+    Public Property ScraperShowPremiered() As Boolean
+        Get
+            Return Me._scrapershowpremiered
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowpremiered = value
+        End Set
+    End Property
+
+    Public Property ScraperShowRating() As Boolean
+        Get
+            Return Me._scrapershowrating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowrating = value
+        End Set
+    End Property
+
+    Public Property ScraperShowStudio() As Boolean
+        Get
+            Return Me._scrapershowstudio
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowstudio = value
+        End Set
+    End Property
+
+    Public Property ScraperShowActors() As Boolean
+        Get
+            Return Me._scrapershowactors
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapershowactors = value
+        End Set
+    End Property
+
+    Public Property ScraperEpTitle() As Boolean
+        Get
+            Return Me._scrapereptitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapereptitle = value
+        End Set
+    End Property
+
+    Public Property ScraperEpSeason() As Boolean
+        Get
+            Return Me._scraperepseason
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepseason = value
+        End Set
+    End Property
+
+    Public Property ScraperEpEpisode() As Boolean
+        Get
+            Return Me._scraperepepisode
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepepisode = value
+        End Set
+    End Property
+
+    Public Property ScraperEpAired() As Boolean
+        Get
+            Return Me._scraperepaired
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepaired = value
+        End Set
+    End Property
+
+    Public Property ScraperEpRating() As Boolean
+        Get
+            Return Me._scrapereprating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapereprating = value
+        End Set
+    End Property
+
+    Public Property ScraperEpPlot() As Boolean
+        Get
+            Return Me._scraperepplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepplot = value
+        End Set
+    End Property
+
+    Public Property ScraperEpDirector() As Boolean
+        Get
+            Return Me._scraperepdirector
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepdirector = value
+        End Set
+    End Property
+
+    Public Property ScraperEpCredits() As Boolean
+        Get
+            Return Me._scraperepcredits
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepcredits = value
+        End Set
+    End Property
+
+    Public Property ScraperEpActors() As Boolean
+        Get
+            Return Me._scraperepactors
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scraperepactors = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -3013,6 +3273,32 @@ Public Class Settings
         Me._onlytvimagesforselectedlangauge = True
         Me._alwaysgetenglishtvimages = True
         Me._displaymissingepisodes = False
+        Me._showlocktitle = False
+        Me._showlockplot = False
+        Me._showlockrating = False
+        Me._showlockgenre = False
+        Me._showlockstudio = False
+        Me._eplocktitle = False
+        Me._eplockplot = False
+        Me._eplockrating = False
+        Me._scrapershowtitle = True
+        Me._scrapershowegu = True
+        Me._scrapershowgenre = True
+        Me._scrapershowmpaa = True
+        Me._scrapershowplot = True
+        Me._scrapershowpremiered = True
+        Me._scrapershowrating = True
+        Me._scrapershowstudio = True
+        Me._scrapershowactors = True
+        Me._scrapereptitle = True
+        Me._scraperepseason = True
+        Me._scraperepepisode = True
+        Me._scraperepaired = True
+        Me._scrapereprating = True
+        Me._scraperepplot = True
+        Me._scraperepdirector = True
+        Me._scraperepcredits = True
+        Me._scraperepactors = True
     End Sub
 
     Public Sub Save()

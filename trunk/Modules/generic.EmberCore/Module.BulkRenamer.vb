@@ -34,10 +34,10 @@ Public Class BulkRenamerModule
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
             Dim tmpBulkRenamer As New dlgBulkRenamer
-            MyMenu.Image = tmpBulkRenamer.Icon.ToBitmap.Clone
+            MyMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
             MyMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
             '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
-            Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
+            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
             tmpBulkRenamer.Dispose()
@@ -45,7 +45,7 @@ Public Class BulkRenamerModule
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
         If enabled Then
-            Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
+            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
             tsi.DropDownItems.Remove(MyMenu)
             enabled = False
         End If

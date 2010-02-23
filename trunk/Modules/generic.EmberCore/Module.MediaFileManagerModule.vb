@@ -105,6 +105,7 @@ Public Class FileManagerExternalModule
             Dim ItemsToWork As New List(Of IO.FileSystemInfo)
             Dim MoviesToWork As New List(Of Long)
             Dim MovieId As Int64 = -1
+            Dim tMItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
 
             For Each sRow As DataGridViewRow In emmRuntimeObjects.MediaList.SelectedRows
                 MovieId = Convert.ToInt64(sRow.Cells(0).Value)
@@ -113,20 +114,20 @@ Public Class FileManagerExternalModule
                 End If
             Next
             If MoviesToWork.Count > 0 Then
-                Dim mMovie As New Object
+                Dim mMovie As New Structures.DBMovie
                 Dim FileDelete As New FileUtils.Delete
                 For Each Id As Long In MoviesToWork
                     mMovie = Master.DB.LoadMovieFromDB(Id)
                     ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                     If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
-                        Select Case sender.OwnerItem.Tag
+                        Select Case tMItem.OwnerItem.Tag.ToString
                             Case "MOVE"
-                                MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                                MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
                                 'TODO:  Before activate this, need to test it better and move to background worker
                                 'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
                                 'Directory.Delete(ItemsToWork(0).ToString, True)
                             Case "COPY"
-                                MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                                MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
                                 'TODO:  Before activate this, need to test it better and move to background worker
                                 'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
                         End Select
@@ -167,8 +168,8 @@ Public Class FileManagerExternalModule
     End Sub
 
     Public Sub Load()
-        Dim Names As String() = AdvancedSettings.GetSetting("Names").Split("|")
-        Dim Paths As String() = AdvancedSettings.GetSetting("Paths").Split("|")
+        Dim Names As String() = AdvancedSettings.GetSetting("Names").Split(Convert.ToChar("|"))
+        Dim Paths As String() = AdvancedSettings.GetSetting("Paths").Split(Convert.ToChar("|"))
         For n = 0 To Names.Count - 1
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
         Next

@@ -19,12 +19,11 @@
 ' ################################################################################
 
 'TODO: Scrape Show/Episode Poster/Fanart from editors
-'TODO: Show and Episode field locks
-'TODO: Enable/Disable scraper info fields
 'TODO: Change season images
 'TODO: Automatic scrapers
 'TODO: Handle non-conforming nfos
 'TODO: Localization strings for all TV stuff
+'TODO: Check Season lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
 'TODO: ?????

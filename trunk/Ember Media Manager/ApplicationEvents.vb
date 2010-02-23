@@ -17,7 +17,9 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports System.IO
+
 Namespace My
 
     Partial Friend Class MyApplication

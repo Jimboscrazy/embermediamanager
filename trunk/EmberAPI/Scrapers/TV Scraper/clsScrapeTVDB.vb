@@ -73,6 +73,8 @@ Namespace TVDB
             Dim TVDBID As String
             Dim iEpisode As Integer
             Dim iSeason As Integer
+            Dim Options As Structures.TVScrapeOptions
+            Dim SelectedLang As String
         End Structure
 
         Public Sub New()
@@ -569,20 +571,20 @@ Namespace TVDB
             Return tvdbLangs
         End Function
 
-        Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String)
-            sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID})
+        Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Options As Structures.TVScrapeOptions)
+            sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Master.eSettings.TVDBLanguage, .Options = Options})
         End Sub
 
-        Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer)
-            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason})
+        Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Options As Structures.TVScrapeOptions)
+            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Master.eSettings.TVDBLanguage, .Options = Options})
         End Sub
 
         Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
             Return sObject.ChangeEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID})
         End Function
 
-        Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer) As MediaContainers.EpisodeDetails
-            Return sObject.GetSingleEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode})
+        Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+            Return sObject.GetSingleEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .Options = Options})
         End Function
 
         Public Sub Cancel()
@@ -629,9 +631,9 @@ Namespace TVDB
                 RaiseEvent ScraperEvent(eType, iProgress, Parameter)
             End Sub
 
-            Private Sub DownloadSeries(ByVal sID As String)
+            Private Sub DownloadSeries(ByVal sInfo As ScrapeInfo)
                 Try
-                    Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))
+                    Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
                     Dim fExists As Boolean = File.Exists(fPath)
                     Dim doDownload As Boolean = False
 
@@ -650,7 +652,7 @@ Namespace TVDB
 
                     If doDownload OrElse Not fExists Then
                         Dim sHTTP As New HTTP
-                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage))
+                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
                         sHTTP = Nothing
 
                         If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
@@ -661,14 +663,14 @@ Namespace TVDB
                             End Using
 
                             Me.ProcessTVDBZip(xZip)
-                            Me.ShowFromXML()
+                            Me.ShowFromXML(sInfo)
                         End If
                     Else
                         Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
 
                             Me.ProcessTVDBZip(fZip)
-                            Me.ShowFromXML()
+                            Me.ShowFromXML(sInfo)
                         End Using
                     End If
                 Catch ex As Exception
@@ -706,7 +708,7 @@ Namespace TVDB
 
             End Sub
 
-            Private Sub ShowFromXML()
+            Private Sub ShowFromXML(ByVal sInfo As ScrapeInfo)
                 Dim Actors As New List(Of MediaContainers.Person)
                 Dim sID As String = String.Empty
                 Dim iEp As Integer = -1
@@ -717,11 +719,13 @@ Namespace TVDB
 
                 'get the actors first
                 Try
-                    If Not String.IsNullOrEmpty(aXML) Then
-                        Dim xdActors As XDocument = XDocument.Parse(aXML)
-                        For Each Actor As XElement In xdActors.Descendants("Actor")
-                            Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
-                        Next
+                    If sInfo.Options.bShowActors OrElse sInfo.Options.bEpActors Then
+                        If Not String.IsNullOrEmpty(aXML) Then
+                            Dim xdActors As XDocument = XDocument.Parse(aXML)
+                            For Each Actor As XElement In xdActors.Descendants("Actor")
+                                Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
+                            Next
+                        End If
                     End If
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -737,15 +741,15 @@ Namespace TVDB
                                 With tmpTVDBShow.Show.TVShow
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
-                                    .Title = xS(0).Element("SeriesName").Value
-                                    .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
-                                    .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
-                                    .MPAA = xS(0).Element("ContentRating").Value
-                                    .Plot = xS(0).Element("Overview").Value
-                                    .Premiered = xS(0).Element("FirstAired").Value
-                                    .Rating = xS(0).Element("Rating").Value
-                                    .Studio = xS(0).Element("Network").Value
-                                    .Actors = Actors
+                                    If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.ShowLockTitle) Then .Title = xS(0).Element("SeriesName").Value
+                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
+                                    If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.ShowLockGenre) Then .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
+                                    If sInfo.Options.bShowMPAA Then .MPAA = xS(0).Element("ContentRating").Value
+                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = xS(0).Element("Overview").Value
+                                    If sInfo.Options.bShowPremiered Then .Premiered = xS(0).Element("FirstAired").Value
+                                    If sInfo.Options.bShowRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.ShowLockRating) Then .Rating = xS(0).Element("Rating").Value
+                                    If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.ShowLockStudio) Then .Studio = xS(0).Element("Network").Value
+                                    If sInfo.Options.bShowActors Then .Actors = Actors
                                 End With
                             End If
 
@@ -767,18 +771,17 @@ Namespace TVDB
 
                                 If Not IsNothing(xE) Then
                                     With Episode.TVEp
-                                        .Title = xE.Element("EpisodeName").Value
+                                        If sInfo.Options.bEpTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.EpLockTitle) Then .Title = xE.Element("EpisodeName").Value
                                         If byTitle Then
-                                            .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
-                                            .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
+                                            If sInfo.Options.bEpSeason Then .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
+                                            If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
                                         End If
-                                        .Aired = xE.Element("FirstAired").Value
-                                        .Rating = xE.Element("Rating").Value
-                                        .Plot = xE.Element("Overview").Value
-
-                                        .Director = xE.Element("Director").Value
-                                        .Credits = CreditsString(xE.Element("GuestStars").Value, xE.Element("Writer").Value)
-                                        .Actors = Actors
+                                        If sInfo.Options.bEpAired Then .Aired = xE.Element("FirstAired").Value
+                                        If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.EpLockRating) Then .Rating = xE.Element("Rating").Value
+                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.EpLockPlot) Then .Plot = xE.Element("Overview").Value
+                                        If sInfo.Options.bEpDirector Then .Director = xE.Element("Director").Value
+                                        If sInfo.Options.bEpCredits Then .Credits = CreditsString(xE.Element("GuestStars").Value, xE.Element("Writer").Value)
+                                        If sInfo.Options.bEpActors Then .Actors = Actors
                                         .PosterURL = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, xE.Element("filename").Value))
                                         .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))
                                     End With
@@ -856,26 +859,26 @@ Namespace TVDB
 
                 If Not String.IsNullOrEmpty(sGStars) Then
                     For Each gStar In sGStars.Split(Convert.ToChar("|"))
-                        cString.Add(String.Concat(gStar, String.Format(" ({0})", gString)))
+                        If Not String.IsNullOrEmpty(gStar) Then cString.Add(String.Concat(gStar, String.Format(" ({0})", gString)))
                     Next
                 End If
 
                 If Not String.IsNullOrEmpty(sWriters) Then
                     For Each Writer In sWriters.Split(Convert.ToChar("|"))
-                        cString.Add(String.Concat(Writer, String.Format(" ({0})", wString)))
+                        If Not String.IsNullOrEmpty(Writer) Then cString.Add(String.Concat(Writer, String.Format(" ({0})", wString)))
                     Next
                 End If
 
                 Return Strings.Join(cString.ToArray, " / ")
             End Function
 
-            Public Sub DownloadSeriesAsync(ByVal iID As Integer)
+            Public Sub DownloadSeriesAsync(ByVal sInfo As ScrapeInfo)
                 Try
                     If Not bwTVDB.IsBusy Then
                         RaiseEvent ScraperEvent(EventType.StartingDownload, 0, Nothing)
                         bwTVDB.WorkerReportsProgress = True
                         bwTVDB.WorkerSupportsCancellation = True
-                        bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = iID.ToString})
+                        bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
                     End If
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -965,7 +968,7 @@ Namespace TVDB
                             End If
                         End Using
                     Else
-                        DownloadSeries(sInfo.TVDBID)
+                        DownloadSeries(sInfo)
                         If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
                             Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
                             RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
@@ -1027,7 +1030,7 @@ Namespace TVDB
                             End If
                         End Using
                     Else
-                        DownloadSeries(sInfo.TVDBID)
+                        DownloadSeries(sInfo)
                         If tmpTVDBShow.Episodes(0).TVShow.ID.Length > 0 Then
                             Master.currShow = tmpTVDBShow.Episodes(0)
                             If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
@@ -1176,7 +1179,7 @@ Namespace TVDB
                         Case 0 'search
                             e.Result = New Results With {.Type = Args.Type, .Result = SearchSeries(DirectCast(Args.Parameter, ScrapeInfo))}
                         Case 1 'show download
-                            Me.DownloadSeries(Args.Parameter.ToString)
+                            Me.DownloadSeries(DirectCast(Args.Parameter, ScrapeInfo))
                             e.Result = New Results With {.Type = Args.Type}
                         Case 2 'load episodes
                             If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, ScrapeInfo))

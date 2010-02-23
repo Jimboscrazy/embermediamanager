@@ -86,8 +86,8 @@ Public Class NunoScraperModule
         Return True
     End Function
 
-    Public Shared Function Translate(ByVal codLang As String, ByVal txt As String)
-        Dim ret As String = ""
+    Public Shared Function Translate(ByVal codLang As String, ByVal txt As String) As String
+        Dim ret As String = String.Empty
         Try
             txt = Web.HttpUtility.UrlEncode(txt)
             'txt = txt.Replace(" ", "%20")
@@ -105,9 +105,9 @@ Public Class NunoScraperModule
             End Using
             wrResponse.Close()
             Dim t As String()
-            t = sResponse.Split(New Char() {"{", "}"})
+            t = sResponse.Split(New Char() {Convert.ToChar("{"), Convert.ToChar("}")})
             If t.Count >= 2 Then
-                t = t(2).Split(":")
+                t = t(2).Split(Convert.ToChar(":"))
                 If t.Count >= 2 Then
                     If t(0).Replace("""", "") = "translatedText" Then
                         ret = t(1).Replace(",""detectedSourceLanguage""", "")

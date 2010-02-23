@@ -284,6 +284,27 @@ Public Class Structures
         Dim ScrapeType As Enums.ScrapeType
         Dim Options As ScrapeOptions
     End Structure
+
+    Public Structure TVScrapeOptions
+        Dim bShowTitle As Boolean
+        Dim bShowEpisodeGuide As Boolean
+        Dim bShowGenre As Boolean
+        Dim bShowMPAA As Boolean
+        Dim bShowPlot As Boolean
+        Dim bShowPremiered As Boolean
+        Dim bShowRating As Boolean
+        Dim bShowStudio As Boolean
+        Dim bShowActors As Boolean
+        Dim bEpTitle As Boolean
+        Dim bEpSeason As Boolean
+        Dim bEpEpisode As Boolean
+        Dim bEpAired As Boolean
+        Dim bEpRating As Boolean
+        Dim bEpPlot As Boolean
+        Dim bEpDirector As Boolean
+        Dim bEpCredits As Boolean
+        Dim bEpActors As Boolean
+    End Structure
 End Class
 
 Public Class Functions
@@ -392,6 +413,27 @@ Public Class Functions
             ' Why this 2 arent here?
             .bFullCrew = Master.eSettings.FullCrew
             .bFullCast = Master.eSettings.FullCast
+        End With
+
+        With Master.DefaultTVOptions
+            .bShowTitle = Master.eSettings.ScraperShowTitle
+            .bShowEpisodeGuide = Master.eSettings.ScraperShowEGU
+            .bShowGenre = Master.eSettings.ScraperShowGenre
+            .bShowMPAA = Master.eSettings.ScraperShowMPAA
+            .bShowPlot = Master.eSettings.ScraperShowPlot
+            .bShowPremiered = Master.eSettings.ScraperShowPremiered
+            .bShowRating = Master.eSettings.ScraperShowRating
+            .bShowStudio = Master.eSettings.ScraperShowStudio
+            .bShowActors = Master.eSettings.ScraperShowActors
+            .bEpTitle = Master.eSettings.ScraperEpTitle
+            .bEpSeason = Master.eSettings.ScraperEpSeason
+            .bEpEpisode = Master.eSettings.ScraperEpEpisode
+            .bEpAired = Master.eSettings.ScraperEpAired
+            .bEpRating = Master.eSettings.ScraperEpRating
+            .bEpPlot = Master.eSettings.ScraperEpPlot
+            .bEpDirector = Master.eSettings.ScraperEpDirector
+            .bEpCredits = Master.eSettings.ScraperEpCredits
+            .bEpActors = Master.eSettings.ScraperEpActors
         End With
     End Sub
 
