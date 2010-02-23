@@ -2371,6 +2371,109 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkShowLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowLockTitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowLockPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowLockRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowLockRating.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowLockGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowLockGenre.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowLockStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowLockStudio.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpLockTitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpLockPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpLockRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpLockRating.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowTitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEGU.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowGenre.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowMPAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowPremiered_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPremiered.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowRating.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStudio.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperShowActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowActors.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpTitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpSeason.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpEpisode.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpAired_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpAired.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpRating.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpDirector.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpCredits.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkScraperEpActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpActors.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2765,6 +2868,32 @@ Public Class dlgSettings
             Master.eSettings.OnlyGetTVImagesForSelectedLanguage = Me.chkOnlyTVImagesLanguage.Checked
             Master.eSettings.AlwaysGetEnglishTVImages = Me.chkGetEnglishImages.Checked
             Master.eSettings.DisplayMissingEpisodes = Me.chkDisplayMissingEpisodes.Checked
+            Master.eSettings.ShowLockTitle = Me.chkShowLockTitle.Checked
+            Master.eSettings.ShowLockPlot = Me.chkShowLockPlot.Checked
+            Master.eSettings.ShowLockRating = Me.chkShowLockRating.Checked
+            Master.eSettings.ShowLockGenre = Me.chkShowLockGenre.Checked
+            Master.eSettings.ShowLockStudio = Me.chkShowLockStudio.Checked
+            Master.eSettings.EpLockTitle = Me.chkEpLockTitle.Checked
+            Master.eSettings.EpLockPlot = Me.chkEpLockPlot.Checked
+            Master.eSettings.EpLockRating = Me.chkEpLockRating.Checked
+            Master.eSettings.ScraperShowTitle = Me.chkScraperShowTitle.Checked
+            Master.eSettings.ScraperShowEGU = Me.chkScraperShowEGU.Checked
+            Master.eSettings.ScraperShowGenre = Me.chkScraperShowGenre.Checked
+            Master.eSettings.ScraperShowMPAA = Me.chkScraperShowMPAA.Checked
+            Master.eSettings.ScraperShowPlot = Me.chkScraperShowPlot.Checked
+            Master.eSettings.ScraperShowPremiered = Me.chkScraperShowPremiered.Checked
+            Master.eSettings.ScraperShowRating = Me.chkScraperShowRating.Checked
+            Master.eSettings.ScraperShowStudio = Me.chkScraperShowStudio.Checked
+            Master.eSettings.ScraperShowActors = Me.chkScraperShowActors.Checked
+            Master.eSettings.ScraperEpTitle = Me.chkScraperEpTitle.Checked
+            Master.eSettings.ScraperEpSeason = Me.chkScraperEpSeason.Checked
+            Master.eSettings.ScraperEpEpisode = Me.chkScraperEpEpisode.Checked
+            Master.eSettings.ScraperEpAired = Me.chkScraperEpAired.Checked
+            Master.eSettings.ScraperEpRating = Me.chkScraperEpRating.Checked
+            Master.eSettings.ScraperEpPlot = Me.chkScraperEpPlot.Checked
+            Master.eSettings.ScraperEpDirector = Me.chkScraperEpDirector.Checked
+            Master.eSettings.ScraperEpCredits = Me.chkScraperEpCredits.Checked
+            Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
 
             Master.eSettings.Save()
 

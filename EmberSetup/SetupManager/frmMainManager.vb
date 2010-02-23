@@ -251,7 +251,7 @@ Public Class frmMainManager
             Dim kinds As PortableExecutableKinds
             Dim imgFileMachine As ImageFileMachine
             _Assembly.ManifestModule.GetPEKind(kinds, imgFileMachine)
-            If kinds And PortableExecutableKinds.PE32Plus Then
+            If (kinds And PortableExecutableKinds.PE32Plus) = PortableExecutableKinds.PE32Plus Then
                 Return "64"
             End If
         Catch
@@ -261,7 +261,7 @@ Public Class frmMainManager
 
     Public Function GetEmberVersion(ByVal fpath As String) As String
         Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
-        Return myBuildInfo.ProductPrivatePart
+        Return myBuildInfo.ProductPrivatePart.ToString
     End Function
 
     Sub LoadExcludes()
@@ -402,7 +402,7 @@ Public Class frmMainManager
                     If Not DBNull.Value.Equals(SQLreader("Filename")) Then o.FTI.Filename = SQLreader("Filename").ToString
                     If Not DBNull.Value.Equals(SQLreader("Hash")) Then o.FTI.Hash = SQLreader("Hash").ToString
                     If Not DBNull.Value.Equals(SQLreader("Platform")) Then o.FTI.Platform = SQLreader("Platform").ToString
-                    If Not DBNull.Value.Equals(SQLreader("UseFile")) Then o.UseFile = SQLreader("UseFile")
+                    If Not DBNull.Value.Equals(SQLreader("UseFile")) Then o.UseFile = Convert.ToBoolean(SQLreader("UseFile"))
                     If (showAll OrElse o.UseFile) AndAlso (Platform = o.FTI.Platform OrElse o.FTI.Platform = "Common") Then
                         Dim i = New ListViewItem
                         i.Text = o.FTI.OriginalPath
@@ -426,7 +426,7 @@ Public Class frmMainManager
         AddHandler lstFiles.ItemCheck, AddressOf lstFiles_ItemCheck
     End Sub
 
-    Function GetHash(ByVal fname As String)
+    Private Function GetHash(ByVal fname As String) As String
         Dim md5Hasher As New SHA1CryptoServiceProvider() 'As MD5
         'md5Hasher = MD5.Create()
         ' Convert the input string to a byte array and compute the hash.
@@ -465,7 +465,7 @@ Public Class frmMainManager
                     o = New OrigPaths
                     If Not DBNull.Value.Equals(SQLreader("OrigPath")) Then o.origpath = SQLreader("OrigPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EmberPath")) Then o.emberpath = SQLreader("EmberPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("Recursive")) Then o.recursive = SQLreader("Recursive").ToString
+                    If Not DBNull.Value.Equals(SQLreader("Recursive")) Then o.recursive = Convert.ToBoolean(SQLreader("Recursive"))
                     If Not DBNull.Value.Equals(SQLreader("Platform")) Then o.platform = SQLreader("Platform").ToString
                     OPaths.Add(o)
                 End While
@@ -506,7 +506,7 @@ Public Class frmMainManager
         Dim sourceFile As FileStream = File.OpenRead(spath)
         Dim destinationFile As FileStream = File.Create(dpath)
 
-        Dim buffer(sourceFile.Length) As Byte
+        Dim buffer(Convert.ToInt32(sourceFile.Length)) As Byte
         sourceFile.Read(buffer, 0, buffer.Length)
 
         Using output As New GZipStream(destinationFile, _
@@ -661,7 +661,7 @@ Public Class frmMainManager
         If File.Exists(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
             Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
             Using xmlSW As New StreamReader(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml")))
-                EmberVersions = xmlSer.Deserialize(xmlSW)
+                EmberVersions = DirectCast(xmlSer.Deserialize(xmlSW), SetupManager.UpgradeList)
             End Using
             LoadVersions()
         End If
@@ -677,7 +677,7 @@ Public Class frmMainManager
     Private Sub lstFiles_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lstFiles.ItemCheck
         Dim o As New EmberFiles
         o = MasterDB.DBGetEmberFile(lstFiles.Items(e.Index).Text, lstFiles.Items(e.Index).SubItems(1).Text)
-        o.UseFile = e.NewValue
+        o.UseFile = Convert.ToBoolean(e.NewValue)
         MasterDB.DBAddChangeEmberFile(o)
     End Sub
 
@@ -840,7 +840,7 @@ Public Class frmMainManager
             Dim xmlSer As XmlSerializer
             xmlSer = New XmlSerializer(GetType(InstallCommands))
             Using xmlSW As New StreamReader(Path.Combine(p, f))
-                _cmds = xmlSer.Deserialize(xmlSW)
+                _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
             End Using
         End If
         CmdVersion = n
@@ -849,7 +849,7 @@ Public Class frmMainManager
 
     Sub SaveCommands(Optional ByVal savetolist As Boolean = True)
         If savetolist Then
-            lstCommands.SelectedItems(0).Text = cbType.SelectedItem
+            lstCommands.SelectedItems(0).Text = cbType.SelectedItem.ToString
             lstCommands.SelectedItems(0).SubItems(1).Text = txtDescriptions.Text
             lstCommands.SelectedItems(0).Tag = txtCommand.Text
         End If
@@ -857,7 +857,7 @@ Public Class frmMainManager
         Dim f As String = String.Format("commands_{0}.xml", CmdVersion)
         _cmds.Command.Clear()
         For Each s As ListViewItem In lstCommands.Items
-            _cmds.Command.Add(New InstallCommand With {.CommandType = s.Text, .CommandDescription = s.SubItems(1).Text, .CommandExecute = s.Tag})
+            _cmds.Command.Add(New InstallCommand With {.CommandType = s.Text, .CommandDescription = s.SubItems(1).Text, .CommandExecute = s.Tag.ToString})
         Next
         _cmds.Save(Path.Combine(p, f))
     End Sub
@@ -873,7 +873,7 @@ Public Class frmMainManager
 
     Private Sub lstCommands_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstCommands.SelectedIndexChanged
         If lstCommands.SelectedItems.Count > 0 AndAlso Not AddCommand Then
-            txtCommand.Text = lstCommands.SelectedItems(0).Tag
+            txtCommand.Text = lstCommands.SelectedItems(0).Tag.ToString
             cbType.SelectedIndex = cbType.FindString(lstCommands.SelectedItems(0).Text)
             txtDescriptions.Text = lstCommands.SelectedItems(0).SubItems(1).Text
             CmdsChanged = False
@@ -913,7 +913,7 @@ Public Class frmMainManager
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         If AddCommand Then
-            Dim i As ListViewItem = lstCommands.Items.Add(cbType.SelectedItem)
+            Dim i As ListViewItem = lstCommands.Items.Add(DirectCast(cbType.SelectedItem, ListViewItem))
             i.Selected = True
             i.SubItems.Add("")
         End If

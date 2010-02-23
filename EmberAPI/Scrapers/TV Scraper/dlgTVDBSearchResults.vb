@@ -19,139 +19,143 @@
 ' ################################################################################
 
 Namespace TVDB
-        Public Class dlgTVDBSearchResults
-            Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+    Public Class dlgTVDBSearchResults
+        Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
-            Private sHTTP As New HTTP
+        Private sHTTP As New HTTP
+        Private sInfo As Scraper.ScrapeInfo
 
-            Private Structure Results
-                Dim Result As Image
-            End Structure
+        Private Structure Results
+            Dim Result As Image
+        End Structure
 
-            Private Structure Arguments
-                Dim pURL As String
-            End Structure
+        Private Structure Arguments
+            Dim pURL As String
+        End Structure
 
-            Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
+        Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
-                Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-                e.Result = New Results With {.Result = sHTTP.DownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))}
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            e.Result = New Results With {.Result = sHTTP.DownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))}
 
-            End Sub
+        End Sub
 
-            Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
+        Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
 
-                Dim Res As Results = DirectCast(e.Result, Results)
+            Dim Res As Results = DirectCast(e.Result, Results)
 
-                Try
-                    Me.pbBanner.Image = Res.Result
-                Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
+            Try
+                Me.pbBanner.Image = Res.Result
+            Catch ex As Exception
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-            End Sub
+        End Sub
 
-            Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
-                If Me.lvSearchResults.SelectedItems.Count > 0 Then
-                    Me.Label3.Text = Master.eLang.GetString(999, "Downloading show info...")
-                    Me.pnlLoading.Visible = True
+            If Me.lvSearchResults.SelectedItems.Count > 0 Then
+                Me.Label3.Text = Master.eLang.GetString(999, "Downloading show info...")
+                Me.pnlLoading.Visible = True
+                Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
+                Me.sInfo.TVDBID = sResults.ID.ToString
+                Me.sInfo.SelectedLang = sResults.Language.ShortLang
+                Scraper.sObject.DownloadSeriesAsync(sInfo)
+            End If
 
-                Scraper.sObject.DownloadSeriesAsync(DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults).ID)
-                End If
+        End Sub
 
-            End Sub
+        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End Sub
 
-            Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-                Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-                Me.Close()
-            End Sub
+        Private Sub ControlsVisible(ByVal areVisible As Boolean)
+            Me.pbBanner.Visible = areVisible
+            Me.lblTitle.Visible = areVisible
+            Me.lblAiredHeader.Visible = areVisible
+            Me.lblAired.Visible = areVisible
+            Me.lblPlotHeader.Visible = areVisible
+            Me.txtOutline.Visible = areVisible
+        End Sub
 
-            Private Sub ControlsVisible(ByVal areVisible As Boolean)
-                Me.pbBanner.Visible = areVisible
-                Me.lblTitle.Visible = areVisible
-                Me.lblAiredHeader.Visible = areVisible
-                Me.lblAired.Visible = areVisible
-                Me.lblPlotHeader.Visible = areVisible
-                Me.txtOutline.Visible = areVisible
-            End Sub
+        Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Try
+                AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
 
-            Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-                Try
-                    AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
+                Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+                Using g As Graphics = Graphics.FromImage(iBackground)
+                    g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                    Me.pnlTop.BackgroundImage = iBackground
+                End Using
+            Catch ex As Exception
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
 
-                    Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-                    Using g As Graphics = Graphics.FromImage(iBackground)
-                        g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                        Me.pnlTop.BackgroundImage = iBackground
-                    End Using
-                Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            End Sub
-
-            Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-                Select Case eType
-                    Case TVDB.Scraper.EventType.SearchResultsDownloaded
-                        Dim lItem As ListViewItem
+        Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+            Select Case eType
+                Case TVDB.Scraper.EventType.SearchResultsDownloaded
+                    Dim lItem As ListViewItem
                     Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
 
-                        Me.lvSearchResults.Items.Clear()
-                        Me.ClearInfo()
+                    Me.lvSearchResults.Items.Clear()
+                    Me.ClearInfo()
 
-                        If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
+                    If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
                         For Each sRes As Scraper.TVSearchResults In sResults
                             lItem = New ListViewItem(sRes.Name)
                             lItem.SubItems.Add(sRes.Language.LongLang)
                             lItem.Tag = sRes
                             Me.lvSearchResults.Items.Add(lItem)
                         Next
-                        End If
+                    End If
 
-                        Me.pnlLoading.Visible = False
-                    Case TVDB.Scraper.EventType.ShowDownloaded
-                        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                        Me.Close()
-                End Select
-            End Sub
+                    Me.pnlLoading.Visible = False
+                Case TVDB.Scraper.EventType.ShowDownloaded
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Close()
+            End Select
+        End Sub
 
-            Private Sub ClearInfo()
-                Me.ControlsVisible(False)
-                Me.lblTitle.Text = String.Empty
-                Me.lblAired.Text = String.Empty
-                Me.pbBanner.Image = Nothing
+        Private Sub ClearInfo()
+            Me.ControlsVisible(False)
+            Me.lblTitle.Text = String.Empty
+            Me.lblAired.Text = String.Empty
+            Me.pbBanner.Image = Nothing
             Scraper.sObject.CancelAsync()
-            End Sub
+        End Sub
 
-        Public Overloads Function ShowDialog(ByVal sInfo As Scraper.ScrapeInfo) As Windows.Forms.DialogResult
+        Public Overloads Function ShowDialog(ByVal _sInfo As Scraper.ScrapeInfo) As Windows.Forms.DialogResult
 
+            Me.sInfo = _sInfo
             Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
             Scraper.sObject.GetSearchResultsAsync(sInfo)
 
             Return MyBase.ShowDialog()
         End Function
 
-            Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
-                Me.ClearInfo()
-                If Me.lvSearchResults.SelectedItems.Count > 0 Then
+        Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
+            Me.ClearInfo()
+            If Me.lvSearchResults.SelectedItems.Count > 0 Then
                 Dim SelectedShow As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
-                    If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
-                        If Me.bwDownloadPic.IsBusy Then
-                            Me.bwDownloadPic.CancelAsync()
-                        End If
-
-                        Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadPic.WorkerSupportsCancellation = True
-                        Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = SelectedShow.Banner})
+                If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
+                    If Me.bwDownloadPic.IsBusy Then
+                        Me.bwDownloadPic.CancelAsync()
                     End If
 
-                    Me.OK_Button.Tag = SelectedShow.ID
-                    Me.lblTitle.Text = SelectedShow.Name
-                    Me.txtOutline.Text = SelectedShow.Overview
-                    Me.lblAired.Text = SelectedShow.Aired
-                    Me.OK_Button.Enabled = True
+                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                    Me.bwDownloadPic.WorkerSupportsCancellation = True
+                    Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = SelectedShow.Banner})
                 End If
-                Me.ControlsVisible(True)
-            End Sub
-        End Class
+
+                Me.OK_Button.Tag = SelectedShow.ID
+                Me.lblTitle.Text = SelectedShow.Name
+                Me.txtOutline.Text = SelectedShow.Overview
+                Me.lblAired.Text = SelectedShow.Aired
+                Me.OK_Button.Enabled = True
+            End If
+            Me.ControlsVisible(True)
+        End Sub
+    End Class
 End Namespace

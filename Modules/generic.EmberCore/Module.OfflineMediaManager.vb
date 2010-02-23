@@ -32,9 +32,9 @@ Public Class OfflineHolderModule
     Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
         If Not enabled Then
             Dim tmpOfflineHolder As New dlgOfflineHolder
-            MyMenu.Image = tmpOfflineHolder.Icon.ToBitmap.Clone
+            MyMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
             MyMenu.Text = "Offline Media Manager"
-            Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
+            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
             tsi.DropDownItems.Add(MyMenu)
             enabled = True
             tmpOfflineHolder.Dispose()
@@ -42,7 +42,7 @@ Public Class OfflineHolderModule
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
         If enabled Then
-            Dim tsi As ToolStripMenuItem = emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem")
+            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
             tsi.DropDownItems.Remove(MyMenu)
             enabled = False
         End If

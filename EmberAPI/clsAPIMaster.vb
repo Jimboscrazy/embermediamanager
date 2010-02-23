@@ -9,6 +9,7 @@ Public Class Master
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared DB As New Database
     Public Shared DefaultOptions As New Structures.ScrapeOptions
+    Public Shared DefaultTVOptions As New Structures.TVScrapeOptions
     Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
 
     Public Shared isWindows As Boolean = Functions.CheckIfWindows

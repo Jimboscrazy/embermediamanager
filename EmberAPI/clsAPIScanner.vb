@@ -1480,7 +1480,7 @@ Public Class Scanner
                                         tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
                                     Else
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
-                                            tmpTVDB.TVEp = Master.TVScraper.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i)
+                                            tmpTVDB.TVEp = Master.TVScraper.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i, Master.DefaultTVOptions)
                                             toNfo = True
 
                                             If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
