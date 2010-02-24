@@ -696,7 +696,7 @@ Partial Class frmNativeSetupInfo
         Me.Name = "frmNativeSetupInfo"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Scraper Setup"
+        Me.Text = "Scraper Setup (Disabled)"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox10.ResumeLayout(False)
