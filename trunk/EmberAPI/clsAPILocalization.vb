@@ -28,8 +28,7 @@ Imports System.Xml.Serialization
 Public Class Localization
     Private Shared _ISOLanguages As New List(Of _ISOLanguage)
     ' ************************************************************************************************
-    ' This are functions for country/Language codes under ISO639 Alpha-2 (ie: Used by DVD/GoogleAPI)
-    ' TODO: Change APIDVD so it use this functions and remove from APIDVD the language Code)
+    ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
     ' TODO: Move language code2 Setup to XML file
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
         Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha2Code = code))(0).Language
@@ -191,7 +190,9 @@ Public Class Localization
         xdoc.Save(lpath)
     End Sub
     '*****************************************************************************************
+
     Sub addcode2(ByVal x As _ISOLanguage)
+        ' SEE NOTES AT TOP
         Dim z As _ISOLanguage = (From y As _ISOLanguage In _ISOLanguages Where (y.Language = y.Language))(0)
         If Not String.IsNullOrEmpty(z.Language) Then
             z.Alpha2Code = x.Alpha2Code
