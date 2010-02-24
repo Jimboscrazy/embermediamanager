@@ -23,7 +23,17 @@
 Public Class dlgNewVersion
 
     Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
-        Process.Start("http://www.embermm.com/tab/show/embermm")
+
+        If Master.isWindows Then
+            Process.Start("http://www.embermm.com/tab/show/embermm")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.embermm.com/tab/show/embermm"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Public Overloads Function ShowDialog(ByVal iNew As Integer) As Windows.Forms.DialogResult

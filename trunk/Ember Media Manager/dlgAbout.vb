@@ -86,6 +86,7 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Darren ""RogueDazza"" Sayers"})
         CredList.Add(New CredLine With {.Text = "Jim ""FCCWizard"" Brown"})
+        CredList.Add(New CredLine With {.Text = """pcjco"""})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
@@ -124,35 +125,115 @@ Public NotInheritable Class dlgAbout
     End Sub
 
     Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
-        Process.Start("http://www.themoviedb.org/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.themoviedb.org/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.themoviedb.org/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
-        Process.Start("http://www.impawards.com/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.impawards.com/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.impawards.com/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
-        Process.Start("http://www.imdb.com/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.imdb.com/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.imdb.com/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMI.Click
-        Process.Start("http://mediainfo.sourceforge.net")
+
+        If Master.isWindows Then
+            Process.Start("http://mediainfo.sourceforge.net")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://mediainfo.sourceforge.net"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        Process.Start("http://www.ffmpeg.org/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.ffmpeg.org/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.ffmpeg.org/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
-        Process.Start("http://www.moviepostersdb.com/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.moviepostersdb.com/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.ffmpeg.org/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
-        Process.Start("http://www.xbmc.org/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.xbmc.org/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.xbmc.org/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
-        Process.Start("http://www.youtube.com/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.youtube.com/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.youtube.com/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
@@ -217,10 +298,30 @@ Public NotInheritable Class dlgAbout
     End Sub
 
     Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
-        Process.Start("http://www.embermm.com")
+
+        If Master.isWindows Then
+            Process.Start("http://www.embermm.com")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.embermm.com"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub pbAllHTPC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllHTPC.Click
-        Process.Start("http://www.allhtpc.com/")
+
+        If Master.isWindows Then
+            Process.Start("http://www.allhtpc.com/")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.allhtpc.com/"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 End Class
