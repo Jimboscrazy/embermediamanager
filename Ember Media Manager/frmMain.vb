@@ -5386,6 +5386,9 @@ Public Class frmMain
                                 If fDeleter.DeleteFiles(True, scrapeMovie) Then
                                     Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
                                     Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                Else
+                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
+                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If
                             Next
                         Case Enums.ScrapeType.CopyBD
@@ -5606,7 +5609,7 @@ doCancel:
                         tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
-                    For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count
+                    For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
                         If Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
                             tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
                             tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
