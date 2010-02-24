@@ -38,7 +38,7 @@ Public Class dlgFIStreamEditor
                 For Each p() As String In xVTypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
                     cbVideoCodec.Items.AddRange(p)
                 Next
-                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbVideoLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
@@ -60,7 +60,7 @@ Public Class dlgFIStreamEditor
                 For Each p() As String In xATypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
                     cbAudioCodec.Items.AddRange(p)
                 Next
-                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
                 cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})
                 If Not movie Is Nothing Then
@@ -71,7 +71,7 @@ Public Class dlgFIStreamEditor
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                 GroupBox3.Visible = True
-                Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbSubsLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbSubsLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
@@ -93,19 +93,19 @@ Public Class dlgFIStreamEditor
                     stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
-                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = ConvertL(cbVideoLanguage.SelectedItem.ToString)
+                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode2ByLang(cbVideoLanguage.SelectedItem.ToString)
                     Return stream_v
                 End If
                 If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                     stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem.ToString)
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
-                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = ConvertL(cbAudioLanguage.SelectedItem.ToString)
+                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode2ByLang(cbAudioLanguage.SelectedItem.ToString)
                     If Not cbAudioChannels.SelectedItem Is Nothing Then stream_a.Channels = cbAudioChannels.SelectedItem.ToString
                     Return stream_a
                 End If
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
-                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem.ToString)
+                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode2ByLang(cbSubsLanguage.SelectedItem.ToString)
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then
                         stream_s.SubsType = If(rbEmbedded.Checked, "Embedded", "External")
                     End If
@@ -118,20 +118,6 @@ Public Class dlgFIStreamEditor
         Catch ex As Exception
             Return Nothing
         End Try
-    End Function
-
-    Private Function ConvertL(ByVal sLang As String) As String
-
-        If APIXML.LanguageXML.Nodes.Count > 0 Then
-            Dim xShortLang = From xLang In APIXML.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
-            If xShortLang.Count > 0 Then
-                Return xShortLang(0)
-            Else
-                Return String.Empty
-            End If
-        Else
-            Return String.Empty
-        End If
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

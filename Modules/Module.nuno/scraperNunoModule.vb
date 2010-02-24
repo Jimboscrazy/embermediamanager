@@ -52,7 +52,7 @@ Public Class NunoScraperModule
         Return True
     End Function
     Public Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As EmberAPI.Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
-        codLang = Localization.ISOLangGetCodeByLang(Language)
+        codLang = Localization.ISOLangGetCode2ByLang(Language)
         If DoOutline Then DBMovie.Movie.Outline = Translate(codLang, DBMovie.Movie.Outline)
         If DoPlot Then DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
         Return True

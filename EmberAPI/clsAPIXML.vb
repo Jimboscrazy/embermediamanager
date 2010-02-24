@@ -35,7 +35,7 @@ Public Class APIXML
     Public Shared StudioXML As New XDocument
     Public Shared alStudios As New List(Of String)
     Public Shared RatingXML As New XDocument
-    Public Shared LanguageXML As New XDocument
+    'Public Shared LanguageXML As New XDocument
 
     Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean) As Image()
 
@@ -398,12 +398,7 @@ Public Class APIXML
                 MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
-            Dim lPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "Languages.xml")
-            If File.Exists(lPath) Then
-                LanguageXML = XDocument.Load(lPath)
-            Else
-                MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
-            End If
+
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -478,19 +473,6 @@ Public Class APIXML
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return retRatings.ToArray
-    End Function
-
-    Public Shared Function GetLanguageList() As Object()
-        Dim retLang As New List(Of String)
-        Try
-            Dim xLang = From xL In LanguageXML.Descendants("Language") Select xL.Element("Name").Value
-            If xLang.Count > 0 Then
-                retLang.AddRange(xLang.ToArray)
-            End If
-        Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retLang.ToArray
     End Function
 
     Public Shared Function GetFileSource(ByVal sPath As String) As String

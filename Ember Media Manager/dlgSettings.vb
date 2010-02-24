@@ -3292,9 +3292,10 @@ Public Class dlgSettings
     Private Sub LoadLangs()
 
         Me.cbLanguages.Items.Add(Master.eLang.Disabled)
-        Me.cbLanguages.Items.AddRange(APIXML.GetLanguageList)
+        'Me.cbLanguages.Items.AddRange(APIXML.GetLanguageList)
+        Me.cbLanguages.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
         Me.cboTVMetaDataOverlay.Items.Add(Master.eLang.Disabled)
-        Me.cboTVMetaDataOverlay.Items.AddRange(APIXML.GetLanguageList)
+        Me.cboTVMetaDataOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
 
     End Sub
 
