@@ -55,9 +55,100 @@ Public Class EmberNativeScraperModule
         End Get
     End Property
 
+    Public Shared ConfigOptions As New EmberAPI.Structures.ScrapeOptions
+
+    Sub LoadSettings()
+        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)
+        ConfigOptions.bMPAA = AdvancedSettings.GetBooleanSetting("DoMPAA", True)
+        ConfigOptions.bRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True)
+        ConfigOptions.bRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True)
+        ConfigOptions.bRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        ConfigOptions.bVotes = AdvancedSettings.GetBooleanSetting("DoVotes", True)
+        ConfigOptions.bStudio = AdvancedSettings.GetBooleanSetting("DoStudio", True)
+        ConfigOptions.bTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bCast = AdvancedSettings.GetBooleanSetting("DoCast", True)
+        ConfigOptions.bDirector = AdvancedSettings.GetBooleanSetting("DoDirector", True)
+        ConfigOptions.bWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True)
+        ConfigOptions.bProducers = AdvancedSettings.GetBooleanSetting("DoProducers", True)
+        ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigOptions.bTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
+        ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
+        ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
+
+    End Sub
+    Sub SaveSettings()
+        AdvancedSettings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
+        AdvancedSettings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
+        AdvancedSettings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
+        AdvancedSettings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
+        AdvancedSettings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
+        AdvancedSettings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
+        AdvancedSettings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
+        AdvancedSettings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
+        AdvancedSettings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
+        AdvancedSettings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
+        AdvancedSettings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
+        AdvancedSettings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
+        AdvancedSettings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
+        AdvancedSettings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
+        AdvancedSettings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
+        AdvancedSettings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
+        AdvancedSettings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
+        AdvancedSettings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
+        AdvancedSettings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
+    End Sub
+
     Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
+        LoadSettings()
         Dim _setup As New frmNativeSetupInfo
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkYear.Checked = ConfigOptions.bYear
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        _setup.chkRelease.Checked = ConfigOptions.bRelease
+        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        _setup.chkRating.Checked = ConfigOptions.bRating
+        _setup.chkVotes.Checked = ConfigOptions.bVotes
+        _setup.chkStudio.Checked = ConfigOptions.bStudio
+        _setup.chkTagline.Checked = ConfigOptions.bTagline
+        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.chkCast.Checked = ConfigOptions.bCast
+        _setup.chkDirector.Checked = ConfigOptions.bDirector
+        _setup.chkWriters.Checked = ConfigOptions.bWriters
+        _setup.chkProducers.Checked = ConfigOptions.bProducers
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
+        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
+        _setup.chkTop250.Checked = ConfigOptions.bTop250
         _setup.ShowDialog()
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bYear = _setup.chkYear.Checked
+        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bRelease = _setup.chkRelease.Checked
+        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
+        ConfigOptions.bRating = _setup.chkRating.Checked
+        ConfigOptions.bVotes = _setup.chkVotes.Checked
+        ConfigOptions.bStudio = _setup.chkStudio.Checked
+        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bOutline = _setup.chkOutline.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
+        ConfigOptions.bCast = _setup.chkCast.Checked
+        ConfigOptions.bDirector = _setup.chkDirector.Checked
+        ConfigOptions.bWriters = _setup.chkWriters.Checked
+        ConfigOptions.bProducers = _setup.chkProducers.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
+        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
+        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
+        ConfigOptions.bTop250 = _setup.chkTop250.Checked
+
+        SaveSettings()
     End Sub
     Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupPostScraper
         Dim _setup As New frmNativeSetupMedia
@@ -110,7 +201,9 @@ Public Class EmberNativeScraperModule
                         DBMovie.ExtraPath = String.Empty
                         DBMovie.SubPath = String.Empty
                         DBMovie.NfoPath = String.Empty
-                        IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, Options)
+                        Dim filterOptions As EmberAPI.Structures.ScrapeOptions = EmberAPI.Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
+
+                        IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions)
                     End If
                 Else
                     Return False
@@ -146,12 +239,6 @@ Public Class EmberNativeScraperModule
             EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
         End If
         RaiseEvent ScraperUpdateMediaList(6, True)
-        ' I removed it to main form .. scraper should NOT save db or rename files!!! ???
-        'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-        'FileFolderRenamer.RenameSingle(DBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID), False)
-        'Else
-        'Master.DB.SaveMovieToDB(DBMovie, False, True, Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID))
-        'End If
         Return True
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper

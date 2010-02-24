@@ -32,4 +32,7 @@ Public Class frmNativeSetupInfo
         Me.Close()
     End Sub
 
+    Private Sub gbOptions_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles gbOptions.Enter
+
+    End Sub
 End Class
