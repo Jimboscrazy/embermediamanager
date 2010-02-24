@@ -1348,11 +1348,27 @@ Public Class dlgEditMovie
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
+
+            Dim tPath As String = String.Empty
+
             If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
-                System.Diagnostics.Process.Start(String.Concat("""", Master.currMovie.TrailerPath, """"))
+                tPath = String.Concat("""", Master.currMovie.TrailerPath, """")
             ElseIf Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
-                System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
+                tPath = String.Concat("""", Me.txtTrailer.Text, """")
             End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.isWindows Then
+                    Process.Start(tPath)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = tPath
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+
         Catch
             MsgBox(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(271, "Error Playing Trailer"))
         End Try

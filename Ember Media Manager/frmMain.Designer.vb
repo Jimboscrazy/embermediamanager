@@ -39,8 +39,11 @@ Partial Class frmMain
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ModuleSettingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.WikiStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator18 = New System.Windows.Forms.ToolStripSeparator
         Me.VersionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator19 = New System.Windows.Forms.ToolStripSeparator
+        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip = New System.Windows.Forms.StatusStrip
         Me.tslStatus = New System.Windows.Forms.ToolStripStatusLabel
         Me.tsSpring = New System.Windows.Forms.ToolStripStatusLabel
@@ -530,24 +533,42 @@ Partial Class frmMain
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem, Me.VersionsToolStripMenuItem})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiStripMenuItem, Me.ToolStripSeparator18, Me.VersionsToolStripMenuItem, Me.ToolStripSeparator19, Me.AboutToolStripMenuItem})
         Me.HelpToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.HelpToolStripMenuItem.Text = "&Help"
         '
+        'WikiStripMenuItem
+        '
+        Me.WikiStripMenuItem.Image = CType(resources.GetObject("WikiStripMenuItem.Image"), System.Drawing.Image)
+        Me.WikiStripMenuItem.Name = "WikiStripMenuItem"
+        Me.WikiStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.WikiStripMenuItem.Text = "EmberMM.com &Wiki..."
+        '
+        'ToolStripSeparator18
+        '
+        Me.ToolStripSeparator18.Name = "ToolStripSeparator18"
+        Me.ToolStripSeparator18.Size = New System.Drawing.Size(182, 6)
+        '
+        'VersionsToolStripMenuItem
+        '
+        Me.VersionsToolStripMenuItem.Image = CType(resources.GetObject("VersionsToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
+        Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.VersionsToolStripMenuItem.Text = "&Versions..."
+        '
+        'ToolStripSeparator19
+        '
+        Me.ToolStripSeparator19.Name = "ToolStripSeparator19"
+        Me.ToolStripSeparator19.Size = New System.Drawing.Size(182, 6)
+        '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.AboutToolStripMenuItem.Text = "&About..."
-        '
-        'VersionsToolStripMenuItem
-        '
-        Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
-        Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
-        Me.VersionsToolStripMenuItem.Text = "Versions"
         '
         'StatusStrip
         '
@@ -4008,4 +4029,7 @@ Partial Class frmMain
     Friend WithEvents cmnuChangeEp As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator17 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents WikiStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator18 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripSeparator19 As System.Windows.Forms.ToolStripSeparator
 End Class

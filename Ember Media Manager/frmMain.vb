@@ -1065,25 +1065,31 @@ Public Class frmMain
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
 
-        '//
-        ' Get me out of here!
-        '\\
-
         Application.Exit()
 
     End Sub
 
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutToolStripMenuItem.Click
 
-        '//
-        ' Give credit where credit is due
-        '\\
         Using dAbout As New dlgAbout
             dAbout.ShowDialog()
         End Using
 
     End Sub
 
+    Private Sub WikiStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles WikiStripMenuItem.Click
+
+        If Master.isWindows Then
+            Process.Start("http://www.embermm.com/projects/embermm/wiki")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.embermm.com/projects/embermm/wiki"
+                Explorer.Start()
+            End Using
+        End If
+
+    End Sub
 
     Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlay.Click
 
@@ -1095,9 +1101,9 @@ Public Class frmMain
             If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
                 If File.Exists(Me.txtFilePath.Text) Then
                     If Master.isWindows Then
-                        System.Diagnostics.Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
+                        Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
                     Else
-                        Using Explorer As New Diagnostics.Process
+                        Using Explorer As New Process
                             Explorer.StartInfo.FileName = "xdg-open"
                             Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
                             Explorer.Start()
@@ -6627,7 +6633,17 @@ doCancel:
     End Sub
 
     Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DonateToolStripMenuItem.Click
-        Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532")
+
+        If Master.isWindows Then
+            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532"
+                Explorer.Start()
+            End Using
+        End If
+
     End Sub
 
     Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
@@ -7739,6 +7755,5 @@ doCancel:
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
     End Sub
-
 End Class
 
