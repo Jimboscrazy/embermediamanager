@@ -57,7 +57,7 @@ Public Class AdvancedSettings
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
         Return If(v(0) Is Nothing, "", v(0).Value.ToString)
     End Function
-    Public Shared Function GetBooleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As Boolean
+    Public Shared Function GetBooleanSetting(ByVal key As String, Optional ByVal defvalue As Boolean = False, Optional ByVal cAssembly As String = "") As Boolean
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
@@ -66,7 +66,7 @@ Public Class AdvancedSettings
             End If
         End If
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        Return If(v(0) Is Nothing, False, Convert.ToBoolean(v(0).Value.ToString))
+        Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
     End Function
     Public Shared Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "") As Boolean
         Dim Assembly As String = cAssembly

@@ -269,6 +269,7 @@ Public Class Structures
         Dim bFullCast As Boolean
     End Structure
 
+
     Public Structure ScrapeModifier
         Dim NFO As Boolean
         Dim Poster As Boolean
@@ -317,6 +318,32 @@ Public Class Functions
     ''' <returns>Path of the directory containing the Ember executable</returns>
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
+    End Function
+    Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
+        Dim filterOptions As New Structures.ScrapeOptions
+        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
+        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
+        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
+        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
+        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
+        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
+        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
+        filterOptions.bCast = Options.bCast AndAlso Options2.bCast
+        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
+        filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
+        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
+        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
+        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
+        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
+        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
+        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
+        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
+        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
+        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
+        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
+        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
+        filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
+        Return filterOptions
     End Function
 
     Public Shared Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
