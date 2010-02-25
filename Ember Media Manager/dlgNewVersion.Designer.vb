@@ -29,7 +29,15 @@ Partial Class dlgNewVersion
         Me.lblNew = New System.Windows.Forms.Label
         Me.llClick = New System.Windows.Forms.LinkLabel
         Me.Label2 = New System.Windows.Forms.Label
+        Me.btnUpgrade = New System.Windows.Forms.Button
+        Me.pnlUpgrade = New System.Windows.Forms.Panel
+        Me.lblUpgrade = New System.Windows.Forms.Label
+        Me.btnNo = New System.Windows.Forms.Button
+        Me.btnYes = New System.Windows.Forms.Button
+        Me.pbUpgrade = New System.Windows.Forms.ProgressBar
+        Me.lblStart = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlUpgrade.SuspendLayout()
         Me.SuspendLayout()
         '
         'Cancel_Button
@@ -99,12 +107,88 @@ Partial Class dlgNewVersion
         Me.Label2.TabIndex = 13
         Me.Label2.Text = "to visit embermm.com."
         '
+        'btnUpgrade
+        '
+        Me.btnUpgrade.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnUpgrade.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnUpgrade.Location = New System.Drawing.Point(374, 390)
+        Me.btnUpgrade.Name = "btnUpgrade"
+        Me.btnUpgrade.Size = New System.Drawing.Size(67, 23)
+        Me.btnUpgrade.TabIndex = 14
+        Me.btnUpgrade.Text = "Upgrade"
+        '
+        'pnlUpgrade
+        '
+        Me.pnlUpgrade.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlUpgrade.Controls.Add(Me.btnNo)
+        Me.pnlUpgrade.Controls.Add(Me.btnYes)
+        Me.pnlUpgrade.Controls.Add(Me.pbUpgrade)
+        Me.pnlUpgrade.Controls.Add(Me.lblStart)
+        Me.pnlUpgrade.Controls.Add(Me.lblUpgrade)
+        Me.pnlUpgrade.Location = New System.Drawing.Point(60, 122)
+        Me.pnlUpgrade.Name = "pnlUpgrade"
+        Me.pnlUpgrade.Size = New System.Drawing.Size(400, 152)
+        Me.pnlUpgrade.TabIndex = 15
+        Me.pnlUpgrade.Visible = False
+        '
+        'lblUpgrade
+        '
+        Me.lblUpgrade.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblUpgrade.Location = New System.Drawing.Point(3, 11)
+        Me.lblUpgrade.Name = "lblUpgrade"
+        Me.lblUpgrade.Size = New System.Drawing.Size(394, 109)
+        Me.lblUpgrade.TabIndex = 4
+        Me.lblUpgrade.Text = "TEXT"
+        Me.lblUpgrade.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblUpgrade.Visible = False
+        '
+        'btnNo
+        '
+        Me.btnNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnNo.Location = New System.Drawing.Point(199, 123)
+        Me.btnNo.Name = "btnNo"
+        Me.btnNo.Size = New System.Drawing.Size(58, 22)
+        Me.btnNo.TabIndex = 3
+        Me.btnNo.Text = "NO"
+        Me.btnNo.UseVisualStyleBackColor = True
+        Me.btnNo.Visible = False
+        '
+        'btnYes
+        '
+        Me.btnYes.Location = New System.Drawing.Point(135, 123)
+        Me.btnYes.Name = "btnYes"
+        Me.btnYes.Size = New System.Drawing.Size(58, 22)
+        Me.btnYes.TabIndex = 2
+        Me.btnYes.Text = "YES"
+        Me.btnYes.UseVisualStyleBackColor = True
+        Me.btnYes.Visible = False
+        '
+        'pbUpgrade
+        '
+        Me.pbUpgrade.Location = New System.Drawing.Point(3, 37)
+        Me.pbUpgrade.Name = "pbUpgrade"
+        Me.pbUpgrade.Size = New System.Drawing.Size(394, 13)
+        Me.pbUpgrade.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbUpgrade.TabIndex = 1
+        '
+        'lblStart
+        '
+        Me.lblStart.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStart.Location = New System.Drawing.Point(12, 11)
+        Me.lblStart.Name = "lblStart"
+        Me.lblStart.Size = New System.Drawing.Size(369, 23)
+        Me.lblStart.TabIndex = 0
+        Me.lblStart.Text = "Preparing for upgrade ..."
+        Me.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'dlgNewVersion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(536, 425)
+        Me.Controls.Add(Me.pnlUpgrade)
+        Me.Controls.Add(Me.btnUpgrade)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.llClick)
         Me.Controls.Add(Me.lblNew)
@@ -119,6 +203,7 @@ Partial Class dlgNewVersion
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "A New Version Is Available"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlUpgrade.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -129,5 +214,12 @@ Partial Class dlgNewVersion
     Friend WithEvents lblNew As System.Windows.Forms.Label
     Friend WithEvents llClick As System.Windows.Forms.LinkLabel
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents btnUpgrade As System.Windows.Forms.Button
+    Friend WithEvents pnlUpgrade As System.Windows.Forms.Panel
+    Friend WithEvents pbUpgrade As System.Windows.Forms.ProgressBar
+    Friend WithEvents lblStart As System.Windows.Forms.Label
+    Friend WithEvents lblUpgrade As System.Windows.Forms.Label
+    Friend WithEvents btnNo As System.Windows.Forms.Button
+    Friend WithEvents btnYes As System.Windows.Forms.Button
 
 End Class

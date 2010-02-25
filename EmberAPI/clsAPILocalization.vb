@@ -47,7 +47,6 @@ Public Class Localization
             r.Add(x.Language)
         Next
         Return r
-        'Return New ArrayList( _ISOLanguages)
     End Function
     Public Shared Function ISOLangGetLanguagesListAlpha2() As ArrayList
         Dim r As New ArrayList
@@ -55,7 +54,6 @@ Public Class Localization
             r.Add(x.Language)
         Next
         Return r
-        'Return New ArrayList( _ISOLanguages)
     End Function
     Structure _ISOLanguage
         Public Language As String

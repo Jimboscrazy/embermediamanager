@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
+Imports System.IO
 
 Public Class dlgNewVersion
-
+    Private WithEvents bwDownloadSetup As New System.ComponentModel.BackgroundWorker
     Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
 
         If Master.isWindows Then
@@ -57,5 +57,46 @@ Public Class dlgNewVersion
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
         Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
+        Me.lblStart.Text = Master.eLang.GetString(999, "Preparing for upgrade ...")
+        Me.lblUpgrade.Text = Master.eLang.GetString(999, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
+        Me.btnYes.Text = Master.eLang.GetString(999, "YES")
+        Me.btnNo.Text = Master.eLang.GetString(999, "NO")
+        Me.btnUpgrade.Text = Master.eLang.GetString(999, "Upgrade")
+
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpgrade.Click
+        btnUpgrade.Enabled = False
+        pnlUpgrade.Visible = True
+        bwDownloadSetup.RunWorkerAsync()
+        While bwDownloadSetup.IsBusy
+            Application.DoEvents()
+        End While
+        lblStart.Visible = False
+        pbUpgrade.Visible = False
+        lblUpgrade.Visible = True
+        btnNo.Visible = True
+        btnYes.Visible = True
+    End Sub
+
+    Private Sub bwbwDownloadSetup_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadSetup.DoWork
+        If File.Exists(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")) Then
+            File.Delete(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"))
+        End If
+        Dim lhttp As New EmberAPI.HTTP
+        lhttp.DownloadFile("http://www.embermm.com/Updates/EmberSetup.exe", Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), False, "other")
+    End Sub
+
+    Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
+        If Master.isWindows Then
+            Process.Start(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"))
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")
+                Explorer.Start()
+            End Using
+        End If
+        Application.Exit()
     End Sub
 End Class
