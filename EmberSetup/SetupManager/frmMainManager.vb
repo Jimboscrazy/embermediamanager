@@ -34,6 +34,7 @@ Public Class frmMainManager
     Public CurrentEmberVersion As String
     Public CurrentEmberPlatform As String
     Public Platform As String = "x86"
+    Public CurrentEmberPath As String = String.Empty
 
     Public Shared OPaths As New List(Of OrigPaths)
     Public Shared EmberVersions As New UpgradeList
@@ -416,6 +417,7 @@ Public Class frmMainManager
                                 CurrentEmberVersion = GetEmberVersion(o.FTI.OriginalPath)
                                 CurrentEmberPlatform = GetEmberPlatform(o.FTI.OriginalPath)
                                 txtEMMVersion.Text = CurrentEmberVersion
+                                CurrentEmberPath = o.FTI.OriginalPath
                             End If
 
                         End If
@@ -627,9 +629,29 @@ Public Class frmMainManager
         Dim _cmds As New InstallCommands
         _cmds.Command = New List(Of InstallCommand)
         If Not File.Exists(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml")))) Then
-            For Each s As String In DefaultStrings.Tables
-                _cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = s})
-            Next
+            'For Each s As String In DefaultStrings.Tables
+            '_cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = s})
+            'Next
+            Dim fd As New OpenFileDialog
+            If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If File.Exists(Path.Combine(CurrentEmberPath, "Media.emm")) Then
+                    Dim lSQLcn As New SQLite.SQLiteConnection()
+                    lSQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(CurrentEmberPath, "Media.emm"))
+                    lSQLcn.Open()
+                    Using SQLcommand As SQLite.SQLiteCommand = lSQLcn.CreateCommand
+                        SQLcommand.CommandText = "select type, sql from sqlite_master;"
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLreader.Read
+                                If Not DBNull.Value.Equals(SQLreader("sql")) Then
+                                    Dim cmd As String = SQLreader("sql").ToString
+                                    Dim t As String = SQLreader("type").ToString
+                                    Dim a As String = ""
+                                End If
+                            End While
+                        End Using
+                    End Using
+                End If
+            End If
             _cmds.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml"))))
             _cmds.Command.Clear()
         End If
@@ -650,7 +672,7 @@ Public Class frmMainManager
     End Sub
 
     Private Sub frmMainManager_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        MasterDB.Connect()
+        MasterDB.Close()
     End Sub
 
     Private Sub frmMainManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
