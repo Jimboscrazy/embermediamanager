@@ -463,6 +463,38 @@ Partial Class dlgSettings
         Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
+        Me.GroupBox32 = New System.Windows.Forms.GroupBox
+        Me.GroupBox35 = New System.Windows.Forms.GroupBox
+        Me.chkScraperShowRating = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowActors = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowStudio = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowPremiered = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowEGU = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowMPAA = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowPlot = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowGenre = New System.Windows.Forms.CheckBox
+        Me.chkScraperShowTitle = New System.Windows.Forms.CheckBox
+        Me.GroupBox34 = New System.Windows.Forms.GroupBox
+        Me.chkScraperEpActors = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpCredits = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpDirector = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpPlot = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpRating = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpAired = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpTitle = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpEpisode = New System.Windows.Forms.CheckBox
+        Me.chkScraperEpSeason = New System.Windows.Forms.CheckBox
+        Me.GroupBox33 = New System.Windows.Forms.GroupBox
+        Me.gbEpLocks = New System.Windows.Forms.GroupBox
+        Me.chkEpLockTitle = New System.Windows.Forms.CheckBox
+        Me.chkEpLockRating = New System.Windows.Forms.CheckBox
+        Me.chkEpLockPlot = New System.Windows.Forms.CheckBox
+        Me.gbShowLocks = New System.Windows.Forms.GroupBox
+        Me.chkShowLockPlot = New System.Windows.Forms.CheckBox
+        Me.chkShowLockGenre = New System.Windows.Forms.CheckBox
+        Me.chkShowLockStudio = New System.Windows.Forms.CheckBox
+        Me.chkShowLockRating = New System.Windows.Forms.CheckBox
+        Me.chkShowLockTitle = New System.Windows.Forms.CheckBox
         Me.GroupBox31 = New System.Windows.Forms.GroupBox
         Me.gbTVMIDefaults = New System.Windows.Forms.GroupBox
         Me.lstTVMetaData = New System.Windows.Forms.ListBox
@@ -488,8 +520,9 @@ Partial Class dlgSettings
         Me.cbTVLanguage = New System.Windows.Forms.ComboBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.gbOptions = New System.Windows.Forms.GroupBox
+        Me.Label52 = New System.Windows.Forms.Label
         Me.Label46 = New System.Windows.Forms.Label
+        Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.txtGenreLimit = New System.Windows.Forms.TextBox
         Me.lblLimit2 = New System.Windows.Forms.Label
@@ -526,8 +559,8 @@ Partial Class dlgSettings
         Me.cbLanguages = New System.Windows.Forms.ComboBox
         Me.Label31 = New System.Windows.Forms.Label
         Me.gbRTFormat = New System.Windows.Forms.GroupBox
-        Me.rbHM = New System.Windows.Forms.RadioButton
-        Me.rbMins = New System.Windows.Forms.RadioButton
+        Me.Label51 = New System.Windows.Forms.Label
+        Me.txtRuntimeFormat = New System.Windows.Forms.TextBox
         Me.chkScanMediaInfo = New System.Windows.Forms.CheckBox
         Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
@@ -596,38 +629,6 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
-        Me.GroupBox32 = New System.Windows.Forms.GroupBox
-        Me.GroupBox33 = New System.Windows.Forms.GroupBox
-        Me.chkEpLockPlot = New System.Windows.Forms.CheckBox
-        Me.chkShowLockStudio = New System.Windows.Forms.CheckBox
-        Me.chkEpLockRating = New System.Windows.Forms.CheckBox
-        Me.chkEpLockTitle = New System.Windows.Forms.CheckBox
-        Me.gbShowLocks = New System.Windows.Forms.GroupBox
-        Me.gbEpLocks = New System.Windows.Forms.GroupBox
-        Me.chkShowLockPlot = New System.Windows.Forms.CheckBox
-        Me.chkShowLockGenre = New System.Windows.Forms.CheckBox
-        Me.chkShowLockRating = New System.Windows.Forms.CheckBox
-        Me.chkShowLockTitle = New System.Windows.Forms.CheckBox
-        Me.GroupBox34 = New System.Windows.Forms.GroupBox
-        Me.chkScraperEpTitle = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpEpisode = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpSeason = New System.Windows.Forms.CheckBox
-        Me.GroupBox35 = New System.Windows.Forms.GroupBox
-        Me.chkScraperShowEGU = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowMPAA = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowPlot = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowGenre = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowTitle = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowRating = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowActors = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowStudio = New System.Windows.Forms.CheckBox
-        Me.chkScraperShowPremiered = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpRating = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpAired = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpActors = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpCredits = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpDirector = New System.Windows.Forms.CheckBox
-        Me.chkScraperEpPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -712,6 +713,12 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVScraper.SuspendLayout()
+        Me.GroupBox32.SuspendLayout()
+        Me.GroupBox35.SuspendLayout()
+        Me.GroupBox34.SuspendLayout()
+        Me.GroupBox33.SuspendLayout()
+        Me.gbEpLocks.SuspendLayout()
+        Me.gbShowLocks.SuspendLayout()
         Me.GroupBox31.SuspendLayout()
         Me.gbTVMIDefaults.SuspendLayout()
         Me.gbTVScraperOptions.SuspendLayout()
@@ -732,12 +739,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox32.SuspendLayout()
-        Me.GroupBox33.SuspendLayout()
-        Me.gbShowLocks.SuspendLayout()
-        Me.gbEpLocks.SuspendLayout()
-        Me.GroupBox34.SuspendLayout()
-        Me.GroupBox35.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -5558,6 +5559,352 @@ Partial Class dlgSettings
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
         '
+        'GroupBox32
+        '
+        Me.GroupBox32.Controls.Add(Me.GroupBox35)
+        Me.GroupBox32.Controls.Add(Me.GroupBox34)
+        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox32.Location = New System.Drawing.Point(208, 252)
+        Me.GroupBox32.Name = "GroupBox32"
+        Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
+        Me.GroupBox32.TabIndex = 69
+        Me.GroupBox32.TabStop = False
+        Me.GroupBox32.Text = "Scraper Fields"
+        '
+        'GroupBox35
+        '
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowRating)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowActors)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowStudio)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowPremiered)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowEGU)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowMPAA)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowPlot)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowGenre)
+        Me.GroupBox35.Controls.Add(Me.chkScraperShowTitle)
+        Me.GroupBox35.Location = New System.Drawing.Point(5, 14)
+        Me.GroupBox35.Name = "GroupBox35"
+        Me.GroupBox35.Size = New System.Drawing.Size(213, 96)
+        Me.GroupBox35.TabIndex = 15
+        Me.GroupBox35.TabStop = False
+        Me.GroupBox35.Text = "Show"
+        '
+        'chkScraperShowRating
+        '
+        Me.chkScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowRating.Location = New System.Drawing.Point(130, 29)
+        Me.chkScraperShowRating.Name = "chkScraperShowRating"
+        Me.chkScraperShowRating.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowRating.TabIndex = 13
+        Me.chkScraperShowRating.Text = "Rating"
+        Me.chkScraperShowRating.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowActors
+        '
+        Me.chkScraperShowActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowActors.Location = New System.Drawing.Point(130, 61)
+        Me.chkScraperShowActors.Name = "chkScraperShowActors"
+        Me.chkScraperShowActors.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowActors.TabIndex = 16
+        Me.chkScraperShowActors.Text = "Actors"
+        Me.chkScraperShowActors.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowStudio
+        '
+        Me.chkScraperShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowStudio.Location = New System.Drawing.Point(130, 45)
+        Me.chkScraperShowStudio.Name = "chkScraperShowStudio"
+        Me.chkScraperShowStudio.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowStudio.TabIndex = 15
+        Me.chkScraperShowStudio.Text = "Studio"
+        Me.chkScraperShowStudio.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowPremiered
+        '
+        Me.chkScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowPremiered.Location = New System.Drawing.Point(130, 13)
+        Me.chkScraperShowPremiered.Name = "chkScraperShowPremiered"
+        Me.chkScraperShowPremiered.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowPremiered.TabIndex = 14
+        Me.chkScraperShowPremiered.Text = "Premiered"
+        Me.chkScraperShowPremiered.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowEGU
+        '
+        Me.chkScraperShowEGU.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowEGU.Location = New System.Drawing.Point(6, 29)
+        Me.chkScraperShowEGU.Name = "chkScraperShowEGU"
+        Me.chkScraperShowEGU.Size = New System.Drawing.Size(118, 17)
+        Me.chkScraperShowEGU.TabIndex = 8
+        Me.chkScraperShowEGU.Text = "EpisodeGuideURL"
+        Me.chkScraperShowEGU.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowMPAA
+        '
+        Me.chkScraperShowMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowMPAA.Location = New System.Drawing.Point(6, 61)
+        Me.chkScraperShowMPAA.Name = "chkScraperShowMPAA"
+        Me.chkScraperShowMPAA.Size = New System.Drawing.Size(119, 17)
+        Me.chkScraperShowMPAA.TabIndex = 11
+        Me.chkScraperShowMPAA.Text = "MPAA"
+        Me.chkScraperShowMPAA.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowPlot
+        '
+        Me.chkScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowPlot.Location = New System.Drawing.Point(6, 77)
+        Me.chkScraperShowPlot.Name = "chkScraperShowPlot"
+        Me.chkScraperShowPlot.Size = New System.Drawing.Size(119, 17)
+        Me.chkScraperShowPlot.TabIndex = 5
+        Me.chkScraperShowPlot.Text = "Plot"
+        Me.chkScraperShowPlot.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowGenre
+        '
+        Me.chkScraperShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowGenre.Location = New System.Drawing.Point(6, 45)
+        Me.chkScraperShowGenre.Name = "chkScraperShowGenre"
+        Me.chkScraperShowGenre.Size = New System.Drawing.Size(118, 17)
+        Me.chkScraperShowGenre.TabIndex = 10
+        Me.chkScraperShowGenre.Text = "Genre"
+        Me.chkScraperShowGenre.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowTitle
+        '
+        Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowTitle.Location = New System.Drawing.Point(6, 13)
+        Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
+        Me.chkScraperShowTitle.Size = New System.Drawing.Size(118, 17)
+        Me.chkScraperShowTitle.TabIndex = 9
+        Me.chkScraperShowTitle.Text = "Title"
+        Me.chkScraperShowTitle.UseVisualStyleBackColor = True
+        '
+        'GroupBox34
+        '
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpActors)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpCredits)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpDirector)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpPlot)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpRating)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpAired)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpTitle)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpEpisode)
+        Me.GroupBox34.Controls.Add(Me.chkScraperEpSeason)
+        Me.GroupBox34.Location = New System.Drawing.Point(221, 14)
+        Me.GroupBox34.Name = "GroupBox34"
+        Me.GroupBox34.Size = New System.Drawing.Size(181, 96)
+        Me.GroupBox34.TabIndex = 14
+        Me.GroupBox34.TabStop = False
+        Me.GroupBox34.Text = "Episode"
+        '
+        'chkScraperEpActors
+        '
+        Me.chkScraperEpActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpActors.Location = New System.Drawing.Point(94, 60)
+        Me.chkScraperEpActors.Name = "chkScraperEpActors"
+        Me.chkScraperEpActors.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpActors.TabIndex = 10
+        Me.chkScraperEpActors.Text = "Actors"
+        Me.chkScraperEpActors.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpCredits
+        '
+        Me.chkScraperEpCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpCredits.Location = New System.Drawing.Point(94, 44)
+        Me.chkScraperEpCredits.Name = "chkScraperEpCredits"
+        Me.chkScraperEpCredits.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpCredits.TabIndex = 9
+        Me.chkScraperEpCredits.Text = "Credits"
+        Me.chkScraperEpCredits.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpDirector
+        '
+        Me.chkScraperEpDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpDirector.Location = New System.Drawing.Point(94, 28)
+        Me.chkScraperEpDirector.Name = "chkScraperEpDirector"
+        Me.chkScraperEpDirector.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpDirector.TabIndex = 8
+        Me.chkScraperEpDirector.Text = "Director"
+        Me.chkScraperEpDirector.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpPlot
+        '
+        Me.chkScraperEpPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpPlot.Location = New System.Drawing.Point(94, 12)
+        Me.chkScraperEpPlot.Name = "chkScraperEpPlot"
+        Me.chkScraperEpPlot.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpPlot.TabIndex = 7
+        Me.chkScraperEpPlot.Text = "Plot"
+        Me.chkScraperEpPlot.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpRating
+        '
+        Me.chkScraperEpRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpRating.Location = New System.Drawing.Point(6, 77)
+        Me.chkScraperEpRating.Name = "chkScraperEpRating"
+        Me.chkScraperEpRating.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpRating.TabIndex = 6
+        Me.chkScraperEpRating.Text = "Rating"
+        Me.chkScraperEpRating.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpAired
+        '
+        Me.chkScraperEpAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpAired.Location = New System.Drawing.Point(6, 61)
+        Me.chkScraperEpAired.Name = "chkScraperEpAired"
+        Me.chkScraperEpAired.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpAired.TabIndex = 5
+        Me.chkScraperEpAired.Text = "Aired"
+        Me.chkScraperEpAired.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpTitle
+        '
+        Me.chkScraperEpTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpTitle.Location = New System.Drawing.Point(6, 13)
+        Me.chkScraperEpTitle.Name = "chkScraperEpTitle"
+        Me.chkScraperEpTitle.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpTitle.TabIndex = 2
+        Me.chkScraperEpTitle.Text = "Title"
+        Me.chkScraperEpTitle.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpEpisode
+        '
+        Me.chkScraperEpEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpEpisode.Location = New System.Drawing.Point(6, 45)
+        Me.chkScraperEpEpisode.Name = "chkScraperEpEpisode"
+        Me.chkScraperEpEpisode.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpEpisode.TabIndex = 4
+        Me.chkScraperEpEpisode.Text = "Episode"
+        Me.chkScraperEpEpisode.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpSeason
+        '
+        Me.chkScraperEpSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpSeason.Location = New System.Drawing.Point(6, 29)
+        Me.chkScraperEpSeason.Name = "chkScraperEpSeason"
+        Me.chkScraperEpSeason.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperEpSeason.TabIndex = 0
+        Me.chkScraperEpSeason.Text = "Season"
+        Me.chkScraperEpSeason.UseVisualStyleBackColor = True
+        '
+        'GroupBox33
+        '
+        Me.GroupBox33.Controls.Add(Me.gbEpLocks)
+        Me.GroupBox33.Controls.Add(Me.gbShowLocks)
+        Me.GroupBox33.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox33.Location = New System.Drawing.Point(208, 6)
+        Me.GroupBox33.Name = "GroupBox33"
+        Me.GroupBox33.Size = New System.Drawing.Size(191, 243)
+        Me.GroupBox33.TabIndex = 68
+        Me.GroupBox33.TabStop = False
+        Me.GroupBox33.Text = "Global Locks (Do not allow updates during scraping)"
+        '
+        'gbEpLocks
+        '
+        Me.gbEpLocks.Controls.Add(Me.chkEpLockTitle)
+        Me.gbEpLocks.Controls.Add(Me.chkEpLockRating)
+        Me.gbEpLocks.Controls.Add(Me.chkEpLockPlot)
+        Me.gbEpLocks.Location = New System.Drawing.Point(5, 127)
+        Me.gbEpLocks.Name = "gbEpLocks"
+        Me.gbEpLocks.Size = New System.Drawing.Size(181, 66)
+        Me.gbEpLocks.TabIndex = 9
+        Me.gbEpLocks.TabStop = False
+        Me.gbEpLocks.Text = "Episode"
+        '
+        'chkEpLockTitle
+        '
+        Me.chkEpLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpLockTitle.Location = New System.Drawing.Point(6, 15)
+        Me.chkEpLockTitle.Name = "chkEpLockTitle"
+        Me.chkEpLockTitle.Size = New System.Drawing.Size(166, 17)
+        Me.chkEpLockTitle.TabIndex = 2
+        Me.chkEpLockTitle.Text = "Lock Title"
+        Me.chkEpLockTitle.UseVisualStyleBackColor = True
+        '
+        'chkEpLockRating
+        '
+        Me.chkEpLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpLockRating.Location = New System.Drawing.Point(6, 47)
+        Me.chkEpLockRating.Name = "chkEpLockRating"
+        Me.chkEpLockRating.Size = New System.Drawing.Size(168, 17)
+        Me.chkEpLockRating.TabIndex = 4
+        Me.chkEpLockRating.Text = "Lock Rating"
+        Me.chkEpLockRating.UseVisualStyleBackColor = True
+        '
+        'chkEpLockPlot
+        '
+        Me.chkEpLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpLockPlot.Location = New System.Drawing.Point(6, 31)
+        Me.chkEpLockPlot.Name = "chkEpLockPlot"
+        Me.chkEpLockPlot.Size = New System.Drawing.Size(166, 17)
+        Me.chkEpLockPlot.TabIndex = 0
+        Me.chkEpLockPlot.Text = "Lock Plot"
+        Me.chkEpLockPlot.UseVisualStyleBackColor = True
+        '
+        'gbShowLocks
+        '
+        Me.gbShowLocks.Controls.Add(Me.chkShowLockPlot)
+        Me.gbShowLocks.Controls.Add(Me.chkShowLockGenre)
+        Me.gbShowLocks.Controls.Add(Me.chkShowLockStudio)
+        Me.gbShowLocks.Controls.Add(Me.chkShowLockRating)
+        Me.gbShowLocks.Controls.Add(Me.chkShowLockTitle)
+        Me.gbShowLocks.Location = New System.Drawing.Point(5, 28)
+        Me.gbShowLocks.Name = "gbShowLocks"
+        Me.gbShowLocks.Size = New System.Drawing.Size(181, 96)
+        Me.gbShowLocks.TabIndex = 8
+        Me.gbShowLocks.TabStop = False
+        Me.gbShowLocks.Text = "Show"
+        '
+        'chkShowLockPlot
+        '
+        Me.chkShowLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowLockPlot.Location = New System.Drawing.Point(6, 29)
+        Me.chkShowLockPlot.Name = "chkShowLockPlot"
+        Me.chkShowLockPlot.Size = New System.Drawing.Size(168, 17)
+        Me.chkShowLockPlot.TabIndex = 8
+        Me.chkShowLockPlot.Text = "Lock Plot"
+        Me.chkShowLockPlot.UseVisualStyleBackColor = True
+        '
+        'chkShowLockGenre
+        '
+        Me.chkShowLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowLockGenre.Location = New System.Drawing.Point(6, 61)
+        Me.chkShowLockGenre.Name = "chkShowLockGenre"
+        Me.chkShowLockGenre.Size = New System.Drawing.Size(168, 17)
+        Me.chkShowLockGenre.TabIndex = 11
+        Me.chkShowLockGenre.Text = "Lock Genre"
+        Me.chkShowLockGenre.UseVisualStyleBackColor = True
+        '
+        'chkShowLockStudio
+        '
+        Me.chkShowLockStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowLockStudio.Location = New System.Drawing.Point(6, 77)
+        Me.chkShowLockStudio.Name = "chkShowLockStudio"
+        Me.chkShowLockStudio.Size = New System.Drawing.Size(168, 17)
+        Me.chkShowLockStudio.TabIndex = 5
+        Me.chkShowLockStudio.Text = "Lock Studio"
+        Me.chkShowLockStudio.UseVisualStyleBackColor = True
+        '
+        'chkShowLockRating
+        '
+        Me.chkShowLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowLockRating.Location = New System.Drawing.Point(6, 45)
+        Me.chkShowLockRating.Name = "chkShowLockRating"
+        Me.chkShowLockRating.Size = New System.Drawing.Size(168, 17)
+        Me.chkShowLockRating.TabIndex = 10
+        Me.chkShowLockRating.Text = "Lock Rating"
+        Me.chkShowLockRating.UseVisualStyleBackColor = True
+        '
+        'chkShowLockTitle
+        '
+        Me.chkShowLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowLockTitle.Location = New System.Drawing.Point(6, 13)
+        Me.chkShowLockTitle.Name = "chkShowLockTitle"
+        Me.chkShowLockTitle.Size = New System.Drawing.Size(168, 17)
+        Me.chkShowLockTitle.TabIndex = 9
+        Me.chkShowLockTitle.Text = "Lock Title"
+        Me.chkShowLockTitle.UseVisualStyleBackColor = True
+        '
         'GroupBox31
         '
         Me.GroupBox31.Controls.Add(Me.gbTVMIDefaults)
@@ -5821,6 +6168,8 @@ Partial Class dlgSettings
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label52)
+        Me.TabPage1.Controls.Add(Me.Label46)
         Me.TabPage1.Controls.Add(Me.gbOptions)
         Me.TabPage1.Controls.Add(Me.GroupBox26)
         Me.TabPage1.Controls.Add(Me.GroupBox10)
@@ -5833,9 +6182,29 @@ Partial Class dlgSettings
         Me.TabPage1.Text = "General"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Label52
+        '
+        Me.Label52.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label52.Location = New System.Drawing.Point(5, 334)
+        Me.Label52.Name = "Label52"
+        Me.Label52.Size = New System.Drawing.Size(590, 12)
+        Me.Label52.TabIndex = 68
+        Me.Label52.Text = "*Enabling locks will disable updating the item during scraping unless the item is" & _
+            " empty."
+        Me.Label52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label46
+        '
+        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label46.Location = New System.Drawing.Point(5, 347)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(590, 15)
+        Me.Label46.TabIndex = 19
+        Me.Label46.Text = "*Scrape Full Crew Must Be Enabled"
+        Me.Label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'gbOptions
         '
-        Me.gbOptions.Controls.Add(Me.Label46)
         Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.txtGenreLimit)
         Me.gbOptions.Controls.Add(Me.lblLimit2)
@@ -5861,22 +6230,12 @@ Partial Class dlgSettings
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(1, 168)
+        Me.gbOptions.Location = New System.Drawing.Point(2, 181)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(302, 192)
+        Me.gbOptions.Size = New System.Drawing.Size(302, 150)
         Me.gbOptions.TabIndex = 67
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
-        '
-        'Label46
-        '
-        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label46.Location = New System.Drawing.Point(6, 174)
-        Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(202, 19)
-        Me.Label46.TabIndex = 19
-        Me.Label46.Text = "*Scrape Full Crew Must Be Enabled"
-        Me.Label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'chkTop250
         '
@@ -5936,9 +6295,9 @@ Partial Class dlgSettings
         Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkCrew.Location = New System.Drawing.Point(205, 83)
         Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Size = New System.Drawing.Size(90, 17)
+        Me.chkCrew.Size = New System.Drawing.Size(95, 17)
         Me.chkCrew.TabIndex = 18
-        Me.chkCrew.Text = "Other Crew*"
+        Me.chkCrew.Text = "Other Crew**"
         Me.chkCrew.UseVisualStyleBackColor = True
         '
         'chkMusicBy
@@ -5948,9 +6307,9 @@ Partial Class dlgSettings
         Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMusicBy.Location = New System.Drawing.Point(205, 67)
         Me.chkMusicBy.Name = "chkMusicBy"
-        Me.chkMusicBy.Size = New System.Drawing.Size(76, 17)
+        Me.chkMusicBy.Size = New System.Drawing.Size(81, 17)
         Me.chkMusicBy.TabIndex = 17
-        Me.chkMusicBy.Text = "Music By*"
+        Me.chkMusicBy.Text = "Music By**"
         Me.chkMusicBy.UseVisualStyleBackColor = True
         '
         'chkProducers
@@ -5960,9 +6319,9 @@ Partial Class dlgSettings
         Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkProducers.Location = New System.Drawing.Point(102, 131)
         Me.chkProducers.Name = "chkProducers"
-        Me.chkProducers.Size = New System.Drawing.Size(82, 17)
+        Me.chkProducers.Size = New System.Drawing.Size(87, 17)
         Me.chkProducers.TabIndex = 16
-        Me.chkProducers.Text = "Producers*"
+        Me.chkProducers.Text = "Producers**"
         Me.chkProducers.UseVisualStyleBackColor = True
         '
         'chkWriters
@@ -6151,9 +6510,9 @@ Partial Class dlgSettings
         Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
         Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox26.Location = New System.Drawing.Point(196, 5)
+        Me.GroupBox26.Location = New System.Drawing.Point(152, 5)
         Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(399, 160)
+        Me.GroupBox26.Size = New System.Drawing.Size(443, 176)
         Me.GroupBox26.TabIndex = 63
         Me.GroupBox26.TabStop = False
         Me.GroupBox26.Text = "Meta Data"
@@ -6167,7 +6526,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
         Me.GroupBox28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox28.Location = New System.Drawing.Point(210, 11)
+        Me.GroupBox28.Location = New System.Drawing.Point(252, 11)
         Me.GroupBox28.Name = "GroupBox28"
         Me.GroupBox28.Size = New System.Drawing.Size(183, 144)
         Me.GroupBox28.TabIndex = 8
@@ -6252,7 +6611,7 @@ Partial Class dlgSettings
         Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLanguages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbLanguages.FormattingEnabled = True
-        Me.cbLanguages.Location = New System.Drawing.Point(16, 134)
+        Me.cbLanguages.Location = New System.Drawing.Point(38, 151)
         Me.cbLanguages.Name = "cbLanguages"
         Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
         Me.cbLanguages.Sorted = True
@@ -6261,49 +6620,42 @@ Partial Class dlgSettings
         'Label31
         '
         Me.Label31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label31.Location = New System.Drawing.Point(14, 106)
+        Me.Label31.Location = New System.Drawing.Point(2, 123)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(202, 29)
+        Me.Label31.Size = New System.Drawing.Size(245, 29)
         Me.Label31.TabIndex = 16
         Me.Label31.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
-        Me.Label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Label31.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'gbRTFormat
         '
-        Me.gbRTFormat.Controls.Add(Me.rbHM)
-        Me.gbRTFormat.Controls.Add(Me.rbMins)
+        Me.gbRTFormat.Controls.Add(Me.Label51)
+        Me.gbRTFormat.Controls.Add(Me.txtRuntimeFormat)
         Me.gbRTFormat.Enabled = False
         Me.gbRTFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRTFormat.Location = New System.Drawing.Point(18, 65)
+        Me.gbRTFormat.Location = New System.Drawing.Point(3, 65)
         Me.gbRTFormat.Name = "gbRTFormat"
-        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
+        Me.gbRTFormat.Size = New System.Drawing.Size(244, 56)
         Me.gbRTFormat.TabIndex = 9
         Me.gbRTFormat.TabStop = False
         Me.gbRTFormat.Text = "Runtime Format"
         '
-        'rbHM
+        'Label51
         '
-        Me.rbHM.AutoSize = True
-        Me.rbHM.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbHM.Location = New System.Drawing.Point(75, 15)
-        Me.rbHM.Name = "rbHM"
-        Me.rbHM.Size = New System.Drawing.Size(86, 17)
-        Me.rbHM.TabIndex = 1
-        Me.rbHM.Text = "X hrs X mins"
-        Me.rbHM.UseVisualStyleBackColor = True
+        Me.Label51.Location = New System.Drawing.Point(5, 38)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(235, 13)
+        Me.Label51.TabIndex = 23
+        Me.Label51.Text = "<h> = Hours, <m> = Minutes"
+        Me.Label51.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'rbMins
+        'txtRuntimeFormat
         '
-        Me.rbMins.AutoSize = True
-        Me.rbMins.Checked = True
-        Me.rbMins.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbMins.Location = New System.Drawing.Point(6, 15)
-        Me.rbMins.Name = "rbMins"
-        Me.rbMins.Size = New System.Drawing.Size(58, 17)
-        Me.rbMins.TabIndex = 0
-        Me.rbMins.TabStop = True
-        Me.rbMins.Text = "X mins"
-        Me.rbMins.UseVisualStyleBackColor = True
+        Me.txtRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtRuntimeFormat.Location = New System.Drawing.Point(61, 14)
+        Me.txtRuntimeFormat.Name = "txtRuntimeFormat"
+        Me.txtRuntimeFormat.Size = New System.Drawing.Size(128, 22)
+        Me.txtRuntimeFormat.TabIndex = 22
         '
         'chkScanMediaInfo
         '
@@ -6341,17 +6693,17 @@ Partial Class dlgSettings
         Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox10.Location = New System.Drawing.Point(1, 5)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(191, 160)
+        Me.GroupBox10.Size = New System.Drawing.Size(145, 176)
         Me.GroupBox10.TabIndex = 1
         Me.GroupBox10.TabStop = False
-        Me.GroupBox10.Text = "Global Locks (Do not allow updates during scraping)"
+        Me.GroupBox10.Text = "Global Locks*"
         '
         'chkLockOutline
         '
         Me.chkLockOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockOutline.Location = New System.Drawing.Point(6, 60)
         Me.chkLockOutline.Name = "chkLockOutline"
-        Me.chkLockOutline.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockOutline.Size = New System.Drawing.Size(129, 17)
         Me.chkLockOutline.TabIndex = 1
         Me.chkLockOutline.Text = "Lock Outline"
         Me.chkLockOutline.UseVisualStyleBackColor = True
@@ -6361,7 +6713,7 @@ Partial Class dlgSettings
         Me.chkLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockPlot.Location = New System.Drawing.Point(6, 44)
         Me.chkLockPlot.Name = "chkLockPlot"
-        Me.chkLockPlot.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockPlot.Size = New System.Drawing.Size(129, 17)
         Me.chkLockPlot.TabIndex = 0
         Me.chkLockPlot.Text = "Lock Plot"
         Me.chkLockPlot.UseVisualStyleBackColor = True
@@ -6371,7 +6723,7 @@ Partial Class dlgSettings
         Me.chkLockTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockTrailer.Location = New System.Drawing.Point(6, 140)
         Me.chkLockTrailer.Name = "chkLockTrailer"
-        Me.chkLockTrailer.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTrailer.Size = New System.Drawing.Size(129, 17)
         Me.chkLockTrailer.TabIndex = 46
         Me.chkLockTrailer.Text = "Lock Trailer"
         Me.chkLockTrailer.UseVisualStyleBackColor = True
@@ -6381,7 +6733,7 @@ Partial Class dlgSettings
         Me.chkLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockGenre.Location = New System.Drawing.Point(6, 124)
         Me.chkLockGenre.Name = "chkLockGenre"
-        Me.chkLockGenre.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockGenre.Size = New System.Drawing.Size(129, 17)
         Me.chkLockGenre.TabIndex = 7
         Me.chkLockGenre.Text = "Lock Genre"
         Me.chkLockGenre.UseVisualStyleBackColor = True
@@ -6391,7 +6743,7 @@ Partial Class dlgSettings
         Me.chkLockRealStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 108)
         Me.chkLockRealStudio.Name = "chkLockRealStudio"
-        Me.chkLockRealStudio.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockRealStudio.Size = New System.Drawing.Size(129, 17)
         Me.chkLockRealStudio.TabIndex = 5
         Me.chkLockRealStudio.Text = "Lock Studio"
         Me.chkLockRealStudio.UseVisualStyleBackColor = True
@@ -6401,7 +6753,7 @@ Partial Class dlgSettings
         Me.chkLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockRating.Location = New System.Drawing.Point(6, 92)
         Me.chkLockRating.Name = "chkLockRating"
-        Me.chkLockRating.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockRating.Size = New System.Drawing.Size(129, 17)
         Me.chkLockRating.TabIndex = 4
         Me.chkLockRating.Text = "Lock Rating"
         Me.chkLockRating.UseVisualStyleBackColor = True
@@ -6411,7 +6763,7 @@ Partial Class dlgSettings
         Me.chkLockTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockTagline.Location = New System.Drawing.Point(6, 76)
         Me.chkLockTagline.Name = "chkLockTagline"
-        Me.chkLockTagline.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTagline.Size = New System.Drawing.Size(129, 17)
         Me.chkLockTagline.TabIndex = 3
         Me.chkLockTagline.Text = "Lock Tagline"
         Me.chkLockTagline.UseVisualStyleBackColor = True
@@ -6421,7 +6773,7 @@ Partial Class dlgSettings
         Me.chkLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkLockTitle.Location = New System.Drawing.Point(6, 28)
         Me.chkLockTitle.Name = "chkLockTitle"
-        Me.chkLockTitle.Size = New System.Drawing.Size(177, 17)
+        Me.chkLockTitle.Size = New System.Drawing.Size(129, 17)
         Me.chkLockTitle.TabIndex = 2
         Me.chkLockTitle.Text = "Lock Title"
         Me.chkLockTitle.UseVisualStyleBackColor = True
@@ -6438,9 +6790,9 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(306, 168)
+        Me.GroupBox1.Location = New System.Drawing.Point(307, 181)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(289, 192)
+        Me.GroupBox1.Size = New System.Drawing.Size(289, 150)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
@@ -7050,352 +7402,6 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'GroupBox32
-        '
-        Me.GroupBox32.Controls.Add(Me.GroupBox35)
-        Me.GroupBox32.Controls.Add(Me.GroupBox34)
-        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox32.Location = New System.Drawing.Point(208, 252)
-        Me.GroupBox32.Name = "GroupBox32"
-        Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
-        Me.GroupBox32.TabIndex = 69
-        Me.GroupBox32.TabStop = False
-        Me.GroupBox32.Text = "Scraper Fields"
-        '
-        'GroupBox33
-        '
-        Me.GroupBox33.Controls.Add(Me.gbEpLocks)
-        Me.GroupBox33.Controls.Add(Me.gbShowLocks)
-        Me.GroupBox33.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox33.Location = New System.Drawing.Point(208, 6)
-        Me.GroupBox33.Name = "GroupBox33"
-        Me.GroupBox33.Size = New System.Drawing.Size(191, 243)
-        Me.GroupBox33.TabIndex = 68
-        Me.GroupBox33.TabStop = False
-        Me.GroupBox33.Text = "Global Locks (Do not allow updates during scraping)"
-        '
-        'chkEpLockPlot
-        '
-        Me.chkEpLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpLockPlot.Location = New System.Drawing.Point(6, 31)
-        Me.chkEpLockPlot.Name = "chkEpLockPlot"
-        Me.chkEpLockPlot.Size = New System.Drawing.Size(166, 17)
-        Me.chkEpLockPlot.TabIndex = 0
-        Me.chkEpLockPlot.Text = "Lock Plot"
-        Me.chkEpLockPlot.UseVisualStyleBackColor = True
-        '
-        'chkShowLockStudio
-        '
-        Me.chkShowLockStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowLockStudio.Location = New System.Drawing.Point(6, 77)
-        Me.chkShowLockStudio.Name = "chkShowLockStudio"
-        Me.chkShowLockStudio.Size = New System.Drawing.Size(168, 17)
-        Me.chkShowLockStudio.TabIndex = 5
-        Me.chkShowLockStudio.Text = "Lock Studio"
-        Me.chkShowLockStudio.UseVisualStyleBackColor = True
-        '
-        'chkEpLockRating
-        '
-        Me.chkEpLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpLockRating.Location = New System.Drawing.Point(6, 47)
-        Me.chkEpLockRating.Name = "chkEpLockRating"
-        Me.chkEpLockRating.Size = New System.Drawing.Size(168, 17)
-        Me.chkEpLockRating.TabIndex = 4
-        Me.chkEpLockRating.Text = "Lock Rating"
-        Me.chkEpLockRating.UseVisualStyleBackColor = True
-        '
-        'chkEpLockTitle
-        '
-        Me.chkEpLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpLockTitle.Location = New System.Drawing.Point(6, 15)
-        Me.chkEpLockTitle.Name = "chkEpLockTitle"
-        Me.chkEpLockTitle.Size = New System.Drawing.Size(166, 17)
-        Me.chkEpLockTitle.TabIndex = 2
-        Me.chkEpLockTitle.Text = "Lock Title"
-        Me.chkEpLockTitle.UseVisualStyleBackColor = True
-        '
-        'gbShowLocks
-        '
-        Me.gbShowLocks.Controls.Add(Me.chkShowLockPlot)
-        Me.gbShowLocks.Controls.Add(Me.chkShowLockGenre)
-        Me.gbShowLocks.Controls.Add(Me.chkShowLockStudio)
-        Me.gbShowLocks.Controls.Add(Me.chkShowLockRating)
-        Me.gbShowLocks.Controls.Add(Me.chkShowLockTitle)
-        Me.gbShowLocks.Location = New System.Drawing.Point(5, 28)
-        Me.gbShowLocks.Name = "gbShowLocks"
-        Me.gbShowLocks.Size = New System.Drawing.Size(181, 96)
-        Me.gbShowLocks.TabIndex = 8
-        Me.gbShowLocks.TabStop = False
-        Me.gbShowLocks.Text = "Show"
-        '
-        'gbEpLocks
-        '
-        Me.gbEpLocks.Controls.Add(Me.chkEpLockTitle)
-        Me.gbEpLocks.Controls.Add(Me.chkEpLockRating)
-        Me.gbEpLocks.Controls.Add(Me.chkEpLockPlot)
-        Me.gbEpLocks.Location = New System.Drawing.Point(5, 127)
-        Me.gbEpLocks.Name = "gbEpLocks"
-        Me.gbEpLocks.Size = New System.Drawing.Size(181, 66)
-        Me.gbEpLocks.TabIndex = 9
-        Me.gbEpLocks.TabStop = False
-        Me.gbEpLocks.Text = "Episode"
-        '
-        'chkShowLockPlot
-        '
-        Me.chkShowLockPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowLockPlot.Location = New System.Drawing.Point(6, 29)
-        Me.chkShowLockPlot.Name = "chkShowLockPlot"
-        Me.chkShowLockPlot.Size = New System.Drawing.Size(168, 17)
-        Me.chkShowLockPlot.TabIndex = 8
-        Me.chkShowLockPlot.Text = "Lock Plot"
-        Me.chkShowLockPlot.UseVisualStyleBackColor = True
-        '
-        'chkShowLockGenre
-        '
-        Me.chkShowLockGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowLockGenre.Location = New System.Drawing.Point(6, 61)
-        Me.chkShowLockGenre.Name = "chkShowLockGenre"
-        Me.chkShowLockGenre.Size = New System.Drawing.Size(168, 17)
-        Me.chkShowLockGenre.TabIndex = 11
-        Me.chkShowLockGenre.Text = "Lock Genre"
-        Me.chkShowLockGenre.UseVisualStyleBackColor = True
-        '
-        'chkShowLockRating
-        '
-        Me.chkShowLockRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowLockRating.Location = New System.Drawing.Point(6, 45)
-        Me.chkShowLockRating.Name = "chkShowLockRating"
-        Me.chkShowLockRating.Size = New System.Drawing.Size(168, 17)
-        Me.chkShowLockRating.TabIndex = 10
-        Me.chkShowLockRating.Text = "Lock Rating"
-        Me.chkShowLockRating.UseVisualStyleBackColor = True
-        '
-        'chkShowLockTitle
-        '
-        Me.chkShowLockTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowLockTitle.Location = New System.Drawing.Point(6, 13)
-        Me.chkShowLockTitle.Name = "chkShowLockTitle"
-        Me.chkShowLockTitle.Size = New System.Drawing.Size(168, 17)
-        Me.chkShowLockTitle.TabIndex = 9
-        Me.chkShowLockTitle.Text = "Lock Title"
-        Me.chkShowLockTitle.UseVisualStyleBackColor = True
-        '
-        'GroupBox34
-        '
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpActors)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpCredits)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpDirector)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpPlot)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpRating)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpAired)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpTitle)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpEpisode)
-        Me.GroupBox34.Controls.Add(Me.chkScraperEpSeason)
-        Me.GroupBox34.Location = New System.Drawing.Point(221, 14)
-        Me.GroupBox34.Name = "GroupBox34"
-        Me.GroupBox34.Size = New System.Drawing.Size(181, 96)
-        Me.GroupBox34.TabIndex = 14
-        Me.GroupBox34.TabStop = False
-        Me.GroupBox34.Text = "Episode"
-        '
-        'chkScraperEpTitle
-        '
-        Me.chkScraperEpTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpTitle.Location = New System.Drawing.Point(6, 13)
-        Me.chkScraperEpTitle.Name = "chkScraperEpTitle"
-        Me.chkScraperEpTitle.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpTitle.TabIndex = 2
-        Me.chkScraperEpTitle.Text = "Title"
-        Me.chkScraperEpTitle.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpEpisode
-        '
-        Me.chkScraperEpEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpEpisode.Location = New System.Drawing.Point(6, 45)
-        Me.chkScraperEpEpisode.Name = "chkScraperEpEpisode"
-        Me.chkScraperEpEpisode.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpEpisode.TabIndex = 4
-        Me.chkScraperEpEpisode.Text = "Episode"
-        Me.chkScraperEpEpisode.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpSeason
-        '
-        Me.chkScraperEpSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpSeason.Location = New System.Drawing.Point(6, 29)
-        Me.chkScraperEpSeason.Name = "chkScraperEpSeason"
-        Me.chkScraperEpSeason.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpSeason.TabIndex = 0
-        Me.chkScraperEpSeason.Text = "Season"
-        Me.chkScraperEpSeason.UseVisualStyleBackColor = True
-        '
-        'GroupBox35
-        '
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowRating)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowActors)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowStudio)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowPremiered)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowEGU)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowMPAA)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowPlot)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowGenre)
-        Me.GroupBox35.Controls.Add(Me.chkScraperShowTitle)
-        Me.GroupBox35.Location = New System.Drawing.Point(5, 14)
-        Me.GroupBox35.Name = "GroupBox35"
-        Me.GroupBox35.Size = New System.Drawing.Size(213, 96)
-        Me.GroupBox35.TabIndex = 15
-        Me.GroupBox35.TabStop = False
-        Me.GroupBox35.Text = "Show"
-        '
-        'chkScraperShowEGU
-        '
-        Me.chkScraperShowEGU.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowEGU.Location = New System.Drawing.Point(6, 29)
-        Me.chkScraperShowEGU.Name = "chkScraperShowEGU"
-        Me.chkScraperShowEGU.Size = New System.Drawing.Size(118, 17)
-        Me.chkScraperShowEGU.TabIndex = 8
-        Me.chkScraperShowEGU.Text = "EpisodeGuideURL"
-        Me.chkScraperShowEGU.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowMPAA
-        '
-        Me.chkScraperShowMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowMPAA.Location = New System.Drawing.Point(6, 61)
-        Me.chkScraperShowMPAA.Name = "chkScraperShowMPAA"
-        Me.chkScraperShowMPAA.Size = New System.Drawing.Size(119, 17)
-        Me.chkScraperShowMPAA.TabIndex = 11
-        Me.chkScraperShowMPAA.Text = "MPAA"
-        Me.chkScraperShowMPAA.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowPlot
-        '
-        Me.chkScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowPlot.Location = New System.Drawing.Point(6, 77)
-        Me.chkScraperShowPlot.Name = "chkScraperShowPlot"
-        Me.chkScraperShowPlot.Size = New System.Drawing.Size(119, 17)
-        Me.chkScraperShowPlot.TabIndex = 5
-        Me.chkScraperShowPlot.Text = "Plot"
-        Me.chkScraperShowPlot.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowGenre
-        '
-        Me.chkScraperShowGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowGenre.Location = New System.Drawing.Point(6, 45)
-        Me.chkScraperShowGenre.Name = "chkScraperShowGenre"
-        Me.chkScraperShowGenre.Size = New System.Drawing.Size(118, 17)
-        Me.chkScraperShowGenre.TabIndex = 10
-        Me.chkScraperShowGenre.Text = "Genre"
-        Me.chkScraperShowGenre.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowTitle
-        '
-        Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowTitle.Location = New System.Drawing.Point(6, 13)
-        Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
-        Me.chkScraperShowTitle.Size = New System.Drawing.Size(118, 17)
-        Me.chkScraperShowTitle.TabIndex = 9
-        Me.chkScraperShowTitle.Text = "Title"
-        Me.chkScraperShowTitle.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowRating
-        '
-        Me.chkScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowRating.Location = New System.Drawing.Point(130, 29)
-        Me.chkScraperShowRating.Name = "chkScraperShowRating"
-        Me.chkScraperShowRating.Size = New System.Drawing.Size(78, 17)
-        Me.chkScraperShowRating.TabIndex = 13
-        Me.chkScraperShowRating.Text = "Rating"
-        Me.chkScraperShowRating.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowActors
-        '
-        Me.chkScraperShowActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowActors.Location = New System.Drawing.Point(130, 61)
-        Me.chkScraperShowActors.Name = "chkScraperShowActors"
-        Me.chkScraperShowActors.Size = New System.Drawing.Size(78, 17)
-        Me.chkScraperShowActors.TabIndex = 16
-        Me.chkScraperShowActors.Text = "Actors"
-        Me.chkScraperShowActors.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowStudio
-        '
-        Me.chkScraperShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowStudio.Location = New System.Drawing.Point(130, 45)
-        Me.chkScraperShowStudio.Name = "chkScraperShowStudio"
-        Me.chkScraperShowStudio.Size = New System.Drawing.Size(78, 17)
-        Me.chkScraperShowStudio.TabIndex = 15
-        Me.chkScraperShowStudio.Text = "Studio"
-        Me.chkScraperShowStudio.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowPremiered
-        '
-        Me.chkScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowPremiered.Location = New System.Drawing.Point(130, 13)
-        Me.chkScraperShowPremiered.Name = "chkScraperShowPremiered"
-        Me.chkScraperShowPremiered.Size = New System.Drawing.Size(78, 17)
-        Me.chkScraperShowPremiered.TabIndex = 14
-        Me.chkScraperShowPremiered.Text = "Premiered"
-        Me.chkScraperShowPremiered.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpRating
-        '
-        Me.chkScraperEpRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpRating.Location = New System.Drawing.Point(6, 77)
-        Me.chkScraperEpRating.Name = "chkScraperEpRating"
-        Me.chkScraperEpRating.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpRating.TabIndex = 6
-        Me.chkScraperEpRating.Text = "Rating"
-        Me.chkScraperEpRating.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpAired
-        '
-        Me.chkScraperEpAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpAired.Location = New System.Drawing.Point(6, 61)
-        Me.chkScraperEpAired.Name = "chkScraperEpAired"
-        Me.chkScraperEpAired.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpAired.TabIndex = 5
-        Me.chkScraperEpAired.Text = "Aired"
-        Me.chkScraperEpAired.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpActors
-        '
-        Me.chkScraperEpActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpActors.Location = New System.Drawing.Point(94, 60)
-        Me.chkScraperEpActors.Name = "chkScraperEpActors"
-        Me.chkScraperEpActors.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpActors.TabIndex = 10
-        Me.chkScraperEpActors.Text = "Actors"
-        Me.chkScraperEpActors.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpCredits
-        '
-        Me.chkScraperEpCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpCredits.Location = New System.Drawing.Point(94, 44)
-        Me.chkScraperEpCredits.Name = "chkScraperEpCredits"
-        Me.chkScraperEpCredits.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpCredits.TabIndex = 9
-        Me.chkScraperEpCredits.Text = "Credits"
-        Me.chkScraperEpCredits.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpDirector
-        '
-        Me.chkScraperEpDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpDirector.Location = New System.Drawing.Point(94, 28)
-        Me.chkScraperEpDirector.Name = "chkScraperEpDirector"
-        Me.chkScraperEpDirector.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpDirector.TabIndex = 8
-        Me.chkScraperEpDirector.Text = "Director"
-        Me.chkScraperEpDirector.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpPlot
-        '
-        Me.chkScraperEpPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpPlot.Location = New System.Drawing.Point(94, 12)
-        Me.chkScraperEpPlot.Name = "chkScraperEpPlot"
-        Me.chkScraperEpPlot.Size = New System.Drawing.Size(67, 17)
-        Me.chkScraperEpPlot.TabIndex = 7
-        Me.chkScraperEpPlot.Text = "Plot"
-        Me.chkScraperEpPlot.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7410,11 +7416,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlTrailers)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
@@ -7422,6 +7423,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlTrailers)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -7565,6 +7571,12 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTVScraper.ResumeLayout(False)
+        Me.GroupBox32.ResumeLayout(False)
+        Me.GroupBox35.ResumeLayout(False)
+        Me.GroupBox34.ResumeLayout(False)
+        Me.GroupBox33.ResumeLayout(False)
+        Me.gbEpLocks.ResumeLayout(False)
+        Me.gbShowLocks.ResumeLayout(False)
         Me.GroupBox31.ResumeLayout(False)
         Me.GroupBox31.PerformLayout()
         Me.gbTVMIDefaults.ResumeLayout(False)
@@ -7596,12 +7608,6 @@ Partial Class dlgSettings
         Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox32.ResumeLayout(False)
-        Me.GroupBox33.ResumeLayout(False)
-        Me.gbShowLocks.ResumeLayout(False)
-        Me.gbEpLocks.ResumeLayout(False)
-        Me.GroupBox34.ResumeLayout(False)
-        Me.GroupBox35.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -8018,8 +8024,6 @@ Partial Class dlgSettings
     Friend WithEvents cbLanguages As System.Windows.Forms.ComboBox
     Friend WithEvents Label31 As System.Windows.Forms.Label
     Friend WithEvents gbRTFormat As System.Windows.Forms.GroupBox
-    Friend WithEvents rbHM As System.Windows.Forms.RadioButton
-    Friend WithEvents rbMins As System.Windows.Forms.RadioButton
     Friend WithEvents chkScanMediaInfo As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseMIDuration As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
@@ -8197,4 +8201,7 @@ Partial Class dlgSettings
     Friend WithEvents chkScraperEpPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperEpRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperEpAired As System.Windows.Forms.CheckBox
+    Friend WithEvents Label51 As System.Windows.Forms.Label
+    Friend WithEvents txtRuntimeFormat As System.Windows.Forms.TextBox
+    Friend WithEvents Label52 As System.Windows.Forms.Label
 End Class

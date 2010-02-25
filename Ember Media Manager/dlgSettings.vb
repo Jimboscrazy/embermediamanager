@@ -192,7 +192,7 @@ Public Class dlgSettings
             Me.cbLanguages.SelectedIndex = 0
             Me.chkUseMIDuration.Checked = False
             Me.gbRTFormat.Enabled = False
-            Me.rbMins.Checked = True
+            Me.txtRuntimeFormat.Text = String.Empty
             Me.chkIFOScan.Checked = False
         End If
     End Sub
@@ -873,7 +873,9 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
         Me.gbRTFormat.Enabled = Me.chkUseMIDuration.Checked
         If Not chkUseMIDuration.Checked Then
-            Me.rbMins.Checked = True
+            Me.txtRuntimeFormat.Text = String.Empty
+        Else
+            If Me.txtRuntimeFormat.Text = String.Empty Then Me.txtRuntimeFormat.Text = "<m> mins"
         End If
     End Sub
 
@@ -1115,14 +1117,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub rbMins_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMins.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub rbHM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbHM.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2474,6 +2468,11 @@ Public Class dlgSettings
     Private Sub chkScraperEpActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpActors.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub txtRuntimeFormat_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRuntimeFormat.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2665,7 +2664,7 @@ Public Class dlgSettings
             Master.eSettings.BDPath = Me.txtBDPath.Text
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
-            Master.eSettings.UseHMForRuntime = Me.rbHM.Checked
+            Master.eSettings.RuntimeMask = Me.txtRuntimeFormat.Text
             Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
             Master.eSettings.UseImgCacheUpdaters = Me.chkUseImgCacheUpdaters.Checked
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
@@ -3075,7 +3074,7 @@ Public Class dlgSettings
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
-            Me.rbHM.Checked = Master.eSettings.UseHMForRuntime
+            Me.txtRuntimeFormat.Text = Master.eSettings.RuntimeMask
             Me.chkUseImgCache.Checked = Master.eSettings.UseImgCache
             Me.chkUseImgCacheUpdaters.Checked = Master.eSettings.UseImgCacheUpdaters
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
