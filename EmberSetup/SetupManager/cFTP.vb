@@ -323,10 +323,13 @@ Public Class FTPClass
             input.Seek(offset, SeekOrigin.Begin)
         End If
         Console.WriteLine(("Uploading file " & fileName & " to ") + remotePath)
-        While (InlineAssignHelper(bytes, input.Read(buffer, 0, buffer.Length))) > 0
+        Dim filesize = getFileSize(fileName)
+        While (offset < filesize)
+            bytes = input.Read(buffer, 0, buffer.Length)
             cSocket.Send(buffer, bytes, 0)
+            offset += bytes
+            Application.DoEvents()
         End While
-        Application.DoEvents()
         input.Close()
         Console.WriteLine("")
         If cSocket.Connected Then
