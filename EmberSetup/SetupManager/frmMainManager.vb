@@ -633,6 +633,7 @@ Public Class frmMainManager
             '_cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = s})
             'Next
             Dim fd As New OpenFileDialog
+            MsgBox("Please choose a Media Database", MsgBoxStyle.Critical, AcceptButton)
             If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 If File.Exists(Path.Combine(CurrentEmberPath, "Media.emm")) Then
                     Dim lSQLcn As New SQLite.SQLiteConnection()
@@ -645,7 +646,10 @@ Public Class frmMainManager
                                 If Not DBNull.Value.Equals(SQLreader("sql")) Then
                                     Dim cmd As String = SQLreader("sql").ToString
                                     Dim t As String = SQLreader("type").ToString
-                                    Dim a As String = ""
+                                    If t = "index" OrElse t = "table" Then
+                                        _cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = cmd})
+                                    End If
+
                                 End If
                             End While
                         End Using
