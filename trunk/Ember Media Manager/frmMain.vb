@@ -7602,9 +7602,9 @@ doCancel:
     End Sub
 
     Private Sub ReScrapeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReScrapeToolStripMenuItem.Click
-        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, True, False)
-        Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+        Me.NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click
