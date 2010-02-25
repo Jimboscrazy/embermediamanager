@@ -511,7 +511,7 @@ Public Class frmMainSetup
                             Return True
                         End If
                         InstallVersion = EmberVersions.VersionList(EmberVersions.VersionList.Count - 1).Version
-                        If InstallVersion = CurrentEmberVersion Then
+                        If InstallVersion <= CurrentEmberVersion Then
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
                             Me.bwDoInstall.ReportProgress(6, "No New Version to Install")
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))

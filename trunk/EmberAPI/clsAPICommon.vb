@@ -654,7 +654,6 @@ Public Class Functions
             Return 0
         End Try
     End Function
-
     Public Shared Function CheckIfWindows() As Boolean
         Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
     End Function
