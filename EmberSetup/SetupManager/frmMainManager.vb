@@ -617,6 +617,9 @@ Public Class frmMainManager
             EmberVersions.VersionList.Add(v)
         End If
         EmberVersions.Save(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versionlist.xml")))
+        Dim sVersion As String = String.Concat("<?xml version=""1.0"" encoding=""utf-8"" ?> ", vbCrLf, String.Format("<version current=""{0}"" /> ", v.Version))
+        'UNCOMMENT when we go live
+        'File.WriteAllText(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "Update.xml")), sVersion, System.Text.Encoding.ASCII)
         Dim _files As New FilesList
         _files.Files = New List(Of FileOfList)
         PopulateFileList(_files)
