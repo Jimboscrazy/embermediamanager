@@ -170,6 +170,7 @@ Public Class EmberNativeScraperModule
     ''' <remarks></remarks>
     Private IMDB As New IMDB.Scraper
     Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+        LoadSettings()
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
