@@ -209,6 +209,7 @@ Public Class Settings
     Private _fieldtitle As Boolean
     Private _fieldyear As Boolean
     Private _fieldmpaa As Boolean
+    Private _fieldcert As Boolean
     Private _fieldrelease As Boolean
     Private _fieldruntime As Boolean
     Private _fieldrating As Boolean
@@ -1987,6 +1988,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property FieldCert() As Boolean
+        Get
+            Return Me._fieldcert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldcert = value
+        End Set
+    End Property
+
     Public Property FieldRelease() As Boolean
         Get
             Return Me._fieldrelease
@@ -3187,6 +3197,7 @@ Public Class Settings
         Me._fieldtitle = True
         Me._fieldyear = True
         Me._fieldmpaa = True
+        Me._fieldcert = True
         Me._fieldrelease = True
         Me._fieldruntime = True
         Me._fieldrating = True

@@ -453,7 +453,7 @@ mResult:
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bMPAA Then
+                If Options.bCert Then
                     'get certifications
                     D = HTML.IndexOf("<h5>Certification:</h5>")
 
@@ -467,7 +467,7 @@ mResult:
                             If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                                 If Cert.Count > 0 Then
                                     IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
-                                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
+                                    If Options.bMPAA AndAlso Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
                                         IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(IMDBMovie.Certification), IMDBMovie.Certification)
                                     End If
                                 End If
