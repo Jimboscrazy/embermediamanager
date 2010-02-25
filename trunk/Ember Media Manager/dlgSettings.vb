@@ -2473,6 +2473,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkCertification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2747,6 +2751,7 @@ Public Class dlgSettings
             Master.eSettings.FieldTitle = Me.chkTitle.Checked
             Master.eSettings.FieldYear = Me.chkYear.Checked
             Master.eSettings.FieldMPAA = Me.chkMPAA.Checked
+            Master.eSettings.FieldCert = Me.chkCertification.Checked
             Master.eSettings.FieldRelease = Me.chkRelease.Checked
             Master.eSettings.FieldRuntime = Me.chkRuntime.Checked
             Master.eSettings.FieldRating = Me.chkRating.Checked
@@ -3134,6 +3139,7 @@ Public Class dlgSettings
             Me.chkTitle.Checked = Master.eSettings.FieldTitle
             Me.chkYear.Checked = Master.eSettings.FieldYear
             Me.chkMPAA.Checked = Master.eSettings.FieldMPAA
+            Me.chkCertification.Checked = Master.eSettings.FieldCert
             Me.chkRelease.Checked = Master.eSettings.FieldRelease
             Me.chkRuntime.Checked = Master.eSettings.FieldRuntime
             Me.chkRating.Checked = Master.eSettings.FieldRating
@@ -3614,7 +3620,8 @@ Public Class dlgSettings
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA/Cert")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        Me.chkCertification.Text = Master.eLang.GetString(999, "Certification")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.GroupBox1.Text = Master.eLang.GetString(429, "Miscellaneous")

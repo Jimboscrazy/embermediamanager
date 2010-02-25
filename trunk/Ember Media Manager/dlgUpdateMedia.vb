@@ -107,7 +107,8 @@ Public Class dlgUpdateMedia
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA/Cert")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        Me.chkCert.Text = Master.eLang.GetString(999, "Certification")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
@@ -210,6 +211,11 @@ Public Class dlgUpdateMedia
 
     Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
         CustomUpdater.Options.bMPAA = chkMPAA.Checked
+        CheckEnable()
+    End Sub
+
+    Private Sub chkCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCert.CheckedChanged
+        CustomUpdater.Options.bCert = chkCert.Checked
         CheckEnable()
     End Sub
 
@@ -379,7 +385,7 @@ Public Class dlgUpdateMedia
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
             If chkCast.Checked OrElse chkCrew.Checked OrElse chkDirector.Checked OrElse chkGenre.Checked OrElse _
-            chkMPAA.Checked OrElse chkMusicBy.Checked OrElse chkOutline.Checked OrElse chkPlot.Checked OrElse _
+            chkMPAA.Checked OrElse chkCert.Checked OrElse chkMusicBy.Checked OrElse chkOutline.Checked OrElse chkPlot.Checked OrElse _
             chkProducers.Checked OrElse chkRating.Checked OrElse chkRelease.Checked OrElse chkRuntime.Checked OrElse _
             chkStudio.Checked OrElse chkTagline.Checked OrElse chkTitle.Checked OrElse chkTrailer.Checked OrElse _
             chkVotes.Checked OrElse chkVotes.Checked OrElse chkWriters.Checked OrElse chkYear.Checked OrElse chkTop250.Checked Then
@@ -393,4 +399,5 @@ Public Class dlgUpdateMedia
             Update_Button.Enabled = False
         End If
     End Sub
+
 End Class

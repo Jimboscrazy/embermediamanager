@@ -66,6 +66,7 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
+        Me.chkCert = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -342,6 +343,7 @@ Partial Class dlgUpdateMedia
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkCert)
         Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkMusicBy)
@@ -375,7 +377,7 @@ Partial Class dlgUpdateMedia
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Checked = True
         Me.chkTop250.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTop250.Location = New System.Drawing.Point(147, 227)
+        Me.chkTop250.Location = New System.Drawing.Point(146, 200)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 19
@@ -387,7 +389,7 @@ Partial Class dlgUpdateMedia
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Checked = True
         Me.chkCrew.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCrew.Location = New System.Drawing.Point(147, 203)
+        Me.chkCrew.Location = New System.Drawing.Point(147, 180)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(85, 17)
         Me.chkCrew.TabIndex = 18
@@ -399,7 +401,7 @@ Partial Class dlgUpdateMedia
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Checked = True
         Me.chkMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMusicBy.Location = New System.Drawing.Point(147, 180)
+        Me.chkMusicBy.Location = New System.Drawing.Point(147, 160)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
         Me.chkMusicBy.TabIndex = 17
@@ -411,7 +413,7 @@ Partial Class dlgUpdateMedia
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Checked = True
         Me.chkProducers.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkProducers.Location = New System.Drawing.Point(147, 157)
+        Me.chkProducers.Location = New System.Drawing.Point(147, 140)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(77, 17)
         Me.chkProducers.TabIndex = 16
@@ -423,7 +425,7 @@ Partial Class dlgUpdateMedia
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Checked = True
         Me.chkWriters.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkWriters.Location = New System.Drawing.Point(147, 134)
+        Me.chkWriters.Location = New System.Drawing.Point(147, 120)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 15
@@ -435,7 +437,7 @@ Partial Class dlgUpdateMedia
         Me.chkStudio.AutoSize = True
         Me.chkStudio.Checked = True
         Me.chkStudio.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkStudio.Location = New System.Drawing.Point(6, 181)
+        Me.chkStudio.Location = New System.Drawing.Point(6, 180)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkStudio.TabIndex = 14
@@ -447,7 +449,7 @@ Partial Class dlgUpdateMedia
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Checked = True
         Me.chkRuntime.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRuntime.Location = New System.Drawing.Point(6, 112)
+        Me.chkRuntime.Location = New System.Drawing.Point(6, 120)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 13
@@ -459,7 +461,7 @@ Partial Class dlgUpdateMedia
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Checked = True
         Me.chkPlot.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkPlot.Location = New System.Drawing.Point(147, 65)
+        Me.chkPlot.Location = New System.Drawing.Point(147, 60)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 12
@@ -471,7 +473,7 @@ Partial Class dlgUpdateMedia
         Me.chkOutline.AutoSize = True
         Me.chkOutline.Checked = True
         Me.chkOutline.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkOutline.Location = New System.Drawing.Point(147, 42)
+        Me.chkOutline.Location = New System.Drawing.Point(147, 40)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(65, 17)
         Me.chkOutline.TabIndex = 11
@@ -483,7 +485,7 @@ Partial Class dlgUpdateMedia
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Checked = True
         Me.chkGenre.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkGenre.Location = New System.Drawing.Point(6, 204)
+        Me.chkGenre.Location = New System.Drawing.Point(6, 200)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 10
@@ -495,7 +497,7 @@ Partial Class dlgUpdateMedia
         Me.chkDirector.AutoSize = True
         Me.chkDirector.Checked = True
         Me.chkDirector.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDirector.Location = New System.Drawing.Point(147, 111)
+        Me.chkDirector.Location = New System.Drawing.Point(147, 100)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkDirector.TabIndex = 9
@@ -519,7 +521,7 @@ Partial Class dlgUpdateMedia
         Me.chkCast.AutoSize = True
         Me.chkCast.Checked = True
         Me.chkCast.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCast.Location = New System.Drawing.Point(147, 88)
+        Me.chkCast.Location = New System.Drawing.Point(147, 80)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(48, 17)
         Me.chkCast.TabIndex = 7
@@ -531,7 +533,7 @@ Partial Class dlgUpdateMedia
         Me.chkVotes.AutoSize = True
         Me.chkVotes.Checked = True
         Me.chkVotes.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkVotes.Location = New System.Drawing.Point(6, 158)
+        Me.chkVotes.Location = New System.Drawing.Point(6, 160)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(55, 17)
         Me.chkVotes.TabIndex = 6
@@ -543,7 +545,7 @@ Partial Class dlgUpdateMedia
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Checked = True
         Me.chkTrailer.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTrailer.Location = New System.Drawing.Point(6, 227)
+        Me.chkTrailer.Location = New System.Drawing.Point(6, 220)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 5
@@ -555,7 +557,7 @@ Partial Class dlgUpdateMedia
         Me.chkRating.AutoSize = True
         Me.chkRating.Checked = True
         Me.chkRating.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRating.Location = New System.Drawing.Point(6, 135)
+        Me.chkRating.Location = New System.Drawing.Point(6, 140)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 4
@@ -567,7 +569,7 @@ Partial Class dlgUpdateMedia
         Me.chkRelease.AutoSize = True
         Me.chkRelease.Checked = True
         Me.chkRelease.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRelease.Location = New System.Drawing.Point(6, 89)
+        Me.chkRelease.Location = New System.Drawing.Point(6, 100)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkRelease.TabIndex = 3
@@ -579,11 +581,11 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA.AutoSize = True
         Me.chkMPAA.Checked = True
         Me.chkMPAA.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMPAA.Location = New System.Drawing.Point(6, 66)
+        Me.chkMPAA.Location = New System.Drawing.Point(6, 60)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(81, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
         Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA/Cert"
+        Me.chkMPAA.Text = "MPAA"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
@@ -591,7 +593,7 @@ Partial Class dlgUpdateMedia
         Me.chkYear.AutoSize = True
         Me.chkYear.Checked = True
         Me.chkYear.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkYear.Location = New System.Drawing.Point(6, 43)
+        Me.chkYear.Location = New System.Drawing.Point(6, 40)
         Me.chkYear.Name = "chkYear"
         Me.chkYear.Size = New System.Drawing.Size(47, 17)
         Me.chkYear.TabIndex = 1
@@ -609,6 +611,18 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'chkCert
+        '
+        Me.chkCert.AutoSize = True
+        Me.chkCert.Checked = True
+        Me.chkCert.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkCert.Location = New System.Drawing.Point(6, 80)
+        Me.chkCert.Name = "chkCert"
+        Me.chkCert.Size = New System.Drawing.Size(89, 17)
+        Me.chkCert.TabIndex = 20
+        Me.chkCert.Text = "Certification"
+        Me.chkCert.UseVisualStyleBackColor = True
         '
         'dlgUpdateMedia
         '
@@ -687,5 +701,6 @@ Partial Class dlgUpdateMedia
     Friend WithEvents chkPosterMod As System.Windows.Forms.CheckBox
     Friend WithEvents chkNFOMod As System.Windows.Forms.CheckBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCert As System.Windows.Forms.CheckBox
 
 End Class

@@ -247,6 +247,7 @@ Public Class Structures
         Dim bTitle As Boolean
         Dim bYear As Boolean
         Dim bMPAA As Boolean
+        Dim bCert As Boolean
         Dim bRelease As Boolean
         Dim bRating As Boolean
         Dim bTrailer As Boolean
@@ -324,6 +325,7 @@ Public Class Functions
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
+        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
         filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
         filterOptions.bRating = Options.bRating AndAlso Options2.bRating
         filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
@@ -421,6 +423,7 @@ Public Class Functions
             .bDirector = Master.eSettings.FieldDirector
             .bGenre = Master.eSettings.FieldGenre
             .bMPAA = Master.eSettings.FieldMPAA
+            .bCert = Master.eSettings.FieldCert
             .bMusicBy = Master.eSettings.FieldMusic
             .bOtherCrew = Master.eSettings.FieldCrew
             .bOutline = Master.eSettings.FieldOutline

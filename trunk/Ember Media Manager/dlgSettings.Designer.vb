@@ -629,6 +629,7 @@ Partial Class dlgSettings
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.Label45 = New System.Windows.Forms.Label
         Me.CheckBox5 = New System.Windows.Forms.CheckBox
+        Me.chkCertification = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -6205,6 +6206,7 @@ Partial Class dlgSettings
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkCertification)
         Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.txtGenreLimit)
         Me.gbOptions.Controls.Add(Me.lblLimit2)
@@ -6241,7 +6243,7 @@ Partial Class dlgSettings
         '
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTop250.Location = New System.Drawing.Point(205, 99)
+        Me.chkTop250.Location = New System.Drawing.Point(205, 115)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 23
@@ -6252,7 +6254,7 @@ Partial Class dlgSettings
         '
         Me.txtGenreLimit.Enabled = False
         Me.txtGenreLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtGenreLimit.Location = New System.Drawing.Point(256, 31)
+        Me.txtGenreLimit.Location = New System.Drawing.Point(256, 47)
         Me.txtGenreLimit.Name = "txtGenreLimit"
         Me.txtGenreLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtGenreLimit.TabIndex = 21
@@ -6261,7 +6263,7 @@ Partial Class dlgSettings
         '
         Me.lblLimit2.AutoSize = True
         Me.lblLimit2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLimit2.Location = New System.Drawing.Point(221, 34)
+        Me.lblLimit2.Location = New System.Drawing.Point(221, 50)
         Me.lblLimit2.Name = "lblLimit2"
         Me.lblLimit2.Size = New System.Drawing.Size(34, 13)
         Me.lblLimit2.TabIndex = 22
@@ -6272,7 +6274,7 @@ Partial Class dlgSettings
         '
         Me.txtActorLimit.Enabled = False
         Me.txtActorLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtActorLimit.Location = New System.Drawing.Point(152, 76)
+        Me.txtActorLimit.Location = New System.Drawing.Point(151, 92)
         Me.txtActorLimit.Name = "txtActorLimit"
         Me.txtActorLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtActorLimit.TabIndex = 19
@@ -6281,7 +6283,7 @@ Partial Class dlgSettings
         '
         Me.lblLimit.AutoSize = True
         Me.lblLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLimit.Location = New System.Drawing.Point(118, 80)
+        Me.lblLimit.Location = New System.Drawing.Point(117, 96)
         Me.lblLimit.Name = "lblLimit"
         Me.lblLimit.Size = New System.Drawing.Size(34, 13)
         Me.lblLimit.TabIndex = 20
@@ -6293,7 +6295,7 @@ Partial Class dlgSettings
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Enabled = False
         Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(205, 83)
+        Me.chkCrew.Location = New System.Drawing.Point(205, 99)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(95, 17)
         Me.chkCrew.TabIndex = 18
@@ -6305,7 +6307,7 @@ Partial Class dlgSettings
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Enabled = False
         Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMusicBy.Location = New System.Drawing.Point(205, 67)
+        Me.chkMusicBy.Location = New System.Drawing.Point(205, 83)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(81, 17)
         Me.chkMusicBy.TabIndex = 17
@@ -6317,7 +6319,7 @@ Partial Class dlgSettings
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Enabled = False
         Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProducers.Location = New System.Drawing.Point(102, 131)
+        Me.chkProducers.Location = New System.Drawing.Point(205, 19)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(87, 17)
         Me.chkProducers.TabIndex = 16
@@ -6328,7 +6330,7 @@ Partial Class dlgSettings
         '
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(102, 115)
+        Me.chkWriters.Location = New System.Drawing.Point(101, 131)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 15
@@ -6339,7 +6341,7 @@ Partial Class dlgSettings
         '
         Me.chkStudio.AutoSize = True
         Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(6, 131)
+        Me.chkStudio.Location = New System.Drawing.Point(101, 19)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkStudio.TabIndex = 14
@@ -6350,7 +6352,7 @@ Partial Class dlgSettings
         '
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(6, 83)
+        Me.chkRuntime.Location = New System.Drawing.Point(6, 99)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 13
@@ -6361,7 +6363,7 @@ Partial Class dlgSettings
         '
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(102, 51)
+        Me.chkPlot.Location = New System.Drawing.Point(101, 67)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 12
@@ -6372,7 +6374,7 @@ Partial Class dlgSettings
         '
         Me.chkOutline.AutoSize = True
         Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(102, 35)
+        Me.chkOutline.Location = New System.Drawing.Point(101, 51)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(65, 17)
         Me.chkOutline.TabIndex = 11
@@ -6383,7 +6385,7 @@ Partial Class dlgSettings
         '
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(205, 19)
+        Me.chkGenre.Location = New System.Drawing.Point(205, 35)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 10
@@ -6394,7 +6396,7 @@ Partial Class dlgSettings
         '
         Me.chkDirector.AutoSize = True
         Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(102, 99)
+        Me.chkDirector.Location = New System.Drawing.Point(101, 115)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkDirector.TabIndex = 9
@@ -6405,7 +6407,7 @@ Partial Class dlgSettings
         '
         Me.chkTagline.AutoSize = True
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTagline.Location = New System.Drawing.Point(102, 19)
+        Me.chkTagline.Location = New System.Drawing.Point(101, 35)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkTagline.TabIndex = 8
@@ -6416,7 +6418,7 @@ Partial Class dlgSettings
         '
         Me.chkCast.AutoSize = True
         Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(102, 67)
+        Me.chkCast.Location = New System.Drawing.Point(101, 83)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(48, 17)
         Me.chkCast.TabIndex = 7
@@ -6427,7 +6429,7 @@ Partial Class dlgSettings
         '
         Me.chkVotes.AutoSize = True
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVotes.Location = New System.Drawing.Point(6, 115)
+        Me.chkVotes.Location = New System.Drawing.Point(6, 131)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(55, 17)
         Me.chkVotes.TabIndex = 6
@@ -6438,7 +6440,7 @@ Partial Class dlgSettings
         '
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(205, 51)
+        Me.chkTrailer.Location = New System.Drawing.Point(205, 67)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 5
@@ -6449,7 +6451,7 @@ Partial Class dlgSettings
         '
         Me.chkRating.AutoSize = True
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(6, 99)
+        Me.chkRating.Location = New System.Drawing.Point(6, 115)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 4
@@ -6460,7 +6462,7 @@ Partial Class dlgSettings
         '
         Me.chkRelease.AutoSize = True
         Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(6, 67)
+        Me.chkRelease.Location = New System.Drawing.Point(6, 83)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkRelease.TabIndex = 3
@@ -6473,9 +6475,9 @@ Partial Class dlgSettings
         Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMPAA.Location = New System.Drawing.Point(6, 51)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(81, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
         Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA/Cert"
+        Me.chkMPAA.Text = "MPAA"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
@@ -7402,6 +7404,17 @@ Partial Class dlgSettings
         Me.CheckBox5.Text = "Overwrite Existing Fanart"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
+        'chkCertification
+        '
+        Me.chkCertification.AutoSize = True
+        Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCertification.Location = New System.Drawing.Point(6, 67)
+        Me.chkCertification.Name = "chkCertification"
+        Me.chkCertification.Size = New System.Drawing.Size(89, 17)
+        Me.chkCertification.TabIndex = 24
+        Me.chkCertification.Text = "Certification"
+        Me.chkCertification.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -8204,4 +8217,5 @@ Partial Class dlgSettings
     Friend WithEvents Label51 As System.Windows.Forms.Label
     Friend WithEvents txtRuntimeFormat As System.Windows.Forms.TextBox
     Friend WithEvents Label52 As System.Windows.Forms.Label
+    Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
 End Class
