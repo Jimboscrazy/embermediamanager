@@ -189,7 +189,12 @@ Public Class EmberNativeScraperModule
                     Return False
             End Select
             Using dSearch As New dlgIMDBSearchResults
-                If dSearch.ShowDialog(DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                Dim tmpTitle As String = DBMovie.Movie.Title
+                If String.IsNullOrEmpty(tmpTitle) Then
+                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                End If
+
+                If dSearch.ShowDialog(tmpTitle) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                     End If
