@@ -183,7 +183,7 @@ Public Class dlgSetsManager
                             If bwLoadMovies.CancellationPending Then Return
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(tmpMovie.Movie.Title, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
                                         If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
