@@ -851,17 +851,30 @@ Public Class MediaInfo
                         Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
                         Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
                         Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                        miMovie.Movie.Runtime = If(Master.eSettings.UseHMForRuntime, String.Format("{0} hrs {1} mins", sHour, sMin), String.Format("{0} mins", (sHour * 60) + sMin))
+                        Dim sMask As String = Master.eSettings.RuntimeMask
+                        Dim sRuntime As String = String.Empty
+
+                        If sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
+                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString)
+                        ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
+                            Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
+                            sRuntime = sMask.Replace("<h>", String.Concat(sHour, tHDec))
+                        ElseIf Not sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
+                            sRuntime = sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
+                        Else
+                            sRuntime = sMask
+                        End If
+                        miMovie.Movie.Runtime = sRuntime
                     End If
 
+                    End If
+                    MI = Nothing
                 End If
-                MI = Nothing
-            End If
-            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                Dim _mi As MediaInfo.Fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
-                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
-            End If
+                If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                    Dim _mi As MediaInfo.Fileinfo
+                    _mi = MediaInfo.ApplyDefaults(pExt)
+                    If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+                End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

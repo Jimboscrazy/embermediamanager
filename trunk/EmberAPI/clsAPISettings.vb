@@ -163,7 +163,7 @@ Public Class Settings
     Private _bdpath As String
     Private _autobd As Boolean
     Private _usemiduration As Boolean
-    Private _usehmforruntime As Boolean
+    Private _runtimemask As String
     Private _genrefilter As String
     Private _useetasfa As Boolean
     Private _sets As New List(Of String)
@@ -1573,12 +1573,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property UseHMForRuntime() As Boolean
+    Public Property RuntimeMask() As String
         Get
-            Return Me._usehmforruntime
+            Return Me._runtimemask
         End Get
-        Set(ByVal value As Boolean)
-            Me._usehmforruntime = value
+        Set(ByVal value As String)
+            Me._runtimemask = value
         End Set
     End Property
 
@@ -3141,7 +3141,7 @@ Public Class Settings
         Me._bdpath = String.Empty
         Me._autobd = False
         Me._usemiduration = False
-        Me._usehmforruntime = False
+        Me._runtimemask = "<m> mins"
         Me._genrefilter = "[All]"
         Me._useetasfa = False
         Me._useimgcache = False
