@@ -3241,6 +3241,32 @@ Public Class dlgSettings
             Me.chkOnlyTVImagesLanguage.Checked = Master.eSettings.OnlyGetTVImagesForSelectedLanguage
             Me.chkGetEnglishImages.Checked = Master.eSettings.AlwaysGetEnglishTVImages
             Me.chkDisplayMissingEpisodes.Checked = Master.eSettings.DisplayMissingEpisodes
+            Me.chkShowLockTitle.Checked = Master.eSettings.ShowLockTitle
+            Me.chkShowLockPlot.Checked = Master.eSettings.ShowLockPlot
+            Me.chkShowLockRating.Checked = Master.eSettings.ShowLockRating
+            Me.chkShowLockGenre.Checked = Master.eSettings.ShowLockGenre
+            Me.chkShowLockStudio.Checked = Master.eSettings.ShowLockStudio
+            Me.chkEpLockTitle.Checked = Master.eSettings.EpLockTitle
+            Me.chkEpLockPlot.Checked = Master.eSettings.EpLockPlot
+            Me.chkEpLockRating.Checked = Master.eSettings.EpLockRating
+            Me.chkScraperShowTitle.Checked = Master.eSettings.ScraperShowTitle
+            Me.chkScraperShowEGU.Checked = Master.eSettings.ScraperShowEGU
+            Me.chkScraperShowGenre.Checked = Master.eSettings.ScraperShowGenre
+            Me.chkScraperShowMPAA.Checked = Master.eSettings.ScraperShowMPAA
+            Me.chkScraperShowPlot.Checked = Master.eSettings.ScraperShowPlot
+            Me.chkScraperShowPremiered.Checked = Master.eSettings.ScraperShowPremiered
+            Me.chkScraperShowRating.Checked = Master.eSettings.ScraperShowRating
+            Me.chkScraperShowStudio.Checked = Master.eSettings.ScraperShowStudio
+            Me.chkScraperShowActors.Checked = Master.eSettings.ScraperShowActors
+            Me.chkScraperEpTitle.Checked = Master.eSettings.ScraperEpTitle
+            Me.chkScraperEpSeason.Checked = Master.eSettings.ScraperEpSeason
+            Me.chkScraperEpEpisode.Checked = Master.eSettings.ScraperEpEpisode
+            Me.chkScraperEpAired.Checked = Master.eSettings.ScraperEpAired
+            Me.chkScraperEpRating.Checked = Master.eSettings.ScraperEpRating
+            Me.chkScraperEpPlot.Checked = Master.eSettings.ScraperEpPlot
+            Me.chkScraperEpDirector.Checked = Master.eSettings.ScraperEpDirector
+            Me.chkScraperEpCredits.Checked = Master.eSettings.ScraperEpCredits
+            Me.chkScraperEpActors.Checked = Master.eSettings.ScraperEpActors
 
             Me.RefreshSources()
             Me.RefreshTVSources()
