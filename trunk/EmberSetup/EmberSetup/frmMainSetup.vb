@@ -316,9 +316,14 @@ Public Class frmMainSetup
     End Sub
 
     Public Sub CreateSetupFolders(ByVal setupPath As String)
-        LogWrite(String.Format("--- CreateSetupFolders: {0}\updates", setupPath))
-        DeleteDirectory(Path.Combine(setupPath, "updates"))
-        Directory.CreateDirectory(Path.Combine(setupPath, "updates"))
+
+        'DeleteDirectory(Path.Combine(setupPath, "updates"))
+        If Not Directory.Exists(Path.Combine(setupPath, "updates")) Then
+            LogWrite(String.Format("--- CreateSetupFolders: {0}\updates", setupPath))
+            Directory.CreateDirectory(Path.Combine(setupPath, "updates"))
+        Else
+            LogWrite(String.Format("--- SetupFoldersExists: {0}\updates", setupPath))
+        End If
     End Sub
 
     Public Sub RemoveSetupFolders(ByVal setupPath As String)
@@ -582,12 +587,14 @@ Public Class frmMainSetup
                         Dim fpath As String = String.Empty
                         Dim hash As String = String.Empty
                         Dim curr_hash As String = String.Empty
+                        Dim inCache As Boolean = False
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Files"})
                         Me.bwDoInstall.ReportProgress(8, _NewFiles.Files.Count)
                         counter = 0
                         For Each f As FileOfList In _NewFiles.Files
                             f.NeedBackup = False
                             f.NeedInstall = True
+                            f.inCache = False
                             curr_hash = String.Empty
                             fpath = Path.Combine(Path.Combine(Path.GetDirectoryName(emberPath), f.Path.Substring(1)), f.Filename)
                             If File.Exists(fpath) Then
@@ -606,20 +613,31 @@ Public Class frmMainSetup
                             If (curr_hash = f.Hash AndAlso Not f.NeedBackup) OrElse (f.Hash = hash) Then
                                 f.NeedInstall = False
                             End If
+                            Dim cachefile As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))
+                            If File.Exists(cachefile) Then
+                                If GetHash(cachefile) = f.Hash Then
+                                    f.inCache = True
+                                Else
+                                    File.Delete(cachefile)
+                                End If
+                            End If
                             If bwDoInstall.CancellationPending Then Return False
                             If f.Platform = CurrentEmberPlatform OrElse f.Platform = "Common" Then
                                 If f.NeedInstall = True Then 'OrElse CurrentEmberVersion = String.Empty 
                                     f.NeedInstall = True
                                     'getFile = String.Format("Files/{0}.gz", f.Filename)
                                     getFile = String.Format("Files/{0}.emm", f.Hash)
-                                    Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
-                                    'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename))) Then
-                                    'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))) Then
-                                    If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))) Then
-                                        ' Error Downloading File... Abort
-                                        LogWrite(String.Format("+++ Main: Error downloading: {0}", f.Filename))
-                                        Me.bwDoInstall.ReportProgress(7, String.Format("Error downloading: {0}", f.Filename))
-                                        Return True
+                                    If f.inCache Then
+                                        LogWrite(String.Format("--- Main: File in cache: skiping ({0})", f.Filename))
+                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("In Cache: {0}", f.Filename)})
+                                    Else
+                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
+                                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))) Then
+                                            ' Error Downloading File... Abort
+                                            LogWrite(String.Format("+++ Main: Error downloading: {0}", f.Filename))
+                                            Me.bwDoInstall.ReportProgress(7, String.Format("Error downloading: {0}", f.Filename))
+                                            Return True
+                                        End If
                                     End If
                                 End If
                             Else

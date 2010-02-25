@@ -32,6 +32,10 @@ Partial Class frmMainManager
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.Label9 = New System.Windows.Forms.Label
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.TextBox1 = New System.Windows.Forms.TextBox
         Me.Button2 = New System.Windows.Forms.Button
@@ -71,10 +75,7 @@ Partial Class frmMainManager
         Me.Label4 = New System.Windows.Forms.Label
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TextBox3 = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
+        Me.Button3 = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -169,6 +170,7 @@ Partial Class frmMainManager
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.TextBox3)
         Me.GroupBox1.Controls.Add(Me.Label10)
@@ -187,10 +189,45 @@ Partial Class frmMainManager
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Ember Information"
         '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(593, 48)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(29, 13)
+        Me.Label11.TabIndex = 13
+        Me.Label11.Text = "Host"
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(628, 45)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(153, 20)
+        Me.TextBox3.TabIndex = 12
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(709, 22)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(53, 13)
+        Me.Label10.TabIndex = 11
+        Me.Label10.Text = "Password"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(593, 22)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(29, 13)
+        Me.Label9.TabIndex = 10
+        Me.Label9.Text = "User"
+        '
         'TextBox2
         '
         Me.TextBox2.Location = New System.Drawing.Point(764, 19)
         Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TextBox2.Size = New System.Drawing.Size(66, 20)
         Me.TextBox2.TabIndex = 9
         '
@@ -203,7 +240,7 @@ Partial Class frmMainManager
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(444, 17)
+        Me.Button2.Location = New System.Drawing.Point(466, 42)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(121, 23)
         Me.Button2.TabIndex = 7
@@ -522,39 +559,14 @@ Partial Class frmMainManager
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         '
-        'Label9
+        'Button3
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(593, 22)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(29, 13)
-        Me.Label9.TabIndex = 10
-        Me.Label9.Text = "User"
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(715, 22)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(53, 13)
-        Me.Label10.TabIndex = 11
-        Me.Label10.Text = "Password"
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(628, 45)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(202, 20)
-        Me.TextBox3.TabIndex = 12
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(593, 48)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(29, 13)
-        Me.Label11.TabIndex = 13
-        Me.Label11.Text = "Host"
+        Me.Button3.Location = New System.Drawing.Point(782, 43)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(54, 23)
+        Me.Button3.TabIndex = 14
+        Me.Button3.Text = "Save"
+        Me.Button3.UseVisualStyleBackColor = True
         '
         'frmMainManager
         '
@@ -639,5 +651,6 @@ Partial Class frmMainManager
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents Button3 As System.Windows.Forms.Button
 
 End Class

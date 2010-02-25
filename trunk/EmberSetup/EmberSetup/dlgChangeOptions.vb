@@ -74,8 +74,15 @@ Public Class dlgChangeOptions
     End Sub
 
     Private Sub dlgChangeOptions_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        txtEMMPath.Text = frmMainSetup.emberPath
-        localPath = frmMainSetup.emberPath
+        If String.IsNullOrEmpty(frmMainSetup.emberPath) Then
+            localPath = frmMainSetup.AppPath()
+            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & "\").Replace("\\", "\")
+        Else
+            localPath = frmMainSetup.emberPath
+            txtEMMPath.Text = frmMainSetup.emberPath
+        End If
+        'txtEMMPath.Text = frmMainSetup.emberPath
+        'localPath = frmMainSetup.emberPath
     End Sub
 
     Private Sub btnGetEMMPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetEMMPath.Click

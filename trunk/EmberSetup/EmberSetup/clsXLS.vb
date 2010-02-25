@@ -77,6 +77,7 @@ Public Class FileOfList
     Public Hash As String
     Public NeedBackup As Boolean = False
     Public NeedInstall As Boolean = True
+    Public inCache As Boolean = False
 End Class
 
 <XmlRoot("CommandFile")> _
