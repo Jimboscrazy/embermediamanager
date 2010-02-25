@@ -297,7 +297,7 @@ Public Class FTPClass
         setBinaryMode(True)
         If [resume] Then
             Try
-                offset = getFileSize(fileName)
+                offset = getFileSize(Path.GetFileName(fileName))
             Catch generatedExceptionName As Exception
                 offset = 0
             End Try
@@ -323,7 +323,7 @@ Public Class FTPClass
             input.Seek(offset, SeekOrigin.Begin)
         End If
         Console.WriteLine(("Uploading file " & fileName & " to ") + remotePath)
-        Dim filesize = getFileSize(fileName)
+        Dim filesize = FileLen(fileName)
         While (offset < filesize)
             bytes = input.Read(buffer, 0, buffer.Length)
             cSocket.Send(buffer, bytes, 0)

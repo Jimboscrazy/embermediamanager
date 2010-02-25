@@ -453,6 +453,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
+                row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Filename).ToString))
                 row = GetAVImages(_curMovie, row)
                 HTMLBody.Append(row)
                 counter += 1
@@ -796,6 +797,49 @@ Public Class dlgExportMovies
             Search_Button.Enabled = False
         End If
     End Sub
+
+
+    Function MovieSize(ByVal spath As String) As Long
+        Dim MovieFilesSize As Long = 0
+        If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(spath), True) OrElse FileUtils.Common.isVideoTS(spath) OrElse FileUtils.Common.isBDRip(spath) Then
+            Try
+                Dim sExt As String = Path.GetExtension(spath).ToLower
+                Dim oFile As String = StringUtils.CleanStackingMarkers(spath, False)
+                Dim sFile As New List(Of String)
+                Dim bIsVTS As Boolean = False
+
+                If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+                    bIsVTS = True
+                End If
+
+                If bIsVTS Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(spath).FullName, "VTS*.VOB"))
+                    Catch
+                    End Try
+                ElseIf sExt = ".m2ts" Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(spath).FullName, "*.m2ts"))
+                    Catch
+                    End Try
+                Else
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(spath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(spath), True)))
+                    Catch
+                    End Try
+                End If
+
+                For Each File As String In sFile
+                    MovieFilesSize += FileLen(File)
+                Next
+            Catch ex As Exception
+            End Try
+        End If
+        Return MovieFilesSize
+    End Function
+
+
+
 End Class
 
 
