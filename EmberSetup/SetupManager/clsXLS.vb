@@ -23,6 +23,18 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 
+Public Class Settings
+    Public FTPUser As String
+    Public FTPPassword As String
+    Public FTPHost As String
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(Settings))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+End Class
+
 <XmlRoot("VersionsFile")> _
 Public Class UpgradeList
     <XmlArray("Versions")> _

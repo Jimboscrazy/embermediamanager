@@ -654,6 +654,7 @@ Public Class frmMainManager
         Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
         Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
         MasterDB.Connect()
+        LoadSettings()
         LoadOPaths()
         cbPlatform.SelectedIndex = 0
         LoadExcludes()
@@ -666,6 +667,18 @@ Public Class frmMainManager
             LoadVersions()
         End If
         _cmds.Command = New List(Of InstallCommand)
+    End Sub
+    Dim SetupSettings As New SetupManager.Settings
+    Sub LoadSettings()
+        If File.Exists(Path.Combine(AppPath, "settings.xml")) Then
+            Dim xmlSer As New XmlSerializer(GetType(Settings))
+            Using xmlSW As New StreamReader(Path.Combine(AppPath, "settings.xml"))
+                SetupSettings = DirectCast(xmlSer.Deserialize(xmlSW), SetupManager.Settings)
+            End Using
+        End If
+        TextBox3.Text = SetupSettings.FTPHost
+        TextBox1.Text = SetupSettings.FTPUser
+        TextBox2.Text = SetupSettings.FTPPassword
     End Sub
 
     Private Sub btnRescan_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescan.Click
@@ -941,7 +954,6 @@ Public Class frmMainManager
         End If
         AddCommand = False
     End Sub
-
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         ' Dim state = New FtpState
         Dim ftp As New FTPClass
@@ -954,10 +966,10 @@ Public Class frmMainManager
             ftp.setRemoteHost(TextBox3.Text)
             ftp.setRemoteUser(TextBox1.Text)
             ftp.setRemotePass(TextBox2.Text)
-            ftp.setRemotePath("/opt/redmine/redmine-0.8.7/public/Updates/")
+            ftp.setRemotePath("/public_html/Updates")
             ftp.login()
             Dim dirRoot As String()
-            Dim dirFiles As String()
+            Dim dirFiles As List(Of String)
             'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
             'ftp.cmdPasv2Port()
             dirRoot = ftp.getFileList("")
@@ -970,7 +982,9 @@ Public Class frmMainManager
                 ftp.chmod("644", Path.GetFileName(s))
             Next
             ftp.chdir("Files")
-            dirFiles = ftp.getFileList("")
+            dirFiles = ftp.getFileList("").ToList
+            dirFiles.Remove(".")
+            dirFiles.Remove("..")
             Dim inDisk As Integer = Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files"))).Count
             Dim done As Integer = 0
             Dim skiped As Integer = 0
@@ -979,10 +993,12 @@ Public Class frmMainManager
             For Each s In Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
                 Try
                     If Not dirFiles.Contains(Path.GetFileName(s)) Then
+                        dirFiles.Remove(Path.GetFileName(s))
                         ftp.upload(s)
                         ftp.chmod("644", Path.GetFileName(s))
                         done += 1
                     Else
+                        dirFiles.Remove(Path.GetFileName(s))
                         skiped += 1
                     End If
                     dlg.Label1.Text = String.Format(" File {0} of {1} - Uploaded {2} , Skiped {3}", done + skiped, inDisk, done, skiped)
@@ -991,10 +1007,25 @@ Public Class frmMainManager
                 Catch ex As Exception
                 End Try
             Next
+            inDisk = dirFiles.Count
+            done = 0
+            For Each s As String In dirFiles.Where(Function(i) Not String.IsNullOrEmpty(i))
+                done += 1
+                dlg.Label1.Text = String.Format(" Removing obsolete files {0} of {1}", done, inDisk)
+                Application.DoEvents()
+                ftp.deleteRemoteFile(s)
+            Next
             ftp.close()
         Catch ex As Exception
         End Try
         dlg.Close()
 
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        SetupSettings.FTPHost = (TextBox3.Text)
+        SetupSettings.FTPUser = (TextBox1.Text)
+        SetupSettings.FTPPassword = (TextBox2.Text)
+        SetupSettings.Save(Path.Combine(AppPath, "settings.xml"))
     End Sub
 End Class

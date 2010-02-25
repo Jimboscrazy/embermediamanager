@@ -294,9 +294,9 @@ Public Class FTPClass
         End If
         Dim cSocket As Socket = createDataSocket()
         Dim offset As Long = 0
+        setBinaryMode(True)
         If [resume] Then
             Try
-                setBinaryMode(True)
                 offset = getFileSize(fileName)
             Catch generatedExceptionName As Exception
                 offset = 0
@@ -326,6 +326,7 @@ Public Class FTPClass
         While (InlineAssignHelper(bytes, input.Read(buffer, 0, buffer.Length))) > 0
             cSocket.Send(buffer, bytes, 0)
         End While
+        Application.DoEvents()
         input.Close()
         Console.WriteLine("")
         If cSocket.Connected Then
@@ -519,8 +520,12 @@ Public Class FTPClass
         End While
         Dim ipAddress As String = (((CStr(parts(0)) & ".") + CStr(parts(1)) & ".") + CStr(parts(2)) & ".") + CStr(parts(3))
         Dim port As Integer = (parts(4) << 8) + parts(5)
+        Dim host As IPAddress()
+
+        host = Dns.GetHostAddresses(ipAddress)
+        Dim ip As IPAddress = host(0)
         Dim s As New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-        Dim ep As New IPEndPoint(Dns.GetHostEntry(ipAddress).AddressList(0), port)
+        Dim ep As New IPEndPoint(ip, port)
         Try
             s.Connect(ep)
         Catch generatedExceptionName As Exception
