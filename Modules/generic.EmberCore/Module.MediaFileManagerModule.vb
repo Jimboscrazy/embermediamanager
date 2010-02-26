@@ -123,13 +123,13 @@ Public Class FileManagerExternalModule
                         Select Case tMItem.OwnerItem.Tag.ToString
                             Case "MOVE"
                                 MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                                'TODO:  Before activate this, need to test it better and move to background worker
-                                'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
-                                'Directory.Delete(ItemsToWork(0).ToString, True)
+                                'TODO:  need to test it better and move to background worker
+                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)))
+                                Directory.Delete(ItemsToWork(0).ToString, True)
                             Case "COPY"
                                 MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                                'TODO:  Before activate this, need to test it better and move to background worker
-                                'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
+                                'TODO:   need to test it better and move to background worker
+                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)))
                         End Select
                     End If
                 Next
