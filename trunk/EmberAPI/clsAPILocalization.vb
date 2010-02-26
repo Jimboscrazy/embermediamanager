@@ -106,12 +106,18 @@ Public Class Localization
         _disabled = "[Disabled]"
     End Sub
 
-    Public Sub LoadLanguage(ByVal Language As String, Optional ByVal force As Boolean = False)
+    Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
         Dim _old_all As String = _all
+        Dim Assembly As String
         Me.Clear()
         Try
             If Not String.IsNullOrEmpty(Language) Then
-                Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If rAssembly = "" Then
+                    Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Else
+                    Assembly = rAssembly
+                End If
+
                 Dim lPath As String
                 htStrings = New Hashtable
                 htStrings.Clear()

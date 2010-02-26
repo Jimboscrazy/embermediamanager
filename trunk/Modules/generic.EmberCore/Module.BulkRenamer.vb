@@ -52,7 +52,7 @@ Public Class BulkRenamerModule
     End Sub
     Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmRuntimeObjects = emm
-        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
     ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName

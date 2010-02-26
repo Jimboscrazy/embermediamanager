@@ -78,7 +78,7 @@ Public Class FileManagerExternalModule
     End Sub
     Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmRuntimeObjects = emm
-        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
         Load()
     End Sub
