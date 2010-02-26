@@ -8,6 +8,16 @@ Public Class EmberNativeScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
+
+    Structure _MySettings
+        Dim IMDBURL As String
+        Dim UseOFDBTitle As Boolean
+        Dim UseOFDBOutline As Boolean
+        Dim UseOFDBPlot As Boolean
+        Dim UseOFDBGenre As Boolean
+    End Structure
+    Private MySettings As New _MySettings
+
     Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberScraperModule.ScraperUpdateMediaList
     Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
         Master.eLang.LoadLanguage(Master.eSettings.Language)
@@ -24,11 +34,16 @@ Public Class EmberNativeScraperModule
     End Property
     Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef studio As List(Of String)) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.GetMovieStudio
         Dim IMDB As New IMDB.Scraper
+        IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
+        IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
+        IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
+        IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return True
     End Function
     Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.SelectImageOfType
         Using dImgSelect As New dlgImgSelect
+            dImgSelect.IMDBURL = MySettings.IMDBURL
             pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
         End Using
         Return True
@@ -78,6 +93,12 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
+        MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL")
+
+        MySettings.UseOFDBTitle = AdvancedSettings.GetBooleanSetting("UseOFDBTitle", False)
+        MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)
+        MySettings.UseOFDBPlot = AdvancedSettings.GetBooleanSetting("UseOFDBPlot", False)
+        MySettings.UseOFDBGenre = AdvancedSettings.GetBooleanSetting("UseOFDBGenre", False)
 
     End Sub
     Sub SaveSettings()
@@ -101,6 +122,11 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
         AdvancedSettings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
         AdvancedSettings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
+        AdvancedSettings.SetSetting("IMDBURL", MySettings.IMDBURL)
+        AdvancedSettings.SetBooleanSetting("UseOFDBTitle", MySettings.UseOFDBTitle)
+        AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)
+        AdvancedSettings.SetBooleanSetting("UseOFDBPlot", MySettings.UseOFDBPlot)
+        AdvancedSettings.SetBooleanSetting("UseOFDBGenre", MySettings.UseOFDBGenre)
     End Sub
 
     Sub SetupScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupScraper
@@ -126,7 +152,24 @@ Public Class EmberNativeScraperModule
         _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
         _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
         _setup.chkTop250.Checked = ConfigOptions.bTop250
+        _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
+        _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
+        _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
+        _setup.chkOFDBGenre.Checked = MySettings.UseOFDBGenre
+        If String.IsNullOrEmpty(MySettings.IMDBURL) Then
+            MySettings.IMDBURL = "akas.imdb.com"
+        End If
+        _setup.txtIMDBURL.Text = MySettings.IMDBURL
         _setup.ShowDialog()
+        If Not String.IsNullOrEmpty(_setup.txtIMDBURL.Text) Then
+            MySettings.IMDBURL = Strings.Replace(_setup.txtIMDBURL.Text, "http://", String.Empty)
+        Else
+            MySettings.IMDBURL = "akas.imdb.com"
+        End If
+        MySettings.UseOFDBTitle = _setup.chkOFDBTitle.Checked
+        MySettings.UseOFDBOutline = _setup.chkOFDBOutline.Checked
+        MySettings.UseOFDBPlot = _setup.chkOFDBPlot.Checked
+        MySettings.UseOFDBGenre = _setup.chkOFDBGenre.Checked
         ConfigOptions.bTitle = _setup.chkTitle.Checked
         ConfigOptions.bYear = _setup.chkYear.Checked
         ConfigOptions.bMPAA = _setup.chkMPAA.Checked
@@ -171,6 +214,11 @@ Public Class EmberNativeScraperModule
     Private IMDB As New IMDB.Scraper
     Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         LoadSettings()
+        IMDB.IMDBURL = MySettings.IMDBURL
+        IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
+        IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
+        IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
+        IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
@@ -190,6 +238,7 @@ Public Class EmberNativeScraperModule
                     Return False
             End Select
             Using dSearch As New dlgIMDBSearchResults
+                dSearch.IMDBURL = MySettings.IMDBURL
                 Dim tmpTitle As String = DBMovie.Movie.Title
                 If String.IsNullOrEmpty(tmpTitle) Then
                     tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
@@ -254,6 +303,8 @@ Public Class EmberNativeScraperModule
         Dim fResults As EmberAPI.Containers.ImgResult
         Dim tURL As String = String.Empty
         Dim Trailer As New Trailers
+        LoadSettings()
+        Trailer.IMDBURL = MySettings.IMDBURL
         Dim doSave As Boolean = False
         If Master.GlobalScrapeMod.Poster Then
             Poster.Clear()
@@ -274,6 +325,7 @@ Public Class EmberNativeScraperModule
                     ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
                         MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                         Using dImgSelect As New dlgImgSelect
+                            dImgSelect.IMDBURL = MySettings.IMDBURL
                             pResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Posters)
                             If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                 DBMovie.PosterPath = pResults.ImagePath
@@ -310,6 +362,7 @@ Public Class EmberNativeScraperModule
                         MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
 
                         Using dImgSelect As New dlgImgSelect
+                            dImgSelect.IMDBURL = MySettings.IMDBURL
                             fResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                 DBMovie.FanartPath = fResults.ImagePath

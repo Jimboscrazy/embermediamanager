@@ -598,15 +598,15 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBPlot.CheckedChanged
+    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBOutline.CheckedChanged
+    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
+    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -794,7 +794,7 @@ Public Class dlgSettings
         Me.RemoveXCom()
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
+    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -802,7 +802,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBURL.TextChanged
+    Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2647,10 +2647,7 @@ Public Class dlgSettings
             Master.eSettings.ResizeSeasonPoster = Me.chkSeaResizePoster.Checked
             Master.eSettings.SeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtSeaPosterHeight.Text), Convert.ToInt32(Me.txtSeaPosterHeight.Text), 0)
             Master.eSettings.SeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtSeaPosterWidth.Text), Convert.ToInt32(Me.txtSeaPosterWidth.Text), 0)
-            Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
-            Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
-            Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
-            Master.eSettings.UseOFDBGenre = Me.chkOFDBGenre.Checked
+
             If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso Convert.ToInt32(txtAutoThumbs.Text) > 0 Then
                 Master.eSettings.AutoThumbs = Convert.ToInt32(txtAutoThumbs.Text)
                 Master.eSettings.AutoThumbsNoSpoilers = Me.chkNoSpoilers.Checked
@@ -2659,11 +2656,6 @@ Public Class dlgSettings
                 Master.eSettings.AutoThumbs = 0
                 Master.eSettings.AutoThumbsNoSpoilers = False
                 Master.eSettings.UseETasFA = False
-            End If
-            If Not String.IsNullOrEmpty(Me.txtIMDBURL.Text) Then
-                Master.eSettings.IMDBURL = Strings.Replace(Me.txtIMDBURL.Text, "http://", String.Empty)
-            Else
-                Master.eSettings.IMDBURL = "akas.imdb.com"
             End If
             Master.eSettings.BDPath = Me.txtBDPath.Text
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
@@ -3062,10 +3054,6 @@ Public Class dlgSettings
                 Me.txtSeaPosterWidth.Text = Master.eSettings.SeasonPosterWidth.ToString
                 Me.txtSeaPosterHeight.Text = Master.eSettings.SeasonPosterHeight.ToString
             End If
-            Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
-            Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
-            Me.chkOFDBPlot.Checked = Master.eSettings.UseOFDBPlot
-            Me.chkOFDBGenre.Checked = Master.eSettings.UseOFDBGenre
             If Master.eSettings.AutoThumbs > 0 Then
                 Me.chkAutoThumbs.Checked = True
                 Me.txtAutoThumbs.Enabled = True
@@ -3075,7 +3063,7 @@ Public Class dlgSettings
                 Me.chkUseETasFA.Enabled = True
                 Me.chkUseETasFA.Checked = Master.eSettings.UseETasFA
             End If
-            Me.txtIMDBURL.Text = Master.eSettings.IMDBURL
+
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
@@ -3511,10 +3499,6 @@ Public Class dlgSettings
         Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
         Me.btnAddTVSource.Text = Master.eLang.GetString(407, "Add Source")
-        Me.chkOFDBGenre.Text = Master.eLang.GetString(474, "Use OFDB Genre")
-        Me.chkOFDBPlot.Text = Master.eLang.GetString(475, "Use OFDB Plot")
-        Me.chkOFDBOutline.Text = Master.eLang.GetString(476, "Use OFDB Outline")
-        Me.chkOFDBTitle.Text = Master.eLang.GetString(477, "Use OFDB Title")
         Me.GroupBox14.Text = Master.eLang.GetString(148, "Poster")
         Me.Label24.Text = Master.eLang.GetString(478, "Poster Quality:")
         Me.Label11.Text = Master.eLang.GetString(479, "Max Width:")
@@ -3551,7 +3535,7 @@ Public Class dlgSettings
         Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
         Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Automatically Extract Extrathumbs During Scrapers")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
-        Me.Label18.Text = Master.eLang.GetString(509, "IMDB Mirror:")
+
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkUseCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
         Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
@@ -3828,7 +3812,6 @@ Public Class dlgSettings
         End If
 
         Me.TabPage1.Text = Master.eLang.GetString(38, "General")
-        Me.TabPage2.Text = Master.eLang.GetString(390, "Options")
         Me.TabPage3.Text = Master.eLang.GetString(38, "General")
         Me.TabPage4.Text = Master.eLang.GetString(699, "Regex")
         Me.TabPage5.Text = Master.eLang.GetString(700, "TV Show")
@@ -4083,4 +4066,7 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub pnlGeneral_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlGeneral.Paint
+
+    End Sub
 End Class

@@ -27,6 +27,7 @@ Imports System.IO.Compression
 
 Namespace IMPA
     Public Class Scraper
+        Public IMDBURL As String
         Friend WithEvents bwIMPA As New System.ComponentModel.BackgroundWorker
 
         Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
@@ -56,7 +57,7 @@ Namespace IMPA
             Try
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "http://([^""]*)impawards.com/([^""]*)")

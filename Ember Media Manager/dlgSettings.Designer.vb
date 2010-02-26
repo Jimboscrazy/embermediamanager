@@ -584,15 +584,6 @@ Partial Class dlgSettings
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.GroupBox30 = New System.Windows.Forms.GroupBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.txtIMDBURL = New System.Windows.Forms.TextBox
-        Me.GroupBox15 = New System.Windows.Forms.GroupBox
-        Me.chkOFDBGenre = New System.Windows.Forms.CheckBox
-        Me.chkOFDBPlot = New System.Windows.Forms.CheckBox
-        Me.chkOFDBOutline = New System.Windows.Forms.CheckBox
-        Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
         Me.cbTrailerQuality = New System.Windows.Forms.ComboBox
         Me.lblPreferredQuality = New System.Windows.Forms.Label
@@ -733,9 +724,6 @@ Partial Class dlgSettings
         Me.gbRTFormat.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.GroupBox30.SuspendLayout()
-        Me.GroupBox15.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.pnlTrailers.SuspendLayout()
@@ -6171,7 +6159,6 @@ Partial Class dlgSettings
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(3, 3)
         Me.TabControl1.Name = "TabControl1"
@@ -6926,102 +6913,6 @@ Partial Class dlgSettings
         Me.chkCert.Text = "Use Certification Language:"
         Me.chkCert.UseVisualStyleBackColor = True
         '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.GroupBox30)
-        Me.TabPage2.Controls.Add(Me.GroupBox15)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(601, 366)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Options"
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'GroupBox30
-        '
-        Me.GroupBox30.Controls.Add(Me.Label18)
-        Me.GroupBox30.Controls.Add(Me.txtIMDBURL)
-        Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox30.Location = New System.Drawing.Point(7, 10)
-        Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(213, 69)
-        Me.GroupBox30.TabIndex = 4
-        Me.GroupBox30.TabStop = False
-        Me.GroupBox30.Text = "IMDB"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(6, 18)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(73, 13)
-        Me.Label18.TabIndex = 62
-        Me.Label18.Text = "IMDB Mirror:"
-        '
-        'txtIMDBURL
-        '
-        Me.txtIMDBURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIMDBURL.Location = New System.Drawing.Point(8, 32)
-        Me.txtIMDBURL.Name = "txtIMDBURL"
-        Me.txtIMDBURL.Size = New System.Drawing.Size(192, 22)
-        Me.txtIMDBURL.TabIndex = 10
-        '
-        'GroupBox15
-        '
-        Me.GroupBox15.Controls.Add(Me.chkOFDBGenre)
-        Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
-        Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
-        Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox15.Location = New System.Drawing.Point(7, 84)
-        Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(213, 87)
-        Me.GroupBox15.TabIndex = 2
-        Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "OFDB"
-        '
-        'chkOFDBGenre
-        '
-        Me.chkOFDBGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 65)
-        Me.chkOFDBGenre.Name = "chkOFDBGenre"
-        Me.chkOFDBGenre.Size = New System.Drawing.Size(168, 17)
-        Me.chkOFDBGenre.TabIndex = 3
-        Me.chkOFDBGenre.Text = "Use OFDB Genre"
-        Me.chkOFDBGenre.UseVisualStyleBackColor = True
-        '
-        'chkOFDBPlot
-        '
-        Me.chkOFDBPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 49)
-        Me.chkOFDBPlot.Name = "chkOFDBPlot"
-        Me.chkOFDBPlot.Size = New System.Drawing.Size(168, 17)
-        Me.chkOFDBPlot.TabIndex = 2
-        Me.chkOFDBPlot.Text = "Use OFDB Plot"
-        Me.chkOFDBPlot.UseVisualStyleBackColor = True
-        '
-        'chkOFDBOutline
-        '
-        Me.chkOFDBOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 33)
-        Me.chkOFDBOutline.Name = "chkOFDBOutline"
-        Me.chkOFDBOutline.Size = New System.Drawing.Size(168, 17)
-        Me.chkOFDBOutline.TabIndex = 1
-        Me.chkOFDBOutline.Text = "Use OFDB Outline"
-        Me.chkOFDBOutline.UseVisualStyleBackColor = True
-        '
-        'chkOFDBTitle
-        '
-        Me.chkOFDBTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 17)
-        Me.chkOFDBTitle.Name = "chkOFDBTitle"
-        Me.chkOFDBTitle.Size = New System.Drawing.Size(168, 17)
-        Me.chkOFDBTitle.TabIndex = 0
-        Me.chkOFDBTitle.Text = "Use OFDB Title"
-        Me.chkOFDBTitle.UseVisualStyleBackColor = True
-        '
         'GroupBox20
         '
         Me.GroupBox20.Controls.Add(Me.cbTrailerQuality)
@@ -7441,6 +7332,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
@@ -7452,7 +7344,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTrailers)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -7623,10 +7514,6 @@ Partial Class dlgSettings
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.GroupBox30.ResumeLayout(False)
-        Me.GroupBox30.PerformLayout()
-        Me.GroupBox15.ResumeLayout(False)
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
@@ -8073,7 +7960,6 @@ Partial Class dlgSettings
     Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents lbTrailerSites As System.Windows.Forms.CheckedListBox
     Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents txtGenreLimit As System.Windows.Forms.TextBox
@@ -8103,22 +7989,14 @@ Partial Class dlgSettings
     Friend WithEvents cbForce As System.Windows.Forms.ComboBox
     Friend WithEvents chkForceTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkOutlineForPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents txtIMDBURL As System.Windows.Forms.TextBox
     Friend WithEvents chkCastWithImg As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseCertForMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkFullCast As System.Windows.Forms.CheckBox
     Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
     Friend WithEvents cbCert As System.Windows.Forms.ComboBox
     Friend WithEvents chkCert As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox15 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkOFDBGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
     Friend WithEvents pnlScraper As System.Windows.Forms.Panel
     Friend WithEvents pnlTrailers As System.Windows.Forms.Panel
-    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
     Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
     Friend WithEvents gbSeaPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtSeaPosterWidth As System.Windows.Forms.TextBox

@@ -21,7 +21,11 @@
 Imports System.Text.RegularExpressions
 
 Public Class dlgIMDBSearchResults
-
+    Public IMDBURL As String
+    Dim UseOFDBTitle As Boolean
+    Dim UseOFDBOutline As Boolean
+    Dim UseOFDBPlot As Boolean
+    Dim UseOFDBGenre As Boolean
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
     Private IMDB As New IMDB.Scraper
@@ -68,6 +72,11 @@ Public Class dlgIMDBSearchResults
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
+        IMDB.IMDBURL = IMDBURL
+        IMDB.UseOFDBTitle = UseOFDBTitle
+        IMDB.UseOFDBOutline = UseOFDBOutline
+        IMDB.UseOFDBPlot = UseOFDBPlot
+        IMDB.UseOFDBGenre = UseOFDBGenre
         AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
         AddHandler IMDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
 

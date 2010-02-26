@@ -22,7 +22,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 
 Public Class dlgTrailer
-
+    Public IMDBURL As String
     Private cTrailer As New Trailers
     Private sHTTP As New HTTP
     Dim tArray As New List(Of String)
@@ -264,6 +264,7 @@ Public Class dlgTrailer
 
     Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
+        cTrailer.IMDBURL = IMDBURL
         AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
         AddHandler sHTTP.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub

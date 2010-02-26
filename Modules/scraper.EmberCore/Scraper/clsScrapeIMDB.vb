@@ -27,6 +27,7 @@ Imports System.IO.Compression
 Imports System.Globalization
 
 Namespace IMDB
+
     Public Class MovieSearchResults
         Private _PopularTitles As New List(Of MediaContainers.Movie)
         Private _ExactMatches As New List(Of MediaContainers.Movie)
@@ -62,6 +63,11 @@ Namespace IMDB
     End Class
 
     Public Class Scraper
+        Public UseOFDBTitle As Boolean
+        Public UseOFDBOutline As Boolean
+        Public UseOFDBPlot As Boolean
+        Public UseOFDBGenre As Boolean
+        Public IMDBURL As String
 
         Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
 
@@ -136,6 +142,7 @@ Namespace IMDB
                         Else
                             Master.tmpMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults
+                                dIMDB.IMDBURL = IMDBURL
                                 If dIMDB.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                         b = False
@@ -230,7 +237,7 @@ Namespace IMDB
                 Dim R As New MovieSearchResults
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")), "&x=0&y=0"))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")), "&x=0&y=0"))
                 Dim rUri As String = sHTTP.ResponseUri
                 sHTTP = Nothing
 
@@ -319,7 +326,7 @@ mResult:
             Dim alStudio As New List(Of String)
 
             Dim sHTTP As New HTTP
-            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/combined"))
+            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, "/combined"))
             sHTTP = Nothing
 
             Dim D, W As Integer
@@ -342,7 +349,7 @@ mResult:
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
                 sHTTP = Nothing
 
                 Dim D, W As Integer
@@ -380,25 +387,25 @@ mResult:
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If (Master.eSettings.UseOFDBTitle AndAlso Options.bTitle) OrElse (Master.eSettings.UseOFDBOutline AndAlso Options.bOutline) OrElse _
-                (Master.eSettings.UseOFDBPlot AndAlso Options.bPlot) OrElse (Master.eSettings.UseOFDBGenre AndAlso Options.bGenre) Then
+                If (UseOFDBTitle AndAlso Options.bTitle) OrElse (UseOFDBOutline AndAlso Options.bOutline) OrElse _
+                (UseOFDBPlot AndAlso Options.bPlot) OrElse (UseOFDBGenre AndAlso Options.bGenre) Then
                     Dim OFDBScrape As New OFDB(strID, IMDBMovie)
-                    If Master.eSettings.UseOFDBTitle AndAlso Options.bTitle Then ofdbTitle = OFDBScrape.Title
-                    If Master.eSettings.UseOFDBOutline AndAlso Options.bOutline Then ofdbOutline = OFDBScrape.Outline
-                    If Master.eSettings.UseOFDBPlot AndAlso Options.bPlot Then ofdbPlot = OFDBScrape.Plot
-                    If Master.eSettings.UseOFDBGenre AndAlso Options.bGenre Then ofdbGenre = OFDBScrape.Genre
+                    If UseOFDBTitle AndAlso Options.bTitle Then ofdbTitle = OFDBScrape.Title
+                    If UseOFDBOutline AndAlso Options.bOutline Then ofdbOutline = OFDBScrape.Outline
+                    If UseOFDBPlot AndAlso Options.bPlot Then ofdbPlot = OFDBScrape.Plot
+                    If UseOFDBGenre AndAlso Options.bGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
                 sHTTP = Nothing
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 Dim sPlot As New HTTP
-                Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
+                Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, "/plotsummary"))
                 sPlot = Nothing
 
                 If doProgress Then
@@ -514,7 +521,7 @@ mResult:
                     Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
                     If Not sTrailerUrl = String.Empty Then
                         Dim sTrailerURL2 As String = String.Empty
-                        sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
+                        sTrailerUrl = String.Concat("http://", IMDBURL, sTrailerUrl, "player")
                         Dim HTTPTrailer As New HTTP
                         Dim HtmlTrailer As String = HTTPTrailer.DownloadData(sTrailerUrl)
                         HTTPTrailer = Nothing
@@ -809,7 +816,7 @@ mPlot:
                             'Producers
                             If Options.bProducers AndAlso M.ToString.Contains("Produced by</a></h5>") Then
                                 Dim Pr = From Po In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
-                                Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
+                                Where Not Po.ToString.Contains(String.Concat("http://", IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
                                 Where Not String.IsNullOrEmpty(P1.Groups("name").ToString) _
                                 Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString, " (producer)"))
