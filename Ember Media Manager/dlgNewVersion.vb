@@ -57,11 +57,11 @@ Public Class dlgNewVersion
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
         Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
-        Me.lblStart.Text = Master.eLang.GetString(999, "Preparing for upgrade ...")
-        Me.lblUpgrade.Text = Master.eLang.GetString(999, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
-        Me.btnYes.Text = Master.eLang.GetString(999, "YES")
-        Me.btnNo.Text = Master.eLang.GetString(999, "NO")
-        Me.btnUpgrade.Text = Master.eLang.GetString(999, "Upgrade")
+        Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
+        Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
+        Me.btnYes.Text = Master.eLang.GetString(719, "YES")
+        Me.btnNo.Text = Master.eLang.GetString(720, "NO")
+        Me.btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
 
     End Sub
 

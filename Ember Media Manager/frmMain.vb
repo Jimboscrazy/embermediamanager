@@ -4161,7 +4161,7 @@ Public Class frmMain
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
                 .SettingsToolStripMenuItem.Text = Master.eLang.GetString(4, "&Settings...")
-                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(999, "Module Settings")
+                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(754, "Module Settings")
                 .HelpToolStripMenuItem.Text = Master.eLang.GetString(5, "&Help")
                 .AboutToolStripMenuItem.Text = Master.eLang.GetString(6, "&About...")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
@@ -4326,6 +4326,36 @@ Public Class frmMain
                 .btnIMDBRating.Text = Master.eLang.GetString(707, "IMDB Rating")
                 .DonateToolStripMenuItem.Text = Master.eLang.GetString(708, "Donate")
                 .CleanDatabaseToolStripMenuItem.Text = Master.eLang.GetString(709, "Clean Database")
+                .cmnuReloadShow.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuMarkShow.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuLockShow.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuEditShow.Text = Master.eLang.GetString(663, "Edit Show")
+                .cmnuRescrapeShow.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuChangeShow.Text = Master.eLang.GetString(767, "Change Show")
+                .RemoveShowToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuRemoveTVShow.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuDeleteTVShow.Text = Master.eLang.GetString(768, "Delete TV Show")
+                .cmnuReloadSeason.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuMarkSeason.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuLockSeason.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuSeasonChangePoster.Text = Master.eLang.GetString(769, "Change Poster")
+                .cmnuSeasonChangeFanart.Text = Master.eLang.GetString(770, "Change Fanart")
+                .cmnuSeasonRescrape.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuDeleteSeason.Text = Master.eLang.GetString(771, "Delete Season")
+                .cmnuReloadEp.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuMarkEp.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuLockEp.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuEditEpisode.Text = Master.eLang.GetString(656, "Edit Episode")
+                .cmnuRescrapeEp.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuChangeEp.Text = Master.eLang.GetString(772, "Change Episode")
+                .RemoveEpToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuRemoveTVEp.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuDeleteTVEp.Text = Master.eLang.GetString(773, "Delete Episode")
+                .DonateToolStripMenuItem.Text = Master.eLang.GetString(792, "Donate")
+                .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
+                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(794, "&Module Settings...")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -6586,7 +6616,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
                 .dgvTVEpisodes.Columns(2).Width = 20
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(999, "Episode #")
+                .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(755, "Episode #")
                 .dgvTVEpisodes.Columns(2).HeaderText = "#"
                 .dgvTVEpisodes.Columns(3).Resizable = DataGridViewTriState.True
                 .dgvTVEpisodes.Columns(3).ReadOnly = True
@@ -6738,13 +6768,13 @@ doCancel:
             Case TVDB.Scraper.EventType.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Loading All Episodes:")
+                Me.tslLoading.Text = Master.eLang.GetString(756, "Loading All Episodes:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case TVDB.Scraper.EventType.SavingStarted
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Saving All Images:")
+                Me.tslLoading.Text = Master.eLang.GetString(757, "Saving All Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case TVDB.Scraper.EventType.ScraperDone
@@ -6756,19 +6786,19 @@ doCancel:
             Case TVDB.Scraper.EventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Searching theTVDB:")
+                Me.tslLoading.Text = Master.eLang.GetString(758, "Searching theTVDB:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case TVDB.Scraper.EventType.SelectImages
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Select Images:")
+                Me.tslLoading.Text = Master.eLang.GetString(759, "Select Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case TVDB.Scraper.EventType.StartingDownload
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
-                Me.tslLoading.Text = Master.eLang.GetString(999, "Downloading Show Zip:")
+                Me.tslLoading.Text = Master.eLang.GetString(760, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case TVDB.Scraper.EventType.Verifying
@@ -6777,7 +6807,7 @@ doCancel:
 
                 Select Case iProgress
                     Case 0 ' show
-                        Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Show:")
+                        Me.tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show:")
                         Me.tspbLoading.Visible = True
                         Me.tslLoading.Visible = True
                         Using dEditShow As New dlgEditShow
@@ -6787,7 +6817,7 @@ doCancel:
                         End Using
                     Case 1 ' season
                     Case 2 ' episode
-                        Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Episode:")
+                        Me.tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode:")
                         Me.tspbLoading.Visible = True
                         Me.tslLoading.Visible = True
                         Using dEditEp As New dlgEditEpisode
@@ -7383,7 +7413,7 @@ doCancel:
     Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVShow.Click
         Try
             'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(999, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(999, "Are you sure?")) = MsgBoxResult.Yes Then
+            If MsgBox(Master.eLang.GetString(763, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Me.ClearInfo()
 
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -7423,7 +7453,7 @@ doCancel:
     Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVEp.Click
         Try
             'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(999, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(999, "Are you sure?")) = MsgBoxResult.Yes Then
+            If MsgBox(Master.eLang.GetString(764, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Dim ePath As String = String.Empty
 
                 Me.ClearInfo()
@@ -7697,7 +7727,7 @@ doCancel:
     Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
         Try
             'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(999, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(999, "Are you sure?")) = MsgBoxResult.Yes Then
+            If MsgBox(Master.eLang.GetString(765, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Dim ePath As String = String.Empty
 
                 Me.ClearInfo()

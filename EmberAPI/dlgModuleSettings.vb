@@ -29,7 +29,7 @@ Public Class dlgModuleSettings
         If lstModules.SelectedItems.Count > 0 Then
             btnGenericSetup.Enabled = True
             btnGenericEnable.Enabled = True
-            If lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled") Then
+            If lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled") Then
                 btnGenericEnable.Enabled = False
                 btnGenericDisable.Enabled = True
             Else
@@ -64,7 +64,7 @@ Public Class dlgModuleSettings
 
         btnGenericEnable.Enabled = False
         btnGenericDisable.Enabled = True
-        lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled")
+        lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled")
         ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, True)
 
     End Sub
@@ -72,7 +72,7 @@ Public Class dlgModuleSettings
     Private Sub btnGenericDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenericDisable.Click
         btnGenericDisable.Enabled = False
         btnGenericEnable.Enabled = True
-        lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Disabled")
+        lstModules.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(775, "Disabled")
         ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
     End Sub
 
@@ -84,14 +84,14 @@ Public Class dlgModuleSettings
 
         btnScraperEnable.Enabled = False
         btnScraperDisable.Enabled = True
-        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled")
+        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled")
         ModulesManager.SetScraperEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, True)
     End Sub
 
     Private Sub btnScraperDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperDisable.Click
         btnScraperDisable.Enabled = False
         btnScraperEnable.Enabled = True
-        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Disabled")
+        lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(775, "Disabled")
         ModulesManager.SetScraperEnable(lstScrapers.SelectedItems.Item(0).Tag().ToString, False)
     End Sub
 
@@ -113,7 +113,7 @@ Public Class dlgModuleSettings
         If lstScrapers.SelectedItems.Count > 0 Then
             btnScraperSetup.Enabled = True
             btnScraperEnable.Enabled = True
-            If lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled") Then
+            If lstScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled") Then
                 btnScraperEnable.Enabled = False
                 btnScraperDisable.Enabled = True
             Else
@@ -133,7 +133,7 @@ Public Class dlgModuleSettings
         If lstPostScrapers.SelectedItems.Count > 0 Then
             btnPostScraperSetup.Enabled = True
             btnPostScraperEnable.Enabled = True
-            If lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled") Then
+            If lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled") Then
                 btnPostScraperEnable.Enabled = False
                 btnPostScraperDisable.Enabled = True
             Else
@@ -152,14 +152,14 @@ Public Class dlgModuleSettings
     Private Sub btnPostScraperEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperEnable.Click
         btnPostScraperEnable.Enabled = False
         btnPostScraperDisable.Enabled = True
-        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Enabled")
+        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(774, "Enabled")
         ModulesManager.SetPostScraperEnable(lstPostScrapers.SelectedItems.Item(0).Tag().ToString, True)
     End Sub
 
     Private Sub btnPostScraperDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperDisable.Click
         btnPostScraperDisable.Enabled = False
         btnPostScraperEnable.Enabled = True
-        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(999, "Disabled")
+        lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(775, "Disabled")
         ModulesManager.SetPostScraperEnable(lstPostScrapers.SelectedItems.Item(0).Tag().ToString, False)
     End Sub
 

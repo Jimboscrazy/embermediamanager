@@ -154,7 +154,7 @@
             Me.Controls.Add(Me.tvList)
             Me.Name = "dlgTVImageSelect"
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-            Me.Text = "dlgTVImageSelect"
+            Me.Text = "TV Image Selection"
             CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.pnlStatus.ResumeLayout(False)
             CType(Me.pbDelete, System.ComponentModel.ISupportInitialize).EndInit()

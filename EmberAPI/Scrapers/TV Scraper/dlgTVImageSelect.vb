@@ -26,9 +26,6 @@
 'TODO: Check Season lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
-'TODO: ?????
-'TODO: PROFIT!!!!
-
 
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -67,16 +64,16 @@ Namespace TVDB
 
         Private Sub GenerateList()
             Try
-                Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Show Poster"), .Tag = "showp"})
-                Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Show Fanart"), .Tag = "showf"})
-                If Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "All Seasons Poster"), .Tag = "allp"})
+                Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
+                Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(785, "Show Fanart"), .Tag = "showf"})
+                If Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
 
                 Dim TnS As TreeNode
                 For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
                     Try
-                        TnS = New TreeNode(String.Format(Master.eLang.GetString(999, "Season {0}"), cSeason.Season))
-                        TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Season Poster"), .Tag = String.Concat("p", cSeason.Season.ToString)})
-                        If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(999, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
+                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season))
+                        TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString)})
+                        If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
                         Me.tvList.Nodes.Add(TnS)
                     Catch ex As Exception
                         ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -637,7 +634,7 @@ Namespace TVDB
                 If e.UserState.ToString = "progress" Then
                     Me.pbStatus.Value = e.ProgressPercentage
                 ElseIf e.UserState.ToString = "current" Then
-                    Me.lblStatus.Text = Master.eLang.GetString(999, "Loading Current Images...")
+                    Me.lblStatus.Text = Master.eLang.GetString(787, "Loading Current Images...")
                     Me.pbStatus.Value = 0
                     Me.pbStatus.Maximum = e.ProgressPercentage
                 Else
@@ -654,7 +651,7 @@ Namespace TVDB
             If Not e.Cancelled Then
                 Me.GenerateList()
 
-                Me.lblStatus.Text = Master.eLang.GetString(999, "(Down)Loading New Images...")
+                Me.lblStatus.Text = Master.eLang.GetString(788, "(Down)Loading New Images...")
                 Me.bwLoadImages.WorkerReportsProgress = True
                 Me.bwLoadImages.WorkerSupportsCancellation = True
                 Me.bwLoadImages.RunWorkerAsync()
@@ -668,6 +665,8 @@ Namespace TVDB
             AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
 
             Functions.PNLDoubleBuffer(Me.pnlImages)
+
+            Me.SetUp()
         End Sub
 
         Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
@@ -701,7 +700,7 @@ Namespace TVDB
                 If e.UserState.ToString = "progress" Then
                     Me.pbStatus.Value = e.ProgressPercentage
                 ElseIf e.UserState.ToString = "defaults" Then
-                    Me.lblStatus.Text = Master.eLang.GetString(999, "Setting Defaults...")
+                    Me.lblStatus.Text = Master.eLang.GetString(789, "Setting Defaults...")
                     Me.pbStatus.Value = 0
                     Me.pbStatus.Maximum = e.ProgressPercentage
                 Else
@@ -735,7 +734,7 @@ Namespace TVDB
                 If Not String.IsNullOrEmpty(iTag.Path) AndAlso File.Exists(iTag.Path) Then
                     tImage.FromFile(iTag.Path)
                 ElseIf Not String.IsNullOrEmpty(iTag.Path) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
-                    Me.lblStatus.Text = Master.eLang.GetString(999, "Downloading Fullsize Fanart Image...")
+                    Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
                     Me.pbStatus.Style = ProgressBarStyle.Marquee
                     Me.pnlStatus.Visible = True
 
@@ -859,6 +858,12 @@ Namespace TVDB
                     End If
                 End If
             End If
+        End Sub
+
+        Private Sub SetUp()
+            Me.Text = Master.eLang.GetString(791, "TV Image Selection")
+            Me.btnOK.Text = Master.eLang.GetString(179, "OK")
+            Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         End Sub
     End Class
 End Namespace

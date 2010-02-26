@@ -108,7 +108,7 @@ Public Class dlgUpdateMedia
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkCert.Text = Master.eLang.GetString(999, "Certification")
+        Me.chkCert.Text = Master.eLang.GetString(722, "Certification")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")

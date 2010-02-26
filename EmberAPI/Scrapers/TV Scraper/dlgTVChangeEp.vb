@@ -46,6 +46,8 @@ Namespace TVDB
         End Function
 
         Private Sub dlgTVChangeEp_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Me.SetUp()
+
             Dim lGroup As New ListViewGroup
             Dim lItem As New ListViewItem
             Dim tSeason As Integer = Nothing
@@ -53,7 +55,7 @@ Namespace TVDB
             For Each Season As Integer In _tepisodes.GroupBy(Function(s) s.Season).Select(Function(group) group.Key)
                 tSeason = Season
                 lGroup = New ListViewGroup
-                lGroup.Header = String.Format(Master.eLang.GetString(999, "Season {0}"), tSeason)
+                lGroup.Header = String.Format(Master.eLang.GetString(726, "Season {0}"), tSeason)
                 lvEpisodes.Groups.Add(lGroup)
                 For Each Episode As MediaContainers.EpisodeDetails In _tepisodes.Where(Function(s) s.Season = tSeason).OrderBy(Function(s) s.Episode)
                     lItem = lvEpisodes.Items.Add(Episode.Episode.ToString)
@@ -94,6 +96,16 @@ Namespace TVDB
             Me.pbPreview.Image = Nothing
             Me.lblTitle.Text = String.Empty
             Me.txtPlot.Text = String.Empty
+        End Sub
+
+        Private Sub SetUp()
+            Me.Text = Master.eLang.GetString(772, "Change Episode")
+
+            Me.lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode")
+            Me.lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title")
+
+            Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+            Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         End Sub
     End Class
 End Namespace

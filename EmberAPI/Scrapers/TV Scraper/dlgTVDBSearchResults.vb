@@ -55,7 +55,7 @@ Namespace TVDB
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
             If Me.lvSearchResults.SelectedItems.Count > 0 Then
-                Me.Label3.Text = Master.eLang.GetString(999, "Downloading show info...")
+                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
                 Me.pnlLoading.Visible = True
                 Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
                 Me.sInfo.TVDBID = sResults.ID.ToString
@@ -88,6 +88,8 @@ Namespace TVDB
                     g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
                     Me.pnlTop.BackgroundImage = iBackground
                 End Using
+
+                Me.SetUp()
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -156,6 +158,21 @@ Namespace TVDB
                 Me.OK_Button.Enabled = True
             End If
             Me.ControlsVisible(True)
+        End Sub
+
+        Private Sub SetUp()
+            Me.Text = Master.eLang.GetString(781, "TV Search Results")
+            Me.Label1.Text = Me.Text
+            Me.Label2.Text = Master.eLang.GetString(782, "View details of each result to find the proper TV show.")
+            Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:")
+            Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:")
+
+            Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title")
+            Me.lvSearchResults.Columns(1).Text = Master.eLang.GetString(610, "Language")
+
+            Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+            Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+
         End Sub
     End Class
 End Namespace
