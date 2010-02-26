@@ -37,6 +37,7 @@ Public Class frmMainSetup
     Public emberPath As String
     Public emberAllFounds As New List(Of String)
     Public Final As Boolean = False
+    Public Force As Boolean = False
     Public ExitMe As Boolean = False
     Public DoInstall As Boolean = True
     Public NoArgs As Boolean = True
@@ -511,7 +512,7 @@ Public Class frmMainSetup
                             Return True
                         End If
                         InstallVersion = EmberVersions.VersionList(EmberVersions.VersionList.Count - 1).Version
-                        If InstallVersion <= CurrentEmberVersion Then
+                        If InstallVersion <= CurrentEmberVersion AndAlso Not Force Then
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
                             Me.bwDoInstall.ReportProgress(6, "No New Version to Install")
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
@@ -806,22 +807,24 @@ Public Class frmMainSetup
                 Dim getFile As String
                 Dim xmlSer As XmlSerializer
                 Dim _cmds As New InstallCommands
-                getFile = "commands_base.xml"
-                If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
-                    xmlSer = New XmlSerializer(GetType(InstallCommands))
-                    Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
-                        _cmds = xmlSer.Deserialize(xmlSW)
-                    End Using
-                    Me.bwDoInstall.ReportProgress(5, "Creating Database")
-                    LogWrite(String.Format("*** Execute DB File: {0}", getFile))
-                    For Each s As InstallCommand In _cmds.Command
-                        If s.CommandType = "DB" Then
-                            LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
-                            cmds.DB.Execute(s.CommandExecute)
-                        End If
-                    Next
-                Else
-                    LogWrite(String.Format("*** Main: Commands: File Not Found: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))))
+                If Not dbExist Then
+                    getFile = "commands_base.xml"
+                    If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
+                        xmlSer = New XmlSerializer(GetType(InstallCommands))
+                        Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
+                            _cmds = xmlSer.Deserialize(xmlSW)
+                        End Using
+                        Me.bwDoInstall.ReportProgress(5, "Creating Database")
+                        LogWrite(String.Format("*** Execute DB File: {0}", getFile))
+                        For Each s As InstallCommand In _cmds.Command
+                            If s.CommandType = "DB" Then
+                                LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                cmds.DB.Execute(s.CommandExecute)
+                            End If
+                        Next
+                    Else
+                        LogWrite(String.Format("*** Main: Commands: File Not Found: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))))
+                    End If
                 End If
                 If dbExist Then
                     System.Threading.Thread.Sleep(1000)
@@ -1018,6 +1021,8 @@ Public Class frmMainSetup
                             Me.Top = Convert.ToInt32(Args(i + 2))
                             Me.Left = Convert.ToInt32(Args(i + 3))
                         End If
+                    Case "-force"
+                        Force = True
                 End Select
             Next
             If Final Then
@@ -1082,7 +1087,10 @@ Public Class frmMainSetup
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
                     lblInfo.Text = String.Format("We have found a EMM instalation in {0}", vbCrLf)
                     lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
-                    lblInfo.Text += "If you want to change this please use [Change Options]"
+                    If Not Force Then
+                        lblInfo.Text += "If you want to change this please use [Change Options]"
+                    End If
+
                 Else
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
                     lblInfo.Text = String.Format("No Ember Media Manager Installation Found{0}", vbCrLf)
@@ -1093,6 +1101,11 @@ Public Class frmMainSetup
             If Not emberPath = String.Empty AndAlso Not CurrentEmberPlatform = String.Empty Then
                 btnInstall.Enabled = True
                 LogWrite(String.Format("--- Main: Setting Install Path: {0}", emberPath))
+            End If
+            If Force Then
+                StartWorker()
+                LogoStop = False
+                llAbout.Visible = False
             End If
         Catch ex As Exception
             LogWrite(String.Format("+++ Main: ERROR ON LOAD ... EXIT"))
@@ -1404,6 +1417,10 @@ Public Class frmMainSetup
         'Dim shape As New System.Drawing.Drawing2D.GraphicsPath
         'shape.AddRectangle(New Rectangle(0, 0, Me.Width, Me.Height))
         'Me.Region = New System.Drawing.Region(shape)
+    End Sub
+
+    Private Sub OpenFileDialog1_FileOk(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+
     End Sub
 End Class
 
