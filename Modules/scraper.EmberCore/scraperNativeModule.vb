@@ -32,27 +32,27 @@ Public Class EmberNativeScraperModule
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
-    Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef studio As List(Of String)) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.GetMovieStudio
+    Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef studio As List(Of String)) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.GetMovieStudio
         Dim IMDB As New IMDB.Scraper
         IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
         IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
         IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
         IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
-        Return True
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.SelectImageOfType
+    Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.SelectImageOfType
         Using dImgSelect As New dlgImgSelect
             dImgSelect.IMDBURL = MySettings.IMDBURL
             pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
         End Using
-        Return True
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.DownloadTrailer
+    Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.DownloadTrailer
         Using dTrailer As New dlgTrailer
             sURL = dTrailer.ShowDialog(DBMovie.Movie.IMDBID, DBMovie.Filename)
         End Using
-        Return True
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
     ReadOnly Property IsScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsScraper
         Get
@@ -202,8 +202,8 @@ Public Class EmberNativeScraperModule
     End Sub
     Sub SetupTVPostScraper() Implements EmberAPI.Interfaces.EmberScraperModule.SetupTVPostScraper
     End Sub
-    Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
-        Return True
+    Function TVScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.TVScraper
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
 
 
@@ -212,7 +212,7 @@ Public Class EmberNativeScraperModule
     ''' </summary>
     ''' <remarks></remarks>
     Private IMDB As New IMDB.Scraper
-    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
+    Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.Scraper
         LoadSettings()
         IMDB.IMDBURL = MySettings.IMDBURL
         IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
@@ -235,7 +235,7 @@ Public Class EmberNativeScraperModule
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
-                    Return False
+                    Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
             End Select
             Using dSearch As New dlgIMDBSearchResults
                 dSearch.IMDBURL = MySettings.IMDBURL
@@ -261,7 +261,7 @@ Public Class EmberNativeScraperModule
                         IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions)
                     End If
                 Else
-                    Return False
+                    Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
                 End If
             End Using
         End If
@@ -294,9 +294,9 @@ Public Class EmberNativeScraperModule
             EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
         End If
         RaiseEvent ScraperUpdateMediaList(6, True)
-        Return True
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
+    Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
         Dim Poster As New EmberAPI.Images
         Dim Fanart As New EmberAPI.Images
         Dim pResults As EmberAPI.Containers.ImgResult
@@ -408,9 +408,9 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
-        Return True
+        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
+    Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
 
     End Function
 End Class

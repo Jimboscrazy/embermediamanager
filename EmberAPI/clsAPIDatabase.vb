@@ -122,6 +122,7 @@ Public Class Database
                     End If
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Movies(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "DateAdd INTEGER , " & _
                                 "MoviePath TEXT NOT NULL, " & _
                                 "Type BOOL NOT NULL DEFAULT False , " & _
                                 "ListTitle TEXT NOT NULL, " & _
@@ -475,7 +476,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", MovieID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-
+                    If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _movieDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
                     _movieDB.isSingle = Convert.ToBoolean(SQLreader("type"))
@@ -669,22 +670,22 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
-                        "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
+                        "DateAdd, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?.?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
-                        "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
+                        "ID, DateAdd, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.Int32, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
-
+                Dim parMovieDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieDateAdd", DbType.Int32, 0, "DateAdd")
                 Dim parMoviePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                 Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
                 Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
@@ -742,6 +743,7 @@ Public Class Database
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
                 'Why do we need IMDB to save to NFO?
                 If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
+                parMovieDateAdd.Value = If(IsNew, EmberAPI.Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
 
                 parMoviePath.Value = _movieDB.Filename
                 parType.Value = _movieDB.isSingle

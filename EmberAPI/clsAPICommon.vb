@@ -182,6 +182,7 @@ End Class
 Public Class Structures
     Public Structure DBMovie
         Dim ID As Long
+        Dim DateAdd As Long
         Dim ListTitle As String
         Dim Movie As MediaContainers.Movie
         Dim IsNew As Boolean
@@ -312,6 +313,15 @@ End Class
 Public Class Functions
     Public Shared Function EmberAPIVersion() As String
         Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+    End Function
+    Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
+        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Return origin.AddSeconds(timestamp)
+    End Function
+    Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
+        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Dim diff As System.TimeSpan = data - origin
+        Return Math.Floor(diff.TotalSeconds)
     End Function
     ''' <summary>
     ''' Force of habit

@@ -255,24 +255,26 @@ Public Class ModulesManager
     ''' <returns>boolean success</returns>
     Public Function FullScrape(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
         'AndAlso? Only return true if both complete successfully?
-
         Return ScrapeOnly(DBMovie, ScrapeType, Options) 'OrElse PostScrapeOnly(movie)
     End Function
 
     Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            If Not _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options) Then Return False
+            ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
+            If ret.breakChain Then Exit For
         Next
-        Return True
+        Return ret.Cancelled
     End Function
     Public Function PostScrapeOnly(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             AddHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
-            Dim ret As Boolean = _externalScraperModule.ProcessorModule.PostScraper(DBMovie, ScrapeType)
+            ret = _externalScraperModule.ProcessorModule.PostScraper(DBMovie, ScrapeType)
             RemoveHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
-            If Not ret Then Exit For
+            If ret.breakChain Then Exit For
         Next
-        Return True
+        Return ret.Cancelled
     End Function
     Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
 
@@ -380,30 +382,32 @@ Public Class ModulesManager
         Next
     End Sub
     Function ScraperSelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean
-        Dim ret As Boolean
+
+        Dim ret As EmberAPI.Interfaces.ScraperResult
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             ret = _externalScraperModule.ProcessorModule.SelectImageOfType(DBMovie, _DLType, pResults, _isEdit)
-            If ret Then Exit For
+            If ret.breakChain Then Exit For
         Next
-        Return ret
+        Return ret.Cancelled
     End Function
 
     Function ScraperDownlaodTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie) As String
-        Dim ret As Boolean
+
+        Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim sURL As String = String.Empty
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             ret = _externalScraperModule.ProcessorModule.DownloadTrailer(DBMovie, sURL)
-            If ret Then Exit For
+            If ret.breakChain Then Exit For
         Next
         Return sURL
     End Function
 
     Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie) As List(Of String)
-        Dim ret As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim sStudio As New List(Of String)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             ret = _externalScraperModule.ProcessorModule.GetMovieStudio(DBMovie, sStudio)
-            If ret Then Exit For
+            If ret.breakChain Then Exit For
         Next
         Return sStudio
     End Function

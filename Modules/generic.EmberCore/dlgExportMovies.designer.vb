@@ -27,16 +27,16 @@ Partial Class dlgExportMovies
         Me.Save_Button = New System.Windows.Forms.Button
         Me.Close_Button = New System.Windows.Forms.Button
         Me.pnlBottomMain = New System.Windows.Forms.Panel
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.cbTemplate = New System.Windows.Forms.ComboBox
         Me.pnlSearch = New System.Windows.Forms.Panel
-        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.Search_Button = New System.Windows.Forms.Button
         Me.lblIn = New System.Windows.Forms.Label
         Me.cbSearch = New System.Windows.Forms.ComboBox
         Me.txtSearch = New System.Windows.Forms.TextBox
+        Me.cbFilterSource = New System.Windows.Forms.ComboBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.cbTemplate = New System.Windows.Forms.ComboBox
         Me.pnlCancel = New System.Windows.Forms.Panel
         Me.btnCancel = New System.Windows.Forms.Button
         Me.pbCompile = New System.Windows.Forms.ProgressBar
@@ -60,7 +60,7 @@ Partial Class dlgExportMovies
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.Save_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Close_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(705, 8)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(885, 11)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -92,41 +92,20 @@ Partial Class dlgExportMovies
         '
         'pnlBottomMain
         '
+        Me.pnlBottomMain.Controls.Add(Me.pnlSearch)
         Me.pnlBottomMain.Controls.Add(Me.Label2)
         Me.pnlBottomMain.Controls.Add(Me.cbTemplate)
-        Me.pnlBottomMain.Controls.Add(Me.pnlSearch)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 495)
+        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 497)
         Me.pnlBottomMain.Name = "pnlBottomMain"
-        Me.pnlBottomMain.Size = New System.Drawing.Size(854, 50)
+        Me.pnlBottomMain.Size = New System.Drawing.Size(1034, 53)
         Me.pnlBottomMain.TabIndex = 5
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(11, 17)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(55, 13)
-        Me.Label2.TabIndex = 8
-        Me.Label2.Text = "Template"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbTemplate
-        '
-        Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTemplate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTemplate.FormattingEnabled = True
-        Me.cbTemplate.Location = New System.Drawing.Point(68, 13)
-        Me.cbTemplate.Name = "cbTemplate"
-        Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
-        Me.cbTemplate.TabIndex = 7
         '
         'pnlSearch
         '
-        Me.pnlSearch.Controls.Add(Me.cbFilterSource)
         Me.pnlSearch.Controls.Add(Me.Reset_Button)
+        Me.pnlSearch.Controls.Add(Me.cbFilterSource)
         Me.pnlSearch.Controls.Add(Me.Label1)
         Me.pnlSearch.Controls.Add(Me.Search_Button)
         Me.pnlSearch.Controls.Add(Me.lblIn)
@@ -137,17 +116,6 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Name = "pnlSearch"
         Me.pnlSearch.Size = New System.Drawing.Size(489, 28)
         Me.pnlSearch.TabIndex = 6
-        '
-        'cbFilterSource
-        '
-        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(74, 4)
-        Me.cbFilterSource.Name = "cbFilterSource"
-        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
-        Me.cbFilterSource.TabIndex = 31
-        Me.cbFilterSource.Visible = False
         '
         'Reset_Button
         '
@@ -205,6 +173,38 @@ Partial Class dlgExportMovies
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(123, 20)
         Me.txtSearch.TabIndex = 1
+        '
+        'cbFilterSource
+        '
+        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbFilterSource.FormattingEnabled = True
+        Me.cbFilterSource.Location = New System.Drawing.Point(74, 5)
+        Me.cbFilterSource.Name = "cbFilterSource"
+        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
+        Me.cbFilterSource.TabIndex = 31
+        Me.cbFilterSource.Visible = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label2.Location = New System.Drawing.Point(11, 17)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(55, 13)
+        Me.Label2.TabIndex = 8
+        Me.Label2.Text = "Template"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbTemplate
+        '
+        Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTemplate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTemplate.FormattingEnabled = True
+        Me.cbTemplate.Location = New System.Drawing.Point(68, 13)
+        Me.cbTemplate.Name = "cbTemplate"
+        Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
+        Me.cbTemplate.TabIndex = 7
         '
         'pnlCancel
         '
@@ -281,7 +281,7 @@ Partial Class dlgExportMovies
         Me.pnlBG.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBG.Location = New System.Drawing.Point(0, 0)
         Me.pnlBG.Name = "pnlBG"
-        Me.pnlBG.Size = New System.Drawing.Size(854, 495)
+        Me.pnlBG.Size = New System.Drawing.Size(1034, 550)
         Me.pnlBG.TabIndex = 4
         '
         'wbMovieList
@@ -290,7 +290,7 @@ Partial Class dlgExportMovies
         Me.wbMovieList.Location = New System.Drawing.Point(0, 0)
         Me.wbMovieList.MinimumSize = New System.Drawing.Size(20, 20)
         Me.wbMovieList.Name = "wbMovieList"
-        Me.wbMovieList.Size = New System.Drawing.Size(854, 495)
+        Me.wbMovieList.Size = New System.Drawing.Size(1034, 550)
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
         '
@@ -301,9 +301,9 @@ Partial Class dlgExportMovies
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
-        Me.ClientSize = New System.Drawing.Size(854, 545)
-        Me.Controls.Add(Me.pnlBG)
+        Me.ClientSize = New System.Drawing.Size(1034, 550)
         Me.Controls.Add(Me.pnlBottomMain)
+        Me.Controls.Add(Me.pnlBG)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
