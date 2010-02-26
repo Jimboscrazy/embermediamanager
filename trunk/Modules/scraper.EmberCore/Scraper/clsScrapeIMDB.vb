@@ -245,7 +245,7 @@ Namespace IMDB
 
                 D = HTML.IndexOf("<b>Popular Titles</b>")
                 If D <= 0 Then GoTo mPartial
-                W = HTML.IndexOf("</p>", D)
+                W = HTML.IndexOf("</table>", D) + 8
 
                 Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
@@ -260,7 +260,7 @@ mPartial:
 
                 D = HTML.IndexOf("Titles (Partial Matches)")
                 If D <= 0 Then GoTo mApprox
-                W = HTML.IndexOf("</p>", D)
+                W = HTML.IndexOf("</table>", D) + 8
 
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
@@ -275,7 +275,7 @@ mApprox:
                 'Now process "Approx Matches" and merge both Partial and Approx matches
                 D = HTML.IndexOf("Titles (Approx Matches)")
                 If D <= 0 Then GoTo mExact
-                W = HTML.IndexOf("</p", D)
+                W = HTML.IndexOf("</table>", D) + 8
 
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
@@ -295,7 +295,7 @@ mExact:
 
                 D = HTML.IndexOf("Titles (Exact Matches)")
                 If D <= 0 Then GoTo mResult
-                W = HTML.IndexOf("</p>", D)
+                W = HTML.IndexOf("</table>", D) + 8
 
                 Table = String.Empty
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
