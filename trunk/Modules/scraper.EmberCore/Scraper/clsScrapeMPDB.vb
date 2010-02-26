@@ -27,6 +27,7 @@ Imports System.Xml
 
 Namespace MPDB
     Public Class Scraper
+        Public IMDBURL As String
         Friend WithEvents bwMPDB As New System.ComponentModel.BackgroundWorker
 
         Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))

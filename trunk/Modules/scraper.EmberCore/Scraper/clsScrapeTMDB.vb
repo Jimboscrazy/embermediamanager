@@ -28,6 +28,7 @@ Imports System.Xml
 
 Namespace TMDB
     Public Class Scraper
+        Public IMDBURL As String
         Private Const APIKey As String = "6f96ee0ee3e734bcf5924584d0948020"
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker

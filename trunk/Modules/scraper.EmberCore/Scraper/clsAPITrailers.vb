@@ -26,6 +26,8 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 
 Public Class Trailers
+    Public IMDBURL As String
+
     Private _ImdbID As String = String.Empty
     Private _ImdbTrailerPage As String = String.Empty
     Private _TrailerList As New List(Of String)
@@ -94,13 +96,13 @@ Public Class Trailers
 
                     For i As Integer = 1 To currPage
                         If Not i = 1 Then
-                            _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer?page=", i))
+                            _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer?page=", i))
                         End If
 
                         Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
 
                         For Each m As Match In Links
-                            trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
+                            trailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/video/screenplay", m.Value, "player"))
 
                             trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
 
@@ -137,7 +139,7 @@ Public Class Trailers
     End Sub
 
     Private Function GetImdbTrailerPage() As Boolean
-        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer"))
+        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer"))
         If _ImdbTrailerPage.ToLower.Contains("page not found") Then
             _ImdbTrailerPage = String.Empty
         End If

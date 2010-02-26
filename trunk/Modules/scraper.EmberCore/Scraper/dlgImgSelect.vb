@@ -24,6 +24,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 
 Public Class dlgImgSelect
+    Public IMDBURL As String
     Private TMDB As New TMDB.Scraper
     Private IMPA As New IMPA.Scraper
     Private MPDB As New MPDB.Scraper
@@ -225,6 +226,9 @@ Public Class dlgImgSelect
 
     Private Sub SetUp()
         Try
+            IMPA.IMDBURL = IMDBURL
+            TMDB.IMDBURL = IMDBURL
+            MPDB.IMDBURL = IMDBURL
             AddHandler TMDB.PostersDownloaded, AddressOf TMDBPostersDownloaded
             AddHandler TMDB.ProgressUpdated, AddressOf TMDBProgressUpdated
             AddHandler IMPA.PostersDownloaded, AddressOf IMPAPostersDownloaded

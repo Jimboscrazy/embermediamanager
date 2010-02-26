@@ -34,7 +34,6 @@ Public Class Settings
     Private _forcetitle As String
     Private _scanmediainfo As Boolean
     Private _scantvmediainfo As Boolean
-    Private _imdburl As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _castimagesonly As Boolean
@@ -145,10 +144,6 @@ Public Class Settings
     Private _resizeseasonposter As Boolean
     Private _seasonposterheight As Integer
     Private _seasonposterwidth As Integer
-    Private _useofdbtitle As Boolean
-    Private _useofdboutline As Boolean
-    Private _useofdbplot As Boolean
-    Private _useofdbgenre As Boolean
     Private _autothumbs As Integer
     Private _autothumbnospoilers As Boolean
     Private _windowloc As New Point
@@ -412,16 +407,6 @@ Public Class Settings
             Me._scantvmediainfo = value
         End Set
     End Property
-
-    Public Property IMDBURL() As String
-        Get
-            Return Me._imdburl
-        End Get
-        Set(ByVal value As String)
-            Me._imdburl = value
-        End Set
-    End Property
-
     Public Property FullCast() As Boolean
         Get
             Return Me._fullcast
@@ -1409,42 +1394,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._seasonposterheight = value
-        End Set
-    End Property
-
-    Public Property UseOFDBTitle() As Boolean
-        Get
-            Return Me._useofdbtitle
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useofdbtitle = value
-        End Set
-    End Property
-
-    Public Property UseOFDBOutline() As Boolean
-        Get
-            Return Me._useofdboutline
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useofdboutline = value
-        End Set
-    End Property
-
-    Public Property UseOFDBPlot() As Boolean
-        Get
-            Return Me._useofdbplot
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useofdbplot = value
-        End Set
-    End Property
-
-    Public Property UseOFDBGenre() As Boolean
-        Get
-            Return Me._useofdbgenre
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useofdbgenre = value
         End Set
     End Property
 
@@ -3022,7 +2971,6 @@ Public Class Settings
         Me._showratingregion = "usa"
         Me._scanmediainfo = True
         Me._scantvmediainfo = True
-        Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
         Me._fullcrew = False
         Me._castimagesonly = False
@@ -3133,10 +3081,6 @@ Public Class Settings
         Me._resizeseasonposter = False
         Me._seasonposterheight = 0
         Me._seasonposterwidth = 0
-        Me._useofdbtitle = False
-        Me._useofdboutline = False
-        Me._useofdbplot = False
-        Me._useofdbgenre = False
         Me._autothumbs = 0
         Me._autothumbnospoilers = False
         Me._windowloc = New Point(0, 0)
