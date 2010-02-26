@@ -131,14 +131,18 @@ Public Class Localization
                         For i As Integer = 0 To xLanguage.Count - 1
                             htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
                         Next
-                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath}
-                        htArrayStrings.Add(_loc)
+                        htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
+                        htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
                         _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
                     Else
-                        Dim _loc As New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath}
-                        htArrayStrings.Add(_loc)
+                        Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
+                        If Not IsNothing(tLocs) Then
+                            tLocs.htStrings = htStrings
+                        Else
+                            htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                        End If
                     End If
                 Else
                     MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
@@ -158,8 +162,8 @@ Public Class Localization
         If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
             Assembly = "*EmberCORE"
         End If
-        htStrings = htArrayStrings.Where(Function(x) x.AssenblyName = Assembly)(0).htStrings
-        If htStrings Is Nothing Then Return strDefault
+        htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
+        If IsNothing(htStrings) Then Return strDefault
         If htStrings.ContainsKey(ID) Then
             Return htStrings.Item(ID).ToString
         Else

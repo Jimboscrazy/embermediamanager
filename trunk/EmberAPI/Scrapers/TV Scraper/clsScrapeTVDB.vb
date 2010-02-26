@@ -854,8 +854,8 @@ Namespace TVDB
 
             Private Function CreditsString(ByVal sGStars As String, ByVal sWriters As String) As String
                 Dim cString As New List(Of String)
-                Dim gString As String = Master.eLang.GetString(999, "Guest Star")
-                Dim wString As String = Master.eLang.GetString(999, "Writer")
+                Dim gString As String = Master.eLang.GetString(776, "Guest Star")
+                Dim wString As String = Master.eLang.GetString(777, "Writer")
 
                 If Not String.IsNullOrEmpty(sGStars) Then
                     For Each gStar In sGStars.Split(Convert.ToChar("|"))
@@ -1079,7 +1079,7 @@ Namespace TVDB
                             Return dChangeEp.ShowDialog(tEpisodes)
                         End Using
                     Else
-                        MsgBox(Master.eLang.GetString(999, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(999, "No Known Episodes"))
+                        MsgBox(Master.eLang.GetString(778, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(779, "No Known Episodes"))
                     End If
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
