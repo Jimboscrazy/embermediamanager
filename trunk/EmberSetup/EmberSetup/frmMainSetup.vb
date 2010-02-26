@@ -826,29 +826,27 @@ Public Class frmMainSetup
                         LogWrite(String.Format("*** Main: Commands: File Not Found: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))))
                     End If
                 End If
-                If dbExist Then
-                    System.Threading.Thread.Sleep(1000)
-                    Dim di As New DirectoryInfo(Path.Combine(Path.GetDirectoryName(emberPath), "updates"))
-                    Dim fis As FileInfo() = di.GetFiles
-                    Array.Sort(fis, New Comparer)
+                System.Threading.Thread.Sleep(1000)
+                Dim di As New DirectoryInfo(Path.Combine(Path.GetDirectoryName(emberPath), "updates"))
+                Dim fis As FileInfo() = di.GetFiles
+                Array.Sort(fis, New Comparer)
 
-                    For Each f As FileInfo In fis
-                        If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
-                            Me.bwDoInstall.ReportProgress(5, String.Format("Executing Commands for Version: {0}", f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
-                            xmlSer = New XmlSerializer(GetType(InstallCommands))
-                            Using xmlSW As New StreamReader(f.FullName)
-                                _cmds = xmlSer.Deserialize(xmlSW)
-                            End Using
-                            LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
-                            For Each s As InstallCommand In _cmds.Command
-                                If s.CommandType = "DB" Then
-                                    LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
-                                    cmds.DB.Execute(s.CommandExecute)
-                                End If
-                            Next
-                        End If
-                    Next
-                End If
+                For Each f As FileInfo In fis
+                    If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
+                        Me.bwDoInstall.ReportProgress(5, String.Format("Executing Commands for Version: {0}", f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
+                        xmlSer = New XmlSerializer(GetType(InstallCommands))
+                        Using xmlSW As New StreamReader(f.FullName)
+                            _cmds = xmlSer.Deserialize(xmlSW)
+                        End Using
+                        LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
+                        For Each s As InstallCommand In _cmds.Command
+                            If s.CommandType = "DB" Then
+                                LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                cmds.DB.Execute(s.CommandExecute)
+                            End If
+                        Next
+                    End If
+                Next
                 System.Threading.Thread.Sleep(1000)
                 cmds.DB.Close()
                 If bwDoInstall.CancellationPending Then Return False
