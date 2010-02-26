@@ -126,6 +126,7 @@ Public Class FileManagerExternalModule
                                 'TODO:  need to test it better and move to background worker
                                 DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)))
                                 Directory.Delete(ItemsToWork(0).ToString, True)
+                                Master.DB.DeleteFromDB(MovieId)
                             Case "COPY"
                                 MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
                                 'TODO:   need to test it better and move to background worker
@@ -171,7 +172,7 @@ Public Class FileManagerExternalModule
         Dim Names As String() = AdvancedSettings.GetSetting("Names").Split(Convert.ToChar("|"))
         Dim Paths As String() = AdvancedSettings.GetSetting("Paths").Split(Convert.ToChar("|"))
         For n = 0 To Names.Count - 1
-            eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
+            If Not String.IsNullOrEmpty(Names(n)) AndAlso Not String.IsNullOrEmpty(Paths(n)) Then eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
         Next
     End Sub
     Class SettingItem
