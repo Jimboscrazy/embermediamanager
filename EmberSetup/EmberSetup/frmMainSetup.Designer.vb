@@ -34,6 +34,7 @@ Partial Class frmMainSetup
         Me.btnRunEmber = New System.Windows.Forms.Button
         Me.llAbout = New System.Windows.Forms.LinkLabel
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.pnlProgress.SuspendLayout()
         CType(Me.MyBackGround, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -121,6 +122,10 @@ Partial Class frmMainSetup
         Me.Timer1.Enabled = True
         Me.Timer1.Interval = 250
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
         'frmMainSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -160,5 +165,6 @@ Partial Class frmMainSetup
     Friend WithEvents MyBackGround As System.Windows.Forms.PictureBox
     Friend WithEvents llAbout As System.Windows.Forms.LinkLabel
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
 
 End Class

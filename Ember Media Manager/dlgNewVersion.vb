@@ -72,11 +72,19 @@ Public Class dlgNewVersion
         While bwDownloadSetup.IsBusy
             Application.DoEvents()
         End While
-        lblStart.Visible = False
-        pbUpgrade.Visible = False
-        lblUpgrade.Visible = True
-        btnNo.Visible = True
-        btnYes.Visible = True
+        If File.Exists(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")) Then
+            lblStart.Visible = False
+            pbUpgrade.Visible = False
+            lblUpgrade.Visible = True
+            btnNo.Visible = True
+            btnYes.Visible = True
+        Else
+            lblStart.Visible = False
+            pbUpgrade.Visible = False
+            Me.lblUpgrade.Text = Master.eLang.GetString(999, "Failed to Load Upgrade Application")
+            lblUpgrade.Visible = True
+            'Error
+        End If
     End Sub
 
     Private Sub bwbwDownloadSetup_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadSetup.DoWork
@@ -89,11 +97,11 @@ Public Class dlgNewVersion
 
     Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
         If Master.isWindows Then
-            Process.Start(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"))
+            Process.Start(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), "-force")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")
+                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), " -force")
                 Explorer.Start()
             End Using
         End If
