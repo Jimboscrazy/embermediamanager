@@ -188,6 +188,7 @@ Public Class ModulesManager
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
+            Dim loaded As Boolean = False
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
@@ -223,8 +224,11 @@ Public Class ModulesManager
                             End If
                             externalScrapersModules.Add(_externalScraperModule)
                             _externalScraperModule.ProcessorModule.Init()
+                            loaded = True
                         End If
                     Next
+                    If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
+                    loaded = False
                 Catch ex As Exception
                 End Try
             Next

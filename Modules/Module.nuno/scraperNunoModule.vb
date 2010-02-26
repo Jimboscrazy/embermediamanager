@@ -20,7 +20,7 @@ Public Class NunoScraperModule
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
     Public Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
-        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
     End Sub
     Public ReadOnly Property IsPostScraper() As Boolean Implements EmberAPI.Interfaces.EmberScraperModule.IsPostScraper
