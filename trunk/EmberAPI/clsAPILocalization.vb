@@ -106,7 +106,7 @@ Public Class Localization
         _disabled = "[Disabled]"
     End Sub
 
-    Public Sub LoadLanguage(ByVal Language As String)
+    Public Sub LoadLanguage(ByVal Language As String, Optional ByVal force As Boolean = False)
         Dim _old_all As String = _all
         Me.Clear()
         Try
@@ -124,6 +124,7 @@ Public Class Localization
                         lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                     End If
                 End If
+                If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
                 If File.Exists(lPath) Then
                     Dim LangXML As XDocument = XDocument.Load(lPath)
                     Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
