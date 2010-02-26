@@ -52,7 +52,7 @@ Partial Class frmNativeSetupMedia
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(360, 461)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(277, 217)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -82,7 +82,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 458)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 214)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -165,7 +165,7 @@ Partial Class frmNativeSetupMedia
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 460)
+        Me.Label1.Location = New System.Drawing.Point(37, 216)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(225, 31)
         Me.Label1.TabIndex = 24
@@ -226,7 +226,7 @@ Partial Class frmNativeSetupMedia
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(510, 492)
+        Me.ClientSize = New System.Drawing.Size(427, 248)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.chkAutoThumbs)
         Me.Controls.Add(Me.chkSingleScrapeImages)

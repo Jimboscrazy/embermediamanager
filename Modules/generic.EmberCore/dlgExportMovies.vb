@@ -405,15 +405,25 @@ Public Class dlgExportMovies
 
                 'now check if we need to include this movie
                 If bSearch Then
-                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(21, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(278, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
-                        'included - build the output
+                    If strIn = Master.eLang.GetString(353, "Source Folder") Then
+                        Dim found As Boolean = False
+                        For Each u As String In strFilter.Split(Convert.ToChar(";"))
+                            If StringUtils.Wildcard.IsMatch(_curMovie.Source, u) Then
+                                found = True
+                                Exit For
+                            End If
+                        Next
+                        If Not found Then Continue For
                     Else
-                        'filtered out - exclude this one
-                        Continue For
+                        If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
+                           (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
+                           (strIn = Master.eLang.GetString(21, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                           (strIn = Master.eLang.GetString(278, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) Then
+                            'included - build the output
+                        Else
+                            'filtered out - exclude this one
+                            Continue For
+                        End If
                     End If
                 End If
 
@@ -627,7 +637,15 @@ Public Class dlgExportMovies
     Private Sub Search_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Search_Button.Click
         pnlSearch.Enabled = False
         use_filter = True
-        BuildHTML(use_filter, If(cbSearch.Text = Master.eLang.GetString(353, "Source Folder"), cbFilterSource.Text, txtSearch.Text), cbSearch.Text, base_template, True)
+        Dim sFilter As String = String.Empty
+        If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+            For Each s As String In lstSources.CheckedItems
+                sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
+            Next
+        Else
+            sFilter = txtSearch.Text
+        End If
+        BuildHTML(use_filter, sFilter, cbSearch.Text, base_template, True)
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -639,17 +657,19 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
-        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
         End If
         If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
-            cbFilterSource.Visible = True
-            txtSearch.Visible = False
+            'cbFilterSource.Visible = True
+            btnSource.Visible = True
+            txtSearch.ReadOnly = True
         Else
-            cbFilterSource.Visible = False
-            txtSearch.Visible = True
+            'cbFilterSource.Visible = False
+            btnSource.Visible = False
+            txtSearch.ReadOnly = False
         End If
     End Sub
 
@@ -712,12 +732,12 @@ Public Class dlgExportMovies
         Me.Label2.Text = Master.eLang.GetString(450, "Template")
 
         Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag"), Master.eLang.GetString(353, "Source Folder")})
-        cbFilterSource.Items.Clear()
+        lstSources.Items.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT * FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    cbFilterSource.Items.Add(SQLReader("Name"))
+                    lstSources.Items.Add(SQLReader("Name"))
                 End While
             End Using
         End Using
@@ -777,7 +797,15 @@ Public Class dlgExportMovies
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
         base_template = cbTemplate.Text
         DontSaveExtra = False
-        BuildHTML(use_filter, If(cbSearch.Text = Master.eLang.GetString(353, "Source Folder"), cbFilterSource.Text, txtSearch.Text), cbSearch.Text, base_template, True)
+        Dim sFilter As String = String.Empty
+        If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+            For Each s As String In lstSources.CheckedItems
+                sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
+            Next
+        Else
+            sFilter = txtSearch.Text
+        End If
+        BuildHTML(use_filter, sFilter, cbSearch.Text, base_template, True)
     End Sub
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
@@ -789,8 +817,8 @@ Public Class dlgExportMovies
         End While
     End Sub
 
-    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
-        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
@@ -837,6 +865,27 @@ Public Class dlgExportMovies
         Return MovieFilesSize
     End Function
 
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSource.Click
+        If btnSource.ImageIndex = 0 Then
+            lstSources.Visible = True
+            btnSource.ImageIndex = 1
+        Else
+            lstSources.Visible = False
+            btnSource.ImageIndex = 0
+            Dim sFilter As String = String.Empty
+            If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+                For Each s In lstSources.CheckedItems
+                    sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
+                Next
+                txtSearch.Text = sFilter
+            End If
+        End If
+
+    End Sub
+
+    Private Sub pnlSearch_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSearch.Paint
+
+    End Sub
 End Class
 
 

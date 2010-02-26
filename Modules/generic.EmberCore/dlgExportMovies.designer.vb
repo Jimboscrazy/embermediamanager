@@ -22,19 +22,20 @@ Partial Class dlgExportMovies
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.Save_Button = New System.Windows.Forms.Button
         Me.Close_Button = New System.Windows.Forms.Button
         Me.pnlBottomMain = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
+        Me.btnSource = New System.Windows.Forms.Button
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.Search_Button = New System.Windows.Forms.Button
         Me.lblIn = New System.Windows.Forms.Label
         Me.cbSearch = New System.Windows.Forms.ComboBox
         Me.txtSearch = New System.Windows.Forms.TextBox
-        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.cbTemplate = New System.Windows.Forms.ComboBox
         Me.pnlCancel = New System.Windows.Forms.Panel
@@ -45,6 +46,8 @@ Partial Class dlgExportMovies
         Me.lblCanceling = New System.Windows.Forms.Label
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
+        Me.lstSources = New System.Windows.Forms.CheckedListBox
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -60,7 +63,7 @@ Partial Class dlgExportMovies
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.Save_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Close_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(885, 11)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(886, 6)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -96,16 +99,15 @@ Partial Class dlgExportMovies
         Me.pnlBottomMain.Controls.Add(Me.Label2)
         Me.pnlBottomMain.Controls.Add(Me.cbTemplate)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
-        Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 497)
+        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 502)
         Me.pnlBottomMain.Name = "pnlBottomMain"
-        Me.pnlBottomMain.Size = New System.Drawing.Size(1034, 53)
+        Me.pnlBottomMain.Size = New System.Drawing.Size(1035, 48)
         Me.pnlBottomMain.TabIndex = 5
         '
         'pnlSearch
         '
+        Me.pnlSearch.Controls.Add(Me.btnSource)
         Me.pnlSearch.Controls.Add(Me.Reset_Button)
-        Me.pnlSearch.Controls.Add(Me.cbFilterSource)
         Me.pnlSearch.Controls.Add(Me.Label1)
         Me.pnlSearch.Controls.Add(Me.Search_Button)
         Me.pnlSearch.Controls.Add(Me.lblIn)
@@ -116,6 +118,17 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Name = "pnlSearch"
         Me.pnlSearch.Size = New System.Drawing.Size(489, 28)
         Me.pnlSearch.TabIndex = 6
+        '
+        'btnSource
+        '
+        Me.btnSource.ImageIndex = 0
+        Me.btnSource.ImageList = Me.ImageList1
+        Me.btnSource.Location = New System.Drawing.Point(196, 4)
+        Me.btnSource.Name = "btnSource"
+        Me.btnSource.Size = New System.Drawing.Size(19, 23)
+        Me.btnSource.TabIndex = 7
+        Me.btnSource.UseVisualStyleBackColor = True
+        Me.btnSource.Visible = False
         '
         'Reset_Button
         '
@@ -130,7 +143,7 @@ Partial Class dlgExportMovies
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(17, 6)
+        Me.Label1.Location = New System.Drawing.Point(15, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(51, 14)
         Me.Label1.TabIndex = 2
@@ -150,9 +163,9 @@ Partial Class dlgExportMovies
         'lblIn
         '
         Me.lblIn.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblIn.Location = New System.Drawing.Point(203, 7)
+        Me.lblIn.Location = New System.Drawing.Point(209, 7)
         Me.lblIn.Name = "lblIn"
-        Me.lblIn.Size = New System.Drawing.Size(34, 13)
+        Me.lblIn.Size = New System.Drawing.Size(32, 13)
         Me.lblIn.TabIndex = 3
         Me.lblIn.Text = "in"
         Me.lblIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -169,21 +182,10 @@ Partial Class dlgExportMovies
         '
         'txtSearch
         '
-        Me.txtSearch.Location = New System.Drawing.Point(74, 4)
+        Me.txtSearch.Location = New System.Drawing.Point(72, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(123, 20)
         Me.txtSearch.TabIndex = 1
-        '
-        'cbFilterSource
-        '
-        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(74, 5)
-        Me.cbFilterSource.Name = "cbFilterSource"
-        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
-        Me.cbFilterSource.TabIndex = 31
-        Me.cbFilterSource.Visible = False
         '
         'Label2
         '
@@ -281,18 +283,33 @@ Partial Class dlgExportMovies
         Me.pnlBG.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBG.Location = New System.Drawing.Point(0, 0)
         Me.pnlBG.Name = "pnlBG"
-        Me.pnlBG.Size = New System.Drawing.Size(1034, 550)
+        Me.pnlBG.Size = New System.Drawing.Size(1035, 550)
         Me.pnlBG.TabIndex = 4
         '
         'wbMovieList
         '
-        Me.wbMovieList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.wbMovieList.Location = New System.Drawing.Point(0, 0)
         Me.wbMovieList.MinimumSize = New System.Drawing.Size(20, 20)
         Me.wbMovieList.Name = "wbMovieList"
-        Me.wbMovieList.Size = New System.Drawing.Size(1034, 550)
+        Me.wbMovieList.Size = New System.Drawing.Size(1034, 500)
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
+        '
+        'lstSources
+        '
+        Me.lstSources.FormattingEnabled = True
+        Me.lstSources.Location = New System.Drawing.Point(286, 442)
+        Me.lstSources.Name = "lstSources"
+        Me.lstSources.Size = New System.Drawing.Size(123, 94)
+        Me.lstSources.TabIndex = 9
+        Me.lstSources.Visible = False
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "asc.png")
+        Me.ImageList1.Images.SetKeyName(1, "desc.png")
         '
         'dlgExportMovies
         '
@@ -301,7 +318,8 @@ Partial Class dlgExportMovies
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
-        Me.ClientSize = New System.Drawing.Size(1034, 550)
+        Me.ClientSize = New System.Drawing.Size(1035, 550)
+        Me.Controls.Add(Me.lstSources)
         Me.Controls.Add(Me.pnlBottomMain)
         Me.Controls.Add(Me.pnlBG)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -342,6 +360,8 @@ Partial Class dlgExportMovies
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents cbFilterSource As System.Windows.Forms.ComboBox
+    Friend WithEvents lstSources As System.Windows.Forms.CheckedListBox
+    Friend WithEvents btnSource As System.Windows.Forms.Button
+    Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
 
 End Class
