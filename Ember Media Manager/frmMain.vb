@@ -1385,6 +1385,8 @@ Public Class frmMain
     Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
 
         Try
+            If Not Me.tabsMain.SelectedIndex = 0 Then Return
+
             Me.tmrWaitShow.Enabled = False
             Me.tmrWaitSeason.Enabled = False
             Me.tmrWaitEp.Enabled = False
@@ -1405,6 +1407,8 @@ Public Class frmMain
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
 
         Try
+            If Not Me.tabsMain.SelectedIndex = 1 Then Return
+
             If Me.dgvTVShows.Enabled Then
                 Me.tmrWait.Enabled = False
                 Me.tmrWaitSeason.Enabled = False
@@ -1427,6 +1431,8 @@ Public Class frmMain
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
 
         Try
+            If Not Me.tabsMain.SelectedIndex = 1 Then Return
+
             Me.tmrWaitShow.Enabled = False
             Me.tmrWait.Enabled = False
             Me.tmrWaitEp.Enabled = False
@@ -1448,6 +1454,8 @@ Public Class frmMain
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
 
         Try
+            If Not Me.tabsMain.SelectedIndex = 1 Then Return
+
             Me.tmrWaitShow.Enabled = False
             Me.tmrWaitSeason.Enabled = False
             Me.tmrWait.Enabled = False
@@ -6253,7 +6261,6 @@ doCancel:
             Me.dgvTVEpisodes.DataSource = Nothing
 
             Me.ClearInfo()
-            Application.DoEvents()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
                 Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))

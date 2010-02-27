@@ -3029,7 +3029,7 @@ Public Class Settings
         Me._properCase = True
         Me._showproperCase = True
         Me._epproperCase = True
-        Me._overwritenfo = True
+        Me._overwritenfo = False
         Me._validexts = New List(Of String)
         Me._nostackexts = New List(Of String)
         Me._movietbn = True
