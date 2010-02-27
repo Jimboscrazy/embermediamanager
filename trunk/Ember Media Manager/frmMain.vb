@@ -5567,6 +5567,12 @@ doCancel:
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
+            If String.IsNullOrEmpty(DBScrapeMovie.Movie.Title) Then
+                SetStatus(DBScrapeMovie.Filename)
+            Else
+                SetStatus(DBScrapeMovie.Movie.Title)
+            End If
+
             If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 dScrapeRow.Item(6) = True
                 'If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
@@ -5587,15 +5593,10 @@ doCancel:
                         End Select
                     End Using
                 End If
-
-
                 If bwNewScraper.CancellationPending Then Exit For
                 If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
                     FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                 End If
-                'Else
-                'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-                'End If
                 dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
                 dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
@@ -7606,6 +7607,10 @@ doCancel:
     Private Sub ToolStripAskMenuItem19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripAskMenuItem19.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         NewScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+    Private Sub SelectNfoAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        NewScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectPosterAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoToolStripMenuItem.Click
