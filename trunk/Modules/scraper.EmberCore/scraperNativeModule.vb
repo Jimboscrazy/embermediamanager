@@ -9,6 +9,16 @@ Public Class EmberNativeScraperModule
     Private Enabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
 
+    Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberScraperModule.testSetupScraper
+        Dim _setup As New frmNativeSetupInfo
+        _setup.TopLevel = False
+        _setup.FormBorderStyle = FormBorderStyle.None
+        p.Controls.Add(_setup)
+        _setup.Top = 30
+        _setup.Show()
+        Return _setup.Height
+    End Function
+
     Structure _MySettings
         Dim IMDBURL As String
         Dim UseOFDBTitle As Boolean

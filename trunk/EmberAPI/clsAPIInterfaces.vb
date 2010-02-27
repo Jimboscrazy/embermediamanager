@@ -15,6 +15,7 @@
     End Structure
 
     Public Interface EmberScraperModule
+        Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
         Sub SetupScraper()
         Sub SetupPostScraper()
         Sub SetupTVScraper()
