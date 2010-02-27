@@ -5604,13 +5604,15 @@ doCancel:
             End If
         Next
         RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
-
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
         Application.DoEvents()
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
+        If (From t In Me.MovieIds.Where(Function(y) y.idx = Me.currRow))(0).idx = Me.currRow Then
+            SelectRow(Me.currRow)
+        End If
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
         btnCancel.Visible = False
