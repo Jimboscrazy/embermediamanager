@@ -6,6 +6,9 @@ Imports System.Web
 
 Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
+    Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberScraperModule.testSetupScraper
+        Return 0
+    End Function
 
     Private MyPath As String
     Private codLang As String

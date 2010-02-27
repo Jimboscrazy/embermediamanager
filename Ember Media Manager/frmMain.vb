@@ -7506,7 +7506,7 @@ doCancel:
 
     Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
         EmberAPI.ModulesManager.Instance.GetVersions()
-        'Using dNewVer As New dlgNewVersion
+        'Using dNewVer As New dlgTestSettings
         'dNewVer.ShowDialog(Me)
         'End Using
     End Sub

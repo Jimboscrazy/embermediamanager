@@ -293,7 +293,12 @@ Public Class ModulesManager
         loadModules()
         loadScrapersModules()
     End Sub
-
+    Public Function ScrapersCount() As Integer
+        Return externalScrapersModules.Count
+    End Function
+    Public Function GetScraper(ByVal idx As Integer) As _externalScraperModuleClass
+        Return externalScrapersModules(idx)
+    End Function
     Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules

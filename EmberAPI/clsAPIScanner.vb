@@ -1085,6 +1085,16 @@ Public Class Scanner
                                         e.Cancel = True
                                         Return
                                     End If
+
+                                    If Not Convert.ToBoolean(SQLreader("Recursive")) Then
+                                        For Each m As String In MoviePaths.Where(Function(s) s.ToLower.StartsWith(SQLreader("Path").ToString.ToLower))
+                                            If Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar)) > 1 Then
+                                                ' test is for debug... remove after validate code and insert the deletemovie code
+                                                Dim test As Integer = Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar))
+                                                ' ***** Should remove Movie from library here!!?????
+                                            End If
+                                        Next
+                                    End If
                                 End While
                             End Using
                         End Using

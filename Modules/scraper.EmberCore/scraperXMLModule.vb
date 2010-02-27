@@ -21,6 +21,17 @@ Imports System.IO
 Imports EmberAPI
 Public Class EmberXMLScraperModule
     Implements EmberAPI.Interfaces.EmberScraperModule
+
+    Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberScraperModule.testSetupScraper
+        Dim _setup As New frmXMLSetup
+        _setup.TopLevel = False
+        _setup.FormBorderStyle = FormBorderStyle.None
+        p.Controls.Add(_setup)
+        _setup.Top = 30
+        _setup.Show()
+        Return _setup.Height
+    End Function
+
     Sub Init() Implements EmberAPI.Interfaces.EmberScraperModule.Init
 
     End Sub
@@ -94,6 +105,7 @@ Public Class EmberXMLScraperModule
     Function TVPostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.TVPostScraper
 
     End Function
+
 End Class
 
 
