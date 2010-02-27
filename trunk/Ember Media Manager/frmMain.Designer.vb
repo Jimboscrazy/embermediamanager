@@ -889,7 +889,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
         '
         'cmnuTitle
         '

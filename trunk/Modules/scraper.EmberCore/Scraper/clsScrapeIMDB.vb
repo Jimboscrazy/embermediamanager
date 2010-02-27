@@ -928,7 +928,6 @@ mPlot:
             End Try
             Return CleanString
         End Function
-
     End Class
 
 End Namespace

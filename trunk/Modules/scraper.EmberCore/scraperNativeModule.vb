@@ -48,6 +48,7 @@ Public Class EmberNativeScraperModule
         IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
         IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
         IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
+        IMDB.IMDBURL = MySettings.IMDBURL
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
