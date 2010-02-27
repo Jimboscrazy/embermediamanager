@@ -826,9 +826,9 @@ Public Class dlgImgSelect
     Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             If Me.DLType = Enums.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(DirectCast(sender, PictureBox).Image)
-                End Using
+
+                EmberAPI.ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(DirectCast(sender, PictureBox).Image)
+
             End If
         Catch
         End Try
@@ -1208,9 +1208,7 @@ Public Class dlgImgSelect
 
             If Not IsNothing(tImage.Image) Then
 
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(tImage.Image)
-                End Using
+                EmberAPI.ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(tImage.Image)
 
             End If
 

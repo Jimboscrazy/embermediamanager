@@ -145,12 +145,6 @@
     <Compile Include="Scraper\dlgImgSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Scraper\dlgImgView.Designer.vb">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgImgView.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Scraper\dlgTrailer.Designer.vb">
       <DependentUpon>dlgTrailer.vb</DependentUpon>
     </Compile>
@@ -206,10 +200,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Scraper\dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scraper\dlgImgView.resx">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scraper\dlgTrailer.resx">

@@ -47,6 +47,8 @@ Public Class ModulesManager
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         Private _MainTool As System.Windows.Forms.ToolStrip
+        Private _OpenImageViewer As OpenImageViewer
+        Delegate Sub OpenImageViewer(ByVal _Image As Image)
         Private _LoadMedia As LoadMedia
         Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
         Sub New()
@@ -56,6 +58,12 @@ Public Class ModulesManager
         End Sub
         Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String) 'Invoked from Modules
             _LoadMedia.Invoke(Scan, SourceName)
+        End Sub
+        Public Sub DelegateOpenImageViewer(ByRef IV As OpenImageViewer)
+            _OpenImageViewer = IV
+        End Sub
+        Public Sub InvokeImageViewer(ByRef _image As Image)
+            _OpenImageViewer.Invoke(_image)
         End Sub
         Public Property MainTool() As System.Windows.Forms.ToolStrip
             Get

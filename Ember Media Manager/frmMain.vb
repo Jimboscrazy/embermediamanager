@@ -399,6 +399,7 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.TopMenu = Me.MenuStrip
         ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
+        ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
         ModulesManager.Instance.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
@@ -6865,10 +6866,17 @@ doCancel:
 
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
             Case TVDB.Scraper.EventType.ImageView
+                'TODO: REMOVE when TV scraper is moved to module!!! (in favor of invokeopenimageviewer)
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(DirectCast(Parameter, Image))
                 End Using
         End Select
+    End Sub
+
+    Private Sub OpenImageViewer(ByVal _Image As Image)
+        Using dImgView As New dlgImgView
+            dImgView.ShowDialog(_Image)
+        End Using
     End Sub
 
     Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
