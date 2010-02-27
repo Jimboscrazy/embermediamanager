@@ -518,9 +518,9 @@ Public Class Scanner
                             Else
                                 MoviePaths.Add(StringUtils.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
-
-                            fList.Add(lFile.FullName)
+                            ' fList.Add(lFile.FullName) -> Move bellow
                         End If
+                        fList.Add(lFile.FullName)
                         If bSingle AndAlso Not SkipStack Then Exit For
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
@@ -1089,8 +1089,6 @@ Public Class Scanner
                                     If Not Convert.ToBoolean(SQLreader("Recursive")) Then
                                         For Each m As String In MoviePaths.Where(Function(s) s.ToLower.StartsWith(SQLreader("Path").ToString.ToLower))
                                             If Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar)) > 1 Then
-                                                ' **** test is for debug... remove after validate code 
-                                                Dim test As Integer = Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar))
                                                 Using SQLDeletecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                                                     SQLDeletecommand.CommandText = "SELECT ID FROM Movies; WHERE MoviePath =(?);"
                                                     Dim parPath As SQLite.SQLiteParameter = SQLDeletecommand.Parameters.Add("parPath", DbType.Int32, 0, "MoviePath")
@@ -1099,6 +1097,7 @@ Public Class Scanner
                                                         While SQLreader2.Read
                                                             Dim mID As Long = Convert.ToInt64(SQLreader("ID"))
                                                             Master.DB.DeleteFromDB(mID)
+                                                            Exit While
                                                         End While
                                                     End Using
                                                 End Using
