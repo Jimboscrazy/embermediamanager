@@ -2936,6 +2936,13 @@ Public Class frmMain
         Me.NewScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
     Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
+        ReloadMovie()
+    End Sub
+
+    Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
+        RefreshAllMovies()
+    End Sub
+    Private Sub ReloadMovie()
         Try
             Me.dgvMediaList.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
@@ -2958,10 +2965,6 @@ Public Class frmMain
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
-        RefreshAllMovies()
     End Sub
 
     Private Sub RefreshAllMovies()
@@ -5564,9 +5567,14 @@ doCancel:
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
-            If ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
+            If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 dScrapeRow.Item(6) = True
-                'Application.DoEvents()
+                'If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
+                If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
+                    'EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
+                    EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
+                End If
+                'RaiseEvent ScraperUpdateMediaList(6, True)
                 If bwNewScraper.CancellationPending Then Exit For
                 ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
                 If bwNewScraper.CancellationPending Then Exit For
@@ -5579,10 +5587,12 @@ doCancel:
                         End Select
                     End Using
                 End If
+
+
                 If bwNewScraper.CancellationPending Then Exit For
-                'For debug unComment this
-                'If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                'FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                    FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+                End If
                 'Else
                 'Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 'End If
@@ -5591,7 +5601,6 @@ doCancel:
                 Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 bwNewScraper.ReportProgress(1)
             End If
-
         Next
         RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
 

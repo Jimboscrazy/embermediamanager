@@ -261,7 +261,7 @@ Public Class EmberNativeScraperModule
                         IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions)
                     End If
                 Else
-                    Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+                    Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False, .Cancelled = True}
                 End If
             End Using
         End If
@@ -290,10 +290,7 @@ Public Class EmberNativeScraperModule
             End If
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
-        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
-            EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
-        End If
-        RaiseEvent ScraperUpdateMediaList(6, True)
+
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberScraperModule.PostScraper
