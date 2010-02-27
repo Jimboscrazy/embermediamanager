@@ -1089,9 +1089,19 @@ Public Class Scanner
                                     If Not Convert.ToBoolean(SQLreader("Recursive")) Then
                                         For Each m As String In MoviePaths.Where(Function(s) s.ToLower.StartsWith(SQLreader("Path").ToString.ToLower))
                                             If Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar)) > 1 Then
-                                                ' test is for debug... remove after validate code and insert the deletemovie code
+                                                ' **** test is for debug... remove after validate code 
                                                 Dim test As Integer = Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar))
-                                                ' ***** Should remove Movie from library here!!?????
+                                                Using SQLDeletecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                                                    SQLDeletecommand.CommandText = "SELECT ID FROM Movies; WHERE MoviePath =(?);"
+                                                    Dim parPath As SQLite.SQLiteParameter = SQLDeletecommand.Parameters.Add("parPath", DbType.Int32, 0, "MoviePath")
+                                                    parPath.Value = m
+                                                    Using SQLreader2 As SQLite.SQLiteDataReader = SQLDeletecommand.ExecuteReader()
+                                                        While SQLreader2.Read
+                                                            Dim mID As Long = Convert.ToInt64(SQLreader("ID"))
+                                                            Master.DB.DeleteFromDB(mID)
+                                                        End While
+                                                    End Using
+                                                End Using
                                             End If
                                         Next
                                     End If
