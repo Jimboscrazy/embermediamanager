@@ -103,7 +103,7 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
-        MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL")
+        MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL", "akas.imdb.com")
 
         MySettings.UseOFDBTitle = AdvancedSettings.GetBooleanSetting("UseOFDBTitle", False)
         MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)

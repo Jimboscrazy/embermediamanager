@@ -69,9 +69,9 @@ Public Class NunoScraperModule
     End Sub
     Public Sub SetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraper
         Using frmSetup As New scraperSetup
-            frmSetup.preferedLanguage = AdvancedSettings.GetSetting("Language")
-            frmSetup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline")
-            frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot")
+            frmSetup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
+            frmSetup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
+            frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
             If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 AdvancedSettings.SetSetting("Language", frmSetup.cLanguage.Text)
                 AdvancedSettings.SetBooleanSetting("Do.Outline", frmSetup.tOutline.Checked)

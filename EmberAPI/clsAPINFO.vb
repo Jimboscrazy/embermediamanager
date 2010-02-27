@@ -729,9 +729,9 @@ Public Class NFO
 
             tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
 
-            'If Not Master.eSettings.OverwriteNfo Then
-            '    RenameNonConfNfo(tPath, False)
-            'End If
+            If Not Master.eSettings.OverwriteNfo Then
+                RenameNonConfNfo(tPath, False)
+            End If
 
             doesExist = File.Exists(tPath)
             If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
