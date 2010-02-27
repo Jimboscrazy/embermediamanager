@@ -115,7 +115,7 @@ Public Class ModulesManager
         Public AssemblyFileName As String
     End Class
     Class _externalScraperModuleClass
-        Public ProcessorModule As Interfaces.EmberScraperModule 'Object
+        Public ProcessorModule As Interfaces.EmberMovieScraperModule 'Object
         Public ScraperEnabled As Boolean
         Public PostScraperEnabled As Boolean
         Public AssemblyName As String
@@ -164,7 +164,7 @@ Public Class ModulesManager
                                         found = True
                                     End If
                                 Next
-                                If Not found AndAlso Path.GetFileNameWithoutExtension(file) = "generic.EmberCore" Then
+                                If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
                                     _externalProcessorModule.Enabled = True
                                     SetModuleEnable(_externalProcessorModule.AssemblyName, True)
                                 End If
@@ -204,10 +204,10 @@ Public Class ModulesManager
                     For Each fileType As Type In assembly.GetTypes
 
                         'Activate the located module
-                        Dim t As Type = fileType.GetInterface("EmberScraperModule")
+                        Dim t As Type = fileType.GetInterface("EmberMovieScraperModule")
                         If Not t Is Nothing Then
-                            Dim ProcessorModule As Interfaces.EmberScraperModule
-                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberScraperModule)
+                            Dim ProcessorModule As Interfaces.EmberMovieScraperModule
+                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieScraperModule)
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
@@ -250,12 +250,12 @@ Public Class ModulesManager
                 c += 1
             Next
             If Not ScraperAnyEnabled Then
-                SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-                SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
+                SetScraperEnable("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", True)
+                SetScraperOrder("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", 1)
             End If
             If Not PostScraperAnyEnabled Then
-                SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-                SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
+                SetPostScraperEnable("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", True)
+                SetPostScraperOrder("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", 1)
             End If
         End If
     End Sub
