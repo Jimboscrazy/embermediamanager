@@ -160,6 +160,7 @@ Public Class dlgIMDBSearchResults
             If Not IsNothing(e.Node.Tag) AndAlso Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
                 Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
                 Me.pnlLoading.Visible = True
+                IMDB.IMDBURL = IMDBURL
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
             End If
         Catch ex As Exception
@@ -237,6 +238,7 @@ Public Class dlgIMDBSearchResults
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+            IMDB.IMDBURL = IMDBURL
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
         Else
             MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
@@ -261,6 +263,7 @@ Public Class dlgIMDBSearchResults
             Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
+            IMDB.IMDBURL = IMDBURL
             IMDB.SearchMovieAsync(Me.txtSearch.Text)
         End If
     End Sub
@@ -348,6 +351,7 @@ Public Class dlgIMDBSearchResults
 
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
         chkManual.Enabled = False
+        IMDB.IMDBURL = IMDBURL
         IMDB.SearchMovieAsync(sMovieTitle)
 
         Return MyBase.ShowDialog()

@@ -250,12 +250,12 @@ Public Class ModulesManager
                 c += 1
             Next
             If Not ScraperAnyEnabled Then
-                SetScraperEnable("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", True)
-                SetScraperOrder("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", 1)
+                SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
+                SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
             If Not PostScraperAnyEnabled Then
-                SetPostScraperEnable("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", True)
-                SetPostScraperOrder("scraper.EmberCore.EmberMovieScraperModule.EmberNativeScraperModule", 1)
+                SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
+                SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
         End If
     End Sub
