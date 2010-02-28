@@ -5552,6 +5552,8 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
             Case Enums.ScrapeType.FilterAuto
                 Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.SingleScrape
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
         End Select
         btnCancel.Visible = True
         lblCanceling.Visible = False

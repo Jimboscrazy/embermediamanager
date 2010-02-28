@@ -232,7 +232,14 @@ Public Class EmberNativeScraperModule
             End If
         End If
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
-            DBMovie.Movie.IMDBID = String.Empty
+            DBMovie.ClearExtras = True
+            DBMovie.PosterPath = String.Empty
+            DBMovie.FanartPath = String.Empty
+            DBMovie.TrailerPath = String.Empty
+            DBMovie.ExtraPath = String.Empty
+            DBMovie.SubPath = String.Empty
+            DBMovie.NfoPath = String.Empty
+            DBMovie.Movie.Clear()
         End If
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
             Select Case ScrapeType
@@ -251,13 +258,14 @@ Public Class EmberNativeScraperModule
                         DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                     End If
                     If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-                        DBMovie.ClearExtras = True
-                        DBMovie.PosterPath = String.Empty
-                        DBMovie.FanartPath = String.Empty
-                        DBMovie.TrailerPath = String.Empty
-                        DBMovie.ExtraPath = String.Empty
-                        DBMovie.SubPath = String.Empty
-                        DBMovie.NfoPath = String.Empty
+
+                        Master.currMovie.ClearExtras = True
+                        Master.currMovie.PosterPath = String.Empty
+                        Master.currMovie.FanartPath = String.Empty
+                        Master.currMovie.TrailerPath = String.Empty
+                        Master.currMovie.ExtraPath = String.Empty
+                        Master.currMovie.SubPath = String.Empty
+                        Master.currMovie.NfoPath = String.Empty
                         Dim filterOptions As EmberAPI.Structures.ScrapeOptions = EmberAPI.Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
                         IMDB.GetMovieInfoAsync(DBMovie.Movie.IMDBID, DBMovie.Movie, filterOptions)
