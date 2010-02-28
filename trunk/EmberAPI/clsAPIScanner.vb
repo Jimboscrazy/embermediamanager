@@ -23,7 +23,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Scanner
 
-    Public MoviePaths As New List(Of String)
+    Public MoviePaths As List(Of String) = Master.DB.GetMoviePaths
     Public TVPaths As New List(Of String)
     Public htTVShows As New Hashtable
     Public ShowPath As String = String.Empty
@@ -1035,29 +1035,9 @@ Public Class Scanner
 
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            Dim mPath As String = String.Empty
             Master.DB.ClearNew()
 
             If Args.Scan.Movies Then
-                MoviePaths.Clear()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = "SELECT Movies.MoviePath FROM Movies;"
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLreader.Read
-                            mPath = SQLreader("MoviePath").ToString.ToLower
-                            If Master.eSettings.NoStackExts.Contains(Path.GetExtension(mPath)) Then
-                                MoviePaths.Add(mPath)
-                            Else
-                                MoviePaths.Add(StringUtils.CleanStackingMarkers(mPath))
-                            End If
-                            If Me.bwPrelim.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                    End Using
-                End Using
-
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         If Not String.IsNullOrEmpty(Args.SourceName) Then

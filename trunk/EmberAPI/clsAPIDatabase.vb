@@ -1744,30 +1744,50 @@ Public Class Database
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
                 If CleanMovies Then
 
+                    Dim MoviePaths As List(Of String) = GetMoviePaths()
+                    MoviePaths.Sort()
+
                     'get a listing of sources and their recursive properties
-                    Dim sDict As New Dictionary(Of String, Boolean)
+                    Dim SourceList As New List(Of SourceHolder)
+                    Dim tSource As SourceHolder
+
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLcommand.CommandText = "SELECT Path, Recursive FROM sources;"
+                        SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
-                                sDict.Add(SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")))
+                                SourceList.Add(New SourceHolder With {.Name = SQLreader("Name").ToString, .Path = SQLreader("Path").ToString, .Recursive = Convert.ToBoolean(SQLreader("Recursive")), .isSingle = Convert.ToBoolean(SQLreader("Single"))})
                             End While
                         End Using
                     End Using
 
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
+                        SQLcommand.CommandText = "SELECT MoviePath, Id, Source FROM movies ORDER BY MoviePath DESC COLLATE NOCASE;"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
+                                    MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                 ElseIf Master.eSettings.SkipLessThan > 0 Then
                                     fInfo = New FileInfo(SQLReader("MoviePath").ToString)
                                     If ((Not Master.eSettings.SkipStackSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.SkipLessThan * 1048576) Then
+                                        MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                         Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
-                                ElseIf sDict.OrderByDescending(Function(s) s.Key).FirstOrDefault(Function(s) Directory.GetParent(SQLReader("MoviePath").ToString).FullName.ToLower.Remove(0, s.Key.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1).Value = False AndAlso Convert.ToBoolean(SQLReader("Recursive")) Then
-                                    Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                Else
+                                    tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
+                                    If Not IsNothing(tSource) Then
+                                        If tSource.Recursive = False AndAlso Directory.GetParent(SQLReader("MoviePath").ToString).FullName.ToLower.Remove(0, tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1 Then
+                                            MoviePaths.Remove(SQLReader("MoviePath").ToString)
+                                            Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                        ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.isSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
+                                            MoviePaths.Remove(SQLReader("MoviePath").ToString)
+                                            Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                        End If
+                                    Else
+                                        'orphaned
+                                        MoviePaths.Remove(SQLReader("MoviePath").ToString)
+                                        Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End If
                                 End If
                             End While
                         End Using
@@ -2041,4 +2061,79 @@ Public Class Database
         If Not BatchMode Then SQLTrans.Commit()
         SQLTrans = Nothing
     End Sub
+
+    Public Function GetMoviePaths() As List(Of String)
+        Dim tList As New List(Of String)
+        Dim mPath As String = String.Empty
+
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT Movies.MoviePath FROM Movies;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    mPath = SQLreader("MoviePath").ToString.ToLower
+                    If Master.eSettings.NoStackExts.Contains(Path.GetExtension(mPath)) Then
+                        tList.Add(mPath)
+                    Else
+                        tList.Add(StringUtils.CleanStackingMarkers(mPath))
+                    End If
+                End While
+            End Using
+        End Using
+
+        Return tList
+    End Function
+
+    Private Class SourceHolder
+        Private _name As String
+        Private _path As String
+        Private _recursive As Boolean
+        Private _single As Boolean
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public Property Path() As String
+            Get
+                Return Me._path
+            End Get
+            Set(ByVal value As String)
+                Me._path = value
+            End Set
+        End Property
+
+        Public Property Recursive() As Boolean
+            Get
+                Return Me._recursive
+            End Get
+            Set(ByVal value As Boolean)
+                Me._recursive = value
+            End Set
+        End Property
+
+        Public Property isSingle() As Boolean
+            Get
+                Return Me._single
+            End Get
+            Set(ByVal value As Boolean)
+                Me._single = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._name = String.Empty
+            Me._path = String.Empty
+            Me._recursive = False
+            Me._single = False
+        End Sub
+    End Class
 End Class
