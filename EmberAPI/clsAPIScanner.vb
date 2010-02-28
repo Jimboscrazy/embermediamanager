@@ -1447,7 +1447,7 @@ Public Class Scanner
                     If Not String.IsNullOrEmpty(TVContainer.Nfo) Then
                         tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(TVContainer.Nfo)
                     Else
-                        tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(TVContainer.ShowPath)
+                        tmpTVDB.TVShow = New MediaContainers.TVShow
                     End If
 
                     If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then
@@ -1518,9 +1518,9 @@ Public Class Scanner
                                                 End If
                                             End If
                                         Else
-                                            tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, sSeasons.Season, i)
+                                            tmpTVDB.TVEp = New MediaContainers.EpisodeDetails
                                         End If
-                                        End If
+                                    End If
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
