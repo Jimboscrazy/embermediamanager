@@ -6574,7 +6574,7 @@ doCancel:
 
         Me.dgvTVSeasons.Enabled = False
 
-        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season <> 999 ORDER BY Season COLLATE NOCASE;"))
+        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season <> 999 ORDER BY Season;"))
 
         If Me.dtSeasons.Rows.Count > 0 Then
 
@@ -6614,6 +6614,9 @@ doCancel:
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                 .dgvTVSeasons.SelectedRows(0).Selected = False
+
+                Me.FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item(2, 0).Value))
+                .dgvTVSeasons.Rows(0).Selected = True
             End With
         End If
 
