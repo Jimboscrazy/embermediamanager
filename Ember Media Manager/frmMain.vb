@@ -246,7 +246,7 @@ Public Class frmMain
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
-            If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
+            ' *#### If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
 
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
@@ -258,7 +258,7 @@ Public Class frmMain
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
             OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
-            OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Master.TVScraper.IsBusy
+            OrElse Me.bwLoadSeasonInfo.IsBusy ' *#### OrElse Master.TVScraper.IsBusy
                 Application.DoEvents()
             End While
 
@@ -410,7 +410,8 @@ Public Class frmMain
 
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
-        AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
+        ' *#### AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
+        AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
 
         Functions.DGVDoubleBuffer(Me.dgvMediaList)
         Functions.DGVDoubleBuffer(Me.dgvTVShows)
@@ -5565,6 +5566,13 @@ doCancel:
         bwNewScraper.WorkerSupportsCancellation = True
         bwNewScraper.WorkerReportsProgress = True
         bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+        While bwNewScraper.IsBusy
+            Application.DoEvents()
+        End While
+        If sType = Enums.ScrapeType.SingleScrape Then
+            MovieInfoDownloaded()
+            Master.DB.SaveMovieToDB(Master.currMovie, False, False, Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID))
+        End If
     End Sub
 
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
@@ -5613,7 +5621,11 @@ doCancel:
                 End If
                 dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
                 dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
-                Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                Else
+                    Master.currMovie = DBScrapeMovie
+                End If
                 bwNewScraper.ReportProgress(1)
             End If
         Next
@@ -5646,6 +5658,129 @@ doCancel:
             Me.Refresh()
         End If
     End Sub
+
+    Private Sub MovieInfoDownloaded()
+
+        Try
+            If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+                Master.currMovie.Movie = Master.tmpMovie
+                If Master.eSettings.ScanMediaInfo Then
+                    Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
+                    Me.tspbLoading.Value = Me.tspbLoading.Maximum
+                    Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                    Me.tspbLoading.MarqueeAnimationSpeed = 25
+                    Application.DoEvents()
+                    MediaInfo.UpdateMediaInfo(Master.currMovie)
+                End If
+
+                If Master.eSettings.SingleScrapeImages Then
+                    Dim tmpImages As New Images
+                    'Using dImgSelectFanart As New dlgImgSelect
+                    Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
+
+                    'If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
+
+                    If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
+                        Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
+                        Application.DoEvents()
+                        'Using dImgSelect As New dlgImgSelect
+
+                        'Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
+                        Dim pResults As New Containers.ImgResult
+                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True)
+                        If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                            Master.currMovie.PosterPath = pResults.ImagePath
+                            If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                        End If
+                        pResults = Nothing
+                        'End Using
+                    End If
+
+                    If AllowFA Then
+                        Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
+                        Application.DoEvents()
+                        'Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
+                        Dim fResults As New Containers.ImgResult
+                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True)
+                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                            Master.currMovie.FanartPath = fResults.ImagePath
+                            If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
+                        End If
+                        fResults = Nothing
+                    End If
+
+                    'End Using
+                    tmpImages.Dispose()
+                    tmpImages = Nothing
+                End If
+
+                If Master.eSettings.SingleScrapeTrailer Then
+                    Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
+                    Application.DoEvents()
+                    'Dim cTrailer As New Trailers
+                    'If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
+                    'Using dTrailer As New dlgTrailer
+                    'Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
+                    Dim tURL As String = ModulesManager.Instance.ScraperDownlaodTrailer(Master.currMovie)
+                    If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
+                        Master.currMovie.Movie.Trailer = tURL
+                    End If
+                    'End Using
+                    'End If
+                    'cTrailer = Nothing
+                End If
+
+                If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
+                    Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
+                    Application.DoEvents()
+                    ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
+                End If
+
+                Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+                Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
+                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
+
+                Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
+                Application.DoEvents()
+
+                Using dEditMovie As New dlgEditMovie
+                    Select Case dEditMovie.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            If Master.eSettings.AutoRenameSingle Then
+                                FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
+                            End If
+                            Me.SetListItemAfterEdit(ID, indX)
+                            If Me.RefreshMovie(ID) Then
+                                Me.FillList(0)
+                            End If
+                        Case Windows.Forms.DialogResult.Retry
+                            Master.currMovie.ClearExtras = False
+                            Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
+                        Case Windows.Forms.DialogResult.Abort
+                            Master.currMovie.ClearExtras = False
+                            Me.NewScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
+                        Case Else
+                            If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
+                    End Select
+                End Using
+
+            Else
+                MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Master.currMovie.ClearExtras = False
+
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        Me.SetStatus(String.Empty)
+        Me.SetControlsEnabled(True, True)
+        Me.EnableFilters(True)
+
+    End Sub
+
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpMovie As New MediaContainers.Movie
@@ -6788,50 +6923,51 @@ doCancel:
 
         Me.SetControlsEnabled(False)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+        ' *#### Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
         Me.SetControlsEnabled(True)
 
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Sub TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case TVDB.Scraper.EventType.LoadingEpisodes
+            Case EmberAPI.Enums.ScraperEventType.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(756, "Loading All Episodes:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case TVDB.Scraper.EventType.SavingStarted
+            Case EmberAPI.Enums.ScraperEventType.SavingStarted
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(757, "Saving All Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case TVDB.Scraper.EventType.ScraperDone
+            Case EmberAPI.Enums.ScraperEventType.ScraperDone
                 Me.RefreshShow(Master.currShow.ShowID, False, False, False, True)
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
                 Me.tslStatus.Visible = False
-            Case TVDB.Scraper.EventType.Searching
+            Case EmberAPI.Enums.ScraperEventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(758, "Searching theTVDB:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case TVDB.Scraper.EventType.SelectImages
+            Case EmberAPI.Enums.ScraperEventType.SelectImages
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(759, "Select Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case TVDB.Scraper.EventType.StartingDownload
+            Case EmberAPI.Enums.ScraperEventType.StartingDownload
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(760, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case TVDB.Scraper.EventType.Verifying
+            Case EmberAPI.Enums.ScraperEventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tspbLoading.MarqueeAnimationSpeed = 25
 
@@ -6842,7 +6978,8 @@ doCancel:
                         Me.tslLoading.Visible = True
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                Master.TVScraper.SaveImages()
+                                ' *####  Master.TVScraper.SaveImages()
+                                ModulesManager.Instance.TVSaveImages()
                             End If
                         End Using
                     Case 1 ' season
@@ -6859,7 +6996,7 @@ doCancel:
                         Me.tslLoading.Visible = False
                 End Select
 
-            Case TVDB.Scraper.EventType.Progress
+            Case EmberAPI.Enums.ScraperEventType.Progress
                 Select Case Parameter.ToString
                     Case "max"
                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -6870,12 +7007,12 @@ doCancel:
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
 
-            Case TVDB.Scraper.EventType.Cancelled
+            Case EmberAPI.Enums.ScraperEventType.Cancelled
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
 
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
-            Case TVDB.Scraper.EventType.ImageView
+            Case EmberAPI.Enums.ScraperEventType.ImageView
                 'TODO: REMOVE when TV scraper is moved to module!!! (in favor of invokeopenimageviewer)
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(DirectCast(Parameter, Image))
@@ -7431,7 +7568,8 @@ doCancel:
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+        ' *#### Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
@@ -7818,7 +7956,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
-        Dim tEpisode As MediaContainers.EpisodeDetails = Master.TVScraper.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
+        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB)
 
         If Not IsNothing(tEpisode) Then
             Master.currShow.TVEp = tEpisode

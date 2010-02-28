@@ -177,6 +177,23 @@ Public Class Enums
         Always = 3
         Never = 4
     End Enum
+
+    Public Enum ScraperEventType As Integer
+        Progress = 0
+        SearchResultsDownloaded = 1
+        StartingDownload = 2
+        ShowDownloaded = 3
+        SavingStarted = 4
+        ScraperDone = 5
+        LoadingEpisodes = 6
+        Searching = 7
+        SelectImages = 8
+        Verifying = 9
+        Cancelled = 10
+        ImageView = 11
+    End Enum
+
+
 End Class
 
 Public Class Structures
@@ -309,6 +326,17 @@ Public Class Structures
         Dim bEpCredits As Boolean
         Dim bEpActors As Boolean
     End Structure
+
+    Public Structure ScrapeInfo
+        Dim ShowID As Integer
+        Dim ShowTitle As String
+        Dim TVDBID As String
+        Dim iEpisode As Integer
+        Dim iSeason As Integer
+        Dim Options As Structures.TVScrapeOptions
+        Dim SelectedLang As String
+    End Structure
+
 End Class
 
 Public Class Functions
