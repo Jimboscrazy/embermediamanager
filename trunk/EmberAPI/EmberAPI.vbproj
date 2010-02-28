@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -99,7 +99,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\Ember Media Manager\bin\x64\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release Files\x86\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -116,6 +117,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="ICSharpCode" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -180,26 +182,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scrapers\TV Scraper\clsScrapeTVDB.vb">
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVChangeEp.Designer.vb">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVChangeEp.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVDBSearchResults.Designer.vb">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVImageSelect.Designer.vb">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scrapers\TV Scraper\dlgTVImageSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgModuleSettings.resx">
@@ -216,18 +198,6 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scrapers\TV Scraper\dlgTVChangeEp.resx">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scrapers\TV Scraper\dlgTVDBSearchResults.resx">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scrapers\TV Scraper\dlgTVImageSelect.resx">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -239,6 +209,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scrapers\TV Scraper\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

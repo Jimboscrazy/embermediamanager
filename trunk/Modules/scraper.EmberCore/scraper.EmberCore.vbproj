@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EF6A550E-DD76-4F4D-8250-8598140F828B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -98,7 +98,15 @@
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Ember Media Manager\bin\x86\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Ember Media Manager\bin\x86\Debug\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -112,10 +120,13 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="EmberAPI" />
+    <Import Include="ICSharpCode" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Data.SQLite" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.Linq" />
@@ -124,6 +135,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="scraperTVNativeModule.vb" />
     <Compile Include="Scraper\clsAPITrailers.vb" />
     <Compile Include="Scraper\clsScrapeAllHTPC.vb" />
     <Compile Include="Scraper\clsScrapeImages.vb" />
@@ -190,8 +202,27 @@
     <Compile Include="frmNativeSetupInfo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="scraperNativeModule.vb" />
-    <Compile Include="scraperXMLModule.vb" />
+    <Compile Include="scraperMovieNativeModule.vb" />
+    <Compile Include="scraperMovieXMLModule.vb" />
+    <Compile Include="TVScraper\clsScrapeTVDB.vb" />
+    <Compile Include="TVScraper\dlgTVChangeEp.Designer.vb">
+      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TVScraper\dlgTVChangeEp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TVScraper\dlgTVDBSearchResults.Designer.vb">
+      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TVScraper\dlgTVDBSearchResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TVScraper\dlgTVImageSelect.Designer.vb">
+      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TVScraper\dlgTVImageSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
@@ -226,6 +257,18 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVScraper\dlgTVChangeEp.resx">
+      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVScraper\dlgTVDBSearchResults.resx">
+      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVScraper\dlgTVImageSelect.resx">
+      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
