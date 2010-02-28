@@ -26,12 +26,12 @@ Partial Class dlgVersions
         Me.lstVersions = New System.Windows.Forms.ListView
         Me.ColumnHeader15 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader16 = New System.Windows.Forms.ColumnHeader
+        Me.btnCopy = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(174, 286)
+        Me.OK_Button.Location = New System.Drawing.Point(350, 289)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -60,12 +60,22 @@ Partial Class dlgVersions
         Me.ColumnHeader16.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader16.Width = 99
         '
+        'btnCopy
+        '
+        Me.btnCopy.Location = New System.Drawing.Point(0, 288)
+        Me.btnCopy.Name = "btnCopy"
+        Me.btnCopy.Size = New System.Drawing.Size(133, 23)
+        Me.btnCopy.TabIndex = 2
+        Me.btnCopy.Text = "Copy to Clipboard"
+        Me.btnCopy.UseVisualStyleBackColor = True
+        '
         'dlgVersions
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(418, 309)
+        Me.ClientSize = New System.Drawing.Size(418, 314)
+        Me.Controls.Add(Me.btnCopy)
         Me.Controls.Add(Me.lstVersions)
         Me.Controls.Add(Me.OK_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -82,5 +92,6 @@ Partial Class dlgVersions
     Friend WithEvents ColumnHeader15 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader16 As System.Windows.Forms.ColumnHeader
     Friend WithEvents lstVersions As System.Windows.Forms.ListView
+    Friend WithEvents btnCopy As System.Windows.Forms.Button
 
 End Class
