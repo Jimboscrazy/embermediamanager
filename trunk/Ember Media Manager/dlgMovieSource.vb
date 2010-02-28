@@ -208,4 +208,10 @@ Public Class dlgMovieSource
     Private Sub dlgMovieSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
+
+    Private Sub chkSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingle.CheckedChanged
+        Me.chkUseFolderName.Enabled = Me.chkSingle.Checked
+
+        If Not Me.chkSingle.Checked Then Me.chkUseFolderName.Checked = False
+    End Sub
 End Class
