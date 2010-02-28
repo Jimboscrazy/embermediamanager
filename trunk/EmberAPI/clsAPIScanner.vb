@@ -518,15 +518,14 @@ Public Class Scanner
                             Else
                                 MoviePaths.Add(StringUtils.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
-                            ' fList.Add(lFile.FullName) -> Move bellow
+                            fList.Add(lFile.FullName)
                         End If
-                        fList.Add(lFile.FullName)
                         If bSingle AndAlso Not SkipStack Then Exit For
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
 
                     For Each s As String In fList
-                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = If(fList.Count = 1, True, bSingle), .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
                     Next
                 End If
 
@@ -1085,25 +1084,6 @@ Public Class Scanner
                                         e.Cancel = True
                                         Return
                                     End If
-
-                                    If Not Convert.ToBoolean(SQLreader("Recursive")) Then
-                                        For Each m As String In MoviePaths.Where(Function(s) s.ToLower.StartsWith(SQLreader("Path").ToString.ToLower))
-                                            If Path.GetDirectoryName(m).Substring(SQLreader("Path").ToString.Length).Count(Function(y) y.ToString.Contains(Path.DirectorySeparatorChar)) > 1 Then
-                                                Using SQLDeletecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                                    SQLDeletecommand.CommandText = "SELECT ID FROM Movies; WHERE MoviePath =(?);"
-                                                    Dim parPath As SQLite.SQLiteParameter = SQLDeletecommand.Parameters.Add("parPath", DbType.Int32, 0, "MoviePath")
-                                                    parPath.Value = m
-                                                    Using SQLreader2 As SQLite.SQLiteDataReader = SQLDeletecommand.ExecuteReader()
-                                                        While SQLreader2.Read
-                                                            Dim mID As Long = Convert.ToInt64(SQLreader("ID"))
-                                                            Master.DB.DeleteFromDB(mID)
-                                                            Exit While
-                                                        End While
-                                                    End Using
-                                                End Using
-                                            End If
-                                        Next
-                                    End If
                                 End While
                             End Using
                         End Using
@@ -1174,7 +1154,7 @@ Public Class Scanner
             End If
 
             'remove any db entries that no longer exist
-            'Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
+            Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
