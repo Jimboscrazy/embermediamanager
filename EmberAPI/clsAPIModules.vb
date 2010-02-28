@@ -387,7 +387,9 @@ Public Class ModulesManager
     Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Boolean
         Dim ret As EmberAPI.Interfaces.ScraperResult
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             ret = _externaltvScraperModule.ProcessorModule.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
+            RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             If ret.breakChain Then Exit For
         Next
         Return ret.Cancelled
@@ -397,7 +399,9 @@ Public Class ModulesManager
         Dim epDetails As New MediaContainers.EpisodeDetails
         Dim ret As EmberAPI.Interfaces.ScraperResult
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             ret = _externaltvScraperModule.ProcessorModule.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options, epDetails)
+            RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             If ret.breakChain Then Exit For
         Next
         Return epDetails
@@ -573,7 +577,9 @@ Public Class ModulesManager
         Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim epDetails As New MediaContainers.EpisodeDetails
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             ret = _externaltvScraperModule.ProcessorModule.ChangeEpisode(ShowID, TVDBID, epDetails)
+            RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             If ret.breakChain Then Exit For
         Next
         Return epDetails
