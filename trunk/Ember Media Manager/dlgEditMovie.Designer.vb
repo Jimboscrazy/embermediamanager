@@ -32,6 +32,8 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnActorDown = New System.Windows.Forms.Button
+        Me.btnActorUp = New System.Windows.Forms.Button
         Me.Label6 = New System.Windows.Forms.Label
         Me.txtSortTitle = New System.Windows.Forms.TextBox
         Me.lblLocalTrailer = New System.Windows.Forms.Label
@@ -244,6 +246,8 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnActorDown)
+        Me.TabPage1.Controls.Add(Me.btnActorUp)
         Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.txtSortTitle)
         Me.TabPage1.Controls.Add(Me.lblLocalTrailer)
@@ -303,6 +307,24 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnActorDown
+        '
+        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
+        Me.btnActorDown.Location = New System.Drawing.Point(430, 304)
+        Me.btnActorDown.Name = "btnActorDown"
+        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorDown.TabIndex = 113
+        Me.btnActorDown.UseVisualStyleBackColor = True
+        '
+        'btnActorUp
+        '
+        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
+        Me.btnActorUp.Location = New System.Drawing.Point(406, 304)
+        Me.btnActorUp.Name = "btnActorUp"
+        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorUp.TabIndex = 112
+        Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'Label6
         '
@@ -1535,5 +1557,7 @@ Partial Class dlgEditMovie
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtSortTitle As System.Windows.Forms.TextBox
     Friend WithEvents DelayTimer As System.Windows.Forms.Timer
+    Friend WithEvents btnActorDown As System.Windows.Forms.Button
+    Friend WithEvents btnActorUp As System.Windows.Forms.Button
 
 End Class

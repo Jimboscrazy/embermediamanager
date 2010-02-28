@@ -85,6 +85,8 @@ Partial Class dlgEditEpisode
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
+        Me.btnActorDown = New System.Windows.Forms.Button
+        Me.btnActorUp = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -170,6 +172,8 @@ Partial Class dlgEditEpisode
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnActorDown)
+        Me.TabPage1.Controls.Add(Me.btnActorUp)
         Me.TabPage1.Controls.Add(Me.txtAired)
         Me.TabPage1.Controls.Add(Me.txtEpisode)
         Me.TabPage1.Controls.Add(Me.lblEpisode)
@@ -754,6 +758,24 @@ Partial Class dlgEditEpisode
         Me.OK_Button.TabIndex = 61
         Me.OK_Button.Text = "OK"
         '
+        'btnActorDown
+        '
+        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
+        Me.btnActorDown.Location = New System.Drawing.Point(328, 423)
+        Me.btnActorDown.Name = "btnActorDown"
+        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorDown.TabIndex = 116
+        Me.btnActorDown.UseVisualStyleBackColor = True
+        '
+        'btnActorUp
+        '
+        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
+        Me.btnActorUp.Location = New System.Drawing.Point(304, 423)
+        Me.btnActorUp.Name = "btnActorUp"
+        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorUp.TabIndex = 115
+        Me.btnActorUp.UseVisualStyleBackColor = True
+        '
         'dlgEditEpisode
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -858,5 +880,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents lblFanartSize As System.Windows.Forms.Label
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
+    Friend WithEvents btnActorDown As System.Windows.Forms.Button
+    Friend WithEvents btnActorUp As System.Windows.Forms.Button
 
 End Class

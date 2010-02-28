@@ -73,6 +73,8 @@ Partial Class dlgEditShow
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
+        Me.btnActorDown = New System.Windows.Forms.Button
+        Me.btnActorUp = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -149,6 +151,8 @@ Partial Class dlgEditShow
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnActorDown)
+        Me.TabPage1.Controls.Add(Me.btnActorUp)
         Me.TabPage1.Controls.Add(Me.txtPremiered)
         Me.TabPage1.Controls.Add(Me.lbGenre)
         Me.TabPage1.Controls.Add(Me.lblStudio)
@@ -600,6 +604,24 @@ Partial Class dlgEditShow
         Me.OK_Button.TabIndex = 58
         Me.OK_Button.Text = "OK"
         '
+        'btnActorDown
+        '
+        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
+        Me.btnActorDown.Location = New System.Drawing.Point(434, 420)
+        Me.btnActorDown.Name = "btnActorDown"
+        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorDown.TabIndex = 115
+        Me.btnActorDown.UseVisualStyleBackColor = True
+        '
+        'btnActorUp
+        '
+        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
+        Me.btnActorUp.Location = New System.Drawing.Point(410, 420)
+        Me.btnActorUp.Name = "btnActorUp"
+        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorUp.TabIndex = 114
+        Me.btnActorUp.UseVisualStyleBackColor = True
+        '
         'dlgEditShow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -685,5 +707,7 @@ Partial Class dlgEditShow
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents txtPremiered As System.Windows.Forms.TextBox
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnActorDown As System.Windows.Forms.Button
+    Friend WithEvents btnActorUp As System.Windows.Forms.Button
 
 End Class
