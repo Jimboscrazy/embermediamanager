@@ -5589,11 +5589,7 @@ doCancel:
             'Do this where so will not need do everytime that row need's updates
             dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
             Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
-            If String.IsNullOrEmpty(DBScrapeMovie.Movie.Title) Then
-                SetStatus(DBScrapeMovie.Filename)
-            Else
-                SetStatus(DBScrapeMovie.Movie.Title)
-            End If
+
 
             If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 dScrapeRow.Item(6) = True
@@ -5626,14 +5622,20 @@ doCancel:
                 Else
                     Master.currMovie = DBScrapeMovie
                 End If
-                bwNewScraper.ReportProgress(1)
+                bwNewScraper.ReportProgress(1, DBScrapeMovie)
             End If
         Next
         RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
+        Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = DirectCast(e.UserState, EmberAPI.Structures.DBMovie)
         Application.DoEvents()
+        If String.IsNullOrEmpty(DBScrapeMovie.Movie.Title) Then
+            SetStatus(DBScrapeMovie.Filename)
+        Else
+            SetStatus(DBScrapeMovie.Movie.Title)
+        End If
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
         If (From t In Me.MovieIds.Where(Function(y) y.idx = Me.currRow))(0).idx = Me.currRow Then
