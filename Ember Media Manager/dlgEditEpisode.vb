@@ -650,4 +650,28 @@ Public Class dlgEditEpisode
             Me.pbPoster.Image = pbFrame.Image
         End If
     End Sub
+
+    Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
+        Try
+            If Me.lvActors.Items.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
+                Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
+                Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
+                Me.lvActors.Items.RemoveAt(iIndex + 1)
+                Me.lvActors.Items(iIndex - 1).Selected = True
+                Me.lvActors.Select()
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
+        If Me.lvActors.Items.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
+            Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
+            Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
+            Me.lvActors.Items.RemoveAt(iIndex)
+            Me.lvActors.Items(iIndex + 1).Selected = True
+            Me.lvActors.Select()
+        End If
+    End Sub
 End Class
