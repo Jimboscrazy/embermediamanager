@@ -146,7 +146,7 @@ Partial Class dlgMovieSource
         '
         Me.chkSingle.AutoSize = True
         Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkSingle.Location = New System.Drawing.Point(6, 59)
+        Me.chkSingle.Location = New System.Drawing.Point(6, 39)
         Me.chkSingle.Name = "chkSingle"
         Me.chkSingle.Size = New System.Drawing.Size(237, 17)
         Me.chkSingle.TabIndex = 2
@@ -156,8 +156,9 @@ Partial Class dlgMovieSource
         'chkUseFolderName
         '
         Me.chkUseFolderName.AutoSize = True
+        Me.chkUseFolderName.Enabled = False
         Me.chkUseFolderName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkUseFolderName.Location = New System.Drawing.Point(6, 39)
+        Me.chkUseFolderName.Location = New System.Drawing.Point(17, 62)
         Me.chkUseFolderName.Name = "chkUseFolderName"
         Me.chkUseFolderName.Size = New System.Drawing.Size(200, 17)
         Me.chkUseFolderName.TabIndex = 1
