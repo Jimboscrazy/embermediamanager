@@ -5566,13 +5566,6 @@ doCancel:
         bwNewScraper.WorkerSupportsCancellation = True
         bwNewScraper.WorkerReportsProgress = True
         bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
-        While bwNewScraper.IsBusy
-            Application.DoEvents()
-        End While
-        If sType = Enums.ScrapeType.SingleScrape Then
-            MovieInfoDownloaded()
-            Master.DB.SaveMovieToDB(Master.currMovie, False, False, Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID))
-        End If
     End Sub
 
     Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
@@ -5598,32 +5591,36 @@ doCancel:
                 End If
                 'RaiseEvent ScraperUpdateMediaList(6, True)
                 If bwNewScraper.CancellationPending Then Exit For
-                ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-                If bwNewScraper.CancellationPending Then Exit For
-                If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
-                    OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                    'Any Non Auto open EditMovie
-                    Master.currMovie = DBScrapeMovie
-                    Using dEditMovie As New dlgEditMovie
-                        Select Case dEditMovie.ShowDialog()
-                        End Select
-                    End Using
-                End If
-                If bwNewScraper.CancellationPending Then Exit For
-                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
-                    FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
-                End If
-                dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
-                dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+
+                    ModulesManager.Instance.PostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+                    If bwNewScraper.CancellationPending Then Exit For
+                    If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
+                        OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                        'Any Non Auto open EditMovie
+                        Master.currMovie = DBScrapeMovie
+                        Using dEditMovie As New dlgEditMovie
+                            Select Case dEditMovie.ShowDialog()
+                            End Select
+                        End Using
+                    End If
+                    If bwNewScraper.CancellationPending Then Exit For
+                    If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
+                        FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
+                    End If
+                    dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
+                    dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 Else
-                    Master.currMovie = DBScrapeMovie
+                    Master.tmpMovie = DBScrapeMovie.Movie
                 End If
                 bwNewScraper.ReportProgress(1, DBScrapeMovie)
             End If
         Next
+
         RemoveHandler ModulesManager.Instance.ScraperUpdateMediaList, AddressOf ScraperUpdateMediaList
+
+        e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
@@ -5636,16 +5633,23 @@ doCancel:
         End If
     End Sub
     Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
-        If (From t In Me.MovieIds.Where(Function(y) y.idx = Me.currRow))(0).idx = Me.currRow Then
-            SelectRow(Me.currRow)
+        Dim Res As Results = DirectCast(e.Result, Results)
+
+        If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
+            MovieInfoDownloaded()
+        Else
+            If (From t In Me.MovieIds.Where(Function(y) y.idx = Me.currRow))(0).idx = Me.currRow Then
+                SelectRow(Me.currRow)
+            End If
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+            btnCancel.Visible = False
+            lblCanceling.Visible = False
+            pbCanceling.Visible = False
+            Me.pnlCancel.Visible = False
+            Me.SetControlsEnabled(True)
         End If
-        Me.tslLoading.Visible = False
-        Me.tspbLoading.Visible = False
-        btnCancel.Visible = False
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
-        Me.pnlCancel.Visible = False
-        Me.SetControlsEnabled(True)
+
     End Sub
     Private Sub ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
         dScrapeRow.Item(col) = v
@@ -5759,6 +5763,7 @@ doCancel:
 
         Master.currMovie.ClearExtras = False
 
+        Me.pnlCancel.Visible = False
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
         Me.SetStatus(String.Empty)
