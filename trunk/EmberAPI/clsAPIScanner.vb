@@ -1409,7 +1409,6 @@ Public Class Scanner
 
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
-        Dim tmpAllSeason As New Structures.DBTV
         Dim toNfo As Boolean = False
         Try
             If TVContainer.Episodes.Count > 0 Then
@@ -1515,10 +1514,7 @@ Public Class Scanner
                                     Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
 
                                     'Save the All Seasons entry
-                                    tmpAllSeason = New Structures.DBTV
-                                    tmpAllSeason.SeasonPosterPath = TVContainer.AllSeasonPoster
-                                    tmpAllSeason.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
-                                    Master.DB.SaveTVSeasonToDB(tmpAllSeason, True, True)
+                                    Master.DB.SaveTVSeasonToDB(New Structures.DBTV With {.ShowID = tmpTVDB.ShowID, .SeasonPosterPath = TVContainer.AllSeasonPoster, .TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}}, True, True)
 
                                     Me.bwPrelim.ReportProgress(1, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
                                 Next

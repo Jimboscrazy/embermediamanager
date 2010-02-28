@@ -5879,7 +5879,7 @@ doCancel:
                 Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
 
             Else
-                Master.DB.DeleteTVEpFromDB(ID, BatchMode)
+                Master.DB.DeleteTVEpFromDB(ID, False, BatchMode)
                 Return True
             End If
 
@@ -7470,7 +7470,7 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
             Next
 
             Master.DB.CleanSeasons(True)
@@ -7505,7 +7505,7 @@ doCancel:
                                     File.Delete(String.Concat(ePath, ".jpg"))
                                     File.Delete(String.Concat(ePath, "-fanart.jpg"))
                                     File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
                                 End If
                             End Using
                         Next
@@ -7792,7 +7792,7 @@ doCancel:
                                                     File.Delete(String.Concat(ePath, ".jpg"))
                                                     File.Delete(String.Concat(ePath, "-fanart.jpg"))
                                                     File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), True)
+                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, True)
                                                 End If
                                             End If
                                         End Using

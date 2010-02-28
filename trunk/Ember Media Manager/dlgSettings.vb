@@ -4066,7 +4066,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub pnlGeneral_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlGeneral.Paint
-
-    End Sub
 End Class
