@@ -244,6 +244,7 @@ Public Class HTTP
                 End If
 
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    Dim temp As String = wrResponse.ContentType.ToString
                     If wrResponse.ContentType.ToLower.Contains("image") Then
                         tmpImage = Functions.ReadImageStreamToEnd(wrResponse.GetResponseStream)
                     End If
