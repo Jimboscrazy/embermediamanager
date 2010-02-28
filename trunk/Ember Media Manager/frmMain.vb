@@ -5616,7 +5616,7 @@ doCancel:
                     End Using
                 End If
                 If bwNewScraper.CancellationPending Then Exit For
-                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                     FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                 End If
                 dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
@@ -5746,7 +5746,7 @@ doCancel:
                 Using dEditMovie As New dlgEditMovie
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            If Master.eSettings.AutoRenameSingle Then
+                            If Master.eSettings.AutoRenameSingle AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                                 FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
                             End If
                             Me.SetListItemAfterEdit(ID, indX)

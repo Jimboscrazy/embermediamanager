@@ -693,7 +693,7 @@ Namespace TVDB
                 Dim xE As XElement = Nothing
                 Dim tShow As Structures.DBTV = tmpTVDBShow.Show
 
-                If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
+                If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(sInfo)
 
                 'get the actors first
                 Try
