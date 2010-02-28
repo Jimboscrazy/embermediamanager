@@ -5593,9 +5593,7 @@ doCancel:
 
             If Not ModulesManager.Instance.ScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 dScrapeRow.Item(6) = True
-                'If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
-                    'EmberAPI.MediaInfo.UpdateMediaInfo(DBMovie)
                     EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 'RaiseEvent ScraperUpdateMediaList(6, True)
@@ -5677,7 +5675,6 @@ doCancel:
 
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    'Using dImgSelectFanart As New dlgImgSelect
                     Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
                     'If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
@@ -5685,9 +5682,6 @@ doCancel:
                     If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
                         Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                         Application.DoEvents()
-                        'Using dImgSelect As New dlgImgSelect
-
-                        'Dim pResults As Containers.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Enums.ImageType.Posters, True)
                         Dim pResults As New Containers.ImgResult
                         ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True)
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -5695,13 +5689,11 @@ doCancel:
                             If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                         End If
                         pResults = Nothing
-                        'End Using
                     End If
 
                     If AllowFA Then
                         Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                         Application.DoEvents()
-                        'Dim fResults As Containers.ImgResult = dImgSelectFanart.ShowDialog
                         Dim fResults As New Containers.ImgResult
                         ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
@@ -5711,7 +5703,6 @@ doCancel:
                         fResults = Nothing
                     End If
 
-                    'End Using
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
@@ -5719,17 +5710,10 @@ doCancel:
                 If Master.eSettings.SingleScrapeTrailer Then
                     Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
                     Application.DoEvents()
-                    'Dim cTrailer As New Trailers
-                    'If cTrailer.IsAllowedToDownload(Master.currMovie.Filename, True, Master.currMovie.Movie.Trailer) Then
-                    'Using dTrailer As New dlgTrailer
-                    'Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
                     Dim tURL As String = ModulesManager.Instance.ScraperDownlaodTrailer(Master.currMovie)
                     If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
                         Master.currMovie.Movie.Trailer = tURL
                     End If
-                    'End Using
-                    'End If
-                    'cTrailer = Nothing
                 End If
 
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
