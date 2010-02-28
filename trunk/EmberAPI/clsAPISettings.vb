@@ -93,7 +93,6 @@ Public Class Settings
     Private _showproperCase As Boolean
     Private _epproperCase As Boolean
     Private _overwritenfo As Boolean
-    Private _overwritetvnfo As Boolean
     Private _validexts As List(Of String)
     Private _nostackexts As List(Of String)
     Private _movietbn As Boolean
@@ -936,15 +935,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._overwritenfo = value
-        End Set
-    End Property
-
-    Public Property OverwriteTVNfo() As Boolean
-        Get
-            Return Me._overwritetvnfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._overwritetvnfo = value
         End Set
     End Property
 
@@ -3040,7 +3030,8 @@ Public Class Settings
         Me._showproperCase = True
         Me._epproperCase = True
         Me._overwritenfo = False
-        Me._overwritetvnfo = False
+        Me._overwritenfo = False
+        Me._overwritenfo = False
         Me._validexts = New List(Of String)
         Me._nostackexts = New List(Of String)
         Me._movietbn = True

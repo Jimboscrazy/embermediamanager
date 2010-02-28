@@ -665,23 +665,59 @@ Public Class NFO
         End Try
     End Sub
 
+    Private Shared Sub RenameToInfo(ByVal sPath As String)
+        Try
+            Dim i As Integer = 1
+            Dim strNewName As String = String.Concat(FileUtils.Common.RemoveExtFromPath(sPath), ".info")
+            'in case there is already a .info file
+            If File.Exists(strNewName) Then
+                Do
+                    strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
+                    i += 1
+                Loop While File.Exists(strNewName)
+                strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
+            End If
+            My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Shared Sub RenameNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
 
         Try
             If isChecked OrElse Not IsConformingNfo(sPath) Then
                 If isChecked OrElse File.Exists(sPath) Then
-                    Dim i As Integer = 1
-                    Dim strNewName As String = String.Concat(FileUtils.Common.RemoveExtFromPath(sPath), ".info")
-                    'in case there is already a .info file
-                    If File.Exists(strNewName) Then
-                        Do
-                            strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
-                            i += 1
-                        Loop While File.Exists(strNewName)
-                        strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
-                    End If
-                    My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+                    RenameToInfo(sPath)
+                End If
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Shared Sub RenameShowNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
+        'test if current nfo is non-conforming... rename per setting
+
+        Try
+            If isChecked OrElse Not IsConformingShowNfo(sPath) Then
+                If isChecked OrElse File.Exists(sPath) Then
+                    RenameToInfo(sPath)
+                End If
+            End If
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Shared Sub RenameEpNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
+        'test if current nfo is non-conforming... rename per setting
+
+        Try
+            If isChecked OrElse Not IsConformingEpNfo(sPath) Then
+                If isChecked OrElse File.Exists(sPath) Then
+                    RenameToInfo(sPath)
                 End If
             End If
         Catch ex As Exception
@@ -693,7 +729,7 @@ Public Class NFO
         Dim testSer As XmlSerializer = Nothing
 
         Try
-            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath).ToLower) Then
+            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
                 Using testSR As StreamReader = New StreamReader(sPath)
                     testSer = New XmlSerializer(GetType(MediaContainers.Movie))
                     Dim testMovie As MediaContainers.Movie = DirectCast(testSer.Deserialize(testSR), MediaContainers.Movie)
@@ -709,6 +745,82 @@ Public Class NFO
                 testSer = Nothing
             End If
 
+            Return False
+        End Try
+    End Function
+
+    Public Shared Function IsConformingShowNfo(ByVal sPath As String) As Boolean
+
+        Dim testSer As XmlSerializer = Nothing
+
+        Try
+            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
+                Using testSR As StreamReader = New StreamReader(sPath)
+                    testSer = New XmlSerializer(GetType(MediaContainers.TVShow))
+                    Dim testShow As MediaContainers.TVShow = DirectCast(testSer.Deserialize(testSR), MediaContainers.TVShow)
+                    testShow = Nothing
+                    testSer = Nothing
+                End Using
+                Return True
+            Else
+                Return False
+            End If
+        Catch
+            If Not IsNothing(testSer) Then
+                testSer = Nothing
+            End If
+
+            Return False
+        End Try
+    End Function
+
+    Public Shared Function IsConformingEpNfo(ByVal sPath As String) As Boolean
+
+        Dim testSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
+        Dim testEp As New MediaContainers.EpisodeDetails
+
+        Try
+            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
+                Using xmlSR As StreamReader = New StreamReader(sPath)
+                    Dim xmlStr As String = xmlSR.ReadToEnd
+                    Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
+                    If rMatches.Count = 1 Then
+                        Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
+                            testEp = DirectCast(testSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                            testSer = Nothing
+                            testEp = Nothing
+                            Return True
+                        End Using
+                    ElseIf rMatches.Count > 1 Then
+                        'read them all... if one fails, the entire nfo is non conforming
+                        For Each xmlReg As Match In rMatches
+                            Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                                testEp = DirectCast(testSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                testEp = Nothing
+                            End Using
+                        Next
+                        testSer = Nothing
+                        Return True
+                    Else
+                        testSer = Nothing
+                        If Not IsNothing(testEp) Then
+                            testEp = Nothing
+                        End If
+                        Return False
+                    End If
+                End Using
+            Else
+                testSer = Nothing
+                testEp = Nothing
+                Return False
+            End If
+        Catch
+            If Not IsNothing(testSer) Then
+                testSer = Nothing
+            End If
+            If Not IsNothing(testEp) Then
+                testEp = Nothing
+            End If
             Return False
         End Try
     End Function
@@ -730,7 +842,7 @@ Public Class NFO
             tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
 
             If Not Master.eSettings.OverwriteNfo Then
-                RenameNonConfNfo(tPath, False)
+                RenameShowNonConfNfo(tPath, False)
             End If
 
             doesExist = File.Exists(tPath)
@@ -769,9 +881,9 @@ Public Class NFO
             Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
             tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
 
-            'If Not Master.eSettings.OverwriteNfo Then
-            '    RenameNonConfNfo(tPath, False)
-            'End If
+            If Not Master.eSettings.OverwriteNfo Then
+                RenameEpNonConfNfo(tPath, False)
+            End If
 
             doesExist = File.Exists(tPath)
             If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
@@ -854,11 +966,19 @@ Public Class NFO
                 End Using
 
             Else
-                'read non conforming nfos
+                'not really anything else to do with non-conforming nfos aside from rename them
+                If Not Master.eSettings.OverwriteNfo Then
+                    RenameEpNonConfNfo(sPath, True)
+                End If
             End If
 
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+
+            'not really anything else to do with non-conforming nfos aside from rename them
+            If Not Master.eSettings.OverwriteNfo Then
+                RenameEpNonConfNfo(sPath, True)
+            End If
         End Try
 
         Return New MediaContainers.EpisodeDetails
@@ -875,11 +995,19 @@ Public Class NFO
                     xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
                 End Using
             Else
-                'read non conforming nfos
+                'not really anything else to do with non-conforming nfos aside from rename them
+                If Not Master.eSettings.OverwriteNfo Then
+                    RenameShowNonConfNfo(sPath, True)
+                End If
             End If
 
-        Catch
-            'read non conforming nfos
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+
+            'not really anything else to do with non-conforming nfos aside from rename them
+            If Not Master.eSettings.OverwriteNfo Then
+                RenameShowNonConfNfo(sPath, True)
+            End If
         End Try
 
         If Not IsNothing(xmlSer) Then
