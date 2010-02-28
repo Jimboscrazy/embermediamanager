@@ -21,6 +21,7 @@
 'TODO: Scrape Show/Episode Poster/Fanart from editors
 'TODO: Change season images
 'TODO: Automatic scrapers
+'TODO: Change Show
 'TODO: Check Season lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows

@@ -58,6 +58,7 @@ Public Class frmMain
     Private pnlGenre() As Panel = Nothing
     Private tmpTitle As String = String.Empty
     Private tmpTVDB As String = String.Empty
+    Private tmpLang As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private fScanner As New Scanner
     Private dtMedia As New DataTable
@@ -907,6 +908,7 @@ Public Class frmMain
             If Me.dgvTVShows.RowCount > 0 Then
                 Me.tmpTitle = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
                 Me.tmpTVDB = Me.dgvTVShows.SelectedRows(0).Cells(9).Value.ToString
+                Me.tmpLang = Me.dgvTVShows.SelectedRows(0).Cells(22).Value.ToString
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                 ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
@@ -3358,6 +3360,7 @@ Public Class frmMain
 
                     Me.tmpTitle = Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value.ToString
                     Me.tmpTVDB = Me.dgvTVShows.Item(9, dgvHTI.RowIndex).Value.ToString
+                    Me.tmpLang = Me.dgvTVShows.Item(22, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -6474,6 +6477,7 @@ doCancel:
         Try
             Me.tmpTitle = Me.dgvTVShows.Item(1, iRow).Value.ToString
             Me.tmpTVDB = Me.dgvTVShows.Item(9, iRow).Value.ToString
+            Me.tmpLang = Me.dgvTVShows.Item(22, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
@@ -6778,7 +6782,8 @@ doCancel:
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
 
         Me.SetControlsEnabled(False)
-        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Master.DefaultTVOptions)
+        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
+        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
         Me.SetControlsEnabled(True)
 
     End Sub
@@ -7421,7 +7426,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Master.DefaultTVOptions)
+        Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click

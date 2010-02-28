@@ -23,7 +23,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Scanner
 
-    Public MoviePaths As List(Of String) = Master.DB.GetMoviePaths
+    Public MoviePaths As New List(Of String)
     Public TVPaths As New List(Of String)
     Public htTVShows As New Hashtable
     Public ShowPath As String = String.Empty
@@ -1038,6 +1038,7 @@ Public Class Scanner
             Master.DB.ClearNew()
 
             If Args.Scan.Movies Then
+                Me.MoviePaths = Master.DB.GetMoviePaths
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         If Not String.IsNullOrEmpty(Args.SourceName) Then

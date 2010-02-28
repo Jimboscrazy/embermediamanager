@@ -231,6 +231,7 @@ Public Class Structures
         Dim IsNewSeason As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsLockSeason As Boolean
+        Dim ShowLanguage As String
     End Structure
 
     Public Structure Scans
