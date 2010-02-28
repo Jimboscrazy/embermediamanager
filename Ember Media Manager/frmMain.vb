@@ -3021,9 +3021,9 @@ Public Class frmMain
                 Next
 
                 If rbFilterAnd.Checked Then
-                    Me.filGenre = Strings.Join(alGenres.ToArray, " AND ")
+                    Me.filGenre = String.Format("({0})", Strings.Join(alGenres.ToArray, " AND "))
                 Else
-                    Me.filGenre = Strings.Join(alGenres.ToArray, " OR ")
+                    Me.filGenre = String.Format("({0})", Strings.Join(alGenres.ToArray, " OR "))
                 End If
 
                 Me.FilterArray.Add(Me.filGenre)
@@ -3058,7 +3058,7 @@ Public Class frmMain
                     alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
                 Next
 
-                Me.filSource = Strings.Join(alSource.ToArray, " OR ")
+                Me.filSource = String.Format("({0})", Strings.Join(alSource.ToArray, " OR "))
 
                 Me.FilterArray.Add(Me.filSource)
                 Me.RunFilter()
@@ -7829,5 +7829,6 @@ doCancel:
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
     End Sub
+
 End Class
 
