@@ -873,7 +873,7 @@ Public Class frmMain
 
         If Me.tabsMain.SelectedIndex = 0 Then
             Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
-        Else
+        ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) Then
             Me.SetControlsEnabled(False)
 
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
@@ -5195,7 +5195,7 @@ Public Class frmMain
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
             End If
 
-            If Master.eSettings.ScanTVMediaInfo Then
+            If Master.eSettings.ScanTVMediaInfo AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
                 Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5

@@ -1934,7 +1934,9 @@ Public Class Database
                                 End If
                             End Using
                         ElseIf Not tMissing Then 'already marked as missing, no need for another query
-                            SQLcommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE TVEpID = ", SQLreader("ID"), ";")
+                            SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVEpPathID = ", SQLreader("ID"), ";")
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE ID = ", SQLreader("ID"), ";")
                             SQLcommand.ExecuteNonQuery()
                         End If
                     End While
@@ -1997,7 +1999,9 @@ Public Class Database
                         End If
                     End Using
                 ElseIf Not tMissing Then 'already marked as missing, no need for another query
-                    SQLcommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE TVEpID = ", tID, ";")
+                    SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE ID = ", ID, ";")
                     SQLcommand.ExecuteNonQuery()
                 End If
             End Using
