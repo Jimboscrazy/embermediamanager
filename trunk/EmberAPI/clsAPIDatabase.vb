@@ -1766,7 +1766,7 @@ Public Class Database
                                     If ((Not Master.eSettings.SkipStackSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.SkipLessThan * 1048576) Then
                                         Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
-                                ElseIf sDict.FirstOrDefault(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.Key.ToLower)).Value = False AndAlso Convert.ToBoolean(SQLReader("Recursive")) Then
+                                ElseIf sDict.OrderByDescending(Function(s) s.Key).FirstOrDefault(Function(s) Directory.GetParent(SQLReader("MoviePath").ToString).FullName.ToLower.Remove(0, s.Key.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1).Value = False AndAlso Convert.ToBoolean(SQLReader("Recursive")) Then
                                     Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                 End If
                             End While
