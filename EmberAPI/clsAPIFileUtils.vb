@@ -595,6 +595,7 @@ Namespace FileUtils
         End Function
 
         Public Shared Function isBDRip(ByVal sPath As String) As Boolean
+            If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
                 Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
             Else
@@ -603,6 +604,7 @@ Namespace FileUtils
         End Function
 
         Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
+            If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
                 Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
             Else
@@ -611,6 +613,7 @@ Namespace FileUtils
         End Function
 
         Public Shared Function GetDirectory(ByVal sPath As String) As String
+            If String.IsNullOrEmpty(sPath) Then Return String.Empty
             If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
             sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
             If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
