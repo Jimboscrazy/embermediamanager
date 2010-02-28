@@ -317,7 +317,8 @@ Public Class Database
                                             "PosterPath TEXT, " & _
                                             "FanartPath TEXT, " & _
                                             "NfoPath TEXT, " & _
-                                            "NeedsSave BOOL NOT NULL DEFAULT False" & _
+                                            "NeedsSave BOOL NOT NULL DEFAULT False, " & _
+                                            "Language TEXT" & _
                                             ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVShowPath ON TVShows (TVShowPath);"
@@ -1250,6 +1251,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _TVDB.ShowFanartPath = SQLreader("FanartPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.ShowNfoPath = SQLreader("NfoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Language")) Then _TVDB.ShowLanguage = SQLreader("Language").ToString
                         _TVDB.IsMarkShow = Convert.ToBoolean(SQLreader("Mark"))
                         _TVDB.IsLockShow = Convert.ToBoolean(SQLreader("Lock"))
                         _TVDB.ShowNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
@@ -1586,13 +1588,13 @@ Public Class Database
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                         "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
-                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                         "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
-                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
@@ -1618,6 +1620,7 @@ Public Class Database
                 Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
+                Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
@@ -1635,6 +1638,7 @@ Public Class Database
                 parLock.Value = _TVShowDB.IsLockShow
                 parSource.Value = _TVShowDB.Source
                 parNeedsSave.Value = _TVShowDB.EpNeedsSave
+                parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), "en", _TVShowDB.ShowLanguage)
 
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID
@@ -1761,7 +1765,7 @@ Public Class Database
                     End Using
 
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT MoviePath, Id, Source FROM movies ORDER BY MoviePath DESC COLLATE NOCASE;"
+                        SQLcommand.CommandText = "SELECT MoviePath, Id, Source FROM movies ORDER BY MoviePath DESC;"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then

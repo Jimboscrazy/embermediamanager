@@ -571,12 +571,12 @@ Namespace TVDB
             Return tvdbLangs
         End Function
 
-        Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Options As Structures.TVScrapeOptions)
-            sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Master.eSettings.TVDBLanguage, .Options = Options})
+        Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
+            sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Options = Options})
         End Sub
 
-        Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Options As Structures.TVScrapeOptions)
-            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Master.eSettings.TVDBLanguage, .Options = Options})
+        Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
+            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Lang, .Options = Options})
         End Sub
 
         Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
@@ -662,14 +662,14 @@ Namespace TVDB
                                 fStream.Write(xZip, 0, xZip.Length)
                             End Using
 
-                            Me.ProcessTVDBZip(xZip)
+                            Me.ProcessTVDBZip(xZip, sInfo)
                             Me.ShowFromXML(sInfo)
                         End If
                     Else
                         Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
 
-                            Me.ProcessTVDBZip(fZip)
+                            Me.ProcessTVDBZip(fZip, sInfo)
                             Me.ShowFromXML(sInfo)
                         End Using
                     End If
@@ -678,7 +678,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Sub ProcessTVDBZip(ByVal tvZip As Byte())
+            Public Sub ProcessTVDBZip(ByVal tvZip As Byte(), ByVal sInfo As ScrapeInfo)
                 sXML = String.Empty
                 bXML = String.Empty
                 aXML = String.Empty
@@ -691,7 +691,7 @@ Namespace TVDB
                             Dim zBuffer As Byte() = Functions.ReadStreamToEnd(zStream)
 
                             Select Case True
-                                Case zEntry.Name.Equals(String.Concat(Master.eSettings.TVDBLanguage, ".xml"))
+                                Case zEntry.Name.Equals(String.Concat(sInfo.SelectedLang, ".xml"))
                                     sXML = System.Text.Encoding.UTF8.GetString(zBuffer)
                                 Case zEntry.Name.Equals("banners.xml")
                                     bXML = System.Text.Encoding.UTF8.GetString(zBuffer)
@@ -716,6 +716,7 @@ Namespace TVDB
                 Dim sTitle As String = String.Empty
                 Dim byTitle As Boolean = False
                 Dim xE As XElement = Nothing
+                Dim tShow As Structures.DBTV = tmpTVDBShow.Show
 
                 'get the actors first
                 Try
@@ -737,8 +738,9 @@ Namespace TVDB
                         Dim xdShow As XDocument = XDocument.Parse(sXML)
                         Dim xS = From xShow In xdShow.Descendants("Series")
                         If xS.Count > 0 Then
-                            If Not IsNothing(tmpTVDBShow.Show.TVShow) Then
-                                With tmpTVDBShow.Show.TVShow
+                            tShow.ShowLanguage = sInfo.SelectedLang
+                            If Not IsNothing(tShow.TVShow) Then
+                                With tShow.TVShow
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.ShowLockTitle) Then .Title = xS(0).Element("SeriesName").Value
@@ -753,14 +755,19 @@ Namespace TVDB
                                 End With
                             End If
 
+                            'set it back
+                            tmpTVDBShow.Show = tShow
+
                             For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
+
+                                Episode.ShowLanguage = sInfo.SelectedLang
 
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
                                 sTitle = Episode.TVEp.Title
                                 byTitle = False
 
-                                If Not IsNothing(tmpTVDBShow.Show.TVShow) Then Episode.TVShow = tmpTVDBShow.Show.TVShow
+                                If Not IsNothing(tShow.TVShow) Then Episode.TVShow = tShow.TVShow
 
                                 xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
 
@@ -796,7 +803,7 @@ Namespace TVDB
 
                 'and finally the images
                 Try
-                    If Not IsNothing(tmpTVDBShow.Show.TVShow) Then
+                    If Not IsNothing(tShow.TVShow) Then
                         If Not String.IsNullOrEmpty(bXML) Then
                             Dim xdImage As XDocument = XDocument.Parse(bXML)
                             For Each tImage As XElement In xdImage.Descendants("Banner")
@@ -954,7 +961,7 @@ Namespace TVDB
                         RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
-                                Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
+                                Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
@@ -970,7 +977,7 @@ Namespace TVDB
                     Else
                         DownloadSeries(sInfo)
                         If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
-                            Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
+                            Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
@@ -983,7 +990,7 @@ Namespace TVDB
                             RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
                             Using dTVDBSearch As New dlgTVDBSearchResults
                                 If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
-                                    Master.currShow.TVShow = tmpTVDBShow.Show.TVShow
+                                    Master.currShow = tmpTVDBShow.Show
                                     RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
                                     Using dTVImageSel As New dlgTVImageSelect
                                         If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
@@ -1112,7 +1119,7 @@ Namespace TVDB
                     If File.Exists(fPath) Then
                         Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
-                            Me.ProcessTVDBZip(fZip)
+                            Me.ProcessTVDBZip(fZip, sInfo)
 
                             'get the actors first
                             Try
