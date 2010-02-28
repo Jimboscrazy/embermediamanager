@@ -693,6 +693,8 @@ Namespace TVDB
                 Dim xE As XElement = Nothing
                 Dim tShow As Structures.DBTV = tmpTVDBShow.Show
 
+                If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
+
                 'get the actors first
                 Try
                     If sInfo.Options.bShowActors OrElse sInfo.Options.bEpActors Then
@@ -1164,7 +1166,6 @@ Namespace TVDB
                             Me.DownloadSeries(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
                             e.Result = New Results With {.Type = Args.Type}
                         Case 2 'load episodes
-                            If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
                             LoadAllEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo).ShowID)
                             e.Result = New Results With {.Type = Args.Type, .Result = Args.Parameter}
                         Case 3 'save
