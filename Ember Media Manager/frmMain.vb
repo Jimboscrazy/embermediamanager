@@ -7815,7 +7815,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
-        Dim tEpisode As MediaContainers.EpisodeDetails = Master.TVScraper.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB)
+        Dim tEpisode As MediaContainers.EpisodeDetails = Master.TVScraper.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
         If Not IsNothing(tEpisode) Then
             Master.currShow.TVEp = tEpisode
