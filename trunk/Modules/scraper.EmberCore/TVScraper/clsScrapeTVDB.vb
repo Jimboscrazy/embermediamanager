@@ -29,9 +29,8 @@ Namespace TVDB
         Public Shared tmpTVDBShow As New TVDBShow
         Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
 
-        Public Event ScraperEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Public Shared WithEvents sObject As New ScraperObject
-
 
         <Serializable()> _
         Public Structure TVImages
@@ -53,21 +52,11 @@ Namespace TVDB
             End Function
         End Structure
 
-        Public Structure ScrapeInfo
-            Dim ShowID As Integer
-            Dim ShowTitle As String
-            Dim TVDBID As String
-            Dim iEpisode As Integer
-            Dim iSeason As Integer
-            Dim Options As Structures.TVScrapeOptions
-            Dim SelectedLang As String
-        End Structure
-
         Public Sub New()
             AddHandler sObject.ScraperEvent, AddressOf InnerEvent
         End Sub
 
-        Public Sub InnerEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Public Sub InnerEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
             RaiseEvent ScraperEvent(eType, iProgress, Parameter)
         End Sub
 
@@ -558,19 +547,19 @@ Namespace TVDB
         End Function
 
         Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
-            sObject.SingleScrape(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Options = Options})
+            sObject.SingleScrape(New EmberAPI.Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Options = Options})
         End Sub
 
         Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
-            sObject.ScrapeEpisode(New ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Lang, .Options = Options})
+            sObject.ScrapeEpisode(New EmberAPI.Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Lang, .Options = Options})
         End Sub
 
-        Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
-            Return sObject.ChangeEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .SelectedLang = Lang})
+        Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
+            Return sObject.ChangeEpisode(New EmberAPI.Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID})
         End Function
 
-        Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
-            Return sObject.GetSingleEpisode(New ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .SelectedLang = Lang, .Options = Options})
+        Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+            Return sObject.GetSingleEpisode(New EmberAPI.Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .Options = Options})
         End Function
 
         Public Sub Cancel()
@@ -591,7 +580,7 @@ Namespace TVDB
             Private aXML As String = String.Empty
 
 
-            Public Event ScraperEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+            Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
             Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
 
@@ -606,18 +595,18 @@ Namespace TVDB
             End Structure
 
             Public Sub SaveImages()
-                RaiseEvent ScraperEvent(EventType.SavingStarted, 0, Nothing)
+                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SavingStarted, 0, Nothing)
                 Me.bwTVDB = New System.ComponentModel.BackgroundWorker
                 Me.bwTVDB.WorkerReportsProgress = True
                 Me.bwTVDB.WorkerSupportsCancellation = True
                 Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
             End Sub
 
-            Public Sub PassEvent(ByVal eType As EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+            Public Sub PassEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
                 RaiseEvent ScraperEvent(eType, iProgress, Parameter)
             End Sub
 
-            Private Sub DownloadSeries(ByVal sInfo As ScrapeInfo)
+            Private Sub DownloadSeries(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 Try
                     Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
                     Dim fExists As Boolean = File.Exists(fPath)
@@ -664,7 +653,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Sub ProcessTVDBZip(ByVal tvZip As Byte(), ByVal sInfo As ScrapeInfo)
+            Public Sub ProcessTVDBZip(ByVal tvZip As Byte(), ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 sXML = String.Empty
                 bXML = String.Empty
                 aXML = String.Empty
@@ -694,7 +683,7 @@ Namespace TVDB
 
             End Sub
 
-            Private Sub ShowFromXML(ByVal sInfo As ScrapeInfo)
+            Private Sub ShowFromXML(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 Dim Actors As New List(Of MediaContainers.Person)
                 Dim sID As String = String.Empty
                 Dim iEp As Integer = -1
@@ -730,7 +719,7 @@ Namespace TVDB
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.ShowLockTitle) Then .Title = xS(0).Element("SeriesName").Value
-                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, sInfo.SelectedLang), String.Empty)
+                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.ShowLockGenre) Then .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
                                     If sInfo.Options.bShowMPAA Then .MPAA = xS(0).Element("ContentRating").Value
                                     If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = xS(0).Element("Overview").Value
@@ -865,10 +854,10 @@ Namespace TVDB
                 Return Strings.Join(cString.ToArray, " / ")
             End Function
 
-            Public Sub DownloadSeriesAsync(ByVal sInfo As ScrapeInfo)
+            Public Sub DownloadSeriesAsync(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 Try
                     If Not bwTVDB.IsBusy Then
-                        RaiseEvent ScraperEvent(EventType.StartingDownload, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.StartingDownload, 0, Nothing)
                         bwTVDB.WorkerReportsProgress = True
                         bwTVDB.WorkerSupportsCancellation = True
                         bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
@@ -878,7 +867,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Sub GetSearchResultsAsync(ByVal sInfo As ScrapeInfo)
+            Public Sub GetSearchResultsAsync(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 Try
                     If Not bwTVDB.IsBusy Then
                         bwTVDB.WorkerReportsProgress = True
@@ -890,7 +879,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Private Function SearchSeries(ByVal sInfo As ScrapeInfo) As List(Of TVSearchResults)
+            Private Function SearchSeries(ByVal sInfo As EmberAPI.Structures.ScrapeInfo) As List(Of TVSearchResults)
                 Dim tvdbResults As New List(Of TVSearchResults)
                 Dim cResult As New TVSearchResults
                 Dim xmlTVDB As XDocument
@@ -934,59 +923,59 @@ Namespace TVDB
                 Return tvdbResults
             End Function
 
-            Public Sub SingleScrape(ByVal sInfo As ScrapeInfo)
-                RaiseEvent ScraperEvent(EventType.LoadingEpisodes, 0, Nothing)
+            Public Sub SingleScrape(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
+                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.LoadingEpisodes, 0, Nothing)
                 bwTVDB.WorkerReportsProgress = False
                 bwTVDB.WorkerSupportsCancellation = True
                 bwTVDB.RunWorkerAsync(New Arguments With {.Type = 2, .Parameter = sInfo})
             End Sub
 
-            Public Sub StartSingleScraper(ByVal sInfo As ScrapeInfo)
+            Public Sub StartSingleScraper(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
                 Try
                     If String.IsNullOrEmpty(sInfo.TVDBID) Then
-                        RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Show
-                                RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                        RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
+                                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
                                     Else
-                                        RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                                     End If
                                 End Using
                             Else
-                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     Else
                         DownloadSeries(sInfo)
                         If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
                             Master.currShow = tmpTVDBShow.Show
-                            RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                    RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
                                 Else
-                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                                 End If
                             End Using
                         Else
-                            RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
                             Using dTVDBSearch As New dlgTVDBSearchResults
                                 If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                     Master.currShow = tmpTVDBShow.Show
-                                    RaiseEvent ScraperEvent(EventType.SelectImages, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
                                     Using dTVImageSel As New dlgTVImageSelect
                                         If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                            RaiseEvent ScraperEvent(EventType.Verifying, 0, Nothing)
+                                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
                                         Else
-                                            RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                                         End If
                                     End Using
                                 Else
-                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                                 End If
                             End Using
                         End If
@@ -996,14 +985,14 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Sub ScrapeEpisode(ByVal sInfo As ScrapeInfo)
+            Public Sub ScrapeEpisode(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
 
                 Try
                     tmpTVDBShow = New TVDBShow
                     tmpTVDBShow.Episodes.Add(Master.currShow)
 
                     If String.IsNullOrEmpty(sInfo.TVDBID) Then
-                        RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
@@ -1017,9 +1006,9 @@ Namespace TVDB
 
                                 If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                                RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
                             Else
-                                RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     Else
@@ -1036,9 +1025,9 @@ Namespace TVDB
 
                             If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                            RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
                         Else
-                            RaiseEvent ScraperEvent(EventType.Searching, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
                             Using dTVDBSearch As New dlgTVDBSearchResults
                                 If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                     Master.currShow = tmpTVDBShow.Episodes(0)
@@ -1052,9 +1041,9 @@ Namespace TVDB
 
                                     If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                                    RaiseEvent ScraperEvent(EventType.Verifying, 2, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
                                 Else
-                                    RaiseEvent ScraperEvent(EventType.Cancelled, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
                                 End If
                             End Using
                         End If
@@ -1064,7 +1053,7 @@ Namespace TVDB
                 End Try
             End Sub
 
-            Public Function ChangeEpisode(ByVal sInfo As ScrapeInfo) As MediaContainers.EpisodeDetails
+            Public Function ChangeEpisode(ByVal sInfo As EmberAPI.Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
                 Try
                     Dim tEpisodes As List(Of MediaContainers.EpisodeDetails) = Me.GetListOfKnownEpisodes(sInfo)
                     If tEpisodes.Count > 0 Then
@@ -1081,7 +1070,7 @@ Namespace TVDB
                 Return Nothing
             End Function
 
-            Public Function GetSingleEpisode(ByVal sInfo As ScrapeInfo) As MediaContainers.EpisodeDetails
+            Public Function GetSingleEpisode(ByVal sInfo As EmberAPI.Structures.ScrapeInfo) As MediaContainers.EpisodeDetails
                 Dim tEp As New MediaContainers.EpisodeDetails
                 Try
                     tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
@@ -1095,11 +1084,11 @@ Namespace TVDB
                 Return New MediaContainers.EpisodeDetails
             End Function
 
-            Public Function GetListOfKnownEpisodes(ByVal sInfo As ScrapeInfo) As List(Of MediaContainers.EpisodeDetails)
+            Public Function GetListOfKnownEpisodes(ByVal sInfo As EmberAPI.Structures.ScrapeInfo) As List(Of MediaContainers.EpisodeDetails)
                 Dim Actors As New List(Of MediaContainers.Person)
                 Dim tEpisodes As New List(Of MediaContainers.EpisodeDetails)
                 Dim tEpisode As New MediaContainers.EpisodeDetails
-                Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
+                Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))
 
                 Try
                     If File.Exists(fPath) Then
@@ -1170,13 +1159,13 @@ Namespace TVDB
                 Try
                     Select Case Args.Type
                         Case 0 'search
-                            e.Result = New Results With {.Type = Args.Type, .Result = SearchSeries(DirectCast(Args.Parameter, ScrapeInfo))}
+                            e.Result = New Results With {.Type = Args.Type, .Result = SearchSeries(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))}
                         Case 1 'show download
-                            Me.DownloadSeries(DirectCast(Args.Parameter, ScrapeInfo))
+                            Me.DownloadSeries(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
                             e.Result = New Results With {.Type = Args.Type}
                         Case 2 'load episodes
-                            If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, ScrapeInfo))
-                            LoadAllEpisodes(DirectCast(Args.Parameter, ScrapeInfo).ShowID)
+                            If Master.eSettings.DisplayMissingEpisodes Then tEpisodes = Me.GetListOfKnownEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo))
+                            LoadAllEpisodes(DirectCast(Args.Parameter, EmberAPI.Structures.ScrapeInfo).ShowID)
                             e.Result = New Results With {.Type = Args.Type, .Result = Args.Parameter}
                         Case 3 'save
                             Me.SaveAllTVInfo()
@@ -1189,7 +1178,7 @@ Namespace TVDB
             End Sub
 
             Private Sub bwTVDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVDB.ProgressChanged
-                RaiseEvent ScraperEvent(EventType.Progress, e.ProgressPercentage, e.UserState.ToString)
+                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Progress, e.ProgressPercentage, e.UserState.ToString)
             End Sub
 
             Private Sub bwTVDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVDB.RunWorkerCompleted
@@ -1198,17 +1187,17 @@ Namespace TVDB
                 Try
                     Select Case Res.Type
                         Case 0 'search
-                            RaiseEvent ScraperEvent(EventType.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
                         Case 1 'show download
-                            RaiseEvent ScraperEvent(EventType.ShowDownloaded, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ShowDownloaded, 0, Nothing)
                         Case 2 'load episodes
                             If Not e.Cancelled Then
-                                StartSingleScraper(DirectCast(Res.Result, ScrapeInfo))
+                                StartSingleScraper(DirectCast(Res.Result, EmberAPI.Structures.ScrapeInfo))
                             Else
-                                RaiseEvent ScraperEvent(EventType.ScraperDone, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ScraperDone, 0, Nothing)
                             End If
                         Case 3 'save
-                            RaiseEvent ScraperEvent(EventType.ScraperDone, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ScraperDone, 0, Nothing)
                     End Select
                 Catch ex As Exception
                     ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -19,6 +19,6 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared tmpMovie As New MediaContainers.Movie
 
-    Public Shared TVScraper As New TVDB.Scraper
+    'Public Shared TVScraper As New TVDB.Scraper
 
 End Class

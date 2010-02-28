@@ -2101,7 +2101,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Me.cbTVLanguage.DataSource = Master.TVScraper.GetLangs(Master.eSettings.TVDBMirror)
+        ' *####  Me.cbTVLanguage.DataSource = Master.TVScraper.GetLangs(Master.eSettings.TVDBMirror)
+        Me.cbTVLanguage.DataSource = ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror)
         Me.cbTVLanguage.DisplayMember = "LongLang"
         Me.cbTVLanguage.ValueMember = "ShortLang"
     End Sub
