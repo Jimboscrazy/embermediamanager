@@ -370,10 +370,7 @@ Public Class frmMain
     End Sub
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
-
-        Return ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(y) Path.GetFileNameWithoutExtension(y.AssemblyFileName) = name).assembly
-        'Return GetType(Interfaces.EmberTVScraperModule).Assembly
-
+        Return ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
     End Function
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
