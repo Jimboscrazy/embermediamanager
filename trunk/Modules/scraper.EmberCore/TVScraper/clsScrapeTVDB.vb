@@ -28,7 +28,7 @@ Public Class Scraper
     Public Shared tmpTVDBShow As New TVDBShow
     Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
 
-    Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
     Public Shared WithEvents sObject As New ScraperObject
 
     <Serializable()> _
@@ -59,7 +59,7 @@ Public Class Scraper
         AddHandler sObject.ScraperEvent, AddressOf InnerEvent
     End Sub
 
-    Public Sub InnerEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Public Sub InnerEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent ScraperEvent(eType, iProgress, Parameter)
     End Sub
 
@@ -583,7 +583,7 @@ Public Class Scraper
         Private aXML As String = String.Empty
 
 
-        Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Public Event ScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
         Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
 
@@ -598,14 +598,14 @@ Public Class Scraper
         End Structure
 
         Public Sub SaveImages()
-            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SavingStarted, 0, Nothing)
+            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.SavingStarted, 0, Nothing)
             Me.bwTVDB = New System.ComponentModel.BackgroundWorker
             Me.bwTVDB.WorkerReportsProgress = True
             Me.bwTVDB.WorkerSupportsCancellation = True
             Me.bwTVDB.RunWorkerAsync(New Arguments With {.Type = 3})
         End Sub
 
-        Public Sub PassEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Public Sub PassEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
             RaiseEvent ScraperEvent(eType, iProgress, Parameter)
         End Sub
 
@@ -862,7 +862,7 @@ Public Class Scraper
         Public Sub DownloadSeriesAsync(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
             Try
                 If Not bwTVDB.IsBusy Then
-                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.StartingDownload, 0, Nothing)
+                    RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.StartingDownload, 0, Nothing)
                     bwTVDB.WorkerReportsProgress = True
                     bwTVDB.WorkerSupportsCancellation = True
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
@@ -929,7 +929,7 @@ Public Class Scraper
         End Function
 
         Public Sub SingleScrape(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
-            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.LoadingEpisodes, 0, Nothing)
+            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.LoadingEpisodes, 0, Nothing)
             bwTVDB.WorkerReportsProgress = False
             bwTVDB.WorkerSupportsCancellation = True
             bwTVDB.RunWorkerAsync(New Arguments With {.Type = 2, .Parameter = sInfo})
@@ -938,49 +938,49 @@ Public Class Scraper
         Public Sub StartSingleScraper(ByVal sInfo As EmberAPI.Structures.ScrapeInfo)
             Try
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
-                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
+                    RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Show
-                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 0, Nothing)
                                 Else
-                                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                                    RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                                 End If
                             End Using
                         Else
-                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                         End If
                     End Using
                 Else
                     DownloadSeries(sInfo)
                     If tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
                         Master.currShow = tmpTVDBShow.Show
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
                             If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 0, Nothing)
                             Else
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     Else
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Show
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SelectImages, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID) = Windows.Forms.DialogResult.OK Then
-                                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 0, Nothing)
+                                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 0, Nothing)
                                     Else
-                                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                                     End If
                                 End Using
                             Else
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     End If
@@ -997,7 +997,7 @@ Public Class Scraper
                 tmpTVDBShow.Episodes.Add(Master.currShow)
 
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
-                    RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
+                    RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Episodes(0)
@@ -1011,9 +1011,9 @@ Public Class Scraper
 
                             If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 2, Nothing)
                         Else
-                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                         End If
                     End Using
                 Else
@@ -1030,9 +1030,9 @@ Public Class Scraper
 
                         If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 2, Nothing)
                     Else
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Searching, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
@@ -1046,9 +1046,9 @@ Public Class Scraper
 
                                 If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Verifying, 2, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Verifying, 2, Nothing)
                             Else
-                                RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Cancelled, 0, Nothing)
+                                RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
                     End If
@@ -1182,7 +1182,7 @@ Public Class Scraper
         End Sub
 
         Private Sub bwTVDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVDB.ProgressChanged
-            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.Progress, e.ProgressPercentage, e.UserState.ToString)
+            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.Progress, e.ProgressPercentage, e.UserState.ToString)
         End Sub
 
         Private Sub bwTVDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVDB.RunWorkerCompleted
@@ -1191,17 +1191,17 @@ Public Class Scraper
             Try
                 Select Case Res.Type
                     Case 0 'search
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.SearchResultsDownloaded, 0, DirectCast(Res.Result, List(Of TVSearchResults)))
                     Case 1 'show download
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ShowDownloaded, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.ShowDownloaded, 0, Nothing)
                     Case 2 'load episodes
                         If Not e.Cancelled Then
                             StartSingleScraper(DirectCast(Res.Result, EmberAPI.Structures.ScrapeInfo))
                         Else
-                            RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ScraperDone, 0, Nothing)
+                            RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                         End If
                     Case 3 'save
-                        RaiseEvent ScraperEvent(EmberAPI.Enums.ScraperEventType.ScraperDone, 0, Nothing)
+                        RaiseEvent ScraperEvent(EmberAPI.Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                 End Select
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

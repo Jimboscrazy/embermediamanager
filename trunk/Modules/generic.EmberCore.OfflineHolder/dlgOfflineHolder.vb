@@ -188,7 +188,7 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.NFO, True, False)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            If ModulesManager.Instance.ScrapeOnly(tMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
+            If ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
                 Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
                 Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
                 Dim fResults As New Containers.ImgResult

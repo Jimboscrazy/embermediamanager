@@ -1375,7 +1375,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        Dim tURL As String = ModulesManager.Instance.ScraperDownlaodTrailer(Master.currMovie)
+        Dim tURL As String = ModulesManager.Instance.ScraperDownloadTrailer(Master.currMovie)
         If Not String.IsNullOrEmpty(tURL) Then
             Me.btnPlayTrailer.Enabled = True
             If tURL.Substring(0, 7) = "http://" Then

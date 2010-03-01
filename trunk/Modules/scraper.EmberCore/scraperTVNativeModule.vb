@@ -62,7 +62,7 @@ Public Class EmberNativeTVScraperModule
         'RemoveHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
     End Function
-    Public Sub Handler_ScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Public Sub Handler_ScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
     End Sub
 
@@ -73,7 +73,7 @@ Public Class EmberNativeTVScraperModule
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
     End Function
 
-    Public Event TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberTVScraperModule.TVScraperEvent
+    Public Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberTVScraperModule.TVScraperEvent
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
 
     Public Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupPostScraper

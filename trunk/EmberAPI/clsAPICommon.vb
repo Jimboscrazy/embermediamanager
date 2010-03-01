@@ -178,7 +178,7 @@ Public Class Enums
         Never = 4
     End Enum
 
-    Public Enum ScraperEventType As Integer
+    Public Enum TVScraperEventType As Integer
         Progress = 0
         SearchResultsDownloaded = 1
         StartingDownload = 2
@@ -191,7 +191,13 @@ Public Class Enums
         Verifying = 9
         Cancelled = 10
     End Enum
-
+    Public Enum MovieScraperEventType As Integer
+        NFOItem = 1
+        PosterItem = 2
+        FanartItem = 3
+        TrailerItem = 4
+        ThumbsItem = 5
+    End Enum
 
 End Class
 

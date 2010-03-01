@@ -827,7 +827,7 @@ Public Class dlgImgSelect
         Try
             If Me.DLType = Enums.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
 
-                ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(DirectCast(sender, PictureBox).Image)
+                ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(DirectCast(sender, PictureBox).Image)
 
             End If
         Catch
@@ -1208,7 +1208,7 @@ Public Class dlgImgSelect
 
             If Not IsNothing(tImage.Image) Then
 
-                ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(tImage.Image)
+                ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.Image)
 
             End If
 
