@@ -46,11 +46,6 @@ Public Class EmberXMLScraperModule
             Return True
         End Get
     End Property
-    ReadOnly Property IsTVScraper() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.IsTVScraper
-        Get
-            Return True
-        End Get
-    End Property
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberMovieScraperModule.ModuleName
         Get
@@ -85,8 +80,8 @@ Public Class EmberXMLScraperModule
 
     End Function
 
-    Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperUpdateMediaList
-
+    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
+    Public Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Sub SetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraper
         Dim _setup As New frmXMLSetup
         _setup.ShowDialog()

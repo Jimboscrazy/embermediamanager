@@ -94,9 +94,9 @@ Public Class dlgTVDBSearchResults
         End Try
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Sub TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case EmberAPI.Enums.ScraperEventType.SearchResultsDownloaded
+            Case EmberAPI.Enums.TVScraperEventType.SearchResultsDownloaded
                 Dim lItem As ListViewItem
                 Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
 
@@ -113,7 +113,7 @@ Public Class dlgTVDBSearchResults
                 End If
 
                 Me.pnlLoading.Visible = False
-            Case EmberAPI.Enums.ScraperEventType.ShowDownloaded
+            Case EmberAPI.Enums.TVScraperEventType.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
         End Select

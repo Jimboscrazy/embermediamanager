@@ -22,7 +22,7 @@ Public Class dlgTestSettings
         Private scraper As EmberAPI.ModulesManager._externalScraperModuleClass
         Private control As dlgTestSettings.EntrieController
         Sub add(ByRef basep As Panel, ByVal order As Integer, ByVal scraperID As Integer, ByRef controller As dlgTestSettings.EntrieController)
-            scraper = ModulesManager.Instance.GetScraper(order)
+            scraper = ModulesManager.Instance.GetScraperByIdx(order)
             Dim p As New Panel
             basep.Controls.Add(p)
             p.Top = 80 + (order * 30)

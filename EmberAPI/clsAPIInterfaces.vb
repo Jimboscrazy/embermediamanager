@@ -18,8 +18,6 @@
         Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
         Sub SetupScraper()
         Sub SetupPostScraper()
-        'Sub SetupTVScraper()
-        'Sub SetupTVPostScraper()
         Sub Init()
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
@@ -31,18 +29,16 @@
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
         ReadOnly Property IsScraper() As Boolean
-        ReadOnly Property IsTVScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
-        Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
+        'Event MovieScraperEvent(ByVal col As Integer, ByVal v As Boolean)
+        Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     End Interface
     Public Interface EmberTVScraperModule
         Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
         Sub SetupScraper()
         Sub SetupPostScraper()
         Sub Init()
-        'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
-        'Options is byref to allow field blocking in scraper chain
-        'Function Scraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ScraperResult
+        'TODO TV Interface need to be redone Need to be more self contained as movies
         Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As ScraperResult
         Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As ScraperResult
         Function PostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As ScraperResult
@@ -55,7 +51,7 @@
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
 
-        Event TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
     End Interface
 
 

@@ -36,11 +36,6 @@ Public Class NunoScraperModule
             Return True
         End Get
     End Property
-    Public ReadOnly Property IsTVScraper() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.IsTVScraper
-        Get
-            Return False
-        End Get
-    End Property
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberMovieScraperModule.ModuleName
         Get
             Return "Nuno Scraper"
@@ -61,7 +56,8 @@ Public Class NunoScraperModule
         If DoPlot Then DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperUpdateMediaList
+    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
+    Public Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Function SelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As EmberAPI.Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function

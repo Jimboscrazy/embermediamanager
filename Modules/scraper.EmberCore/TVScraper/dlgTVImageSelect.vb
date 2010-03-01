@@ -478,7 +478,7 @@ Public Class dlgTVImageSelect
             tImage = DirectCast(sender, PictureBox).Image
         End If
 
-        ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(tImage)
+        ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage)
 
     End Sub
 

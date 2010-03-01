@@ -21,16 +21,21 @@
 ' Nuno Reminders:
 ' TODO: Need to do "strings" on all this stuff..
 '
-
-'Option Strict Off
 Imports System
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 
 Public Class ModulesManager
+    Public RuntimeObjects As New EmberRuntimeObjects
+    Public externalProcessorModules As New List(Of _externalGenericModuleClass)
+    Public externalScrapersModules As New List(Of _externalScraperModuleClass)
+    Public externalTVScrapersModules As New List(Of _externalTVScraperModuleClass)
+    Public Shared AssemblyList As New List(Of AssemblyListItem)
     'Singleton Instace for module manager .. allways use this one
     Private Shared Singleton As ModulesManager = Nothing
+    Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
+
     Public Shared ReadOnly Property Instance() As ModulesManager
         Get
             If (Singleton Is Nothing) Then
@@ -43,20 +48,19 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public Assembly As System.Reflection.Assembly
     End Structure
-    Public Shared AssemblyList As New List(Of AssemblyListItem)
-    Class EmberRuntimeObjects
 
+    Class EmberRuntimeObjects
         'all runtime object including Function (delegate) that need to be exposed to Modules
+        Delegate Sub OpenImageViewer(ByVal _Image As Image)
+        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+
+        Private _OpenImageViewer As OpenImageViewer
+        Private _LoadMedia As LoadMedia
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         Private _MainTool As System.Windows.Forms.ToolStrip
-        Private _OpenImageViewer As OpenImageViewer
-        Delegate Sub OpenImageViewer(ByVal _Image As Image)
-        Private _LoadMedia As LoadMedia
-        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
-        Sub New()
-        End Sub
+
         Public Sub DelegateLoadMedia(ByRef lm As LoadMedia) 'Setup from EmberAPP
             _LoadMedia = lm
         End Sub
@@ -66,7 +70,7 @@ Public Class ModulesManager
         Public Sub DelegateOpenImageViewer(ByRef IV As OpenImageViewer)
             _OpenImageViewer = IV
         End Sub
-        Public Sub InvokeImageViewer(ByRef _image As Image)
+        Public Sub InvokeOpenImageViewer(ByRef _image As Image)
             _OpenImageViewer.Invoke(_image)
         End Sub
         Public Property MainTool() As System.Windows.Forms.ToolStrip
@@ -112,7 +116,7 @@ Public Class ModulesManager
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
     End Class
-    Class _externalProcessorModuleClass
+    Class _externalGenericModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
@@ -139,14 +143,9 @@ Public Class ModulesManager
         Public IsPostScraper As Boolean
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        Public assembly As System.Reflection.Assembly
     End Class
 
-    Public RuntimeObjects As New EmberRuntimeObjects
-    Public externalProcessorModules As New List(Of _externalProcessorModuleClass)
-    Public externalScrapersModules As New List(Of _externalScraperModuleClass)
-    Public externalTVScrapersModules As New List(Of _externalTVScraperModuleClass)
-    Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
+
 
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
@@ -170,7 +169,7 @@ Public Class ModulesManager
                                 Dim ProcessorModule As Interfaces.EmberExternalModule 'Object
                                 ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberExternalModule)
                                 'Add the activated module to the arraylist
-                                Dim _externalProcessorModule As New _externalProcessorModuleClass
+                                Dim _externalProcessorModule As New _externalGenericModuleClass
                                 Dim filename As String = file
                                 If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
                                     AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
@@ -312,7 +311,6 @@ Public Class ModulesManager
                                 AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
                             End If
 
-                            _externaltvScraperModule.assembly = assembly
                             _externaltvScraperModule.ProcessorModule = ProcessorModule
                             _externaltvScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externaltvScraperModule.AssemblyFileName = Path.GetFileName(file)
@@ -363,80 +361,6 @@ Public Class ModulesManager
             End If
         End If
     End Sub
-    ''' <summary>
-    ''' Entry point to Scrape and Post Scrape .. will run all modules enabled
-    ''' </summary>
-    ''' <param name="movie">MediaContainers.Movie Object with Title or Id fieldIn</param>
-    ''' <param Options="movie">ScrapeOptions Structure defining user scrape options</param>
-    ''' <returns>boolean success</returns>
-    Public Function FullScrape(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
-        'AndAlso? Only return true if both complete successfully?
-        Return ScrapeOnly(DBMovie, ScrapeType, Options) 'OrElse PostScrapeOnly(movie)
-    End Function
-
-    Public Function ScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
-        Dim ret As EmberAPI.Interfaces.ScraperResult
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
-            If ret.breakChain Then Exit For
-        Next
-        Return ret.Cancelled
-    End Function
-    Public Function PostScrapeOnly(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean
-        Dim ret As EmberAPI.Interfaces.ScraperResult
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
-            AddHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
-            ret = _externalScraperModule.ProcessorModule.PostScraper(DBMovie, ScrapeType)
-            'RemoveHandler _externalScraperModule.ProcessorModule.ScraperUpdateMediaList, AddressOf Handler_ScraperUpdateMediaList
-            If ret.breakChain Then Exit For
-        Next
-        Return ret.Cancelled
-    End Function
-
-    Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Boolean
-        Dim ret As EmberAPI.Interfaces.ScraperResult
-        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            ret = _externaltvScraperModule.ProcessorModule.Scraper(ShowID, ShowTitle, TVDBID, Lang, Options)
-            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            If ret.breakChain Then Exit For
-        Next
-        Return ret.Cancelled
-    End Function
-    Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Boolean
-        Dim ret As EmberAPI.Interfaces.ScraperResult
-        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            ret = _externaltvScraperModule.ProcessorModule.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
-            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            If ret.breakChain Then Exit For
-        Next
-        Return ret.Cancelled
-    End Function
-
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
-        Dim epDetails As New MediaContainers.EpisodeDetails
-        Dim ret As EmberAPI.Interfaces.ScraperResult
-        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
-            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            ret = _externaltvScraperModule.ProcessorModule.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options, epDetails)
-            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            If ret.breakChain Then Exit For
-        Next
-        Return epDetails
-    End Function
-
-    Event TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-    Public Sub Handler_TVScraperEvent(ByVal eType As EmberAPI.Enums.ScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-        RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
-    End Sub
-    Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
-    Public Sub Handler_ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean)
-        RaiseEvent ScraperUpdateMediaList(col, v)
-    End Sub
-
-    Sub New()
-    End Sub
 
     Public Sub LoadAllModules()
         loadModules()
@@ -446,12 +370,12 @@ Public Class ModulesManager
     Public Function ScrapersCount() As Integer
         Return externalScrapersModules.Count
     End Function
-    Public Function GetScraper(ByVal idx As Integer) As _externalScraperModuleClass
+    Public Function GetScraperByIdx(ByVal idx As Integer) As _externalScraperModuleClass
         Return externalScrapersModules(idx)
     End Function
     Public Sub Setup()
         Dim modulesSetup As New dlgModuleSettings
-        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
+        For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
             li.SubItems.Add(If(_externalProcessorModule.Enabled, Master.eLang.GetString(774, "Enabled"), Master.eLang.GetString(775, "Disabled")))
             li.Tag = _externalProcessorModule.AssemblyName
@@ -487,7 +411,7 @@ Public Class ModulesManager
             li = dlgVersions.lstVersions.Items.Add(_externalScraperModule.ProcessorModule.ModuleName)
             li.SubItems.Add(_externalScraperModule.ProcessorModule.ModuleVersion)
         Next
-        For Each _externalModule As _externalProcessorModuleClass In externalProcessorModules
+        For Each _externalModule As _externalGenericModuleClass In externalProcessorModules
             li = dlgVersions.lstVersions.Items.Add(_externalModule.ProcessorModule.ModuleName)
             li.SubItems.Add(_externalModule.ProcessorModule.ModuleVersion)
         Next
@@ -495,49 +419,20 @@ Public Class ModulesManager
     End Sub
 
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
-        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.ProcessorModule.Setup()
         Next
     End Sub
-    Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.SetupScraper()
-        Next
-    End Sub
-    Public Sub RunPostScraperSetup(ByVal ModuleAssembly As String)
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.SetupPostScraper()
-        Next
-    End Sub
+
 
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.Enabled = value
             If value = True Then
                 _externalProcessorModule.ProcessorModule.Enable()
             Else
                 _externalProcessorModule.ProcessorModule.Disable()
             End If
-        Next
-    End Sub
-    Public Sub SetTVScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ScraperEnabled = value
-        Next
-    End Sub
-    Public Sub SetTVPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.PostScraperEnabled = value
-        Next
-    End Sub
-    Public Sub SetTVScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
-        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ScraperOrder = value
-        Next
-    End Sub
-    Public Sub SetTVPostScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
-        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.PostScraperOrder = value
         Next
     End Sub
 
@@ -562,6 +457,45 @@ Public Class ModulesManager
             _externalScraperModule.PostScraperOrder = value
         Next
     End Sub
+
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'Event MovieScraperEvent(ByVal col As Integer, ByVal v As Boolean)
+    Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+    Public Sub Handler_MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+        RaiseEvent MovieScraperEvent(eType, Parameter)
+    End Sub
+
+    Public Function MovieScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+            ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
+            RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+            If ret.breakChain Then Exit For
+        Next
+        Return ret.Cancelled
+    End Function
+    Public Function MoviePostScrapeOnly(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.IsPostScraper AndAlso e.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+            AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+            ret = _externalScraperModule.ProcessorModule.PostScraper(DBMovie, ScrapeType)
+            RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+            If ret.breakChain Then Exit For
+        Next
+        Return ret.Cancelled
+    End Function
+
+    Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ProcessorModule.SetupScraper()
+        Next
+    End Sub
+    Public Sub RunPostScraperSetup(ByVal ModuleAssembly As String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ProcessorModule.SetupPostScraper()
+        Next
+    End Sub
     Function ScraperSelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean
 
         Dim ret As EmberAPI.Interfaces.ScraperResult
@@ -572,7 +506,7 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Function ScraperDownlaodTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie) As String
+    Function ScraperDownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie) As String
 
         Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim sURL As String = String.Empty
@@ -582,7 +516,6 @@ Public Class ModulesManager
         Next
         Return sURL
     End Function
-
     Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie) As List(Of String)
         Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim sStudio As New List(Of String)
@@ -592,6 +525,33 @@ Public Class ModulesManager
         Next
         Return sStudio
     End Function
+
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Public Sub Handler_TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
+    End Sub
+
+    Public Sub SetTVScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ScraperEnabled = value
+        Next
+    End Sub
+    Public Sub SetTVPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.PostScraperEnabled = value
+        Next
+    End Sub
+    Public Sub SetTVScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
+        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.ScraperOrder = value
+        Next
+    End Sub
+    Public Sub SetTVPostScraperOrder(ByVal ModuleAssembly As String, ByVal value As Integer)
+        For Each _externalScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+            _externalScraperModule.PostScraperOrder = value
+        Next
+    End Sub
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
         Dim ret As EmberAPI.Interfaces.ScraperResult
         Dim epDetails As New MediaContainers.EpisodeDetails
@@ -620,11 +580,43 @@ Public Class ModulesManager
         Next
         Return Langs
     End Function
+    Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
+        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            ret = _externaltvScraperModule.ProcessorModule.Scraper(ShowID, ShowTitle, TVDBID, Lang, Options)
+            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            If ret.breakChain Then Exit For
+        Next
+        Return ret.Cancelled
+    End Function
+    Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Boolean
+        Dim ret As EmberAPI.Interfaces.ScraperResult
+        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            ret = _externaltvScraperModule.ProcessorModule.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
+            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            If ret.breakChain Then Exit For
+        Next
+        Return ret.Cancelled
+    End Function
 
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+        Dim epDetails As New MediaContainers.EpisodeDetails
+        Dim ret As EmberAPI.Interfaces.ScraperResult
+        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.IsScraper AndAlso e.ScraperEnabled)
+            AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            ret = _externaltvScraperModule.ProcessorModule.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options, epDetails)
+            'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
+            If ret.breakChain Then Exit For
+        Next
+        Return epDetails
+    End Function
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)
 
-        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
+        For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalProcessorModule.AssemblyName
             t.AssemblyFileName = _externalProcessorModule.AssemblyFileName
