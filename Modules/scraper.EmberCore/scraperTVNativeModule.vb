@@ -8,7 +8,7 @@ Public Class EmberNativeTVScraperModule
     Implements EmberAPI.Interfaces.EmberTVScraperModule
 
     Private _Name As String = "Ember Native TV Scraper"
-    Public Shared TVScraper As New TVDB.Scraper
+    Public Shared TVScraper As New Scraper
     Public Sub Init() Implements EmberAPI.Interfaces.EmberTVScraperModule.Init
 
     End Sub
