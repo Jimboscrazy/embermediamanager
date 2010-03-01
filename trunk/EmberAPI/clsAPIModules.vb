@@ -135,6 +135,7 @@ Public Class ModulesManager
         Public IsPostScraper As Boolean
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
+        Public assembly As System.Reflection.Assembly
     End Class
 
     Public RuntimeObjects As New EmberRuntimeObjects
@@ -294,6 +295,7 @@ Public Class ModulesManager
                             ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberTVScraperModule)
                             'Add the activated module to the arraylist
                             Dim _externaltvScraperModule As New _externalTVScraperModuleClass
+                            _externaltvScraperModule.assembly = assembly
                             _externaltvScraperModule.ProcessorModule = ProcessorModule
                             _externaltvScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externaltvScraperModule.AssemblyFileName = Path.GetFileName(file)
