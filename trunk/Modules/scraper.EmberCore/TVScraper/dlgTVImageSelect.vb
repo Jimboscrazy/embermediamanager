@@ -477,7 +477,9 @@ Public Class dlgTVImageSelect
         Else
             tImage = DirectCast(sender, PictureBox).Image
         End If
-        Scraper.sObject.PassEvent(EmberAPI.Enums.ScraperEventType.ImageView, 0, tImage)
+
+        ModulesManager.Instance.RuntimeObjects.InvokeImageViewer(tImage)
+
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)

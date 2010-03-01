@@ -190,7 +190,6 @@ Public Class Enums
         SelectImages = 8
         Verifying = 9
         Cancelled = 10
-        ImageView = 11
     End Enum
 
 
