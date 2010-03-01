@@ -39,7 +39,11 @@ Public Class ModulesManager
             Return Singleton
         End Get
     End Property
-
+    Structure AssemblyListItem
+        Public AssemblyName As String
+        Public Assembly As System.Reflection.Assembly
+    End Structure
+    Public Shared AssemblyList As New List(Of AssemblyListItem)
     Class EmberRuntimeObjects
 
         'all runtime object including Function (delegate) that need to be exposed to Modules
@@ -167,6 +171,10 @@ Public Class ModulesManager
                                 ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberExternalModule)
                                 'Add the activated module to the arraylist
                                 Dim _externalProcessorModule As New _externalProcessorModuleClass
+                                Dim filename As String = file
+                                If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                    AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                                End If
                                 _externalProcessorModule.ProcessorModule = ProcessorModule
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
@@ -223,6 +231,10 @@ Public Class ModulesManager
                             ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieScraperModule)
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
+                            Dim filename As String = file
+                            If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                            End If
                             _externalScraperModule.ProcessorModule = ProcessorModule
                             _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
@@ -295,6 +307,11 @@ Public Class ModulesManager
                             ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberTVScraperModule)
                             'Add the activated module to the arraylist
                             Dim _externaltvScraperModule As New _externalTVScraperModuleClass
+                            Dim filename As String = file
+                            If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                            End If
+
                             _externaltvScraperModule.assembly = assembly
                             _externaltvScraperModule.ProcessorModule = ProcessorModule
                             _externaltvScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
