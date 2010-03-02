@@ -4184,7 +4184,6 @@ Public Class frmMain
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
                 .SettingsToolStripMenuItem.Text = Master.eLang.GetString(4, "&Settings...")
-                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(754, "Module Settings")
                 .HelpToolStripMenuItem.Text = Master.eLang.GetString(5, "&Help")
                 .AboutToolStripMenuItem.Text = Master.eLang.GetString(6, "&About...")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
@@ -4378,7 +4377,6 @@ Public Class frmMain
                 .cmnuDeleteTVEp.Text = Master.eLang.GetString(773, "Delete Episode")
                 .DonateToolStripMenuItem.Text = Master.eLang.GetString(792, "Donate")
                 .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
-                .ModuleSettingToolStripMenuItem.Text = Master.eLang.GetString(794, "&Module Settings...")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -7028,11 +7026,6 @@ doCancel:
             dImgView.ShowDialog(_Image)
         End Using
     End Sub
-
-    Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
-        ModulesManager.Instance.Setup()
-    End Sub
-
     Private Sub SetAVImages(ByVal aImage As Image())
         Try
             Me.pbResolution.Image = aImage(0)

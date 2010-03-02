@@ -22,29 +22,43 @@ Imports EmberAPI
 Public Class MovieExporterModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
-    Private enabled As Boolean = False
+    Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
-    Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
+    Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         'Dim _setup As New frmSetup
         '_setup.ShowDialog()
+        Return 0
+    End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+
     End Sub
-    Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
-        If Not enabled Then
-            Dim tmpExportMovies As New dlgExportMovies
-            MyMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
-            MyMenu.Text = "Export Movie List"
-            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
-            tsi.DropDownItems.Add(MyMenu)
-            enabled = True
-            tmpExportMovies.Dispose()
-        End If
+
+    Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
+        Get
+            Return _enabled
+        End Get
+        Set(ByVal value As Boolean)
+            _enabled = value
+            If _enabled Then
+                Enable()
+            Else
+                disable()
+            End If
+        End Set
+    End Property
+
+    Sub Enable()
+        Dim tmpExportMovies As New dlgExportMovies
+        MyMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
+        MyMenu.Text = "Export Movie List"
+        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyMenu)
+        tmpExportMovies.Dispose()
+
     End Sub
-    Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
-        If enabled Then
-            Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
-            tsi.DropDownItems.Remove(MyMenu)
-            enabled = False
-        End If
+    Sub Disable()
+        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyMenu)
     End Sub
     Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
         emmRuntimeObjects = emm

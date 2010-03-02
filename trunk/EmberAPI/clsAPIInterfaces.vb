@@ -1,9 +1,9 @@
 ﻿Public Class Interfaces
     ' Interfaces for external Modules
     Public Interface EmberExternalModule
-        Sub Enable()
-        Sub Disable()
-        Sub Setup()
+        Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer
+        Sub SaveSetup()
+        Property Enabled() As Boolean
         Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects)
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
