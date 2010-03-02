@@ -868,7 +868,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
         Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
@@ -919,19 +919,19 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdaterTrailer.CheckedChanged
+    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress
+    Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged
+    Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
+    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -983,7 +983,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
+    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1024,7 +1024,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
+    Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1066,7 +1066,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
+    Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1629,7 +1629,7 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveRegex()
     End Sub
 
-    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
+    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -4071,7 +4071,7 @@ Public Class dlgSettings
         For Each pPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(s) s.Type = sType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
             pNode = New TreeNode(pPanel.Text, pPanel.ImageIndex, pPanel.ImageIndex)
             pNode.Name = pPanel.Name
-            For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = sType AndAlso p.Parent = pPanel.Name).OrderBy(Function(s) s.Order)
+            For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = sType AndAlso p.Parent = pNode.Name).OrderBy(Function(s) s.Order)
                 cNode = New TreeNode(cPanel.Text, cPanel.ImageIndex, cPanel.ImageIndex)
                 cNode.Name = cPanel.Name
                 pNode.Nodes.Add(cNode)
@@ -4116,18 +4116,18 @@ Public Class dlgSettings
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlImages", _
-                      .Text = Master.eLang.GetString(557, "Scraper - Images"), _
+                      .Text = Master.eLang.GetString(557, "Scraper - Media"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
                       .Panel = Me.pnlImages, _
                       .Order = 400})
-        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                      .Name = "pnlTrailers", _
-                      .Text = Master.eLang.GetString(799, "Scraper - Trailers"), _
-                      .ImageIndex = 8, _
-                      .Type = Master.eLang.GetString(36, "Movies"), _
-                      .Panel = Me.pnlTrailers, _
-                      .Order = 500})
+        'Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+        '              .Name = "pnlTrailers", _
+        '              .Text = Master.eLang.GetString(799, "Scraper - Trailers"), _
+        '              .ImageIndex = 8, _
+        '              .Type = Master.eLang.GetString(36, "Movies"), _
+        '              .Panel = Me.pnlTrailers, _
+        '              .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlShows", _
                       .Text = Master.eLang.GetString(38, "General"), _
@@ -4151,7 +4151,7 @@ Public Class dlgSettings
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlTVImages", _
-                      .Text = Master.eLang.GetString(557, "Scraper - Images"), _
+                      .Text = Master.eLang.GetString(557, "Scraper - Media"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
                       .Panel = Me.pnlTVImages, _
@@ -4179,7 +4179,7 @@ Public Class dlgSettings
                       .Order = 300})
 
         'MODULES - Add method to add settings panel from module - Order = position
-
+        AddScraperPanels()
         'Example of adding item as a child:
         'Me.SettingsPanels.Add(New SettingsPanel With { _
         '                      .Name = "pnlTest", _
@@ -4190,6 +4190,37 @@ Public Class dlgSettings
         '                      .Order = 100, _
         '                      .Parent = "pnlGeneral"})
     End Sub
+    Sub AddScraperPanels()
+        Dim scraperCount As Integer = 1
+        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
+            If s.ProcessorModule.IsScraper Then
+                Dim pnlExtScraper As New Panel
+                pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-Scraper")
+                Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                              .Name = pnlExtScraper.Name, _
+                              .Text = s.ProcessorModule.ModuleName, _
+                              .ImageIndex = 3, _
+                              .Type = Master.eLang.GetString(36, "Movies"), _
+                              .Panel = pnlExtScraper, _
+                              .Order = 100 * scraperCount, _
+                              .Parent = "pnlScraper"})
+            End If
+            If s.ProcessorModule.IsPostScraper Then
+                Dim pnlExtScraper As New Panel
+                pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-PostScraper")
+                Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                              .Name = pnlExtScraper.Name, _
+                              .Text = pnlExtScraper.Name, _
+                              .ImageIndex = 3, _
+                              .Type = Master.eLang.GetString(36, "Movies"), _
+                              .Panel = pnlExtScraper, _
+                              .Order = 100 * scraperCount, _
+                              .Parent = "pnlImages"})
+            End If
+
+        Next
+    End Sub
+
 
     Private Sub RemoveCurrPanel()
         If Me.pnlMain.Controls.Count > 0 Then
