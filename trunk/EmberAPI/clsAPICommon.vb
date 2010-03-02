@@ -20,6 +20,7 @@
 
 Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Xml.Serialization
 
 Public Class Containers
     Public Class TVLanguage
@@ -102,6 +103,7 @@ Public Class Containers
         Dim _text As String
         Dim _imageindex As Integer
         Dim _type As String
+
         Dim _panel As Panel
         Dim _order As Integer
         Dim _parent As String
@@ -141,7 +143,7 @@ Public Class Containers
                 Me._type = value
             End Set
         End Property
-
+        <XmlIgnore()> _
         Public Property Panel() As Panel
             Get
                 Return Me._panel

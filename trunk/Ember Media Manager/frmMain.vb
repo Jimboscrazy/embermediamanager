@@ -370,10 +370,16 @@ Public Class frmMain
     End Sub
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
-        Return ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
+        Dim asm As Assembly = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
+        If asm Is Nothing Then
+            asm = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name.Split(Convert.ToChar("."))(0)).Assembly
+        End If
+        Return asm
     End Function
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
+        ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
+                .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
         AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
         Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
