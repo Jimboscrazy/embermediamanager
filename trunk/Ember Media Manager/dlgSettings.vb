@@ -31,6 +31,9 @@ Public Class dlgSettings
     Private TVMeta As New List(Of Settings.MetadataPerType)
     Private LangChanged As Boolean = False
     Private ShowRegex As List(Of Settings.TVShowRegEx)
+    Private SettingsPanels As New List(Of Containers.SettingsPanel)
+    Private currPanel As New Panel
+    Private currText As String = String.Empty
 
 #Region "Form/Controls"
 
@@ -103,10 +106,10 @@ Public Class dlgSettings
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.SetUp()
 
-            tvSettings.ExpandAll()
-            tvSettings.SelectedNode = tvSettings.Nodes(0)
+            Functions.PNLDoubleBuffer(Me.pnlMain)
+
+            Me.SetUp()
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -128,6 +131,7 @@ Public Class dlgSettings
             Me.FillSettings()
 
             Me.SetApplyButton(False)
+            Me.LangChanged = False
 
             Me.sResult.NeedsUpdate = False
             sResult.NeedsRefresh = False
@@ -598,18 +602,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkUseCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -644,47 +636,17 @@ Public Class dlgSettings
     End Sub
 
     Private Sub tvSettings_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettings.AfterSelect
-        lblCurrent.Text = tvSettings.SelectedNode.Text
 
-        pnlGeneral.Visible = False
-        pnlXBMCCom.Visible = False
-        pnlMovies.Visible = False
-        pnlSources.Visible = False
-        pnlScraper.Visible = False
-        pnlTrailers.Visible = False
-        pnlExtensions.Visible = False
-        pnlImages.Visible = False
-        pnlShows.Visible = False
-        pnlTVSources.Visible = False
-        pnlTVScraper.Visible = False
-        pnlTVImages.Visible = False
+        Me.pbCurrent.Image = Me.ilSettings.Images(Me.tvSettings.SelectedNode.ImageIndex)
+        Me.lblCurrent.Text = String.Format("{0} - {1}", Me.currText, Me.tvSettings.SelectedNode.Text)
 
-        Select Case tvSettings.SelectedNode.Name
-            Case "nGeneral"
-                pnlGeneral.Visible = True
-            Case "nXBMCCom"
-                pnlXBMCCom.Visible = True
-            Case "nMovies"
-                pnlMovies.Visible = True
-            Case "nSources"
-                pnlSources.Visible = True
-            Case "nScraper"
-                pnlScraper.Visible = True
-            Case "nTrailers"
-                pnlTrailers.Visible = True
-            Case "nExts"
-                pnlExtensions.Visible = True
-            Case "nImages"
-                pnlImages.Visible = True
-            Case "nTV"
-                pnlShows.Visible = True
-            Case "nTVSources"
-                pnlTVSources.Visible = True
-            Case "nTVScraper"
-                pnlTVScraper.Visible = True
-            Case "nTVImages"
-                pnlTVImages.Visible = True
-        End Select
+        Me.RemoveCurrPanel()
+
+        Me.currPanel = Me.SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettings.SelectedNode.Name).Panel
+        Me.currPanel.Location = New Point(0, 0)
+        Me.pnlMain.Controls.Add(Me.currPanel)
+        Me.currPanel.Visible = True
+
     End Sub
 
     Private Sub lbXBMCCom_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbXBMCCom.KeyDown
@@ -794,15 +756,7 @@ Public Class dlgSettings
         Me.RemoveXCom()
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkNoSpoilers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSpoilers.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -828,10 +782,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkUpdates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdates.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkXBMCCompatibility_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1737,10 +1687,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkShowFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub cbShowFanartSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbShowFanartSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1920,10 +1866,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkEpisodeNfoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeNfoCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chEpPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -3793,26 +3735,6 @@ Public Class dlgSettings
         Me.lvMovies.Columns(4).Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.lvMovies.Columns(5).Text = Master.eLang.GetString(413, "Single Video")
 
-        Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
-        Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
-        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(421, "Communication")
-        Me.tvSettings.Nodes(1).Text = Master.eLang.GetString(36, "Movies")
-        Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
-        Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
-        Me.tvSettings.Nodes(1).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
-        Me.tvSettings.Nodes(1).Nodes(3).Text = Master.eLang.GetString(799, "Scraper - Trailers")
-        Me.tvSettings.Nodes(2).Text = Master.eLang.GetString(698, "TV Shows")
-        Me.tvSettings.Nodes(2).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
-        Me.tvSettings.Nodes(2).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
-        Me.tvSettings.Nodes(2).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
-
-        If Not IsNothing(tvSettings.SelectedNode) Then
-            Me.lblCurrent.Text = tvSettings.SelectedNode.Text
-        Else
-            Me.lblCurrent.Text = Master.eLang.GetString(38, "General")
-        End If
-
-        Me.TabPage1.Text = Master.eLang.GetString(38, "General")
         Me.TabPage3.Text = Master.eLang.GetString(38, "General")
         Me.TabPage4.Text = Master.eLang.GetString(699, "Regex")
         Me.TabPage5.Text = Master.eLang.GetString(700, "TV Show")
@@ -3831,7 +3753,11 @@ Public Class dlgSettings
 
         Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
 
-        LoadTrailerQualities()
+        Me.LoadTrailerQualities()
+
+        Me.AddPanels()
+        Me.AddButtons()
+
     End Sub
 
     Private Sub RemoveSortToken()
@@ -4067,4 +3993,207 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub AddButtons()
+
+        Dim TSBs As New List(Of ToolStripButton)
+        Dim TSB As ToolStripButton
+        Dim ButtonsWidth As Integer = 0
+
+        Me.ToolStrip1.Items.Clear()
+
+        'first create all the buttons so we can get their size to calculate the spacer
+        TSB = New ToolStripButton With { _
+                                .Text = Master.eLang.GetString(390, "Options"), _
+                                .Image = My.Resources.General, _
+                                .TextImageRelation = TextImageRelation.ImageAboveText, _
+                                .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+                                .Tag = 100}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        TSB = New ToolStripButton With { _
+                                .Text = Master.eLang.GetString(36, "Movies"), _
+                                .Image = My.Resources.Movie, _
+                                .TextImageRelation = TextImageRelation.ImageAboveText, _
+                                .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+                                .Tag = 200}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        TSB = New ToolStripButton With { _
+                                .Text = Master.eLang.GetString(698, "TV Shows"), _
+                                .Image = My.Resources.TVShows, _
+                                .TextImageRelation = TextImageRelation.ImageAboveText, _
+                                .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+                                .Tag = 300}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        TSB = New ToolStripButton With { _
+                                .Text = Master.eLang.GetString(999, "Modules"), _
+                                .Image = My.Resources.Modules, _
+                                .TextImageRelation = TextImageRelation.ImageAboveText, _
+                                .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+                                .Tag = 400}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        'MODULES - Add method to add button from modules - Tag = position
+
+        If TSBs.Count > 0 Then
+            'calculate the spacer width
+            For Each tsbWidth As ToolStripButton In TSBs
+                ButtonsWidth += tsbWidth.Width
+            Next
+
+            Dim sSpacer As String = New String(Convert.ToChar(" "), Convert.ToInt32(((Me.ToolStrip1.Width - ButtonsWidth) / (TSBs.Count + 1)) / 4))
+
+            'add it all
+            For Each tButton As ToolStripButton In TSBs.OrderBy(Function(b) Convert.ToInt32(b.Tag))
+                If sSpacer.Length > 0 Then Me.ToolStrip1.Items.Add(New ToolStripLabel With {.Text = sSpacer})
+                Me.ToolStrip1.Items.Add(tButton)
+            Next
+
+            'set default page
+            Me.currText = TSBs.Item(0).Text
+            Me.FillList(currText)
+        End If
+    End Sub
+
+    Private Sub ToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        currText = DirectCast(sender, ToolStripButton).Text
+        Me.FillList(currText)
+    End Sub
+
+    Private Sub FillList(ByVal sType As String)
+        Dim pNode As New TreeNode
+        Dim cNode As New TreeNode
+
+        Me.tvSettings.Nodes.Clear()
+        Me.RemoveCurrPanel()
+
+        For Each pPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(s) s.Type = sType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
+            pNode = New TreeNode(pPanel.Text, pPanel.ImageIndex, pPanel.ImageIndex)
+            pNode.Name = pPanel.Name
+            For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = sType AndAlso p.Parent = pPanel.Name).OrderBy(Function(s) s.Order)
+                cNode = New TreeNode(cPanel.Text, cPanel.ImageIndex, cPanel.ImageIndex)
+                cNode.Name = cPanel.Name
+                pNode.Nodes.Add(cNode)
+            Next
+            Me.tvSettings.Nodes.Add(pNode)
+        Next
+
+        If Me.tvSettings.Nodes.Count > 0 Then
+            Me.tvSettings.ExpandAll()
+            Me.tvSettings.SelectedNode = Me.tvSettings.Nodes(0)
+        Else
+            Me.pbCurrent.Image = Nothing
+            Me.lblCurrent.Text = String.Empty
+        End If
+
+    End Sub
+
+    Private Sub AddPanels()
+
+        Me.SettingsPanels.Clear()
+
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlMovies", _
+                      .Text = Master.eLang.GetString(38, "General"), _
+                      .ImageIndex = 2, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = Me.pnlMovies, _
+                      .Order = 100})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlSources", _
+                      .Text = Master.eLang.GetString(555, "Files and Sources"), _
+                      .ImageIndex = 5, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = Me.pnlSources, _
+                      .Order = 200})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlScraper", _
+                      .Text = Master.eLang.GetString(556, "Scraper - Data"), _
+                      .ImageIndex = 3, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = Me.pnlScraper, _
+                      .Order = 300})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlImages", _
+                      .Text = Master.eLang.GetString(557, "Scraper - Images"), _
+                      .ImageIndex = 6, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = Me.pnlImages, _
+                      .Order = 400})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTrailers", _
+                      .Text = Master.eLang.GetString(799, "Scraper - Trailers"), _
+                      .ImageIndex = 8, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = Me.pnlTrailers, _
+                      .Order = 500})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlShows", _
+                      .Text = Master.eLang.GetString(38, "General"), _
+                      .ImageIndex = 7, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = Me.pnlShows, _
+                      .Order = 100})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTVSources", _
+                      .Text = Master.eLang.GetString(555, "Files and Sources"), _
+                      .ImageIndex = 5, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = Me.pnlTVSources, _
+                      .Order = 200})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTVScraper", _
+                      .Text = Master.eLang.GetString(556, "Scraper - Data"), _
+                      .ImageIndex = 3, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = Me.pnlTVScraper, _
+                      .Order = 300})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTVImages", _
+                      .Text = Master.eLang.GetString(557, "Scraper - Images"), _
+                      .ImageIndex = 6, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = Me.pnlTVImages, _
+                      .Order = 400})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlGeneral", _
+                      .Text = Master.eLang.GetString(38, "General"), _
+                      .ImageIndex = 0, _
+                      .Type = Master.eLang.GetString(390, "Options"), _
+                      .Panel = Me.pnlGeneral, _
+                      .Order = 100})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlExtensions", _
+                      .Text = Master.eLang.GetString(553, "File System"), _
+                      .ImageIndex = 4, _
+                      .Type = Master.eLang.GetString(390, "Options"), _
+                      .Panel = Me.pnlExtensions, _
+                      .Order = 200})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlXBMCCom", _
+                      .Text = Master.eLang.GetString(421, "Communication"), _
+                      .ImageIndex = 1, _
+                      .Type = Master.eLang.GetString(390, "Options"), _
+                      .Panel = Me.pnlXBMCCom, _
+                      .Order = 300})
+
+        'MODULES - Add method to add settings panel from module - Order = position
+
+        'Example of adding item as a child:
+        'Me.SettingsPanels.Add(New SettingsPanel With { _
+        '                      .Name = "pnlTest", _
+        '                      .Text = "TEST", _
+        '                      .ImageIndex = 1, _
+        '                      .Type = "Options", _
+        '                      .Panel = Me.pnlMovies, _
+        '                      .Order = 100, _
+        '                      .Parent = "pnlGeneral"})
+    End Sub
+
+    Private Sub RemoveCurrPanel()
+        If Me.pnlMain.Controls.Count > 0 Then
+            Me.pnlMain.Controls.Remove(Me.currPanel)
+        End If
+    End Sub
 End Class

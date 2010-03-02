@@ -96,6 +96,93 @@ Public Class Containers
             _fanart.Clear()
         End Sub
     End Class
+
+    Public Class SettingsPanel
+        Dim _name As String
+        Dim _text As String
+        Dim _imageindex As Integer
+        Dim _type As String
+        Dim _panel As Panel
+        Dim _order As Integer
+        Dim _parent As String
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public Property Text() As String
+            Get
+                Return Me._text
+            End Get
+            Set(ByVal value As String)
+                Me._text = value
+            End Set
+        End Property
+
+        Public Property ImageIndex() As Integer
+            Get
+                Return Me._imageindex
+            End Get
+            Set(ByVal value As Integer)
+                Me._imageindex = value
+            End Set
+        End Property
+
+        Public Property Type() As String
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As String)
+                Me._type = value
+            End Set
+        End Property
+
+        Public Property Panel() As Panel
+            Get
+                Return Me._panel
+            End Get
+            Set(ByVal value As Panel)
+                Me._panel = value
+            End Set
+        End Property
+
+        Public Property Order() As Integer
+            Get
+                Return Me._order
+            End Get
+            Set(ByVal value As Integer)
+                Me._order = value
+            End Set
+        End Property
+
+        Public Property Parent() As String
+            Get
+                Return Me._parent
+            End Get
+            Set(ByVal value As String)
+                Me._parent = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._name = String.Empty
+            Me._text = String.Empty
+            Me._imageindex = 0
+            Me._type = String.Empty
+            Me._panel = New Panel
+            Me._order = 0
+            Me._parent = String.Empty
+        End Sub
+    End Class
 End Class
 
 Public Class Enums

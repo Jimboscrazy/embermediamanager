@@ -23,6 +23,7 @@
 'TODO: Automatic scrapers
 'TODO: Change Show
 'TODO: Check Season lock and mark when adding new episodes
+'TODO: Add search and manual entry to tv search results dialog
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
 
