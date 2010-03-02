@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmNativeSetupInfo
+Partial Class frmInfoSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmNativeSetupInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNativeSetupInfo))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmInfoSettingsHolder))
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.lblVersion = New System.Windows.Forms.Label
@@ -60,16 +60,17 @@ Partial Class frmNativeSetupInfo
         Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.pnlSettings = New System.Windows.Forms.Panel
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(0, 334)
         Me.PictureBox1.Name = "PictureBox1"
@@ -80,7 +81,6 @@ Partial Class frmNativeSetupInfo
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
         Me.Label1.Location = New System.Drawing.Point(37, 336)
@@ -489,26 +489,34 @@ Partial Class frmNativeSetupInfo
         Me.Panel1.Controls.Add(Me.cbEnabled)
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(596, 25)
+        Me.Panel1.Size = New System.Drawing.Size(1125, 25)
         Me.Panel1.TabIndex = 81
         '
-        'frmNativeSetupInfo
+        'pnlSettings
+        '
+        Me.pnlSettings.Controls.Add(Me.Panel1)
+        Me.pnlSettings.Controls.Add(Me.PictureBox1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox30)
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox15)
+        Me.pnlSettings.Controls.Add(Me.gbOptions)
+        Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
+        Me.pnlSettings.TabIndex = 82
+        '
+        'frmInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(594, 368)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.GroupBox30)
-        Me.Controls.Add(Me.GroupBox15)
-        Me.Controls.Add(Me.gbOptions)
+        Me.ClientSize = New System.Drawing.Size(652, 388)
+        Me.Controls.Add(Me.pnlSettings)
         Me.Controls.Add(Me.lblVersion)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmNativeSetupInfo"
+        Me.Name = "frmInfoSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -520,6 +528,7 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox15.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -560,5 +569,6 @@ Partial Class frmNativeSetupInfo
     Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
 
 End Class

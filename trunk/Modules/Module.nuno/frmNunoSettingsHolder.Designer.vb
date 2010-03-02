@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class scraperSetup
+Partial Class frmNunoSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -34,9 +34,11 @@ Partial Class scraperSetup
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.cCheckSubsLanguage = New System.Windows.Forms.CheckBox
         Me.cAddSubMetadata = New System.Windows.Forms.CheckBox
+        Me.pnlSettings = New System.Windows.Forms.Panel
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -47,7 +49,7 @@ Partial Class scraperSetup
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(247, 167)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(436, 296)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -129,7 +131,7 @@ Partial Class scraperSetup
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.tOutline)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(5, 2)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(396, 54)
         Me.GroupBox1.TabIndex = 6
@@ -139,7 +141,7 @@ Partial Class scraperSetup
         '
         Me.GroupBox2.Controls.Add(Me.cCheckSubsLanguage)
         Me.GroupBox2.Controls.Add(Me.cAddSubMetadata)
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 62)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 63)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(396, 71)
         Me.GroupBox2.TabIndex = 7
@@ -167,20 +169,28 @@ Partial Class scraperSetup
         Me.cAddSubMetadata.Text = "Add external subtitle to Meta Data"
         Me.cAddSubMetadata.UseVisualStyleBackColor = True
         '
-        'scraperSetup
+        'pnlSettings
+        '
+        Me.pnlSettings.Controls.Add(Me.GroupBox1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox2)
+        Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(407, 174)
+        Me.pnlSettings.TabIndex = 8
+        '
+        'frmNunoSettingsHolder
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(405, 208)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
+        Me.ClientSize = New System.Drawing.Size(594, 337)
+        Me.Controls.Add(Me.pnlSettings)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "scraperSetup"
+        Me.Name = "frmNunoSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Setup"
@@ -189,6 +199,7 @@ Partial Class scraperSetup
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -204,5 +215,6 @@ Partial Class scraperSetup
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents cCheckSubsLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents cAddSubMetadata As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
 
 End Class

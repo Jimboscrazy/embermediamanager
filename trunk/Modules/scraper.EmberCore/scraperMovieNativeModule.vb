@@ -6,38 +6,33 @@ Imports EmberAPI
 ''' <remarks></remarks>
 Public Class EmberNativeScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
-    Private _SraperEnabled As Boolean = False
-    Private _PostSraperEnabled As Boolean = False
+    Private _ScraperEnabled As Boolean = False
+    Private _PostScraperEnabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
-    Dim _setup As frmNativeSetupInfo
-    Dim _setupPost As New frmNativeSetupMedia
+    Private _setup As New frmInfoSettingsHolder
+    Private _setupPost As New frmMediaSettingsHolder
 
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
-            Return _SraperEnabled
+            Return _ScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _SraperEnabled = value
+            _ScraperEnabled = value
         End Set
     End Property
     Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperEnabled
         Get
-            Return _PostSraperEnabled
+            Return _PostScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _PostSraperEnabled = value
+            _PostScraperEnabled = value
         End Set
     End Property
 
-    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
-        _setup = New frmNativeSetupInfo
-        _setup.TopLevel = False
-        _setup.FormBorderStyle = FormBorderStyle.None
-        p.Controls.Add(_setup)
-        _setup.Top = 0
-        _setup.Width = p.Width
+    Function InjectSetupScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
         LoadSettings()
-        _setup.cbEnabled.Checked = _SraperEnabled
+        _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
         _setup.chkYear.Checked = ConfigOptions.bYear
         _setup.chkMPAA.Checked = ConfigOptions.bMPAA
@@ -67,9 +62,17 @@ Public Class EmberNativeScraperModule
         End If
         _setup.txtIMDBURL.Text = MySettings.IMDBURL
 
-        _setup.Show()
-        Return _setup.Height
+        SPanel.Name = _Name
+        SPanel.Order = 110
+        SPanel.Parent = "pnlScraper"
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
+        SPanel.Text = _Name
+        SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
+        SPanel.Panel = _setup.pnlSettings
+
+        Return SPanel
     End Function
+
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
         If Not String.IsNullOrEmpty(_setup.txtIMDBURL.Text) Then
             MySettings.IMDBURL = Strings.Replace(_setup.txtIMDBURL.Text, "http://", String.Empty)
@@ -105,7 +108,7 @@ Public Class EmberNativeScraperModule
         _setup.Dispose()
     End Sub
     Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-        _setupPost = New frmNativeSetupMedia
+        _setupPost = New frmMediaSettingsHolder
 
         _setupPost.TopLevel = False
         _setupPost.FormBorderStyle = FormBorderStyle.None
