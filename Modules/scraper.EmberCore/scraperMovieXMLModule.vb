@@ -22,15 +22,20 @@ Imports EmberAPI
 Public Class EmberXMLScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
 
-    Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.testSetupScraper
+    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim _setup As New frmXMLSetup
         _setup.TopLevel = False
         _setup.FormBorderStyle = FormBorderStyle.None
         p.Controls.Add(_setup)
-        _setup.Top = 30
+        _setup.Top = 0
         _setup.Show()
         Return _setup.Height
     End Function
+    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+
+        Return 0
+    End Function
+
 
     Sub Init() Implements EmberAPI.Interfaces.EmberMovieScraperModule.Init
 

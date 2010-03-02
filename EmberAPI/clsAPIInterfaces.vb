@@ -15,7 +15,8 @@
     End Structure
 
     Public Interface EmberMovieScraperModule
-        Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer
         Sub SetupScraper()
         Sub SetupPostScraper()
         Sub Init()

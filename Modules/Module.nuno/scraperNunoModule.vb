@@ -6,7 +6,11 @@ Imports System.Web
 
 Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
-    Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.testSetupScraper
+    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        Return 0
+    End Function
+    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+
         Return 0
     End Function
 
