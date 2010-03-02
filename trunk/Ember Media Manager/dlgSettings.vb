@@ -2834,10 +2834,14 @@ Public Class dlgSettings
 
             Master.eSettings.Save()
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
-                If s.IsScraper Then s.ProcessorModule.SaveSetupScraper()
-                If s.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
+                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
+                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
             Next
-
+            For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
+                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
+                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
+            Next
+            ModulesManager.Instance.SaveSettings()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4195,44 +4199,83 @@ Public Class dlgSettings
     End Sub
     Sub AddScraperPanels()
         Dim scraperCount As Integer = 1
-        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
-            If s.ProcessorModule.IsScraper Then
-                Dim pnlExtScraper As New Panel
-                pnlExtScraper.BackColor = Color.White
-                pnlExtScraper.Width = 617
-                pnlExtScraper.Height = 400
-                pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-Scraper")
-                Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                              .Name = pnlExtScraper.Name, _
-                              .Text = s.ProcessorModule.ModuleName, _
-                              .ImageIndex = 3, _
-                              .Type = Master.eLang.GetString(36, "Movies"), _
-                              .Panel = pnlExtScraper, _
-                              .Order = 100 * scraperCount, _
-                              .Parent = "pnlScraper"})
-                pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
-                pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
+            Dim pnlExtScraper As New Panel
+            pnlExtScraper.BackColor = Color.White
+            pnlExtScraper.Width = 617
+            pnlExtScraper.Height = 400
+            pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-Scraper")
+            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                          .Name = pnlExtScraper.Name, _
+                          .Text = s.ProcessorModule.ModuleName, _
+                          .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
+                          .Type = Master.eLang.GetString(36, "Movies"), _
+                          .Panel = pnlExtScraper, _
+                          .Order = 100 * scraperCount, _
+                          .Parent = "pnlScraper"})
+            pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
+            pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+            scraperCount += 1
+        Next
+        scraperCount = 1
+        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
+            Dim pnlExtScraper As New Panel
+            pnlExtScraper.BackColor = Color.White
+            pnlExtScraper.Width = 617
+            pnlExtScraper.Height = 400
 
-            End If
-            If s.ProcessorModule.IsPostScraper Then
-                Dim pnlExtScraper As New Panel
-                pnlExtScraper.BackColor = Color.White
-                pnlExtScraper.Width = 617
-                pnlExtScraper.Height = 400
+            pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-PostScraper")
+            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                          .Name = pnlExtScraper.Name, _
+                          .Text = s.ProcessorModule.ModuleName, _
+                          .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
+                          .Type = Master.eLang.GetString(36, "Movies"), _
+                          .Panel = pnlExtScraper, _
+                          .Order = 100 * scraperCount, _
+                          .Parent = "pnlImages"})
+            pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
+            pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+            scraperCount += 1
+        Next
+        scraperCount = 1
+        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
 
-                pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-PostScraper")
-                Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                              .Name = pnlExtScraper.Name, _
-                              .Text = s.ProcessorModule.ModuleName, _
-                              .ImageIndex = 3, _
-                              .Type = Master.eLang.GetString(36, "Movies"), _
-                              .Panel = pnlExtScraper, _
-                              .Order = 100 * scraperCount, _
-                              .Parent = "pnlImages"})
-                pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
-                pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
-            End If
+            Dim pnlExtScraper As New Panel
+            pnlExtScraper.BackColor = Color.White
+            pnlExtScraper.Width = 617
+            pnlExtScraper.Height = 400
+            pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-TVScraper")
+            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                          .Name = pnlExtScraper.Name, _
+                          .Text = s.ProcessorModule.ModuleName, _
+                          .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
+                          .Type = Master.eLang.GetString(698, "TV Shows"), _
+                          .Panel = pnlExtScraper, _
+                          .Order = 100 * scraperCount, _
+                          .Parent = "pnlTVScraper"})
+            pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
+            pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+            scraperCount += 1
+        Next
+        scraperCount = 1
+        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
+            Dim pnlExtScraper As New Panel
+            pnlExtScraper.BackColor = Color.White
+            pnlExtScraper.Width = 617
+            pnlExtScraper.Height = 400
 
+            pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-TVPostScraper")
+            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                          .Name = pnlExtScraper.Name, _
+                          .Text = s.ProcessorModule.ModuleName, _
+                          .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
+                          .Type = Master.eLang.GetString(698, "TV Shows"), _
+                          .Panel = pnlExtScraper, _
+                          .Order = 100 * scraperCount, _
+                          .Parent = "pnlTVImages"})
+            pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
+            pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+            scraperCount += 1
         Next
     End Sub
 

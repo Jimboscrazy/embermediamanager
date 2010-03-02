@@ -59,10 +59,12 @@ Partial Class frmNativeSetupInfo
         Me.chkOFDBOutline = New System.Windows.Forms.CheckBox
         Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
         Me.cbEnabled = New System.Windows.Forms.CheckBox
+        Me.Panel1 = New System.Windows.Forms.Panel
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox1
@@ -123,7 +125,7 @@ Partial Class frmNativeSetupInfo
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(227, 33)
+        Me.gbOptions.Location = New System.Drawing.Point(227, 40)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(261, 252)
         Me.gbOptions.TabIndex = 77
@@ -390,7 +392,7 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox30.Controls.Add(Me.Label18)
         Me.GroupBox30.Controls.Add(Me.txtIMDBURL)
         Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox30.Location = New System.Drawing.Point(8, 33)
+        Me.GroupBox30.Location = New System.Drawing.Point(8, 40)
         Me.GroupBox30.Name = "GroupBox30"
         Me.GroupBox30.Size = New System.Drawing.Size(213, 69)
         Me.GroupBox30.TabIndex = 79
@@ -422,7 +424,7 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
         Me.GroupBox15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox15.Location = New System.Drawing.Point(8, 107)
+        Me.GroupBox15.Location = New System.Drawing.Point(8, 114)
         Me.GroupBox15.Name = "GroupBox15"
         Me.GroupBox15.Size = New System.Drawing.Size(213, 87)
         Me.GroupBox15.TabIndex = 78
@@ -472,12 +474,23 @@ Partial Class frmNativeSetupInfo
         'cbEnabled
         '
         Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Location = New System.Drawing.Point(8, 10)
+        Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
         Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
         Me.cbEnabled.TabIndex = 80
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.cbEnabled)
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(596, 25)
+        Me.Panel1.TabIndex = 81
         '
         'frmNativeSetupInfo
         '
@@ -485,7 +498,7 @@ Partial Class frmNativeSetupInfo
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(594, 368)
-        Me.Controls.Add(Me.cbEnabled)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.GroupBox30)
         Me.Controls.Add(Me.GroupBox15)
         Me.Controls.Add(Me.gbOptions)
@@ -505,8 +518,9 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox30.ResumeLayout(False)
         Me.GroupBox30.PerformLayout()
         Me.GroupBox15.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
@@ -545,5 +559,6 @@ Partial Class frmNativeSetupInfo
     Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

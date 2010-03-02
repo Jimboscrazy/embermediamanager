@@ -36,9 +36,11 @@ Partial Class frmNativeSetupMedia
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.cbEnabled = New System.Windows.Forms.CheckBox
+        Me.Panel1 = New System.Windows.Forms.Panel
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox1
@@ -58,7 +60,7 @@ Partial Class frmNativeSetupMedia
         Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
         Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
         Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox9.Location = New System.Drawing.Point(11, 116)
+        Me.GroupBox9.Location = New System.Drawing.Point(11, 117)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(184, 100)
         Me.GroupBox9.TabIndex = 71
@@ -105,7 +107,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.GroupBox2.Controls.Add(Me.lbTrailerSites)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(201, 116)
+        Me.GroupBox2.Location = New System.Drawing.Point(201, 117)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(161, 100)
         Me.GroupBox2.TabIndex = 72
@@ -140,7 +142,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.CheckBox1.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.CheckBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(10, 49)
+        Me.CheckBox1.Location = New System.Drawing.Point(10, 50)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(84, 16)
         Me.CheckBox1.TabIndex = 76
@@ -152,7 +154,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(10, 71)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(10, 72)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
         Me.chkAutoThumbs.TabIndex = 75
@@ -164,7 +166,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.chkSingleScrapeImages.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(10, 31)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(10, 32)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 15)
         Me.chkSingleScrapeImages.TabIndex = 74
@@ -176,7 +178,7 @@ Partial Class frmNativeSetupMedia
         '
         Me.chkDownloadTrailer.AutoSize = True
         Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(10, 93)
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(10, 94)
         Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
         Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
         Me.chkDownloadTrailer.TabIndex = 73
@@ -186,12 +188,23 @@ Partial Class frmNativeSetupMedia
         'cbEnabled
         '
         Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Location = New System.Drawing.Point(10, 8)
+        Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
         Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
         Me.cbEnabled.TabIndex = 81
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.cbEnabled)
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(596, 25)
+        Me.Panel1.TabIndex = 82
         '
         'frmNativeSetupMedia
         '
@@ -199,7 +212,7 @@ Partial Class frmNativeSetupMedia
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(594, 368)
-        Me.Controls.Add(Me.cbEnabled)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.chkAutoThumbs)
         Me.Controls.Add(Me.chkSingleScrapeImages)
@@ -218,6 +231,8 @@ Partial Class frmNativeSetupMedia
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -235,5 +250,6 @@ Partial Class frmNativeSetupMedia
     Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

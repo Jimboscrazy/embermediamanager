@@ -9,7 +9,8 @@ Public Class EmberNativeScraperModule
     Private _SraperEnabled As Boolean = False
     Private _PostSraperEnabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
-    Dim _setup As New frmNativeSetupInfo
+    Dim _setup As frmNativeSetupInfo
+    Dim _setupPost As New frmNativeSetupMedia
 
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
@@ -29,10 +30,12 @@ Public Class EmberNativeScraperModule
     End Property
 
     Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        _setup = New frmNativeSetupInfo
         _setup.TopLevel = False
         _setup.FormBorderStyle = FormBorderStyle.None
         p.Controls.Add(_setup)
         _setup.Top = 0
+        _setup.Width = p.Width
         LoadSettings()
         _setup.cbEnabled.Checked = _SraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
@@ -99,20 +102,22 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
 
         SaveSettings()
-
+        _setup.Dispose()
     End Sub
     Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-        Dim _setup As New frmNativeSetupMedia
-        _setup.TopLevel = False
-        _setup.FormBorderStyle = FormBorderStyle.None
-        p.Controls.Add(_setup)
-        _setup.Top = 0
-        _setup.Show()
-        Return _setup.Height
+        _setupPost = New frmNativeSetupMedia
+
+        _setupPost.TopLevel = False
+        _setupPost.FormBorderStyle = FormBorderStyle.None
+        p.Controls.Add(_setupPost)
+        _setupPost.Top = 0
+        _setupPost.Width = p.Width
+        _setupPost.Show()
+        Return _setupPost.Height
         Return 0
     End Function
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
-
+        _setupPost.Dispose()
     End Sub
     Structure _MySettings
         Dim IMDBURL As String
