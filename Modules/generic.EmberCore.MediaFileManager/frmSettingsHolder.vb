@@ -20,7 +20,7 @@
 
 Imports System.Windows.Forms
 
-Public Class frmSetup
+Public Class frmSettingsHolder
     Dim isSelected As Boolean = False
 
     Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged

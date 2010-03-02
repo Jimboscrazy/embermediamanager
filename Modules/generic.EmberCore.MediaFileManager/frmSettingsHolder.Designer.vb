@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmSetup
+Partial Class frmSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmSetup
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSetup))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Me.ListView1 = New System.Windows.Forms.ListView
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
@@ -36,7 +36,9 @@ Partial Class frmSetup
         Me.btnNewSet = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.cbEnabled = New System.Windows.Forms.CheckBox
+        Me.pnlSettings = New System.Windows.Forms.Panel
         Me.Panel1.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
         Me.SuspendLayout()
         '
         'ListView1
@@ -144,7 +146,7 @@ Partial Class frmSetup
         Me.Panel1.Controls.Add(Me.cbEnabled)
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(506, 25)
+        Me.Panel1.Size = New System.Drawing.Size(1115, 25)
         Me.Panel1.TabIndex = 82
         '
         'cbEnabled
@@ -157,22 +159,30 @@ Partial Class frmSetup
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
+        'pnlSettings
+        '
+        Me.pnlSettings.Controls.Add(Me.Panel1)
+        Me.pnlSettings.Controls.Add(Me.ListView1)
+        Me.pnlSettings.Controls.Add(Me.btnRemoveSet)
+        Me.pnlSettings.Controls.Add(Me.Label3)
+        Me.pnlSettings.Controls.Add(Me.btnEditSet)
+        Me.pnlSettings.Controls.Add(Me.Label4)
+        Me.pnlSettings.Controls.Add(Me.btnNewSet)
+        Me.pnlSettings.Controls.Add(Me.TextBox1)
+        Me.pnlSettings.Controls.Add(Me.Button4)
+        Me.pnlSettings.Controls.Add(Me.TextBox2)
+        Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
+        Me.pnlSettings.TabIndex = 83
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(505, 342)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.btnRemoveSet)
-        Me.Controls.Add(Me.btnEditSet)
-        Me.Controls.Add(Me.btnNewSet)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.ListView1)
+        Me.ClientSize = New System.Drawing.Size(625, 342)
+        Me.Controls.Add(Me.pnlSettings)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -182,8 +192,9 @@ Partial Class frmSetup
         Me.Text = "Settings for Media File Manager"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents ListView1 As System.Windows.Forms.ListView
@@ -199,5 +210,6 @@ Partial Class frmSetup
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
 
 End Class

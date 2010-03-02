@@ -107,17 +107,16 @@ Public Class EmberNativeScraperModule
         SaveSettings()
         _setup.Dispose()
     End Sub
-    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-        _setupPost = New frmMediaSettingsHolder
-
-        _setupPost.TopLevel = False
-        _setupPost.FormBorderStyle = FormBorderStyle.None
-        p.Controls.Add(_setupPost)
-        _setupPost.Top = 0
-        _setupPost.Width = p.Width
-        _setupPost.Show()
-        Return _setupPost.Height
-        Return 0
+    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+        Dim Spanel As New Containers.SettingsPanel
+        Spanel.Name = Me._Name
+        Spanel.Text = Me._Name
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        Spanel.Order = 110
+        Spanel.Parent = "pnlImages"
+        Spanel.Panel = Me._setup.pnlSettings
+        Return Spanel
     End Function
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
         _setupPost.Dispose()

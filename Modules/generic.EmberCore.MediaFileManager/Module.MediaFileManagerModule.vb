@@ -38,7 +38,7 @@ Public Class FileManagerExternalModule
     Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
     Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
-    Dim _setup As frmSetup
+    Dim _setup As New frmSettingsHolder
     Private MyPath As String
 
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
@@ -54,13 +54,8 @@ Public Class FileManagerExternalModule
             End If
         End Set
     End Property
-    Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
-        _setup = New frmSetup
-        _setup.TopLevel = False
-        _setup.FormBorderStyle = FormBorderStyle.None
-        p.Controls.Add(_setup)
-        _setup.Top = 0
-        _setup.Width = p.Width
+    Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        Dim SPanel As New Containers.SettingsPanel
         Dim li As ListViewItem
         _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
@@ -74,7 +69,13 @@ Public Class FileManagerExternalModule
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
         Next
         _setup.Show()
-        Return _setup.Height
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(999, "Modules")
+        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = _setup.pnlSettings
+        Return SPanel
     End Function
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Save()
