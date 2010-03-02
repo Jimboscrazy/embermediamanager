@@ -68,7 +68,6 @@ Public Class FileManagerExternalModule
         For Each i As ListViewItem In _setup.ListView1.Items
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
         Next
-        _setup.Show()
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(999, "Modules")
