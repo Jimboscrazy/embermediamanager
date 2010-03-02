@@ -2489,6 +2489,8 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(6, "image.png")
         Me.ilSettings.Images.SetKeyName(7, "television.ico")
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
+        Me.ilSettings.Images.SetKeyName(9, "valid.png")
+        Me.ilSettings.Images.SetKeyName(10, "invalid.png")
         '
         'tvSettings
         '
