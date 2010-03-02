@@ -30,6 +30,7 @@ Imports System.Xml.Serialization
 Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
     Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
+    Private _enabled As Boolean = False
     Private _Name As String = "Media File Manager"
 
     Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
@@ -37,27 +38,53 @@ Public Class FileManagerExternalModule
     Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
     Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
+    Dim _setup As frmSetup
     Private MyPath As String
-    Sub Setup() Implements EmberAPI.Interfaces.EmberExternalModule.Setup
-        Dim _setup As New frmSetup
+
+    Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
+        Get
+            Return _enabled
+        End Get
+        Set(ByVal value As Boolean)
+            _enabled = value
+            If _enabled Then
+                Enable()
+            Else
+                Disable()
+            End If
+        End Set
+    End Property
+    Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        _setup = New frmSetup
+        _setup.TopLevel = False
+        _setup.FormBorderStyle = FormBorderStyle.None
+        p.Controls.Add(_setup)
+        _setup.Top = 0
+        _setup.Width = p.Width
         Dim li As ListViewItem
+        _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
             li = New ListViewItem
             li.Text = e.Name
             li.SubItems.Add(e.FolderPath)
             _setup.ListView1.Items.Add(li)
         Next
-        _setup.ShowDialog()
         eSettings.ModuleSettings.Clear()
         For Each i As ListViewItem In _setup.ListView1.Items
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
         Next
+        _setup.Show()
+        Return _setup.Height
+    End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Save()
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
+        _setup.Dispose()
     End Sub
-    Sub Enable() Implements EmberAPI.Interfaces.EmberExternalModule.Enable
+
+    Sub Enable()
         MyMenu.Text = "Media File Manager"
         MySubMenu1.Text = "Move To"
         MySubMenu1.Tag = "MOVE"
@@ -72,7 +99,7 @@ Public Class FileManagerExternalModule
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
     End Sub
-    Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
+    Sub Disable()
         emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
         emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
     End Sub

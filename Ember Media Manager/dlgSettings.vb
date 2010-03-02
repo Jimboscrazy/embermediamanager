@@ -4198,7 +4198,7 @@ Public Class dlgSettings
         '                      .Parent = "pnlGeneral"})
     End Sub
     Sub AddScraperPanels()
-        Dim scraperCount As Integer = 1
+        Dim ModuleCounter As Integer = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
             Dim pnlExtScraper As New Panel
             pnlExtScraper.BackColor = Color.White
@@ -4211,13 +4211,13 @@ Public Class dlgSettings
                           .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
                           .Type = Master.eLang.GetString(36, "Movies"), _
                           .Panel = pnlExtScraper, _
-                          .Order = 100 * scraperCount, _
+                          .Order = 100 * ModuleCounter, _
                           .Parent = "pnlScraper"})
             pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
             pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
-            scraperCount += 1
+            ModuleCounter += 1
         Next
-        scraperCount = 1
+        ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
             Dim pnlExtScraper As New Panel
             pnlExtScraper.BackColor = Color.White
@@ -4231,13 +4231,13 @@ Public Class dlgSettings
                           .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
                           .Type = Master.eLang.GetString(36, "Movies"), _
                           .Panel = pnlExtScraper, _
-                          .Order = 100 * scraperCount, _
+                          .Order = 100 * ModuleCounter, _
                           .Parent = "pnlImages"})
             pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
             pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
-            scraperCount += 1
+            ModuleCounter += 1
         Next
-        scraperCount = 1
+        ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
 
             Dim pnlExtScraper As New Panel
@@ -4251,13 +4251,13 @@ Public Class dlgSettings
                           .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
                           .Type = Master.eLang.GetString(698, "TV Shows"), _
                           .Panel = pnlExtScraper, _
-                          .Order = 100 * scraperCount, _
+                          .Order = 100 * ModuleCounter, _
                           .Parent = "pnlTVScraper"})
             pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
             pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
-            scraperCount += 1
+            ModuleCounter += 1
         Next
-        scraperCount = 1
+        ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
             Dim pnlExtScraper As New Panel
             pnlExtScraper.BackColor = Color.White
@@ -4271,12 +4271,33 @@ Public Class dlgSettings
                           .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
                           .Type = Master.eLang.GetString(698, "TV Shows"), _
                           .Panel = pnlExtScraper, _
-                          .Order = 100 * scraperCount, _
+                          .Order = 100 * ModuleCounter, _
                           .Parent = "pnlTVImages"})
             pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
             pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
-            scraperCount += 1
+            ModuleCounter += 1
         Next
+        ModuleCounter = 1
+        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+
+            Dim pnlExt As New Panel
+            pnlExt.BackColor = Color.White
+            pnlExt.Width = 617
+            pnlExt.Height = 400
+            pnlExt.Name = String.Concat(s.ProcessorModule.ModuleName, "-Generic")
+            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                          .Name = pnlExt.Name, _
+                          .Text = s.ProcessorModule.ModuleName, _
+                          .ImageIndex = If(s.ProcessorModule.Enabled, 9, 10), _
+                          .Type = Master.eLang.GetString(999, "Modules"), _
+                          .Panel = pnlExt, _
+                          .Order = 100 * ModuleCounter})
+            pnlExt.Height = s.ProcessorModule.InjectSetup(pnlExt) + 5
+            pnlExt.Height = If(pnlExt.Height > 400, pnlExt.Height, 400)
+            ModuleCounter += 1
+        Next
+
+
     End Sub
 
 

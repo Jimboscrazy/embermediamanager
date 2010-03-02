@@ -183,11 +183,7 @@ Public Class ModulesManager
                                 End If
                                 externalProcessorModules.Add(_externalProcessorModule)
                                 ProcessorModule.Init(RuntimeObjects)
-                                If _externalProcessorModule.Enabled Then
-                                    ProcessorModule.Enable()
-                                Else
-                                    ProcessorModule.Disable()
-                                End If
+                                ProcessorModule.Enabled = _externalProcessorModule.Enabled
                             End If
                         Catch ex As Exception
                         End Try
@@ -411,7 +407,7 @@ Public Class ModulesManager
 
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
         For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalProcessorModule.ProcessorModule.Setup()
+            '_externalProcessorModule.ProcessorModule.InjectSetup()
         Next
     End Sub
 
@@ -419,11 +415,7 @@ Public Class ModulesManager
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
             _externalProcessorModule.Enabled = value
-            If value = True Then
-                _externalProcessorModule.ProcessorModule.Enable()
-            Else
-                _externalProcessorModule.ProcessorModule.Disable()
-            End If
+            _externalProcessorModule.ProcessorModule.Enabled = value
         Next
     End Sub
 
