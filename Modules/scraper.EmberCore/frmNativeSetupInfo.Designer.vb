@@ -23,9 +23,6 @@ Partial Class frmNativeSetupInfo
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNativeSetupInfo))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.Cancel_Button = New System.Windows.Forms.Button
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.lblVersion = New System.Windows.Forms.Label
@@ -61,52 +58,18 @@ Partial Class frmNativeSetupInfo
         Me.chkOFDBPlot = New System.Windows.Forms.CheckBox
         Me.chkOFDBOutline = New System.Windows.Forms.CheckBox
         Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.cbEnabled = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(351, 276)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
-        '
-        'Cancel_Button
-        '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
-        '
         'PictureBox1
         '
         Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 273)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 334)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -118,7 +81,7 @@ Partial Class frmNativeSetupInfo
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 275)
+        Me.Label1.Location = New System.Drawing.Point(37, 336)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(225, 31)
         Me.Label1.TabIndex = 24
@@ -160,7 +123,7 @@ Partial Class frmNativeSetupInfo
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(227, 12)
+        Me.gbOptions.Location = New System.Drawing.Point(227, 33)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(261, 252)
         Me.gbOptions.TabIndex = 77
@@ -427,7 +390,7 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox30.Controls.Add(Me.Label18)
         Me.GroupBox30.Controls.Add(Me.txtIMDBURL)
         Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox30.Location = New System.Drawing.Point(8, 12)
+        Me.GroupBox30.Location = New System.Drawing.Point(8, 33)
         Me.GroupBox30.Name = "GroupBox30"
         Me.GroupBox30.Size = New System.Drawing.Size(213, 69)
         Me.GroupBox30.TabIndex = 79
@@ -459,7 +422,7 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
         Me.GroupBox15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox15.Location = New System.Drawing.Point(8, 86)
+        Me.GroupBox15.Location = New System.Drawing.Point(8, 107)
         Me.GroupBox15.Name = "GroupBox15"
         Me.GroupBox15.Size = New System.Drawing.Size(213, 87)
         Me.GroupBox15.TabIndex = 78
@@ -506,20 +469,29 @@ Partial Class frmNativeSetupInfo
         Me.chkOFDBTitle.Text = "Use OFDB Title"
         Me.chkOFDBTitle.UseVisualStyleBackColor = True
         '
+        'cbEnabled
+        '
+        Me.cbEnabled.AutoSize = True
+        Me.cbEnabled.Location = New System.Drawing.Point(8, 10)
+        Me.cbEnabled.Name = "cbEnabled"
+        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.TabIndex = 80
+        Me.cbEnabled.Text = "Enabled"
+        Me.cbEnabled.UseVisualStyleBackColor = True
+        '
         'frmNativeSetupInfo
         '
-        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(501, 307)
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(594, 368)
+        Me.Controls.Add(Me.cbEnabled)
         Me.Controls.Add(Me.GroupBox30)
         Me.Controls.Add(Me.GroupBox15)
         Me.Controls.Add(Me.gbOptions)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -527,7 +499,6 @@ Partial Class frmNativeSetupInfo
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
-        Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
@@ -535,11 +506,9 @@ Partial Class frmNativeSetupInfo
         Me.GroupBox30.PerformLayout()
         Me.GroupBox15.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblVersion As System.Windows.Forms.Label
@@ -575,5 +544,6 @@ Partial Class frmNativeSetupInfo
     Friend WithEvents chkOFDBPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
 
 End Class

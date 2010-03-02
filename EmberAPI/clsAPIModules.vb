@@ -243,8 +243,10 @@ Public Class ModulesManager
 
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ScraperEnabled = i.ScraperEnabled
+                                _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
                                 ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
                                 _externalScraperModule.PostScraperEnabled = i.PostScraperEnabled
+                                _externalScraperModule.ProcessorModule.PostScraperEnabled = i.PostScraperEnabled
                                 PostScraperAnyEnabled = PostScraperAnyEnabled Or i.PostScraperEnabled
                                 _externalScraperModule.ScraperOrder = i.ScraperOrder
                                 _externalScraperModule.PostScraperOrder = i.PostScraperOrder
@@ -320,8 +322,10 @@ Public Class ModulesManager
 
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externaltvScraperModule.AssemblyName)
                                 _externaltvScraperModule.ScraperEnabled = i.ScraperEnabled
+                                _externaltvScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
                                 ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
                                 _externaltvScraperModule.PostScraperEnabled = i.PostScraperEnabled
+                                _externaltvScraperModule.ProcessorModule.PostScraperEnabled = i.PostScraperEnabled
                                 PostScraperAnyEnabled = PostScraperAnyEnabled Or i.PostScraperEnabled
                                 _externaltvScraperModule.ScraperOrder = i.ScraperOrder
                                 _externaltvScraperModule.PostScraperOrder = i.PostScraperOrder
@@ -486,16 +490,6 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Public Sub RunScraperSetup(ByVal ModuleAssembly As String)
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.SetupScraper()
-        Next
-    End Sub
-    Public Sub RunPostScraperSetup(ByVal ModuleAssembly As String)
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalScraperModule.ProcessorModule.SetupPostScraper()
-        Next
-    End Sub
     Function ScraperSelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As Boolean
 
         Dim ret As EmberAPI.Interfaces.ScraperResult

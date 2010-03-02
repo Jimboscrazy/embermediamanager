@@ -103,11 +103,6 @@ Public Class dlgModuleSettings
 
     End Sub
 
-    Private Sub btnScraperSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperSetup.Click
-        If lstScrapers.SelectedItems.Count > 0 Then
-            ModulesManager.RunScraperSetup(lstScrapers.SelectedItems.Item(0).Tag().ToString)
-        End If
-    End Sub
 
     Private Sub lstScrapers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstScrapers.SelectedIndexChanged
         If lstScrapers.SelectedItems.Count > 0 Then
@@ -161,12 +156,6 @@ Public Class dlgModuleSettings
         btnPostScraperEnable.Enabled = True
         lstPostScrapers.SelectedItems.Item(0).SubItems(1).Text = Master.eLang.GetString(775, "Disabled")
         ModulesManager.SetPostScraperEnable(lstPostScrapers.SelectedItems.Item(0).Tag().ToString, False)
-    End Sub
-
-    Private Sub btnPostScraperSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPostScraperSetup.Click
-        If lstPostScrapers.SelectedItems.Count > 0 Then
-            ModulesManager.RunPostScraperSetup(lstPostScrapers.SelectedItems.Item(0).Tag().ToString)
-        End If
     End Sub
 
     Private Sub btnScraperUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnScraperUp.Click

@@ -6208,7 +6208,7 @@ Partial Class dlgSettings
         'Label52
         '
         Me.Label52.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label52.Location = New System.Drawing.Point(1, 373)
+        Me.Label52.Location = New System.Drawing.Point(1, 372)
         Me.Label52.Name = "Label52"
         Me.Label52.Size = New System.Drawing.Size(590, 10)
         Me.Label52.TabIndex = 68
@@ -6219,7 +6219,7 @@ Partial Class dlgSettings
         'Label46
         '
         Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label46.Location = New System.Drawing.Point(2, 386)
+        Me.Label46.Location = New System.Drawing.Point(2, 385)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(590, 10)
         Me.Label46.TabIndex = 19
@@ -7012,7 +7012,7 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.Label46)
         Me.pnlScraper.Location = New System.Drawing.Point(187, 165)
         Me.pnlScraper.Name = "pnlScraper"
-        Me.pnlScraper.Size = New System.Drawing.Size(617, 402)
+        Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 62
         Me.pnlScraper.Visible = False
         '
@@ -7273,7 +7273,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(828, 598)
+        Me.ClientSize = New System.Drawing.Size(828, 751)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)

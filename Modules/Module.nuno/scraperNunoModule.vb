@@ -6,13 +6,50 @@ Imports System.Web
 
 Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
+
+    Private _SraperEnabled As Boolean = False
+    Private _PostSraperEnabled As Boolean = False
+
+    Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
+        Get
+            Return _SraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _SraperEnabled = value
+        End Set
+    End Property
+    Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperEnabled
+        Get
+            Return _PostSraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _PostSraperEnabled = value
+        End Set
+    End Property
+
     Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        Using frmSetup As New scraperSetup
+            frmSetup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
+            frmSetup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
+            frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
+            If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                AdvancedSettings.SetSetting("Language", frmSetup.cLanguage.Text)
+                AdvancedSettings.SetBooleanSetting("Do.Outline", frmSetup.tOutline.Checked)
+                AdvancedSettings.SetBooleanSetting("Do.Plot", frmSetup.tPlot.Checked)
+            End If
+        End Using
         Return 0
     End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
+
+    End Sub
     Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
 
         Return 0
     End Function
+    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
+
+    End Sub
 
     Private MyPath As String
     Private codLang As String
@@ -65,20 +102,8 @@ Public Class NunoScraperModule
     Public Function SelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As EmberAPI.Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Public Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraper
-    End Sub
-    Public Sub SetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraper
-        Using frmSetup As New scraperSetup
-            frmSetup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
-            frmSetup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
-            frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
-            If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                AdvancedSettings.SetSetting("Language", frmSetup.cLanguage.Text)
-                AdvancedSettings.SetBooleanSetting("Do.Outline", frmSetup.tOutline.Checked)
-                AdvancedSettings.SetBooleanSetting("Do.Plot", frmSetup.tPlot.Checked)
-            End If
-        End Using
-    End Sub
+
+
     Public Shared Function Translate(ByVal codLang As String, ByVal txt As String) As String
         Dim ret As String = String.Empty
         Try
@@ -113,8 +138,6 @@ Public Class NunoScraperModule
 
         Return ret
     End Function
-
-
 End Class
 
 
