@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EF6A550E-DD76-4F4D-8250-8598140F828B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -169,16 +169,16 @@
     <Compile Include="Scraper\dlgTrailerFormat.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmNativeSetupMedia.Designer.vb">
-      <DependentUpon>frmNativeSetupMedia.vb</DependentUpon>
+    <Compile Include="frmMediaSettingsHolder.Designer.vb">
+      <DependentUpon>frmMediaSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmNativeSetupMedia.vb">
+    <Compile Include="frmMediaSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmXMLSetup.Designer.vb">
-      <DependentUpon>frmXMLSetup.vb</DependentUpon>
+    <Compile Include="frmXMLSettingsHolder.Designer.vb">
+      <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmXMLSetup.vb">
+    <Compile Include="frmXMLSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -196,10 +196,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmNativeSetupInfo.Designer.vb">
-      <DependentUpon>frmNativeSetupInfo.vb</DependentUpon>
+    <Compile Include="frmInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmInfoSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmNativeSetupInfo.vb">
+    <Compile Include="frmInfoSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="scraperMovieNativeModule.vb" />
@@ -241,16 +241,16 @@
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmNativeSetupMedia.resx">
-      <DependentUpon>frmNativeSetupMedia.vb</DependentUpon>
+    <EmbeddedResource Include="frmMediaSettingsHolder.resx">
+      <DependentUpon>frmMediaSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmNativeSetupInfo.resx">
-      <DependentUpon>frmNativeSetupInfo.vb</DependentUpon>
+    <EmbeddedResource Include="frmInfoSettingsHolder.resx">
+      <DependentUpon>frmInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmXMLSetup.resx">
-      <DependentUpon>frmXMLSetup.vb</DependentUpon>
+    <EmbeddedResource Include="frmXMLSettingsHolder.resx">
+      <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

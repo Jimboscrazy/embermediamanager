@@ -4199,22 +4199,11 @@ Public Class dlgSettings
     End Sub
     Sub AddScraperPanels()
         Dim ModuleCounter As Integer = 1
+        Dim tPanel As New Containers.SettingsPanel
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
-            Dim pnlExtScraper As New Panel
-            pnlExtScraper.BackColor = Color.White
-            pnlExtScraper.Width = 617
-            pnlExtScraper.Height = 400
-            pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-Scraper")
-            Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                          .Name = pnlExtScraper.Name, _
-                          .Text = s.ProcessorModule.ModuleName, _
-                          .ImageIndex = If(s.ProcessorModule.ScraperEnabled, 9, 10), _
-                          .Type = Master.eLang.GetString(36, "Movies"), _
-                          .Panel = pnlExtScraper, _
-                          .Order = 100 * ModuleCounter, _
-                          .Parent = "pnlScraper"})
-            pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
-            pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
+            tPanel = s.ProcessorModule.InjectSetupScraper
+            tPanel.Order += ModuleCounter
+            Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
         Next
         ModuleCounter = 1

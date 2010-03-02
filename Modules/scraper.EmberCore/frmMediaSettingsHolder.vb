@@ -20,6 +20,6 @@
 
 Imports System.Windows.Forms
 
-Public Class frmNativeSetupMedia
+Public Class frmMediaSettingsHolder
 
 End Class

@@ -115,20 +115,22 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
+        Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalGenericModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
+        Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Interfaces.EmberMovieScraperModule 'Object
-
         Public AssemblyName As String
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
+        Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalTVScraperModuleClass
         Public ProcessorModule As Interfaces.EmberTVScraperModule  'Object
@@ -136,6 +138,7 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
+        Public SettingsPanel As Containers.SettingsPanel
     End Class
 
 

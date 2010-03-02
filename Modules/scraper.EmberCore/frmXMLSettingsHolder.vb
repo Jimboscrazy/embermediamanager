@@ -20,6 +20,6 @@
 
 Imports System.Windows.Forms
 
-Public Class frmXMLSetup
+Public Class frmXMLSettingsHolder
 
 End Class

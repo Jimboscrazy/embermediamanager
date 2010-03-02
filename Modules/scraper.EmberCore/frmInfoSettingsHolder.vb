@@ -20,15 +20,13 @@
 
 Imports System.Windows.Forms
 
-Public Class frmNativeSetupInfo
-    Private Sub gbOptions_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles gbOptions.Enter
+Public Class frmInfoSettingsHolder
 
+    Private Sub frmInfoSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
     End Sub
 
-    Private Sub frmNativeSetupInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
-    End Sub
-    Sub SetUp()
+    Private Sub SetUp()
         Me.chkOFDBGenre.Text = Master.eLang.GetString(474, "Use OFDB Genre")
         Me.chkOFDBPlot.Text = Master.eLang.GetString(475, "Use OFDB Plot")
         Me.chkOFDBOutline.Text = Master.eLang.GetString(476, "Use OFDB Outline")
@@ -57,4 +55,5 @@ Public Class frmNativeSetupInfo
         Me.Label46.Text = Master.eLang.GetString(797, "*Scrape Full Crew Must Be Enabled")
         Me.Label1.Text = Master.eLang.GetString(9999, "This are Scraper specific Settings, and act as a filter.\nYou should check Ember Global Setting also.").Replace("\n", vbCrLf)
     End Sub
+
 End Class

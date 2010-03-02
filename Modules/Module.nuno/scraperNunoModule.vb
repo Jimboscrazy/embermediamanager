@@ -7,38 +7,46 @@ Imports System.Web
 Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
 
-    Private _SraperEnabled As Boolean = False
-    Private _PostSraperEnabled As Boolean = False
+    Private _ScraperEnabled As Boolean = False
+    Private _PostScraperEnabled As Boolean = False
+    Private _setup As New frmNunoSettingsHolder
+    Private _Name As String = "Nuno Module"
 
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
-            Return _SraperEnabled
+            Return _ScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _SraperEnabled = value
+            _ScraperEnabled = value
         End Set
     End Property
     Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperEnabled
         Get
-            Return _PostSraperEnabled
+            Return _PostScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _PostSraperEnabled = value
+            _PostScraperEnabled = value
         End Set
     End Property
 
-    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
-        Using frmSetup As New scraperSetup
-            frmSetup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
-            frmSetup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
-            frmSetup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
-            If frmSetup.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                AdvancedSettings.SetSetting("Language", frmSetup.cLanguage.Text)
-                AdvancedSettings.SetBooleanSetting("Do.Outline", frmSetup.tOutline.Checked)
-                AdvancedSettings.SetBooleanSetting("Do.Plot", frmSetup.tPlot.Checked)
-            End If
-        End Using
-        Return 0
+    Function InjectSetupScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        Me._setup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
+        Me._setup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
+        Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
+        If Me._setup.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
+            AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
+            AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
+        End If
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
+        SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        SPanel.Order = 110
+        SPanel.Parent = "pnlMovies"
+        SPanel.Panel = _setup.pnlSettings
+        Return SPanel
     End Function
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
 

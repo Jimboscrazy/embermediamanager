@@ -7263,6 +7263,7 @@ Partial Class dlgSettings
         'pnlMain
         '
         Me.pnlMain.AutoScroll = True
+        Me.pnlMain.BackColor = System.Drawing.Color.White
         Me.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlMain.Location = New System.Drawing.Point(187, 165)
         Me.pnlMain.Name = "pnlMain"
