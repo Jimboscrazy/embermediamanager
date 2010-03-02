@@ -2841,6 +2841,9 @@ Public Class dlgSettings
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
                 If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
             Next
+            For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+                If s.ProcessorModule.Enabled Then s.ProcessorModule.SaveSetup()
+            Next
             ModulesManager.Instance.SaveSettings()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
