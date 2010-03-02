@@ -61,9 +61,16 @@ Public Class EmberXMLScraperModule
 
     End Sub
 
-    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-
-        Return 0
+    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+        Dim Spanel As New Containers.SettingsPanel
+        Spanel.Name = Me._Name
+        Spanel.Text = Me._Name
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        Spanel.Order = 110
+        Spanel.Parent = "pnlImages"
+        Spanel.Panel = Me._setup.pnlSettings
+        Return Spanel
     End Function
 
 

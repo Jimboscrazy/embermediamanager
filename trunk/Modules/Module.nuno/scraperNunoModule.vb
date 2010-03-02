@@ -3,13 +3,12 @@ Imports System.Xml.Serialization
 Imports System.Net
 Imports System.Web
 
-
 Public Class NunoScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
 
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-    Private _setup As New frmNunoSettingsHolder
+    Private _setup As New frmSettingsHolder
     Private _Name As String = "Nuno Module"
 
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
@@ -51,9 +50,16 @@ Public Class NunoScraperModule
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
 
     End Sub
-    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-
-        Return 0
+    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+        Dim SPanel As New Containers.SettingsPanel
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(698, "TV Shows")
+        SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = New System.Windows.Forms.Panel
+        SPanel.Parent = "pnlTVScraper"
+        Return SPanel
     End Function
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
 

@@ -1,7 +1,7 @@
 ﻿Public Class Interfaces
     ' Interfaces for external Modules
     Public Interface EmberExternalModule
-        Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetup() As Containers.SettingsPanel
         Sub SaveSetup()
         Property Enabled() As Boolean
         Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects)
@@ -17,7 +17,7 @@
     Public Interface EmberMovieScraperModule
         Function InjectSetupScraper() As Containers.SettingsPanel
         Sub SaveSetupScraper()
-        Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetupPostScraper() As Containers.SettingsPanel
         Sub SaveSetupPostScraper()
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean
@@ -37,9 +37,9 @@
         Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     End Interface
     Public Interface EmberTVScraperModule
-        Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetupScraper() As Containers.SettingsPanel
         Sub SaveSetupScraper()
-        Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Function InjectSetupPostScraper() As Containers.SettingsPanel
         Sub SaveSetupPostScraper()
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean

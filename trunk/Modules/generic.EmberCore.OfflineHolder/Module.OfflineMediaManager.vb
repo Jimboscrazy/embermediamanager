@@ -40,10 +40,15 @@ Public Class OfflineHolderModule
         End Set
     End Property
 
-    Function InjectSetup(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
-        'Dim _setup As New frmSetup
-        '_setup.ShowDialog()
-        Return 0
+    Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        Dim SPanel As New Containers.SettingsPanel
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(999, "Modules")
+        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = New Panel
+        Return SPanel
     End Function
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 

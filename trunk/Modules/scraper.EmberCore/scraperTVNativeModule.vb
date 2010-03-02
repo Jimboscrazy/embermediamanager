@@ -9,23 +9,23 @@ Public Class EmberNativeTVScraperModule
 
     Private _Name As String = "Ember Native TV Scraper"
     Public Shared TVScraper As New Scraper
-    Private _SraperEnabled As Boolean = False
-    Private _PostSraperEnabled As Boolean = False
+    Private _ScraperEnabled As Boolean = False
+    Private _PostScraperEnabled As Boolean = False
 
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperEnabled
         Get
-            Return _SraperEnabled
+            Return _ScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _SraperEnabled = value
+            _ScraperEnabled = value
         End Set
     End Property
     Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.PostScraperEnabled
         Get
-            Return _PostSraperEnabled
+            Return _PostScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _PostSraperEnabled = value
+            _PostScraperEnabled = value
         End Set
     End Property
 
@@ -96,16 +96,32 @@ Public Class EmberNativeTVScraperModule
     Public Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberTVScraperModule.TVScraperEvent
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
 
-    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupScraper
-        Return 0
+    Function InjectSetupScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(698, "TV Shows")
+        SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = New Panel
+        SPanel.Parent = "pnlTVScraper"
+        Return SPanel
     End Function
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupScraper
     End Sub
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupPostScraper
     End Sub
 
-    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupPostScraper
-        Return 0
+    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupPostScraper
+        Dim SPanel As New Containers.SettingsPanel
+        SPanel.Name = Me._Name
+        SPanel.Text = Me._Name
+        SPanel.Type = Master.eLang.GetString(698, "TV Shows")
+        SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = New Panel
+        SPanel.Parent = "pnlTVImages"
+        Return SPanel
     End Function
 
 
