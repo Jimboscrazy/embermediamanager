@@ -33,11 +33,11 @@ Public Class NunoScraperModule
         Me._setup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
         Me._setup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
-        If Me._setup.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
-            AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
-            AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
-        End If
+        'If Me._setup.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        '    AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
+        '    AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
+        '    AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
+        'End If
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(36, "Movies")
