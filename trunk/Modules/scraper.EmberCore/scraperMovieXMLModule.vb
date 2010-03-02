@@ -21,6 +21,25 @@ Imports System.IO
 Imports EmberAPI
 Public Class EmberXMLScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
+    Private _SraperEnabled As Boolean = False
+    Private _PostSraperEnabled As Boolean = False
+
+    Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
+        Get
+            Return _SraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _SraperEnabled = value
+        End Set
+    End Property
+    Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperEnabled
+        Get
+            Return _PostSraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _PostSraperEnabled = value
+        End Set
+    End Property
 
     Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim _setup As New frmXMLSetup
@@ -31,6 +50,13 @@ Public Class EmberXMLScraperModule
         _setup.Show()
         Return _setup.Height
     End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
+
+    End Sub
+    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
+
+    End Sub
+
     Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
 
         Return 0
@@ -87,13 +113,6 @@ Public Class EmberXMLScraperModule
 
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
-    Sub SetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraper
-        Dim _setup As New frmXMLSetup
-        _setup.ShowDialog()
-    End Sub
-    Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraper
-
-    End Sub
 
 End Class
 

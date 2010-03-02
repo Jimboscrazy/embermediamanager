@@ -9,6 +9,26 @@ Public Class EmberNativeTVScraperModule
 
     Private _Name As String = "Ember Native TV Scraper"
     Public Shared TVScraper As New Scraper
+    Private _SraperEnabled As Boolean = False
+    Private _PostSraperEnabled As Boolean = False
+
+    Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperEnabled
+        Get
+            Return _SraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _SraperEnabled = value
+        End Set
+    End Property
+    Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.PostScraperEnabled
+        Get
+            Return _PostSraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _PostSraperEnabled = value
+        End Set
+    End Property
+
     Public Sub Init() Implements EmberAPI.Interfaces.EmberTVScraperModule.Init
 
     End Sub
@@ -76,17 +96,18 @@ Public Class EmberNativeTVScraperModule
     Public Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberTVScraperModule.TVScraperEvent
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
 
-    Public Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupPostScraper
-
-    End Sub
-
-    Public Sub SetupScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupScraper
-
-    End Sub
-
-    Public Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberTVScraperModule.testSetupScraper
-
+    Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupScraper
+        Return 0
     End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupScraper
+    End Sub
+    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupPostScraper
+    End Sub
+
+    Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupPostScraper
+        Return 0
+    End Function
+
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.ChangeEpisode
         epDet = TVScraper.ChangeEpisode(ShowID, TVDBID)

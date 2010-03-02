@@ -16,9 +16,11 @@
 
     Public Interface EmberMovieScraperModule
         Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Sub SaveSetupScraper()
         Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer
-        Sub SetupScraper()
-        Sub SetupPostScraper()
+        Sub SaveSetupPostScraper()
+        Property ScraperEnabled() As Boolean
+        Property PostScraperEnabled() As Boolean
         Sub Init()
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
@@ -35,9 +37,12 @@
         Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     End Interface
     Public Interface EmberTVScraperModule
-        Function testSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
-        Sub SetupScraper()
-        Sub SetupPostScraper()
+        Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Sub SaveSetupScraper()
+        Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer
+        Sub SaveSetupPostScraper()
+        Property ScraperEnabled() As Boolean
+        Property PostScraperEnabled() As Boolean
         Sub Init()
         'TODO TV Interface need to be redone Need to be more self contained as movies
         Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As ScraperResult

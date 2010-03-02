@@ -106,9 +106,7 @@ Public Class dlgSettings
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
             Functions.PNLDoubleBuffer(Me.pnlMain)
-
             Me.SetUp()
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -2835,6 +2833,10 @@ Public Class dlgSettings
             Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
 
             Master.eSettings.Save()
+            For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
+                If s.IsScraper Then s.ProcessorModule.SaveSetupScraper()
+                If s.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
+            Next
 
             Functions.CreateDefaultOptions()
         Catch ex As Exception
@@ -3378,6 +3380,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
+        Me.Height = 630
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.GroupBox11.Text = Master.eLang.GetString(554, "XBMC Communication")
@@ -4195,6 +4198,7 @@ Public Class dlgSettings
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
             If s.ProcessorModule.IsScraper Then
                 Dim pnlExtScraper As New Panel
+                pnlExtScraper.BackColor = Color.White
                 pnlExtScraper.Width = 617
                 pnlExtScraper.Height = 400
                 pnlExtScraper.Name = String.Concat(s.ProcessorModule.ModuleName, "-Scraper")
@@ -4207,10 +4211,12 @@ Public Class dlgSettings
                               .Order = 100 * scraperCount, _
                               .Parent = "pnlScraper"})
                 pnlExtScraper.Height = s.ProcessorModule.InjectSetupScraper(pnlExtScraper) + 5
+                pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
 
             End If
             If s.ProcessorModule.IsPostScraper Then
                 Dim pnlExtScraper As New Panel
+                pnlExtScraper.BackColor = Color.White
                 pnlExtScraper.Width = 617
                 pnlExtScraper.Height = 400
 
@@ -4224,6 +4230,7 @@ Public Class dlgSettings
                               .Order = 100 * scraperCount, _
                               .Parent = "pnlImages"})
                 pnlExtScraper.Height = s.ProcessorModule.InjectSetupPostScraper(pnlExtScraper) + 5
+                pnlExtScraper.Height = If(pnlExtScraper.Height > 400, pnlExtScraper.Height, 400)
             End If
 
         Next

@@ -6,18 +6,101 @@ Imports EmberAPI
 ''' <remarks></remarks>
 Public Class EmberNativeScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
-    Private Enabled As Boolean = False
+    Private _SraperEnabled As Boolean = False
+    Private _PostSraperEnabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
+    Dim _setup As New frmNativeSetupInfo
+
+    Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
+        Get
+            Return _SraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _SraperEnabled = value
+        End Set
+    End Property
+    Property PostScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperEnabled
+        Get
+            Return _PostSraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _PostSraperEnabled = value
+        End Set
+    End Property
 
     Function InjectSetupScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
-        Dim _setup As New frmNativeSetupInfo
         _setup.TopLevel = False
         _setup.FormBorderStyle = FormBorderStyle.None
         p.Controls.Add(_setup)
         _setup.Top = 0
+        LoadSettings()
+        _setup.cbEnabled.Checked = _SraperEnabled
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkYear.Checked = ConfigOptions.bYear
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        _setup.chkRelease.Checked = ConfigOptions.bRelease
+        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        _setup.chkRating.Checked = ConfigOptions.bRating
+        _setup.chkVotes.Checked = ConfigOptions.bVotes
+        _setup.chkStudio.Checked = ConfigOptions.bStudio
+        _setup.chkTagline.Checked = ConfigOptions.bTagline
+        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.chkCast.Checked = ConfigOptions.bCast
+        _setup.chkDirector.Checked = ConfigOptions.bDirector
+        _setup.chkWriters.Checked = ConfigOptions.bWriters
+        _setup.chkProducers.Checked = ConfigOptions.bProducers
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
+        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
+        _setup.chkTop250.Checked = ConfigOptions.bTop250
+        _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
+        _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
+        _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
+        _setup.chkOFDBGenre.Checked = MySettings.UseOFDBGenre
+        If String.IsNullOrEmpty(MySettings.IMDBURL) Then
+            MySettings.IMDBURL = "akas.imdb.com"
+        End If
+        _setup.txtIMDBURL.Text = MySettings.IMDBURL
+
         _setup.Show()
         Return _setup.Height
     End Function
+    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
+        If Not String.IsNullOrEmpty(_setup.txtIMDBURL.Text) Then
+            MySettings.IMDBURL = Strings.Replace(_setup.txtIMDBURL.Text, "http://", String.Empty)
+        Else
+            MySettings.IMDBURL = "akas.imdb.com"
+        End If
+        MySettings.UseOFDBTitle = _setup.chkOFDBTitle.Checked
+        MySettings.UseOFDBOutline = _setup.chkOFDBOutline.Checked
+        MySettings.UseOFDBPlot = _setup.chkOFDBPlot.Checked
+        MySettings.UseOFDBGenre = _setup.chkOFDBGenre.Checked
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bYear = _setup.chkYear.Checked
+        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bRelease = _setup.chkRelease.Checked
+        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
+        ConfigOptions.bRating = _setup.chkRating.Checked
+        ConfigOptions.bVotes = _setup.chkVotes.Checked
+        ConfigOptions.bStudio = _setup.chkStudio.Checked
+        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bOutline = _setup.chkOutline.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
+        ConfigOptions.bCast = _setup.chkCast.Checked
+        ConfigOptions.bDirector = _setup.chkDirector.Checked
+        ConfigOptions.bWriters = _setup.chkWriters.Checked
+        ConfigOptions.bProducers = _setup.chkProducers.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
+        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
+        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
+        ConfigOptions.bTop250 = _setup.chkTop250.Checked
+
+        SaveSettings()
+
+    End Sub
     Function InjectSetupPostScraper(ByRef p As System.Windows.Forms.Panel) As Integer Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim _setup As New frmNativeSetupMedia
         _setup.TopLevel = False
@@ -28,7 +111,9 @@ Public Class EmberNativeScraperModule
         Return _setup.Height
         Return 0
     End Function
+    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
 
+    End Sub
     Structure _MySettings
         Dim IMDBURL As String
         Dim UseOFDBTitle As Boolean
@@ -111,7 +196,6 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
         MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL", "akas.imdb.com")
-
         MySettings.UseOFDBTitle = AdvancedSettings.GetBooleanSetting("UseOFDBTitle", False)
         MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)
         MySettings.UseOFDBPlot = AdvancedSettings.GetBooleanSetting("UseOFDBPlot", False)
@@ -144,75 +228,6 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)
         AdvancedSettings.SetBooleanSetting("UseOFDBPlot", MySettings.UseOFDBPlot)
         AdvancedSettings.SetBooleanSetting("UseOFDBGenre", MySettings.UseOFDBGenre)
-    End Sub
-
-    Sub SetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraper
-        LoadSettings()
-        Dim _setup As New frmNativeSetupInfo
-        _setup.chkTitle.Checked = ConfigOptions.bTitle
-        _setup.chkYear.Checked = ConfigOptions.bYear
-        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
-        _setup.chkRelease.Checked = ConfigOptions.bRelease
-        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
-        _setup.chkRating.Checked = ConfigOptions.bRating
-        _setup.chkVotes.Checked = ConfigOptions.bVotes
-        _setup.chkStudio.Checked = ConfigOptions.bStudio
-        _setup.chkTagline.Checked = ConfigOptions.bTagline
-        _setup.chkOutline.Checked = ConfigOptions.bOutline
-        _setup.chkPlot.Checked = ConfigOptions.bPlot
-        _setup.chkCast.Checked = ConfigOptions.bCast
-        _setup.chkDirector.Checked = ConfigOptions.bDirector
-        _setup.chkWriters.Checked = ConfigOptions.bWriters
-        _setup.chkProducers.Checked = ConfigOptions.bProducers
-        _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
-        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
-        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
-        _setup.chkTop250.Checked = ConfigOptions.bTop250
-        _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
-        _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
-        _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
-        _setup.chkOFDBGenre.Checked = MySettings.UseOFDBGenre
-        If String.IsNullOrEmpty(MySettings.IMDBURL) Then
-            MySettings.IMDBURL = "akas.imdb.com"
-        End If
-        _setup.txtIMDBURL.Text = MySettings.IMDBURL
-        _setup.ShowDialog()
-        If Not String.IsNullOrEmpty(_setup.txtIMDBURL.Text) Then
-            MySettings.IMDBURL = Strings.Replace(_setup.txtIMDBURL.Text, "http://", String.Empty)
-        Else
-            MySettings.IMDBURL = "akas.imdb.com"
-        End If
-        MySettings.UseOFDBTitle = _setup.chkOFDBTitle.Checked
-        MySettings.UseOFDBOutline = _setup.chkOFDBOutline.Checked
-        MySettings.UseOFDBPlot = _setup.chkOFDBPlot.Checked
-        MySettings.UseOFDBGenre = _setup.chkOFDBGenre.Checked
-        ConfigOptions.bTitle = _setup.chkTitle.Checked
-        ConfigOptions.bYear = _setup.chkYear.Checked
-        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
-        ConfigOptions.bRelease = _setup.chkRelease.Checked
-        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
-        ConfigOptions.bRating = _setup.chkRating.Checked
-        ConfigOptions.bVotes = _setup.chkVotes.Checked
-        ConfigOptions.bStudio = _setup.chkStudio.Checked
-        ConfigOptions.bTagline = _setup.chkTagline.Checked
-        ConfigOptions.bOutline = _setup.chkOutline.Checked
-        ConfigOptions.bPlot = _setup.chkPlot.Checked
-        ConfigOptions.bCast = _setup.chkCast.Checked
-        ConfigOptions.bDirector = _setup.chkDirector.Checked
-        ConfigOptions.bWriters = _setup.chkWriters.Checked
-        ConfigOptions.bProducers = _setup.chkProducers.Checked
-        ConfigOptions.bGenre = _setup.chkGenre.Checked
-        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
-        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
-        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
-        ConfigOptions.bTop250 = _setup.chkTop250.Checked
-
-        SaveSettings()
-    End Sub
-    Sub SetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraper
-        Dim _setup As New frmNativeSetupMedia
-        _setup.ShowDialog()
     End Sub
 
     ''' <summary>
