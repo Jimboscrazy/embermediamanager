@@ -81,6 +81,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property General() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("General", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property haslanguage() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("haslanguage", resourceCulture)
@@ -111,9 +118,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property Modules() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Modules", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property ModulesMenu() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ModulesMenu", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Movie() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Movie", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -164,6 +185,13 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("television", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property TVShows() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TVShows", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
