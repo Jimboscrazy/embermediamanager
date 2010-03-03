@@ -3238,11 +3238,11 @@ Public Class frmMain
     Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanDatabaseToolStripMenuItem.Click
         Me.SetControlsEnabled(False)
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        Me.tspbLoading.MarqueeAnimationSpeed = 25
         Me.EnableFilters(False)
 
-        Me.tslLoading.Text = Master.eLang.GetString(644, "Cleaning Database:")
+        Me.SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
         Me.tspbLoading.Visible = True
-        Me.tslLoading.Visible = True
 
         Me.bwCleanDB.WorkerSupportsCancellation = True
         Me.bwCleanDB.RunWorkerAsync()
@@ -4027,9 +4027,8 @@ Public Class frmMain
 
     Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted
 
-        Me.tslLoading.Text = String.Empty
+        Me.SetStatus(String.Empty)
         Me.tspbLoading.Visible = False
-        Me.tslLoading.Visible = False
         Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
 
@@ -6645,9 +6644,13 @@ doCancel:
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
         Select Case iType
             Case 1
-                Me.SetStatus(String.Concat("Added Episode: ", sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(999, "Added Episode: "), sText))
+            Case 2
+                Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
+            Case 3
+                Me.SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Else
-                Me.SetStatus(String.Concat("Added Movie: ", sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(999, "Added Movie: "), sText))
         End Select
     End Sub
 

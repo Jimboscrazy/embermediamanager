@@ -1085,6 +1085,8 @@ Public Class Scanner
             End If
 
             If Args.Scan.TV Then
+                bwPrelim.ReportProgress(2, String.Empty)
+
                 htTVShows.Clear()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLcommand.CommandText = "SELECT ID, TVShowPath FROM TVShows;"
@@ -1145,6 +1147,7 @@ Public Class Scanner
                 End Using
             End If
 
+            Me.bwPrelim.ReportProgress(3, String.Empty)
             'remove any db entries that no longer exist
             Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
         Catch ex As Exception
