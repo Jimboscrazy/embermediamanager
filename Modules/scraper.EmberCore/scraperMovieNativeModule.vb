@@ -11,6 +11,8 @@ Public Class EmberNativeScraperModule
     Private _Name As String = "Ember Native Scraper"
     Private _setup As frmInfoSettingsHolder
     Private _setupPost As frmMediaSettingsHolder
+    Public Shared ConfigOptions As New EmberAPI.Structures.ScrapeOptions
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
@@ -110,12 +112,29 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
 
+
+
         SaveSettings()
         _setup.Dispose()
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim Spanel As New Containers.SettingsPanel
         _setupPost = New frmMediaSettingsHolder
+        LoadSettings()
+        _setupPost.cbEnabled.Checked = _PostScraperEnabled
+        If Master.eSettings.TrailerSites.Count > 0 Then
+            For Each iTrailer As Integer In Master.eSettings.TrailerSites
+                _setupPost.lbTrailerSites.SetItemChecked(iTrailer, True)
+            Next
+        End If
+        _setupPost.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
+        _setupPost.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
+        _setupPost.chkAutoThumbs.Checked = ConfigScrapeModifier.Extra
+        _setupPost.chkUseTMDB.Checked = Master.eSettings.UseTMDB
+        _setupPost.chkUseIMPA.Checked = Master.eSettings.UseIMPA
+        _setupPost.chkUseMPDB.Checked = Master.eSettings.UseMPDB
+        _setupPost.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
+        _setupPost.chkDownloadTrailer.Checked = MySettings.DownloadTrailers
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
         Spanel.Order = 110
@@ -132,6 +151,19 @@ Public Class EmberNativeScraperModule
         RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), If(state, 9, 10), difforder)
     End Sub
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
+        MySettings.DownloadTrailers = _setupPost.chkDownloadTrailer.Checked
+        ' TODO: this should move to Advanced Serttings (Modules) OR SPECIFIC settings file
+        For Each iTrailer As Integer In _setupPost.lbTrailerSites.CheckedIndices
+            Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Enums.TrailerPages))
+        Next
+        Master.eSettings.TrailerTimeout = Convert.ToInt32(_setupPost.txtTimeout.Text)
+        Master.eSettings.UseTMDB = _setupPost.chkUseTMDB.Checked
+        Master.eSettings.UseIMPA = _setupPost.chkUseIMPA.Checked
+        Master.eSettings.UseMPDB = _setupPost.chkUseMPDB.Checked
+        ConfigScrapeModifier.Poster = _setupPost.chkScrapePoster.Checked
+        ConfigScrapeModifier.Fanart = _setupPost.chkScrapeFanart.Checked
+        ConfigScrapeModifier.Extra = _setupPost.chkAutoThumbs.Checked
+        SaveSettings()
         _setupPost.Dispose()
     End Sub
     Structure _MySettings
@@ -140,6 +172,7 @@ Public Class EmberNativeScraperModule
         Dim UseOFDBOutline As Boolean
         Dim UseOFDBPlot As Boolean
         Dim UseOFDBGenre As Boolean
+        Dim DownloadTrailers As Boolean
     End Structure
     Private MySettings As New _MySettings
 
@@ -192,7 +225,7 @@ Public Class EmberNativeScraperModule
         End Get
     End Property
 
-    Public Shared ConfigOptions As New EmberAPI.Structures.ScrapeOptions
+
 
     Sub LoadSettings()
         ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
@@ -220,7 +253,15 @@ Public Class EmberNativeScraperModule
         MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)
         MySettings.UseOFDBPlot = AdvancedSettings.GetBooleanSetting("UseOFDBPlot", False)
         MySettings.UseOFDBGenre = AdvancedSettings.GetBooleanSetting("UseOFDBGenre", False)
+        MySettings.DownloadTrailers = AdvancedSettings.GetBooleanSetting("DownloadTraliers", False)
+        ConfigScrapeModifier.DoSearch = True
+        ConfigScrapeModifier.Meta = True
+        ConfigScrapeModifier.NFO = True
 
+        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigScrapeModifier.Extra = AdvancedSettings.GetBooleanSetting("DoExtra", True)
+        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
+        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
     Sub SaveSettings()
         AdvancedSettings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
@@ -248,6 +289,12 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)
         AdvancedSettings.SetBooleanSetting("UseOFDBPlot", MySettings.UseOFDBPlot)
         AdvancedSettings.SetBooleanSetting("UseOFDBGenre", MySettings.UseOFDBGenre)
+
+        AdvancedSettings.SetBooleanSetting("DownloadTraliers", MySettings.DownloadTrailers)
+        AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+        AdvancedSettings.SetBooleanSetting("DoExtra", ConfigScrapeModifier.Extra)
+        AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
     End Sub
 
     ''' <summary>
@@ -345,12 +392,16 @@ Public Class EmberNativeScraperModule
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
     Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraper
+        LoadSettings()
         Dim Poster As New EmberAPI.Images
         Dim Fanart As New EmberAPI.Images
         Dim pResults As EmberAPI.Containers.ImgResult
         Dim fResults As EmberAPI.Containers.ImgResult
         Dim tURL As String = String.Empty
         Dim Trailer As New Trailers
+
+        Dim saveModifier As Structures.ScrapeModifier = Master.GlobalScrapeMod
+        Master.GlobalScrapeMod = EmberAPI.Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
         LoadSettings()
         Trailer.IMDBURL = MySettings.IMDBURL
         Dim doSave As Boolean = False
@@ -461,6 +512,7 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
+        Master.GlobalScrapeMod = saveModifier
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
 End Class

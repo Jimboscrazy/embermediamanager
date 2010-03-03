@@ -59,4 +59,20 @@ Public Class frmInfoSettingsHolder
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
+
+    Private Sub gbOptions_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles gbOptions.Enter
+
+    End Sub
+
+    Private Sub chkFullCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCrew.CheckedChanged
+        Me.chkProducers.Enabled = Me.chkFullCrew.Checked
+        Me.chkMusicBy.Enabled = Me.chkFullCrew.Checked
+        Me.chkCrew.Enabled = Me.chkFullCrew.Checked
+
+        If Not Me.chkFullCrew.Checked Then
+            Me.chkProducers.Checked = False
+            Me.chkMusicBy.Checked = False
+            Me.chkCrew.Checked = False
+        End If
+    End Sub
 End Class

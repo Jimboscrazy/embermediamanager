@@ -162,12 +162,8 @@ Partial Class dlgSettings
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
-        Me.Label47 = New System.Windows.Forms.Label
         Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
-        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
-        Me.chkUseTMDB = New System.Windows.Forms.CheckBox
-        Me.chkUseIMPA = New System.Windows.Forms.CheckBox
         Me.chkUseETasFA = New System.Windows.Forms.CheckBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
@@ -580,14 +576,7 @@ Partial Class dlgSettings
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
-        Me.GroupBox20 = New System.Windows.Forms.GroupBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.txtTimeout = New System.Windows.Forms.TextBox
-        Me.Label22 = New System.Windows.Forms.Label
-        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
         Me.pnlScraper = New System.Windows.Forms.Panel
-        Me.pnlTrailers = New System.Windows.Forms.Panel
         Me.TextBox1 = New System.Windows.Forms.TextBox
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.Label33 = New System.Windows.Forms.Label
@@ -715,9 +704,7 @@ Partial Class dlgSettings
         Me.gbRTFormat.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox20.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
-        Me.pnlTrailers.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -2247,35 +2234,21 @@ Partial Class dlgSettings
         '
         'GroupBox9
         '
-        Me.GroupBox9.Controls.Add(Me.Label47)
         Me.GroupBox9.Controls.Add(Me.chkNoSaveImagesToNfo)
         Me.GroupBox9.Controls.Add(Me.chkSingleScrapeImages)
-        Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
-        Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
-        Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
         Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox9.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(184, 194)
+        Me.GroupBox9.Size = New System.Drawing.Size(184, 103)
         Me.GroupBox9.TabIndex = 0
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
-        '
-        'Label47
-        '
-        Me.Label47.AutoSize = True
-        Me.Label47.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label47.Location = New System.Drawing.Point(4, 19)
-        Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(96, 13)
-        Me.Label47.TabIndex = 50
-        Me.Label47.Text = "Get Images From:"
         '
         'chkNoSaveImagesToNfo
         '
         Me.chkNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 118)
+        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 37)
         Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
         Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(172, 34)
         Me.chkNoSaveImagesToNfo.TabIndex = 4
@@ -2287,49 +2260,13 @@ Partial Class dlgSettings
         '
         Me.chkSingleScrapeImages.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 100)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 19)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 36)
         Me.chkSingleScrapeImages.TabIndex = 3
         Me.chkSingleScrapeImages.Text = "Get Images on Single Scrape"
         Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
-        '
-        'chkUseMPDB
-        '
-        Me.chkUseMPDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseMPDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseMPDB.Location = New System.Drawing.Point(29, 76)
-        Me.chkUseMPDB.Name = "chkUseMPDB"
-        Me.chkUseMPDB.Size = New System.Drawing.Size(150, 22)
-        Me.chkUseMPDB.TabIndex = 2
-        Me.chkUseMPDB.Text = "MoviePosterDB.com"
-        Me.chkUseMPDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseMPDB.UseVisualStyleBackColor = True
-        '
-        'chkUseTMDB
-        '
-        Me.chkUseTMDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseTMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseTMDB.Location = New System.Drawing.Point(29, 38)
-        Me.chkUseTMDB.Name = "chkUseTMDB"
-        Me.chkUseTMDB.Size = New System.Drawing.Size(149, 19)
-        Me.chkUseTMDB.TabIndex = 0
-        Me.chkUseTMDB.Text = "TheMovieDB.org"
-        Me.chkUseTMDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseTMDB.UseVisualStyleBackColor = True
-        '
-        'chkUseIMPA
-        '
-        Me.chkUseIMPA.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseIMPA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseIMPA.Location = New System.Drawing.Point(29, 57)
-        Me.chkUseIMPA.Name = "chkUseIMPA"
-        Me.chkUseIMPA.Size = New System.Drawing.Size(149, 20)
-        Me.chkUseIMPA.TabIndex = 1
-        Me.chkUseIMPA.Text = "IMPAwards.com"
-        Me.chkUseIMPA.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseIMPA.UseVisualStyleBackColor = True
         '
         'chkUseETasFA
         '
@@ -3452,9 +3389,9 @@ Partial Class dlgSettings
         Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
         Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
         Me.GroupBox17.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox17.Location = New System.Drawing.Point(5, 203)
+        Me.GroupBox17.Location = New System.Drawing.Point(3, 110)
         Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Size = New System.Drawing.Size(183, 161)
+        Me.GroupBox17.Size = New System.Drawing.Size(183, 102)
         Me.GroupBox17.TabIndex = 1
         Me.GroupBox17.TabStop = False
         Me.GroupBox17.Text = "Caching"
@@ -6938,71 +6875,6 @@ Partial Class dlgSettings
         Me.chkCert.Text = "Use Certification Language:"
         Me.chkCert.UseVisualStyleBackColor = True
         '
-        'GroupBox20
-        '
-        Me.GroupBox20.Controls.Add(Me.Label18)
-        Me.GroupBox20.Controls.Add(Me.Label23)
-        Me.GroupBox20.Controls.Add(Me.txtTimeout)
-        Me.GroupBox20.Controls.Add(Me.Label22)
-        Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
-        Me.GroupBox20.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox20.Location = New System.Drawing.Point(6, 4)
-        Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(602, 137)
-        Me.GroupBox20.TabIndex = 3
-        Me.GroupBox20.TabStop = False
-        Me.GroupBox20.Text = "Trailers"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(65, 82)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(205, 13)
-        Me.Label18.TabIndex = 71
-        Me.Label18.Text = "This will go to Scraper specific settings"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(12, 21)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(51, 13)
-        Me.Label23.TabIndex = 70
-        Me.Label23.Text = "Timeout:"
-        '
-        'txtTimeout
-        '
-        Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTimeout.Location = New System.Drawing.Point(73, 17)
-        Me.txtTimeout.Name = "txtTimeout"
-        Me.txtTimeout.Size = New System.Drawing.Size(50, 22)
-        Me.txtTimeout.TabIndex = 69
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(314, 13)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(126, 13)
-        Me.Label22.TabIndex = 2
-        Me.Label22.Text = "Supported Trailer Sites:"
-        '
-        'lbTrailerSites
-        '
-        Me.lbTrailerSites.CheckOnClick = True
-        Me.lbTrailerSites.Enabled = False
-        Me.lbTrailerSites.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbTrailerSites.FormattingEnabled = True
-        Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(316, 28)
-        Me.lbTrailerSites.Name = "lbTrailerSites"
-        Me.lbTrailerSites.Size = New System.Drawing.Size(149, 72)
-        Me.lbTrailerSites.TabIndex = 6
-        '
         'pnlScraper
         '
         Me.pnlScraper.BackColor = System.Drawing.Color.White
@@ -7017,16 +6889,6 @@ Partial Class dlgSettings
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 62
         Me.pnlScraper.Visible = False
-        '
-        'pnlTrailers
-        '
-        Me.pnlTrailers.BackColor = System.Drawing.Color.White
-        Me.pnlTrailers.Controls.Add(Me.GroupBox20)
-        Me.pnlTrailers.Location = New System.Drawing.Point(187, 165)
-        Me.pnlTrailers.Name = "pnlTrailers"
-        Me.pnlTrailers.Size = New System.Drawing.Size(617, 400)
-        Me.pnlTrailers.TabIndex = 73
-        Me.pnlTrailers.Visible = False
         '
         'TextBox1
         '
@@ -7285,7 +7147,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlMain)
@@ -7294,10 +7156,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlTrailers)
+        Me.Controls.Add(Me.pnlScraper)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7340,7 +7201,6 @@ Partial Class dlgSettings
         Me.GroupBox13.PerformLayout()
         CType(Me.tbFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox9.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -7470,10 +7330,7 @@ Partial Class dlgSettings
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox20.ResumeLayout(False)
-        Me.GroupBox20.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
-        Me.pnlTrailers.ResumeLayout(False)
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -7503,15 +7360,12 @@ Partial Class dlgSettings
     Friend WithEvents lvMovies As System.Windows.Forms.ListView
     Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
     Friend WithEvents colRecur As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chkUseMPDB As System.Windows.Forms.CheckBox
     Friend WithEvents chkOverwriteFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkOverwritePoster As System.Windows.Forms.CheckBox
     Friend WithEvents cbFanartSize As System.Windows.Forms.ComboBox
     Friend WithEvents lblFanartSize As System.Windows.Forms.Label
     Friend WithEvents lblPosterSize As System.Windows.Forms.Label
     Friend WithEvents cbPosterSize As System.Windows.Forms.ComboBox
-    Friend WithEvents chkUseIMPA As System.Windows.Forms.CheckBox
-    Friend WithEvents chkUseTMDB As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieTrailerCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieInfoCol As System.Windows.Forms.CheckBox
@@ -7902,9 +7756,6 @@ Partial Class dlgSettings
     Friend WithEvents chkLockRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockTagline As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox20 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label22 As System.Windows.Forms.Label
-    Friend WithEvents lbTrailerSites As System.Windows.Forms.CheckedListBox
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents txtGenreLimit As System.Windows.Forms.TextBox
@@ -7941,7 +7792,6 @@ Partial Class dlgSettings
     Friend WithEvents cbCert As System.Windows.Forms.ComboBox
     Friend WithEvents chkCert As System.Windows.Forms.CheckBox
     Friend WithEvents pnlScraper As System.Windows.Forms.Panel
-    Friend WithEvents pnlTrailers As System.Windows.Forms.Panel
     Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
     Friend WithEvents gbSeaPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtSeaPosterWidth As System.Windows.Forms.TextBox
@@ -7991,7 +7841,6 @@ Partial Class dlgSettings
     Friend WithEvents Label45 As System.Windows.Forms.Label
     Friend WithEvents CheckBox5 As System.Windows.Forms.CheckBox
     Friend WithEvents Label46 As System.Windows.Forms.Label
-    Friend WithEvents Label47 As System.Windows.Forms.Label
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtAPIKey As System.Windows.Forms.TextBox
     Friend WithEvents Label48 As System.Windows.Forms.Label
@@ -8066,7 +7915,4 @@ Partial Class dlgSettings
     Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents cbTrailerQuality As System.Windows.Forms.ComboBox
     Friend WithEvents lblPreferredQuality As System.Windows.Forms.Label
-    Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents Label23 As System.Windows.Forms.Label
-    Friend WithEvents txtTimeout As System.Windows.Forms.TextBox
 End Class

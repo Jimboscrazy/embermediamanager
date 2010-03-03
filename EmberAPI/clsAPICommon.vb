@@ -480,7 +480,18 @@ Public Class Functions
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
         Return filterOptions
     End Function
+    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
+        Dim filterModifier As New Structures.ScrapeModifier
+        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        filterModifier.Extra = Options.DoSearch AndAlso Options2.Extra
+        filterModifier.Fanart = Options.DoSearch AndAlso Options2.Fanart
+        filterModifier.Meta = Options.DoSearch AndAlso Options2.Meta
+        filterModifier.NFO = Options.DoSearch AndAlso Options2.NFO
+        filterModifier.Poster = Options.DoSearch AndAlso Options2.Poster
+        filterModifier.Trailer = Options.DoSearch AndAlso Options2.Trailer
 
+
+    End Function
     Public Shared Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
         Dim StreamBuffer(4096) As Byte
         Dim BlockSize As Integer = 0
