@@ -5583,7 +5583,7 @@ doCancel:
         Next
 
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
-
+        RemoveHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
