@@ -285,11 +285,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUseTMDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseTMDB.CheckedChanged
+    Private Sub chkUseTMDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUseIMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseIMPA.CheckedChanged
+    Private Sub chkUseIMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -424,7 +424,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
+    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -869,8 +869,7 @@ Public Class dlgSettings
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
         Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
-        Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
-        Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
+
         Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
@@ -882,29 +881,13 @@ Public Class dlgSettings
             Me.chkNoDLTrailer.Checked = False
             Me.chkOverwriteTrailer.Checked = False
             Me.chkDeleteAllTrailers.Checked = False
-            Me.txtTimeout.Text = "2"
-            For i As Integer = 0 To lbTrailerSites.Items.Count - 1
-                lbTrailerSites.SetItemChecked(i, False)
-            Next
+
             Me.cbTrailerQuality.SelectedIndex = -1
             Me.cbTrailerQuality.Enabled = False
         End If
     End Sub
 
-    Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbTrailerSites.ItemCheck
-        Me.SetApplyButton(True)
-        If e.Index = 0 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(1)) Then
-            Me.cbTrailerQuality.Enabled = True
-        ElseIf e.Index = 1 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(0)) Then
-            Me.cbTrailerQuality.Enabled = True
-        Else
-            If Me.lbTrailerSites.GetItemChecked(0) OrElse Me.lbTrailerSites.GetItemChecked(1) Then
-                Me.cbTrailerQuality.Enabled = True
-            Else
-                Me.cbTrailerQuality.Enabled = False
-            End If
-        End If
-    End Sub
+
 
     Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
         If e.Index = 0 Then
@@ -2510,9 +2493,7 @@ Public Class dlgSettings
             Master.eSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
             Master.eSettings.MovieSubCol = Me.chkMovieSubCol.Checked
             Master.eSettings.MovieExtraCol = Me.chkMovieExtraCol.Checked
-            Master.eSettings.UseTMDB = Me.chkUseTMDB.Checked
-            Master.eSettings.UseIMPA = Me.chkUseIMPA.Checked
-            Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
+
             Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Enums.PosterSize)
             Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.ShowPosterType)
@@ -2614,26 +2595,24 @@ Public Class dlgSettings
             End If
 
             Master.eSettings.TrailerSites.Clear()
-            If Me.lbTrailerSites.CheckedItems.Count > 0 Then
-                For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
-                    Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Enums.TrailerPages))
-                Next
-                Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
-                Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
-                Master.eSettings.TrailerTimeout = Convert.ToInt32(Me.txtTimeout.Text)
-                Master.eSettings.SingleScrapeTrailer = Me.chkSingleScrapeTrailer.Checked
-                Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
-                Master.eSettings.OverwriteTrailer = Me.chkOverwriteTrailer.Checked
-                Master.eSettings.DeleteAllTrailers = Me.chkDeleteAllTrailers.Checked
-            Else
-                Master.eSettings.DownloadTrailers = False
-                Master.eSettings.UpdaterTrailers = False
-                Master.eSettings.SingleScrapeTrailer = False
-                Master.eSettings.TrailerTimeout = 2
-                Master.eSettings.UpdaterTrailersNoDownload = False
-                Master.eSettings.OverwriteTrailer = False
-                Master.eSettings.DeleteAllTrailers = False
-            End If
+            'If Me.lbTrailerSites.CheckedItems.Count > 0 Then
+
+            Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
+            Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
+
+            Master.eSettings.SingleScrapeTrailer = Me.chkSingleScrapeTrailer.Checked
+            Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
+            Master.eSettings.OverwriteTrailer = Me.chkOverwriteTrailer.Checked
+            Master.eSettings.DeleteAllTrailers = Me.chkDeleteAllTrailers.Checked
+            'Else
+            'Master.eSettings.DownloadTrailers = False
+            'Master.eSettings.UpdaterTrailers = False
+            'Master.eSettings.SingleScrapeTrailer = False
+            'Master.eSettings.TrailerTimeout = 2
+            'Master.eSettings.UpdaterTrailersNoDownload = False
+            'Master.eSettings.OverwriteTrailer = False
+            'Master.eSettings.DeleteAllTrailers = False
+            'End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
                 If Me.lbGenre.CheckedItems.Contains(String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))) Then
@@ -2832,7 +2811,6 @@ Public Class dlgSettings
             Master.eSettings.ScraperEpCredits = Me.chkScraperEpCredits.Checked
             Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
 
-            Master.eSettings.Save()
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
                 If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
@@ -2845,6 +2823,8 @@ Public Class dlgSettings
                 If s.ProcessorModule.Enabled Then s.ProcessorModule.SaveSetup()
             Next
             ModulesManager.Instance.SaveSettings()
+
+            Master.eSettings.Save()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2911,9 +2891,7 @@ Public Class dlgSettings
             Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
             Me.chkMovieSubCol.Checked = Master.eSettings.MovieSubCol
             Me.chkMovieExtraCol.Checked = Master.eSettings.MovieExtraCol
-            Me.chkUseTMDB.Checked = Master.eSettings.UseTMDB
-            Me.chkUseIMPA.Checked = Master.eSettings.UseIMPA
-            Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
+
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
             Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
@@ -3030,17 +3008,13 @@ Public Class dlgSettings
             Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
             Me.chkNoDLTrailer.Checked = Master.eSettings.UpdaterTrailersNoDownload
             Me.chkSingleScrapeTrailer.Checked = Master.eSettings.SingleScrapeTrailer
-            Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
+
             Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
             Me.chkDeleteAllTrailers.Checked = Master.eSettings.DeleteAllTrailers
 
             Me.cbTrailerQuality.SelectedValue = Master.eSettings.PreferredTrailerQuality
 
-            If Master.eSettings.TrailerSites.Count > 0 Then
-                For Each iTrailer As Integer In Master.eSettings.TrailerSites
-                    Me.lbTrailerSites.SetItemChecked(iTrailer, True)
-                Next
-            End If
+
 
             FillGenres()
 
@@ -3479,9 +3453,7 @@ Public Class dlgSettings
         Me.GroupBox9.Text = Master.eLang.GetString(497, "Images")
         Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save Image URLs to Nfo")
         Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Scrape Images on Single Scrape")
-        Me.chkUseMPDB.Text = Master.eLang.GetString(500, "MoviePosterDB.com")
-        Me.chkUseTMDB.Text = Master.eLang.GetString(501, "TheMovieDB.org")
-        Me.chkUseIMPA.Text = Master.eLang.GetString(502, "IMPAwards.com")
+
         Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use Extrathumb if no Fanart Found")
         Me.Label17.Text = Master.eLang.GetString(504, "** If checked, Ember will use only the first half of the movie to extract thumbs")
         Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers**")
@@ -3508,14 +3480,14 @@ Public Class dlgSettings
         Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
         Me.GroupBox31.Text = Master.eLang.GetString(59, "Meta Data")
-        Me.GroupBox20.Text = Master.eLang.GetString(151, "Trailers")
+
         Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing Trailers")
         Me.chkOverwriteTrailer.Text = Master.eLang.GetString(523, "Overwrite Trailer")
         Me.chkNoDLTrailer.Text = Master.eLang.GetString(524, "Only Get URLs During Scrapers")
         Me.chkSingleScrapeTrailer.Text = Master.eLang.GetString(525, "Get Trailers During Single-Scrape")
-        Me.Label23.Text = Master.eLang.GetString(526, "Timeout:")
+
         Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get Trailers During ""All Items"" Scrapers")
-        Me.Label22.Text = Master.eLang.GetString(528, "Supported Trailer Sites:")
+
         Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Downloading")
         Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
         Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
@@ -3728,7 +3700,7 @@ Public Class dlgSettings
         Me.chkScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         Me.chkTVScanOrderModify.Text = Me.chkScanOrderModify.Text
         Me.Label42.Text = Master.eLang.GetString(797, "* Scrape Full Crew must be enabled")
-        Me.Label47.Text = Master.eLang.GetString(798, "Get Images From:")
+
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")

@@ -26,4 +26,43 @@ Public Class frmMediaSettingsHolder
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
     End Sub
+
+    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+        Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
+        Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
+        If Not Me.chkDownloadTrailer.Checked Then
+            Me.txtTimeout.Text = "2"
+            For i As Integer = 0 To lbTrailerSites.Items.Count - 1
+                lbTrailerSites.SetItemChecked(i, False)
+            Next
+        End If
+    End Sub
+    Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
+        'Me.SetApplyButton(True)
+        If e.Index = 0 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(1)) Then
+            'Me.cbTrailerQuality.Enabled = True
+        ElseIf e.Index = 1 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(0)) Then
+            'Me.cbTrailerQuality.Enabled = True
+        Else
+            If Me.lbTrailerSites.GetItemChecked(0) OrElse Me.lbTrailerSites.GetItemChecked(1) Then
+                'Me.cbTrailerQuality.Enabled = True
+            Else
+                'Me.cbTrailerQuality.Enabled = False
+            End If
+        End If
+    End Sub
+    Sub SetUp()
+        Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
+        'Me.GroupBox20.Text = Master.eLang.GetString(151, "Trailers")
+        Me.Label23.Text = Master.eLang.GetString(526, "Timeout:")
+        Me.GroupBox2.Text = Master.eLang.GetString(528, "Supported Trailer Sites:")
+        Me.chkUseMPDB.Text = Master.eLang.GetString(500, "MoviePosterDB.com")
+        Me.chkUseTMDB.Text = Master.eLang.GetString(501, "TheMovieDB.org")
+        Me.chkUseIMPA.Text = Master.eLang.GetString(502, "IMPAwards.com")
+        Me.GroupBox9.Text = Master.eLang.GetString(798, "Get Images From:")
+    End Sub
+
+    Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SetUp()
+    End Sub
 End Class

@@ -61,6 +61,9 @@ Partial Class frmInfoSettingsHolder
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
+        Me.Label2 = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
@@ -127,7 +130,7 @@ Partial Class frmInfoSettingsHolder
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(227, 40)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(261, 252)
+        Me.gbOptions.Size = New System.Drawing.Size(387, 161)
         Me.gbOptions.TabIndex = 77
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
@@ -135,7 +138,7 @@ Partial Class frmInfoSettingsHolder
         'Label46
         '
         Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label46.Location = New System.Drawing.Point(2, 215)
+        Me.Label46.Location = New System.Drawing.Point(6, 139)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(202, 19)
         Me.Label46.TabIndex = 19
@@ -146,7 +149,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTop250.Location = New System.Drawing.Point(114, 131)
+        Me.chkTop250.Location = New System.Drawing.Point(237, 99)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 23
@@ -158,7 +161,7 @@ Partial Class frmInfoSettingsHolder
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Enabled = False
         Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(114, 115)
+        Me.chkCrew.Location = New System.Drawing.Point(237, 83)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(90, 17)
         Me.chkCrew.TabIndex = 18
@@ -170,7 +173,7 @@ Partial Class frmInfoSettingsHolder
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Enabled = False
         Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMusicBy.Location = New System.Drawing.Point(114, 99)
+        Me.chkMusicBy.Location = New System.Drawing.Point(237, 67)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(76, 17)
         Me.chkMusicBy.TabIndex = 17
@@ -181,7 +184,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkFullCrew.AutoSize = True
         Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCrew.Location = New System.Drawing.Point(114, 163)
+        Me.chkFullCrew.Location = New System.Drawing.Point(237, 131)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
         Me.chkFullCrew.TabIndex = 2
@@ -192,7 +195,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkFullCast.AutoSize = True
         Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCast.Location = New System.Drawing.Point(114, 147)
+        Me.chkFullCast.Location = New System.Drawing.Point(237, 115)
         Me.chkFullCast.Name = "chkFullCast"
         Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
         Me.chkFullCast.TabIndex = 0
@@ -204,7 +207,7 @@ Partial Class frmInfoSettingsHolder
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Enabled = False
         Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProducers.Location = New System.Drawing.Point(114, 51)
+        Me.chkProducers.Location = New System.Drawing.Point(237, 19)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(82, 17)
         Me.chkProducers.TabIndex = 16
@@ -215,7 +218,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(114, 35)
+        Me.chkWriters.Location = New System.Drawing.Point(131, 115)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 15
@@ -226,7 +229,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkStudio.AutoSize = True
         Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(6, 131)
+        Me.chkStudio.Location = New System.Drawing.Point(131, 17)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkStudio.TabIndex = 14
@@ -248,7 +251,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(6, 179)
+        Me.chkPlot.Location = New System.Drawing.Point(131, 65)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 12
@@ -259,7 +262,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkOutline.AutoSize = True
         Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(6, 163)
+        Me.chkOutline.Location = New System.Drawing.Point(131, 49)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(65, 17)
         Me.chkOutline.TabIndex = 11
@@ -270,7 +273,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(114, 67)
+        Me.chkGenre.Location = New System.Drawing.Point(237, 35)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 10
@@ -281,7 +284,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkDirector.AutoSize = True
         Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(114, 19)
+        Me.chkDirector.Location = New System.Drawing.Point(131, 99)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkDirector.TabIndex = 9
@@ -292,7 +295,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkTagline.AutoSize = True
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTagline.Location = New System.Drawing.Point(6, 147)
+        Me.chkTagline.Location = New System.Drawing.Point(131, 33)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkTagline.TabIndex = 8
@@ -303,7 +306,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkCast.AutoSize = True
         Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(6, 195)
+        Me.chkCast.Location = New System.Drawing.Point(131, 81)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(48, 17)
         Me.chkCast.TabIndex = 7
@@ -325,7 +328,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(114, 83)
+        Me.chkTrailer.Location = New System.Drawing.Point(237, 51)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 5
@@ -486,7 +489,10 @@ Partial Class frmInfoSettingsHolder
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.btnDown)
         Me.Panel1.Controls.Add(Me.cbEnabled)
+        Me.Panel1.Controls.Add(Me.btnUp)
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(1125, 25)
@@ -504,6 +510,38 @@ Partial Class frmInfoSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 82
+        '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Enabled = False
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(591, 1)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 83
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Enabled = False
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(566, 1)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 82
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(500, 7)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(60, 12)
+        Me.Label2.TabIndex = 84
+        Me.Label2.Text = "Scraper order"
         '
         'frmInfoSettingsHolder
         '
@@ -570,5 +608,8 @@ Partial Class frmInfoSettingsHolder
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 
 End Class
