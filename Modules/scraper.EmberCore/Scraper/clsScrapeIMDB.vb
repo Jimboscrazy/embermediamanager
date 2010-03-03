@@ -79,6 +79,7 @@ Namespace IMDB
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
         Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
+        Private Const ACTORTABLE_PATTERN As String = "<table class=""cast"">(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_3 As String = "<a href=""/search/title\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
@@ -553,7 +554,7 @@ mResult:
                 If Options.bCast Then
                     'Find all cast of the movie  
                     'Match the table only 1 time
-                    Dim ActorsTable As String = Regex.Match(HTML, TABLE_PATTERN).ToString
+                    Dim ActorsTable As String = Regex.Match(HTML, ACTORTABLE_PATTERN).ToString
 
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
