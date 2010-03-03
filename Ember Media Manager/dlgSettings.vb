@@ -4208,6 +4208,7 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4215,6 +4216,7 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.SetupPostScraperChanged, AddressOf Handle_SetupScraperChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -4237,10 +4239,14 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
         Next
-
-
     End Sub
 
+    Private Sub Handle_SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
+        SettingsPanels.FirstOrDefault(Function(s) s.Name = name).ImageIndex = imageidx
+        tvSettings.Nodes.Find(name, True)(0).ImageIndex = imageidx
+        tvSettings.Nodes.Find(name, True)(0).SelectedImageIndex = imageidx
+
+    End Sub
 
     Private Sub RemoveCurrPanel()
         If Me.pnlMain.Controls.Count > 0 Then

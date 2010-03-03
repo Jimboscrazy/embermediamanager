@@ -21,7 +21,7 @@
 Imports System.Windows.Forms
 
 Public Class frmInfoSettingsHolder
-
+    Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
     Private Sub frmInfoSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
     End Sub
@@ -56,4 +56,7 @@ Public Class frmInfoSettingsHolder
         Me.Label1.Text = Master.eLang.GetString(9999, "This are Scraper specific Settings, and act as a filter.\nYou should check Ember Global Setting also.").Replace("\n", vbCrLf)
     End Sub
 
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    End Sub
 End Class

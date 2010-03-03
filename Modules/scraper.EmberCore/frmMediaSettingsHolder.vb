@@ -21,5 +21,9 @@
 Imports System.Windows.Forms
 
 Public Class frmMediaSettingsHolder
+    Public Event SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
+    End Sub
 End Class

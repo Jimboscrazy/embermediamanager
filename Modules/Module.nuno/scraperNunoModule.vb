@@ -10,7 +10,8 @@ Public Class NunoScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _setup As New frmSettingsHolder
     Private _Name As String = "Nuno Module"
-
+    Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
