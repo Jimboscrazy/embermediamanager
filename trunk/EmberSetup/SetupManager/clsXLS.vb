@@ -35,6 +35,28 @@ Public Class Settings
     End Sub
 End Class
 
+<XmlRoot("Modules")> _
+Public Class _LastVersion
+    <XmlArray("Module")> _
+    <XmlArrayItem("File")> _
+    Public Modules As New List(Of _Module)
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(_LastVersion))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+End Class
+Public Class _Module : Implements IComparable(Of Versions)
+    Public Name As String
+    Public Version As String
+    Public Platform As String
+    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
+        Return (Me.Version).CompareTo(other.Version)
+    End Function
+End Class
+
+
 <XmlRoot("VersionsFile")> _
 Public Class UpgradeList
     <XmlArray("Versions")> _

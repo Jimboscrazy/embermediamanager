@@ -38,6 +38,7 @@ Public Class frmMainManager
 
     Public Shared OPaths As New List(Of OrigPaths)
     Public Shared EmberVersions As New UpgradeList
+    Public Shared ModulesVersions As New _LastVersion
 
     Dim _cmds As New InstallCommands
     Dim CmdsChanged As Boolean = False
@@ -497,11 +498,15 @@ Public Class frmMainManager
                             File.Copy(srcFile, dstFile)
                         Catch ex As Exception
                         End Try
+                        If SQLreader("EmberPath").ToString = "\Modules" AndAlso Path.GetExtension(SQLreader("Filename").ToString) = "dll" Then
+                            ModulesVersions.Modules.Add(New _Module With {.Name = SQLreader("Filename").ToString})
+                        End If
                         'CompressFile(srcFile, dstFile)
                     End If
                 End While
             End Using
         End Using
+        ModulesVersions.Save(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versions.xml")))
     End Sub
 
     Public Shared Sub CompressFile(ByVal spath As String, ByVal dpath As String)

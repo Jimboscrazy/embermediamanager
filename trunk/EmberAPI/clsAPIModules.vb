@@ -52,6 +52,7 @@ Public Class ModulesManager
     Structure VersionItem
         Public Name As String
         Public Version As String
+        Public AssemblyFileName As String
     End Structure
     Class EmberRuntimeObjects
         'all runtime object including Function (delegate) that need to be exposed to Modules
@@ -119,14 +120,14 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        Public SettingsPanel As Containers.SettingsPanel
+        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalGenericModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
-        Public SettingsPanel As Containers.SettingsPanel
+        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Interfaces.EmberMovieScraperModule 'Object
@@ -134,7 +135,7 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        Public SettingsPanel As Containers.SettingsPanel
+        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalTVScraperModuleClass
         Public ProcessorModule As Interfaces.EmberTVScraperModule  'Object
@@ -142,11 +143,8 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        Public SettingsPanel As Containers.SettingsPanel
+        'Public SettingsPanel As Containers.SettingsPanel
     End Class
-
-
-
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
     ''' </summary>
@@ -399,10 +397,14 @@ Public Class ModulesManager
         VersionList.Add(New VersionItem With {.Name = "Ember Application", .Version = My.Application.Info.Version.Revision.ToString})
         VersionList.Add(New VersionItem With {.Name = "Ember API", .Version = EmberAPI.Functions.EmberAPIVersion()})
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
+                    .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+                    .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalModule As _externalGenericModuleClass In externalProcessorModules
-            VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName, .Version = _externalModule.ProcessorModule.ModuleVersion})
+            VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName, _
+                    .AssemblyFileName = _externalModule.AssemblyFileName, _
+                    .Version = _externalModule.ProcessorModule.ModuleVersion})
         Next
     End Sub
 
