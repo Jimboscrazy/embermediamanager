@@ -38,7 +38,7 @@ Public Class FileManagerExternalModule
     Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
     Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
-    Dim _setup As New frmSettingsHolder
+    Dim _setup As frmSettingsHolder
     Private MyPath As String
 
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
@@ -56,6 +56,7 @@ Public Class FileManagerExternalModule
     End Property
     Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
+        _setup = New frmSettingsHolder
         Dim li As ListViewItem
         _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
