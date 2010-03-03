@@ -35,6 +35,7 @@ Public Class ModulesManager
     'Singleton Instace for module manager .. allways use this one
     Private Shared Singleton As ModulesManager = Nothing
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
+    Public Shared VersionList As New List(Of VersionItem)
 
     Public Shared ReadOnly Property Instance() As ModulesManager
         Get
@@ -48,7 +49,10 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public Assembly As System.Reflection.Assembly
     End Structure
-
+    Structure VersionItem
+        Public Name As String
+        Public Version As String
+    End Structure
     Class EmberRuntimeObjects
         'all runtime object including Function (delegate) that need to be exposed to Modules
         Delegate Sub OpenImageViewer(ByVal _Image As Image)
@@ -356,6 +360,7 @@ Public Class ModulesManager
         loadModules()
         loadScrapersModules()
         loadTVScrapersModules()
+        BuildVersionList()
     End Sub
     Public Function ScrapersCount() As Integer
         Return externalScrapersModules.Count
@@ -389,21 +394,24 @@ Public Class ModulesManager
         modulesSetup.ModulesManager = Me
         modulesSetup.ShowDialog()
     End Sub
+    Private Sub BuildVersionList()
+        VersionList.Clear()
+        VersionList.Add(New VersionItem With {.Name = "Ember Application", .Version = My.Application.Info.Version.Revision.ToString})
+        VersionList.Add(New VersionItem With {.Name = "Ember API", .Version = EmberAPI.Functions.EmberAPIVersion()})
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
+        Next
+        For Each _externalModule As _externalGenericModuleClass In externalProcessorModules
+            VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName, .Version = _externalModule.ProcessorModule.ModuleVersion})
+        Next
+    End Sub
 
     Public Sub GetVersions()
         Dim dlgVersions As New dlgVersions
         Dim li As ListViewItem
-        li = dlgVersions.lstVersions.Items.Add("Ember Application")
-        li.SubItems.Add(My.Application.Info.Version.Revision.ToString)
-        li = dlgVersions.lstVersions.Items.Add("Ember API")
-        li.SubItems.Add(EmberAPI.Functions.EmberAPIVersion())
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
-            li = dlgVersions.lstVersions.Items.Add(_externalScraperModule.ProcessorModule.ModuleName)
-            li.SubItems.Add(_externalScraperModule.ProcessorModule.ModuleVersion)
-        Next
-        For Each _externalModule As _externalGenericModuleClass In externalProcessorModules
-            li = dlgVersions.lstVersions.Items.Add(_externalModule.ProcessorModule.ModuleName)
-            li.SubItems.Add(_externalModule.ProcessorModule.ModuleVersion)
+        For Each v As VersionItem In VersionList
+            li = dlgVersions.lstVersions.Items.Add(v.Name)
+            li.SubItems.Add(v.Version)
         Next
         dlgVersions.ShowDialog()
     End Sub
