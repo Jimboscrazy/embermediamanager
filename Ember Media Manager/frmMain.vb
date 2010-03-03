@@ -173,7 +173,7 @@ Public Class frmMain
         End Set
     End Property
 
-    Friend WithEvents bwNewScraper As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     Private dScrapeRow As DataRow
     Private scrapeRunningIdx As Integer
     Structure RunList
@@ -248,6 +248,7 @@ Public Class frmMain
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
+            If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
             ' *#### If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
 
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
@@ -258,7 +259,7 @@ Public Class frmMain
             Me.Refresh()
 
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
-            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
             OrElse Me.bwLoadSeasonInfo.IsBusy ' *#### OrElse Master.TVScraper.IsBusy
                 Application.DoEvents()
@@ -337,7 +338,7 @@ Public Class frmMain
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
                             If Not Me.fScanner.IsBusy Then
-                                While Me.bwLoadInfo.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 End While
                                 Me.RefreshAllMovies()
@@ -345,14 +346,14 @@ Public Class frmMain
                         End If
                         If dResult.NeedsUpdate Then
                             If Not Me.fScanner.IsBusy Then
-                                While Me.bwLoadInfo.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 End While
                                 Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                             End If
                         End If
                     Else
-                        If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwNewScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                        If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                             Me.FillList(0)
                         End If
                     End If
@@ -367,6 +368,26 @@ Public Class frmMain
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
+    End Sub
+
+    Sub ShowCancelPanel(ByVal txt As String)
+        'Me.tspbLoading.Style = ProgressBarStyle.Continuous
+        'Me.tspbLoading.Value = Me.tspbLoading.Minimum
+        'Me.tspbLoading.Maximum = MovieIds.Count
+        Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        Me.tspbLoading.MarqueeAnimationSpeed = 25
+        Me.tslLoading.Text = txt
+        btnCancel.Visible = True
+        lblCanceling.Visible = False
+        pbCanceling.Visible = False
+        Me.pnlCancel.Visible = True
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+    End Sub
+    Sub HideCancelPanel()
+        Me.pnlCancel.Visible = False
+        'Me.tslLoading.Visible = True
+        'Me.tspbLoading.Visible = True
     End Sub
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
@@ -968,7 +989,7 @@ Public Class frmMain
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -1863,7 +1884,7 @@ Public Class frmMain
                 Next
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -2650,11 +2671,11 @@ Public Class frmMain
         lblCanceling.Visible = True
         pbCanceling.Visible = True
 
-        If Me.bwNewScraper.IsBusy Then Me.bwNewScraper.CancelAsync()
+        If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
-        If Me.bwNewScraper.IsBusy Then Me.bwNewScraper.CancelAsync()
+        If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
 
-        While Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy
+        While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy
             Application.DoEvents()
         End While
     End Sub
@@ -2815,7 +2836,7 @@ Public Class frmMain
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             End While
 
@@ -3298,7 +3319,7 @@ Public Class frmMain
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -3416,7 +3437,7 @@ Public Class frmMain
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNewScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -3996,7 +4017,7 @@ Public Class frmMain
         Dim iCount As Integer = 0
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataRow In Me.dtMedia.Rows
-                If Me.bwNewScraper.CancellationPending Then Return
+                If Me.bwMovieScraper.CancellationPending Then Return
                 Me.bwRefreshMovies.ReportProgress(iCount, sRow.Item(1))
                 Me.RefreshMovie(Convert.ToInt64(sRow.Item(0)), True)
                 iCount += 1
@@ -4820,7 +4841,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters(True)
             End If
@@ -4954,7 +4975,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -5087,7 +5108,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -5224,7 +5245,7 @@ Public Class frmMain
 
             Me.InfoCleared = False
 
-            If Not bwNewScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -5533,19 +5554,19 @@ doCancel:
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
         Application.DoEvents()
-        bwNewScraper.WorkerSupportsCancellation = True
-        bwNewScraper.WorkerReportsProgress = True
-        bwNewScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+        bwMovieScraper.WorkerSupportsCancellation = True
+        bwMovieScraper.WorkerReportsProgress = True
+        bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
     End Sub
 
-    Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNewScraper.DoWork
+    Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         'AddHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         For Each rl As RunList In MovieIds
-            If bwNewScraper.CancellationPending Then Exit For
+            If bwMovieScraper.CancellationPending Then Exit For
 
             Dim MovieId As Integer = rl.Id
             scrapeRunningIdx = rl.idx 'So we can update MediaList
@@ -5562,10 +5583,10 @@ doCancel:
                     EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 'RaiseEvent ScraperUpdateMediaList(6, True)
-                If bwNewScraper.CancellationPending Then Exit For
+                If bwMovieScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-                    If bwNewScraper.CancellationPending Then Exit For
+                    If bwMovieScraper.CancellationPending Then Exit For
                     If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                         FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                     End If
@@ -5575,7 +5596,7 @@ doCancel:
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
                 End If
-                bwNewScraper.ReportProgress(1, DBScrapeMovie)
+                bwMovieScraper.ReportProgress(1, DBScrapeMovie)
             End If
         Next
 
@@ -5583,7 +5604,7 @@ doCancel:
         'RemoveHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
-    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
+    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
         Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = DirectCast(e.UserState, EmberAPI.Structures.DBMovie)
         Application.DoEvents()
@@ -5593,7 +5614,7 @@ doCancel:
             SetStatus(DBScrapeMovie.Movie.Title)
         End If
     End Sub
-    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNewScraper.RunWorkerCompleted
+    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -6562,7 +6583,7 @@ doCancel:
                 Me.ShowNoInfo(True, 0)
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
 
-                If Not Me.bwNewScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.mnuMediaList.Enabled = True
                 End If
             Else
