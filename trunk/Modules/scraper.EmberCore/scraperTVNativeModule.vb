@@ -11,7 +11,8 @@ Public Class EmberNativeTVScraperModule
     Public Shared TVScraper As New Scraper
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-
+    Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupScraperChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupPostScraperChanged
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled

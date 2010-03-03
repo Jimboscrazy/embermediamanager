@@ -33,8 +33,9 @@
         ReadOnly Property ModuleVersion() As String
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
-        'Event MovieScraperEvent(ByVal col As Integer, ByVal v As Boolean)
         Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
+        Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
     End Interface
     Public Interface EmberTVScraperModule
         Function InjectSetupScraper() As Containers.SettingsPanel
@@ -58,6 +59,8 @@
         ReadOnly Property IsPostScraper() As Boolean
 
         Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
+        Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
     End Interface
 
 
