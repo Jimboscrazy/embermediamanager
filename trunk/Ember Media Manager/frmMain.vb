@@ -2726,8 +2726,7 @@ Public Class frmMain
         '//
         ' Copy all existing fanart to the backdrops folder
         '\\
-        'TODO
-        'Me.ScrapeData(Enums.ScrapeType.CopyBD, Nothing, Nothing)
+        Me.NonScrape(Enums.ScrapeType.CopyBD, Nothing)
     End Sub
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
