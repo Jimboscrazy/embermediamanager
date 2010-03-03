@@ -89,7 +89,6 @@ Partial Class frmMain
         Me.RemoveGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSep = New System.Windows.Forms.ToolStripSeparator
         Me.ScrapingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ReScrapeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectAllAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SelectNfoAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -989,18 +988,11 @@ Partial Class frmMain
         '
         'ScrapingToolStripMenuItem
         '
-        Me.ScrapingToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReScrapeToolStripMenuItem, Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
+        Me.ScrapingToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
         Me.ScrapingToolStripMenuItem.Image = CType(resources.GetObject("ScrapingToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ScrapingToolStripMenuItem.Name = "ScrapingToolStripMenuItem"
         Me.ScrapingToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.ScrapingToolStripMenuItem.Text = "(Re)Scrape Selected Movies"
-        '
-        'ReScrapeToolStripMenuItem
-        '
-        Me.ReScrapeToolStripMenuItem.Name = "ReScrapeToolStripMenuItem"
-        Me.ReScrapeToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.ReScrapeToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
-        Me.ReScrapeToolStripMenuItem.Text = "ReScrape"
         '
         'ToolStripMenuItem5
         '
@@ -4004,7 +3996,6 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VersionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ReScrapeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonChangePoster As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonChangeFanart As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator14 As System.Windows.Forms.ToolStripSeparator
