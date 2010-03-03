@@ -40,25 +40,30 @@ Partial Class frmMediaSettingsHolder
         Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.cbEnabled = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkTrailerDump = New System.Windows.Forms.CheckBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.txtDumpPath = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
+        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlSettings.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.Label23)
-        Me.pnlSettings.Controls.Add(Me.txtTimeout)
+        Me.pnlSettings.Controls.Add(Me.GroupBox3)
+        Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
-        Me.pnlSettings.Controls.Add(Me.chkScrapeFanart)
-        Me.pnlSettings.Controls.Add(Me.chkAutoThumbs)
-        Me.pnlSettings.Controls.Add(Me.chkScrapePoster)
-        Me.pnlSettings.Controls.Add(Me.chkDownloadTrailer)
-        Me.pnlSettings.Controls.Add(Me.GroupBox9)
-        Me.pnlSettings.Controls.Add(Me.GroupBox2)
         Me.pnlSettings.Controls.Add(Me.Panel2)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
         Me.pnlSettings.Name = "pnlSettings"
@@ -69,7 +74,7 @@ Partial Class frmMediaSettingsHolder
         '
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(219, 51)
+        Me.Label23.Location = New System.Drawing.Point(21, 43)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(51, 13)
         Me.Label23.TabIndex = 91
@@ -79,7 +84,7 @@ Partial Class frmMediaSettingsHolder
         '
         Me.txtTimeout.Enabled = False
         Me.txtTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTimeout.Location = New System.Drawing.Point(280, 47)
+        Me.txtTimeout.Location = New System.Drawing.Point(82, 39)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(50, 22)
         Me.txtTimeout.TabIndex = 90
@@ -112,7 +117,7 @@ Partial Class frmMediaSettingsHolder
         '
         Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(10, 49)
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 37)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
         Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
         Me.chkScrapeFanart.TabIndex = 87
@@ -124,7 +129,7 @@ Partial Class frmMediaSettingsHolder
         '
         Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(392, 32)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(350, 18)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
         Me.chkAutoThumbs.TabIndex = 86
@@ -136,9 +141,9 @@ Partial Class frmMediaSettingsHolder
         '
         Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(10, 31)
+        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 19)
         Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(173, 15)
+        Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
         Me.chkScrapePoster.TabIndex = 85
         Me.chkScrapePoster.Text = "Get Posters"
         Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -148,11 +153,11 @@ Partial Class frmMediaSettingsHolder
         '
         Me.chkDownloadTrailer.AutoSize = True
         Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(200, 31)
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 19)
         Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(135, 17)
         Me.chkDownloadTrailer.TabIndex = 84
-        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
+        Me.chkDownloadTrailer.Text = "Enable Downloading"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
         'GroupBox9
@@ -161,9 +166,9 @@ Partial Class frmMediaSettingsHolder
         Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
         Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
         Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox9.Location = New System.Drawing.Point(10, 72)
+        Me.GroupBox9.Location = New System.Drawing.Point(151, 10)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(184, 100)
+        Me.GroupBox9.Size = New System.Drawing.Size(160, 80)
         Me.GroupBox9.TabIndex = 82
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Get Images From:"
@@ -208,9 +213,9 @@ Partial Class frmMediaSettingsHolder
         '
         Me.GroupBox2.Controls.Add(Me.lbTrailerSites)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(200, 72)
+        Me.GroupBox2.Location = New System.Drawing.Point(151, 9)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(161, 100)
+        Me.GroupBox2.Size = New System.Drawing.Size(161, 79)
         Me.GroupBox2.TabIndex = 83
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Supported Trailer Sites:"
@@ -223,7 +228,7 @@ Partial Class frmMediaSettingsHolder
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
         Me.lbTrailerSites.Location = New System.Drawing.Point(6, 18)
         Me.lbTrailerSites.Name = "lbTrailerSites"
-        Me.lbTrailerSites.Size = New System.Drawing.Size(149, 72)
+        Me.lbTrailerSites.Size = New System.Drawing.Size(149, 55)
         Me.lbTrailerSites.TabIndex = 9
         '
         'Panel2
@@ -231,6 +236,9 @@ Partial Class frmMediaSettingsHolder
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel2.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel2.Controls.Add(Me.Label3)
+        Me.Panel2.Controls.Add(Me.btnDown)
+        Me.Panel2.Controls.Add(Me.btnUp)
         Me.Panel2.Controls.Add(Me.cbEnabled)
         Me.Panel2.Location = New System.Drawing.Point(0, 0)
         Me.Panel2.Name = "Panel2"
@@ -247,6 +255,106 @@ Partial Class frmMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnBrowse)
+        Me.GroupBox1.Controls.Add(Me.txtDumpPath)
+        Me.GroupBox1.Controls.Add(Me.chkTrailerDump)
+        Me.GroupBox1.Controls.Add(Me.chkDownloadTrailer)
+        Me.GroupBox1.Controls.Add(Me.Label23)
+        Me.GroupBox1.Controls.Add(Me.txtTimeout)
+        Me.GroupBox1.Controls.Add(Me.GroupBox2)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(15, 134)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(587, 98)
+        Me.GroupBox1.TabIndex = 92
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Trailers"
+        Me.GroupBox1.UseCompatibleTextRendering = True
+        '
+        'chkTrailerDump
+        '
+        Me.chkTrailerDump.AutoSize = True
+        Me.chkTrailerDump.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTrailerDump.Location = New System.Drawing.Point(318, 19)
+        Me.chkTrailerDump.Name = "chkTrailerDump"
+        Me.chkTrailerDump.Size = New System.Drawing.Size(155, 17)
+        Me.chkTrailerDump.TabIndex = 92
+        Me.chkTrailerDump.Text = "Watch for ""Dump"" Folder"
+        Me.chkTrailerDump.UseVisualStyleBackColor = True
+        Me.chkTrailerDump.Visible = False
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.GroupBox9)
+        Me.GroupBox3.Controls.Add(Me.chkScrapePoster)
+        Me.GroupBox3.Controls.Add(Me.chkScrapeFanart)
+        Me.GroupBox3.Controls.Add(Me.chkAutoThumbs)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.Location = New System.Drawing.Point(15, 31)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(587, 97)
+        Me.GroupBox3.TabIndex = 93
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Images"
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(558, 37)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
+        Me.btnBrowse.TabIndex = 94
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        Me.btnBrowse.Visible = False
+        '
+        'txtDumpPath
+        '
+        Me.txtDumpPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtDumpPath.Location = New System.Drawing.Point(318, 39)
+        Me.txtDumpPath.Name = "txtDumpPath"
+        Me.txtDumpPath.Size = New System.Drawing.Size(237, 22)
+        Me.txtDumpPath.TabIndex = 93
+        Me.txtDumpPath.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(500, 7)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(60, 12)
+        Me.Label3.TabIndex = 87
+        Me.Label3.Text = "Scraper order"
+        '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Enabled = False
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(591, 1)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 86
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Enabled = False
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(566, 1)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 85
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
+        'fbdBrowse
+        '
+        Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
+        '
         'frmMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -262,12 +370,14 @@ Partial Class frmMediaSettingsHolder
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
         Me.pnlSettings.ResumeLayout(False)
-        Me.pnlSettings.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -288,5 +398,14 @@ Partial Class frmMediaSettingsHolder
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents txtTimeout As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTrailerDump As System.Windows.Forms.CheckBox
+    Friend WithEvents btnBrowse As System.Windows.Forms.Button
+    Friend WithEvents txtDumpPath As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
 
 End Class
