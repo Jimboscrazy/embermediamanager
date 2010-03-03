@@ -5536,7 +5536,7 @@ doCancel:
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
-        AddHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
+        'AddHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         For Each rl As RunList In MovieIds
             If bwNewScraper.CancellationPending Then Exit For
 
@@ -5549,7 +5549,8 @@ doCancel:
 
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                RaiseEvent InnerMovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+                'RaiseEvent InnerMovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+                MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
                     EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
@@ -5583,7 +5584,7 @@ doCancel:
         Next
 
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
-        RemoveHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
+        'RemoveHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNewScraper.ProgressChanged
@@ -5615,7 +5616,7 @@ doCancel:
         End If
 
     End Sub
-    Event InnerMovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+    'Event InnerMovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     Delegate Sub DelegateEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     Private Sub MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
         If (Me.InvokeRequired) Then
