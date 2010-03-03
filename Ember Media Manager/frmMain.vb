@@ -5499,10 +5499,17 @@ doCancel:
             Next
         End If
 
-        Me.tspbLoading.Style = ProgressBarStyle.Continuous
         Me.SetControlsEnabled(False, False)
-        Me.tspbLoading.Value = Me.tspbLoading.Minimum
-        Me.tspbLoading.Maximum = MovieIds.Count
+
+        If MovieIds.Count > 1 Then
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.tspbLoading.Value = Me.tspbLoading.Minimum
+            Me.tspbLoading.Maximum = MovieIds.Count
+        Else
+            Me.tspbLoading.Style = ProgressBarStyle.Marquee
+            Me.tspbLoading.MarqueeAnimationSpeed = 25
+        End If
+
         Select Case sType
             Case Enums.ScrapeType.FullAsk
                 Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
@@ -5557,18 +5564,7 @@ doCancel:
                 'RaiseEvent ScraperUpdateMediaList(6, True)
                 If bwNewScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-                    If bwNewScraper.CancellationPending Then Exit For
-                    If Args.scrapeType = Enums.ScrapeType.FilterAsk OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk _
-                        OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                        'Any Non Auto open EditMovie
-                        Master.currMovie = DBScrapeMovie
-                        Using dEditMovie As New dlgEditMovie
-                            Select Case dEditMovie.ShowDialog()
-                            End Select
-                        End Using
-                    End If
                     If bwNewScraper.CancellationPending Then Exit For
                     If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                         FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
@@ -5603,9 +5599,7 @@ doCancel:
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
             MovieInfoDownloaded()
         Else
-            If (From t In Me.MovieIds.Where(Function(y) y.idx = Me.currRow))(0).idx = Me.currRow Then
-                SelectRow(Me.currRow)
-            End If
+            SelectRow(Me.currRow)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             btnCancel.Visible = False
@@ -7770,12 +7764,6 @@ doCancel:
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
-    End Sub
-
-    Private Sub ReScrapeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReScrapeToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-        Functions.SetScraperMod(Enums.ModType.All, True, False)
-        Me.MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click

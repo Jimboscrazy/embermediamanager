@@ -864,7 +864,7 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
-            ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, pResults, True)
+            ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True)
             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                 Fanart.FromFile(sPath)
                 pbFanart.Image = Fanart.Image
