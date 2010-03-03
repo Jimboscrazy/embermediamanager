@@ -62,11 +62,11 @@ Public Class EmberNativeScraperModule
         End If
         _setup.txtIMDBURL.Text = MySettings.IMDBURL
 
-        SPanel.Name = _Name
+        SPanel.Name = String.Concat(Me._Name, "Scraper")
+        SPanel.Text = _Name
         SPanel.Order = 110
         SPanel.Parent = "pnlScraper"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
-        SPanel.Text = _Name
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
 
@@ -110,13 +110,14 @@ Public Class EmberNativeScraperModule
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim Spanel As New Containers.SettingsPanel
         _setupPost = New frmMediaSettingsHolder
-        Spanel.Name = Me._Name
+        Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Order = 110
         Spanel.Parent = "pnlImages"
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
+        Spanel.Panel = Me._setupPost.pnlSettings
+
         Return Spanel
     End Function
     Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
