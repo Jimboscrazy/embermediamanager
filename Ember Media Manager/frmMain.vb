@@ -423,7 +423,6 @@ Public Class frmMain
 
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
-        ' *#### AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
         AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
 
         Functions.DGVDoubleBuffer(Me.dgvMediaList)
@@ -984,7 +983,6 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                         Functions.SetScraperMod(Enums.ModType.All, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
@@ -1883,7 +1881,6 @@ Public Class frmMain
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
-                            'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                             Functions.SetScraperMod(Enums.ModType.All, False)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
@@ -2154,9 +2151,7 @@ Public Class frmMain
         '\\
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, True, False)
-
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
-        'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -2174,7 +2169,6 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                         Functions.SetScraperMod(Enums.ModType.All, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
@@ -2274,7 +2268,6 @@ Public Class frmMain
     Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2282,7 +2275,6 @@ Public Class frmMain
     Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2290,7 +2282,6 @@ Public Class frmMain
     Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2298,7 +2289,6 @@ Public Class frmMain
     Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2306,7 +2296,6 @@ Public Class frmMain
     Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2314,7 +2303,6 @@ Public Class frmMain
     Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2322,7 +2310,6 @@ Public Class frmMain
     Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2330,7 +2317,6 @@ Public Class frmMain
     Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2338,7 +2324,6 @@ Public Class frmMain
     Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2346,7 +2331,6 @@ Public Class frmMain
     Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.FullAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2354,7 +2338,6 @@ Public Class frmMain
     Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2362,7 +2345,6 @@ Public Class frmMain
     Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2370,7 +2352,6 @@ Public Class frmMain
     Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2378,7 +2359,6 @@ Public Class frmMain
     Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2386,7 +2366,6 @@ Public Class frmMain
     Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2394,7 +2373,6 @@ Public Class frmMain
     Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
@@ -2402,14 +2380,13 @@ Public Class frmMain
     Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
@@ -2417,7 +2394,6 @@ Public Class frmMain
     Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
@@ -2425,7 +2401,6 @@ Public Class frmMain
     Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
@@ -2433,7 +2408,6 @@ Public Class frmMain
     Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2441,7 +2415,6 @@ Public Class frmMain
     Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2449,7 +2422,6 @@ Public Class frmMain
     Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2457,7 +2429,6 @@ Public Class frmMain
     Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2465,7 +2436,6 @@ Public Class frmMain
     Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2473,7 +2443,6 @@ Public Class frmMain
     Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
@@ -2481,7 +2450,6 @@ Public Class frmMain
     Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
@@ -2489,15 +2457,12 @@ Public Class frmMain
     Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
-
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.NewAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
@@ -2529,7 +2494,6 @@ Public Class frmMain
     Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
@@ -2537,7 +2501,6 @@ Public Class frmMain
     Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
@@ -2545,7 +2508,6 @@ Public Class frmMain
     Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
@@ -2553,7 +2515,6 @@ Public Class frmMain
     Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2561,7 +2522,6 @@ Public Class frmMain
     Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2569,7 +2529,6 @@ Public Class frmMain
     Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
 
         Functions.SetScraperMod(Enums.ModType.Poster, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2577,7 +2536,6 @@ Public Class frmMain
     Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
 
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2585,7 +2543,6 @@ Public Class frmMain
     Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
 
         Functions.SetScraperMod(Enums.ModType.Extra, True)
-        'Me.ScrapeData(Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2593,7 +2550,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoAll.Click
 
         Functions.SetScraperMod(Enums.ModType.All, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2601,7 +2557,6 @@ Public Class frmMain
     Private Sub mnuFilterAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoNfo.Click
 
         Functions.SetScraperMod(Enums.ModType.NFO, True)
-        'Me.ScrapeData(Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultOptions)
 
     End Sub
@@ -2771,7 +2726,7 @@ Public Class frmMain
         '//
         ' Copy all existing fanart to the backdrops folder
         '\\
-
+        'TODO
         'Me.ScrapeData(Enums.ScrapeType.CopyBD, Nothing, Nothing)
     End Sub
 
@@ -2926,7 +2881,6 @@ Public Class frmMain
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
                 Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
-                'Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Options)
             End If
         End Using
     End Sub
@@ -6935,7 +6889,6 @@ doCancel:
 
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ' *#### Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
         ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
         Me.SetControlsEnabled(True, True)
 
@@ -6990,7 +6943,6 @@ doCancel:
                         Me.tslLoading.Visible = True
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                ' *####  Master.TVScraper.SaveImages()
                                 ModulesManager.Instance.TVSaveImages()
                             End If
                         End Using
@@ -7570,7 +7522,6 @@ doCancel:
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        ' *#### Master.TVScraper.ScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
         ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
     End Sub
 
@@ -7671,9 +7622,6 @@ doCancel:
 
     Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
         EmberAPI.ModulesManager.Instance.GetVersions()
-        'Using dNewVer As New dlgTestSettings
-        'dNewVer.ShowDialog(Me)
-        'End Using
     End Sub
 
     Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
