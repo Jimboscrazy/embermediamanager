@@ -9,9 +9,8 @@ Public Class EmberNativeScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
     Private _Name As String = "Ember Native Scraper"
-    Private _setup As New frmInfoSettingsHolder
-    Private _setupPost As New frmMediaSettingsHolder
-
+    Private _setup As frmInfoSettingsHolder
+    Private _setupPost As frmMediaSettingsHolder
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
@@ -31,6 +30,7 @@ Public Class EmberNativeScraperModule
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
+        _setup = New frmInfoSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle
@@ -109,6 +109,7 @@ Public Class EmberNativeScraperModule
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim Spanel As New Containers.SettingsPanel
+        _setupPost = New frmMediaSettingsHolder
         Spanel.Name = Me._Name
         Spanel.Text = Me._Name
         Spanel.Type = Master.eLang.GetString(36, "Movies")
