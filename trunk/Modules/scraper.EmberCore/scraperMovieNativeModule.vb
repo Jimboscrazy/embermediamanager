@@ -399,10 +399,10 @@ Public Class EmberNativeScraperModule
         Dim fResults As EmberAPI.Containers.ImgResult
         Dim tURL As String = String.Empty
         Dim Trailer As New Trailers
-
+        LoadSettings()
         Dim saveModifier As Structures.ScrapeModifier = Master.GlobalScrapeMod
         Master.GlobalScrapeMod = EmberAPI.Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
-        LoadSettings()
+
         Trailer.IMDBURL = MySettings.IMDBURL
         Dim doSave As Boolean = False
         If Master.GlobalScrapeMod.Poster Then
