@@ -21,6 +21,7 @@
 Imports System.IO
 Imports System.Text
 Imports ICSharpCode.SharpZipLib.Zip
+Imports System.Data
 
 Public Class Scraper
     Public Const APIKey As String = "7B090234F418D074"
