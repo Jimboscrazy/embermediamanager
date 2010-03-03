@@ -2604,6 +2604,7 @@ Public Class dlgSettings
             Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
             Master.eSettings.OverwriteTrailer = Me.chkOverwriteTrailer.Checked
             Master.eSettings.DeleteAllTrailers = Me.chkDeleteAllTrailers.Checked
+            'Master.eSettings. = Me.chkAutoThumbs.Checked
             'Else
             'Master.eSettings.DownloadTrailers = False
             'Master.eSettings.UpdaterTrailers = False

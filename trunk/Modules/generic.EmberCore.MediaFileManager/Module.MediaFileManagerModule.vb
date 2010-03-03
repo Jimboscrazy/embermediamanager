@@ -40,6 +40,11 @@ Public Class FileManagerExternalModule
     Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
     Dim _setup As frmSettingsHolder
     Private MyPath As String
+    Private Structure Arguments
+        Dim src As String
+        Dim dst As String
+    End Structure
+    Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
 
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
@@ -57,6 +62,7 @@ Public Class FileManagerExternalModule
     Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
+        Load()
         Dim li As ListViewItem
         _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
@@ -64,10 +70,6 @@ Public Class FileManagerExternalModule
             li.Text = e.Name
             li.SubItems.Add(e.FolderPath)
             _setup.ListView1.Items.Add(li)
-        Next
-        eSettings.ModuleSettings.Clear()
-        For Each i As ListViewItem In _setup.ListView1.Items
-            eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
         Next
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
@@ -78,6 +80,10 @@ Public Class FileManagerExternalModule
         Return SPanel
     End Function
     Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+        eSettings.ModuleSettings.Clear()
+        For Each i As ListViewItem In _setup.ListView1.Items
+            eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
+        Next
         Save()
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
@@ -168,6 +174,12 @@ Public Class FileManagerExternalModule
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        DirectoryCopy(Args.src, Args.dst)
+    End Sub
+
+
     Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem)
         FolderSubMenus.RemoveAll(Function(b) True)
         For Each e In eSettings.ModuleSettings

@@ -416,7 +416,6 @@ Public Class EmberNativeScraperModule
                             DBMovie.PosterPath = pResults.ImagePath
                             'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                             RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
-                            Application.DoEvents() 'for debug
                             If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                 DBMovie.Movie.Thumb = pResults.Posters
                             End If
@@ -431,7 +430,6 @@ Public Class EmberNativeScraperModule
                                 'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                                 'RaiseEvent ScraperUpdateMediaList(4, True)
                                 RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
-                                Application.DoEvents() 'for debug
                                 If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                     DBMovie.Movie.Thumb = pResults.Posters
                                 End If

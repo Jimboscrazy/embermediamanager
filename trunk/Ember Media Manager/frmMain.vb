@@ -5536,6 +5536,7 @@ doCancel:
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
+        AddHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         For Each rl As RunList In MovieIds
             If bwNewScraper.CancellationPending Then Exit For
 
@@ -5548,7 +5549,7 @@ doCancel:
 
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                dScrapeRow.Item(6) = True
+                RaiseEvent InnerMovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
                     EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
@@ -5614,21 +5615,26 @@ doCancel:
         End If
 
     End Sub
+    Event InnerMovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+    Delegate Sub DelegateEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     Private Sub MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
-        Select Case eType
-            Case Enums.MovieScraperEventType.PosterItem
-                dScrapeRow.Item(4) = DirectCast(Parameter, Boolean)
-            Case Enums.MovieScraperEventType.FanartItem
-                dScrapeRow.Item(5) = DirectCast(Parameter, Boolean)
-            Case Enums.MovieScraperEventType.TrailerItem
-                dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
-            Case Enums.MovieScraperEventType.ThumbsItem
-                dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
-            Case Enums.MovieScraperEventType.ThumbsItem
-                dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
-        End Select
+        If (Me.InvokeRequired) Then
+            Me.Invoke(New DelegateEvent(AddressOf MovieScraperEvent), New Object() {eType, Parameter})
+        Else
+            Select Case eType
+                Case Enums.MovieScraperEventType.PosterItem
+                    dScrapeRow.Item(4) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.FanartItem
+                    dScrapeRow.Item(5) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.NFOItem
+                    dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.TrailerItem
+                    dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.ThumbsItem
+                    dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
+            End Select
+        End If
     End Sub
-
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
             Me.tspbLoading.Value = iPercent
