@@ -149,7 +149,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Structures.DBMovie In _movies
+            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) y.IsMark = True) 'Using IsMark for to mark files need exporting
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
                     If File.Exists(_curMovie.PosterPath) Then
@@ -181,7 +181,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Structures.DBMovie In _movies
+            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) y.IsMark = True) 'Using IsMark for to mark files need exporting
                 Try
                     Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
                     If File.Exists(_curMovie.FanartPath) Then
@@ -413,6 +413,7 @@ Public Class dlgExportMovies
                                 Exit For
                             End If
                         Next
+                        _curMovie.IsMark = False
                         If Not found Then Continue For
                     Else
                         If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
@@ -422,11 +423,12 @@ Public Class dlgExportMovies
                             'included - build the output
                         Else
                             'filtered out - exclude this one
+                            _curMovie.IsMark = False
                             Continue For
                         End If
                     End If
                 End If
-
+                _curMovie.IsMark = True
 
 
                 Dim uni As New UnicodeEncoding()

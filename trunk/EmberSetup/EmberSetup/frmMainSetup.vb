@@ -1227,7 +1227,7 @@ Public Class frmMainSetup
                 g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
                 UpdateBackgorund()
 
-                If ShowCredits Then 'AndAlso Not bCredits Is Nothing Then
+                If ShowCredits Then
                     Credits(g)
                     'If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
                 Else
@@ -1258,7 +1258,6 @@ Public Class frmMainSetup
 
     Sub StartSetup()
         Try
-            ' Get the path that stores user documents.
             Dim startInfo As New ProcessStartInfo(Path.Combine(emberPath, "EmberSetup.exe"))
             startInfo.WindowStyle = ProcessWindowStyle.Hidden
             startInfo.Arguments = String.Format("-final {0} {1} {2}", If(CurrentEmberVersion = String.Empty, "0", CurrentEmberVersion), Me.Top, Me.Left)
