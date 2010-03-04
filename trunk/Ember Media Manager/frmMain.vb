@@ -541,6 +541,7 @@ Public Class frmMain
                         End While
                         ' *** TODO command line scraping - need to work on this later
                         ' *** ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
+                        MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                     Catch ex As Exception
                         ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
@@ -603,6 +604,7 @@ Public Class frmMain
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
                             'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
+                            MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                         Else
                             Me.ScraperDone = True
                         End If
@@ -5527,7 +5529,6 @@ doCancel:
     End Sub
 
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
-        'TODO: cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim OldTitle As String = String.Empty
         Dim NewTitle As String = String.Empty

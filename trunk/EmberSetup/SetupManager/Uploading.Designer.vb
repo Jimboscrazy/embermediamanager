@@ -42,7 +42,6 @@ Partial Class Uploading
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(318, 24)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Label1"
         '
         'Uploading
         '
