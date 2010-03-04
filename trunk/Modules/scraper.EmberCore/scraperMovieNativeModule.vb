@@ -201,8 +201,9 @@ Public Class EmberNativeScraperModule
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
     End Function
-    Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
+    Function SelectImageOfType(ByRef mMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
         Using dImgSelect As New dlgImgSelect
+            If preload Then dImgSelect.PreLoad(mMovie, _DLType, _isEdit)
             dImgSelect.IMDBURL = MySettings.IMDBURL
             pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
         End Using

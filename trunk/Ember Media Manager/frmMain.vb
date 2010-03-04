@@ -362,26 +362,6 @@ Public Class frmMain
         End Try
 
     End Sub
-
-    Sub ShowCancelPanel(ByVal txt As String)
-        'Me.tspbLoading.Style = ProgressBarStyle.Continuous
-        'Me.tspbLoading.Value = Me.tspbLoading.Minimum
-        'Me.tspbLoading.Maximum = MovieIds.Count
-        Me.tspbLoading.Style = ProgressBarStyle.Marquee
-        Me.tspbLoading.MarqueeAnimationSpeed = 25
-        Me.tslLoading.Text = txt
-        btnCancel.Visible = True
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
-        Me.pnlCancel.Visible = True
-        Me.tslLoading.Visible = True
-        Me.tspbLoading.Visible = True
-    End Sub
-    Sub HideCancelPanel()
-        Me.pnlCancel.Visible = False
-        'Me.tslLoading.Visible = True
-        'Me.tspbLoading.Visible = True
-    End Sub
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
         Dim asm As Assembly = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
@@ -5595,12 +5575,12 @@ doCancel:
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
 
-    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
+    Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
         Me.SetStatus(e.UserState.ToString)
     End Sub
 
-    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
+    Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -5666,14 +5646,11 @@ doCancel:
                     Dim tmpImages As New Images
                     Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                    'TODO: Re-implement preload
-                    'If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
-
                     If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
                         Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                         Application.DoEvents()
                         Dim pResults As New Containers.ImgResult
-                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True)
+                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True, AllowFA)
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                             Master.currMovie.PosterPath = pResults.ImagePath
                             If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
