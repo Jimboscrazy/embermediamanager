@@ -35,9 +35,8 @@ Public Class Settings
     End Sub
 End Class
 
-<XmlRoot("Modules")> _
+<XmlRoot("Config")> _
 Public Class _LastVersion
-    <XmlArray("Module")> _
     <XmlArrayItem("File")> _
     Public Modules As New List(Of _Module)
     Public Sub Save(ByVal fpath As String)

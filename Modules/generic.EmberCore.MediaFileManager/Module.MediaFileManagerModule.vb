@@ -157,14 +157,14 @@ Public Class FileManagerExternalModule
                         Select Case tMItem.OwnerItem.Tag.ToString
                             Case "MOVE"
                                 If MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
-                                    'TODO:  need to test it better and move to background worker
+                                    'TODO:  need to test it better
                                     DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(756, "Moving Movie"))
                                     Master.DB.DeleteFromDB(MovieId)
                                 End If
 
                             Case "COPY"
                                 If MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
-                                    'TODO:   need to test it better and move to background worker
+                                    'TODO:   need to test it better 
                                     DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(756, "Copying Movie"))
                                 End If
                         End Select

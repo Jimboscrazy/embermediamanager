@@ -382,10 +382,14 @@ Public Class frmMainManager
                         If Not DBNull.Value.Equals(SQLreader("Hash")) Then o.Hash = SQLreader("Hash").ToString
                         If Not DBNull.Value.Equals(SQLreader("Platform")) Then o.Platform = SQLreader("Platform").ToString
                         _f.Files.Add(o)
+                        If SQLreader("EmberPath").ToString = "\Modules" AndAlso Path.GetExtension(SQLreader("Filename").ToString) = ".dll" Then
+                            ModulesVersions.Modules.Add(New _Module With {.Name = SQLreader("Filename").ToString, .Platform = SQLreader("Platform").ToString})
+                        End If
                     End If
                 End While
             End Using
         End Using
+        ModulesVersions.Save(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versions.xml")))
     End Sub
 
     Sub LoadFiles(Optional ByVal showAll As Boolean = True)
@@ -498,15 +502,12 @@ Public Class frmMainManager
                             File.Copy(srcFile, dstFile)
                         Catch ex As Exception
                         End Try
-                        If SQLreader("EmberPath").ToString = "\Modules" AndAlso Path.GetExtension(SQLreader("Filename").ToString) = "dll" Then
-                            ModulesVersions.Modules.Add(New _Module With {.Name = SQLreader("Filename").ToString})
-                        End If
                         'CompressFile(srcFile, dstFile)
                     End If
                 End While
             End Using
         End Using
-        ModulesVersions.Save(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, "versions.xml")))
+
     End Sub
 
     Public Shared Sub CompressFile(ByVal spath As String, ByVal dpath As String)
@@ -995,7 +996,7 @@ Public Class frmMainManager
         Try
             dlg.TopMost = True
             dlg.Show()
-            dlg.Label1.Text = "Uploading Configuration"
+            dlg.Label1.Text = "Connecting to Server"
             Application.DoEvents()
             ftp.setRemoteHost(TextBox3.Text)
             ftp.setRemoteUser(TextBox1.Text)
@@ -1006,15 +1007,13 @@ Public Class frmMainManager
             Dim dirFiles As List(Of String)
             'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
             'ftp.cmdPasv2Port()
+            Application.DoEvents()
+
+
             dirRoot = ftp.getFileList("")
             If Not dirRoot.Contains("Files") Then
                 ftp.mkdir("Files")
             End If
-
-            For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
-                ftp.upload(s)
-                ftp.chmod("644", Path.GetFileName(s))
-            Next
             ftp.chdir("Files")
             dirFiles = ftp.getFileList("").ToList
             dirFiles.Remove(".")
@@ -1048,6 +1047,13 @@ Public Class frmMainManager
                 dlg.Label1.Text = String.Format(" Removing obsolete files {0} of {1}", done, inDisk)
                 Application.DoEvents()
                 ftp.deleteRemoteFile(s)
+            Next
+            dlg.Label1.Text = "Uploading Configuration"
+            Application.DoEvents()
+            ftp.chdir("..")
+            For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
+                ftp.upload(s)
+                ftp.chmod("644", Path.GetFileName(s))
             Next
             ftp.close()
         Catch ex As Exception
