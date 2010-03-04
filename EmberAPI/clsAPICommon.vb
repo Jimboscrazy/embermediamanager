@@ -286,6 +286,8 @@ Public Class Enums
         FanartItem = 3
         TrailerItem = 4
         ThumbsItem = 5
+        SortTitle = 6
+        ListTitle = 7
     End Enum
 
 End Class
