@@ -784,9 +784,9 @@ mPlot:
                     If D > 0 Then W = HTML.IndexOf("</div>", D)
                     If D > 0 AndAlso W > 0 Then
                         Dim q = From M In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                Where Not DirectCast(M, Match).Groups("name").ToString = "more" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "(more)" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "WGA" _
+                                Where Not DirectCast(M, Match).Groups("name").ToString.Trim = "more" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "(more)" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "WGA" _
                                 Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(DirectCast(M, Match).Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
                         If q.Count > 0 Then
