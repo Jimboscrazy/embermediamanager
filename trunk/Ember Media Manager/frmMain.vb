@@ -370,7 +370,7 @@ Public Class frmMain
 
     End Sub
 
-    Sub ShowCancelPanel(ByVal txt As String)
+    Function ShowCancelPanel(ByVal txt As String) As Button
         'Me.tspbLoading.Style = ProgressBarStyle.Continuous
         'Me.tspbLoading.Value = Me.tspbLoading.Minimum
         'Me.tspbLoading.Maximum = MovieIds.Count
@@ -383,7 +383,8 @@ Public Class frmMain
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
-    End Sub
+        Return btnCancel
+    End Function
     Sub HideCancelPanel()
         Me.pnlCancel.Visible = False
         'Me.tslLoading.Visible = True
@@ -5598,7 +5599,7 @@ doCancel:
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
-    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
+    Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
         Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = DirectCast(e.UserState, EmberAPI.Structures.DBMovie)
         Application.DoEvents()
@@ -5608,7 +5609,7 @@ doCancel:
             SetStatus(DBScrapeMovie.Movie.Title)
         End If
     End Sub
-    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
+    Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then

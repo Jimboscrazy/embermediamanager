@@ -156,15 +156,17 @@ Public Class FileManagerExternalModule
                     If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                         Select Case tMItem.OwnerItem.Tag.ToString
                             Case "MOVE"
-                                MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                                'TODO:  need to test it better and move to background worker
-                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)))
-                                Directory.Delete(ItemsToWork(0).ToString, True)
-                                Master.DB.DeleteFromDB(MovieId)
+                                If MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
+                                    'TODO:  need to test it better and move to background worker
+                                    DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(756, "Moving Movie"))
+                                    Master.DB.DeleteFromDB(MovieId)
+                                End If
+
                             Case "COPY"
-                                MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                                'TODO:   need to test it better and move to background worker
-                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)))
+                                If MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
+                                    'TODO:   need to test it better and move to background worker
+                                    DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(756, "Copying Movie"))
+                                End If
                         End Select
                     End If
                 Next
@@ -174,9 +176,39 @@ Public Class FileManagerExternalModule
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
+        Using dCopy As New dlgCopyFiles
+            dCopy.Show()
+            dCopy.ProgressBar1.Style = ProgressBarStyle.Marquee
+            dCopy.Text = title
+            dCopy.Label1.Text = Path.GetFileNameWithoutExtension(src)
+            bwCopyDirectory.WorkerReportsProgress = True
+            bwCopyDirectory.WorkerSupportsCancellation = True
+            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst})
+            While bwCopyDirectory.IsBusy
+                Application.DoEvents()
+            End While
+        End Using
+    End Sub
+    Sub DirectoryMove(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
+        Using dCopy As New dlgCopyFiles
+            dCopy.Show()
+            dCopy.ProgressBar1.Style = ProgressBarStyle.Marquee
+            dCopy.Text = title
+            dCopy.Label1.Text = Path.GetFileNameWithoutExtension(src)
+            bwCopyDirectory.WorkerReportsProgress = True
+            bwCopyDirectory.WorkerSupportsCancellation = True
+            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst})
+            While bwCopyDirectory.IsBusy
+                Application.DoEvents()
+            End While
+            Directory.Delete(src, True)
+        End Using
+    End Sub
+
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        DirectoryCopy(Args.src, Args.dst)
+        _DirectoryCopy(Args.src, Args.dst)
     End Sub
 
 
@@ -230,7 +262,7 @@ Public Class FileManagerExternalModule
             End Set
         End Property
     End Class
-    Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
+    Private Sub _DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
         Dim dir As New DirectoryInfo(sourceDirName)
         ' If the source directory does not exist, throw an exception.
         If Not dir.Exists Then
