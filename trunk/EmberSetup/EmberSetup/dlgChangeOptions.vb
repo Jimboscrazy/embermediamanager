@@ -103,15 +103,20 @@ Public Class dlgChangeOptions
 
     Private Sub txtEMMPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEMMPath.TextChanged
         If frmMainSetup.CheckIfWindows Then
-                If Directory.Exists(txtEMMPath.Text) Then
-                Dim p As String = frmMainSetup.GetEmberPlatform(Path.GetDirectoryName(txtEMMPath.Text))
-                If p = "x86" Then
-                    rbX86.Checked = True
-                End If
-                If p = "x64" Then
-                    rbX64.Checked = True
-                End If
+            Dim p As String = String.Empty
+            If Directory.Exists(txtEMMPath.Text) Then
+                p = frmMainSetup.GetEmberPlatform(Path.GetDirectoryName(txtEMMPath.Text))
+            Else
+                p = If(frmMainSetup.Is64Bit, "x64", "x86")
             End If
+
+            If p = "x86" Then
+                rbX86.Checked = True
+            End If
+            If p = "x64" Then
+                rbX64.Checked = True
+            End If
+
         Else
             lblInfo.Text = "Platform: Mono"
             rbX86.Visible = False
