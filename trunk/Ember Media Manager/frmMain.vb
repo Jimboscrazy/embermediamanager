@@ -3257,7 +3257,6 @@ Public Class frmMain
     Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanDatabaseToolStripMenuItem.Click
         Me.SetControlsEnabled(False)
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
-        Me.tspbLoading.MarqueeAnimationSpeed = 25
         Me.EnableFilters(False)
 
         Me.SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
@@ -4429,7 +4428,6 @@ Public Class frmMain
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
-            Me.tspbLoading.MarqueeAnimationSpeed = 25
             Me.tspbLoading.Visible = True
 
             Application.DoEvents()
@@ -5526,7 +5524,6 @@ doCancel:
             Me.tspbLoading.Maximum = MovieIds.Count
         Else
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
-            Me.tspbLoading.MarqueeAnimationSpeed = 25
         End If
 
         Select Case sType
@@ -5668,7 +5665,6 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                    Me.tspbLoading.MarqueeAnimationSpeed = 25
                     Application.DoEvents()
                     MediaInfo.UpdateMediaInfo(Master.currMovie)
                 End If
@@ -5750,8 +5746,6 @@ doCancel:
                     End Select
                 End Using
 
-            Else
-                MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
             End If
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -6923,13 +6917,11 @@ doCancel:
         Select Case eType
             Case EmberAPI.Enums.TVScraperEventType.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(756, "Loading All Episodes:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case EmberAPI.Enums.TVScraperEventType.SavingStarted
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(757, "Saving All Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
@@ -6941,25 +6933,21 @@ doCancel:
                 Me.tslStatus.Visible = False
             Case EmberAPI.Enums.TVScraperEventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(758, "Searching theTVDB:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case EmberAPI.Enums.TVScraperEventType.SelectImages
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(759, "Select Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case EmberAPI.Enums.TVScraperEventType.StartingDownload
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
                 Me.tslLoading.Text = Master.eLang.GetString(760, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
             Case EmberAPI.Enums.TVScraperEventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tspbLoading.MarqueeAnimationSpeed = 25
 
                 Select Case iProgress
                     Case 0 ' show

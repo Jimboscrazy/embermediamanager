@@ -598,6 +598,7 @@ Partial Class frmMain
         '
         Me.tspbLoading.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.tspbLoading.AutoSize = False
+        Me.tspbLoading.MarqueeAnimationSpeed = 25
         Me.tspbLoading.Name = "tspbLoading"
         Me.tspbLoading.Size = New System.Drawing.Size(150, 16)
         Me.tspbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous
@@ -855,7 +856,7 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
