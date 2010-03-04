@@ -64,14 +64,14 @@ Public Class frmMainSetup
     Private NeedDoEvents As Boolean = False
 
     Sub SetupMyControls()
-        Me.lblStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStatus.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(18, 10)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(470, 27)
         Me.lblStatus.Text = "lblStatus"
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter
 
-        Me.lblInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInfo.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblInfo.Location = New System.Drawing.Point(18, 36)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(470, 170)
@@ -123,7 +123,18 @@ Public Class frmMainSetup
         log.WriteLine(s)
         log.Close()
     End Sub
-
+    ' Declaration
+    Declare Function IsWow64Process Lib "kernel32" (ByVal hProcess As Int32, ByRef Wow64Process As Boolean) As Int32
+    ' Function
+    Public Shared Function Is64Bit() As Boolean
+        Dim proc As Process = Process.GetCurrentProcess
+        Dim Wow64Process As Boolean
+        Try
+            Return IsWow64Process(proc.Id, Wow64Process) < 0
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
     Public Function GetEmberPlatform(ByVal fpath As String) As String
         Try
             If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
@@ -490,6 +501,7 @@ Public Class frmMainSetup
                         CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
                     End If
                     If CurrentEmberPlatform = String.Empty Then
+                        CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                         LogWrite(String.Format("*** Main: No Platform Selected ABORT"))
                         Me.bwDoInstall.ReportProgress(7, "No Platform Selected") '  Error
                         Return True
@@ -1090,6 +1102,7 @@ Public Class frmMainSetup
                     End If
 
                 Else
+                    CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
                     lblInfo.Text = String.Format("No Ember Media Manager Installation Found{0}", vbCrLf)
                     lblInfo.Text += "Please use [Change Options] to choose the Instalation Folder"
@@ -1195,37 +1208,38 @@ Public Class frmMainSetup
             'g.DrawRectangle(Pens.Black, l.Left, l.Top, l.Width, l.Height)
         Next
     End Sub
-
+    Public mePainting As New Object
     Private Sub MyBackGround_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBackGround.Paint
-        Try
-            Dim g As Graphics = e.Graphics
-            g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-            'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
-            If iLogo Is Nothing Then
-                SetupLogo()
-            End If
-            Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * 0.735)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-            DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * 0.735), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * 0.265))
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-            Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
-            Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
-            g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
-            UpdateBackgorund()
+        SyncLock mePainting
+            Try
+                Dim g As Graphics = e.Graphics
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
+                'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
+                If iLogo Is Nothing Then
+                    SetupLogo()
+                End If
+                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * 0.735)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * 0.735), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * 0.265))
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
+                Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
+                g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
+                UpdateBackgorund()
 
-            If ShowCredits Then 'AndAlso Not bCredits Is Nothing Then
-                Credits()
-                If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
-            Else
-                DrawString(g, lblStatus)
-                DrawString(g, lblInfo)
-            End If
-            If NeedDoEvents Then Application.DoEvents()
-            If pbFiles.Visible Then pbFiles.Refresh()
-            'System.Threading.Thread.Sleep(10)
-            Me.MyBackGround.Invalidate()
-        Catch ex As Exception
-        End Try
+                If ShowCredits Then 'AndAlso Not bCredits Is Nothing Then
+                    Credits(g)
+                    'If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
+                Else
+                    DrawString(g, lblStatus)
+                    DrawString(g, lblInfo)
+                End If
+                'If NeedDoEvents Then Application.DoEvents()
+                'If pbFiles.Visible Then pbFiles.Refresh()
+                'Me.MyBackGround.Invalidate()
+            Catch ex As Exception
+            End Try
+        End SyncLock
     End Sub
 
     Sub SetupLogo()
@@ -1320,29 +1334,39 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = "Ember Media Manager", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
         'CredList.Add(New CredLine With {.Text = String.Format("Version r{0}", My.Application.Info.Version.Revision), .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
+        CredList.Add(New CredLine With {.Text = My.Application.Info.Description, .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = My.Application.Info.Copyright, .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Created By: Jason Schnitzler", .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
-        CredList.Add(New CredLine With {.Text = "__________Team Coders__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "__________Project Coders__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Jason ""nul7"" Schnitzler"})
         CredList.Add(New CredLine With {.Text = "Nuno ""Zordor"" Novais"})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
-        CredList.Add(New CredLine With {.Text = "__________Team Testers__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "__________Project Manager__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Bence ""olympia"" Nádas"})
+        CredList.Add(New CredLine With {.Text = String.Empty})
+        CredList.Add(New CredLine With {.Text = String.Empty})
+        CredList.Add(New CredLine With {.Text = String.Empty})
+        CredList.Add(New CredLine With {.Text = "__________Contributors__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = String.Empty})
+        CredList.Add(New CredLine With {.Text = "Darren ""RogueDazza"" Sayers"})
+        CredList.Add(New CredLine With {.Text = "Jim ""FCCWizard"" Brown"})
+        CredList.Add(New CredLine With {.Text = """pcjco"""})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "_________Special Thanks_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Carlos ""asphinx"" Nabb - Genre Images"})
-        CredList.Add(New CredLine With {.Text = """Halibutt"" - Studio Icon Pack"})
+        CredList.Add(New CredLine With {.Text = "Krzysztof ""Halibutt"" Machocki - Studio Icon Pack"})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
@@ -1367,9 +1391,9 @@ Public Class frmMainSetup
         PicY = Me.MyBackGround.Height
     End Sub
     Dim SlowDown As Integer = 0
-    Sub Credits()
-        bCredits = New Bitmap(Me.MyBackGround.Width, Me.MyBackGround.Height)
-        Dim e As Graphics = Graphics.FromImage(bCredits)
+    Sub Credits(ByVal e As Graphics)
+        'bCredits = New Bitmap(Me.MyBackGround.Width, Me.MyBackGround.Height)
+        'Dim e As Graphics = Graphics.FromImage(bCredits)
         Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
         For i As Integer = 0 To CredList.Count - 1
             CurrentY = PicY + FontMod
@@ -1379,7 +1403,7 @@ Public Class frmMainSetup
             e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
         Next
         SlowDown += 1
-        If SlowDown > 5 Then
+        If SlowDown > 8 Then
             PicY -= 1
             SlowDown = 0
         End If
