@@ -32,6 +32,7 @@ Partial Class frmMainManager
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Button3 = New System.Windows.Forms.Button
         Me.Label11 = New System.Windows.Forms.Label
         Me.TextBox3 = New System.Windows.Forms.TextBox
         Me.Label10 = New System.Windows.Forms.Label
@@ -75,7 +76,15 @@ Partial Class frmMainManager
         Me.Label4 = New System.Windows.Forms.Label
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.lstModulesx86 = New System.Windows.Forms.ListView
+        Me.ColumnHeader8 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader9 = New System.Windows.Forms.ColumnHeader
+        Me.lstModulesx64 = New System.Windows.Forms.ListView
+        Me.ColumnHeader10 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader11 = New System.Windows.Forms.ColumnHeader
+        Me.Label13 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -84,6 +93,7 @@ Partial Class frmMainManager
         Me.TabPage2.SuspendLayout()
         Me.gbCommands.SuspendLayout()
         Me.pnlWork.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
         Me.SuspendLayout()
         '
         'lstVersions
@@ -94,7 +104,7 @@ Partial Class frmMainManager
         Me.lstVersions.HideSelection = False
         Me.lstVersions.Location = New System.Drawing.Point(1, 23)
         Me.lstVersions.Name = "lstVersions"
-        Me.lstVersions.Size = New System.Drawing.Size(121, 225)
+        Me.lstVersions.Size = New System.Drawing.Size(123, 225)
         Me.lstVersions.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lstVersions.TabIndex = 0
         Me.lstVersions.UseCompatibleStateImageBehavior = False
@@ -116,7 +126,7 @@ Partial Class frmMainManager
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.TabControl1)
-        Me.Panel1.Location = New System.Drawing.Point(123, 0)
+        Me.Panel1.Location = New System.Drawing.Point(132, 2)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(861, 497)
         Me.Panel1.TabIndex = 2
@@ -125,6 +135,7 @@ Partial Class frmMainManager
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(3, 0)
         Me.TabControl1.Multiline = True
         Me.TabControl1.Name = "TabControl1"
@@ -138,9 +149,9 @@ Partial Class frmMainManager
         Me.TabPage1.Controls.Add(Me.cbPlatform)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.CheckBox1)
-        Me.TabPage1.Controls.Add(Me.btnRescan)
-        Me.TabPage1.Controls.Add(Me.btnRefresh)
         Me.TabPage1.Controls.Add(Me.lstFiles)
+        Me.TabPage1.Controls.Add(Me.txtEMMVersion)
+        Me.TabPage1.Controls.Add(Me.Label2)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -152,7 +163,7 @@ Partial Class frmMainManager
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(264, 372)
+        Me.Label3.Location = New System.Drawing.Point(9, 372)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(45, 13)
         Me.Label3.TabIndex = 11
@@ -163,7 +174,7 @@ Partial Class frmMainManager
         Me.cbPlatform.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPlatform.FormattingEnabled = True
         Me.cbPlatform.Items.AddRange(New Object() {"x86", "x64", "Mono"})
-        Me.cbPlatform.Location = New System.Drawing.Point(314, 369)
+        Me.cbPlatform.Location = New System.Drawing.Point(59, 369)
         Me.cbPlatform.Name = "cbPlatform"
         Me.cbPlatform.Size = New System.Drawing.Size(84, 21)
         Me.cbPlatform.TabIndex = 10
@@ -174,12 +185,12 @@ Partial Class frmMainManager
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.TextBox3)
         Me.GroupBox1.Controls.Add(Me.Label10)
+        Me.GroupBox1.Controls.Add(Me.btnRefresh)
+        Me.GroupBox1.Controls.Add(Me.btnRescan)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.TextBox2)
         Me.GroupBox1.Controls.Add(Me.TextBox1)
         Me.GroupBox1.Controls.Add(Me.Button2)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.txtEMMVersion)
         Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Controls.Add(Me.btnSaveVersion)
         Me.GroupBox1.Location = New System.Drawing.Point(6, 391)
@@ -187,7 +198,15 @@ Partial Class frmMainManager
         Me.GroupBox1.Size = New System.Drawing.Size(836, 74)
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Ember Information"
+        '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(782, 43)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(54, 23)
+        Me.Button3.TabIndex = 14
+        Me.Button3.Text = "Save"
+        Me.Button3.UseVisualStyleBackColor = True
         '
         'Label11
         '
@@ -240,17 +259,17 @@ Partial Class frmMainManager
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(466, 42)
+        Me.Button2.Location = New System.Drawing.Point(466, 17)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(121, 23)
         Me.Button2.TabIndex = 7
-        Me.Button2.Text = "Upload Files"
+        Me.Button2.Text = "3. Upload Files"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 22)
+        Me.Label2.Location = New System.Drawing.Point(155, 372)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(70, 13)
         Me.Label2.TabIndex = 1
@@ -258,7 +277,7 @@ Partial Class frmMainManager
         '
         'txtEMMVersion
         '
-        Me.txtEMMVersion.Location = New System.Drawing.Point(82, 19)
+        Me.txtEMMVersion.Location = New System.Drawing.Point(231, 369)
         Me.txtEMMVersion.Name = "txtEMMVersion"
         Me.txtEMMVersion.ReadOnly = True
         Me.txtEMMVersion.Size = New System.Drawing.Size(78, 20)
@@ -267,11 +286,11 @@ Partial Class frmMainManager
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(308, 17)
+        Me.Button1.Location = New System.Drawing.Point(328, 17)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(121, 23)
         Me.Button1.TabIndex = 6
-        Me.Button1.Text = "Pack Version Files"
+        Me.Button1.Text = "2. Pack Version Files"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'btnSaveVersion
@@ -281,7 +300,7 @@ Partial Class frmMainManager
         Me.btnSaveVersion.Name = "btnSaveVersion"
         Me.btnSaveVersion.Size = New System.Drawing.Size(121, 23)
         Me.btnSaveVersion.TabIndex = 0
-        Me.btnSaveVersion.Text = "Save Version"
+        Me.btnSaveVersion.Text = "1. Save Version"
         Me.btnSaveVersion.UseVisualStyleBackColor = True
         '
         'CheckBox1
@@ -296,7 +315,7 @@ Partial Class frmMainManager
         '
         'btnRescan
         '
-        Me.btnRescan.Location = New System.Drawing.Point(133, 367)
+        Me.btnRescan.Location = New System.Drawing.Point(16, 43)
         Me.btnRescan.Name = "btnRescan"
         Me.btnRescan.Size = New System.Drawing.Size(121, 23)
         Me.btnRescan.TabIndex = 6
@@ -305,7 +324,7 @@ Partial Class frmMainManager
         '
         'btnRefresh
         '
-        Me.btnRefresh.Location = New System.Drawing.Point(6, 367)
+        Me.btnRefresh.Location = New System.Drawing.Point(16, 17)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Size = New System.Drawing.Size(121, 23)
         Me.btnRefresh.TabIndex = 5
@@ -559,25 +578,92 @@ Partial Class frmMainManager
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         '
-        'Button3
+        'Label12
         '
-        Me.Button3.Location = New System.Drawing.Point(782, 43)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(54, 23)
-        Me.Button3.TabIndex = 14
-        Me.Button3.Text = "Save"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(16, 3)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(67, 13)
+        Me.Label12.TabIndex = 14
+        Me.Label12.Text = "Versions x86"
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.Label13)
+        Me.TabPage3.Controls.Add(Me.lstModulesx64)
+        Me.TabPage3.Controls.Add(Me.lstModulesx86)
+        Me.TabPage3.Controls.Add(Me.Label12)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(850, 471)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Modules"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'lstModulesx86
+        '
+        Me.lstModulesx86.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader8, Me.ColumnHeader9})
+        Me.lstModulesx86.FullRowSelect = True
+        Me.lstModulesx86.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lstModulesx86.Location = New System.Drawing.Point(19, 19)
+        Me.lstModulesx86.Name = "lstModulesx86"
+        Me.lstModulesx86.Size = New System.Drawing.Size(376, 254)
+        Me.lstModulesx86.TabIndex = 15
+        Me.lstModulesx86.UseCompatibleStateImageBehavior = False
+        Me.lstModulesx86.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Module"
+        Me.ColumnHeader8.Width = 282
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Version"
+        Me.ColumnHeader9.Width = 71
+        '
+        'lstModulesx64
+        '
+        Me.lstModulesx64.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader11})
+        Me.lstModulesx64.FullRowSelect = True
+        Me.lstModulesx64.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lstModulesx64.Location = New System.Drawing.Point(446, 19)
+        Me.lstModulesx64.Name = "lstModulesx64"
+        Me.lstModulesx64.Size = New System.Drawing.Size(376, 254)
+        Me.lstModulesx64.TabIndex = 16
+        Me.lstModulesx64.UseCompatibleStateImageBehavior = False
+        Me.lstModulesx64.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Module"
+        Me.ColumnHeader10.Width = 282
+        '
+        'ColumnHeader11
+        '
+        Me.ColumnHeader11.Text = "Version"
+        Me.ColumnHeader11.Width = 71
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(443, 3)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(67, 13)
+        Me.Label13.TabIndex = 17
+        Me.Label13.Text = "Versions x64"
         '
         'frmMainManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(984, 499)
+        Me.ClientSize = New System.Drawing.Size(996, 499)
         Me.Controls.Add(Me.pnlWork)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnOriginPath)
         Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.lstVersions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "frmMainManager"
@@ -595,6 +681,8 @@ Partial Class frmMainManager
         Me.gbCommands.PerformLayout()
         Me.pnlWork.ResumeLayout(False)
         Me.pnlWork.PerformLayout()
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -652,5 +740,14 @@ Partial Class frmMainManager
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents lstModulesx86 As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader9 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents lstModulesx64 As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
 
 End Class

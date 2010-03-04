@@ -38,7 +38,8 @@ Public Class dlgNewVersion
 
     Public Overloads Function ShowDialog(ByVal iNew As Integer) As Windows.Forms.DialogResult
 
-        Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available."), iNew)
+        'Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available."), iNew)
+        Me.lblNew.Text = String.Format(Master.eLang.GetString(999, "A New Version is now available.")) 'Maybe just a module.. don't know what version
         Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", vbNewLine)
 
         Return MyBase.ShowDialog()

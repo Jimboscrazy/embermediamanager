@@ -53,6 +53,7 @@ Public Class ModulesManager
         Public Name As String
         Public Version As String
         Public AssemblyFileName As String
+        Public NeedUpdate As Boolean
     End Structure
     Class EmberRuntimeObjects
         'all runtime object including Function (delegate) that need to be exposed to Modules
@@ -394,8 +395,8 @@ Public Class ModulesManager
     End Sub
     Private Sub BuildVersionList()
         VersionList.Clear()
-        VersionList.Add(New VersionItem With {.Name = "Ember Application", .Version = My.Application.Info.Version.Revision.ToString})
-        VersionList.Add(New VersionItem With {.Name = "Ember API", .Version = EmberAPI.Functions.EmberAPIVersion()})
+        VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPP", .Name = "Ember Application", .Version = My.Application.Info.Version.Revision.ToString})
+        VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPI", .Name = "Ember API", .Version = EmberAPI.Functions.EmberAPIVersion()})
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
             VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
                     .AssemblyFileName = _externalScraperModule.AssemblyFileName, _

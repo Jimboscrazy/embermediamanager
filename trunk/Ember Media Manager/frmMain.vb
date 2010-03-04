@@ -628,15 +628,23 @@ Public Class frmMain
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
-                ' Checks for new Ember Version
+                'Testing NEW Checks for new Ember And Modules Version
                 If Master.eSettings.CheckUpdates Then
-                    Dim tmpNew As Integer = Functions.CheckUpdate
-                    If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
+                    If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
-                            dNewVer.ShowDialog(tmpNew)
+                            dNewVer.ShowDialog(0)
                         End Using
                     End If
                 End If
+                ' Checks for new Ember Version
+                'If Master.eSettings.CheckUpdates Then
+                'Dim tmpNew As Integer = Functions.CheckUpdate
+                'If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
+                'Using dNewVer As New dlgNewVersion
+                'dNewVer.ShowDialog(tmpNew)
+                'End Using
+                'End If
+                'End If
 
                 Me.Location = Master.eSettings.WindowLoc
                 Me.Size = Master.eSettings.WindowSize

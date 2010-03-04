@@ -770,6 +770,35 @@ Public Class Functions
     ''' Check for the lastest version of Ember
     ''' </summary>
     ''' <returns>Latest version as integer</returns>
+    Public Shared Function CheckNeedUpdate() As Boolean
+        Dim sHTTP As New HTTP
+        Dim needUpdate As Boolean = False
+        Dim platform As String = "x86"
+        Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
+        sHTTP = Nothing
+        If updateXML.Length > 0 Then
+            For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
+                Dim vl As ModulesManager.VersionItem = v
+                Dim n As String = String.Empty
+                Dim xmlUpdate As XDocument
+                Try
+                    xmlUpdate = XDocument.Parse(updateXML)
+                Catch
+                    Return False
+                End Try
+                Dim xUdpate = From xUp In xmlUpdate...<Config>...<Modules>...<File> Where (xUp.<Version>.Value <> "" AndAlso xUp.<Name>.Value = vl.AssemblyFileName AndAlso xUp.<Platform>.Value = platform) Select xUp.<Version>.Value
+                Try
+                    If Convert.ToInt16(xUdpate(0)) > Convert.ToInt16(v.Version) Then
+                        v.NeedUpdate = True
+                        needUpdate = True
+                    End If
+
+                Catch ex As Exception
+                End Try
+            Next
+            Return needUpdate
+        End If
+    End Function
     Public Shared Function CheckUpdate() As Integer
         Try
             Dim sHTTP As New HTTP
