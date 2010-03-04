@@ -43,6 +43,7 @@ Public Class frmMain
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
 
     'Private ExternalModulesManager As ModulesManager
     Private bsMedia As New BindingSource
@@ -76,6 +77,8 @@ Public Class frmMain
     Private InfoCleared As Boolean = False
     Private isCL As Boolean = False
     Private sHTTP As New HTTP
+    Private dScrapeRow As DataRow = Nothing
+    Private ScrapeList As New List(Of DataRow)
 
     'Loading Delays
     Private currRow As Integer = -1
@@ -172,16 +175,6 @@ Public Class frmMain
             _genrepanelcolor = value
         End Set
     End Property
-
-    Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
-    Private dScrapeRow As DataRow
-    Private scrapeRunningIdx As Integer
-    Structure RunList
-        Dim idx As Integer
-        Dim Id As Integer
-    End Structure
-    Dim MovieIds As New List(Of RunList) 'Movies to scrape (db id and MediaList idx)
-
 #End Region '*** Declarations
 
 
@@ -370,7 +363,7 @@ Public Class frmMain
 
     End Sub
 
-    Function ShowCancelPanel(ByVal txt As String) As Button
+    Sub ShowCancelPanel(ByVal txt As String)
         'Me.tspbLoading.Style = ProgressBarStyle.Continuous
         'Me.tspbLoading.Value = Me.tspbLoading.Minimum
         'Me.tspbLoading.Maximum = MovieIds.Count
@@ -383,8 +376,7 @@ Public Class frmMain
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
-        Return btnCancel
-    End Function
+    End Sub
     Sub HideCancelPanel()
         Me.pnlCancel.Visible = False
         'Me.tslLoading.Visible = True
@@ -5487,11 +5479,11 @@ doCancel:
 
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
-        MovieIds.Clear()
+        ScrapeList.Clear()
         If selected Then
             'create snapshoot list of selected movies
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                MovieIds.Add(New RunList With {.Id = Convert.ToInt32(sRow.Cells(0).Value), .idx = sRow.Index})
+                ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
             'create list of movies acording to scrapetype
@@ -5511,19 +5503,18 @@ doCancel:
                         If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
                 End Select
 
-                Dim MovieId As Integer = Convert.ToInt32(drvRow.Item(0))
-                Dim idx As Integer = DirectCast(DirectCast((From dRow In dgvMediaList.Rows Where Convert.ToInt64(DirectCast(dRow, DataGridViewRow).Cells(0).Value) = MovieId Select dRow)(0), DataGridViewRow).Index, Integer)
-                MovieIds.Add(New RunList With {.Id = MovieId, .idx = idx})
+                ScrapeList.Add(drvRow)
             Next
         End If
 
         Me.SetControlsEnabled(False, False)
 
-        Me.tspbLoading.Value = Me.tspbLoading.Minimum
-        If MovieIds.Count > 1 Then
+        Me.tspbLoading.Value = 0
+        If ScrapeList.Count > 1 Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
-            Me.tspbLoading.Maximum = MovieIds.Count
+            Me.tspbLoading.Maximum = ScrapeList.Count
         Else
+            Me.tspbLoading.Maximum = 100
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
@@ -5556,21 +5547,20 @@ doCancel:
     End Sub
 
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
-        'Will Need to make a cleanup on Arguments when old scraper code is removed
+        'TODO: cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Dim OldTitle As String = String.Empty
+        Dim NewTitle As String = String.Empty
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
-        'AddHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
-        For Each rl As RunList In MovieIds
+
+        For Each dRow As DataRow In ScrapeList
             If bwMovieScraper.CancellationPending Then Exit For
+            OldTitle = dRow.Item(3).ToString
+            bwMovieScraper.ReportProgress(1, OldTitle)
 
-            Dim MovieId As Integer = rl.Id
-            scrapeRunningIdx = rl.idx 'So we can update MediaList
-
-            'Do this where so will not need do everytime that row need's updates
-            dScrapeRow = DirectCast((From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = MovieId Select drvRow)(0), DataRow)
-            Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(MovieId)
-
+            dScrapeRow = dRow
+            Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
@@ -5579,37 +5569,38 @@ doCancel:
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    NewTitle = DBScrapeMovie.ListTitle
+
+                    If Not NewTitle = OldTitle Then
+                        bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(999, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
+                    End If
+
+                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
+                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+
                     If bwMovieScraper.CancellationPending Then Exit For
                     If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                         FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                     End If
-                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, DBScrapeMovie.ListTitle)
-                    'dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
-                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
-                    'dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
                 End If
-                bwMovieScraper.ReportProgress(1, DBScrapeMovie)
             End If
         Next
 
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
-    Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
+
+    Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         Me.tspbLoading.Value += e.ProgressPercentage
-        Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = DirectCast(e.UserState, EmberAPI.Structures.DBMovie)
-        Application.DoEvents()
-        If String.IsNullOrEmpty(DBScrapeMovie.Movie.Title) Then
-            SetStatus(DBScrapeMovie.Filename)
-        Else
-            SetStatus(DBScrapeMovie.Movie.Title)
-        End If
+        Me.SetStatus(e.UserState.ToString)
     End Sub
-    Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
+
+    Private Sub bwNewScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -5626,7 +5617,7 @@ doCancel:
         End If
 
     End Sub
-    'Event InnerMovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+
     Delegate Sub DelegateEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
     Private Sub MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
         If (Me.InvokeRequired) Then
@@ -5650,6 +5641,7 @@ doCancel:
             End Select
         End If
     End Sub
+
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
             Me.tspbLoading.Value = iPercent
@@ -5674,6 +5666,7 @@ doCancel:
                     Dim tmpImages As New Images
                     Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
+                    'TODO: Re-implement preload
                     'If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Enums.ImageType.Fanart, True)
 
                     If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then

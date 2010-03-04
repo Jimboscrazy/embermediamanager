@@ -415,7 +415,6 @@ Public Class Scanner
                     End If
                 Next
 
-
             Catch ex As Exception
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
