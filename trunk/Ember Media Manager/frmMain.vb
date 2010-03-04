@@ -2673,8 +2673,6 @@ Public Class frmMain
 
         If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
-        If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
-
         While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy
             Application.DoEvents()
         End While
@@ -5559,7 +5557,7 @@ doCancel:
         bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
     End Sub
 
-    Private Sub bwNewScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
+    Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         'Will Need to make a cleanup on Arguments when old scraper code is removed
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
@@ -5577,12 +5575,10 @@ doCancel:
 
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                'RaiseEvent InnerMovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
                     EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
-                'RaiseEvent ScraperUpdateMediaList(6, True)
                 If bwMovieScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
@@ -5590,8 +5586,10 @@ doCancel:
                     If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                         FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                     End If
-                    dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
-                    dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
+                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, DBScrapeMovie.ListTitle)
+                    'dScrapeRow.Item(3) = DBScrapeMovie.ListTitle
+                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                    'dScrapeRow.Item(50) = DBScrapeMovie.Movie.SortTitle
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
@@ -5601,7 +5599,6 @@ doCancel:
         Next
 
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
-        'RemoveHandler InnerMovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
     End Sub
     Private Sub bwNewScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -5648,6 +5645,10 @@ doCancel:
                     dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.ThumbsItem
                     dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.SortTitle
+                    dScrapeRow.Item(50) = DirectCast(Parameter, String)
+                Case Enums.MovieScraperEventType.ListTitle
+                    dScrapeRow.Item(3) = DirectCast(Parameter, String)
             End Select
         End If
     End Sub

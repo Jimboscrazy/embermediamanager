@@ -414,7 +414,6 @@ Public Class EmberNativeScraperModule
                         pResults.ImagePath = Poster.SaveAsPoster(DBMovie)
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                             DBMovie.PosterPath = pResults.ImagePath
-                            'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                             RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
                             If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                 DBMovie.Movie.Thumb = pResults.Posters
@@ -427,8 +426,6 @@ Public Class EmberNativeScraperModule
                             pResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Posters)
                             If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                 DBMovie.PosterPath = pResults.ImagePath
-                                'Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                'RaiseEvent ScraperUpdateMediaList(4, True)
                                 RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
                                 If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                     DBMovie.Movie.Thumb = pResults.Posters
@@ -450,8 +447,6 @@ Public Class EmberNativeScraperModule
                         fResults.ImagePath = Fanart.SaveAsFanart(DBMovie)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             DBMovie.FanartPath = fResults.ImagePath
-                            'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                            'RaiseEvent ScraperUpdateMediaList(5, True)
                             RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
                             If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                 DBMovie.Movie.Fanart = fResults.Fanart
@@ -465,8 +460,6 @@ Public Class EmberNativeScraperModule
                             fResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                 DBMovie.FanartPath = fResults.ImagePath
-                                'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                'RaiseEvent ScraperUpdateMediaList(5, True)
                                 RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                                 If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                     DBMovie.Movie.Fanart = fResults.Fanart
@@ -485,8 +478,6 @@ Public Class EmberNativeScraperModule
                     'doSave = True
                 Else
                     DBMovie.TrailerPath = tURL
-                    'Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
-                    'RaiseEvent ScraperUpdateMediaList(7, True)
                     RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                 End If
             End If
@@ -498,12 +489,9 @@ Public Class EmberNativeScraperModule
             If Master.eSettings.AutoThumbs > 0 AndAlso DBMovie.isSingle Then
                 Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBMovie, Master.eSettings.AutoThumbs, False)
                 If Not String.IsNullOrEmpty(ETasFA) Then
-                    'Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                    'RaiseEvent ScraperUpdateMediaList(9, True)
                     RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                     DBMovie.ExtraPath = "TRUE"
                     If Not ETasFA = "TRUE" Then
-                        'Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
                         RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                         DBMovie.FanartPath = ETasFA
                     End If
