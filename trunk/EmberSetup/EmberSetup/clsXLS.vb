@@ -28,10 +28,6 @@ Public Class UpgradeList
     <XmlArrayItem("Version")> _
     Public VersionList As New List(Of Versions)
 
-    <XmlArray("APIVersions")> _
-    <XmlArrayItem("Version")> _
-    Public APIVersionList As New List(Of Versions)
-
     Public Sub Save(ByVal fpath As String)
         Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
         Using xmlSW As New StreamWriter(fpath)

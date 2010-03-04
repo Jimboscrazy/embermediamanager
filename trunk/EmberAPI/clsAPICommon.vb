@@ -765,7 +765,18 @@ Public Class Functions
         End Try
         Return "Unavailable"
     End Function
-
+    ' Declaration
+    Declare Function IsWow64Process Lib "kernel32" (ByVal hProcess As Int32, ByRef Wow64Process As Boolean) As Int32
+    ' Function
+    Public Shared Function Is64Bit() As Boolean
+        Dim proc As Process = Process.GetCurrentProcess
+        Dim Wow64Process As Boolean
+        Try
+            Return IsWow64Process(proc.Id, Wow64Process) < 0
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
     ''' <summary>
     ''' Check for the lastest version of Ember
     ''' </summary>
@@ -773,7 +784,7 @@ Public Class Functions
     Public Shared Function CheckNeedUpdate() As Boolean
         Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
-        Dim platform As String = "x86"
+        Dim platform As String = If(Is64Bit, "x64", "x86")
         Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
         sHTTP = Nothing
         If updateXML.Length > 0 Then
