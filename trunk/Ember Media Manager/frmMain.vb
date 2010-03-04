@@ -5518,9 +5518,9 @@ doCancel:
 
         Me.SetControlsEnabled(False, False)
 
+        Me.tspbLoading.Value = Me.tspbLoading.Minimum
         If MovieIds.Count > 1 Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
-            Me.tspbLoading.Value = Me.tspbLoading.Minimum
             Me.tspbLoading.Maximum = MovieIds.Count
         Else
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
