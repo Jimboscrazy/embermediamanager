@@ -2,11 +2,15 @@
     ' Interfaces for external Modules
     Public Interface EmberExternalModule
         Function InjectSetup() As Containers.SettingsPanel
-        Sub SaveSetup()
+        Sub SaveSetup(ByVal DoDispose As Boolean)
         Property Enabled() As Boolean
-        Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects)
+        Sub Init()
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
+        Sub RunGeneric(ByVal _params As List(Of Object))
+        ReadOnly Property ModuleType() As Enums.ModuleType
+        Event ModuleSettingsChanged()
+        Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean)
     End Interface
 
     Public Structure ScraperResult
@@ -16,9 +20,9 @@
 
     Public Interface EmberMovieScraperModule
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Sub SaveSetupScraper()
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         Function InjectSetupPostScraper() As Containers.SettingsPanel
-        Sub SaveSetupPostScraper()
+        Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean
         Sub Init()
@@ -34,14 +38,15 @@
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
         Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
-        Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
-        Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
+        Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ModuleSettingsChanged()
     End Interface
     Public Interface EmberTVScraperModule
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Sub SaveSetupScraper()
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         Function InjectSetupPostScraper() As Containers.SettingsPanel
-        Sub SaveSetupPostScraper()
+        Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean
         Sub Init()
@@ -59,8 +64,9 @@
         ReadOnly Property IsPostScraper() As Boolean
 
         Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-        Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
-        Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
+        Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ModuleSettingsChanged()
     End Interface
 
 

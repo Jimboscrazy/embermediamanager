@@ -7904,6 +7904,5 @@ doCancel:
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
     End Sub
-
 End Class
 

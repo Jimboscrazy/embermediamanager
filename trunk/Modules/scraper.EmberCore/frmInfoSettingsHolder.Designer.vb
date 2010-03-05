@@ -60,10 +60,10 @@ Partial Class frmInfoSettingsHolder
         Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label2 = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.pnlSettings = New System.Windows.Forms.Panel
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
@@ -498,18 +498,15 @@ Partial Class frmInfoSettingsHolder
         Me.Panel1.Size = New System.Drawing.Size(1125, 25)
         Me.Panel1.TabIndex = 81
         '
-        'pnlSettings
+        'Label2
         '
-        Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Controls.Add(Me.PictureBox1)
-        Me.pnlSettings.Controls.Add(Me.GroupBox30)
-        Me.pnlSettings.Controls.Add(Me.Label1)
-        Me.pnlSettings.Controls.Add(Me.GroupBox15)
-        Me.pnlSettings.Controls.Add(Me.gbOptions)
-        Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
-        Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
-        Me.pnlSettings.TabIndex = 82
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(500, 7)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(60, 12)
+        Me.Label2.TabIndex = 84
+        Me.Label2.Text = "Scraper order"
         '
         'btnDown
         '
@@ -533,15 +530,18 @@ Partial Class frmInfoSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
-        'Label2
+        'pnlSettings
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(500, 7)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(60, 12)
-        Me.Label2.TabIndex = 84
-        Me.Label2.Text = "Scraper order"
+        Me.pnlSettings.Controls.Add(Me.Panel1)
+        Me.pnlSettings.Controls.Add(Me.PictureBox1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox30)
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox15)
+        Me.pnlSettings.Controls.Add(Me.gbOptions)
+        Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
+        Me.pnlSettings.TabIndex = 82
         '
         'frmInfoSettingsHolder
         '

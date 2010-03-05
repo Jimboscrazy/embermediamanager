@@ -13,8 +13,10 @@ Public Class EmberNativeScraperModule
     Private _setupPost As frmMediaSettingsHolder
     Public Shared ConfigOptions As New EmberAPI.Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
-    Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
+
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
@@ -74,14 +76,19 @@ Public Class EmberNativeScraperModule
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
+
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        '_ScraperEnabled = _setup.cbEnabled.Checked
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), If(state, 9, 10), difforder)
+        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
-        RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
         If Not String.IsNullOrEmpty(_setup.txtIMDBURL.Text) Then
             MySettings.IMDBURL = Strings.Replace(_setup.txtIMDBURL.Text, "http://", String.Empty)
         Else
@@ -115,7 +122,11 @@ Public Class EmberNativeScraperModule
 
 
         SaveSettings()
-        _setup.Dispose()
+        If DoDispose Then
+            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim Spanel As New Containers.SettingsPanel
@@ -144,13 +155,17 @@ Public Class EmberNativeScraperModule
         Spanel.Panel = Me._setupPost.pnlSettings
 
         AddHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
+        AddHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
         Return SPanel
     End Function
     Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         '_PostScraperEnabled = _setup.cbEnabled.Checked
-        RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), If(state, 9, 10), difforder)
+        RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
     End Sub
-    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
+    Private Sub Handle_PostModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
         MySettings.DownloadTrailers = _setupPost.chkDownloadTrailer.Checked
         ' TODO: this should move to Advanced Serttings (Modules) OR SPECIFIC settings file
         For Each iTrailer As Integer In _setupPost.lbTrailerSites.CheckedIndices
@@ -164,7 +179,11 @@ Public Class EmberNativeScraperModule
         ConfigScrapeModifier.Fanart = _setupPost.chkScrapeFanart.Checked
         ConfigScrapeModifier.Extra = _setupPost.chkAutoThumbs.Checked
         SaveSettings()
-        _setupPost.Dispose()
+        If DoDispose Then
+            RemoveHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
+            RemoveHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
+            _setupPost.Dispose()
+        End If
     End Sub
     Structure _MySettings
         Dim IMDBURL As String

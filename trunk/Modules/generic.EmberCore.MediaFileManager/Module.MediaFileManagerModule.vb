@@ -29,22 +29,30 @@ Imports System.Xml.Serialization
 
 Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private _enabled As Boolean = False
     Private _Name As String = "Media File Manager"
 
-    Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
-    Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
-    Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
-    Dim _setup As frmSettingsHolder
+    Private MyMenuSep As New System.Windows.Forms.ToolStripSeparator
+    Private MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
+    Private FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
+    Private _setup As frmSettingsHolder
     Private MyPath As String
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+
     Private Structure Arguments
         Dim src As String
         Dim dst As String
     End Structure
     Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
+
+    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return Enums.ModuleType.Generic
+        End Get
+    End Property
 
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
@@ -77,9 +85,21 @@ Public Class FileManagerExternalModule
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
+        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+
+    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
+        RaiseEvent ModuleEnabledChanged(Me._Name, State)
+    End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+        Me._enabled = Me._setup.cbEnabled.Checked
         eSettings.ModuleSettings.Clear()
         For Each i As ListViewItem In _setup.ListView1.Items
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
@@ -88,7 +108,11 @@ Public Class FileManagerExternalModule
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
-        _setup.Dispose()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
     Sub Enable()
@@ -99,19 +123,18 @@ Public Class FileManagerExternalModule
         MySubMenu2.Tag = "COPY"
         MyMenu.DropDownItems.Add(MySubMenu1)
         MyMenu.DropDownItems.Add(MySubMenu2)
-        emmRuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
-        emmRuntimeObjects.MenuMediaList.Items.Add(MyMenu)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenu)
 
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
     End Sub
     Sub Disable()
-        emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
-        emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        emmRuntimeObjects = emm
+    Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
         Load()
@@ -141,7 +164,7 @@ Public Class FileManagerExternalModule
             Dim MovieId As Int64 = -1
             Dim tMItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
 
-            For Each sRow As DataGridViewRow In emmRuntimeObjects.MediaList.SelectedRows
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows
                 MovieId = Convert.ToInt64(sRow.Cells(0).Value)
                 If Not MoviesToWork.Contains(MovieId) Then
                     MoviesToWork.Add(MovieId)
@@ -304,6 +327,9 @@ Public Class FileManagerExternalModule
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
+    End Sub
+
+    Public Sub RunGeneric(ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
     End Sub
 End Class
 

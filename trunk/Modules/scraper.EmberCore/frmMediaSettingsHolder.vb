@@ -22,12 +22,14 @@ Imports System.Windows.Forms
 Imports System.IO
 Public Class frmMediaSettingsHolder
     Public Event SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+    Public Event ModuleSettingsChanged()
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
         Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
         If Not Me.chkDownloadTrailer.Checked Then
@@ -38,7 +40,7 @@ Public Class frmMediaSettingsHolder
         End If
     End Sub
     Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
-        'Me.SetApplyButton(True)
+        RaiseEvent ModuleSettingsChanged()
         If e.Index = 0 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(1)) Then
             'Me.cbTrailerQuality.Enabled = True
         ElseIf e.Index = 1 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(0)) Then
@@ -79,7 +81,40 @@ Public Class frmMediaSettingsHolder
     End Sub
 
     Private Sub chkTrailerDump_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailerDump.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
         txtDumpPath.Enabled = chkTrailerDump.Checked
         btnBrowse.Enabled = chkTrailerDump.Checked
+    End Sub
+
+    Private Sub chkScrapePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapePoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapeFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkUseTMDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseTMDB.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkUseIMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseIMPA.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtDumpPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDumpPath.TextChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class

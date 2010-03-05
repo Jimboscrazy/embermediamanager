@@ -20,6 +20,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaFile
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.BulkRename", "Modules\generic.EmberCore.BulkRename\generic.EmberCore.BulkRename.vbproj", "{EAAB0601-6478-44D2-A39C-89B0850D7833}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Notifications", "Modules\generic.EmberCore.Notifications\generic.EmberCore.Notifications.vbproj", "{2A08A524-88DA-432F-92E6-8DC63C5376DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -191,6 +193,7 @@ Global
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|x64.ActiveCfg = Debug|x64
+		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|x64.Build.0 = Debug|x64
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|x86.ActiveCfg = Debug|x86
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Debug|x86.Build.0 = Debug|x86
 		{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}.Ember Media Manager|Any CPU.ActiveCfg = Release|x86
@@ -223,6 +226,26 @@ Global
 		{EAAB0601-6478-44D2-A39C-89B0850D7833}.Release|x64.Build.0 = Release|x64
 		{EAAB0601-6478-44D2-A39C-89B0850D7833}.Release|x86.ActiveCfg = Release|x86
 		{EAAB0601-6478-44D2-A39C-89B0850D7833}.Release|x86.Build.0 = Release|x86
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.All|Any CPU.Build.0 = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.All|x64.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.All|x86.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|x64.ActiveCfg = Debug|x64
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|x64.Build.0 = Debug|x64
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|x86.ActiveCfg = Debug|x86
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Debug|x86.Build.0 = Debug|x86
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Ember Media Manager|Any CPU.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Ember Media Manager|Any CPU.Build.0 = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Ember Media Manager|x64.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Ember Media Manager|x86.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x64.ActiveCfg = Release|x64
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x64.Build.0 = Release|x64
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x86.ActiveCfg = Release|x86
+		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

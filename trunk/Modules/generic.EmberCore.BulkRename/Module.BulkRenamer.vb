@@ -22,9 +22,17 @@ Imports EmberAPI
 ' TODO update the tooltip and label with all the new settings
 Public Class BulkRenamerModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private _enabled As Boolean = False
     Private _Name As String = "Bulk Renamer"
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+
+    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return Enums.ModuleType.Generic
+        End Get
+    End Property
+
     Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
@@ -35,7 +43,7 @@ Public Class BulkRenamerModule
         SPanel.Panel = New Panel
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 
     End Sub
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
@@ -56,18 +64,17 @@ Public Class BulkRenamerModule
         MyMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
         MyMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         _enabled = True
         tmpBulkRenamer.Dispose()
     End Sub
     Sub Disable()
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
         _enabled = False
     End Sub
-    Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        emmRuntimeObjects = emm
+    Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
@@ -88,10 +95,13 @@ Public Class BulkRenamerModule
         Using dBulkRename As New dlgBulkRenamer
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    emmRuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                 End If
             Catch ex As Exception
             End Try
         End Using
+    End Sub
+
+    Public Sub RunGeneric(ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
     End Sub
 End Class

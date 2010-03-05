@@ -280,6 +280,7 @@ Public Class Enums
         Verifying = 9
         Cancelled = 10
     End Enum
+
     Public Enum MovieScraperEventType As Integer
         NFOItem = 1
         PosterItem = 2
@@ -290,6 +291,10 @@ Public Class Enums
         ListTitle = 7
     End Enum
 
+    Public Enum ModuleType As Integer
+        Generic = 0
+        Notification = 1
+    End Enum
 End Class
 
 Public Class Structures
@@ -839,6 +844,7 @@ Public Class Functions
             Return 0
         End Try
     End Function
+
     Public Shared Function CheckIfWindows() As Boolean
         Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
     End Function
@@ -850,4 +856,11 @@ Public Class Functions
             Return "ffmpeg"
         End If
     End Function
+
+    Public Shared Sub Notify(ByVal Type As String, ByVal Icon As Integer, ByVal Title As String, ByVal Message As String, Optional ByVal CustomIcon As Image = Nothing)
+        Try
+            ModulesManager.Instance.externalProcessorModules.First(Function(m) m.Enabled AndAlso m.Type = Enums.ModuleType.Notification).ProcessorModule.RunGeneric(New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
+        Catch
+        End Try
+    End Sub
 End Class

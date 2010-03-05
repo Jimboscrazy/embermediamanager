@@ -54,7 +54,7 @@ Public Class dlgSettings
 
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Try
-            Me.SaveSettings()
+            Me.SaveSettings(True)
             If LangChanged Then
                 LangChanged = False
                 SetUp()
@@ -95,7 +95,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        Me.SaveSettings()
+        Me.SaveSettings(False)
         Me.Close()
     End Sub
 
@@ -132,8 +132,8 @@ Public Class dlgSettings
             Me.LangChanged = False
 
             Me.sResult.NeedsUpdate = False
-            sResult.NeedsRefresh = False
-            sResult.DidCancel = False
+            Me.sResult.NeedsRefresh = False
+            Me.sResult.DidCancel = False
             Me.didApply = False
         Catch ex As Exception
             ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2410,7 +2410,7 @@ Public Class dlgSettings
     ' ########## ROUTINES/FUNCTIONS ##########
     ' ########################################
 
-    Private Sub SaveSettings()
+    Private Sub SaveSettings(ByVal isApply As Boolean)
 
         Try
             Master.eSettings.FilterCustom.Clear()
@@ -2813,15 +2813,15 @@ Public Class dlgSettings
             Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
-                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
-                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
+                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
+                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
-                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper()
-                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper()
+                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
+                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
-                If s.ProcessorModule.Enabled Then s.ProcessorModule.SaveSetup()
+                If s.ProcessorModule.Enabled Then s.ProcessorModule.SaveSetup(Not isApply)
             Next
             ModulesManager.Instance.SaveSettings()
 
@@ -4182,6 +4182,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4190,6 +4191,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.SetupPostScraperChanged, AddressOf Handle_SetupScraperChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -4197,6 +4199,7 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4204,6 +4207,7 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
@@ -4211,14 +4215,35 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer)
-        SettingsPanels.FirstOrDefault(Function(s) s.Name = name).ImageIndex = imageidx
-        tvSettings.Nodes.Find(name, True)(0).ImageIndex = imageidx
-        tvSettings.Nodes.Find(name, True)(0).SelectedImageIndex = imageidx
+    Private Sub Handle_SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        SettingsPanels.FirstOrDefault(Function(s) s.Name = name).ImageIndex = If(State, 9, 10)
+        Try
+            tvSettings.Nodes.Find(name, True)(0).ImageIndex = If(State, 9, 10)
+            tvSettings.Nodes.Find(name, True)(0).SelectedImageIndex = If(State, 9, 10)
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Me.SetApplyButton(True)
+    End Sub
 
+    Private Sub Handle_ModuleSettingsChanged()
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub Handle_ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean)
+        SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).ImageIndex = If(State, 9, 10)
+        Try
+            tvSettings.Nodes.Find(Name, True)(0).ImageIndex = If(State, 9, 10)
+            tvSettings.Nodes.Find(Name, True)(0).SelectedImageIndex = If(State, 9, 10)
+        Catch ex As Exception
+            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub RemoveCurrPanel()
