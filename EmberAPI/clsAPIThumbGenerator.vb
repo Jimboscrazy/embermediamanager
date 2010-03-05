@@ -103,7 +103,7 @@ Public Class ThumbGenerator
                 End If
 
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
         End Sub
@@ -235,7 +235,7 @@ Public Class ThumbGenerator
                 End If
 
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
         End Sub

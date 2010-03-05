@@ -179,7 +179,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -270,7 +270,7 @@ Public Class dlgImgSelect
             Me.lblDL1.Text = Me.lblDL3.Text
             Me.Label2.Text = Master.eLang.GetString(307, "Downloading Selected Image...")
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -280,7 +280,7 @@ Public Class dlgImgSelect
             Me._mpdbDone = True
             Me.AllDoneDownloading()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -299,7 +299,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -308,7 +308,7 @@ Public Class dlgImgSelect
             Me._impaDone = True
             Me.AllDoneDownloading()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -359,7 +359,7 @@ Public Class dlgImgSelect
             Me.Activate()
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -382,7 +382,7 @@ Public Class dlgImgSelect
             Me.bwMPDBDownload.WorkerReportsProgress = True
             Me.bwMPDBDownload.RunWorkerAsync()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -406,7 +406,7 @@ Public Class dlgImgSelect
             Me.bwTMDBDownload.WorkerReportsProgress = True
             Me.bwTMDBDownload.RunWorkerAsync()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -430,7 +430,7 @@ Public Class dlgImgSelect
             Me.bwIMPADownload.WorkerReportsProgress = True
             Me.bwIMPADownload.RunWorkerAsync()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -532,7 +532,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -617,7 +617,7 @@ Public Class dlgImgSelect
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -687,7 +687,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iCounter += 1
@@ -753,7 +753,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -819,7 +819,7 @@ Public Class dlgImgSelect
 
             Me.Invalidate()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -862,7 +862,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -875,7 +875,7 @@ Public Class dlgImgSelect
                     Me.GetFanart()
             End Select
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -918,7 +918,7 @@ Public Class dlgImgSelect
             Me.lblDL2Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL2.Value = e.ProgressPercentage
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1016,7 +1016,7 @@ Public Class dlgImgSelect
             Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1075,7 +1075,7 @@ Public Class dlgImgSelect
             Me.lblDL3Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL3.Value = e.ProgressPercentage
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1217,7 +1217,7 @@ Public Class dlgImgSelect
 
         Catch ex As Exception
             Me.pnlSinglePic.Visible = False
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub

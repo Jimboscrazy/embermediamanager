@@ -383,7 +383,7 @@ Public Class Scanner
                     fSorter = Nothing
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Dim dInfo As New DirectoryInfo(sPath)
@@ -416,7 +416,7 @@ Public Class Scanner
                 Next
 
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             dInfo = Nothing
@@ -541,7 +541,7 @@ Public Class Scanner
 
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         di = Nothing
@@ -579,7 +579,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True 'This is the Else
@@ -604,7 +604,7 @@ Public Class Scanner
             End If
             Return False
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
     End Function
@@ -622,7 +622,7 @@ Public Class Scanner
                                                       Not s.Name.ToLower.Contains("sample")).OrderBy(Function(s) s.Name).Count > 0 Then Return True
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return False
     End Function
@@ -785,7 +785,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         fList = Nothing
@@ -834,7 +834,7 @@ Public Class Scanner
             Episode.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         fList = Nothing
@@ -901,7 +901,7 @@ Public Class Scanner
             tShow.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         fList = Nothing
@@ -1012,7 +1012,7 @@ Public Class Scanner
 
 
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
             dInfo = Nothing
             inInfo = Nothing
@@ -1036,7 +1036,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         di = Nothing
     End Sub
@@ -1150,7 +1150,7 @@ Public Class Scanner
             'remove any db entries that no longer exist
             Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
         End Try
 
@@ -1261,7 +1261,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         lFiles = Nothing
@@ -1303,13 +1303,13 @@ Public Class Scanner
 
                         retSeason.Add(cSeason)
                     Catch ex As Exception
-                        ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 Next
 
                 If retSeason.Count > 0 Then Return retSeason
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Continue For
             End Try
         Next
@@ -1404,7 +1404,7 @@ Public Class Scanner
                 Me.bwPrelim.ReportProgress(0, tmpMovieDB.Movie.Title)
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -1527,7 +1527,7 @@ Public Class Scanner
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 End Class

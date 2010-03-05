@@ -62,6 +62,7 @@ Partial Class frmMain
         Me.CleanDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.DonateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ErrorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlFilterGenre = New System.Windows.Forms.Panel
         Me.lblGFilClose = New System.Windows.Forms.Label
@@ -610,7 +611,7 @@ Partial Class frmMain
         '
         'MenuStrip
         '
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem, Me.DonateToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem, Me.DonateToolStripMenuItem, Me.ErrorToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
         Me.MenuStrip.Size = New System.Drawing.Size(1016, 24)
@@ -710,6 +711,16 @@ Partial Class frmMain
         Me.DonateToolStripMenuItem.Name = "DonateToolStripMenuItem"
         Me.DonateToolStripMenuItem.Size = New System.Drawing.Size(73, 20)
         Me.DonateToolStripMenuItem.Text = "Donate"
+        '
+        'ErrorToolStripMenuItem
+        '
+        Me.ErrorToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ErrorToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ErrorToolStripMenuItem.Image = CType(resources.GetObject("ErrorToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.ErrorToolStripMenuItem.Name = "ErrorToolStripMenuItem"
+        Me.ErrorToolStripMenuItem.Size = New System.Drawing.Size(28, 20)
+        Me.ErrorToolStripMenuItem.ToolTipText = "An Error Has Occurred"
+        Me.ErrorToolStripMenuItem.Visible = False
         '
         'scMain
         '
@@ -4015,4 +4026,5 @@ Partial Class frmMain
     Friend WithEvents WikiStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator18 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator19 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ErrorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

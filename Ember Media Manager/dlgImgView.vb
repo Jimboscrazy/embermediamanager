@@ -103,7 +103,7 @@ Public Class dlgImgView
 
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -154,7 +154,7 @@ Public Class dlgImgView
             Me.Left = Convert.ToInt32((screenWidth - Me.Width) / 2)
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Visible = True
@@ -180,7 +180,7 @@ Public Class dlgImgView
             Me.Top = Convert.ToInt32((My.Computer.Screen.WorkingArea.Height - Me.Height) / 2)
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Visible = True
@@ -196,7 +196,7 @@ Public Class dlgImgView
             Me.pnlBG.AutoScrollPosition = New Drawing.Point(0, 0)
             Me.pbPicture.Location = New Point(0, 25)
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

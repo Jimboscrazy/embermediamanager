@@ -77,7 +77,7 @@ Public Class dlgManualEdit
 
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
 
@@ -238,7 +238,7 @@ Public Class dlgManualEdit
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -297,7 +297,7 @@ Public Class dlgManualEdit
                     ListBox1.Items.Add(ErrStr)
 
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     Exit Do
                 End Try
 

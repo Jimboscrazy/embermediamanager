@@ -183,7 +183,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
                 Try
@@ -258,7 +258,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
@@ -362,7 +362,7 @@ Public Class MediaInfo
                 Me.Close()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return fiOut
     End Function
@@ -825,7 +825,7 @@ Public Class MediaInfo
 
     Public Shared Function ApplyTVDefaults(ByVal ext As String) As Fileinfo
         Dim fi As New Fileinfo
-        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataPerFileType
+        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataperFileType
             If m.FileType = ext Then
                 fi = m.MetaData
                 Return fi
@@ -867,16 +867,16 @@ Public Class MediaInfo
                         miMovie.Movie.Runtime = sRuntime
                     End If
 
-                    End If
-                    MI = Nothing
                 End If
-                If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                    Dim _mi As MediaInfo.Fileinfo
-                    _mi = MediaInfo.ApplyDefaults(pExt)
-                    If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
-                End If
+                MI = Nothing
+            End If
+            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                Dim _mi As MediaInfo.Fileinfo
+                _mi = MediaInfo.ApplyDefaults(pExt)
+                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+            End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -899,7 +899,7 @@ Public Class MediaInfo
                 If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub

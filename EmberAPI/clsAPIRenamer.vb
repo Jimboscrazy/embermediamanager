@@ -388,7 +388,7 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -420,7 +420,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             Return String.Empty
@@ -524,7 +524,7 @@ Public Class FileFolderRenamer
             Next
             Return pattern.Trim
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return String.Empty
         End Try
     End Function
@@ -594,7 +594,7 @@ Public Class FileFolderRenamer
                         Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
                         Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
 
-                        If f.IsVIDEO_TS Then
+                        If f.IsVideo_TS Then
                             srcDir = Path.Combine(srcDir, "VIDEO_TS")
                             destDir = Path.Combine(destDir, "VIDEO_TS")
                         ElseIf f.IsBDMV Then
@@ -630,14 +630,14 @@ Public Class FileFolderRenamer
                                 End If
                                 DoUpdate = True
                             Catch ex As Exception
-                                ErrorLogger.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                                Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                                 'Need to make some type of failure log
                                 Continue For
                             End Try
 
                         End If
                         'Rename Files
-                        If Not f.IsVIDEO_TS AndAlso Not f.IsBDMV Then
+                        If Not f.IsVideo_TS AndAlso Not f.IsBDMV Then
                             If (Not f.NewFileName = f.FileName) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
                                 Dim tmpList As New List(Of String)
                                 Dim di As DirectoryInfo
@@ -677,7 +677,7 @@ Public Class FileFolderRenamer
 
                                                 DoUpdate = True
                                             Catch ex As Exception
-                                                ErrorLogger.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                                Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                                 'Need to make some type of failure log
                                             End Try
                                         End If
@@ -716,7 +716,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -756,7 +756,7 @@ Public Class FileFolderRenamer
                     Else
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
-                    MovieFile.IsVIDEO_TS = True
+                    MovieFile.IsVideo_TS = True
                 ElseIf FileUtils.Common.isBDRip(_tmpMovie.Filename) Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).Name
                     If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName Then
@@ -765,7 +765,7 @@ Public Class FileFolderRenamer
                     Else
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
-                    MovieFile.IsVIDEO_TS = True
+                    MovieFile.IsVideo_TS = True
                 Else
                     MovieFile.Parent = Directory.GetParent(_tmpMovie.Filename).Name
                     If MovieFile.BasePath = Directory.GetParent(_tmpMovie.Filename).FullName Then
@@ -818,7 +818,7 @@ Public Class FileFolderRenamer
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
 
-                If _frename.IsVIDEO_TS Then
+                If _frename.IsVideo_TS Then
                     srcDir = Path.Combine(srcDir, "VIDEO_TS")
                     destDir = Path.Combine(destDir, "VIDEO_TS")
 
@@ -846,13 +846,13 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(637, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(638, "Unable to Rename Directory"))
                         Else
-                            ErrorLogger.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                            Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                         End If
                     End Try
 
                 End If
                 'Rename Files
-                If Not _frename.IsVIDEO_TS AndAlso Not _frename.IsBDMV Then
+                If Not _frename.IsVideo_TS AndAlso Not _frename.IsBDMV Then
                     If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.isSingle Then
                         Dim di As DirectoryInfo
 
@@ -888,7 +888,7 @@ Public Class FileFolderRenamer
                                         If ShowError Then
                                             MsgBox(String.Format(Master.eLang.GetString(639, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(640, "Unable to Rename File"))
                                         Else
-                                            ErrorLogger.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                            Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         End If
                                     End Try
                                 End If
@@ -924,7 +924,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 End Class

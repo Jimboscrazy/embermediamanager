@@ -69,6 +69,7 @@ Partial Class frmNotify
         Me.Controls.Add(Me.lblMessage)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.pbIcon)
+        Me.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmNotify"

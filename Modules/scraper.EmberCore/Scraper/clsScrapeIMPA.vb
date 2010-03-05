@@ -68,7 +68,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Return String.Empty
             End Try
         End Function
@@ -81,7 +81,7 @@ Namespace IMPA
                     bwIMPA.RunWorkerAsync(New Arguments With {.Parameter = sURL})
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -115,7 +115,7 @@ Namespace IMPA
                     Next
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPoster
@@ -126,7 +126,7 @@ Namespace IMPA
             Try
                 e.Result = GetIMPAPosters(Args.Parameter)
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub

@@ -312,7 +312,7 @@ Public Class dlgTrailer
                 txtManual.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

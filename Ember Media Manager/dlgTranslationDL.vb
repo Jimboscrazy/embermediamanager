@@ -61,7 +61,7 @@ Public Class dlgTranslationDL
                 End If
             Next
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         sHTTP = Nothing
     End Sub
@@ -149,7 +149,7 @@ Public Class dlgTranslationDL
                 Next
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         sHTTP = Nothing
     End Sub

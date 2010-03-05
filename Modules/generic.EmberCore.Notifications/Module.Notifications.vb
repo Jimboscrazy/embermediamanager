@@ -26,6 +26,8 @@ Public Class NotificationsModule
     Private eSettings As New NotifySettings
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+    Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Private dNotify As frmNotify
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
@@ -93,6 +95,15 @@ Public Class NotificationsModule
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub Handle_NotifierClicked(ByVal _type As String)
+        RaiseEvent GenericEvent(New List(Of Object)(New Object() {_type}))
+    End Sub
+
+    Private Sub Handle_NotifierClosed()
+        RemoveHandler Me.dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
+        RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
+    End Sub
+
     Public Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
         Try
             If mType = Enums.ModuleType.Notification Then
@@ -104,8 +115,10 @@ Public Class NotificationsModule
                 End Select
 
                 If ShowIt Then
-                    Dim dNotify As New frmNotify
-                    dNotify.Show(Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
+                    dNotify = New frmNotify
+                    AddHandler dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
+                    AddHandler dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
+                    dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
                 End If
             End If
         Catch ex As Exception

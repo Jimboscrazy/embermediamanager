@@ -84,7 +84,7 @@ Public Class dlgBulkRenamer
                 End If
             End With
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -143,7 +143,7 @@ Public Class dlgBulkRenamer
                                                         MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
                                                     End If
                                                 Catch ex As Exception
-                                                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
                                                 End Try
                                             End If
 
@@ -199,7 +199,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             End Try
                             iProg += 1
 
@@ -215,7 +215,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -242,7 +242,7 @@ Public Class dlgBulkRenamer
             End If
             Me.pnlCancel.Visible = False
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -256,7 +256,7 @@ Public Class dlgBulkRenamer
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -289,7 +289,7 @@ Public Class dlgBulkRenamer
             Me.bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -311,7 +311,7 @@ Public Class dlgBulkRenamer
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -320,7 +320,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -333,7 +333,7 @@ Public Class dlgBulkRenamer
                 tThread.Start()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -449,7 +449,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -458,7 +458,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -527,7 +527,7 @@ Public Class dlgBulkRenamer
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

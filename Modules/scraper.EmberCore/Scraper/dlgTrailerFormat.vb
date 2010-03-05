@@ -87,7 +87,7 @@ Public Class dlgTrailerFormat
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         Finally
             Me.pnlStatus.Visible = False
             Me.lstFormats.Enabled = True

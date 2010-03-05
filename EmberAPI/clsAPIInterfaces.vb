@@ -11,6 +11,7 @@
         ReadOnly Property ModuleType() As List(Of Enums.ModuleType)
         Event ModuleSettingsChanged()
         Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean)
+        Event GenericEvent(ByVal _params As List(Of Object))
     End Interface
 
     Public Structure ScraperResult

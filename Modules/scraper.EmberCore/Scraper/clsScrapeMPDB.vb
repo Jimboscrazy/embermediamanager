@@ -59,7 +59,7 @@ Namespace MPDB
                     Me.bwMPDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID})
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -95,7 +95,7 @@ Namespace MPDB
                     bwMPDB.ReportProgress(3)
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPosters
@@ -106,7 +106,7 @@ Namespace MPDB
             Try
                 e.Result = GetMPDBPosters(Args.Parameter)
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub
