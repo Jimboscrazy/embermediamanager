@@ -127,7 +127,7 @@ Public Class ModulesManager
         Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
-        Public Type As Enums.ModuleType
+        Public Type As List(Of Enums.ModuleType)
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Interfaces.EmberMovieScraperModule 'Object

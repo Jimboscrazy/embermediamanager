@@ -7,8 +7,8 @@
         Sub Init()
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
-        Sub RunGeneric(ByVal _params As List(Of Object))
-        ReadOnly Property ModuleType() As Enums.ModuleType
+        Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object))
+        ReadOnly Property ModuleType() As List(Of Enums.ModuleType)
         Event ModuleSettingsChanged()
         Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean)
     End Interface
