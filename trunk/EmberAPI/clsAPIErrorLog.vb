@@ -23,13 +23,15 @@ Imports System.Text
 
 Public Class ErrorLogger
 
+    Public Event ErrorOccurred()
+
     ''' <summary>
     ''' Write the error to our log file, if enabled in settings.
     ''' </summary>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
-    Public Shared Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String)
+    Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String)
 
         Try
             If Master.eSettings.LogErrors Then
@@ -40,23 +42,25 @@ Public Class ErrorLogger
                 End If
 
                 'check the file
-                Dim fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
-                Dim s As StreamWriter = New StreamWriter(fs)
-                s.Close()
-                fs.Close()
+                Using fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                    Using s As StreamWriter = New StreamWriter(fs)
+                    End Using
+                End Using
 
                 'log it
-                Dim fs1 As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Append, FileAccess.Write)
-                Dim s1 As StreamWriter = New StreamWriter(fs1)
-                s1.Write(String.Concat("Title: ", title, vbNewLine))
-                s1.Write(String.Concat("Message: ", msg, vbNewLine))
-                s1.Write(String.Concat("StackTrace: ", stkTrace, vbNewLine))
-                s1.Write(String.Concat("Date/Time: ", DateTime.Now.ToString(), vbNewLine))
-                s1.Write(String.Concat("===========================================================================================", vbNewLine, vbNewLine))
-                s1.Close()
-                fs1.Close()
+                Using fs1 As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Append, FileAccess.Write)
+                    Using s1 As StreamWriter = New StreamWriter(fs1)
+                        s1.Write(String.Concat("Title: ", title, vbNewLine))
+                        s1.Write(String.Concat("Message: ", msg, vbNewLine))
+                        s1.Write(String.Concat("StackTrace: ", stkTrace, vbNewLine))
+                        s1.Write(String.Concat("Date/Time: ", DateTime.Now.ToString(), vbNewLine))
+                        s1.Write(String.Concat("===========================================================================================", vbNewLine, vbNewLine))
+                    End Using
+                End Using
 
                 Functions.Notify("error", 1, Master.eLang.GetString(999, "An Error Has Occurred"), msg)
+
+                RaiseEvent ErrorOccurred()
             End If
         Catch
         End Try

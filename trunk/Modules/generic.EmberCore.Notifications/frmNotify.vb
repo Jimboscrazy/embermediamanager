@@ -21,9 +21,17 @@
 Public Class frmNotify
 
     Private Shared DisplayedForms As New List(Of frmNotify)
+    Public Shared MasterIndex As Integer = 0
+    Public Index As Integer = 0
+
+    Private _type As String
 
     Protected AnimationTimer As New Timer()
     Protected AnimationType As AnimationTypes = AnimationTypes.Show
+
+    Public Event NotifierClicked(ByVal _type As String)
+    Public Event NotifierClosed()
+
 
     Public Enum AnimationTypes
         Show = 0
@@ -37,7 +45,9 @@ Public Class frmNotify
         End Get
     End Property
 
-    Public Overloads Sub Show(ByVal _icon As Integer, ByVal _title As String, ByVal _message As String, ByVal _customicon As Image)
+    Public Overloads Sub Show(ByVal _type As String, ByVal _icon As Integer, ByVal _title As String, ByVal _message As String, ByVal _customicon As Image)
+
+        Me._type = _type
         If Not IsNothing(_customicon) Then
             Me.pbIcon.Image = _customicon
         Else
@@ -60,19 +70,32 @@ Public Class frmNotify
         MyBase.Show()
     End Sub
 
+    Private Sub frmNotify_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Click
+        RaiseEvent NotifierClicked(Me._type)
+    End Sub
+
     Private Sub frmNotify_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         frmNotify.DisplayedForms.Remove(Me)
+        RaiseEvent NotifierClosed()
     End Sub
 
     Private Sub frmNotify_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         AddHandler AnimationTimer.Tick, AddressOf OnTimer
 
+        'only allow 6 notifications on screen at a time
+        If frmNotify.DisplayedForms.Count = 6 Then
+            frmNotify.DisplayedForms(0).Close()
+        End If
+
         Me.SetBounds(Screen.PrimaryScreen.WorkingArea.Width - Me.Width - 5, Screen.PrimaryScreen.WorkingArea.Height - 5, 315, 0)
 
         For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms
             DisplayedForm.Top -= 5
         Next
+
+        frmNotify.MasterIndex += 1
+        Me.Index = frmNotify.MasterIndex
 
         frmNotify.DisplayedForms.Add(Me)
 
@@ -87,7 +110,7 @@ Public Class frmNotify
                 If Me.Height < 80 Then
                     Me.SetBounds(Me.Left, Me.Top - 2, Me.Width, Me.Height + 2)
 
-                    For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms.Where(Function(s) Not s Is Me)
+                    For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms.Where(Function(s) s.Index < Me.Index)
                         DisplayedForm.Top -= 2
                     Next
                 Else
@@ -107,7 +130,7 @@ Public Class frmNotify
 
             Case AnimationTypes.Close
 
-                If Me.Height > 0 Then
+                If Me.Height > 2 Then
                     Me.SetBounds(Me.Left, Me.Top + 2, Me.Width, Me.Height - 2)
                 Else
                     Me.Close()
@@ -124,7 +147,16 @@ Public Class frmNotify
         Me.AnimationTimer.Start()
     End Sub
 
-    Public Sub New()
-        InitializeComponent()
+    Private Sub lblMessage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblMessage.Click
+        RaiseEvent NotifierClicked(Me._type)
     End Sub
+
+    Private Sub lblTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblTitle.Click
+        RaiseEvent NotifierClicked(Me._type)
+    End Sub
+
+    Private Sub pbIcon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIcon.Click
+        RaiseEvent NotifierClicked(Me._type)
+    End Sub
+
 End Class

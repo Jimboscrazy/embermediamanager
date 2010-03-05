@@ -75,11 +75,11 @@ Public Class dlgTVImageSelect
                     If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
                     Me.tvList.Nodes.Add(TnS)
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -108,7 +108,7 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -132,7 +132,7 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -156,7 +156,7 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -180,7 +180,7 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -204,12 +204,12 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return Me.SetDefaults()
@@ -292,7 +292,7 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -318,12 +318,12 @@ Public Class dlgTVImageSelect
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
-                    ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         DefaultImages = Scraper.TVDBImages.Clone
@@ -401,7 +401,7 @@ Public Class dlgTVImageSelect
             End If
             Me.CheckCurrentImage()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -452,7 +452,7 @@ Public Class dlgTVImageSelect
 
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iCounter += 1
@@ -508,7 +508,7 @@ Public Class dlgTVImageSelect
                 Next
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -528,7 +528,7 @@ Public Class dlgTVImageSelect
 
             Me.CheckCurrentImage()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -624,7 +624,7 @@ Public Class dlgTVImageSelect
                 Me.bwLoadData.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Next
 
@@ -643,7 +643,7 @@ Public Class dlgTVImageSelect
                 Me.pbStatus.Maximum = e.ProgressPercentage
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -709,7 +709,7 @@ Public Class dlgTVImageSelect
                 Me.pbStatus.Maximum = e.ProgressPercentage
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

@@ -123,7 +123,7 @@ Public Class StringUtils
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return String.Empty
@@ -205,7 +205,7 @@ Public Class StringUtils
                 End If
 
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If doExtras Then movieName = FilterTokens(CleanStackingMarkers(movieName.Trim))
@@ -214,7 +214,7 @@ Public Class StringUtils
             Return movieName.Trim
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             ' Some error handling so EMM dont break on populate folderdata
             Return movieName.Trim
         End Try
@@ -297,7 +297,7 @@ Public Class StringUtils
             Return TVShowName.Trim
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             ' Some error handling so EMM dont break on populate folderdata
             Return TVShowName.Trim
         End Try
@@ -344,7 +344,7 @@ Public Class StringUtils
             Return TVEpName.Trim
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return TVEpName.Trim
         End Try
     End Function

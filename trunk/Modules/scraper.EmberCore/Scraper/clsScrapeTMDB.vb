@@ -113,7 +113,7 @@ Namespace TMDB
                     bwTMDB.ReportProgress(3)
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return String.Empty
@@ -128,7 +128,7 @@ Namespace TMDB
                     Me.bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .sType = sType})
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -191,7 +191,7 @@ Namespace TMDB
                     bwTMDB.ReportProgress(2)
                 End If
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             sHTTP = Nothing
@@ -204,7 +204,7 @@ Namespace TMDB
             Try
                 e.Result = GetTMDBImages(Args.Parameter, Args.sType)
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing
             End Try
         End Sub

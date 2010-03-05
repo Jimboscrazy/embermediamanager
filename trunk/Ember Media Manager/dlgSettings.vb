@@ -62,7 +62,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -136,7 +136,7 @@ Public Class dlgSettings
             Me.sResult.DidCancel = False
             Me.didApply = False
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -340,7 +340,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -356,7 +356,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -372,7 +372,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -388,7 +388,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -404,7 +404,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -420,7 +420,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2828,7 +2828,7 @@ Public Class dlgSettings
             Master.eSettings.Save()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3191,7 +3191,7 @@ Public Class dlgSettings
             Me.RefreshSources()
             Me.RefreshTVSources()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3873,7 +3873,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3910,7 +3910,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4226,7 +4226,7 @@ Public Class dlgSettings
             tvSettings.Nodes.Find(name, True)(0).ImageIndex = If(State, 9, 10)
             tvSettings.Nodes.Find(name, True)(0).SelectedImageIndex = If(State, 9, 10)
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.SetApplyButton(True)
     End Sub
@@ -4241,7 +4241,7 @@ Public Class dlgSettings
             tvSettings.Nodes.Find(Name, True)(0).ImageIndex = If(State, 9, 10)
             tvSettings.Nodes.Find(Name, True)(0).SelectedImageIndex = If(State, 9, 10)
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.SetApplyButton(True)
     End Sub

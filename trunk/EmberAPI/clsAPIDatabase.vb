@@ -52,7 +52,7 @@ Public Class Database
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dTable)
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -461,7 +461,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -625,7 +625,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _movieDB.ID = -1
         End Try
         Return _movieDB
@@ -650,7 +650,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return New Structures.DBMovie With {.Id = -1}
     End Function
@@ -818,7 +818,7 @@ Public Class Database
                         If rdrMovie.Read Then
                             _movieDB.ID = Convert.ToInt64(rdrMovie(0))
                         Else
-                            ErrorLogger.WriteToErrorLog("Something very wrong here: SaveMovieToDB", _movieDB.ToString, "Error")
+                            Master.eLog.WriteToErrorLog("Something very wrong here: SaveMovieToDB", _movieDB.ToString, "Error")
                             _movieDB.ID = -1
                             Return _movieDB
                         End If
@@ -998,7 +998,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return _movieDB
     End Function
@@ -1117,7 +1117,7 @@ Public Class Database
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _TVDB.EpID = -1
         End Try
         Return _TVDB
@@ -1149,7 +1149,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return _TVDB
     End Function
@@ -1175,7 +1175,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return _TVDB
     End Function
@@ -1199,7 +1199,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return New Structures.DBTV With {.EpID = -1}
     End Function
@@ -1287,7 +1287,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _TVDB.ShowID = -1
         End Try
         Return _TVDB
@@ -1418,7 +1418,7 @@ Public Class Database
                         If rdrTVEp.Read Then
                             _TVEpDB.EpID = Convert.ToInt64(rdrTVEp(0))
                         Else
-                            ErrorLogger.WriteToErrorLog("Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
+                            Master.eLog.WriteToErrorLog("Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
                             _TVEpDB.EpID = -1
                             Exit Sub
                         End If
@@ -1532,7 +1532,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1662,7 +1662,7 @@ Public Class Database
                         If rdrTVShow.Read Then
                             _TVShowDB.ShowID = Convert.ToInt64(rdrTVShow(0))
                         Else
-                            ErrorLogger.WriteToErrorLog("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
+                            Master.eLog.WriteToErrorLog("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                             _TVShowDB.ShowID = -1
                             Exit Sub
                         End If
@@ -1700,7 +1700,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1818,7 +1818,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1848,7 +1848,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -1876,7 +1876,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -1944,7 +1944,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -2010,7 +2010,7 @@ Public Class Database
                 Me.CleanSeasons()
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -2051,7 +2051,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

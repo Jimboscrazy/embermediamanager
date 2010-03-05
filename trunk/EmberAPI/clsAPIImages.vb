@@ -78,7 +78,7 @@ Public Class Images : Implements IDisposable
                     _image = New Bitmap(ms)
                 End Using
             Catch ex As Exception
-                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error: " & sPath)
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error: " & sPath)
             End Try
         End If
     End Sub
@@ -136,7 +136,7 @@ Public Class Images : Implements IDisposable
                 If doesExist Then File.SetAttributes(sPath, fAtt)
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -267,7 +267,7 @@ Public Class Images : Implements IDisposable
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -309,7 +309,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -343,7 +343,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -377,7 +377,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -471,7 +471,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -610,7 +610,7 @@ Public Class Images : Implements IDisposable
                 End If
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -652,7 +652,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -686,7 +686,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -739,7 +739,7 @@ Public Class Images : Implements IDisposable
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return strReturn
@@ -768,7 +768,7 @@ Public Class Images : Implements IDisposable
                 Return Enums.PosterSize.Small
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
 
@@ -790,7 +790,7 @@ Public Class Images : Implements IDisposable
                 Return Enums.FanartSize.Small
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
 
@@ -969,7 +969,7 @@ Public Class Images : Implements IDisposable
                     End If
             End Select
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
 
@@ -1009,7 +1009,7 @@ Public Class Images : Implements IDisposable
 
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1023,7 +1023,7 @@ Public Class Images : Implements IDisposable
             Delete(Path.Combine(tPath, "poster.jpg"))
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1035,7 +1035,7 @@ Public Class Images : Implements IDisposable
             Delete(String.Concat(tPath, ".jpg"))
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1064,7 +1064,7 @@ Public Class Images : Implements IDisposable
 
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1074,7 +1074,7 @@ Public Class Images : Implements IDisposable
             Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), "-fanart.jpg")))
             Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), ".fanart.jpg")))
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1083,7 +1083,7 @@ Public Class Images : Implements IDisposable
             Delete(String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.ShowPath), "-fanart.jpg"))
             Delete(String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.ShowPath), ".fanart.jpg"))
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

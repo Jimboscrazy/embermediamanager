@@ -546,7 +546,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return iMod
@@ -678,7 +678,7 @@ Public Class Functions
                 Master.CanScanDiscImage = False
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -766,22 +766,15 @@ Public Class Functions
                 Return strChangelog
             End If
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return "Unavailable"
     End Function
-    ' Declaration
-    Declare Function IsWow64Process Lib "kernel32" (ByVal hProcess As Int32, ByRef Wow64Process As Boolean) As Int32
-    ' Function
-    Public Shared Function Is64Bit() As Boolean
-        Dim proc As Process = Process.GetCurrentProcess
-        Dim Wow64Process As Boolean
-        Try
-            Return IsWow64Process(proc.Id, Wow64Process) < 0
-        Catch ex As Exception
-            Return False
-        End Try
+
+    Public Shared Function Check64Bit() As Boolean
+        Return (IntPtr.Size = 8)
     End Function
+
     ''' <summary>
     ''' Check for the lastest version of Ember
     ''' </summary>
@@ -789,7 +782,7 @@ Public Class Functions
     Public Shared Function CheckNeedUpdate() As Boolean
         Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
-        Dim platform As String = If(Is64Bit, "x64", "x86")
+        Dim platform As String = If(Master.is64Bit, "x64", "x86")
         Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
         sHTTP = Nothing
         If updateXML.Length > 0 Then
@@ -840,7 +833,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return 0
         End Try
     End Function
@@ -859,7 +852,9 @@ Public Class Functions
 
     Public Shared Sub Notify(ByVal Type As String, ByVal Icon As Integer, ByVal Title As String, ByVal Message As String, Optional ByVal CustomIcon As Image = Nothing)
         Try
-            ModulesManager.Instance.externalProcessorModules.First(Function(m) m.Enabled AndAlso m.Type.Contains(Enums.ModuleType.Notification)).ProcessorModule.RunGeneric(Enums.ModuleType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
+            If Not IsNothing(Master.NotifierModule) Then
+                Master.NotifierModule.RunGeneric(Enums.ModuleType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
+            End If
         Catch
         End Try
     End Sub
