@@ -308,6 +308,22 @@ Public Class Images : Implements IDisposable
                 End If
             End If
 
+            If Master.eSettings.ShowJPG Then
+                pPath = Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".jpg"))
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+            If Master.eSettings.ShowTBN Then
+                pPath = Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".tbn"))
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
