@@ -5671,7 +5671,7 @@ doCancel:
                         Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                         Application.DoEvents()
                         Dim fResults As New Containers.ImgResult
-                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True)
+                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True, AllowFA)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             Master.currMovie.FanartPath = fResults.ImagePath
                             If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
