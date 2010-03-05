@@ -247,6 +247,8 @@ Public Class Settings
     Private _seasonalltbn As Boolean
     Private _seasonalljpg As Boolean
     Private _showfolderjpg As Boolean
+    Private _showtbn As Boolean
+    Private _showjpg As Boolean
     Private _showpostertbn As Boolean
     Private _showposterjpg As Boolean
     Private _showfanartjpg As Boolean
@@ -2324,6 +2326,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ShowTBN() As Boolean
+        Get
+            Return Me._showtbn
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showtbn = value
+        End Set
+    End Property
+
+    Public Property ShowJPG() As Boolean
+        Get
+            Return Me._showjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showjpg = value
+        End Set
+    End Property
+
     Public Property ShowPosterTBN() As Boolean
         Get
             Return Me._showpostertbn
@@ -3185,7 +3205,9 @@ Public Class Settings
         Me._tvshowregexes = New List(Of TVShowRegEx)
         Me._seasonalltbn = True
         Me._seasonalljpg = False
-        Me._showfolderjpg = True
+        Me._showfolderjpg = False
+        Me._showtbn = True
+        Me._showjpg = False
         Me._showpostertbn = False
         Me._showposterjpg = False
         Me._showfanartjpg = True

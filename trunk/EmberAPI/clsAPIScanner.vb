@@ -867,6 +867,16 @@ Public Class Scanner
                 tShow.AllSeasonPoster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
             End If
 
+            If String.IsNullOrEmpty(tShow.Poster) AndAlso Master.eSettings.ShowTBN Then
+                fName = Path.Combine(parPath, String.Concat(FileUtils.Common.GetDirectory(parPath), ".tbn"))
+                tShow.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+            End If
+
+            If String.IsNullOrEmpty(tShow.Poster) AndAlso Master.eSettings.ShowJPG Then
+                fName = Path.Combine(parPath, String.Concat(FileUtils.Common.GetDirectory(parPath), ".jpg"))
+                tShow.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+            End If
+
             If String.IsNullOrEmpty(tShow.Poster) AndAlso Master.eSettings.ShowFolderJPG Then
                 fName = Path.Combine(parPath, "folder.jpg")
                 tShow.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)

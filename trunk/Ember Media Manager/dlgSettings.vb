@@ -2401,6 +2401,13 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkShowTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2719,6 +2726,8 @@ Public Class dlgSettings
             Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
             Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
             Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
+            Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
+            Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
             Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
             Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
             Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
@@ -3103,6 +3112,8 @@ Public Class dlgSettings
             Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
             Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
             Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
+            Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
+            Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
             Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
             Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
             Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
@@ -4251,4 +4262,5 @@ Public Class dlgSettings
             Me.pnlMain.Controls.Remove(Me.currPanel)
         End If
     End Sub
+
 End Class
