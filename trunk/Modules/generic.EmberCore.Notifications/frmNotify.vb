@@ -114,7 +114,7 @@ Public Class frmNotify
                 End If
 
         End Select
-
+        Me.Refresh()
     End Sub
 
     Private Sub frmNotify_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
