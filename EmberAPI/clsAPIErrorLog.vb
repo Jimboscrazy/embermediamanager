@@ -55,6 +55,8 @@ Public Class ErrorLogger
                 s1.Write(String.Concat("===========================================================================================", vbNewLine, vbNewLine))
                 s1.Close()
                 fs1.Close()
+
+                Functions.Notify("error", 1, Master.eLang.GetString(999, "An Error Has Occurred"), msg)
             End If
         Catch
         End Try

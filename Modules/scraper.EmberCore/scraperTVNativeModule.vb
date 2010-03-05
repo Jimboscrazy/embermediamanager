@@ -11,8 +11,10 @@ Public Class EmberNativeTVScraperModule
     Public Shared TVScraper As New Scraper
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-    Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupScraperChanged
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupPostScraperChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupScraperChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberTVScraperModule.SetupPostScraperChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberTVScraperModule.ModuleSettingsChanged
+
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberTVScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
@@ -108,9 +110,9 @@ Public Class EmberNativeTVScraperModule
         SPanel.Parent = "pnlTVScraper"
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupScraper
     End Sub
-    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupPostScraper
+    Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveSetupPostScraper
     End Sub
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberTVScraperModule.InjectSetupPostScraper

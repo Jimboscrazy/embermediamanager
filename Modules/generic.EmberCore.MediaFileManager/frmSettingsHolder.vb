@@ -21,6 +21,9 @@
 Imports System.Windows.Forms
 
 Public Class frmSettingsHolder
+    Public Event ModuleEnabledChanged(ByVal State As Boolean)
+    Public Event ModuleSettingsChanged()
+
     Dim isSelected As Boolean = False
 
     Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
@@ -55,12 +58,13 @@ Public Class frmSettingsHolder
 
     Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
         Dim li As New ListViewItem
-        li.text = TextBox1.Text
+        li.Text = TextBox1.Text
         li.SubItems.Add(TextBox2.Text)
         ListView1.Items.Add(li)
         TextBox1.Text = ""
         TextBox2.Text = ""
         CheckButtons()
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
@@ -69,6 +73,7 @@ Public Class frmSettingsHolder
         TextBox2.Text = ""
         isSelected = False
         CheckButtons()
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
@@ -84,5 +89,9 @@ Public Class frmSettingsHolder
         TextBox2.Text = ""
         isSelected = False
         CheckButtons()
+    End Sub
+
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
     End Sub
 End Class

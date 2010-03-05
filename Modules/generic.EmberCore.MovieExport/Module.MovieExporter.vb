@@ -21,9 +21,17 @@ Imports EmberAPI
 
 Public Class MovieExporterModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+
+    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return Enums.ModuleType.Generic
+        End Get
+    End Property
+
     Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
@@ -34,7 +42,7 @@ Public Class MovieExporterModule
         SPanel.Panel = New Panel
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 
     End Sub
 
@@ -56,17 +64,16 @@ Public Class MovieExporterModule
         Dim tmpExportMovies As New dlgExportMovies
         MyMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
         MyMenu.Text = "Export Movie List"
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         tmpExportMovies.Dispose()
 
     End Sub
     Sub Disable()
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        emmRuntimeObjects = emm
+    Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
@@ -87,5 +94,8 @@ Public Class MovieExporterModule
         Using dExportMovies As New dlgExportMovies
             dExportMovies.ShowDialog()
         End Using
+    End Sub
+
+    Public Sub RunGeneric(ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
     End Sub
 End Class

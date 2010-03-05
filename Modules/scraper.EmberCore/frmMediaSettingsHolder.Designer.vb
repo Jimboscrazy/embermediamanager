@@ -24,38 +24,38 @@ Partial Class frmMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.txtTimeout = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.chkScrapeFanart = New System.Windows.Forms.CheckBox
-        Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
-        Me.chkScrapePoster = New System.Windows.Forms.CheckBox
-        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.chkUseTMDB = New System.Windows.Forms.CheckBox
         Me.chkUseIMPA = New System.Windows.Forms.CheckBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.cbEnabled = New System.Windows.Forms.CheckBox
+        Me.chkScrapePoster = New System.Windows.Forms.CheckBox
+        Me.chkScrapeFanart = New System.Windows.Forms.CheckBox
+        Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.chkTrailerDump = New System.Windows.Forms.CheckBox
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.txtDumpPath = New System.Windows.Forms.TextBox
+        Me.chkTrailerDump = New System.Windows.Forms.CheckBox
+        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.txtTimeout = New System.Windows.Forms.TextBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.Panel2 = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
+        Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlSettings.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox9.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.Panel2.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox9.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -70,95 +70,19 @@ Partial Class frmMediaSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 83
         '
-        'Label23
+        'GroupBox3
         '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(21, 43)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(51, 13)
-        Me.Label23.TabIndex = 91
-        Me.Label23.Text = "Timeout:"
-        '
-        'txtTimeout
-        '
-        Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTimeout.Location = New System.Drawing.Point(82, 39)
-        Me.txtTimeout.Name = "txtTimeout"
-        Me.txtTimeout.Size = New System.Drawing.Size(50, 22)
-        Me.txtTimeout.TabIndex = 90
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 337)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 89
-        Me.Label1.Text = "This are Module specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember G" & _
-            "lobal Setting also."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 335)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 88
-        Me.PictureBox1.TabStop = False
-        '
-        'chkScrapeFanart
-        '
-        Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 37)
-        Me.chkScrapeFanart.Name = "chkScrapeFanart"
-        Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
-        Me.chkScrapeFanart.TabIndex = 87
-        Me.chkScrapeFanart.Text = "Get Fanart"
-        Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeFanart.UseVisualStyleBackColor = True
-        '
-        'chkAutoThumbs
-        '
-        Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(350, 18)
-        Me.chkAutoThumbs.Name = "chkAutoThumbs"
-        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
-        Me.chkAutoThumbs.TabIndex = 86
-        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs"
-        Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.UseVisualStyleBackColor = True
-        '
-        'chkScrapePoster
-        '
-        Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 19)
-        Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
-        Me.chkScrapePoster.TabIndex = 85
-        Me.chkScrapePoster.Text = "Get Posters"
-        Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapePoster.UseVisualStyleBackColor = True
-        '
-        'chkDownloadTrailer
-        '
-        Me.chkDownloadTrailer.AutoSize = True
-        Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 19)
-        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(135, 17)
-        Me.chkDownloadTrailer.TabIndex = 84
-        Me.chkDownloadTrailer.Text = "Enable Downloading"
-        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
+        Me.GroupBox3.Controls.Add(Me.GroupBox9)
+        Me.GroupBox3.Controls.Add(Me.chkScrapePoster)
+        Me.GroupBox3.Controls.Add(Me.chkScrapeFanart)
+        Me.GroupBox3.Controls.Add(Me.chkAutoThumbs)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.Location = New System.Drawing.Point(15, 31)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(587, 97)
+        Me.GroupBox3.TabIndex = 93
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Images"
         '
         'GroupBox9
         '
@@ -209,6 +133,122 @@ Partial Class frmMediaSettingsHolder
         Me.chkUseIMPA.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseIMPA.UseVisualStyleBackColor = True
         '
+        'chkScrapePoster
+        '
+        Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkScrapePoster.Name = "chkScrapePoster"
+        Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
+        Me.chkScrapePoster.TabIndex = 85
+        Me.chkScrapePoster.Text = "Get Posters"
+        Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapePoster.UseVisualStyleBackColor = True
+        '
+        'chkScrapeFanart
+        '
+        Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 37)
+        Me.chkScrapeFanart.Name = "chkScrapeFanart"
+        Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
+        Me.chkScrapeFanart.TabIndex = 87
+        Me.chkScrapeFanart.Text = "Get Fanart"
+        Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeFanart.UseVisualStyleBackColor = True
+        '
+        'chkAutoThumbs
+        '
+        Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(350, 18)
+        Me.chkAutoThumbs.Name = "chkAutoThumbs"
+        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
+        Me.chkAutoThumbs.TabIndex = 86
+        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs"
+        Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkAutoThumbs.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnBrowse)
+        Me.GroupBox1.Controls.Add(Me.txtDumpPath)
+        Me.GroupBox1.Controls.Add(Me.chkTrailerDump)
+        Me.GroupBox1.Controls.Add(Me.chkDownloadTrailer)
+        Me.GroupBox1.Controls.Add(Me.Label23)
+        Me.GroupBox1.Controls.Add(Me.txtTimeout)
+        Me.GroupBox1.Controls.Add(Me.GroupBox2)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(15, 134)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(587, 98)
+        Me.GroupBox1.TabIndex = 92
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Trailers"
+        Me.GroupBox1.UseCompatibleTextRendering = True
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(558, 37)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
+        Me.btnBrowse.TabIndex = 94
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        Me.btnBrowse.Visible = False
+        '
+        'txtDumpPath
+        '
+        Me.txtDumpPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtDumpPath.Location = New System.Drawing.Point(318, 39)
+        Me.txtDumpPath.Name = "txtDumpPath"
+        Me.txtDumpPath.Size = New System.Drawing.Size(237, 22)
+        Me.txtDumpPath.TabIndex = 93
+        Me.txtDumpPath.Visible = False
+        '
+        'chkTrailerDump
+        '
+        Me.chkTrailerDump.AutoSize = True
+        Me.chkTrailerDump.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTrailerDump.Location = New System.Drawing.Point(318, 19)
+        Me.chkTrailerDump.Name = "chkTrailerDump"
+        Me.chkTrailerDump.Size = New System.Drawing.Size(155, 17)
+        Me.chkTrailerDump.TabIndex = 92
+        Me.chkTrailerDump.Text = "Watch for ""Dump"" Folder"
+        Me.chkTrailerDump.UseVisualStyleBackColor = True
+        Me.chkTrailerDump.Visible = False
+        '
+        'chkDownloadTrailer
+        '
+        Me.chkDownloadTrailer.AutoSize = True
+        Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 19)
+        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(135, 17)
+        Me.chkDownloadTrailer.TabIndex = 84
+        Me.chkDownloadTrailer.Text = "Enable Downloading"
+        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(21, 43)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(51, 13)
+        Me.Label23.TabIndex = 91
+        Me.Label23.Text = "Timeout:"
+        '
+        'txtTimeout
+        '
+        Me.txtTimeout.Enabled = False
+        Me.txtTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTimeout.Location = New System.Drawing.Point(82, 39)
+        Me.txtTimeout.Name = "txtTimeout"
+        Me.txtTimeout.Size = New System.Drawing.Size(50, 22)
+        Me.txtTimeout.TabIndex = 90
+        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.lbTrailerSites)
@@ -231,6 +271,30 @@ Partial Class frmMediaSettingsHolder
         Me.lbTrailerSites.Size = New System.Drawing.Size(149, 55)
         Me.lbTrailerSites.TabIndex = 9
         '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Blue
+        Me.Label1.Location = New System.Drawing.Point(37, 337)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(225, 31)
+        Me.Label1.TabIndex = 89
+        Me.Label1.Text = "This are Module specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember G" & _
+            "lobal Setting also."
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 335)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 88
+        Me.PictureBox1.TabStop = False
+        '
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -244,80 +308,6 @@ Partial Class frmMediaSettingsHolder
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(1125, 25)
         Me.Panel2.TabIndex = 81
-        '
-        'cbEnabled
-        '
-        Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
-        Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
-        Me.cbEnabled.TabIndex = 82
-        Me.cbEnabled.Text = "Enabled"
-        Me.cbEnabled.UseVisualStyleBackColor = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.btnBrowse)
-        Me.GroupBox1.Controls.Add(Me.txtDumpPath)
-        Me.GroupBox1.Controls.Add(Me.chkTrailerDump)
-        Me.GroupBox1.Controls.Add(Me.chkDownloadTrailer)
-        Me.GroupBox1.Controls.Add(Me.Label23)
-        Me.GroupBox1.Controls.Add(Me.txtTimeout)
-        Me.GroupBox1.Controls.Add(Me.GroupBox2)
-        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(15, 134)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(587, 98)
-        Me.GroupBox1.TabIndex = 92
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Trailers"
-        Me.GroupBox1.UseCompatibleTextRendering = True
-        '
-        'chkTrailerDump
-        '
-        Me.chkTrailerDump.AutoSize = True
-        Me.chkTrailerDump.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailerDump.Location = New System.Drawing.Point(318, 19)
-        Me.chkTrailerDump.Name = "chkTrailerDump"
-        Me.chkTrailerDump.Size = New System.Drawing.Size(155, 17)
-        Me.chkTrailerDump.TabIndex = 92
-        Me.chkTrailerDump.Text = "Watch for ""Dump"" Folder"
-        Me.chkTrailerDump.UseVisualStyleBackColor = True
-        Me.chkTrailerDump.Visible = False
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.GroupBox9)
-        Me.GroupBox3.Controls.Add(Me.chkScrapePoster)
-        Me.GroupBox3.Controls.Add(Me.chkScrapeFanart)
-        Me.GroupBox3.Controls.Add(Me.chkAutoThumbs)
-        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(15, 31)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(587, 97)
-        Me.GroupBox3.TabIndex = 93
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Images"
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(558, 37)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
-        Me.btnBrowse.TabIndex = 94
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        Me.btnBrowse.Visible = False
-        '
-        'txtDumpPath
-        '
-        Me.txtDumpPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtDumpPath.Location = New System.Drawing.Point(318, 39)
-        Me.txtDumpPath.Name = "txtDumpPath"
-        Me.txtDumpPath.Size = New System.Drawing.Size(237, 22)
-        Me.txtDumpPath.TabIndex = 93
-        Me.txtDumpPath.Visible = False
         '
         'Label3
         '
@@ -351,6 +341,16 @@ Partial Class frmMediaSettingsHolder
         Me.btnUp.TabIndex = 85
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'cbEnabled
+        '
+        Me.cbEnabled.AutoSize = True
+        Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
+        Me.cbEnabled.Name = "cbEnabled"
+        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.TabIndex = 82
+        Me.cbEnabled.Text = "Enabled"
+        Me.cbEnabled.UseVisualStyleBackColor = True
+        '
         'fbdBrowse
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
@@ -370,14 +370,14 @@ Partial Class frmMediaSettingsHolder
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
         Me.pnlSettings.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

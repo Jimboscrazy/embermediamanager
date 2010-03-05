@@ -121,14 +121,13 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalGenericModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
         Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
-        'Public SettingsPanel As Containers.SettingsPanel
+        Public Type As Enums.ModuleType
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Interfaces.EmberMovieScraperModule 'Object
@@ -136,7 +135,6 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     Class _externalTVScraperModuleClass
         Public ProcessorModule As Interfaces.EmberTVScraperModule  'Object
@@ -144,7 +142,6 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public ScraperOrder As Integer
         Public PostScraperOrder As Integer
-        'Public SettingsPanel As Containers.SettingsPanel
     End Class
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
@@ -176,6 +173,7 @@ Public Class ModulesManager
                                 _externalProcessorModule.ProcessorModule = ProcessorModule
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
+                                _externalProcessorModule.Type = ProcessorModule.ModuleType
                                 Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
@@ -188,7 +186,7 @@ Public Class ModulesManager
                                     SetModuleEnable(_externalProcessorModule.AssemblyName, True)
                                 End If
                                 externalProcessorModules.Add(_externalProcessorModule)
-                                ProcessorModule.Init(RuntimeObjects)
+                                ProcessorModule.Init()
                                 ProcessorModule.Enabled = _externalProcessorModule.Enabled
                             End If
                         Catch ex As Exception

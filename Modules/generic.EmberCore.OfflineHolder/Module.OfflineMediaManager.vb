@@ -21,10 +21,17 @@ Imports EmberAPI
 
 Public Class OfflineHolderModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
 
     Private _enabled As Boolean = False
     Private _Name As String = "Offline Media Manager"
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+
+    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return Enums.ModuleType.Generic
+        End Get
+    End Property
 
     Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
@@ -50,7 +57,8 @@ Public Class OfflineHolderModule
         SPanel.Panel = New Panel
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 
     End Sub
 
@@ -59,19 +67,18 @@ Public Class OfflineHolderModule
         Dim tmpOfflineHolder As New dlgOfflineHolder
         MyMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
         MyMenu.Text = "Offline Media Manager"
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         tmpOfflineHolder.Dispose()
 
     End Sub
     Sub Disable()
 
-        Dim tsi As ToolStripMenuItem = DirectCast(emmRuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
 
     End Sub
-    Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        emmRuntimeObjects = emm
+    Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
@@ -91,8 +98,11 @@ Public Class OfflineHolderModule
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                emmRuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
             End If
         End Using
+    End Sub
+
+    Public Sub RunGeneric(ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
     End Sub
 End Class

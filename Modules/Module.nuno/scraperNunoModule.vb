@@ -10,8 +10,10 @@ Public Class NunoScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _setup As New frmSettingsHolder
     Private _Name As String = "Nuno Module"
-    Public Event SetupScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal imageidx As Integer, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupScraperChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event Modulesettingschanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
+
     Property ScraperEnabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
@@ -48,7 +50,7 @@ Public Class NunoScraperModule
         SPanel.Panel = _setup.pnlSettings
         Return SPanel
     End Function
-    Sub SaveSetupScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupScraper
 
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
@@ -62,7 +64,7 @@ Public Class NunoScraperModule
         SPanel.Parent = "pnlTVScraper"
         Return SPanel
     End Function
-    Sub SaveSetupPostScraper() Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
+    Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
 
     End Sub
 
