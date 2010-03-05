@@ -27,9 +27,9 @@ Public Class NotificationsModule
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
 
-    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return Enums.ModuleType.Notification
+            Return New List(Of Enums.ModuleType)(New Enums.ModuleType() {Enums.ModuleType.Notification}) 'Enums.ModuleType.Notification
         End Get
     End Property
 
@@ -93,18 +93,20 @@ Public Class NotificationsModule
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Sub RunGeneric(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
         Try
-            Dim ShowIt As Boolean = False
+            If mType = Enums.ModuleType.Notification Then
+                Dim ShowIt As Boolean = False
 
-            Select Case True
-                Case _params(0).ToString = "error" AndAlso eSettings.OnError
-                    ShowIt = True
-            End Select
+                Select Case True
+                    Case _params(0).ToString = "error" AndAlso eSettings.OnError
+                        ShowIt = True
+                End Select
 
-            If ShowIt Then
-                Dim dNotify As New frmNotify
-                dNotify.Show(Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
+                If ShowIt Then
+                    Dim dNotify As New frmNotify
+                    dNotify.Show(Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
+                End If
             End If
         Catch ex As Exception
         End Try

@@ -27,9 +27,9 @@ Public Class BulkRenamerModule
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
 
-    Public ReadOnly Property ModuleType() As Enums.ModuleType Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return Enums.ModuleType.Generic
+            Return New List(Of Enums.ModuleType)(New Enums.ModuleType() {Enums.ModuleType.Generic})
         End Get
     End Property
 
@@ -102,6 +102,6 @@ Public Class BulkRenamerModule
         End Using
     End Sub
 
-    Public Sub RunGeneric(ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
     End Sub
 End Class

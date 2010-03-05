@@ -859,7 +859,7 @@ Public Class Functions
 
     Public Shared Sub Notify(ByVal Type As String, ByVal Icon As Integer, ByVal Title As String, ByVal Message As String, Optional ByVal CustomIcon As Image = Nothing)
         Try
-            ModulesManager.Instance.externalProcessorModules.First(Function(m) m.Enabled AndAlso m.Type = Enums.ModuleType.Notification).ProcessorModule.RunGeneric(New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
+            ModulesManager.Instance.externalProcessorModules.First(Function(m) m.Enabled AndAlso m.Type.Contains(Enums.ModuleType.Notification)).ProcessorModule.RunGeneric(Enums.ModuleType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
         Catch
         End Try
     End Sub
