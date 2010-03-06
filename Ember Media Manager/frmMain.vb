@@ -319,6 +319,23 @@ Public Class frmMain
                         Me.dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
                     End If
 
+                    If Me.dgvTVShows.RowCount > 0 Then
+                        Me.dgvTVShows.Columns(2).Visible = Not Master.eSettings.ShowPosterCol
+                        Me.dgvTVShows.Columns(3).Visible = Not Master.eSettings.ShowFanartCol
+                        Me.dgvTVShows.Columns(4).Visible = Not Master.eSettings.ShowNfoCol
+                    End If
+
+                    If Me.dgvTVSeasons.RowCount > 0 Then
+                        Me.dgvTVSeasons.Columns(3).Visible = Not Master.eSettings.SeasonPosterCol
+                        Me.dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.SeasonFanartCol
+                    End If
+
+                    If Me.dgvTVEpisodes.RowCount > 0 Then
+                        Me.dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.EpisodePosterCol
+                        Me.dgvTVEpisodes.Columns(5).Visible = Not Master.eSettings.EpisodeFanartCol
+                        Me.dgvTVEpisodes.Columns(6).Visible = Not Master.eSettings.EpisodeNfoCol
+                    End If
+
                     'might as well wait for these
                     While Me.bwMediaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                         Application.DoEvents()
@@ -369,7 +386,7 @@ Public Class frmMain
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
-                .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
+                .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "dll"), Assembly.GetExecutingAssembly().Evidence)})
         AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
         Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
@@ -714,8 +731,6 @@ Public Class frmMain
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
-
-            Me.Activate()
 
         End If
 
@@ -1431,20 +1446,18 @@ Public Class frmMain
         Try
             If Not Me.tabsMain.SelectedIndex = 1 Then Return
 
-            If Me.dgvTVShows.Enabled Then
-                Me.tmrWait.Enabled = False
-                Me.tmrWaitSeason.Enabled = False
-                Me.tmrWaitEp.Enabled = False
-                Me.tmrWaitShow.Enabled = False
-                Me.tmrLoad.Enabled = False
-                Me.tmrLoadSeason.Enabled = False
-                Me.tmrLoadEp.Enabled = False
-                Me.tmrLoadShow.Enabled = False
+            Me.tmrWait.Enabled = False
+            Me.tmrWaitSeason.Enabled = False
+            Me.tmrWaitEp.Enabled = False
+            Me.tmrWaitShow.Enabled = False
+            Me.tmrLoad.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
+            Me.tmrLoadEp.Enabled = False
+            Me.tmrLoadShow.Enabled = False
 
 
-                Me.currShowRow = e.RowIndex
-                Me.tmrWaitShow.Enabled = True
-            End If
+            Me.currShowRow = e.RowIndex
+            Me.tmrWaitShow.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5387,7 +5400,7 @@ Public Class frmMain
     End Sub
     Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
         'Will Need to make a cleanup on Arguments when old scraper code is removed
-        Dim scrapeMovie As EmberAPI.Structures.DBMovie
+        Dim scrapeMovie As Structures.DBMovie
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -5558,12 +5571,12 @@ doCancel:
             bwMovieScraper.ReportProgress(1, OldTitle)
 
             dScrapeRow = dRow
-            Dim DBScrapeMovie As EmberAPI.Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
+            Dim DBScrapeMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                 MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
-                    EmberAPI.MediaInfo.UpdateMediaInfo(DBScrapeMovie)
+                    MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -5616,8 +5629,8 @@ doCancel:
 
     End Sub
 
-    Delegate Sub DelegateEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
-    Private Sub MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object)
+    Delegate Sub DelegateEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+    Private Sub MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
         If (Me.InvokeRequired) Then
             Me.Invoke(New DelegateEvent(AddressOf MovieScraperEvent), New Object() {eType, Parameter})
         Else
@@ -6506,8 +6519,8 @@ doCancel:
 
                         If .dgvTVShows.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 1 Then
                             'Set current cell and automatically load the info for the first movie in the list
-                            .dgvTVShows.Rows(iIndex).Cells(3).Selected = True
-                            .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(3)
+                            .dgvTVShows.Rows(iIndex).Cells(1).Selected = True
+                            .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(1)
 
                             Me.SetControlsEnabled(True)
                         End If
@@ -6901,19 +6914,19 @@ doCancel:
 
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case EmberAPI.Enums.TVScraperEventType.LoadingEpisodes
+            Case Enums.TVScraperEventType.LoadingEpisodes
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(756, "Loading All Episodes:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case EmberAPI.Enums.TVScraperEventType.SavingStarted
+            Case Enums.TVScraperEventType.SavingStarted
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(757, "Saving All Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case EmberAPI.Enums.TVScraperEventType.ScraperDone
+            Case Enums.TVScraperEventType.ScraperDone
                 Me.RefreshShow(Master.currShow.ShowID, False, False, False, True)
 
                 Me.tspbLoading.Visible = False
@@ -6922,22 +6935,22 @@ doCancel:
 
                 Me.SetControlsEnabled(True, True)
 
-            Case EmberAPI.Enums.TVScraperEventType.Searching
+            Case Enums.TVScraperEventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(758, "Searching theTVDB:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case EmberAPI.Enums.TVScraperEventType.SelectImages
+            Case Enums.TVScraperEventType.SelectImages
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(759, "Select Images:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case EmberAPI.Enums.TVScraperEventType.StartingDownload
+            Case Enums.TVScraperEventType.StartingDownload
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(760, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
-            Case EmberAPI.Enums.TVScraperEventType.Verifying
+            Case Enums.TVScraperEventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
 
                 Select Case iProgress
@@ -6964,7 +6977,7 @@ doCancel:
                         Me.tslLoading.Visible = False
                 End Select
 
-            Case EmberAPI.Enums.TVScraperEventType.Progress
+            Case Enums.TVScraperEventType.Progress
                 Select Case Parameter.ToString
                     Case "max"
                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -6975,7 +6988,7 @@ doCancel:
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
 
-            Case EmberAPI.Enums.TVScraperEventType.Cancelled
+            Case Enums.TVScraperEventType.Cancelled
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
 
@@ -7627,7 +7640,7 @@ doCancel:
     End Sub
 
     Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
-        EmberAPI.ModulesManager.Instance.GetVersions()
+        ModulesManager.Instance.GetVersions()
     End Sub
 
     Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
@@ -7812,7 +7825,7 @@ doCancel:
                     Else
                         Me.ToolStripSeparator16.Visible = True
                         Me.cmnuSeasonChangePoster.Visible = True
-                        Me.cmnuSeasonChangeFanart.Visible = True
+                        Me.cmnuSeasonChangeFanart.Visible = Master.eSettings.SeasonFanartEnabled
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
 
@@ -7940,6 +7953,54 @@ doCancel:
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
         ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+    End Sub
+
+    Private Sub cmnuSeasonChangePoster_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangePoster.Click
+
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+
+        Using tmpImage As New Images
+            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
+            Dim PosterPath As String = Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
+
+            If Not String.IsNullOrEmpty(PosterPath) Then
+                tmpImage.FromFile(PosterPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, Me.tmpLang, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBSeason.SeasonPosterPath = tmpImage.SaveAsSeasonPoster(DBSeason)
+                Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonPosterPath
+                Master.DB.SaveTVSeasonToDB(DBSeason, False)
+            End If
+        End Using
+    End Sub
+
+    Private Sub cmnuSeasonChangeFanart_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeFanart.Click
+
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+
+        Using tmpImage As New Images
+            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
+            Dim FanartPath As String = Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
+
+            If Not String.IsNullOrEmpty(FanartPath) Then
+                tmpImage.FromFile(FanartPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, Me.tmpLang, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBSeason.SeasonFanartPath = tmpImage.SaveAsSeasonFanart(DBSeason)
+                Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonFanartPath
+                Master.DB.SaveTVSeasonToDB(DBSeason, False)
+            End If
+        End Using
     End Sub
 End Class
 

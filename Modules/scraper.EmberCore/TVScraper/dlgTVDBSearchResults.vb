@@ -22,7 +22,7 @@ Public Class dlgTVDBSearchResults
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
     Private sHTTP As New HTTP
-    Private sInfo As EmberAPI.Structures.ScrapeInfo
+    Private sInfo As Structures.ScrapeInfo
 
     Private Structure Results
         Dim Result As Image
@@ -99,9 +99,9 @@ Public Class dlgTVDBSearchResults
         End Try
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case EmberAPI.Enums.TVScraperEventType.SearchResultsDownloaded
+            Case Enums.TVScraperEventType.SearchResultsDownloaded
                 Dim lItem As ListViewItem
                 Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
 
@@ -123,7 +123,7 @@ Public Class dlgTVDBSearchResults
                     Me.lvSearchResults.Items(0).Selected = True
                     Me.lvSearchResults.Select()
                 End If
-            Case EmberAPI.Enums.TVScraperEventType.ShowDownloaded
+            Case Enums.TVScraperEventType.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
         End Select
@@ -137,7 +137,7 @@ Public Class dlgTVDBSearchResults
         Scraper.sObject.CancelAsync()
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal _sInfo As EmberAPI.Structures.ScrapeInfo) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
 
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)

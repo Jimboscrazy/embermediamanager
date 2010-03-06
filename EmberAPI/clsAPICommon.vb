@@ -20,7 +20,6 @@
 
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports System.Xml.Serialization
 
 Public Class Containers
     Public Class TVLanguage
@@ -143,7 +142,7 @@ Public Class Containers
                 Me._type = value
             End Set
         End Property
-        <XmlIgnore()> _
+        <System.Xml.Serialization.XmlIgnore()> _
         Public Property Panel() As Panel
             Get
                 Return Me._panel
@@ -295,6 +294,15 @@ Public Class Enums
         Generic = 0
         Notification = 1
     End Enum
+
+    Public Enum TVImageType As Integer
+        All = 0
+        ShowPoster = 1
+        ShowFanart = 2
+        SeasonPoster = 3
+        SeasonFanart = 4
+        AllSeasonPoster = 5
+    End Enum
 End Class
 
 Public Class Structures
@@ -436,6 +444,8 @@ Public Class Structures
         Dim iSeason As Integer
         Dim Options As Structures.TVScrapeOptions
         Dim SelectedLang As String
+        Dim ImageType As Enums.TVImageType
+        Dim CurrentImage As Image
     End Structure
 
 End Class

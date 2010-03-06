@@ -47,7 +47,7 @@ Public Class dlgImgSelect
     Private pnlImage() As Panel
     Private lblImage() As Label
     Private chkImage() As CheckBox
-    Private tmpImage As New EmberAPI.Images
+    Private tmpImage As New Images
     Private selIndex As Integer = -1
     Private noImages As Boolean = False
 
@@ -1172,7 +1172,7 @@ Public Class dlgImgSelect
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
 
         Try
-            Dim tImage As New EmberAPI.Images
+            Dim tImage As New Images
 
             Me.pnlSinglePic.Visible = True
             Application.DoEvents()
