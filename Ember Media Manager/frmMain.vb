@@ -3175,7 +3175,8 @@ Public Class frmMain
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True, True)
+            '# **** FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {Master.currMovie, True, True, True}))
             Me.SetListItemAfterEdit(ID, indX)
             If Me.RefreshMovie(ID) Then
                 Me.FillList(0)
@@ -3190,16 +3191,14 @@ Public Class frmMain
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
         Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
-        Using dRenameManual As New dlgRenameManual
-            Select Case dRenameManual.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    Me.SetListItemAfterEdit(ID, indX)
-                    If Me.RefreshMovie(ID) Then
-                        Me.FillList(0)
-                    End If
-                    Me.SetStatus(Master.currMovie.Filename)
-            End Select
-        End Using
+        Select Case ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovieManual, Nothing, True)
+            Case False ' Not Cancelled
+                Me.SetListItemAfterEdit(ID, indX)
+                If Me.RefreshMovie(ID) Then
+                    Me.FillList(0)
+                End If
+                Me.SetStatus(Master.currMovie.Filename)
+        End Select
     End Sub
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
@@ -5592,13 +5591,9 @@ doCancel:
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
 
                     If bwMovieScraper.CancellationPending Then Exit For
-                    ' This will replace Renamer and allow other module to act as needed
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperReadyToSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+                    ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
 
-                    'Bellow will move to Renamer RunGeneric  On ModuleEventType.ScraperReadyToSave
-                    If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
-                        FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
-                    End If
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
@@ -5735,7 +5730,8 @@ doCancel:
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             If Master.eSettings.AutoRenameSingle AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
-                                FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
+                                ' ##*** FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {Master.currMovie, False, False, True}))
                             End If
                             Me.SetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then

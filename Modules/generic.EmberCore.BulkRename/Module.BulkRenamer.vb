@@ -22,26 +22,29 @@ Imports EmberAPI
 ' TODO update the tooltip and label with all the new settings
 Public Class BulkRenamerModule
     Implements Interfaces.EmberExternalModule
+    Private _setup As frmSettingsHolder
     Private _enabled As Boolean = False
-    Private _Name As String = "Bulk Renamer"
+    Private _Name As String = "Renamer"
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieScraperRDYtoSave, Enums.ModuleEventType.RenameMovie})
         End Get
     End Property
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
+        Me._setup = New frmSettingsHolder
+        Me._setup.chkEnabled.Checked = Me._enabled
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(999, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = New Panel
+        SPanel.Panel = Me._setup.pnlSettings()
         Return SPanel
     End Function
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
@@ -104,6 +107,29 @@ Public Class BulkRenamerModule
     End Sub
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+        Select Case mType
+            Case Enums.ModuleEventType.MovieScraperRDYtoSave
+                Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
+                ' TODO: Some of the Bellow setting should move to Module
+                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
+                    FileFolderRenamer.RenameSingle(tDBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
+                End If
+            Case Enums.ModuleEventType.RenameMovie
+                Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
+                Dim BatchMode As Boolean = DirectCast(_params(1), Boolean)
+                Dim ToNFO As Boolean = DirectCast(_params(2), Boolean)
+                Dim ShowErrors As Boolean = DirectCast(_params(3), Boolean)
+                FileFolderRenamer.RenameSingle(tDBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, BatchMode, ToNFO, ShowErrors)
+            Case Enums.ModuleEventType.RenameMovieManual
+                Using dRenameManual As New dlgRenameManual
+                    Select Case dRenameManual.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            Return New Interfaces.ModuleResult With {.Cancelled = False, .breakChain = False}
+                        Case Else
+                            Return New Interfaces.ModuleResult With {.Cancelled = True, .breakChain = False}
+                    End Select
+                End Using
+        End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 End Class

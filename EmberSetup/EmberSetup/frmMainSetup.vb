@@ -123,17 +123,8 @@ Public Class frmMainSetup
         log.WriteLine(s)
         log.Close()
     End Sub
-    ' Declaration
-    Declare Function IsWow64Process Lib "kernel32" (ByVal hProcess As Int32, ByRef Wow64Process As Boolean) As Int32
-    ' Function
     Public Shared Function Is64Bit() As Boolean
-        Dim proc As Process = Process.GetCurrentProcess
-        Dim Wow64Process As Boolean
-        Try
-            Return IsWow64Process(proc.Id, Wow64Process) < 0
-        Catch ex As Exception
-            Return False
-        End Try
+        Return (IntPtr.Size = 8)
     End Function
     Public Function GetEmberPlatform(ByVal fpath As String) As String
         Try
