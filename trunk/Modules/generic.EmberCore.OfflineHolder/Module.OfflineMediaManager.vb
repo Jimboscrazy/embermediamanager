@@ -104,6 +104,7 @@ Public Class OfflineHolderModule
         End Using
     End Sub
 
-    Public Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _parmas As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
-    End Sub
+    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
+    End Function
 End Class

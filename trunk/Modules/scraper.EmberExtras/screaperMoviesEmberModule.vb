@@ -4,7 +4,7 @@ Imports EmberAPI
 ''' Native Scraper
 ''' </summary>
 ''' <remarks></remarks>
-Public Class EmberBenceScraperModule
+Public Class EmberExtrasScraperModule
     Implements EmberAPI.Interfaces.EmberMovieScraperModule
 
 
