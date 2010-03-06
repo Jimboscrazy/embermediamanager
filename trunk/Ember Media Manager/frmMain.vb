@@ -386,7 +386,7 @@ Public Class frmMain
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
-                .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "dll"), Assembly.GetExecutingAssembly().Evidence)})
+                .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
         AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
         Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")

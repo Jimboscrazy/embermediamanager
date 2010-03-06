@@ -8,7 +8,7 @@ Public Class EmberExtrasScraperModule
     Implements Interfaces.EmberMovieScraperModule
 
 
-    Private _Name As String = "Bence Scraper"
+    Private _Name As String = "Ember Extras Scraper"
 
     Public Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
 
