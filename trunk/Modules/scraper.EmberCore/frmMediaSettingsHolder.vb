@@ -62,28 +62,11 @@ Public Class frmMediaSettingsHolder
         Me.chkUseTMDB.Text = Master.eLang.GetString(501, "TheMovieDB.org")
         Me.chkUseIMPA.Text = Master.eLang.GetString(502, "IMPAwards.com")
         Me.GroupBox9.Text = Master.eLang.GetString(798, "Get Images From:")
-        Me.chkTrailerDump.Text = Master.eLang.GetString(999, "Watch for ""Dump"" Folder")
         Me.chkDownloadTrailer.Text = Master.eLang.GetString(999, "Enable Downloading")
     End Sub
 
     Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
-    End Sub
-
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
-        With Me.fbdBrowse
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtDumpPath.Text = .SelectedPath.ToString
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub chkTrailerDump_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailerDump.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        txtDumpPath.Enabled = chkTrailerDump.Checked
-        btnBrowse.Enabled = chkTrailerDump.Checked
     End Sub
 
     Private Sub chkScrapePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapePoster.CheckedChanged
@@ -111,10 +94,6 @@ Public Class frmMediaSettingsHolder
     End Sub
 
     Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtDumpPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDumpPath.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class

@@ -9,7 +9,7 @@ Public Class NunoScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
     Private _setup As New frmSettingsHolder
-    Private _Name As String = "Nuno Module"
+    Private _Name As String = "Nuno's Module"
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupScraperChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
     Public Event Modulesettingschanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
@@ -36,11 +36,6 @@ Public Class NunoScraperModule
         Me._setup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
         Me._setup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
-        'If Me._setup.ShowDialog() = Windows.Forms.DialogResult.OK Then
-        '    AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
-        '    AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
-        '    AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
-        'End If
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(36, "Movies")
@@ -51,7 +46,9 @@ Public Class NunoScraperModule
         Return SPanel
     End Function
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupScraper
-
+        AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
+        AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
+        AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
@@ -81,7 +78,6 @@ Public Class NunoScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     Public Sub Init() Implements Interfaces.EmberMovieScraperModule.Init
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
     End Sub
     Public ReadOnly Property IsPostScraper() As Boolean Implements Interfaces.EmberMovieScraperModule.IsPostScraper
@@ -114,8 +110,9 @@ Public Class NunoScraperModule
         If DoPlot Then DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
+
     Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
+
     Public Function SelectImageOfType(ByRef DBMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

@@ -73,13 +73,13 @@ Public Class dlgRenameManual
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(632, "Manual Rename"), " | ", Master.currMovie.Movie.Title)
-        Me.Label1.Text = Master.eLang.GetString(633, "Folder Name")
-        Me.Label2.Text = Master.eLang.GetString(634, "File Name")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.Label3.Text = Master.eLang.GetString(641, "Renaming Directory/Files...")
+        Me.Text = String.Concat(Master.eLang.GetString(13, "Manual Rename"), " | ", Master.currMovie.Movie.Title)
+        Me.Label1.Text = Master.eLang.GetString(14, "Folder Name")
+        Me.Label2.Text = Master.eLang.GetString(15, "File Name")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close", True)
+        Me.lblTitle.Text = Master.eLang.GetString(16, "Title:")
+        Me.Label3.Text = Master.eLang.GetString(17, "Renaming Directory/Files...")
         Me.txtTitle.Text = Master.currMovie.Movie.Title
     End Sub
 

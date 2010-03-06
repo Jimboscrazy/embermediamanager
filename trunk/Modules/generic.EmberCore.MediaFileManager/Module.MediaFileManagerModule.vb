@@ -73,6 +73,7 @@ Public Class FileManagerExternalModule
         _setup = New frmSettingsHolder
         Load()
         Dim li As ListViewItem
+        _setup.ListView1.Clear()
         _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
             li = New ListViewItem
@@ -82,7 +83,7 @@ Public Class FileManagerExternalModule
         Next
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
-        SPanel.Type = Master.eLang.GetString(999, "Modules")
+        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
@@ -138,6 +139,7 @@ Public Class FileManagerExternalModule
     Sub Init() Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
+        Master.eLang.LoadLanguage(Master.eSettings.Language)
         Load()
     End Sub
 

@@ -41,7 +41,7 @@ Public Class BulkRenamerModule
         Me._setup.chkEnabled.Checked = Me._enabled
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
-        SPanel.Type = Master.eLang.GetString(999, "Modules")
+        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings()

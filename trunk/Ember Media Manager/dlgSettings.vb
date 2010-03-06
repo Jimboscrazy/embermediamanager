@@ -4021,7 +4021,7 @@ Public Class dlgSettings
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
-                                .Text = Master.eLang.GetString(999, "Modules"), _
+                                .Text = Master.eLang.GetString(802, "Modules"), _
                                 .Image = My.Resources.Modules, _
                                 .TextImageRelation = TextImageRelation.ImageAboveText, _
                                 .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
