@@ -20,7 +20,7 @@
 Imports EmberAPI
 
 Public Class OfflineHolderModule
-    Implements EmberAPI.Interfaces.EmberExternalModule
+    Implements Interfaces.EmberExternalModule
 
     Private _enabled As Boolean = False
     Private _Name As String = "Offline Media Manager"
@@ -34,7 +34,7 @@ Public Class OfflineHolderModule
         End Get
     End Property
 
-    Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
+    Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
         Get
             Return _enabled
         End Get
@@ -48,7 +48,7 @@ Public Class OfflineHolderModule
         End Set
     End Property
 
-    Function InjectSetup() As Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+    Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
@@ -59,7 +59,7 @@ Public Class OfflineHolderModule
         Return SPanel
     End Function
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
 
     End Sub
 
@@ -79,16 +79,16 @@ Public Class OfflineHolderModule
         tsi.DropDownItems.Remove(MyMenu)
 
     End Sub
-    Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
+    Sub Init() Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
-    ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
         Get
             Return _Name
         End Get
     End Property
-    ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
@@ -104,7 +104,7 @@ Public Class OfflineHolderModule
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
-        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
+    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 End Class

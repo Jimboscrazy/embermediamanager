@@ -464,7 +464,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Filename).ToString))
-                row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(EmberAPI.Functions.ConvertFromUnixTimestamp(_curMovie.DateAdd).ToShortDateString))
+                row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(_curMovie.DateAdd).ToShortDateString))
                 row = GetAVImages(_curMovie, row)
                 HTMLBody.Append(row)
                 counter += 1

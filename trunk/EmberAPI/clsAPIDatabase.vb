@@ -745,7 +745,7 @@ Public Class Database
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
                 'Why do we need IMDB to save to NFO?
                 If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
-                parMovieDateAdd.Value = If(IsNew, EmberAPI.Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
 
                 parMoviePath.Value = _movieDB.Filename
                 parType.Value = _movieDB.isSingle
@@ -1129,11 +1129,13 @@ Public Class Database
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="iSeason">Number of the season to load, as stored in the database</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Long, ByVal WithShow As Boolean) As Structures.DBTV
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
         Try
             _TVDB.ShowID = ShowID
             If WithShow Then FillTVShowFromDB(_TVDB)
+            _TVDB.TVEp = New MediaContainers.EpisodeDetails
+            _TVDB.TVEp.Season = iSeason
 
             Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommandTVSeason.CommandText = String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")

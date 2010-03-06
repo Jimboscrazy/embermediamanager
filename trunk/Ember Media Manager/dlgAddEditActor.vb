@@ -135,7 +135,7 @@ Public Class dlgAddEditActor
 
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As EmberAPI.MediaContainers.Person = Nothing) As EmberAPI.MediaContainers.Person
+    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As MediaContainers.Person = Nothing) As MediaContainers.Person
 
         '//
         ' Overload to pass data
@@ -144,7 +144,7 @@ Public Class dlgAddEditActor
         Me.isNew = bNew
 
         If bNew Then
-            Me.eActor = New EmberAPI.MediaContainers.Person
+            Me.eActor = New MediaContainers.Person
         Else
             Me.eActor = inActor
         End If

@@ -56,11 +56,11 @@ Public Class NotificationsModule
         End Get
     End Property
 
-    Public Sub Init() Implements EmberAPI.Interfaces.EmberExternalModule.Init
+    Public Sub Init() Implements Interfaces.EmberExternalModule.Init
         LoadSettings()
     End Sub
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
         Me._enabled = _setup.chkEnabled.Checked
         eSettings.OnError = _setup.chkOnError.Checked
         SaveSettings()
@@ -104,7 +104,7 @@ Public Class NotificationsModule
         RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
             If mType = Enums.ModuleType.Notification Then
                 Dim ShowIt As Boolean = False
@@ -123,7 +123,7 @@ Public Class NotificationsModule
             End If
         Catch ex As Exception
         End Try
-        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Private Sub SaveSettings()

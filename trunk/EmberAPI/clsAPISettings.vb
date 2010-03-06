@@ -3294,7 +3294,7 @@ Public Class Settings
 
     Public Sub Load()
         Try
-            Dim xmlSerial As New XmlSerializer(GetType(EmberAPI.Settings))
+            Dim xmlSerial As New XmlSerializer(GetType(Settings))
 
             If File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) Then
                 Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))

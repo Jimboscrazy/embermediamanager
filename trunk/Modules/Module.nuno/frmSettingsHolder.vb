@@ -11,7 +11,7 @@
     End Sub
 
     Private Sub scraperSetup_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        cLanguage.Items.AddRange(EmberAPI.Localization.ISOLangGetLanguagesList.ToArray)
+        cLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
         If cLanguage.Items.Count > 0 Then cLanguage.SelectedIndex = cLanguage.FindString(preferedLanguage)
     End Sub
 

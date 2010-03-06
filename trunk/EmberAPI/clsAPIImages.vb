@@ -420,7 +420,7 @@ Public Class Images : Implements IDisposable
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
                 Try
-                    tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                    tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
                 Catch
                 End Try
 
@@ -728,8 +728,8 @@ Public Class Images : Implements IDisposable
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
                 Try
-                    tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
-                Catch
+                    tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+                Catch ex As Exception
                 End Try
 
                 If Not String.IsNullOrEmpty(tPath) Then

@@ -19,9 +19,8 @@
 ' ################################################################################
 
 'TODO: Scrape Show/Episode Poster/Fanart from editors
-'TODO: Change season images
 'TODO: Automatic scrapers
-'TODO: Check Season lock and mark when adding new episodes
+'TODO: Check Season/show lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
 
@@ -31,6 +30,8 @@ Imports System.Text.RegularExpressions
 Public Class dlgTVImageSelect
     Private _id As Integer = -1
     Private _season As Integer = -999
+    Private _type As Enums.TVImageType
+    Private _fanartchanged As Boolean = False
 
     Private DefaultImages As New Scraper.TVImages
     Private ShowPosterList As New List(Of Scraper.TVDBShowPoster)
@@ -61,21 +62,27 @@ Public Class dlgTVImageSelect
 
     Private Sub GenerateList()
         Try
-            Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
-            Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(785, "Show Fanart"), .Tag = "showf"})
-            If Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(785, "Show Fanart"), .Tag = "showf"})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
 
             Dim TnS As TreeNode
-            For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
-                Try
-                    TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season))
-                    TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString)})
-                    If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
-                    Me.tvList.Nodes.Add(TnS)
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
+            If Me._type = Enums.TVImageType.All Then
+                For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
+                    Try
+                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season))
+                        TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString)})
+                        If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
+                        Me.tvList.Nodes.Add(TnS)
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            ElseIf Me._type = Enums.TVImageType.SeasonPoster Then
+                tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(999, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
+            ElseIf Me._type = Enums.TVImageType.SeasonFanart Then
+                If Master.eSettings.SeasonFanartEnabled Then tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(999, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -87,124 +94,135 @@ Public Class dlgTVImageSelect
         Try
             Me.bwLoadImages.ReportProgress(Scraper.tmpTVDBShow.Episodes.Count + Scraper.tmpTVDBShow.SeasonPosters.Count + Scraper.tmpTVDBShow.ShowPosters.Count + Scraper.tmpTVDBShow.Fanart.Count + Scraper.tmpTVDBShow.Posters.Count, "max")
 
-            For Each Epi As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
-                Try
-                    If Not File.Exists(Epi.TVEp.LocalFile) Then
-                        If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
-                            Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
-                            Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
-                            Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+            If Me._type = Enums.TVImageType.All Then
+                For Each Epi As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
+                    Try
+                        If Not File.Exists(Epi.TVEp.LocalFile) Then
+                            If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
+                                Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
+                                Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
+                                Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                            End If
+                        Else
+                            Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
                         End If
-                    Else
-                        Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
-                    End If
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
-
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-
-            For Each Seas As Scraper.TVDBSeasonPoster In Scraper.tmpTVDBShow.SeasonPosters
-                Try
-                    If Not File.Exists(Seas.LocalFile) Then
-                        If Not String.IsNullOrEmpty(Seas.URL) Then
-                            Seas.Image.FromWeb(Seas.URL)
-                            Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
-                            Seas.Image.Save(Seas.LocalFile)
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
                         End If
-                    Else
-                        Seas.Image.FromFile(Seas.LocalFile)
-                    End If
-                    SeasonList.Add(Seas)
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
 
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-
-            For Each SPost As Scraper.TVDBShowPoster In Scraper.tmpTVDBShow.ShowPosters
-                Try
-                    If Not File.Exists(SPost.LocalFile) Then
-                        If Not String.IsNullOrEmpty(SPost.URL) Then
-                            SPost.Image.FromWeb(SPost.URL)
-                            Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
-                            SPost.Image.Save(SPost.LocalFile)
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonPoster OrElse Me._type = Enums.TVImageType.AllSeasonPoster Then
+                For Each Seas As Scraper.TVDBSeasonPoster In Scraper.tmpTVDBShow.SeasonPosters
+                    Try
+                        If Not File.Exists(Seas.LocalFile) Then
+                            If Not String.IsNullOrEmpty(Seas.URL) Then
+                                Seas.Image.FromWeb(Seas.URL)
+                                Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
+                                Seas.Image.Save(Seas.LocalFile)
+                            End If
+                        Else
+                            Seas.Image.FromFile(Seas.LocalFile)
                         End If
-                    Else
-                        SPost.Image.FromFile(SPost.LocalFile)
-                    End If
-                    ShowPosterList.Add(SPost)
+                        SeasonList.Add(Seas)
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
-
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-
-            For Each SFan As Scraper.TVDBFanart In Scraper.tmpTVDBShow.Fanart
-                Try
-                    If Not File.Exists(SFan.LocalThumb) Then
-                        If Not String.IsNullOrEmpty(SFan.ThumbnailURL) Then
-                            SFan.Image.FromWeb(SFan.ThumbnailURL)
-                            Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
-                            SFan.Image.Image.Save(SFan.LocalThumb)
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
                         End If
-                    Else
-                        SFan.Image.FromFile(SFan.LocalThumb)
-                    End If
-                    FanartList.Add(SFan)
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
 
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-
-            For Each Post As Scraper.TVDBPoster In Scraper.tmpTVDBShow.Posters
-                Try
-                    If Not File.Exists(Post.LocalFile) Then
-                        If Not String.IsNullOrEmpty(Post.URL) Then
-                            Post.Image.FromWeb(Post.URL)
-                            Directory.CreateDirectory(Directory.GetParent(Post.LocalFile).FullName)
-                            Post.Image.Save(Post.LocalFile)
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then
+                For Each SPost As Scraper.TVDBShowPoster In Scraper.tmpTVDBShow.ShowPosters
+                    Try
+                        If Not File.Exists(SPost.LocalFile) Then
+                            If Not String.IsNullOrEmpty(SPost.URL) Then
+                                SPost.Image.FromWeb(SPost.URL)
+                                Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                SPost.Image.Save(SPost.LocalFile)
+                            End If
+                        Else
+                            SPost.Image.FromFile(SPost.LocalFile)
                         End If
-                    Else
-                        Post.Image.FromFile(Post.LocalFile)
-                    End If
-                    GenericPosterList.Add(Post)
+                        ShowPosterList.Add(SPost)
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
 
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
+
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.SeasonFanart Then
+                For Each SFan As Scraper.TVDBFanart In Scraper.tmpTVDBShow.Fanart
+                    Try
+                        If Not File.Exists(SFan.LocalThumb) Then
+                            If Not String.IsNullOrEmpty(SFan.ThumbnailURL) Then
+                                SFan.Image.FromWeb(SFan.ThumbnailURL)
+                                Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
+                                SFan.Image.Image.Save(SFan.LocalThumb)
+                            End If
+                        Else
+                            SFan.Image.FromFile(SFan.LocalThumb)
+                        End If
+                        FanartList.Add(SFan)
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
+
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster OrElse _
+            Me._type = Enums.TVImageType.SeasonPoster OrElse Me._type = Enums.TVImageType.AllSeasonPoster Then
+                For Each Post As Scraper.TVDBPoster In Scraper.tmpTVDBShow.Posters
+                    Try
+                        If Not File.Exists(Post.LocalFile) Then
+                            If Not String.IsNullOrEmpty(Post.URL) Then
+                                Post.Image.FromWeb(Post.URL)
+                                Directory.CreateDirectory(Directory.GetParent(Post.LocalFile).FullName)
+                                Post.Image.Save(Post.LocalFile)
+                            End If
+                        Else
+                            Post.Image.FromFile(Post.LocalFile)
+                        End If
+                        GenericPosterList.Add(Post)
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -225,7 +243,7 @@ Public Class dlgTVImageSelect
         Try
             Me.bwLoadImages.ReportProgress(Scraper.TVDBImages.SeasonImageList.Count + Scraper.tmpTVDBShow.Episodes.Count + 3, "defaults")
 
-            If IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
                 Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
                 If Not IsNothing(tSP) Then
                     Scraper.TVDBImages.ShowPoster.Image.Image = tSP.Image.Image
@@ -239,7 +257,7 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(1, "progress")
 
-            If IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                 Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
                 If Not IsNothing(tSF) Then
                     If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
@@ -261,7 +279,7 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(2, "progress")
 
-            If Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
                 Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
                 If Not IsNothing(tSP) Then
                     Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
@@ -275,51 +293,54 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(3, "progress")
 
-            For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
-                Try
-                    iSeason = cSeason.Season
-                    If IsNothing(cSeason.Poster.Image) Then
-                        tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason)
-                        If Not IsNothing(tSea) Then cSeason.Poster.Image = tSea.Image.Image
-                    End If
-                    If Master.eSettings.SeasonFanartEnabled AndAlso IsNothing(cSeason.Fanart.Image.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then cSeason.Fanart.Image.Image = Scraper.TVDBImages.ShowFanart.Image.Image
-
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-
-            For Each Episode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
-                Try
-                    If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
-                        Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
-                    ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                        Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
-                    End If
-
-                    If Master.eSettings.EpisodeFanartEnabled Then
-                        If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                            Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
-                        ElseIf Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                            Episode.TVEp.Fanart.Image = Scraper.TVDBImages.ShowFanart.Image.Image
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonPoster OrElse Me._type = Enums.TVImageType.SeasonFanart Then
+                For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
+                    Try
+                        iSeason = cSeason.Season
+                        If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonPoster) AndAlso IsNothing(cSeason.Poster.Image) Then
+                            tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason)
+                            If Not IsNothing(tSea) Then cSeason.Poster.Image = tSea.Image.Image
                         End If
-                    End If
+                        If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonFanart) AndAlso Master.eSettings.SeasonFanartEnabled AndAlso IsNothing(cSeason.Fanart.Image.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then cSeason.Fanart.Image.Image = Scraper.TVDBImages.ShowFanart.Image.Image
 
-                    If Me.bwLoadImages.CancellationPending Then
-                        Return True
-                    End If
-                    Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                    iProgress += 1
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
 
+            If Me._type = Enums.TVImageType.All Then
+                For Each Episode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
+                    Try
+                        If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
+                            Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
+                        ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
+                            Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
+                        End If
+
+                        If Master.eSettings.EpisodeFanartEnabled Then
+                            If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
+                                Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
+                            ElseIf Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                                Episode.TVEp.Fanart.Image = Scraper.TVDBImages.ShowFanart.Image.Image
+                            End If
+                        End If
+
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -329,9 +350,24 @@ Public Class dlgTVImageSelect
         Return False
     End Function
 
-    Public Overloads Function ShowDialog(ByVal ShowID As Integer) As System.Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.TVImageType) As System.Windows.Forms.DialogResult
         Me._id = ShowID
+        Me._type = Type
         Return MyBase.ShowDialog
+    End Function
+
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal CurrentImage As Image) As Image
+        Me._id = ShowID
+        Me._type = Type
+        Me._season = Season
+        Me.pbCurrent.Image = CurrentImage
+
+
+        If MyBase.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Return Me.pbCurrent.Image
+        Else
+            Return Nothing
+        End If
     End Function
 
     Private Sub tvList_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvList.AfterSelect
@@ -385,7 +421,7 @@ Public Class dlgTVImageSelect
                         ElseIf tMatch.Groups("type").Value = "p" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
                             Me.SelIsPoster = True
-                            Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value)).Poster.Image
+                            Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Me.SelSeason).Poster.Image
                             iCount = 0
                             For Each SImage As Scraper.TVDBSeasonPoster In SeasonList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                                 Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount, Nothing)
@@ -548,42 +584,27 @@ Public Class dlgTVImageSelect
             Return
         End If
 
-        If Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
-            Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
-            Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.ShowPosterPath
-        End If
-
-        If Me.bwLoadData.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowFanartPath) Then
-            Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowFanartPath)
-            Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.ShowFanartPath
-        End If
-
-        If Me.bwLoadData.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.AllSeasonPosterEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath) Then
-            Scraper.TVDBImages.AllSeasonPoster.Image.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath)
-            Scraper.TVDBImages.AllSeasonPoster.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath
-        End If
-
-        If Me.bwLoadData.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        For Each sEpisode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
-            Try
-                iSeason = sEpisode.TVEp.Season
-
-                If IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
-                    Scraper.TVDBImages.ShowPoster.Image.FromFile(sEpisode.ShowPosterPath)
+        Select Case Me._type
+            Case Enums.TVImageType.AllSeasonPoster
+                Scraper.TVDBImages.AllSeasonPoster.Image.Image = Me.pbCurrent.Image
+            Case Enums.TVImageType.SeasonFanart
+                cSI = New Scraper.TVDBSeasonImage
+                cSI.Season = Me._season
+                cSI.Fanart.Image.Image = Me.pbCurrent.Image
+                Scraper.TVDBImages.SeasonImageList.Add(cSI)
+            Case Enums.TVImageType.SeasonPoster
+                cSI = New Scraper.TVDBSeasonImage
+                cSI.Season = Me._season
+                cSI.Poster.Image = Me.pbCurrent.Image
+                Scraper.TVDBImages.SeasonImageList.Add(cSI)
+            Case Enums.TVImageType.ShowFanart
+                Scraper.TVDBImages.ShowFanart.Image.Image = Me.pbCurrent.Image
+            Case Enums.TVImageType.ShowPoster
+                Scraper.TVDBImages.ShowPoster.Image.Image = Me.pbCurrent.Image
+            Case Enums.TVImageType.All
+                If Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
+                    Scraper.TVDBImages.ShowPoster.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
+                    Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.ShowPosterPath
                 End If
 
                 If Me.bwLoadData.CancellationPending Then
@@ -591,9 +612,9 @@ Public Class dlgTVImageSelect
                     Return
                 End If
 
-                If Master.eSettings.EpisodeFanartEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
-                    Scraper.TVDBImages.ShowFanart.Image.FromFile(sEpisode.ShowFanartPath)
-                    Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.ShowFanartPath
+                If Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowFanartPath) Then
+                    Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.tmpTVDBShow.Show.ShowFanartPath)
+                    Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.ShowFanartPath
                 End If
 
                 If Me.bwLoadData.CancellationPending Then
@@ -601,17 +622,9 @@ Public Class dlgTVImageSelect
                     Return
                 End If
 
-                If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
-                    cSI = New Scraper.TVDBSeasonImage
-                    cSI.Season = iSeason
-                    If Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
-                        cSI.Poster.FromFile(sEpisode.SeasonPosterPath)
-                    End If
-                    If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
-                        cSI.Fanart.Image.FromFile(sEpisode.SeasonFanartPath)
-                        cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
-                    End If
-                    Scraper.TVDBImages.SeasonImageList.Add(cSI)
+                If Master.eSettings.AllSeasonPosterEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath) Then
+                    Scraper.TVDBImages.AllSeasonPoster.Image.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath)
+                    Scraper.TVDBImages.AllSeasonPoster.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath
                 End If
 
                 If Me.bwLoadData.CancellationPending Then
@@ -619,12 +632,54 @@ Public Class dlgTVImageSelect
                     Return
                 End If
 
-                Me.bwLoadData.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Next
+                For Each sEpisode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
+                    Try
+                        iSeason = sEpisode.TVEp.Season
+
+                        If IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
+                            Scraper.TVDBImages.ShowPoster.Image.FromFile(sEpisode.ShowPosterPath)
+                        End If
+
+                        If Me.bwLoadData.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+
+                        If Master.eSettings.EpisodeFanartEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
+                            Scraper.TVDBImages.ShowFanart.Image.FromFile(sEpisode.ShowFanartPath)
+                            Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.ShowFanartPath
+                        End If
+
+                        If Me.bwLoadData.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+
+                        If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
+                            cSI = New Scraper.TVDBSeasonImage
+                            cSI.Season = iSeason
+                            If Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
+                                cSI.Poster.FromFile(sEpisode.SeasonPosterPath)
+                            End If
+                            If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
+                                cSI.Fanart.Image.FromFile(sEpisode.SeasonFanartPath)
+                                cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
+                            End If
+                            Scraper.TVDBImages.SeasonImageList.Add(cSI)
+                        End If
+
+                        If Me.bwLoadData.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+
+                        Me.bwLoadData.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+        End Select
 
     End Sub
 
@@ -753,16 +808,52 @@ Public Class dlgTVImageSelect
     End Function
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
-        If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
-            Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
-            Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
-        ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
-            Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
-            If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
-                Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
+
+        If Me._type = Enums.TVImageType.All Then
+            Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
                 Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
+                    Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+                End If
+            End If
+        ElseIf Me._type = Enums.TVImageType.SeasonFanart AndAlso Me._fanartchanged Then
+            Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile) Then
+                Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.FromFile(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.SeasonImageList(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile) Then
+                Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.FromWeb(Scraper.TVDBImages.SeasonImageList(0).Fanart.URL)
+                If Not IsNothing(Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile).FullName)
+                    Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Save(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image
+                End If
+            End If
+        ElseIf Me._type = Enums.TVImageType.ShowFanart AndAlso Me._fanartchanged Then
+            Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
+            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
+                Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
+            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
+                If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
+                    Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
+                    Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
+                End If
             End If
         End If
 
@@ -830,6 +921,8 @@ Public Class dlgTVImageSelect
 
     Private Sub SetImage(ByVal SelImage As Image, ByVal SelTag As ImageTag)
         Me.pbCurrent.Image = SelImage
+
+        Me._fanartchanged = True
 
         If Me.SelSeason = -999 Then
             If Me.SelIsPoster Then

@@ -2,7 +2,7 @@
 Imports System.Text.RegularExpressions
 Imports System.Drawing.Imaging
 Public Class ScrapeImages
-    Public Shared Function GetPreferredImage(ByRef Image As EmberAPI.Images, ByVal IMDBID As String, ByVal iType As Enums.ImageType, ByRef imgResult As Containers.ImgResult, ByVal sPath As String, ByVal doETs As Boolean, Optional ByVal doAsk As Boolean = False) As Boolean
+    Public Shared Function GetPreferredImage(ByRef Image As Images, ByVal IMDBID As String, ByVal iType As Enums.ImageType, ByRef imgResult As Containers.ImgResult, ByVal sPath As String, ByVal doETs As Boolean, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
@@ -103,7 +103,7 @@ Public Class ScrapeImages
                         Next
 
                         For Each iMovie As MediaContainers.Image In tmpListTMDB
-                            If EmberAPI.Images.GetPosterDims(iMovie.WebImage.Image) = Master.eSettings.PreferredPosterSize Then
+                            If Images.GetPosterDims(iMovie.WebImage.Image) = Master.eSettings.PreferredPosterSize Then
                                 Image.Image = iMovie.WebImage.Image
                                 GoTo foundit
                             End If
@@ -169,7 +169,7 @@ Public Class ScrapeImages
                                     Image.FromWeb(iImage.URL)
                                     If Not IsNothing(Image.Image) Then
                                         If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Enums.PosterSize = EmberAPI.Images.GetPosterDims(Image.Image)
+                                        Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
                                             Select Case tmpSize
@@ -217,7 +217,7 @@ Public Class ScrapeImages
                                     Image.FromWeb(iImage.URL)
                                     If Not IsNothing(Image.Image) Then
                                         If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Enums.PosterSize = EmberAPI.Images.GetPosterDims(Image.Image)
+                                        Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
                                             Select Case tmpSize
@@ -464,7 +464,7 @@ Public Class ScrapeImages
                             Next
 
                             For Each iMovie As MediaContainers.Image In tmpListTMDB
-                                If EmberAPI.Images.GetFanartDims(iMovie.WebImage.Image) = Master.eSettings.PreferredFanartSize Then
+                                If Images.GetFanartDims(iMovie.WebImage.Image) = Master.eSettings.PreferredFanartSize Then
                                     Image.Image = iMovie.WebImage.Image
                                     GoTo foundit
                                 End If

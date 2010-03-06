@@ -36,8 +36,8 @@ Public Class dlgStudioSelect
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
 
-        Dim DBMovie As New EmberAPI.Structures.DBMovie
-        DBMovie.Movie = New EmberAPI.MediaContainers.Movie
+        Dim DBMovie As New Structures.DBMovie
+        DBMovie.Movie = New MediaContainers.Movie
         DBMovie.Movie.IMDBID = Me._imdbid
         Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(DBMovie)
         For i As Integer = 0 To alStudio.Count - 1

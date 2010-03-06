@@ -426,7 +426,7 @@ Public Class frmMainManager
                                 lstModulesx64.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
                             End If
                         End If
-                        If SQLreader("Filename").ToString.ToLower = "emberapi.dll" Then
+                        If SQLreader("Filename").ToString.ToLower = "dll" Then
                             Dim v As String = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
                             ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPI", .Platform = SQLreader("Platform").ToString})
                             If SQLreader("Platform").ToString = "x86" Then

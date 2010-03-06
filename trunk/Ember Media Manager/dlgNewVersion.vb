@@ -73,7 +73,7 @@ Public Class dlgNewVersion
         While bwDownloadSetup.IsBusy
             Application.DoEvents()
         End While
-        If File.Exists(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")) Then
+        If File.Exists(Path.Combine(Functions.AppPath, "EmberSetup.exe")) Then
             lblStart.Visible = False
             pbUpgrade.Visible = False
             lblUpgrade.Visible = True
@@ -89,20 +89,20 @@ Public Class dlgNewVersion
     End Sub
 
     Private Sub bwbwDownloadSetup_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadSetup.DoWork
-        If File.Exists(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe")) Then
-            File.Delete(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"))
+        If File.Exists(Path.Combine(Functions.AppPath, "EmberSetup.exe")) Then
+            File.Delete(Path.Combine(Functions.AppPath, "EmberSetup.exe"))
         End If
-        Dim lhttp As New EmberAPI.HTTP
-        lhttp.DownloadFile("http://www.embermm.com/Updates/EmberSetup.exe", Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), False, "other")
+        Dim lhttp As New HTTP
+        lhttp.DownloadFile("http://www.embermm.com/Updates/EmberSetup.exe", Path.Combine(Functions.AppPath, "EmberSetup.exe"), False, "other")
     End Sub
 
     Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
         If Master.isWindows Then
-            Process.Start(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), "-force")
+            Process.Start(Path.Combine(Functions.AppPath, "EmberSetup.exe"), "-force")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(EmberAPI.Functions.AppPath, "EmberSetup.exe"), " -force")
+                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(Functions.AppPath, "EmberSetup.exe"), " -force")
                 Explorer.Start()
             End Using
         End If
