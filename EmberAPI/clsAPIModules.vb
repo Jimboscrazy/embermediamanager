@@ -557,7 +557,6 @@ Public Class ModulesManager
     End Function
     Sub TVSaveImages()
         Dim ret As EmberAPI.Interfaces.ModuleResult
-        Dim epDetails As New MediaContainers.EpisodeDetails
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             ret = _externaltvScraperModule.ProcessorModule.SaveImages()
             If ret.breakChain Then Exit For

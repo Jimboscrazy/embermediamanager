@@ -721,12 +721,13 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged
+    Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
+
         '//
         ' Begin thread to download actor image if one exists
         '\\
         Try
-            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
+            If Me.lstActors.Items.Count > 0 AndAlso Me.lstActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.alActors.Item(Me.lstActors.SelectedIndex)) AndAlso Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
 
                 If Not IsNothing(Me.pbActors.Image) Then
                     Me.pbActors.Image.Dispose()
@@ -3633,14 +3634,19 @@ Public Class frmMain
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Dim dImage As Image = sHTTP.DownloadImage(Args.pURL)
 
-            If Me.bwDownloadPic.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            sHTTP.StartDownloadImage(Args.pURL)
 
-            e.Result = New Results With {.Result = dImage}
+            While sHTTP.IsDownloading
+                Application.DoEvents()
+                If Me.bwDownloadPic.CancellationPending Then
+                    e.Cancel = True
+                    sHTTP.Cancel()
+                    Return
+                End If
+            End While
+
+            e.Result = New Results With {.Result = sHTTP.Image}
         Catch ex As Exception
             e.Result = New Results With {.Result = Nothing}
             e.Cancel = True
@@ -4474,6 +4480,7 @@ Public Class frmMain
 
             If doInfo Then
                 Me.ClearInfo()
+
                 Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadInfo.WorkerSupportsCancellation = True
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
@@ -6891,7 +6898,6 @@ doCancel:
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
         ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
-        Me.SetControlsEnabled(True, True)
 
     End Sub
 
@@ -6913,6 +6919,9 @@ doCancel:
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
                 Me.tslStatus.Visible = False
+
+                Me.SetControlsEnabled(True, True)
+
             Case EmberAPI.Enums.TVScraperEventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = Master.eLang.GetString(758, "Searching theTVDB:")
@@ -6971,6 +6980,8 @@ doCancel:
                 Me.tslLoading.Visible = False
 
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
+
+                Me.SetControlsEnabled(True, True)
         End Select
     End Sub
 
@@ -7924,5 +7935,6 @@ doCancel:
                 Me.Activate()
         End Select
     End Sub
+
 End Class
 

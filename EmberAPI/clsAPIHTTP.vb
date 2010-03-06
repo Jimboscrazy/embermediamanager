@@ -26,7 +26,12 @@ Imports System.IO.Compression
 <Serializable()> _
 Public Class HTTP
 
-    Dim _responseuri As String
+    Private _responseuri As String
+    Private _image As Image
+    Private _cancel As Boolean
+    Private _URL As String = String.Empty
+    Private dThread As New Threading.Thread(AddressOf DownloadImage)
+    Private wrRequest As HttpWebRequest
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)
 
@@ -39,12 +44,20 @@ Public Class HTTP
         End Set
     End Property
 
+    Public ReadOnly Property Image() As Image
+        Get
+            Return Me._image
+        End Get
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
 
     Public Sub Clear()
         Me._responseuri = String.Empty
+        Me._image = Nothing
+        Me._cancel = False
     End Sub
 
     Public Function DownloadZip(ByVal URL As String) As Byte()
@@ -224,12 +237,30 @@ Public Class HTTP
         Return outFile
     End Function
 
-    Public Function DownloadImage(ByVal sURL As String) As Image
-        Dim tmpImage As Image = Nothing
+    Public Sub StartDownloadImage(ByVal sURL As String)
+        Me.Clear()
+        Me._URL = sURL
+        Me.dThread = New Threading.Thread(AddressOf DownloadImage)
+        Me.dThread.IsBackground = True
+        Me.dThread.Start()
+    End Sub
+
+    Public Function IsDownloading() As Boolean
+        Return Me.dThread.IsAlive
+    End Function
+
+    Public Sub Cancel()
+        Me._cancel = True
+        Me.wrRequest.Abort()
+    End Sub
+
+    Public Sub DownloadImage()
         Try
-            If StringUtils.isValidURL(sURL) Then
-                Dim wrRequest As HttpWebRequest = DirectCast(HttpWebRequest.Create(sURL), HttpWebRequest)
+            If StringUtils.isValidURL(Me._URL) Then
+                wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
                 wrRequest.Timeout = 5000
+
+                If Me._cancel Then Return
 
                 If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                     Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -243,16 +274,41 @@ Public Class HTTP
                     wrRequest.Proxy = wProxy
                 End If
 
+                If Me._cancel Then Return
+
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    If Me._cancel Then Return
                     Dim temp As String = wrResponse.ContentType.ToString
                     If wrResponse.ContentType.ToLower.Contains("image") Then
-                        tmpImage = Functions.ReadImageStreamToEnd(wrResponse.GetResponseStream)
+                        If Me._cancel Then Return
+                        Me._image = ReadImageStreamToEnd(wrResponse.GetResponseStream)
                     End If
                 End Using
+
                 wrRequest = Nothing
             End If
         Catch
         End Try
-        Return tmpImage
+    End Sub
+
+    Public Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
+        Try
+            Dim StreamBuffer(4096) As Byte
+            Dim BlockSize As Integer = 0
+            Using mStream As MemoryStream = New MemoryStream()
+                Do
+                    BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                    If Me._cancel Then Return Nothing
+                    If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
+                    If Me._cancel Then Return Nothing
+
+                Loop While BlockSize > 0
+
+                Return Image.FromStream(mStream)
+            End Using
+        Catch
+        End Try
+
+        Return Nothing
     End Function
 End Class

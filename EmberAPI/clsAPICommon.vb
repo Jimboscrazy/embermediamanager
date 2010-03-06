@@ -444,15 +444,18 @@ Public Class Functions
     Public Shared Function EmberAPIVersion() As String
         Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
     End Function
+
     Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Return origin.AddSeconds(timestamp)
     End Function
+
     Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
+
     ''' <summary>
     ''' Force of habit
     ''' </summary>
@@ -460,6 +463,7 @@ Public Class Functions
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
+
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
         Dim filterOptions As New Structures.ScrapeOptions
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
@@ -487,6 +491,7 @@ Public Class Functions
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
         Return filterOptions
     End Function
+
     Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
         Dim filterModifier As New Structures.ScrapeModifier
         filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
@@ -497,17 +502,6 @@ Public Class Functions
         filterModifier.Poster = Options.Poster AndAlso Options2.Poster
         filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
         Return filterModifier
-    End Function
-    Public Shared Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
-        Dim StreamBuffer(4096) As Byte
-        Dim BlockSize As Integer = 0
-        Using mStream As MemoryStream = New MemoryStream()
-            Do
-                BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
-            Loop While BlockSize > 0
-            Return Image.FromStream(mStream)
-        End Using
     End Function
 
     Public Shared Function ReadStreamToEnd(ByVal rStream As Stream) As Byte()
