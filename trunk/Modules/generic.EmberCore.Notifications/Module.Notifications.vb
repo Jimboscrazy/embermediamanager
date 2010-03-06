@@ -29,9 +29,9 @@ Public Class NotificationsModule
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private dNotify As frmNotify
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleType) Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleType)(New Enums.ModuleType() {Enums.ModuleType.Notification}) 'Enums.ModuleType.Notification
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification}) 'Enums.ModuleType.Notification
         End Get
     End Property
 
@@ -104,9 +104,9 @@ Public Class NotificationsModule
         RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
-            If mType = Enums.ModuleType.Notification Then
+            If mType = Enums.ModuleEventType.Notification Then
                 Dim ShowIt As Boolean = False
 
                 Select Case True

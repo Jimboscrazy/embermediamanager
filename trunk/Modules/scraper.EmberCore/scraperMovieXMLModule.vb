@@ -53,7 +53,7 @@ Public Class EmberXMLScraperModule
         Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Order = 110
-        Spanel.Parent = "pnlScraper"
+        Spanel.Parent = "pnlMovieData"
         Spanel.Panel = Me._setup.pnlSettings
         Return Spanel
     End Function
@@ -71,7 +71,7 @@ Public Class EmberXMLScraperModule
         Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Order = 110
-        Spanel.Parent = "pnlImages"
+        Spanel.Parent = "pnlMovieMedia"
         Spanel.Panel = Me._setup.pnlSettings
         Return Spanel
     End Function

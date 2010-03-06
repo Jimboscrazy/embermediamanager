@@ -71,7 +71,7 @@ Public Class EmberNativeScraperModule
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = _Name
         SPanel.Order = 110
-        SPanel.Parent = "pnlScraper"
+        SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
@@ -149,7 +149,7 @@ Public Class EmberNativeScraperModule
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
         Spanel.Order = 110
-        Spanel.Parent = "pnlImages"
+        Spanel.Parent = "pnlMovieMedia"
         Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
         Spanel.Panel = Me._setupPost.pnlSettings

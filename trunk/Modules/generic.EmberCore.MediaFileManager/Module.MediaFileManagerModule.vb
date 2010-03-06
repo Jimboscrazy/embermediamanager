@@ -49,9 +49,9 @@ Public Class FileManagerExternalModule
     End Structure
     Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleType) Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleType)(New Enums.ModuleType() {Enums.ModuleType.Generic})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
         End Get
     End Property
 
@@ -330,7 +330,7 @@ Public Class FileManagerExternalModule
 
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 End Class

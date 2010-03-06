@@ -53,7 +53,7 @@
         Me.pnlImages.AutoScroll = True
         Me.pnlImages.BackColor = System.Drawing.SystemColors.Control
         Me.pnlImages.Location = New System.Drawing.Point(222, 4)
-        Me.pnlImages.Name = "pnlImages"
+        Me.pnlImages.Name = "pnlMovieMedia"
         Me.pnlImages.Size = New System.Drawing.Size(622, 421)
         Me.pnlImages.TabIndex = 1
         '
