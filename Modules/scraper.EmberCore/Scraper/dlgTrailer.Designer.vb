@@ -48,9 +48,9 @@ Partial Class dlgTrailer
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(296, 334)
+        Me.OK_Button.Location = New System.Drawing.Point(290, 334)
         Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
+        Me.OK_Button.Size = New System.Drawing.Size(74, 23)
         Me.OK_Button.TabIndex = 0
         Me.OK_Button.Text = "Download"
         '
@@ -66,6 +66,7 @@ Partial Class dlgTrailer
         'lbTrailers
         '
         Me.lbTrailers.Enabled = False
+        Me.lbTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbTrailers.FormattingEnabled = True
         Me.lbTrailers.HorizontalScrollbar = True
         Me.lbTrailers.Location = New System.Drawing.Point(6, 19)
@@ -79,6 +80,7 @@ Partial Class dlgTrailer
         Me.GroupBox1.Controls.Add(Me.btnGetTrailers)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.lbTrailers)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(424, 319)
@@ -101,9 +103,10 @@ Partial Class dlgTrailer
         'lblStatus
         '
         Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(3, 10)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(104, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(121, 13)
         Me.lblStatus.TabIndex = 1
         Me.lblStatus.Text = "Compiling trailer list..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -157,15 +160,16 @@ Partial Class dlgTrailer
         Me.txtManual.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtManual.Location = New System.Drawing.Point(9, 82)
         Me.txtManual.Name = "txtManual"
-        Me.txtManual.Size = New System.Drawing.Size(365, 20)
+        Me.txtManual.Size = New System.Drawing.Size(365, 22)
         Me.txtManual.TabIndex = 4
         '
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(6, 68)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(68, 13)
+        Me.Label2.Size = New System.Drawing.Size(70, 13)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Local Trailer:"
         '
@@ -174,26 +178,27 @@ Partial Class dlgTrailer
         Me.txtYouTube.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtYouTube.Location = New System.Drawing.Point(9, 28)
         Me.txtYouTube.Name = "txtYouTube"
-        Me.txtYouTube.Size = New System.Drawing.Size(392, 20)
+        Me.txtYouTube.Size = New System.Drawing.Size(392, 22)
         Me.txtYouTube.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(6, 14)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(145, 13)
+        Me.Label1.Size = New System.Drawing.Size(148, 13)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Direct Link or YouTube URL:"
         '
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Enabled = False
-        Me.btnPlayTrailer.Image = Nothing
+        Me.btnPlayTrailer.Image = CType(resources.GetObject("btnPlayTrailer.Image"), System.Drawing.Image)
         Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 334)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
-        Me.btnPlayTrailer.Size = New System.Drawing.Size(100, 23)
+        Me.btnPlayTrailer.Size = New System.Drawing.Size(106, 23)
         Me.btnPlayTrailer.TabIndex = 109
         Me.btnPlayTrailer.Text = "Preview Trailer"
         Me.btnPlayTrailer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -202,9 +207,9 @@ Partial Class dlgTrailer
         'btnSetNfo
         '
         Me.btnSetNfo.Enabled = False
-        Me.btnSetNfo.Location = New System.Drawing.Point(223, 334)
+        Me.btnSetNfo.Location = New System.Drawing.Point(207, 334)
         Me.btnSetNfo.Name = "btnSetNfo"
-        Me.btnSetNfo.Size = New System.Drawing.Size(67, 23)
+        Me.btnSetNfo.Size = New System.Drawing.Size(77, 23)
         Me.btnSetNfo.TabIndex = 110
         Me.btnSetNfo.Text = "Set To Nfo"
         '
@@ -221,6 +226,7 @@ Partial Class dlgTrailer
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.btnPlayTrailer)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

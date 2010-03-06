@@ -41,6 +41,8 @@
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.btnSearch = New System.Windows.Forms.Button
+        Me.txtSearch = New System.Windows.Forms.TextBox
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.pnlTop.SuspendLayout()
@@ -86,10 +88,10 @@
         'lblAiredHeader
         '
         Me.lblAiredHeader.AutoSize = True
-        Me.lblAiredHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAiredHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAiredHeader.Location = New System.Drawing.Point(325, 161)
         Me.lblAiredHeader.Name = "lblAiredHeader"
-        Me.lblAiredHeader.Size = New System.Drawing.Size(40, 13)
+        Me.lblAiredHeader.Size = New System.Drawing.Size(38, 13)
         Me.lblAiredHeader.TabIndex = 63
         Me.lblAiredHeader.Text = "Aired:"
         Me.lblAiredHeader.Visible = False
@@ -99,7 +101,7 @@
         Me.lblAired.AutoSize = True
         Me.lblAired.Location = New System.Drawing.Point(387, 161)
         Me.lblAired.Name = "lblAired"
-        Me.lblAired.Size = New System.Drawing.Size(65, 13)
+        Me.lblAired.Size = New System.Drawing.Size(63, 13)
         Me.lblAired.TabIndex = 62
         Me.lblAired.Text = "00/00/0000"
         Me.lblAired.Visible = False
@@ -107,10 +109,10 @@
         'lblPlotHeader
         '
         Me.lblPlotHeader.AutoSize = True
-        Me.lblPlotHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPlotHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPlotHeader.Location = New System.Drawing.Point(325, 189)
         Me.lblPlotHeader.Name = "lblPlotHeader"
-        Me.lblPlotHeader.Size = New System.Drawing.Size(87, 13)
+        Me.lblPlotHeader.Size = New System.Drawing.Size(83, 13)
         Me.lblPlotHeader.TabIndex = 67
         Me.lblPlotHeader.Text = "Plot Summary:"
         Me.lblPlotHeader.Visible = False
@@ -131,11 +133,10 @@
         Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang})
         Me.lvSearchResults.FullRowSelect = True
         Me.lvSearchResults.HideSelection = False
-        Me.lvSearchResults.Location = New System.Drawing.Point(3, 69)
+        Me.lvSearchResults.Location = New System.Drawing.Point(3, 96)
         Me.lvSearchResults.MultiSelect = False
         Me.lvSearchResults.Name = "lvSearchResults"
         Me.lvSearchResults.Size = New System.Drawing.Size(316, 236)
-        Me.lvSearchResults.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvSearchResults.TabIndex = 68
         Me.lvSearchResults.UseCompatibleStateImageBehavior = False
         Me.lvSearchResults.View = System.Windows.Forms.View.Details
@@ -164,9 +165,10 @@
         'Label3
         '
         Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(3, 10)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(96, 13)
+        Me.Label3.Size = New System.Drawing.Size(98, 13)
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "Searching TVDB..."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -200,7 +202,7 @@
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(261, 13)
+        Me.Label2.Size = New System.Drawing.Size(287, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "View details of each result to find the proper TV show."
         '
@@ -208,11 +210,11 @@
         '
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
         Me.Label1.Location = New System.Drawing.Point(58, 3)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(229, 29)
+        Me.Label1.Size = New System.Drawing.Size(216, 32)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "TV Search Results"
         '
@@ -227,6 +229,22 @@
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'btnSearch
+        '
+        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
+        Me.btnSearch.Location = New System.Drawing.Point(296, 67)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(23, 23)
+        Me.btnSearch.TabIndex = 72
+        Me.btnSearch.UseVisualStyleBackColor = True
+        '
+        'txtSearch
+        '
+        Me.txtSearch.Location = New System.Drawing.Point(3, 68)
+        Me.txtSearch.Name = "txtSearch"
+        Me.txtSearch.Size = New System.Drawing.Size(287, 22)
+        Me.txtSearch.TabIndex = 71
+        '
         'dlgTVDBSearchResults
         '
         Me.AcceptButton = Me.OK_Button
@@ -234,6 +252,8 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(629, 345)
+        Me.Controls.Add(Me.btnSearch)
+        Me.Controls.Add(Me.txtSearch)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.lvSearchResults)
@@ -245,6 +265,7 @@
         Me.Controls.Add(Me.pbBanner)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -280,5 +301,7 @@
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents btnSearch As System.Windows.Forms.Button
+    Friend WithEvents txtSearch As System.Windows.Forms.TextBox
 
 End Class

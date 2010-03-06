@@ -86,7 +86,6 @@ Public Class dlgTVDBSearchResults
 
     Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            ' *#### AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -110,7 +109,7 @@ Public Class dlgTVDBSearchResults
                 Me.ClearInfo()
 
                 If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
-                    For Each sRes As Scraper.TVSearchResults In sResults
+                    For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) StringUtils.ComputeLevenshtein(Me.sInfo.ShowTitle, r.Name))
                         lItem = New ListViewItem(sRes.Name)
                         lItem.SubItems.Add(sRes.Language.LongLang)
                         lItem.Tag = sRes
@@ -119,6 +118,11 @@ Public Class dlgTVDBSearchResults
                 End If
 
                 Me.pnlLoading.Visible = False
+
+                If Me.lvSearchResults.Items.Count > 0 Then
+                    Me.lvSearchResults.Items(0).Selected = True
+                    Me.lvSearchResults.Select()
+                End If
             Case EmberAPI.Enums.TVScraperEventType.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
@@ -137,10 +141,14 @@ Public Class dlgTVDBSearchResults
 
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
-        Scraper.sObject.GetSearchResultsAsync(sInfo)
+        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
     End Function
+
+    Private Sub lvSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSearchResults.GotFocus
+        Me.AcceptButton = Me.OK_Button
+    End Sub
 
     Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
         Me.ClearInfo()
@@ -178,5 +186,15 @@ Public Class dlgTVDBSearchResults
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
 
+    End Sub
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Me.sInfo.ShowTitle = Me.txtSearch.Text
+        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+        Me.pnlLoading.Visible = True
+    End Sub
+
+    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
+        Me.AcceptButton = Me.btnSearch
     End Sub
 End Class
