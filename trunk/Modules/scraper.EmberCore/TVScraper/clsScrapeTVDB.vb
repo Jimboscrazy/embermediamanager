@@ -830,7 +830,13 @@ Public Class Scraper
             Dim sHTTP As New HTTP
             Dim sImage As New Images
 
-            sImage.Image = sHTTP.DownloadImage(sURL)
+            sHTTP.StartDownloadImage(sURL)
+
+            While sHTTP.IsDownloading
+                Application.DoEvents()
+            End While
+
+            sImage.Image = sHTTP.Image
 
             If Not IsNothing(sImage.Image) Then
                 sImage.Save(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, sPath.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))

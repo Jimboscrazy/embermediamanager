@@ -85,8 +85,13 @@ Public Class Images : Implements IDisposable
 
     Public Sub FromWeb(ByVal sURL As String)
         Try
-            Dim tImage As Image = sHTTP.DownloadImage(sURL)
-            If Not IsNothing(tImage) Then _image = New Bitmap(tImage)
+            sHTTP.StartDownloadImage(sURL)
+
+            While sHTTP.IsDownloading
+                Application.DoEvents()
+            End While
+
+            If Not IsNothing(sHTTP.Image) Then _image = New Bitmap(sHTTP.Image)
         Catch
         End Try
     End Sub

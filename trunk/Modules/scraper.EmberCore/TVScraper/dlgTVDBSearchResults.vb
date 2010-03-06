@@ -35,7 +35,13 @@ Public Class dlgTVDBSearchResults
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        e.Result = New Results With {.Result = sHTTP.DownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))}
+        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))
+
+        While sHTTP.IsDownloading
+            Application.DoEvents()
+        End While
+
+        e.Result = New Results With {.Result = sHTTP.Image()}
 
     End Sub
 

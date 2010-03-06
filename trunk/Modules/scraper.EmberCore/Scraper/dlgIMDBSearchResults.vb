@@ -173,7 +173,14 @@ Public Class dlgIMDBSearchResults
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        e.Result = New Results With {.Result = sHTTP.DownloadImage(Args.pURL)}
+
+        sHTTP.StartDownloadImage(Args.pURL)
+
+        While sHTTP.IsDownloading
+            Application.DoEvents()
+        End While
+
+        e.Result = New Results With {.Result = sHTTP.Image}
 
     End Sub
 
