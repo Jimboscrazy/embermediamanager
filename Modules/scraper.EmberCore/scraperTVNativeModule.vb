@@ -122,7 +122,7 @@ Public Class EmberNativeTVScraperModule
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = New Panel
-        SPanel.Parent = "pnlTVScraper"
+        SPanel.Parent = "pnlTVData"
         Return SPanel
     End Function
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupScraper
@@ -138,7 +138,7 @@ Public Class EmberNativeTVScraperModule
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = New Panel
-        SPanel.Parent = "pnlTVImages"
+        SPanel.Parent = "pnlTVMedia"
         Return SPanel
     End Function
 

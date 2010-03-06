@@ -290,9 +290,10 @@ Public Class Enums
         ListTitle = 7
     End Enum
 
-    Public Enum ModuleType As Integer
+    Public Enum ModuleEventType As Integer
         Generic = 0
         Notification = 1
+        ScraperReadyToSave = 2  'Called when scraper finished but before save
     End Enum
 
     Public Enum TVImageType As Integer
@@ -857,7 +858,7 @@ Public Class Functions
     Public Shared Sub Notify(ByVal Type As String, ByVal Icon As Integer, ByVal Title As String, ByVal Message As String, Optional ByVal CustomIcon As Image = Nothing)
         Try
             If Not IsNothing(Master.NotifierModule) Then
-                Master.NotifierModule.RunGeneric(Enums.ModuleType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
+                Master.NotifierModule.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
             End If
         Catch
         End Try

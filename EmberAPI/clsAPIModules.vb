@@ -129,7 +129,7 @@ Public Class ModulesManager
         Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
-        Public Type As List(Of Enums.ModuleType)
+        Public Type As List(Of Enums.ModuleEventType)
         Public ModuleOrder As Integer 'TODO: not important at this point.. for 1.5
     End Class
     Class _externalScraperModuleClass
@@ -423,7 +423,7 @@ Public Class ModulesManager
             '_externalProcessorModule.ProcessorModule.InjectSetup()
         Next
     End Sub
-    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object), Optional ByVal RunOnlyOne As Boolean = False) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal RunOnlyOne As Boolean = False) As Boolean
         Dim ret As Interfaces.ModuleResult
         For Each _externalGenericModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
             ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params)

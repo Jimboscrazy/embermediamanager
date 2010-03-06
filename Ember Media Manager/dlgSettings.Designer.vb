@@ -3256,7 +3256,7 @@ Partial Class dlgSettings
         Me.pnlImages.Controls.Add(Me.GroupBox23)
         Me.pnlImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlImages.Location = New System.Drawing.Point(187, 165)
-        Me.pnlImages.Name = "pnlImages"
+        Me.pnlImages.Name = "pnlMovieMedia"
         Me.pnlImages.Size = New System.Drawing.Size(617, 583)
         Me.pnlImages.TabIndex = 68
         Me.pnlImages.Visible = False
@@ -4679,7 +4679,7 @@ Partial Class dlgSettings
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
         Me.pnlTVImages.Location = New System.Drawing.Point(187, 165)
-        Me.pnlTVImages.Name = "pnlTVImages"
+        Me.pnlTVImages.Name = "pnlTVMedia"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVImages.TabIndex = 71
         Me.pnlTVImages.Visible = False
@@ -5557,7 +5557,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
         Me.pnlTVScraper.Controls.Add(Me.Label48)
         Me.pnlTVScraper.Location = New System.Drawing.Point(187, 165)
-        Me.pnlTVScraper.Name = "pnlTVScraper"
+        Me.pnlTVScraper.Name = "pnlTVData"
         Me.pnlTVScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
@@ -6911,7 +6911,7 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.GroupBox26)
         Me.pnlScraper.Controls.Add(Me.Label46)
         Me.pnlScraper.Location = New System.Drawing.Point(187, 165)
-        Me.pnlScraper.Name = "pnlScraper"
+        Me.pnlScraper.Name = "pnlMovieData"
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 62
         Me.pnlScraper.Visible = False

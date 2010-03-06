@@ -4102,14 +4102,14 @@ Public Class dlgSettings
                       .Panel = Me.pnlSources, _
                       .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                      .Name = "pnlScraper", _
+                      .Name = "pnlMovieData", _
                       .Text = Master.eLang.GetString(556, "Scraper - Data"), _
                       .ImageIndex = 3, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
                       .Panel = Me.pnlScraper, _
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                      .Name = "pnlImages", _
+                      .Name = "pnlMovieMedia", _
                       .Text = Master.eLang.GetString(557, "Scraper - Media"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
@@ -4137,14 +4137,14 @@ Public Class dlgSettings
                       .Panel = Me.pnlTVSources, _
                       .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                      .Name = "pnlTVScraper", _
+                      .Name = "pnlTVData", _
                       .Text = Master.eLang.GetString(556, "Scraper - Data"), _
                       .ImageIndex = 3, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
                       .Panel = Me.pnlTVScraper, _
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-                      .Name = "pnlTVImages", _
+                      .Name = "pnlTVMedia", _
                       .Text = Master.eLang.GetString(557, "Scraper - Media"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _

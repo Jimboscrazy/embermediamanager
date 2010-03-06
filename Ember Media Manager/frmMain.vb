@@ -433,7 +433,7 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
         AddHandler Master.eLog.ErrorOccurred, AddressOf ErrorOccurred
 
-        Master.NotifierModule = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(m) m.Enabled AndAlso m.Type.Contains(Enums.ModuleType.Notification)).ProcessorModule
+        Master.NotifierModule = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(m) m.Enabled AndAlso m.Type.Contains(Enums.ModuleEventType.Notification)).ProcessorModule
         If Not IsNothing(Master.NotifierModule) Then
             AddHandler Master.NotifierModule.GenericEvent, AddressOf Me.NotifierClicked
         End If
@@ -5592,6 +5592,10 @@ doCancel:
                     ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
 
                     If bwMovieScraper.CancellationPending Then Exit For
+                    ' This will replace Renamer and allow other module to act as needed
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperReadyToSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+
+                    'Bellow will move to Renamer RunGeneric  On ModuleEventType.ScraperReadyToSave
                     If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
                         FileFolderRenamer.RenameSingle(DBScrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID), False)
                     End If
