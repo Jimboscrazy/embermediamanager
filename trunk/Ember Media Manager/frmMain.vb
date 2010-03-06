@@ -3551,6 +3551,963 @@ Public Class frmMain
         End Try
 
     End Sub
+
+    Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
+
+        Me.SetControlsEnabled(False, True)
+        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+
+    End Sub
+
+    Private Sub dgvMediaList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Resize
+        ResizeMediaList()
+    End Sub
+
+    Private Sub dgvTVShows_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Resize
+        ResizeTVLists(1)
+    End Sub
+
+    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
+        ResizeTVLists(2)
+    End Sub
+
+    Private Sub dgvTVEpisodes_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Resize
+        ResizeTVLists(3)
+    End Sub
+
+    Private Sub cmnuReloadShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadShow.Click
+        Try
+            Me.dgvTVShows.Cursor = Cursors.WaitCursor
+            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+            Me.SetControlsEnabled(False, True)
+
+            Dim doFill As Boolean = False
+            Dim tFill As Boolean = False
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
+                    If tFill Then doFill = True
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVShows.Cursor = Cursors.Default
+            Me.dgvTVSeasons.Cursor = Cursors.Default
+            Me.dgvTVEpisodes.Cursor = Cursors.Default
+            Me.SetControlsEnabled(True, True)
+
+            If doFill Then FillList(0)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuMarkShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkShow.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(6).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVShows SET mark = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        parMark.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(6).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(6).Value = parMark.Value
+
+                        Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?);"
+                            parSeaMark.Value = parMark.Value
+                            parSeaID.Value = parID.Value
+                            SQLSeaCommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
+                                eRow.Cells(8).Value = parMark.Value
+                            Next
+                        End Using
+
+                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
+                            SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?);"
+                            parEMark.Value = parMark.Value
+                            parEID.Value = parID.Value
+                            SQLECommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                                eRow.Cells(8).Value = parMark.Value
+                            Next
+                        End Using
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVShows.Invalidate()
+            Me.dgvTVSeasons.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuLockShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockShow.Click
+        Try
+            Dim setLock As Boolean = False
+            If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    'if any one item is set as unlocked, set menu to lock
+                    'else they are all locked so set menu to unlock
+                    If Not Convert.ToBoolean(sRow.Cells(10).Value) Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVShows SET lock = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        parLock.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(10).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(10).Value = parLock.Value
+
+                        Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parSeaLock As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?);"
+                            parSeaLock.Value = parLock.Value
+                            parSeaID.Value = parID.Value
+                            SQLSeaCommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
+                                eRow.Cells(7).Value = parLock.Value
+                            Next
+                        End Using
+
+                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "lock")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
+                            SQLECommand.CommandText = "UPDATE TVEps SET lock = (?) WHERE TVShowID = (?);"
+                            parELock.Value = parLock.Value
+                            parEID.Value = parID.Value
+                            SQLECommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                                eRow.Cells(11).Value = parLock.Value
+                            Next
+                        End Using
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVShows.Invalidate()
+            Me.dgvTVSeasons.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuReloadSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadSeason.Click
+        Me.dgvTVShows.Cursor = Cursors.WaitCursor
+        Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+        Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+        Me.SetControlsEnabled(False, True)
+
+        Dim doFill As Boolean = False
+        Dim tFill As Boolean = False
+
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, " AND Missing = 0;")
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                            While SQLReader.Read
+                                tFill = Me.RefreshEpisode(Convert.ToInt64(SQLReader("ID")), True)
+                                If tFill Then doFill = True
+                            End While
+                        End Using
+                    End Using
+                Next
+
+                Master.DB.CleanSeasons(True)
+
+                SQLTrans.Commit()
+            End Using
+        End If
+
+        Me.dgvTVShows.Cursor = Cursors.Default
+        Me.dgvTVSeasons.Cursor = Cursors.Default
+        Me.dgvTVEpisodes.Cursor = Cursors.Default
+        Me.SetControlsEnabled(True, True)
+
+        If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+    End Sub
+
+    Private Sub cmnuMarkSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkSeason.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                    SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                        parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        parSeason.Value = sRow.Cells(2).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(8).Value = parMark.Value
+
+                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
+                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
+                            SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                            parEMark.Value = parMark.Value
+                            parEID.Value = parID.Value
+                            parESeason.Value = parSeason.Value
+                            SQLECommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                                eRow.Cells(8).Value = parMark.Value
+                            Next
+                        End Using
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVSeasons.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuLockSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockSeason.Click
+        Try
+            Dim setLock As Boolean = False
+            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
+                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                    SQLcommand.CommandText = "UPDATE TVSeason SET Lock = (?) WHERE TVShowID = (?) AND Season = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                        parLock.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(7).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        parSeason.Value = sRow.Cells(2).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(7).Value = parLock.Value
+
+                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "mark")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
+                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
+                            SQLECommand.CommandText = "UPDATE TVEps SET Lock = (?) WHERE TVShowID = (?) AND Season = (?);"
+                            parELock.Value = parLock.Value
+                            parEID.Value = parID.Value
+                            parESeason.Value = parSeason.Value
+                            SQLECommand.ExecuteNonQuery()
+
+                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                                eRow.Cells(11).Value = parLock.Value
+                            Next
+                        End Using
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVSeasons.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadEp.Click
+        Try
+            Me.dgvTVShows.Cursor = Cursors.WaitCursor
+            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+            Me.SetControlsEnabled(False, True)
+
+            Dim doFill As Boolean = False
+            Dim tFill As Boolean = False
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    tFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True)
+                    If tFill Then doFill = True
+                Next
+
+                Master.DB.CleanSeasons(True)
+
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVShows.Cursor = Cursors.Default
+            Me.dgvTVSeasons.Cursor = Cursors.Default
+            Me.dgvTVEpisodes.Cursor = Cursors.Default
+            Me.SetControlsEnabled(True, True)
+
+            If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuMarkEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkEp.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        parMark.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(8).Value = parMark.Value
+                    Next
+                End Using
+
+                'now check the status of all episodes in the season so we can update the season mark flag if needed
+                Dim MarkCount As Integer = 0
+                Dim NotMarkCount As Integer = 0
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                    If Convert.ToBoolean(sRow.Cells(8).Value) Then
+                        MarkCount += 1
+                    Else
+                        NotMarkCount += 1
+                    End If
+                Next
+
+                If MarkCount = 0 OrElse NotMarkCount = 0 Then
+                    Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
+                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                        SQLSeacommand.CommandText = "UPDATE TVSeason SET Mark = (?) WHERE TVShowID = (?) AND Season = (?);"
+                        If MarkCount = 0 Then
+                            parSeaMark.Value = False
+                        ElseIf NotMarkCount = 0 Then
+                            parSeaMark.Value = True
+                        End If
+                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
+                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
+                        SQLSeacommand.ExecuteNonQuery()
+                        Me.dgvTVSeasons.SelectedRows(0).Cells(8).Value = parSeaMark.Value
+                    End Using
+                End If
+
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVSeasons.Invalidate()
+            Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuLockEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockEp.Click
+        Try
+            Dim setLock As Boolean = False
+            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    'if any one item is set as unlocked, set menu to lock
+                    'else they are all locked so set menu to unlock
+                    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVShows SET lock = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        parLock.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(11).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(11).Value = parLock.Value
+                    Next
+                End Using
+
+                'now check the status of all episodes in the season so we can update the season lock flag if needed
+                Dim LockCount As Integer = 0
+                Dim NotLockCount As Integer = 0
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                    If Convert.ToBoolean(sRow.Cells(11).Value) Then
+                        LockCount += 1
+                    Else
+                        NotLockCount += 1
+                    End If
+                Next
+
+                If LockCount = 0 OrElse NotLockCount = 0 Then
+                    Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
+                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
+                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                        SQLSeacommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?) AND Season = (?);"
+                        If LockCount = 0 Then
+                            parSeaLock.Value = False
+                        ElseIf NotLockCount = 0 Then
+                            parSeaLock.Value = True
+                        End If
+                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
+                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
+                        SQLSeacommand.ExecuteNonQuery()
+                        Me.dgvTVSeasons.SelectedRows(0).Cells(7).Value = parSeaLock.Value
+                    End Using
+                End If
+
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvTVEpisodes.Invalidate()
+            Me.dgvTVSeasons.Invalidate()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
+        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+    End Sub
+
+    Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
+        Me.ClearInfo()
+
+        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+            Next
+            SQLTrans.Commit()
+        End Using
+
+        Me.FillList(0)
+    End Sub
+
+    Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVShow.Click
+        Try
+            'TODO: Add method for confirmation dialog
+            If MsgBox(Master.eLang.GetString(763, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
+                Me.ClearInfo()
+
+                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        FileUtils.Delete.DeleteDirectory(sRow.Cells(7).Value.ToString)
+                        Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
+                    Next
+                    SQLTrans.Commit()
+                End Using
+
+                Me.FillList(0)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVEp.Click
+        Me.ClearInfo()
+
+        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
+            Next
+
+            Master.DB.CleanSeasons(True)
+
+            SQLTrans.Commit()
+        End Using
+
+        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
+
+        Me.SetTVCount()
+
+    End Sub
+
+    Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVEp.Click
+        Try
+            'TODO: Add method for confirmation dialog
+            If MsgBox(Master.eLang.GetString(764, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
+                Dim ePath As String = String.Empty
+
+                Me.ClearInfo()
+
+                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(9).Value.ToString, ";")
+                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                If SQLReader.HasRows Then
+                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
+                                    File.Delete(SQLReader("TVEpPath").ToString)
+                                    File.Delete(String.Concat(ePath, ".nfo"))
+                                    File.Delete(String.Concat(ePath, ".tbn"))
+                                    File.Delete(String.Concat(ePath, ".jpg"))
+                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
+                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
+                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
+                                End If
+                            End Using
+                        Next
+                    End Using
+
+                    Master.DB.CleanSeasons()
+
+                    SQLTrans.Commit()
+                End Using
+
+                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
+
+                Me.SetTVCount()
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
+        ModulesManager.Instance.GetVersions()
+    End Sub
+
+    Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectNfoAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectAllAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectNfoAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAskMEnuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskMEnuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectTrailerAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectMetaAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAskMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectNfoAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAutoiMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoiMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectTrailerAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectMetaAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterÃskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterÃskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectExtraAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+
+    Private Sub ToolStripAskMenuItem19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripAskMenuItem19.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+    End Sub
+    Private Sub SelectNfoAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectPosterAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub SelectFanartAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectExtraAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Extra, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectTrailerAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectMetaAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectMeEtaAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMeEtaAskToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
+    End Sub
+
+    Private Sub dgvTVSeasons_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVSeasons.MouseDown
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVSeasons.RowCount > 0 Then
+                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVSeasons.HitTest(e.X, e.Y)
+                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                        Dim setMark As Boolean = False
+                        Dim setLock As Boolean = False
+
+                        Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                        Me.ToolStripSeparator16.Visible = False
+                        Me.cmnuSeasonChangePoster.Visible = False
+                        Me.cmnuSeasonChangeFanart.Visible = False
+                        Me.ToolStripSeparator14.Visible = False
+                        Me.cmnuSeasonRescrape.Visible = False
+
+                        For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                                setMark = True
+                                If setLock Then Exit For
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
+                                setLock = True
+                                If setMark Then Exit For
+                            End If
+                        Next
+
+                        Me.cmnuMarkSeason.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuLockSeason.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+
+                    Else
+                        Me.ToolStripSeparator16.Visible = True
+                        Me.cmnuSeasonChangePoster.Visible = True
+                        Me.cmnuSeasonChangeFanart.Visible = Master.eSettings.SeasonFanartEnabled
+                        Me.ToolStripSeparator14.Visible = True
+                        Me.cmnuSeasonRescrape.Visible = True
+
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuSeasons.Enabled = False
+                        End If
+
+                        Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
+                        Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvTVSeasons.ClearSelection()
+                            Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
+                        End If
+
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuRemoveSeasonFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuRemoveSeasonFromDB.Click
+        Me.ClearInfo()
+
+        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
+            Next
+            SQLTrans.Commit()
+        End Using
+
+        Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+
+        Me.SetTVCount()
+    End Sub
+
+    Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
+        Try
+            'TODO: Add method for confirmation dialog
+            If MsgBox(Master.eLang.GetString(765, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
+                Dim ePath As String = String.Empty
+
+                Me.ClearInfo()
+
+                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                    Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                            SQLDelCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
+                            Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
+                                While SQLDelReader.Read
+                                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("ID"), ";")
+                                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                            If SQLReader.HasRows Then
+                                                If Regex.IsMatch(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) Then
+                                                    FileUtils.Delete.DeleteDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName)
+                                                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
+                                                    Exit While
+                                                Else
+                                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
+                                                    File.Delete(SQLReader("TVEpPath").ToString)
+                                                    File.Delete(String.Concat(ePath, ".nfo"))
+                                                    File.Delete(String.Concat(ePath, ".tbn"))
+                                                    File.Delete(String.Concat(ePath, ".jpg"))
+                                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
+                                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
+                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, True)
+                                                End If
+                                            End If
+                                        End Using
+                                    End Using
+                                End While
+                            End Using
+                        Next
+                    End Using
+                    SQLTrans.Commit()
+                End Using
+
+                Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value))
+
+                Me.SetTVCount()
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
+        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB)
+
+        If Not IsNothing(tEpisode) Then
+            Master.currShow.TVEp = tEpisode
+            Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsEpPoster(Master.currShow)
+
+            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
+
+            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
+        End If
+    End Sub
+
+    Private Sub ErrorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ErrorToolStripMenuItem.Click
+        dlgErrorViewer.Show(Me)
+    End Sub
+
+    Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
+        Me.SetControlsEnabled(False, True)
+        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+    End Sub
+
+    Private Sub cmnuSeasonChangePoster_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangePoster.Click
+
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+
+        Using tmpImage As New Images
+            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
+            Dim PosterPath As String = Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
+
+            If Not String.IsNullOrEmpty(PosterPath) Then
+                tmpImage.FromFile(PosterPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, 0, Me.tmpLang, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBSeason.SeasonPosterPath = tmpImage.SaveAsSeasonPoster(DBSeason)
+                Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonPosterPath
+                Master.DB.SaveTVSeasonToDB(DBSeason, False)
+            End If
+        End Using
+    End Sub
+
+    Private Sub cmnuSeasonChangeFanart_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeFanart.Click
+
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
+
+        Using tmpImage As New Images
+            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
+            Dim FanartPath As String = Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
+
+            If Not String.IsNullOrEmpty(FanartPath) Then
+                tmpImage.FromFile(FanartPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, 0, Me.tmpLang, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBSeason.SeasonFanartPath = tmpImage.SaveAsSeasonFanart(DBSeason)
+                Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonFanartPath
+                Master.DB.SaveTVSeasonToDB(DBSeason, False)
+            End If
+        End Using
+    End Sub
+
+    Private Sub cmnuChangeAllSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeAllSeasonPoster.Click
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)
+        Using tmpImage As New Images
+            Dim DBAllSeason As Structures.DBTV = Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
+            Dim PosterPath As String = DBAllSeason.SeasonPosterPath
+
+            If Not String.IsNullOrEmpty(PosterPath) Then
+                tmpImage.FromFile(PosterPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Enums.TVImageType.AllSeasonPoster, 0, 0, Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBAllSeason.SeasonPosterPath = tmpImage.SaveAsAllSeasonPoster(DBAllSeason)
+                Master.DB.SaveTVSeasonToDB(DBAllSeason, False)
+            End If
+        End Using
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -6868,7 +7825,7 @@ doCancel:
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
         Me.ToolsToolStripMenuItem.Enabled = isEnabled
-        Me.tsbAutoPilot.Enabled = isEnabled
+        Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.mnuMediaList.Enabled = isEnabled
         Me.mnuShows.Enabled = isEnabled
@@ -6907,15 +7864,6 @@ doCancel:
         Else
             Directory.CreateDirectory(Master.TempPath)
         End If
-    End Sub
-#End Region '*** Routines/Functions
-
-    Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
-
-        Me.SetControlsEnabled(False, True)
-        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
-
     End Sub
 
     Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
@@ -7007,6 +7955,7 @@ doCancel:
             dImgView.ShowDialog(_Image)
         End Using
     End Sub
+
     Private Sub SetAVImages(ByVal aImage As Image())
         Try
             Me.pbResolution.Image = aImage(0)
@@ -7017,22 +7966,6 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub dgvMediaList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Resize
-        ResizeMediaList()
-    End Sub
-
-    Private Sub dgvTVShows_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Resize
-        ResizeTVLists(1)
-    End Sub
-
-    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
-        ResizeTVLists(2)
-    End Sub
-
-    Private Sub dgvTVEpisodes_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Resize
-        ResizeTVLists(3)
     End Sub
 
     Private Sub ResizeMediaList()
@@ -7080,868 +8013,9 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuReloadShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadShow.Click
-        Try
-            Me.dgvTVShows.Cursor = Cursors.WaitCursor
-            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
-            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
-            Me.SetControlsEnabled(False, True)
-
-            Dim doFill As Boolean = False
-            Dim tFill As Boolean = False
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
-                    If tFill Then doFill = True
-                Next
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVShows.Cursor = Cursors.Default
-            Me.dgvTVSeasons.Cursor = Cursors.Default
-            Me.dgvTVEpisodes.Cursor = Cursors.Default
-            Me.SetControlsEnabled(True, True)
-
-            If doFill Then FillList(0)
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuMarkShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkShow.Click
-        Try
-            Dim setMark As Boolean = False
-            If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    'if any one item is set as unmarked, set menu to mark
-                    'else they are all marked, so set menu to unmark
-                    If Not Convert.ToBoolean(sRow.Cells(6).Value) Then
-                        setMark = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE TVShows SET mark = (?) WHERE id = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        parMark.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(6).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(6).Value = parMark.Value
-
-                        Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?);"
-                            parSeaMark.Value = parMark.Value
-                            parSeaID.Value = parID.Value
-                            SQLSeaCommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                                eRow.Cells(8).Value = parMark.Value
-                            Next
-                        End Using
-
-                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-                            SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?);"
-                            parEMark.Value = parMark.Value
-                            parEID.Value = parID.Value
-                            SQLECommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(8).Value = parMark.Value
-                            Next
-                        End Using
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVShows.Invalidate()
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuLockShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockShow.Click
-        Try
-            Dim setLock As Boolean = False
-            If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    'if any one item is set as unlocked, set menu to lock
-                    'else they are all locked so set menu to unlock
-                    If Not Convert.ToBoolean(sRow.Cells(10).Value) Then
-                        setLock = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE TVShows SET lock = (?) WHERE id = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        parLock.Value = If(Me.dgvTVShows.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(10).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(10).Value = parLock.Value
-
-                        Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parSeaLock As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                            SQLSeaCommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?);"
-                            parSeaLock.Value = parLock.Value
-                            parSeaID.Value = parID.Value
-                            SQLSeaCommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                                eRow.Cells(7).Value = parLock.Value
-                            Next
-                        End Using
-
-                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "lock")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-                            SQLECommand.CommandText = "UPDATE TVEps SET lock = (?) WHERE TVShowID = (?);"
-                            parELock.Value = parLock.Value
-                            parEID.Value = parID.Value
-                            SQLECommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(11).Value = parLock.Value
-                            Next
-                        End Using
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVShows.Invalidate()
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuReloadSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadSeason.Click
-        Me.dgvTVShows.Cursor = Cursors.WaitCursor
-        Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
-        Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
-        Me.SetControlsEnabled(False, True)
-
-        Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
-
-        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, " AND Missing = 0;")
-                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                            While SQLReader.Read
-                                tFill = Me.RefreshEpisode(Convert.ToInt64(SQLReader("ID")), True)
-                                If tFill Then doFill = True
-                            End While
-                        End Using
-                    End Using
-                Next
-
-                Master.DB.CleanSeasons(True)
-
-                SQLTrans.Commit()
-            End Using
-        End If
-
-        Me.dgvTVShows.Cursor = Cursors.Default
-        Me.dgvTVSeasons.Cursor = Cursors.Default
-        Me.dgvTVEpisodes.Cursor = Cursors.Default
-        Me.SetControlsEnabled(True, True)
-
-        If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
-    End Sub
-
-    Private Sub cmnuMarkSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkSeason.Click
-        Try
-            Dim setMark As Boolean = False
-            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-                        setMark = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
-                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE TVSeason SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                        parMark.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        parSeason.Value = sRow.Cells(2).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(8).Value = parMark.Value
-
-                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
-                            SQLECommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-                            parEMark.Value = parMark.Value
-                            parEID.Value = parID.Value
-                            parESeason.Value = parSeason.Value
-                            SQLECommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(8).Value = parMark.Value
-                            Next
-                        End Using
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuLockSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockSeason.Click
-        Try
-            Dim setLock As Boolean = False
-            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
-                        setLock = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "TVShowID")
-                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                    SQLcommand.CommandText = "UPDATE TVSeason SET Lock = (?) WHERE TVShowID = (?) AND Season = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                        parLock.Value = If(Me.dgvTVSeasons.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(7).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        parSeason.Value = sRow.Cells(2).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(7).Value = parLock.Value
-
-                        Using SQLECommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "TVShowID")
-                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
-                            SQLECommand.CommandText = "UPDATE TVEps SET Lock = (?) WHERE TVShowID = (?) AND Season = (?);"
-                            parELock.Value = parLock.Value
-                            parEID.Value = parID.Value
-                            parESeason.Value = parSeason.Value
-                            SQLECommand.ExecuteNonQuery()
-
-                            For Each eRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                                eRow.Cells(11).Value = parLock.Value
-                            Next
-                        End Using
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuReloadEp.Click
-        Try
-            Me.dgvTVShows.Cursor = Cursors.WaitCursor
-            Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
-            Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
-            Me.SetControlsEnabled(False, True)
-
-            Dim doFill As Boolean = False
-            Dim tFill As Boolean = False
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    tFill = Me.RefreshEpisode(Convert.ToInt64(sRow.Cells(0).Value), True)
-                    If tFill Then doFill = True
-                Next
-
-                Master.DB.CleanSeasons(True)
-
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVShows.Cursor = Cursors.Default
-            Me.dgvTVSeasons.Cursor = Cursors.Default
-            Me.dgvTVEpisodes.Cursor = Cursors.Default
-            Me.SetControlsEnabled(True, True)
-
-            If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuMarkEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMarkEp.Click
-        Try
-            Dim setMark As Boolean = False
-            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    'if any one item is set as unmarked, set menu to mark
-                    'else they are all marked, so set menu to unmark
-                    If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-                        setMark = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE TVEps SET mark = (?) WHERE id = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        parMark.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(8).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(8).Value = parMark.Value
-                    Next
-                End Using
-
-                'now check the status of all episodes in the season so we can update the season mark flag if needed
-                Dim MarkCount As Integer = 0
-                Dim NotMarkCount As Integer = 0
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If Convert.ToBoolean(sRow.Cells(8).Value) Then
-                        MarkCount += 1
-                    Else
-                        NotMarkCount += 1
-                    End If
-                Next
-
-                If MarkCount = 0 OrElse NotMarkCount = 0 Then
-                    Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                        SQLSeacommand.CommandText = "UPDATE TVSeason SET Mark = (?) WHERE TVShowID = (?) AND Season = (?);"
-                        If MarkCount = 0 Then
-                            parSeaMark.Value = False
-                        ElseIf NotMarkCount = 0 Then
-                            parSeaMark.Value = True
-                        End If
-                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
-                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
-                        SQLSeacommand.ExecuteNonQuery()
-                        Me.dgvTVSeasons.SelectedRows(0).Cells(8).Value = parSeaMark.Value
-                    End Using
-                End If
-
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVSeasons.Invalidate()
-            Me.dgvTVEpisodes.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuLockEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLockEp.Click
-        Try
-            Dim setLock As Boolean = False
-            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    'if any one item is set as unlocked, set menu to lock
-                    'else they are all locked so set menu to unlock
-                    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                        setLock = True
-                        Exit For
-                    End If
-                Next
-            End If
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE TVShows SET lock = (?) WHERE id = (?);"
-                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        parLock.Value = If(Me.dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(11).Value))
-                        parID.Value = sRow.Cells(0).Value
-                        SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(11).Value = parLock.Value
-                    Next
-                End Using
-
-                'now check the status of all episodes in the season so we can update the season lock flag if needed
-                Dim LockCount As Integer = 0
-                Dim NotLockCount As Integer = 0
-                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If Convert.ToBoolean(sRow.Cells(11).Value) Then
-                        LockCount += 1
-                    Else
-                        NotLockCount += 1
-                    End If
-                Next
-
-                If LockCount = 0 OrElse NotLockCount = 0 Then
-                    Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "TVShowID")
-                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
-                        SQLSeacommand.CommandText = "UPDATE TVSeason SET lock = (?) WHERE TVShowID = (?) AND Season = (?);"
-                        If LockCount = 0 Then
-                            parSeaLock.Value = False
-                        ElseIf NotLockCount = 0 Then
-                            parSeaLock.Value = True
-                        End If
-                        parSeaID.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value)
-                        parSeason.Value = Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value)
-                        SQLSeacommand.ExecuteNonQuery()
-                        Me.dgvTVSeasons.SelectedRows(0).Cells(7).Value = parSeaLock.Value
-                    End Using
-                End If
-
-                SQLtransaction.Commit()
-            End Using
-
-            Me.dgvTVEpisodes.Invalidate()
-            Me.dgvTVSeasons.Invalidate()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
-    End Sub
-
-    Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
-        Me.ClearInfo()
-
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
-            Next
-            SQLTrans.Commit()
-        End Using
-
-        Me.FillList(0)
-    End Sub
-
-    Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVShow.Click
-        Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(763, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Me.ClearInfo()
-
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        FileUtils.Delete.DeleteDirectory(sRow.Cells(7).Value.ToString)
-                        Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
-                    Next
-                    SQLTrans.Commit()
-                End Using
-
-                Me.FillList(0)
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVEp.Click
-        Me.ClearInfo()
-
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
-            Next
-
-            Master.DB.CleanSeasons(True)
-
-            SQLTrans.Commit()
-        End Using
-
-        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
-
-        Me.SetTVCount()
-
-    End Sub
-
-    Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVEp.Click
-        Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(764, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Dim ePath As String = String.Empty
-
-                Me.ClearInfo()
-
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(9).Value.ToString, ";")
-                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                If SQLReader.HasRows Then
-                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                    File.Delete(SQLReader("TVEpPath").ToString)
-                                    File.Delete(String.Concat(ePath, ".nfo"))
-                                    File.Delete(String.Concat(ePath, ".tbn"))
-                                    File.Delete(String.Concat(ePath, ".jpg"))
-                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
-                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
-                                End If
-                            End Using
-                        Next
-                    End Using
-
-                    Master.DB.CleanSeasons()
-
-                    SQLTrans.Commit()
-                End Using
-
-                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
-
-                Me.SetTVCount()
-
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub VersionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles VersionsToolStripMenuItem.Click
-        ModulesManager.Instance.GetVersions()
-    End Sub
-
-    Private Sub SelectAllAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectNfoAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectAllAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectNfoAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectExtraAskMEnuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskMEnuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectTrailerAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectMetaAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectNfoAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAutoiMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoiMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectExtraAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectTrailerAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectMetaAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterÃskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterÃskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectExtraAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub ToolStripAskMenuItem19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripAskMenuItem19.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-    Private Sub SelectNfoAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectExtraAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectTrailerAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectMetaAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectMeEtaAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMeEtaAskToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub dgvTVSeasons_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVSeasons.MouseDown
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVSeasons.RowCount > 0 Then
-                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVSeasons.HitTest(e.X, e.Y)
-                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-
-                    If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
-                        Dim setMark As Boolean = False
-                        Dim setLock As Boolean = False
-
-                        Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.ToolStripSeparator16.Visible = False
-                        Me.cmnuSeasonChangePoster.Visible = False
-                        Me.cmnuSeasonChangeFanart.Visible = False
-                        Me.ToolStripSeparator14.Visible = False
-                        Me.cmnuSeasonRescrape.Visible = False
-
-                        For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-                                setMark = True
-                                If setLock Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells(7).Value) Then
-                                setLock = True
-                                If setMark Then Exit For
-                            End If
-                        Next
-
-                        Me.cmnuMarkSeason.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuLockSeason.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-
-                    Else
-                        Me.ToolStripSeparator16.Visible = True
-                        Me.cmnuSeasonChangePoster.Visible = True
-                        Me.cmnuSeasonChangeFanart.Visible = Master.eSettings.SeasonFanartEnabled
-                        Me.ToolStripSeparator14.Visible = True
-                        Me.cmnuSeasonRescrape.Visible = True
-
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.mnuSeasons.Enabled = False
-                        End If
-
-                        Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
-                        Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.dgvTVSeasons.ClearSelection()
-                            Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
-                            Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
-                        End If
-
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuRemoveSeasonFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuRemoveSeasonFromDB.Click
-        Me.ClearInfo()
-
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
-            Next
-            SQLTrans.Commit()
-        End Using
-
-        Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
-
-        Me.SetTVCount()
-    End Sub
-
-    Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
-        Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(765, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Dim ePath As String = String.Empty
-
-                Me.ClearInfo()
-
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                            SQLDelCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
-                            Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
-                                While SQLDelReader.Read
-                                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("ID"), ";")
-                                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                            If SQLReader.HasRows Then
-                                                If Regex.IsMatch(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) Then
-                                                    FileUtils.Delete.DeleteDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName)
-                                                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
-                                                    Exit While
-                                                Else
-                                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                                    File.Delete(SQLReader("TVEpPath").ToString)
-                                                    File.Delete(String.Concat(ePath, ".nfo"))
-                                                    File.Delete(String.Concat(ePath, ".tbn"))
-                                                    File.Delete(String.Concat(ePath, ".jpg"))
-                                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
-                                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, True)
-                                                End If
-                                            End If
-                                        End Using
-                                    End Using
-                                End While
-                            End Using
-                        Next
-                    End Using
-                    SQLTrans.Commit()
-                End Using
-
-                Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value))
-
-                Me.SetTVCount()
-
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
-        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB)
-
-        If Not IsNothing(tEpisode) Then
-            Master.currShow.TVEp = tEpisode
-            Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsEpPoster(Master.currShow)
-
-            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
-
-            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
-        End If
-    End Sub
-
     Private Sub ErrorOccurred()
         Me.ErrorToolStripMenuItem.Visible = True
         If dlgErrorViewer.Visible Then dlgErrorViewer.UpdateLog()
-    End Sub
-
-    Private Sub ErrorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ErrorToolStripMenuItem.Click
-        dlgErrorViewer.Show(Me)
     End Sub
 
     Private Sub NotifierClicked(ByVal _params As List(Of Object))
@@ -7952,79 +8026,7 @@ doCancel:
                 Me.Activate()
         End Select
     End Sub
+#End Region '*** Routines/Functions
 
-    Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
-        Me.SetControlsEnabled(False, True)
-        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
-    End Sub
-
-    Private Sub cmnuSeasonChangePoster_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangePoster.Click
-
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-
-        Using tmpImage As New Images
-            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
-            Dim PosterPath As String = Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
-
-            If Not String.IsNullOrEmpty(PosterPath) Then
-                tmpImage.FromFile(PosterPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, 0, Me.tmpLang, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBSeason.SeasonPosterPath = tmpImage.SaveAsSeasonPoster(DBSeason)
-                Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonPosterPath
-                Master.DB.SaveTVSeasonToDB(DBSeason, False)
-            End If
-        End Using
-    End Sub
-
-    Private Sub cmnuSeasonChangeFanart_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeFanart.Click
-
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-
-        Using tmpImage As New Images
-            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
-            Dim FanartPath As String = Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
-
-            If Not String.IsNullOrEmpty(FanartPath) Then
-                tmpImage.FromFile(FanartPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, 0, Me.tmpLang, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBSeason.SeasonFanartPath = tmpImage.SaveAsSeasonFanart(DBSeason)
-                Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonFanartPath
-                Master.DB.SaveTVSeasonToDB(DBSeason, False)
-            End If
-        End Using
-    End Sub
-
-    Private Sub cmnuChangeAllSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeAllSeasonPoster.Click
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)
-        Using tmpImage As New Images
-            Dim DBAllSeason As Structures.DBTV = Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
-            Dim PosterPath As String = DBAllSeason.SeasonPosterPath
-
-            If Not String.IsNullOrEmpty(PosterPath) Then
-                tmpImage.FromFile(PosterPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Enums.TVImageType.AllSeasonPoster, 0, 0, Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBAllSeason.SeasonPosterPath = tmpImage.SaveAsAllSeasonPoster(DBAllSeason)
-                Master.DB.SaveTVSeasonToDB(DBAllSeason, False)
-            End If
-        End Using
-    End Sub
 End Class
 

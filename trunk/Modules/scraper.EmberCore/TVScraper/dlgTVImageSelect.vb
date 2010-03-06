@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-'TODO: Automatic scrapers
-'TODO: Check Season/show lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
 'TODO: LATER - Support VIDEO_TS/BDMV folders for TV Shows
 
