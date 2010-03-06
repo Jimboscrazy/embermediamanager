@@ -60,40 +60,40 @@ Public Class EmberNativeTVScraperModule
         End Get
     End Property
 
-    Public Function PostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.PostScraper
+    Public Function PostScraper(ByRef DBTV As EmberAPI.Structures.DBTV, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.PostScraper
 
     End Function
-    Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.GetLangs
+    Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.GetLangs
         Langs = TVScraper.GetLangs(sMirror)
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function SaveImages() As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveImages
+    Function SaveImages() As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.SaveImages
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
         TVScraper.SaveImages()
         'RemoveHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.Scraper
+    Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.Scraper
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Options)
         'RemoveHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.ScrapeEpisode
+    Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.ScrapeEpisode
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
         TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
         'RemoveHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
     Public Sub Handler_ScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
     End Sub
 
-    Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.GetSingleEpisode
+    Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.GetSingleEpisode
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
         epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options)
         'RemoveHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
     Public Event TVScraperEvent(ByVal eType As EmberAPI.Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberTVScraperModule.TVScraperEvent
@@ -128,9 +128,9 @@ Public Class EmberNativeTVScraperModule
     End Function
 
 
-    Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberTVScraperModule.ChangeEpisode
+    Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberTVScraperModule.ChangeEpisode
         epDet = TVScraper.ChangeEpisode(ShowID, TVDBID)
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = True}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = True}
     End Function
 End Class
 

@@ -104,7 +104,7 @@ Public Class NotificationsModule
         RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
     End Sub
 
-    Public Sub RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleType, ByVal _params As List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
             If mType = Enums.ModuleType.Notification Then
                 Dim ShowIt As Boolean = False
@@ -123,7 +123,8 @@ Public Class NotificationsModule
             End If
         Catch ex As Exception
         End Try
-    End Sub
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
+    End Function
 
     Private Sub SaveSettings()
         AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)

@@ -73,12 +73,12 @@ Public Class NunoScraperModule
     Private DoOutline As Boolean
     Private DoPlot As Boolean
     Private Language As String
-    Public Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.DownloadTrailer
+    Public Function DownloadTrailer(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sURL As String) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.DownloadTrailer
 
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    Public Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sStudio As System.Collections.Generic.List(Of String)) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.GetMovieStudio
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+    Public Function GetMovieStudio(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef sStudio As System.Collections.Generic.List(Of String)) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.GetMovieStudio
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
     End Function
     Public Sub Init() Implements EmberAPI.Interfaces.EmberMovieScraperModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
@@ -104,20 +104,20 @@ Public Class NunoScraperModule
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
-    Public Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraper
+    Public Function PostScraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal ScrapeType As EmberAPI.Enums.ScrapeType) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraper
 
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    Public Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As EmberAPI.Structures.ScrapeOptions) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.Scraper
+    Public Function Scraper(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByRef ScrapeType As EmberAPI.Enums.ScrapeType, ByRef Options As EmberAPI.Structures.ScrapeOptions) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.Scraper
         codLang = Localization.ISOLangGetCode2ByLang(Language)
         If DoOutline Then DBMovie.Movie.Outline = Translate(codLang, DBMovie.Movie.Outline)
         If DoPlot Then DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
     End Function
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As EmberAPI.Enums.MovieScraperEventType, ByVal Parameter As Object) Implements EmberAPI.Interfaces.EmberMovieScraperModule.MovieScraperEvent
-    Public Function SelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As EmberAPI.Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As EmberAPI.Interfaces.ScraperResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
-        Return New EmberAPI.Interfaces.ScraperResult With {.breakChain = False}
+    Public Function SelectImageOfType(ByRef DBMovie As EmberAPI.Structures.DBMovie, ByVal _DLType As EmberAPI.Enums.ImageType, ByRef pResults As EmberAPI.Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberMovieScraperModule.SelectImageOfType
+        Return New EmberAPI.Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
 
