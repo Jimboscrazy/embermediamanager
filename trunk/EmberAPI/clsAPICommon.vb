@@ -293,7 +293,9 @@ Public Class Enums
     Public Enum ModuleEventType As Integer
         Generic = 0
         Notification = 1
-        ScraperReadyToSave = 2  'Called when scraper finished but before save
+        MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
+        RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
+        RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
     End Enum
 
     Public Enum TVImageType As Integer

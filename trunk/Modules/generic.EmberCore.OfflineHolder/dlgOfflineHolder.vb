@@ -452,7 +452,8 @@ Public Class dlgOfflineHolder
         End If
         Try
             If Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern) Then
-                FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
+                ' ##** FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {tMovie, False}))
             End If
         Catch ex As Exception
         End Try
