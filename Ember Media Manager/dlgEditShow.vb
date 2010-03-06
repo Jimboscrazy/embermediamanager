@@ -117,7 +117,6 @@ Public Class dlgEditShow
                 .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
                 .lblFanartSize.Visible = True
             End If
-            .btnSetFanartScrape.Enabled = False
 
             Poster.FromFile(Master.currShow.ShowPosterPath)
             If Not IsNothing(Poster.Image) Then
@@ -126,7 +125,6 @@ Public Class dlgEditShow
                 .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                 .lblPosterSize.Visible = True
             End If
-            .btnSetPosterScrape.Enabled = False
         End With
     End Sub
 
@@ -653,6 +651,24 @@ Public Class dlgEditShow
             Me.lvActors.Items.RemoveAt(iIndex)
             Me.lvActors.Items(iIndex + 1).Selected = True
             Me.lvActors.Select()
+        End If
+    End Sub
+
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Me.pbPoster.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Poster.Image = tImage
+            Me.pbPoster.Image = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Me.pbFanart.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Fanart.Image = tImage
+            Me.pbFanart.Image = tImage
         End If
     End Sub
 End Class

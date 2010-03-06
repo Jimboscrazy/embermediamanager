@@ -29,6 +29,8 @@ Partial Class dlgEditEpisode
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnActorDown = New System.Windows.Forms.Button
+        Me.btnActorUp = New System.Windows.Forms.Button
         Me.txtAired = New System.Windows.Forms.TextBox
         Me.txtEpisode = New System.Windows.Forms.TextBox
         Me.lblEpisode = New System.Windows.Forms.Label
@@ -85,8 +87,6 @@ Partial Class dlgEditEpisode
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
-        Me.btnActorDown = New System.Windows.Forms.Button
-        Me.btnActorUp = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -207,6 +207,24 @@ Partial Class dlgEditEpisode
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnActorDown
+        '
+        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
+        Me.btnActorDown.Location = New System.Drawing.Point(328, 423)
+        Me.btnActorDown.Name = "btnActorDown"
+        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorDown.TabIndex = 116
+        Me.btnActorDown.UseVisualStyleBackColor = True
+        '
+        'btnActorUp
+        '
+        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
+        Me.btnActorUp.Location = New System.Drawing.Point(304, 423)
+        Me.btnActorUp.Name = "btnActorUp"
+        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorUp.TabIndex = 115
+        Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'txtAired
         '
@@ -757,24 +775,6 @@ Partial Class dlgEditEpisode
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 61
         Me.OK_Button.Text = "OK"
-        '
-        'btnActorDown
-        '
-        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
-        Me.btnActorDown.Location = New System.Drawing.Point(328, 423)
-        Me.btnActorDown.Name = "btnActorDown"
-        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorDown.TabIndex = 116
-        Me.btnActorDown.UseVisualStyleBackColor = True
-        '
-        'btnActorUp
-        '
-        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
-        Me.btnActorUp.Location = New System.Drawing.Point(304, 423)
-        Me.btnActorUp.Name = "btnActorUp"
-        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorUp.TabIndex = 115
-        Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'dlgEditEpisode
         '

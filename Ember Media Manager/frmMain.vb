@@ -3353,6 +3353,8 @@ Public Class frmMain
                         Me.ToolStripSeparator8.Visible = False
                         Me.cmnuEditShow.Visible = False
                         Me.ToolStripSeparator7.Visible = False
+                        Me.cmnuChangeAllSeasonPoster.Visible = False
+                        Me.ToolStripSeparator20.Visible = False
                         Me.cmnuRescrapeShow.Visible = False
                         Me.cmnuChangeShow.Visible = False
 
@@ -3379,6 +3381,8 @@ Public Class frmMain
                         Me.ToolStripSeparator8.Visible = True
                         Me.cmnuEditShow.Visible = True
                         Me.ToolStripSeparator7.Visible = True
+                        Me.cmnuChangeAllSeasonPoster.Visible = Master.eSettings.AllSeasonPosterEnabled
+                        Me.ToolStripSeparator20.Visible = Master.eSettings.AllSeasonPosterEnabled
                         Me.cmnuRescrapeShow.Visible = True
                         Me.cmnuChangeShow.Visible = True
 
@@ -7968,7 +7972,7 @@ doCancel:
                 tmpImage.FromFile(PosterPath)
             End If
 
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, Me.tmpLang, tmpImage.Image)
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, 0, Me.tmpLang, tmpImage.Image)
 
             If Not IsNothing(tImage) Then
                 tmpImage.Image = tImage
@@ -7992,13 +7996,33 @@ doCancel:
                 tmpImage.FromFile(FanartPath)
             End If
 
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, Me.tmpLang, tmpImage.Image)
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, 0, Me.tmpLang, tmpImage.Image)
 
             If Not IsNothing(tImage) Then
                 tmpImage.Image = tImage
                 DBSeason.SeasonFanartPath = tmpImage.SaveAsSeasonFanart(DBSeason)
                 Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonFanartPath
                 Master.DB.SaveTVSeasonToDB(DBSeason, False)
+            End If
+        End Using
+    End Sub
+
+    Private Sub cmnuChangeAllSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeAllSeasonPoster.Click
+        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)
+        Using tmpImage As New Images
+            Dim DBAllSeason As Structures.DBTV = Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
+            Dim PosterPath As String = DBAllSeason.SeasonPosterPath
+
+            If Not String.IsNullOrEmpty(PosterPath) Then
+                tmpImage.FromFile(PosterPath)
+            End If
+
+            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Enums.TVImageType.AllSeasonPoster, 0, 0, Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, tmpImage.Image)
+
+            If Not IsNothing(tImage) Then
+                tmpImage.Image = tImage
+                DBAllSeason.SeasonPosterPath = tmpImage.SaveAsAllSeasonPoster(DBAllSeason)
+                Master.DB.SaveTVSeasonToDB(DBAllSeason, False)
             End If
         End Using
     End Sub

@@ -305,6 +305,8 @@ Public Class Enums
         SeasonPoster = 3
         SeasonFanart = 4
         AllSeasonPoster = 5
+        EpisodePoster = 6
+        EpisodeFanart = 7
     End Enum
 End Class
 

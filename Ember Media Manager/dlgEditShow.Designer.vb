@@ -29,6 +29,8 @@ Partial Class dlgEditShow
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnActorDown = New System.Windows.Forms.Button
+        Me.btnActorUp = New System.Windows.Forms.Button
         Me.txtPremiered = New System.Windows.Forms.TextBox
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.lblStudio = New System.Windows.Forms.Label
@@ -73,8 +75,6 @@ Partial Class dlgEditShow
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
-        Me.btnActorDown = New System.Windows.Forms.Button
-        Me.btnActorUp = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -184,6 +184,24 @@ Partial Class dlgEditShow
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnActorDown
+        '
+        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
+        Me.btnActorDown.Location = New System.Drawing.Point(434, 420)
+        Me.btnActorDown.Name = "btnActorDown"
+        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorDown.TabIndex = 115
+        Me.btnActorDown.UseVisualStyleBackColor = True
+        '
+        'btnActorUp
+        '
+        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
+        Me.btnActorUp.Location = New System.Drawing.Point(410, 420)
+        Me.btnActorUp.Name = "btnActorUp"
+        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorUp.TabIndex = 114
+        Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'txtPremiered
         '
@@ -603,24 +621,6 @@ Partial Class dlgEditShow
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 58
         Me.OK_Button.Text = "OK"
-        '
-        'btnActorDown
-        '
-        Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
-        Me.btnActorDown.Location = New System.Drawing.Point(434, 420)
-        Me.btnActorDown.Name = "btnActorDown"
-        Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorDown.TabIndex = 115
-        Me.btnActorDown.UseVisualStyleBackColor = True
-        '
-        'btnActorUp
-        '
-        Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
-        Me.btnActorUp.Location = New System.Drawing.Point(410, 420)
-        Me.btnActorUp.Name = "btnActorUp"
-        Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorUp.TabIndex = 114
-        Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'dlgEditShow
         '
