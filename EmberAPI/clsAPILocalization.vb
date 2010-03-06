@@ -118,16 +118,19 @@ Public Class Localization
                     Assembly = rAssembly
                 End If
 
-                Dim lPath As String
+                Dim lPath As String = String.Empty
                 htStrings = New Hashtable
                 htStrings.Clear()
-                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "*EmberCORE" Then
                     Assembly = "*EmberCORE"
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                 Else
                     lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
-                    If Not File.Exists(lPath) Then 'Fallback, maybe not good idea, but needed for now
-                        lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                    If Not File.Exists(lPath) Then 'FFailback disabled, possible not need anymore
+                        'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+                        File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf & _
+                            "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf & _
+                            "</strings>")
                     End If
                 End If
                 If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
@@ -164,46 +167,52 @@ Public Class Localization
 
     End Sub
 
-    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
+    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String, Optional ByVal forceFromMain As Boolean = False) As String
         Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-        If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+        If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse forceFromMain Then
             Assembly = "*EmberCORE"
         End If
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
-        If IsNothing(htStrings) Then Return strDefault
+        If IsNothing(htStrings) Then
+            '*****************************************************************************************
+            ' this will add strings not found *** Dev propose only, should not go to release version
+            'AddNotExist(Assembly, ID.ToString, strDefault)
+            '*****************************************************************************************
+            Return strDefault
+        End If
         If htStrings.ContainsKey(ID) Then
             Return htStrings.Item(ID).ToString
         Else
             '*****************************************************************************************
             ' this will add strings not found *** Dev propose only, should not go to release version
-            Try
-
-                Dim lPath As String
-                Dim Language As String = Master.eSettings.Language
-                If Assembly = "*EmberCORE" Then
-                    lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
-                Else
-                    lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
-                End If
-                'AddNotExist(lPath, ID.ToString, strDefault)
-            Catch ex As Exception
-            End Try
+            'AddNotExist(Assembly, ID.ToString, strDefault)
             '*****************************************************************************************
             Return strDefault
         End If
     End Function
     '*****************************************************************************************
     ' this will add strings not found *** Dev propose only, should not go to release version
-    Sub AddNotExist(ByVal lpath As String, ByVal id As String, ByVal value As String)
-        Dim xdoc As New XmlDocument()
-        xdoc.Load(lpath)
-        Dim elem As XmlElement = xdoc.CreateElement("string")
-        Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "id", "id", "")
-        attr.Value = id
-        elem.Attributes.SetNamedItem(attr)
-        elem.InnerText = value
-        xdoc.DocumentElement.AppendChild(elem)
-        xdoc.Save(lpath)
+    Sub AddNotExist(ByVal Assembly As String, ByVal id As String, ByVal value As String)
+        Dim lPath As String
+        Dim Language As String = Master.eSettings.Language
+        Try
+            If Assembly = "*EmberCORE" Then
+                lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
+            Else
+                lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
+            End If
+            Dim xdoc As New XmlDocument()
+            xdoc.Load(lPath)
+            Dim elem As XmlElement = xdoc.CreateElement("string")
+            Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "id", "id", "")
+            attr.Value = id
+            elem.Attributes.SetNamedItem(attr)
+            elem.InnerText = value
+            xdoc.DocumentElement.AppendChild(elem)
+            xdoc.Save(lPath)
+        Catch ex As Exception
+        End Try
+        LoadLanguage(Language, Assembly, True)
     End Sub
 
     Public Sub New()

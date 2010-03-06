@@ -33,9 +33,6 @@ Partial Class frmMediaSettingsHolder
         Me.chkScrapeFanart = New System.Windows.Forms.CheckBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.btnBrowse = New System.Windows.Forms.Button
-        Me.txtDumpPath = New System.Windows.Forms.TextBox
-        Me.chkTrailerDump = New System.Windows.Forms.CheckBox
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.Label23 = New System.Windows.Forms.Label
         Me.txtTimeout = New System.Windows.Forms.TextBox
@@ -171,9 +168,6 @@ Partial Class frmMediaSettingsHolder
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.btnBrowse)
-        Me.GroupBox1.Controls.Add(Me.txtDumpPath)
-        Me.GroupBox1.Controls.Add(Me.chkTrailerDump)
         Me.GroupBox1.Controls.Add(Me.chkDownloadTrailer)
         Me.GroupBox1.Controls.Add(Me.Label23)
         Me.GroupBox1.Controls.Add(Me.txtTimeout)
@@ -186,38 +180,6 @@ Partial Class frmMediaSettingsHolder
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Trailers"
         Me.GroupBox1.UseCompatibleTextRendering = True
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(558, 37)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
-        Me.btnBrowse.TabIndex = 94
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        Me.btnBrowse.Visible = False
-        '
-        'txtDumpPath
-        '
-        Me.txtDumpPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtDumpPath.Location = New System.Drawing.Point(318, 39)
-        Me.txtDumpPath.Name = "txtDumpPath"
-        Me.txtDumpPath.Size = New System.Drawing.Size(237, 22)
-        Me.txtDumpPath.TabIndex = 93
-        Me.txtDumpPath.Visible = False
-        '
-        'chkTrailerDump
-        '
-        Me.chkTrailerDump.AutoSize = True
-        Me.chkTrailerDump.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailerDump.Location = New System.Drawing.Point(318, 19)
-        Me.chkTrailerDump.Name = "chkTrailerDump"
-        Me.chkTrailerDump.Size = New System.Drawing.Size(155, 17)
-        Me.chkTrailerDump.TabIndex = 92
-        Me.chkTrailerDump.Text = "Watch for ""Dump"" Folder"
-        Me.chkTrailerDump.UseVisualStyleBackColor = True
-        Me.chkTrailerDump.Visible = False
         '
         'chkDownloadTrailer
         '
@@ -400,9 +362,6 @@ Partial Class frmMediaSettingsHolder
     Friend WithEvents txtTimeout As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkTrailerDump As System.Windows.Forms.CheckBox
-    Friend WithEvents btnBrowse As System.Windows.Forms.Button
-    Friend WithEvents txtDumpPath As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button

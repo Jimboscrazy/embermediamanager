@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <string id="1">&amp;File</string>
   <string id="2">E&amp;xit</string>
@@ -144,7 +144,7 @@
   <string id="142">Error Retrieving Details</string>
   <string id="143">Update {0} Only</string>
   <string id="144">Update</string>
-  <string id="145">Only</string> 
+  <string id="145">Only</string>
   <string id="146">There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings.</string>
   <string id="147">Unable to Start XBMC Update for {0}</string>
   <string id="148">Poster</string>
@@ -801,4 +801,5 @@
   <string id="799">Scraper - Trailers</string>
   <string id="800">Preferred Quality:</string>
   <string id="801">TVDB Mirror</string>
+  <string id="802">Modules</string>
 </strings>

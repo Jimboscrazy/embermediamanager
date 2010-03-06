@@ -78,7 +78,7 @@ Public Class NotificationsModule
         Me._setup.chkOnError.Checked = eSettings.OnError
         SPanel.Name = Me._name
         SPanel.Text = Me._name
-        SPanel.Type = Master.eLang.GetString(999, "Modules")
+        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings

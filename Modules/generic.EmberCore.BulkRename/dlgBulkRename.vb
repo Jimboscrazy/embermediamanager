@@ -380,7 +380,7 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(12, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
@@ -389,28 +389,28 @@ Public Class dlgBulkRenamer
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(163, "Bulk Renamer")
-        Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.Label2.Text = Master.eLang.GetString(164, "Rename movies and files")
+        Me.Text = Master.eLang.GetString(1, "Bulk Renamer")
+        Me.Close_Button.Text = Master.eLang.GetString(2, "Close")
+        Me.Label2.Text = Master.eLang.GetString(3, "Rename movies and files")
         Me.Label4.Text = Me.Text
-        Me.lblCompiling.Text = Master.eLang.GetString(165, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(166, "Canceling Compilation...")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Rename_Button.Text = Master.eLang.GetString(168, "Rename")
-        Me.tsmLockMovie.Text = Master.eLang.GetString(24, "Lock")
-        Me.tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock")
-        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All")
-        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All")
-        Me.lblFolderPattern.Text = Master.eLang.GetString(171, "Folder Pattern (for Single movie in Folder)")
-        Me.lblFilePattern.Text = Master.eLang.GetString(172, "File Pattern")
-        Me.Label1.Text = Master.eLang.GetString(173, "Folder Pattern (for Multiple movies in Folder)")
-        Me.chkRenamedOnly.Text = Master.eLang.GetString(636, "Display Only Movies That Will Be Renamed")
+        Me.lblCompiling.Text = Master.eLang.GetString(4, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(5, "Canceling Compilation...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.Rename_Button.Text = Master.eLang.GetString(6, "Rename")
+        Me.tsmLockMovie.Text = Master.eLang.GetString(24, "Lock", True)
+        Me.tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock", True)
+        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All", True)
+        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All", True)
+        Me.lblFolderPattern.Text = Master.eLang.GetString(7, "Folder Pattern (for Single movie in Folder)")
+        Me.lblFilePattern.Text = Master.eLang.GetString(8, "File Pattern")
+        Me.Label1.Text = Master.eLang.GetString(9, "Folder Pattern (for Multiple movies in Folder)")
+        Me.chkRenamedOnly.Text = Master.eLang.GetString(10, "Display Only Movies That Will Be Renamed")
     End Sub
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
-        lblCompiling.Text = Master.eLang.GetString(567, "Renaming...")
+        lblCompiling.Text = Master.eLang.GetString(11, "Renaming...")
         lblFile.Visible = True
         pbCompile.Style = ProgressBarStyle.Continuous
         pbCompile.Maximum = FFRenamer.GetMoviesCount

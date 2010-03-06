@@ -1022,7 +1022,7 @@ Public Class frmMainSetup
                             Me.Top = Convert.ToInt32(Args(i + 2))
                             Me.Left = Convert.ToInt32(Args(i + 3))
                         End If
-                    Case "-force"
+                    Case "-force" OrElse "-recover"
                         Force = True
                 End Select
             Next
