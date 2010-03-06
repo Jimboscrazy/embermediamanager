@@ -60,6 +60,7 @@ Partial Class dlgIMDBSearchResults
         'OK_Button
         '
         Me.OK_Button.Enabled = False
+        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OK_Button.Location = New System.Drawing.Point(497, 400)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 22)
@@ -69,6 +70,7 @@ Partial Class dlgIMDBSearchResults
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(570, 400)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 22)
@@ -77,6 +79,7 @@ Partial Class dlgIMDBSearchResults
         '
         'tvResults
         '
+        Me.tvResults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tvResults.HideSelection = False
         Me.tvResults.Location = New System.Drawing.Point(4, 96)
         Me.tvResults.Name = "tvResults"
@@ -115,6 +118,7 @@ Partial Class dlgIMDBSearchResults
         '
         'txtOutline
         '
+        Me.txtOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtOutline.Location = New System.Drawing.Point(294, 295)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
@@ -126,6 +130,7 @@ Partial Class dlgIMDBSearchResults
         'lblYear
         '
         Me.lblYear.AutoSize = True
+        Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblYear.Location = New System.Drawing.Point(472, 130)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(31, 13)
@@ -135,6 +140,7 @@ Partial Class dlgIMDBSearchResults
         '
         'lblDirector
         '
+        Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDirector.Location = New System.Drawing.Point(472, 156)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(165, 16)
@@ -144,6 +150,7 @@ Partial Class dlgIMDBSearchResults
         '
         'lblGenre
         '
+        Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGenre.Location = New System.Drawing.Point(472, 183)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(165, 52)
@@ -154,9 +161,10 @@ Partial Class dlgIMDBSearchResults
         'txtIMDBID
         '
         Me.txtIMDBID.Enabled = False
-        Me.txtIMDBID.Location = New System.Drawing.Point(131, 401)
+        Me.txtIMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtIMDBID.Location = New System.Drawing.Point(131, 398)
         Me.txtIMDBID.Name = "txtIMDBID"
-        Me.txtIMDBID.Size = New System.Drawing.Size(100, 20)
+        Me.txtIMDBID.Size = New System.Drawing.Size(100, 22)
         Me.txtIMDBID.TabIndex = 2
         '
         'pnlTop
@@ -210,9 +218,10 @@ Partial Class dlgIMDBSearchResults
         'chkManual
         '
         Me.chkManual.AutoSize = True
+        Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkManual.Location = New System.Drawing.Point(4, 402)
         Me.chkManual.Name = "chkManual"
-        Me.chkManual.Size = New System.Drawing.Size(121, 17)
+        Me.chkManual.Size = New System.Drawing.Size(128, 17)
         Me.chkManual.TabIndex = 1
         Me.chkManual.Text = "Manual IMDB Entry:"
         Me.chkManual.UseVisualStyleBackColor = True
@@ -220,7 +229,8 @@ Partial Class dlgIMDBSearchResults
         'btnVerify
         '
         Me.btnVerify.Enabled = False
-        Me.btnVerify.Location = New System.Drawing.Point(237, 400)
+        Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnVerify.Location = New System.Drawing.Point(237, 398)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 3
@@ -230,9 +240,10 @@ Partial Class dlgIMDBSearchResults
         'lblIMDB
         '
         Me.lblIMDB.AutoSize = True
+        Me.lblIMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblIMDB.Location = New System.Drawing.Point(472, 247)
         Me.lblIMDB.Name = "lblIMDB"
-        Me.lblIMDB.Size = New System.Drawing.Size(34, 13)
+        Me.lblIMDB.Size = New System.Drawing.Size(35, 13)
         Me.lblIMDB.TabIndex = 60
         Me.lblIMDB.Text = "IMDB"
         Me.lblIMDB.Visible = False
