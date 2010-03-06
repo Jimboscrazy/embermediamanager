@@ -1161,7 +1161,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long) As Structures.DBTV
+    Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
         Try
             _TVDB.ShowID = ShowID
@@ -1175,6 +1175,8 @@ Public Class Database
                     End If
                 End Using
             End Using
+
+            If WithShow Then Me.FillTVShowFromDB(_TVDB)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1223,6 +1225,7 @@ Public Class Database
         _TVDB.ShowNfoPath = _tmpTVDB.ShowNfoPath
         _TVDB.ShowPath = _tmpTVDB.ShowPath
         _TVDB.TVShow = _tmpTVDB.TVShow
+        _TVDB.ShowLanguage = _tmpTVDB.ShowLanguage
     End Sub
 
     Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)

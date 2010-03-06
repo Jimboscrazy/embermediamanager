@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-'TODO: Scrape Show/Episode Poster/Fanart from editors
 'TODO: Automatic scrapers
 'TODO: Check Season/show lock and mark when adding new episodes
 'TODO: LATER - TV Show renaming (including "dump folder")
@@ -63,7 +62,7 @@ Public Class dlgTVImageSelect
     Private Sub GenerateList()
         Try
             If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(785, "Show Fanart"), .Tag = "showf"})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(999, "Episode Fanart"), Master.eLang.GetString(785, "Show Fanart")), .Tag = "showf"})
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
 
             Dim TnS As TreeNode
@@ -171,7 +170,7 @@ Public Class dlgTVImageSelect
                 Next
             End If
 
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.SeasonFanart Then
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.SeasonFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then
                 For Each SFan As Scraper.TVDBFanart In Scraper.tmpTVDBShow.Fanart
                     Try
                         If Not File.Exists(SFan.LocalThumb) Then
@@ -257,7 +256,7 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadImages.ReportProgress(1, "progress")
 
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                 Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
                 If Not IsNothing(tSF) Then
                     If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
@@ -597,7 +596,7 @@ Public Class dlgTVImageSelect
                 cSI.Season = Me._season
                 cSI.Poster.Image = Me.pbCurrent.Image
                 Scraper.TVDBImages.SeasonImageList.Add(cSI)
-            Case Enums.TVImageType.ShowFanart
+            Case Enums.TVImageType.ShowFanart, Enums.TVImageType.EpisodeFanart
                 Scraper.TVDBImages.ShowFanart.Image.Image = Me.pbCurrent.Image
             Case Enums.TVImageType.ShowPoster
                 Scraper.TVDBImages.ShowPoster.Image.Image = Me.pbCurrent.Image
@@ -779,6 +778,7 @@ Public Class dlgTVImageSelect
             Me.btnOK.Enabled = True
         End If
 
+        Me.pbCurrent.Visible = True
     End Sub
 
     Private Function DownloadFanart(ByVal iTag As ImageTag) As Image
@@ -840,7 +840,7 @@ Public Class dlgTVImageSelect
                     Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image
                 End If
             End If
-        ElseIf Me._type = Enums.TVImageType.ShowFanart AndAlso Me._fanartchanged Then
+        ElseIf (Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso Me._fanartchanged Then
             Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
             Me.pnlStatus.Visible = True

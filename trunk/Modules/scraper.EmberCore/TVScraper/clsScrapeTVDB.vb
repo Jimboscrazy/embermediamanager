@@ -566,8 +566,8 @@ Public Class Scraper
         Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .Options = Options})
     End Function
 
-    Public Function GetSingleImage(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Lang As String, ByVal CurrentImage As Image) As Image
-        Return sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .SelectedLang = Lang, .CurrentImage = CurrentImage})
+    Public Function GetSingleImage(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal CurrentImage As Image) As Image
+        Return sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .SelectedLang = Lang, .CurrentImage = CurrentImage})
     End Function
 
     Public Sub Cancel()
@@ -1159,10 +1159,43 @@ Public Class Scraper
         End Function
 
         Public Function GetSingleImage(ByVal sInfo As Structures.ScrapeInfo) As Image
-            Me.DownloadSeries(sInfo, True)
-            Using dImageSelect As New dlgTVImageSelect
-                Return dImageSelect.ShowDialog(sInfo.ShowID, sInfo.ImageType, sInfo.iSeason, sInfo.CurrentImage)
-            End Using
+            If sInfo.ImageType = Enums.TVImageType.EpisodePoster Then
+                Using tImage As New Images
+                    Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
+                    If Not IsNothing(tmpEp) Then
+
+                        If File.Exists(tmpEp.LocalFile) Then
+                            tImage.FromFile(tmpEp.LocalFile)
+                        Else
+                            tImage.FromWeb(tmpEp.PosterURL)
+                            If Not IsNothing(tImage.Image) Then
+                                Directory.CreateDirectory(Directory.GetParent(tmpEp.LocalFile).FullName)
+                                tImage.Save(tmpEp.LocalFile)
+                            End If
+                        End If
+
+                        If Not IsNothing(tImage.Image) Then
+                            Using dPosterConfirm As New dlgTVEpisodePoster
+                                If dPosterConfirm.ShowDialog(tImage.Image) = DialogResult.OK Then
+                                    Return tImage.Image
+                                Else
+                                    Return Nothing
+                                End If
+                            End Using
+                        Else
+                            MsgBox(Master.eLang.GetString(999, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(999, "No Poster Available"))
+                            Return Nothing
+                        End If
+                    Else
+                        Return Nothing
+                    End If
+                End Using
+            Else
+                Me.DownloadSeries(sInfo, True)
+                Using dImageSelect As New dlgTVImageSelect
+                    Return dImageSelect.ShowDialog(sInfo.ShowID, sInfo.ImageType, sInfo.iSeason, sInfo.CurrentImage)
+                End Using
+            End If
         End Function
 
         Public Sub CancelAsync()

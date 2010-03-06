@@ -53,7 +53,7 @@
         Me.pnlImages.AutoScroll = True
         Me.pnlImages.BackColor = System.Drawing.SystemColors.Control
         Me.pnlImages.Location = New System.Drawing.Point(222, 4)
-        Me.pnlImages.Name = "pnlMovieMedia"
+        Me.pnlImages.Name = "pnlImages"
         Me.pnlImages.Size = New System.Drawing.Size(622, 421)
         Me.pnlImages.TabIndex = 1
         '
@@ -66,6 +66,7 @@
         Me.pbCurrent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbCurrent.TabIndex = 2
         Me.pbCurrent.TabStop = False
+        Me.pbCurrent.Visible = False
         '
         'pnlStatus
         '

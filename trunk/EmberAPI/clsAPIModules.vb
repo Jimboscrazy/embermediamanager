@@ -604,12 +604,12 @@ Public Class ModulesManager
         Return epDetails
     End Function
 
-    Public Function TVSingleImageOnly(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Lang As String, ByVal CurrentImage As Image) As Image
+    Public Function TVSingleImageOnly(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal CurrentImage As Image) As Image
         Dim Image As Image = Nothing
         Dim ret As Interfaces.ModuleResult
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
             AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-            ret = _externaltvScraperModule.ProcessorModule.GetSingleImage(ShowID, TVDBID, Type, Season, Lang, CurrentImage, Image)
+            ret = _externaltvScraperModule.ProcessorModule.GetSingleImage(ShowID, TVDBID, Type, Season, Episode, Lang, CurrentImage, Image)
             'RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
             If ret.breakChain Then Exit For
         Next

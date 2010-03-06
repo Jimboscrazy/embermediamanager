@@ -114,7 +114,6 @@ Public Class dlgEditEpisode
                     .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
                     .lblFanartSize.Visible = True
                 End If
-                .btnSetFanartScrape.Enabled = False
             End If
 
             Poster.FromFile(Master.currShow.EpPosterPath)
@@ -124,7 +123,6 @@ Public Class dlgEditEpisode
                 .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                 .lblPosterSize.Visible = True
             End If
-            .btnSetPosterScrape.Enabled = False
         End With
     End Sub
 
@@ -250,16 +248,14 @@ Public Class dlgEditEpisode
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsEpFanart(Master.currShow)
-                    Master.currShow.EpFanartPath = fPath
+                    Master.currShow.EpFanartPath = .Fanart.SaveAsEpFanart(Master.currShow)
                 Else
                     .Fanart.DeleteEpFanart(Master.currShow)
                     Master.currShow.EpFanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsEpPoster(Master.currShow)
-                    Master.currShow.EpPosterPath = pPath
+                    Master.currShow.EpPosterPath = .Poster.SaveAsEpPoster(Master.currShow)
                 Else
                     .Poster.DeleteEpPosters(Master.currShow)
                     Master.currShow.EpPosterPath = String.Empty
@@ -673,5 +669,33 @@ Public Class dlgEditEpisode
             Me.lvActors.Items(iIndex + 1).Selected = True
             Me.lvActors.Select()
         End If
+    End Sub
+
+    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Me.pbFanart.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Fanart.Image = tImage
+            Me.pbFanart.Image = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Me.pbFanart.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Poster.Image = tImage
+            Me.pbPoster.Image = tImage
+        End If
+    End Sub
+
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.Poster.Image = Nothing
+    End Sub
+
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.Fanart.Image = Nothing
     End Sub
 End Class
