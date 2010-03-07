@@ -2728,7 +2728,11 @@ Public Class dlgSettings
             Master.eSettings.TVCleanDB = Me.chkTVCleanDB.Checked
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
             Master.eSettings.TVShowRegexes = Me.ShowRegex
-            Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
+            If String.IsNullOrEmpty(Me.cbRatingRegion.Text) Then
+                Master.eSettings.ShowRatingRegion = "usa"
+            Else
+                Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
+            End If
             Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
             Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
             Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
