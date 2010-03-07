@@ -6928,7 +6928,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(828, 751)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
@@ -6948,6 +6947,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlScraper)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
