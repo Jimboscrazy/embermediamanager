@@ -46,6 +46,7 @@ Partial Class dlgUpdateMedia
         Me.chkAllMod = New System.Windows.Forms.CheckBox
         Me.Update_Button = New System.Windows.Forms.Button
         Me.gbOptions = New System.Windows.Forms.GroupBox
+        Me.chkCert = New System.Windows.Forms.CheckBox
         Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.chkCrew = New System.Windows.Forms.CheckBox
         Me.chkMusicBy = New System.Windows.Forms.CheckBox
@@ -66,7 +67,6 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
-        Me.chkCert = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -136,6 +136,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdateModifier_All.AutoSize = True
         Me.rbUpdateModifier_All.Checked = True
+        Me.rbUpdateModifier_All.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_All.Location = New System.Drawing.Point(6, 19)
         Me.rbUpdateModifier_All.Name = "rbUpdateModifier_All"
         Me.rbUpdateModifier_All.Size = New System.Drawing.Size(77, 17)
@@ -150,7 +151,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_New)
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_Missing)
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
-        Me.gbUpdateModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbUpdateModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
         Me.gbUpdateModifier.Size = New System.Drawing.Size(275, 68)
@@ -162,6 +163,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdateModifier_Marked.AutoSize = True
         Me.rbUpdateModifier_Marked.Enabled = False
+        Me.rbUpdateModifier_Marked.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(126, 42)
         Me.rbUpdateModifier_Marked.Name = "rbUpdateModifier_Marked"
         Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(103, 17)
@@ -173,6 +175,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdateModifier_New.AutoSize = True
         Me.rbUpdateModifier_New.Enabled = False
+        Me.rbUpdateModifier_New.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_New.Location = New System.Drawing.Point(6, 42)
         Me.rbUpdateModifier_New.Name = "rbUpdateModifier_New"
         Me.rbUpdateModifier_New.Size = New System.Drawing.Size(87, 17)
@@ -183,6 +186,7 @@ Partial Class dlgUpdateMedia
         'rbUpdateModifier_Missing
         '
         Me.rbUpdateModifier_Missing.AutoSize = True
+        Me.rbUpdateModifier_Missing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(126, 20)
         Me.rbUpdateModifier_Missing.Name = "rbUpdateModifier_Missing"
         Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(134, 17)
@@ -194,7 +198,7 @@ Partial Class dlgUpdateMedia
         '
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Ask)
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
-        Me.gbUpdateType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbUpdateType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 147)
         Me.gbUpdateType.Name = "gbUpdateType"
         Me.gbUpdateType.Size = New System.Drawing.Size(275, 75)
@@ -205,6 +209,7 @@ Partial Class dlgUpdateMedia
         'rbUpdate_Ask
         '
         Me.rbUpdate_Ask.AutoSize = True
+        Me.rbUpdate_Ask.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdate_Ask.Location = New System.Drawing.Point(6, 41)
         Me.rbUpdate_Ask.Name = "rbUpdate_Ask"
         Me.rbUpdate_Ask.Size = New System.Drawing.Size(215, 17)
@@ -216,6 +221,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdate_Auto.AutoSize = True
         Me.rbUpdate_Auto.Checked = True
+        Me.rbUpdate_Auto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdate_Auto.Location = New System.Drawing.Point(6, 18)
         Me.rbUpdate_Auto.Name = "rbUpdate_Auto"
         Me.rbUpdate_Auto.Size = New System.Drawing.Size(174, 17)
@@ -233,7 +239,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Controls.Add(Me.chkPosterMod)
         Me.gbUpdateItems.Controls.Add(Me.chkNFOMod)
         Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
-        Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
         Me.gbUpdateItems.Name = "gbUpdateItems"
         Me.gbUpdateItems.Size = New System.Drawing.Size(275, 96)
@@ -247,6 +253,7 @@ Partial Class dlgUpdateMedia
         Me.chkTrailerMod.Checked = True
         Me.chkTrailerMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTrailerMod.Enabled = False
+        Me.chkTrailerMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTrailerMod.Location = New System.Drawing.Point(135, 54)
         Me.chkTrailerMod.Name = "chkTrailerMod"
         Me.chkTrailerMod.Size = New System.Drawing.Size(57, 17)
@@ -260,6 +267,7 @@ Partial Class dlgUpdateMedia
         Me.chkExtraMod.Checked = True
         Me.chkExtraMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkExtraMod.Enabled = False
+        Me.chkExtraMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkExtraMod.Location = New System.Drawing.Point(135, 36)
         Me.chkExtraMod.Name = "chkExtraMod"
         Me.chkExtraMod.Size = New System.Drawing.Size(90, 17)
@@ -273,6 +281,7 @@ Partial Class dlgUpdateMedia
         Me.chkMetaMod.Checked = True
         Me.chkMetaMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMetaMod.Enabled = False
+        Me.chkMetaMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMetaMod.Location = New System.Drawing.Point(135, 18)
         Me.chkMetaMod.Name = "chkMetaMod"
         Me.chkMetaMod.Size = New System.Drawing.Size(79, 17)
@@ -286,6 +295,7 @@ Partial Class dlgUpdateMedia
         Me.chkFanartMod.Checked = True
         Me.chkFanartMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkFanartMod.Enabled = False
+        Me.chkFanartMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFanartMod.Location = New System.Drawing.Point(14, 72)
         Me.chkFanartMod.Name = "chkFanartMod"
         Me.chkFanartMod.Size = New System.Drawing.Size(59, 17)
@@ -299,6 +309,7 @@ Partial Class dlgUpdateMedia
         Me.chkPosterMod.Checked = True
         Me.chkPosterMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkPosterMod.Enabled = False
+        Me.chkPosterMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkPosterMod.Location = New System.Drawing.Point(14, 54)
         Me.chkPosterMod.Name = "chkPosterMod"
         Me.chkPosterMod.Size = New System.Drawing.Size(58, 17)
@@ -312,6 +323,7 @@ Partial Class dlgUpdateMedia
         Me.chkNFOMod.Checked = True
         Me.chkNFOMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkNFOMod.Enabled = False
+        Me.chkNFOMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkNFOMod.Location = New System.Drawing.Point(14, 36)
         Me.chkNFOMod.Name = "chkNFOMod"
         Me.chkNFOMod.Size = New System.Drawing.Size(49, 17)
@@ -324,6 +336,7 @@ Partial Class dlgUpdateMedia
         Me.chkAllMod.AutoSize = True
         Me.chkAllMod.Checked = True
         Me.chkAllMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkAllMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkAllMod.Location = New System.Drawing.Point(14, 18)
         Me.chkAllMod.Name = "chkAllMod"
         Me.chkAllMod.Size = New System.Drawing.Size(69, 17)
@@ -364,7 +377,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(287, 70)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(274, 254)
@@ -372,11 +385,25 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
         '
+        'chkCert
+        '
+        Me.chkCert.AutoSize = True
+        Me.chkCert.Checked = True
+        Me.chkCert.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkCert.Location = New System.Drawing.Point(6, 80)
+        Me.chkCert.Name = "chkCert"
+        Me.chkCert.Size = New System.Drawing.Size(89, 17)
+        Me.chkCert.TabIndex = 20
+        Me.chkCert.Text = "Certification"
+        Me.chkCert.UseVisualStyleBackColor = True
+        '
         'chkTop250
         '
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Checked = True
         Me.chkTop250.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTop250.Location = New System.Drawing.Point(146, 200)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
@@ -389,6 +416,7 @@ Partial Class dlgUpdateMedia
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Checked = True
         Me.chkCrew.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkCrew.Location = New System.Drawing.Point(147, 180)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(85, 17)
@@ -401,6 +429,7 @@ Partial Class dlgUpdateMedia
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Checked = True
         Me.chkMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMusicBy.Location = New System.Drawing.Point(147, 160)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
@@ -413,6 +442,7 @@ Partial Class dlgUpdateMedia
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Checked = True
         Me.chkProducers.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkProducers.Location = New System.Drawing.Point(147, 140)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(77, 17)
@@ -425,6 +455,7 @@ Partial Class dlgUpdateMedia
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Checked = True
         Me.chkWriters.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkWriters.Location = New System.Drawing.Point(147, 120)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
@@ -437,6 +468,7 @@ Partial Class dlgUpdateMedia
         Me.chkStudio.AutoSize = True
         Me.chkStudio.Checked = True
         Me.chkStudio.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkStudio.Location = New System.Drawing.Point(6, 180)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(60, 17)
@@ -449,6 +481,7 @@ Partial Class dlgUpdateMedia
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Checked = True
         Me.chkRuntime.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRuntime.Location = New System.Drawing.Point(6, 120)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
@@ -461,6 +494,7 @@ Partial Class dlgUpdateMedia
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Checked = True
         Me.chkPlot.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkPlot.Location = New System.Drawing.Point(147, 60)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
@@ -473,6 +507,7 @@ Partial Class dlgUpdateMedia
         Me.chkOutline.AutoSize = True
         Me.chkOutline.Checked = True
         Me.chkOutline.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkOutline.Location = New System.Drawing.Point(147, 40)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(65, 17)
@@ -485,6 +520,7 @@ Partial Class dlgUpdateMedia
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Checked = True
         Me.chkGenre.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkGenre.Location = New System.Drawing.Point(6, 200)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
@@ -497,6 +533,7 @@ Partial Class dlgUpdateMedia
         Me.chkDirector.AutoSize = True
         Me.chkDirector.Checked = True
         Me.chkDirector.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkDirector.Location = New System.Drawing.Point(147, 100)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(67, 17)
@@ -509,6 +546,7 @@ Partial Class dlgUpdateMedia
         Me.chkTagline.AutoSize = True
         Me.chkTagline.Checked = True
         Me.chkTagline.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTagline.Location = New System.Drawing.Point(147, 19)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(63, 17)
@@ -521,6 +559,7 @@ Partial Class dlgUpdateMedia
         Me.chkCast.AutoSize = True
         Me.chkCast.Checked = True
         Me.chkCast.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkCast.Location = New System.Drawing.Point(147, 80)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(48, 17)
@@ -533,6 +572,7 @@ Partial Class dlgUpdateMedia
         Me.chkVotes.AutoSize = True
         Me.chkVotes.Checked = True
         Me.chkVotes.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkVotes.Location = New System.Drawing.Point(6, 160)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(55, 17)
@@ -545,6 +585,7 @@ Partial Class dlgUpdateMedia
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Checked = True
         Me.chkTrailer.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTrailer.Location = New System.Drawing.Point(6, 220)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
@@ -557,6 +598,7 @@ Partial Class dlgUpdateMedia
         Me.chkRating.AutoSize = True
         Me.chkRating.Checked = True
         Me.chkRating.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRating.Location = New System.Drawing.Point(6, 140)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
@@ -569,6 +611,7 @@ Partial Class dlgUpdateMedia
         Me.chkRelease.AutoSize = True
         Me.chkRelease.Checked = True
         Me.chkRelease.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRelease.Location = New System.Drawing.Point(6, 100)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(92, 17)
@@ -581,6 +624,7 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA.AutoSize = True
         Me.chkMPAA.Checked = True
         Me.chkMPAA.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMPAA.Location = New System.Drawing.Point(6, 60)
         Me.chkMPAA.Name = "chkMPAA"
         Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
@@ -593,6 +637,7 @@ Partial Class dlgUpdateMedia
         Me.chkYear.AutoSize = True
         Me.chkYear.Checked = True
         Me.chkYear.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkYear.Location = New System.Drawing.Point(6, 40)
         Me.chkYear.Name = "chkYear"
         Me.chkYear.Size = New System.Drawing.Size(47, 17)
@@ -605,24 +650,13 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Checked = True
         Me.chkTitle.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkTitle.Location = New System.Drawing.Point(6, 20)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
-        '
-        'chkCert
-        '
-        Me.chkCert.AutoSize = True
-        Me.chkCert.Checked = True
-        Me.chkCert.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCert.Location = New System.Drawing.Point(6, 80)
-        Me.chkCert.Name = "chkCert"
-        Me.chkCert.Size = New System.Drawing.Size(89, 17)
-        Me.chkCert.TabIndex = 20
-        Me.chkCert.Text = "Certification"
-        Me.chkCert.UseVisualStyleBackColor = True
         '
         'dlgUpdateMedia
         '

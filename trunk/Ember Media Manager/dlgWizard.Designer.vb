@@ -192,6 +192,7 @@ Partial Class dlgWizard
         '
         'chkMovieNameMultiOnly
         '
+        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(19, 237)
         Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
         Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(199, 42)
@@ -203,7 +204,7 @@ Partial Class dlgWizard
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox7.Location = New System.Drawing.Point(224, 203)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(139, 61)
@@ -214,6 +215,7 @@ Partial Class dlgWizard
         'chkMovieNameNFO
         '
         Me.chkMovieNameNFO.AutoSize = True
+        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 41)
         Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
         Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
@@ -224,6 +226,7 @@ Partial Class dlgWizard
         'chkMovieNFO
         '
         Me.chkMovieNFO.AutoSize = True
+        Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
         Me.chkMovieNFO.Name = "chkMovieNFO"
         Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
@@ -236,7 +239,7 @@ Partial Class dlgWizard
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox6.Location = New System.Drawing.Point(224, 111)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(139, 86)
@@ -247,6 +250,7 @@ Partial Class dlgWizard
         'chkMovieNameDotFanartJPG
         '
         Me.chkMovieNameDotFanartJPG.AutoSize = True
+        Me.chkMovieNameDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 63)
         Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
         Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(126, 17)
@@ -257,6 +261,7 @@ Partial Class dlgWizard
         'chkMovieNameFanartJPG
         '
         Me.chkMovieNameFanartJPG.AutoSize = True
+        Me.chkMovieNameFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 42)
         Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
         Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(127, 17)
@@ -267,6 +272,7 @@ Partial Class dlgWizard
         'chkFanartJPG
         '
         Me.chkFanartJPG.AutoSize = True
+        Me.chkFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
         Me.chkFanartJPG.Name = "chkFanartJPG"
         Me.chkFanartJPG.Size = New System.Drawing.Size(77, 17)
@@ -283,7 +289,7 @@ Partial Class dlgWizard
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(19, 111)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(199, 126)
@@ -294,6 +300,7 @@ Partial Class dlgWizard
         'chkFolderJPG
         '
         Me.chkFolderJPG.AutoSize = True
+        Me.chkFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFolderJPG.Location = New System.Drawing.Point(10, 97)
         Me.chkFolderJPG.Name = "chkFolderJPG"
         Me.chkFolderJPG.Size = New System.Drawing.Size(77, 17)
@@ -304,6 +311,7 @@ Partial Class dlgWizard
         'chkPosterJPG
         '
         Me.chkPosterJPG.AutoSize = True
+        Me.chkPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkPosterJPG.Location = New System.Drawing.Point(101, 74)
         Me.chkPosterJPG.Name = "chkPosterJPG"
         Me.chkPosterJPG.Size = New System.Drawing.Size(79, 17)
@@ -314,6 +322,7 @@ Partial Class dlgWizard
         'chkPosterTBN
         '
         Me.chkPosterTBN.AutoSize = True
+        Me.chkPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkPosterTBN.Location = New System.Drawing.Point(10, 74)
         Me.chkPosterTBN.Name = "chkPosterTBN"
         Me.chkPosterTBN.Size = New System.Drawing.Size(80, 17)
@@ -324,6 +333,7 @@ Partial Class dlgWizard
         'chkMovieNameJPG
         '
         Me.chkMovieNameJPG.AutoSize = True
+        Me.chkMovieNameJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNameJPG.Location = New System.Drawing.Point(101, 51)
         Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
         Me.chkMovieNameJPG.Size = New System.Drawing.Size(92, 17)
@@ -334,6 +344,7 @@ Partial Class dlgWizard
         'chkMovieJPG
         '
         Me.chkMovieJPG.AutoSize = True
+        Me.chkMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieJPG.Location = New System.Drawing.Point(10, 51)
         Me.chkMovieJPG.Name = "chkMovieJPG"
         Me.chkMovieJPG.Size = New System.Drawing.Size(76, 17)
@@ -344,6 +355,7 @@ Partial Class dlgWizard
         'chkMovieNameTBN
         '
         Me.chkMovieNameTBN.AutoSize = True
+        Me.chkMovieNameTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieNameTBN.Location = New System.Drawing.Point(101, 28)
         Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
         Me.chkMovieNameTBN.Size = New System.Drawing.Size(93, 17)
@@ -354,6 +366,7 @@ Partial Class dlgWizard
         'chkMovieTBN
         '
         Me.chkMovieTBN.AutoSize = True
+        Me.chkMovieTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkMovieTBN.Location = New System.Drawing.Point(10, 28)
         Me.chkMovieTBN.Name = "chkMovieTBN"
         Me.chkMovieTBN.Size = New System.Drawing.Size(77, 17)
@@ -363,7 +376,7 @@ Partial Class dlgWizard
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(45, 281)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(286, 30)
@@ -509,7 +522,7 @@ Partial Class dlgWizard
         'Label6
         '
         Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label6.Location = New System.Drawing.Point(13, 58)
+        Me.Label6.Location = New System.Drawing.Point(16, 57)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(337, 46)
         Me.Label6.TabIndex = 1
@@ -521,7 +534,7 @@ Partial Class dlgWizard
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label7.Location = New System.Drawing.Point(17, 5)
+        Me.Label7.Location = New System.Drawing.Point(35, 5)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(297, 50)
         Me.Label7.TabIndex = 0
@@ -540,10 +553,10 @@ Partial Class dlgWizard
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.Panel3)
-        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel4)
+        Me.Controls.Add(Me.Panel3)
+        Me.Controls.Add(Me.Panel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

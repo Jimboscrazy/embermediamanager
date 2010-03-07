@@ -30,6 +30,7 @@ Partial Class dlgExportMovies
         Me.pnlBottomMain = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.btnSource = New System.Windows.Forms.Button
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.Search_Button = New System.Windows.Forms.Button
@@ -47,7 +48,6 @@ Partial Class dlgExportMovies
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
         Me.lstSources = New System.Windows.Forms.CheckedListBox
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -129,6 +129,13 @@ Partial Class dlgExportMovies
         Me.btnSource.TabIndex = 7
         Me.btnSource.UseVisualStyleBackColor = True
         Me.btnSource.Visible = False
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "asc.png")
+        Me.ImageList1.Images.SetKeyName(1, "desc.png")
         '
         'Reset_Button
         '
@@ -297,19 +304,13 @@ Partial Class dlgExportMovies
         '
         'lstSources
         '
+        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lstSources.FormattingEnabled = True
         Me.lstSources.Location = New System.Drawing.Point(286, 442)
         Me.lstSources.Name = "lstSources"
         Me.lstSources.Size = New System.Drawing.Size(123, 94)
         Me.lstSources.TabIndex = 9
         Me.lstSources.Visible = False
-        '
-        'ImageList1
-        '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "asc.png")
-        Me.ImageList1.Images.SetKeyName(1, "desc.png")
         '
         'dlgExportMovies
         '

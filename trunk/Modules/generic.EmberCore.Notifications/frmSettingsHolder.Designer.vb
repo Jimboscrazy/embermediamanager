@@ -23,12 +23,12 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.chkOnNewEp = New System.Windows.Forms.CheckBox
         Me.chkOnMovieScraped = New System.Windows.Forms.CheckBox
         Me.chkOnNewMovie = New System.Windows.Forms.CheckBox
         Me.chkOnError = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
-        Me.chkOnNewEp = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -46,12 +46,22 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
         '
+        'chkOnNewEp
+        '
+        Me.chkOnNewEp.AutoSize = True
+        Me.chkOnNewEp.Location = New System.Drawing.Point(10, 146)
+        Me.chkOnNewEp.Name = "chkOnNewEp"
+        Me.chkOnNewEp.Size = New System.Drawing.Size(149, 17)
+        Me.chkOnNewEp.TabIndex = 86
+        Me.chkOnNewEp.Text = "On New Episode Added"
+        Me.chkOnNewEp.UseVisualStyleBackColor = True
+        '
         'chkOnMovieScraped
         '
         Me.chkOnMovieScraped.AutoSize = True
         Me.chkOnMovieScraped.Location = New System.Drawing.Point(10, 109)
         Me.chkOnMovieScraped.Name = "chkOnMovieScraped"
-        Me.chkOnMovieScraped.Size = New System.Drawing.Size(115, 17)
+        Me.chkOnMovieScraped.Size = New System.Drawing.Size(120, 17)
         Me.chkOnMovieScraped.TabIndex = 85
         Me.chkOnMovieScraped.Text = "On Movie Scraped"
         Me.chkOnMovieScraped.UseVisualStyleBackColor = True
@@ -61,7 +71,7 @@ Partial Class frmSettingsHolder
         Me.chkOnNewMovie.AutoSize = True
         Me.chkOnNewMovie.Location = New System.Drawing.Point(10, 86)
         Me.chkOnNewMovie.Name = "chkOnNewMovie"
-        Me.chkOnNewMovie.Size = New System.Drawing.Size(131, 17)
+        Me.chkOnNewMovie.Size = New System.Drawing.Size(139, 17)
         Me.chkOnNewMovie.TabIndex = 84
         Me.chkOnNewMovie.Text = "On New Movie Added"
         Me.chkOnNewMovie.UseVisualStyleBackColor = True
@@ -71,7 +81,7 @@ Partial Class frmSettingsHolder
         Me.chkOnError.AutoSize = True
         Me.chkOnError.Location = New System.Drawing.Point(10, 45)
         Me.chkOnError.Name = "chkOnError"
-        Me.chkOnError.Size = New System.Drawing.Size(65, 17)
+        Me.chkOnError.Size = New System.Drawing.Size(70, 17)
         Me.chkOnError.TabIndex = 83
         Me.chkOnError.Text = "On Error"
         Me.chkOnError.UseVisualStyleBackColor = True
@@ -91,20 +101,10 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.AutoSize = True
         Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
         Me.chkEnabled.Name = "chkEnabled"
-        Me.chkEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 80
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
-        '
-        'chkOnNewEp
-        '
-        Me.chkOnNewEp.AutoSize = True
-        Me.chkOnNewEp.Location = New System.Drawing.Point(10, 146)
-        Me.chkOnNewEp.Name = "chkOnNewEp"
-        Me.chkOnNewEp.Size = New System.Drawing.Size(140, 17)
-        Me.chkOnNewEp.TabIndex = 86
-        Me.chkOnNewEp.Text = "On New Episode Added"
-        Me.chkOnNewEp.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
@@ -112,6 +112,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(643, 356)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmSettingsHolder"
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)

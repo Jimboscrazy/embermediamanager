@@ -31,11 +31,11 @@ Partial Class dlgNewVersion
         Me.Label2 = New System.Windows.Forms.Label
         Me.btnUpgrade = New System.Windows.Forms.Button
         Me.pnlUpgrade = New System.Windows.Forms.Panel
-        Me.lblUpgrade = New System.Windows.Forms.Label
         Me.btnNo = New System.Windows.Forms.Button
         Me.btnYes = New System.Windows.Forms.Button
         Me.pbUpgrade = New System.Windows.Forms.ProgressBar
         Me.lblStart = New System.Windows.Forms.Label
+        Me.lblUpgrade = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlUpgrade.SuspendLayout()
         Me.SuspendLayout()
@@ -131,17 +131,6 @@ Partial Class dlgNewVersion
         Me.pnlUpgrade.TabIndex = 15
         Me.pnlUpgrade.Visible = False
         '
-        'lblUpgrade
-        '
-        Me.lblUpgrade.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUpgrade.Location = New System.Drawing.Point(3, 11)
-        Me.lblUpgrade.Name = "lblUpgrade"
-        Me.lblUpgrade.Size = New System.Drawing.Size(394, 109)
-        Me.lblUpgrade.TabIndex = 4
-        Me.lblUpgrade.Text = "TEXT"
-        Me.lblUpgrade.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblUpgrade.Visible = False
-        '
         'btnNo
         '
         Me.btnNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -173,13 +162,24 @@ Partial Class dlgNewVersion
         '
         'lblStart
         '
-        Me.lblStart.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStart.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStart.Location = New System.Drawing.Point(12, 11)
         Me.lblStart.Name = "lblStart"
         Me.lblStart.Size = New System.Drawing.Size(369, 23)
         Me.lblStart.TabIndex = 0
         Me.lblStart.Text = "Preparing for upgrade ..."
         Me.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblUpgrade
+        '
+        Me.lblUpgrade.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblUpgrade.Location = New System.Drawing.Point(3, 11)
+        Me.lblUpgrade.Name = "lblUpgrade"
+        Me.lblUpgrade.Size = New System.Drawing.Size(394, 109)
+        Me.lblUpgrade.TabIndex = 4
+        Me.lblUpgrade.Text = "TEXT"
+        Me.lblUpgrade.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblUpgrade.Visible = False
         '
         'dlgNewVersion
         '
@@ -195,6 +195,7 @@ Partial Class dlgNewVersion
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.txtChangelog)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

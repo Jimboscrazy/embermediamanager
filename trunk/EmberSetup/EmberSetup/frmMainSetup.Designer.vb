@@ -112,7 +112,7 @@ Partial Class frmMainSetup
         Me.llAbout.AutoSize = True
         Me.llAbout.Location = New System.Drawing.Point(446, 263)
         Me.llAbout.Name = "llAbout"
-        Me.llAbout.Size = New System.Drawing.Size(35, 13)
+        Me.llAbout.Size = New System.Drawing.Size(39, 13)
         Me.llAbout.TabIndex = 11
         Me.llAbout.TabStop = True
         Me.llAbout.Text = "About"
@@ -142,6 +142,7 @@ Partial Class frmMainSetup
         Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.btnInstall)
         Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

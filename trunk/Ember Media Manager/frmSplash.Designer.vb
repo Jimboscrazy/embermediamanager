@@ -30,7 +30,7 @@ Partial Class frmSplash
         'Version
         '
         Me.Version.BackColor = System.Drawing.Color.White
-        Me.Version.Font = New System.Drawing.Font("Arial", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Version.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Version.Location = New System.Drawing.Point(49, 170)
         Me.Version.Name = "Version"
         Me.Version.Size = New System.Drawing.Size(253, 11)

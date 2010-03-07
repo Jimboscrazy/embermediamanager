@@ -768,9 +768,9 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(186, 426)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(186, 444)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
-        Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 162)
+        Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 146)
         Me.pnlFilterGenre.TabIndex = 15
         Me.pnlFilterGenre.Visible = False
         '
@@ -819,9 +819,9 @@ Partial Class frmMain
         Me.pnlFilterSource.Controls.Add(Me.lblSFilClose)
         Me.pnlFilterSource.Controls.Add(Me.Label8)
         Me.pnlFilterSource.Controls.Add(Me.clbFilterSource)
-        Me.pnlFilterSource.Location = New System.Drawing.Point(186, 497)
+        Me.pnlFilterSource.Location = New System.Drawing.Point(186, 515)
         Me.pnlFilterSource.Name = "pnlFilterSource"
-        Me.pnlFilterSource.Size = New System.Drawing.Size(166, 162)
+        Me.pnlFilterSource.Size = New System.Drawing.Size(166, 146)
         Me.pnlFilterSource.TabIndex = 16
         Me.pnlFilterSource.Visible = False
         '
@@ -1730,7 +1730,7 @@ Partial Class frmMain
         Me.GroupBox1.Controls.Add(Me.btnIMDBRating)
         Me.GroupBox1.Controls.Add(Me.btnSortTitle)
         Me.GroupBox1.Controls.Add(Me.btnSortDate)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(3, 81)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(131, 76)
@@ -1740,6 +1740,7 @@ Partial Class frmMain
         '
         'btnIMDBRating
         '
+        Me.btnIMDBRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnIMDBRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
         Me.btnIMDBRating.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnIMDBRating.Location = New System.Drawing.Point(7, 53)
@@ -1752,6 +1753,7 @@ Partial Class frmMain
         '
         'btnSortTitle
         '
+        Me.btnSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
         Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
@@ -1764,6 +1766,7 @@ Partial Class frmMain
         '
         'btnSortDate
         '
+        Me.btnSortDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSortDate.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
         Me.btnSortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
@@ -1792,7 +1795,7 @@ Partial Class frmMain
         Me.GroupBox3.Controls.Add(Me.chkFilterTolerance)
         Me.GroupBox3.Controls.Add(Me.chkFilterMissing)
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
-        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(131, 59)
@@ -1803,6 +1806,7 @@ Partial Class frmMain
         'chkFilterTolerance
         '
         Me.chkFilterTolerance.AutoSize = True
+        Me.chkFilterTolerance.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 41)
         Me.chkFilterTolerance.Name = "chkFilterTolerance"
         Me.chkFilterTolerance.Size = New System.Drawing.Size(112, 17)
@@ -1813,6 +1817,7 @@ Partial Class frmMain
         'chkFilterMissing
         '
         Me.chkFilterMissing.AutoSize = True
+        Me.chkFilterMissing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterMissing.Location = New System.Drawing.Point(7, 27)
         Me.chkFilterMissing.Name = "chkFilterMissing"
         Me.chkFilterMissing.Size = New System.Drawing.Size(96, 17)
@@ -1823,6 +1828,7 @@ Partial Class frmMain
         'chkFilterDupe
         '
         Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterDupe.Location = New System.Drawing.Point(7, 13)
         Me.chkFilterDupe.Name = "chkFilterDupe"
         Me.chkFilterDupe.Size = New System.Drawing.Size(80, 17)
@@ -1845,7 +1851,7 @@ Partial Class frmMain
         Me.gbSpecific.Controls.Add(Me.txtFilterGenre)
         Me.gbSpecific.Controls.Add(Me.Label2)
         Me.gbSpecific.Controls.Add(Me.Label3)
-        Me.gbSpecific.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSpecific.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
         Me.gbSpecific.Size = New System.Drawing.Size(224, 155)
@@ -1856,7 +1862,7 @@ Partial Class frmMain
         'txtFilterSource
         '
         Me.txtFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtFilterSource.Location = New System.Drawing.Point(50, 129)
         Me.txtFilterSource.Name = "txtFilterSource"
         Me.txtFilterSource.ReadOnly = True
@@ -1866,6 +1872,7 @@ Partial Class frmMain
         'Label6
         '
         Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label6.Location = New System.Drawing.Point(6, 108)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(66, 13)
@@ -1875,6 +1882,7 @@ Partial Class frmMain
         'cbFilterFileSource
         '
         Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterFileSource.FormattingEnabled = True
         Me.cbFilterFileSource.Location = New System.Drawing.Point(77, 104)
         Me.cbFilterFileSource.Name = "cbFilterFileSource"
@@ -1884,6 +1892,7 @@ Partial Class frmMain
         'chkFilterLock
         '
         Me.chkFilterLock.AutoSize = True
+        Me.chkFilterLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkFilterLock.Location = New System.Drawing.Point(80, 18)
         Me.chkFilterLock.Name = "chkFilterLock"
         Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
@@ -1906,6 +1915,7 @@ Partial Class frmMain
         '
         Me.rbFilterAnd.AutoSize = True
         Me.rbFilterAnd.Checked = True
+        Me.rbFilterAnd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
         Me.rbFilterAnd.Name = "rbFilterAnd"
         Me.rbFilterAnd.Size = New System.Drawing.Size(46, 17)
@@ -1917,6 +1927,7 @@ Partial Class frmMain
         'rbFilterOr
         '
         Me.rbFilterOr.AutoSize = True
+        Me.rbFilterOr.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
         Me.rbFilterOr.Name = "rbFilterOr"
         Me.rbFilterOr.Size = New System.Drawing.Size(38, 17)
@@ -1927,6 +1938,7 @@ Partial Class frmMain
         'chkFilterNew
         '
         Me.chkFilterNew.AutoSize = True
+        Me.chkFilterNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
         Me.chkFilterNew.Name = "chkFilterNew"
         Me.chkFilterNew.Size = New System.Drawing.Size(49, 17)
@@ -1937,6 +1949,7 @@ Partial Class frmMain
         'cbFilterYear
         '
         Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYear.FormattingEnabled = True
         Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
         Me.cbFilterYear.Location = New System.Drawing.Point(130, 80)
@@ -1947,6 +1960,7 @@ Partial Class frmMain
         'chkFilterMark
         '
         Me.chkFilterMark.AutoSize = True
+        Me.chkFilterMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
         Me.chkFilterMark.Name = "chkFilterMark"
         Me.chkFilterMark.Size = New System.Drawing.Size(65, 17)
@@ -1957,6 +1971,7 @@ Partial Class frmMain
         'cbFilterYearMod
         '
         Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYearMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYearMod.FormattingEnabled = True
         Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
         Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 80)
@@ -1967,6 +1982,7 @@ Partial Class frmMain
         'Label5
         '
         Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label5.Location = New System.Drawing.Point(6, 83)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(31, 13)
@@ -1976,6 +1992,7 @@ Partial Class frmMain
         'txtFilterGenre
         '
         Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtFilterGenre.Location = New System.Drawing.Point(50, 58)
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
@@ -1985,6 +2002,7 @@ Partial Class frmMain
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(6, 132)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(45, 13)
@@ -1994,6 +2012,7 @@ Partial Class frmMain
         'Label3
         '
         Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(6, 60)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(41, 13)
@@ -2005,6 +2024,7 @@ Partial Class frmMain
         Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
         Me.btnFilterDown.Enabled = False
+        Me.btnFilterDown.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnFilterDown.Location = New System.Drawing.Point(324, 1)
         Me.btnFilterDown.Name = "btnFilterDown"
         Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
@@ -2018,7 +2038,7 @@ Partial Class frmMain
         '
         Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnFilterUp.Location = New System.Drawing.Point(292, 1)
         Me.btnFilterUp.Name = "btnFilterUp"
         Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
@@ -2175,7 +2195,7 @@ Partial Class frmMain
         Me.txtCerts.Location = New System.Drawing.Point(117, 208)
         Me.txtCerts.Name = "txtCerts"
         Me.txtCerts.ReadOnly = True
-        Me.txtCerts.Size = New System.Drawing.Size(212, 20)
+        Me.txtCerts.Size = New System.Drawing.Size(212, 22)
         Me.txtCerts.TabIndex = 41
         Me.txtCerts.TabStop = False
         '
@@ -2304,7 +2324,7 @@ Partial Class frmMain
         Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
         Me.txtFilePath.Name = "txtFilePath"
         Me.txtFilePath.ReadOnly = True
-        Me.txtFilePath.Size = New System.Drawing.Size(304, 20)
+        Me.txtFilePath.Size = New System.Drawing.Size(304, 22)
         Me.txtFilePath.TabIndex = 31
         Me.txtFilePath.TabStop = False
         '
@@ -2329,7 +2349,7 @@ Partial Class frmMain
         Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
         Me.txtIMDBID.Name = "txtIMDBID"
         Me.txtIMDBID.ReadOnly = True
-        Me.txtIMDBID.Size = New System.Drawing.Size(108, 20)
+        Me.txtIMDBID.Size = New System.Drawing.Size(108, 22)
         Me.txtIMDBID.TabIndex = 29
         Me.txtIMDBID.TabStop = False
         '
@@ -3590,6 +3610,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.MenuStrip)
         Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip
         Me.MinimumSize = New System.Drawing.Size(1024, 764)
