@@ -2408,6 +2408,11 @@ Public Class dlgSettings
     Private Sub chkShowJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub ToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        currText = DirectCast(sender, ToolStripButton).Text
+        Me.FillList(currText)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3985,7 +3990,6 @@ Public Class dlgSettings
     Private Sub LoadRatingRegions()
         Me.cbRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
     End Sub
-#End Region '*** Routines/Functions
 
     Private Sub AddButtons()
 
@@ -4028,7 +4032,7 @@ Public Class dlgSettings
                                 .Tag = 400}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
-        'MODULES - Add method to add button from modules - Tag = position
+        'TODO: MODULES - Add method to add button from modules - Tag = position
 
         If TSBs.Count > 0 Then
             'calculate the spacer width
@@ -4048,11 +4052,6 @@ Public Class dlgSettings
             Me.currText = TSBs.Item(0).Text
             Me.FillList(currText)
         End If
-    End Sub
-
-    Private Sub ToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        currText = DirectCast(sender, ToolStripButton).Text
-        Me.FillList(currText)
     End Sub
 
     Private Sub FillList(ByVal sType As String)
@@ -4115,13 +4114,6 @@ Public Class dlgSettings
                       .Type = Master.eLang.GetString(36, "Movies"), _
                       .Panel = Me.pnlImages, _
                       .Order = 400})
-        'Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-        '              .Name = "pnlTrailers", _
-        '              .Text = Master.eLang.GetString(799, "Scraper - Trailers"), _
-        '              .ImageIndex = 8, _
-        '              .Type = Master.eLang.GetString(36, "Movies"), _
-        '              .Panel = Me.pnlTrailers, _
-        '              .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlShows", _
                       .Text = Master.eLang.GetString(38, "General"), _
@@ -4172,18 +4164,10 @@ Public Class dlgSettings
                       .Panel = Me.pnlXBMCCom, _
                       .Order = 300})
 
-        'MODULES - Add method to add settings panel from module - Order = position
         AddScraperPanels()
-        'Example of adding item as a child:
-        'Me.SettingsPanels.Add(New SettingsPanel With { _
-        '                      .Name = "pnlTest", _
-        '                      .Text = "TEST", _
-        '                      .ImageIndex = 1, _
-        '                      .Type = "Options", _
-        '                      .Panel = Me.pnlMovies, _
-        '                      .Order = 100, _
-        '                      .Parent = "pnlGeneral"})
+
     End Sub
+
     Sub AddScraperPanels()
         Dim ModuleCounter As Integer = 1
         Dim tPanel As New Containers.SettingsPanel
@@ -4262,5 +4246,6 @@ Public Class dlgSettings
             Me.pnlMain.Controls.Remove(Me.currPanel)
         End If
     End Sub
+#End Region '*** Routines/Functions
 
 End Class
