@@ -894,7 +894,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
         '
         'cmnuTitle
         '
@@ -1144,13 +1144,13 @@ Partial Class frmMain
         'cmnuRenameAuto
         '
         Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
-        Me.cmnuRenameAuto.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuRenameAuto.Size = New System.Drawing.Size(114, 22)
         Me.cmnuRenameAuto.Text = "Auto"
         '
         'cmnuRenameManual
         '
         Me.cmnuRenameManual.Name = "cmnuRenameManual"
-        Me.cmnuRenameManual.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
         Me.cmnuRenameManual.Text = "Manual"
         '
         'ToolStripSeparator1

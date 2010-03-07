@@ -23,9 +23,12 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.chkOnMovieScraped = New System.Windows.Forms.CheckBox
+        Me.chkOnNewMovie = New System.Windows.Forms.CheckBox
         Me.chkOnError = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
+        Me.chkOnNewEp = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -33,12 +36,35 @@ Partial Class frmSettingsHolder
         'pnlSettings
         '
         Me.pnlSettings.BackColor = System.Drawing.Color.White
+        Me.pnlSettings.Controls.Add(Me.chkOnNewEp)
+        Me.pnlSettings.Controls.Add(Me.chkOnMovieScraped)
+        Me.pnlSettings.Controls.Add(Me.chkOnNewMovie)
         Me.pnlSettings.Controls.Add(Me.chkOnError)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
+        '
+        'chkOnMovieScraped
+        '
+        Me.chkOnMovieScraped.AutoSize = True
+        Me.chkOnMovieScraped.Location = New System.Drawing.Point(10, 109)
+        Me.chkOnMovieScraped.Name = "chkOnMovieScraped"
+        Me.chkOnMovieScraped.Size = New System.Drawing.Size(115, 17)
+        Me.chkOnMovieScraped.TabIndex = 85
+        Me.chkOnMovieScraped.Text = "On Movie Scraped"
+        Me.chkOnMovieScraped.UseVisualStyleBackColor = True
+        '
+        'chkOnNewMovie
+        '
+        Me.chkOnNewMovie.AutoSize = True
+        Me.chkOnNewMovie.Location = New System.Drawing.Point(10, 86)
+        Me.chkOnNewMovie.Name = "chkOnNewMovie"
+        Me.chkOnNewMovie.Size = New System.Drawing.Size(131, 17)
+        Me.chkOnNewMovie.TabIndex = 84
+        Me.chkOnNewMovie.Text = "On New Movie Added"
+        Me.chkOnNewMovie.UseVisualStyleBackColor = True
         '
         'chkOnError
         '
@@ -70,6 +96,16 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'chkOnNewEp
+        '
+        Me.chkOnNewEp.AutoSize = True
+        Me.chkOnNewEp.Location = New System.Drawing.Point(10, 146)
+        Me.chkOnNewEp.Name = "chkOnNewEp"
+        Me.chkOnNewEp.Size = New System.Drawing.Size(140, 17)
+        Me.chkOnNewEp.TabIndex = 86
+        Me.chkOnNewEp.Text = "On New Episode Added"
+        Me.chkOnNewEp.UseVisualStyleBackColor = True
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -89,4 +125,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnError As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOnMovieScraped As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOnNewMovie As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOnNewEp As System.Windows.Forms.CheckBox
 End Class

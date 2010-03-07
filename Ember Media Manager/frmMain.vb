@@ -6559,6 +6559,7 @@ doCancel:
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
 
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(999, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
                 End If
@@ -6570,8 +6571,12 @@ doCancel:
     End Sub
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
-        Me.tspbLoading.Value += e.ProgressPercentage
-        Me.SetStatus(e.UserState.ToString)
+        If e.ProgressPercentage = -1 Then
+            Functions.Notify("moviescraped", 3, Master.eLang.GetString(999, "Movie Scraped"), e.UserState.ToString)
+        Else
+            Me.tspbLoading.Value += e.ProgressPercentage
+            Me.SetStatus(e.UserState.ToString)
+        End If
     End Sub
 
     Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
@@ -8030,6 +8035,5 @@ doCancel:
         End Select
     End Sub
 #End Region '*** Routines/Functions
-
 End Class
 
