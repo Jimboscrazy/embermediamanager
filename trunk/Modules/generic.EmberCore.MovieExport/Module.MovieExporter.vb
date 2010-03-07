@@ -21,8 +21,10 @@ Imports EmberAPI
 
 Public Class MovieExporterModule
     Implements Interfaces.EmberExternalModule
+
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
+    Private _setup As frmSettingsHolder
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
@@ -34,16 +36,29 @@ Public Class MovieExporterModule
     End Property
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
+        Me._setup = New frmSettingsHolder
+        Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = New Panel
+        SPanel.Panel = Me._setup.pnlSettings
+        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+
+    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
+        RaiseEvent ModuleEnabledChanged(Me._name, State)
+    End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
 
     End Sub
 
