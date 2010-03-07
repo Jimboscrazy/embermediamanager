@@ -23,44 +23,53 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.chkBulRenamer = New System.Windows.Forms.CheckBox
+        Me.chkGenericModule = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
+        Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
+        Me.chkRenameSingle = New System.Windows.Forms.CheckBox
+        Me.chkRenameMulti = New System.Windows.Forms.CheckBox
+        Me.lblFilePattern = New System.Windows.Forms.Label
+        Me.lblFolderPattern = New System.Windows.Forms.Label
+        Me.txtFilePattern = New System.Windows.Forms.TextBox
+        Me.txtFolderPattern = New System.Windows.Forms.TextBox
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.gbRenamerPatterns.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
         Me.pnlSettings.BackColor = System.Drawing.Color.White
-        Me.pnlSettings.Controls.Add(Me.CheckBox2)
-        Me.pnlSettings.Controls.Add(Me.CheckBox1)
+        Me.pnlSettings.Controls.Add(Me.gbRenamerPatterns)
+        Me.pnlSettings.Controls.Add(Me.chkBulRenamer)
+        Me.pnlSettings.Controls.Add(Me.chkGenericModule)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
         '
-        'CheckBox2
+        'chkBulRenamer
         '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(10, 54)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(160, 17)
-        Me.CheckBox2.TabIndex = 84
-        Me.CheckBox2.Text = "Enable Bulk Renamer Tool"
-        Me.CheckBox2.UseVisualStyleBackColor = True
+        Me.chkBulRenamer.AutoSize = True
+        Me.chkBulRenamer.Location = New System.Drawing.Point(391, 31)
+        Me.chkBulRenamer.Name = "chkBulRenamer"
+        Me.chkBulRenamer.Size = New System.Drawing.Size(160, 17)
+        Me.chkBulRenamer.TabIndex = 84
+        Me.chkBulRenamer.Text = "Enable Bulk Renamer Tool"
+        Me.chkBulRenamer.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'chkGenericModule
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(10, 31)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(190, 17)
-        Me.CheckBox1.TabIndex = 83
-        Me.CheckBox1.Text = "Enable Generic Rename Module"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.chkGenericModule.AutoSize = True
+        Me.chkGenericModule.Location = New System.Drawing.Point(10, 31)
+        Me.chkGenericModule.Name = "chkGenericModule"
+        Me.chkGenericModule.Size = New System.Drawing.Size(190, 17)
+        Me.chkGenericModule.TabIndex = 83
+        Me.chkGenericModule.Text = "Enable Generic Rename Module"
+        Me.chkGenericModule.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -82,6 +91,82 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'gbRenamerPatterns
+        '
+        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameSingle)
+        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameMulti)
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
+        Me.gbRenamerPatterns.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbRenamerPatterns.Location = New System.Drawing.Point(21, 54)
+        Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
+        Me.gbRenamerPatterns.Size = New System.Drawing.Size(194, 176)
+        Me.gbRenamerPatterns.TabIndex = 85
+        Me.gbRenamerPatterns.TabStop = False
+        Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
+        '
+        'chkRenameSingle
+        '
+        Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
+        Me.chkRenameSingle.Name = "chkRenameSingle"
+        Me.chkRenameSingle.Size = New System.Drawing.Size(176, 30)
+        Me.chkRenameSingle.TabIndex = 74
+        Me.chkRenameSingle.Text = "Automatically Rename Files During Single-Scraper"
+        Me.chkRenameSingle.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.UseVisualStyleBackColor = True
+        '
+        'chkRenameMulti
+        '
+        Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
+        Me.chkRenameMulti.Name = "chkRenameMulti"
+        Me.chkRenameMulti.Size = New System.Drawing.Size(179, 30)
+        Me.chkRenameMulti.TabIndex = 73
+        Me.chkRenameMulti.Text = "Automatically Rename Files During Multi-Scraper"
+        Me.chkRenameMulti.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.UseVisualStyleBackColor = True
+        '
+        'lblFilePattern
+        '
+        Me.lblFilePattern.AutoSize = True
+        Me.lblFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilePattern.Location = New System.Drawing.Point(7, 56)
+        Me.lblFilePattern.Name = "lblFilePattern"
+        Me.lblFilePattern.Size = New System.Drawing.Size(70, 13)
+        Me.lblFilePattern.TabIndex = 3
+        Me.lblFilePattern.Text = "Files Pattern"
+        '
+        'lblFolderPattern
+        '
+        Me.lblFolderPattern.AutoSize = True
+        Me.lblFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFolderPattern.Location = New System.Drawing.Point(6, 17)
+        Me.lblFolderPattern.Name = "lblFolderPattern"
+        Me.lblFolderPattern.Size = New System.Drawing.Size(85, 13)
+        Me.lblFolderPattern.TabIndex = 2
+        Me.lblFolderPattern.Text = "Folders Pattern"
+        '
+        'txtFilePattern
+        '
+        Me.txtFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilePattern.Location = New System.Drawing.Point(8, 71)
+        Me.txtFilePattern.Name = "txtFilePattern"
+        Me.txtFilePattern.Size = New System.Drawing.Size(176, 22)
+        Me.txtFilePattern.TabIndex = 1
+        '
+        'txtFolderPattern
+        '
+        Me.txtFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 32)
+        Me.txtFolderPattern.Name = "txtFolderPattern"
+        Me.txtFolderPattern.Size = New System.Drawing.Size(177, 22)
+        Me.txtFolderPattern.TabIndex = 0
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -95,12 +180,21 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.gbRenamerPatterns.ResumeLayout(False)
+        Me.gbRenamerPatterns.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkBulRenamer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGenericModule As System.Windows.Forms.CheckBox
+    Friend WithEvents gbRenamerPatterns As System.Windows.Forms.GroupBox
+    Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRenameMulti As System.Windows.Forms.CheckBox
+    Friend WithEvents lblFilePattern As System.Windows.Forms.Label
+    Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
+    Friend WithEvents txtFilePattern As System.Windows.Forms.TextBox
+    Friend WithEvents txtFolderPattern As System.Windows.Forms.TextBox
 End Class

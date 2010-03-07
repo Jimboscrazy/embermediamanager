@@ -182,8 +182,6 @@ Public Class Settings
     Private _nodisplayfanart As Boolean
     Private _outlineforplot As Boolean
     Private _xbmccoms As List(Of XBMCCom)
-    Private _defaultfolderspattern As String
-    Private _defaultfilespattern As String
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
@@ -230,8 +228,8 @@ Public Class Settings
     Private _missingfiltertrailer As Boolean
     Private _missingfiltersubs As Boolean
     Private _missingfilterextras As Boolean
-    Private _autorenamemulti As Boolean
-    Private _autorenamesingle As Boolean
+    'Private _autorenamemulti As Boolean
+    'Private _autorenamesingle As Boolean
     Private _movietheme As String
     Private _tvshowtheme As String
     Private _tveptheme As String
@@ -1750,24 +1748,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property FoldersPattern() As String
-        Get
-            Return Me._defaultfolderspattern
-        End Get
-        Set(ByVal value As String)
-            Me._defaultfolderspattern = value
-        End Set
-    End Property
-
-    Public Property FilesPattern() As String
-        Get
-            Return Me._defaultfilespattern
-        End Get
-        Set(ByVal value As String)
-            Me._defaultfilespattern = value
-        End Set
-    End Property
-
     Public Property SortPath() As String
         Get
             Return Me._sortpath
@@ -2170,24 +2150,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._missingfilterextras = value
-        End Set
-    End Property
-
-    Public Property AutoRenameMulti() As Boolean
-        Get
-            Return Me._autorenamemulti
-        End Get
-        Set(ByVal value As Boolean)
-            Me._autorenamemulti = value
-        End Set
-    End Property
-
-    Public Property AutoRenameSingle() As Boolean
-        Get
-            Return Me._autorenamesingle
-        End Get
-        Set(ByVal value As Boolean)
-            Me._autorenamesingle = value
         End Set
     End Property
 
@@ -3140,8 +3102,6 @@ Public Class Settings
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
         Me._outlineforplot = False
-        Me._defaultfolderspattern = "$T {($Y)}"
-        Me._defaultfilespattern = "$T{.$S}"
         Me._xbmccoms = New List(Of XBMCCom)
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
@@ -3189,8 +3149,6 @@ Public Class Settings
         Me._missingfiltertrailer = True
         Me._missingfiltersubs = True
         Me._missingfilterextras = True
-        Me._autorenamemulti = False
-        Me._autorenamesingle = False
         Me._movietheme = "Default"
         Me._tvshowtheme = "Default"
         Me._tveptheme = "Default"

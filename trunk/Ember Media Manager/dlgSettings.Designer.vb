@@ -232,13 +232,6 @@ Partial Class dlgSettings
         Me.btnAddNoStack = New System.Windows.Forms.Button
         Me.txtNoStack = New System.Windows.Forms.TextBox
         Me.lstNoStack = New System.Windows.Forms.ListBox
-        Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
-        Me.chkRenameSingle = New System.Windows.Forms.CheckBox
-        Me.chkRenameMulti = New System.Windows.Forms.CheckBox
-        Me.lblFilePattern = New System.Windows.Forms.Label
-        Me.lblFolderPattern = New System.Windows.Forms.Label
-        Me.txtFilePattern = New System.Windows.Forms.TextBox
-        Me.txtFolderPattern = New System.Windows.Forms.TextBox
         Me.GroupBox18 = New System.Windows.Forms.GroupBox
         Me.btnRemMovieExt = New System.Windows.Forms.Button
         Me.btnAddMovieExt = New System.Windows.Forms.Button
@@ -618,7 +611,6 @@ Partial Class dlgSettings
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox22.SuspendLayout()
-        Me.gbRenamerPatterns.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.pnlSources.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
@@ -2939,7 +2931,6 @@ Partial Class dlgSettings
         Me.pnlExtensions.BackColor = System.Drawing.Color.White
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.GroupBox3)
-        Me.pnlExtensions.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
         Me.pnlExtensions.Location = New System.Drawing.Point(187, 165)
         Me.pnlExtensions.Name = "pnlExtensions"
@@ -2954,7 +2945,7 @@ Partial Class dlgSettings
         Me.GroupBox22.Controls.Add(Me.txtNoStack)
         Me.GroupBox22.Controls.Add(Me.lstNoStack)
         Me.GroupBox22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox22.Location = New System.Drawing.Point(203, 192)
+        Me.GroupBox22.Location = New System.Drawing.Point(202, 6)
         Me.GroupBox22.Name = "GroupBox22"
         Me.GroupBox22.Size = New System.Drawing.Size(194, 199)
         Me.GroupBox22.TabIndex = 2
@@ -2997,82 +2988,6 @@ Partial Class dlgSettings
         Me.lstNoStack.Size = New System.Drawing.Size(171, 147)
         Me.lstNoStack.Sorted = True
         Me.lstNoStack.TabIndex = 0
-        '
-        'gbRenamerPatterns
-        '
-        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameSingle)
-        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameMulti)
-        Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
-        Me.gbRenamerPatterns.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRenamerPatterns.Location = New System.Drawing.Point(203, 6)
-        Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
-        Me.gbRenamerPatterns.Size = New System.Drawing.Size(194, 176)
-        Me.gbRenamerPatterns.TabIndex = 1
-        Me.gbRenamerPatterns.TabStop = False
-        Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
-        '
-        'chkRenameSingle
-        '
-        Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
-        Me.chkRenameSingle.Name = "chkRenameSingle"
-        Me.chkRenameSingle.Size = New System.Drawing.Size(176, 30)
-        Me.chkRenameSingle.TabIndex = 74
-        Me.chkRenameSingle.Text = "Automatically Rename Files During Single-Scraper"
-        Me.chkRenameSingle.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameSingle.UseVisualStyleBackColor = True
-        '
-        'chkRenameMulti
-        '
-        Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameMulti.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
-        Me.chkRenameMulti.Name = "chkRenameMulti"
-        Me.chkRenameMulti.Size = New System.Drawing.Size(179, 30)
-        Me.chkRenameMulti.TabIndex = 73
-        Me.chkRenameMulti.Text = "Automatically Rename Files During Multi-Scraper"
-        Me.chkRenameMulti.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameMulti.UseVisualStyleBackColor = True
-        '
-        'lblFilePattern
-        '
-        Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilePattern.Location = New System.Drawing.Point(7, 56)
-        Me.lblFilePattern.Name = "lblFilePattern"
-        Me.lblFilePattern.Size = New System.Drawing.Size(70, 13)
-        Me.lblFilePattern.TabIndex = 3
-        Me.lblFilePattern.Text = "Files Pattern"
-        '
-        'lblFolderPattern
-        '
-        Me.lblFolderPattern.AutoSize = True
-        Me.lblFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFolderPattern.Location = New System.Drawing.Point(6, 17)
-        Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(85, 13)
-        Me.lblFolderPattern.TabIndex = 2
-        Me.lblFolderPattern.Text = "Folders Pattern"
-        '
-        'txtFilePattern
-        '
-        Me.txtFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilePattern.Location = New System.Drawing.Point(8, 71)
-        Me.txtFilePattern.Name = "txtFilePattern"
-        Me.txtFilePattern.Size = New System.Drawing.Size(176, 22)
-        Me.txtFilePattern.TabIndex = 1
-        '
-        'txtFolderPattern
-        '
-        Me.txtFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 32)
-        Me.txtFolderPattern.Name = "txtFolderPattern"
-        Me.txtFolderPattern.Size = New System.Drawing.Size(177, 22)
-        Me.txtFolderPattern.TabIndex = 0
         '
         'GroupBox18
         '
@@ -6936,18 +6851,18 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlScraper)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7017,8 +6932,6 @@ Partial Class dlgSettings
         Me.pnlExtensions.ResumeLayout(False)
         Me.GroupBox22.ResumeLayout(False)
         Me.GroupBox22.PerformLayout()
-        Me.gbRenamerPatterns.ResumeLayout(False)
-        Me.gbRenamerPatterns.PerformLayout()
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
         Me.pnlSources.ResumeLayout(False)
@@ -7280,11 +7193,6 @@ Partial Class dlgSettings
     Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
     Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
-    Friend WithEvents gbRenamerPatterns As System.Windows.Forms.GroupBox
-    Friend WithEvents lblFilePattern As System.Windows.Forms.Label
-    Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
-    Friend WithEvents txtFilePattern As System.Windows.Forms.TextBox
-    Friend WithEvents txtFolderPattern As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox22 As System.Windows.Forms.GroupBox
     Friend WithEvents btnRemoveNoStack As System.Windows.Forms.Button
     Friend WithEvents btnAddNoStack As System.Windows.Forms.Button
@@ -7327,8 +7235,6 @@ Partial Class dlgSettings
     Friend WithEvents chkMissingFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkMissingPoster As System.Windows.Forms.CheckBox
     Friend WithEvents btnDLTrans As System.Windows.Forms.Button
-    Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRenameMulti As System.Windows.Forms.CheckBox
     Friend WithEvents cbAutoETSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkAutoETSize As System.Windows.Forms.CheckBox
     Friend WithEvents Label35 As System.Windows.Forms.Label

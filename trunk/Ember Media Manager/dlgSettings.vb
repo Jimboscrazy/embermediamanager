@@ -1051,11 +1051,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
+    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
+    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1382,11 +1382,11 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameMulti.CheckedChanged
+    Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameSingle.CheckedChanged
+    Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2643,8 +2643,6 @@ Public Class dlgSettings
             Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
             Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
-            Master.eSettings.FoldersPattern = Me.txtFolderPattern.Text
-            Master.eSettings.FilesPattern = Me.txtFilePattern.Text
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
             Master.eSettings.DisplayYear = Me.chkDisplayYear.Checked
             Master.eSettings.ETNative = Me.rbETNative.Checked
@@ -2713,8 +2711,6 @@ Public Class dlgSettings
             Master.eSettings.MissingFilterSubs = Me.chkMissingSubs.Checked
             Master.eSettings.MissingFilterExtras = Me.chkMissingExtra.Checked
 
-            Master.eSettings.AutoRenameMulti = Me.chkRenameMulti.Checked
-            Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
             Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
@@ -3042,8 +3038,6 @@ Public Class dlgSettings
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
             Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
 
-            Me.txtFolderPattern.Text = Master.eSettings.FoldersPattern
-            Me.txtFilePattern.Text = Master.eSettings.FilesPattern
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
             Me.chkDisplayYear.Checked = Master.eSettings.DisplayYear
 
@@ -3101,9 +3095,6 @@ Public Class dlgSettings
             Me.chkMissingTrailer.Checked = Master.eSettings.MissingFilterTrailer
             Me.chkMissingSubs.Checked = Master.eSettings.MissingFilterSubs
             Me.chkMissingExtra.Checked = Master.eSettings.MissingFilterExtras
-
-            Me.chkRenameMulti.Checked = Master.eSettings.AutoRenameMulti
-            Me.chkRenameSingle.Checked = Master.eSettings.AutoRenameSingle
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
             Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
@@ -3511,9 +3502,7 @@ Public Class dlgSettings
 
         Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Downloading")
         Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
-        Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
-        Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
-        Me.lblFolderPattern.Text = Master.eLang.GetString(533, "Folders Pattern")
+
         Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         Me.btnEditSource.Text = Master.eLang.GetString(535, "Edit Source")
         Me.btnEditTVSource.Text = Master.eLang.GetString(535, "Edit Source")
@@ -3587,8 +3576,7 @@ Public Class dlgSettings
         Me.chkMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
         Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
-        Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
-        Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
+
         Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.Label1.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
