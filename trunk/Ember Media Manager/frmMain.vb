@@ -2169,12 +2169,10 @@ Public Class frmMain
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
 
-        '//
-        ' Begin the process to search IMDB for data
-        '\\
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, True, False)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -2221,6 +2219,8 @@ Public Class frmMain
 
                         Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditMovie.Visible = False
+                        Me.ScrapingToolStripMenuItem.Visible = True
+                        Me.cmnuRescrape.Visible = False
                         Me.cmnuSearchNew.Visible = False
                         Me.cmuRenamer.Visible = False
                         Me.cmnuMetaData.Visible = False
@@ -2252,7 +2252,8 @@ Public Class frmMain
                         Me.RemoveGenreToolStripMenuItem.Enabled = False
                     Else
                         Me.cmnuEditMovie.Visible = True
-                        Me.ScrapingToolStripMenuItem.Visible = True
+                        Me.ScrapingToolStripMenuItem.Visible = False
+                        Me.cmnuRescrape.Visible = True
                         Me.cmnuSearchNew.Visible = True
                         Me.cmuRenamer.Visible = True
                         Me.cmnuMetaData.Visible = True
@@ -4151,11 +4152,6 @@ Public Class frmMain
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub SelectAllAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
     Private Sub SelectNfoAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
@@ -4163,66 +4159,6 @@ Public Class frmMain
 
     Private Sub SelectAllAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectNfoAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectExtraAskMEnuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAskMEnuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectTrailerAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectMetaAskMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAskMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectNfoAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectNfoAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectPosterAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectPosterAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectFanartAutoiMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoiMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectExtraAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectTrailerAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-    End Sub
-
-    Private Sub SelectMetaAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
@@ -4258,36 +4194,26 @@ Public Class frmMain
     Private Sub SelectFanartAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectFanartAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
     End Sub
 
     Private Sub SelectExtraAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectExtraAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Extra, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
     End Sub
 
     Private Sub SelectTrailerAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTrailerAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
     End Sub
 
     Private Sub SelectMetaAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMetaAutoToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
-
     End Sub
 
     Private Sub SelectMeEtaAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMeEtaAskToolStripMenuItem.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
-
-    End Sub
-
-    Private Sub SelectAllAutoMenuToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllAutoMenuToolStripMenuItem.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub dgvTVSeasons_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVSeasons.MouseDown
@@ -4510,6 +4436,12 @@ Public Class frmMain
                 Master.DB.SaveTVSeasonToDB(DBAllSeason, False)
             End If
         End Using
+    End Sub
+
+    Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
+        Functions.SetScraperMod(Enums.ModType.DoSearch, False)
+        Functions.SetScraperMod(Enums.ModType.All, True, False)
+        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
     End Sub
 #End Region '*** Form/Controls
 
@@ -8035,5 +7967,6 @@ doCancel:
         End Select
     End Sub
 #End Region '*** Routines/Functions
+
 End Class
 
