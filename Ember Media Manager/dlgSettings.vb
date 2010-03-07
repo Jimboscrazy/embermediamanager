@@ -3417,7 +3417,7 @@ Public Class dlgSettings
         Me.Label8.Text = Master.eLang.GetString(458, "* New movies will still display in green if not checked.")
         Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies*")
         Me.GroupBox2.Text = Master.eLang.GetString(460, "Media List Options")
-        Me.Label30.Text = Master.eLang.GetString(461, "Tolerance:")
+        Me.Label30.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.chkCheckTitles.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.GroupBox25.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.chkDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")

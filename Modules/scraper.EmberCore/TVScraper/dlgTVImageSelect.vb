@@ -229,6 +229,21 @@ Public Class dlgTVImageSelect
 
     End Function
 
+    Public Shared Function GetFanartDims(ByVal fSize As Size) As Enums.FanartSize
+
+        Try
+            If (fSize.Width > 1000 AndAlso fSize.Height > 750) OrElse (fSize.Height > 1000 AndAlso fSize.Width > 750) Then
+                Return Enums.FanartSize.Lrg
+            ElseIf (fSize.Width > 700 AndAlso fSize.Height > 400) OrElse (fSize.Height > 700 AndAlso fSize.Width > 400) Then
+                Return Enums.FanartSize.Mid
+            Else
+                Return Enums.FanartSize.Small
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Function
+
     Public Function SetDefaults() As Boolean
 
         Dim iSeason As Integer = -1
@@ -241,7 +256,11 @@ Public Class dlgTVImageSelect
             Me.bwLoadImages.ReportProgress(Scraper.TVDBImages.SeasonImageList.Count + Scraper.tmpTVDBShow.Episodes.Count + 3, "defaults")
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
-                Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowPosterSize)
+
+                'no preferred size, just get any one of them
+                If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
                 If Not IsNothing(tSP) Then
                     Scraper.TVDBImages.ShowPoster.Image.Image = tSP.Image.Image
                     Scraper.TVDBImages.ShowPoster.LocalFile = tSP.LocalFile
@@ -255,7 +274,11 @@ Public Class dlgTVImageSelect
             Me.bwLoadImages.ReportProgress(1, "progress")
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
+                Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso GetFanartDims(f.Size) = Master.eSettings.PreferredShowFanartSize)
+
+                'no fanart of the preferred size, just get the first available
+                If IsNothing(tSF) Then tSF = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
+
                 If Not IsNothing(tSF) Then
                     If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
                         Scraper.TVDBImages.ShowFanart.Image.FromFile(tSF.LocalFile)
@@ -278,6 +301,7 @@ Public Class dlgTVImageSelect
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
                 Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                'no preferred size setting for all seasons poster so just grab anything
                 If Not IsNothing(tSP) Then
                     Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
                     Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSP.LocalFile
@@ -295,7 +319,8 @@ Public Class dlgTVImageSelect
                     Try
                         iSeason = cSeason.Season
                         If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonPoster) AndAlso IsNothing(cSeason.Poster.Image) Then
-                            tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason)
+                            tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason AndAlso p.Type = Master.eSettings.PreferredSeasonPosterSize)
+                            If IsNothing(tSea) Then tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason)
                             If Not IsNothing(tSea) Then cSeason.Poster.Image = tSea.Image.Image
                         End If
                         If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonFanart) AndAlso Master.eSettings.SeasonFanartEnabled AndAlso IsNothing(cSeason.Fanart.Image.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then cSeason.Fanart.Image.Image = Scraper.TVDBImages.ShowFanart.Image.Image

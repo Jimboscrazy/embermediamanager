@@ -164,6 +164,10 @@ Partial Class dlgSettings
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
+        Me.GroupBox17 = New System.Windows.Forms.GroupBox
+        Me.chkUseImgCacheUpdaters = New System.Windows.Forms.CheckBox
+        Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
+        Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseETasFA = New System.Windows.Forms.CheckBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
@@ -263,10 +267,6 @@ Partial Class dlgSettings
         Me.chkUpdaterTrailer = New System.Windows.Forms.CheckBox
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.Label19 = New System.Windows.Forms.Label
-        Me.GroupBox17 = New System.Windows.Forms.GroupBox
-        Me.chkUseImgCacheUpdaters = New System.Windows.Forms.CheckBox
-        Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
-        Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.GroupBox23 = New System.Windows.Forms.GroupBox
         Me.chkAutoETSize = New System.Windows.Forms.CheckBox
         Me.cbAutoETSize = New System.Windows.Forms.ComboBox
@@ -516,7 +516,7 @@ Partial Class dlgSettings
         Me.cbTVLanguage = New System.Windows.Forms.ComboBox
         Me.Label48 = New System.Windows.Forms.Label
         Me.Label52 = New System.Windows.Forms.Label
-        Me.Label46 = New System.Windows.Forms.Label
+        Me.Label42 = New System.Windows.Forms.Label
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.chkCertification = New System.Windows.Forms.CheckBox
         Me.chkTop250 = New System.Windows.Forms.CheckBox
@@ -579,29 +579,6 @@ Partial Class dlgSettings
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
         Me.pnlScraper = New System.Windows.Forms.Panel
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.Label33 = New System.Windows.Forms.Label
-        Me.TrackBar1 = New System.Windows.Forms.TrackBar
-        Me.Label37 = New System.Windows.Forms.Label
-        Me.Label38 = New System.Windows.Forms.Label
-        Me.Label39 = New System.Windows.Forms.Label
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
-        Me.Label40 = New System.Windows.Forms.Label
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox
-        Me.TextBox3 = New System.Windows.Forms.TextBox
-        Me.TextBox4 = New System.Windows.Forms.TextBox
-        Me.CheckBox3 = New System.Windows.Forms.CheckBox
-        Me.Label41 = New System.Windows.Forms.Label
-        Me.TrackBar2 = New System.Windows.Forms.TrackBar
-        Me.Label42 = New System.Windows.Forms.Label
-        Me.Label43 = New System.Windows.Forms.Label
-        Me.Label44 = New System.Windows.Forms.Label
-        Me.CheckBox4 = New System.Windows.Forms.CheckBox
-        Me.ComboBox2 = New System.Windows.Forms.ComboBox
-        Me.Label45 = New System.Windows.Forms.Label
-        Me.CheckBox5 = New System.Windows.Forms.CheckBox
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.pnlMain = New System.Windows.Forms.Panel
         Me.GroupBox11.SuspendLayout()
@@ -624,6 +601,7 @@ Partial Class dlgSettings
         Me.GroupBox13.SuspendLayout()
         CType(Me.tbFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
+        Me.GroupBox17.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlGeneral.SuspendLayout()
@@ -646,7 +624,6 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
-        Me.GroupBox17.SuspendLayout()
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.pnlTVSources.SuspendLayout()
@@ -707,8 +684,6 @@ Partial Class dlgSettings
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
-        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -727,7 +702,7 @@ Partial Class dlgSettings
         Me.GroupBox11.Controls.Add(Me.Label6)
         Me.GroupBox11.Controls.Add(Me.txtPort)
         Me.GroupBox11.Controls.Add(Me.txtIP)
-        Me.GroupBox11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox11.Location = New System.Drawing.Point(298, 6)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(308, 386)
@@ -888,10 +863,10 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox4.Location = New System.Drawing.Point(210, 3)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(206, 344)
+        Me.GroupBox4.Size = New System.Drawing.Size(401, 344)
         Me.GroupBox4.TabIndex = 2
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
@@ -900,7 +875,7 @@ Partial Class dlgSettings
         '
         Me.chkShowGenresText.AutoSize = True
         Me.chkShowGenresText.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowGenresText.Location = New System.Drawing.Point(10, 192)
+        Me.chkShowGenresText.Location = New System.Drawing.Point(10, 178)
         Me.chkShowGenresText.Name = "chkShowGenresText"
         Me.chkShowGenresText.Size = New System.Drawing.Size(166, 17)
         Me.chkShowGenresText.TabIndex = 57
@@ -909,11 +884,12 @@ Partial Class dlgSettings
         '
         'chkSourceFromFolder
         '
+        Me.chkSourceFromFolder.AutoSize = True
         Me.chkSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSourceFromFolder.Location = New System.Drawing.Point(10, 111)
+        Me.chkSourceFromFolder.Location = New System.Drawing.Point(10, 110)
         Me.chkSourceFromFolder.Name = "chkSourceFromFolder"
-        Me.chkSourceFromFolder.Size = New System.Drawing.Size(172, 31)
+        Me.chkSourceFromFolder.Size = New System.Drawing.Size(243, 17)
         Me.chkSourceFromFolder.TabIndex = 16
         Me.chkSourceFromFolder.Text = "Include Folder Name in Source Type Check"
         Me.chkSourceFromFolder.UseVisualStyleBackColor = True
@@ -922,7 +898,7 @@ Partial Class dlgSettings
         '
         Me.chkNoDisplayFanart.AutoSize = True
         Me.chkNoDisplayFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoDisplayFanart.Location = New System.Drawing.Point(10, 158)
+        Me.chkNoDisplayFanart.Location = New System.Drawing.Point(10, 144)
         Me.chkNoDisplayFanart.Name = "chkNoDisplayFanart"
         Me.chkNoDisplayFanart.Size = New System.Drawing.Size(139, 17)
         Me.chkNoDisplayFanart.TabIndex = 2
@@ -944,7 +920,7 @@ Partial Class dlgSettings
         '
         Me.chkNoDisplayPoster.AutoSize = True
         Me.chkNoDisplayPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoDisplayPoster.Location = New System.Drawing.Point(10, 141)
+        Me.chkNoDisplayPoster.Location = New System.Drawing.Point(10, 127)
         Me.chkNoDisplayPoster.Name = "chkNoDisplayPoster"
         Me.chkNoDisplayPoster.Size = New System.Drawing.Size(138, 17)
         Me.chkNoDisplayPoster.TabIndex = 1
@@ -955,7 +931,7 @@ Partial Class dlgSettings
         '
         Me.chkShowDims.AutoSize = True
         Me.chkShowDims.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowDims.Location = New System.Drawing.Point(10, 175)
+        Me.chkShowDims.Location = New System.Drawing.Point(10, 161)
         Me.chkShowDims.Name = "chkShowDims"
         Me.chkShowDims.Size = New System.Drawing.Size(160, 17)
         Me.chkShowDims.TabIndex = 3
@@ -1013,10 +989,10 @@ Partial Class dlgSettings
         Me.GroupBox29.Controls.Add(Me.Label1)
         Me.GroupBox29.Controls.Add(Me.cbMovieTheme)
         Me.GroupBox29.Controls.Add(Me.Label35)
-        Me.GroupBox29.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox29.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox29.Location = New System.Drawing.Point(8, 61)
         Me.GroupBox29.Name = "GroupBox29"
-        Me.GroupBox29.Size = New System.Drawing.Size(181, 166)
+        Me.GroupBox29.Size = New System.Drawing.Size(179, 166)
         Me.GroupBox29.TabIndex = 21
         Me.GroupBox29.TabStop = False
         Me.GroupBox29.Text = "Themes*"
@@ -1127,7 +1103,7 @@ Partial Class dlgSettings
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.tcCleaner)
-        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(401, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(208, 385)
@@ -1405,7 +1381,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
-        Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox12.Location = New System.Drawing.Point(5, 205)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(199, 161)
@@ -1471,7 +1447,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(209, 4)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(218, 362)
@@ -1483,7 +1459,7 @@ Partial Class dlgSettings
         '
         Me.txtCheckTitleTol.Enabled = False
         Me.txtCheckTitleTol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCheckTitleTol.Location = New System.Drawing.Point(75, 50)
+        Me.txtCheckTitleTol.Location = New System.Drawing.Point(142, 50)
         Me.txtCheckTitleTol.Name = "txtCheckTitleTol"
         Me.txtCheckTitleTol.Size = New System.Drawing.Size(61, 22)
         Me.txtCheckTitleTol.TabIndex = 74
@@ -1492,11 +1468,12 @@ Partial Class dlgSettings
         '
         Me.Label30.AutoSize = True
         Me.Label30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(18, 54)
+        Me.Label30.Location = New System.Drawing.Point(27, 54)
         Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(59, 13)
+        Me.Label30.Size = New System.Drawing.Size(111, 13)
         Me.Label30.TabIndex = 73
-        Me.Label30.Text = "Tolerance:"
+        Me.Label30.Text = "Mismatch Tolerance:"
+        Me.Label30.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'chkCheckTitles
         '
@@ -1515,7 +1492,7 @@ Partial Class dlgSettings
         Me.GroupBox25.Controls.Add(Me.btnAddToken)
         Me.GroupBox25.Controls.Add(Me.txtSortToken)
         Me.GroupBox25.Controls.Add(Me.lstSortTokens)
-        Me.GroupBox25.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox25.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox25.Location = New System.Drawing.Point(9, 73)
         Me.GroupBox25.Name = "GroupBox25"
         Me.GroupBox25.Size = New System.Drawing.Size(200, 102)
@@ -1645,10 +1622,10 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(243, 113)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(366, 225)
+        Me.GroupBox8.Size = New System.Drawing.Size(366, 197)
         Me.GroupBox8.TabIndex = 5
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -1657,7 +1634,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(199, 65)
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(199, 70)
         Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
         Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(161, 42)
         Me.chkMovieNameMultiOnly.TabIndex = 5
@@ -1669,7 +1646,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
-        Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox21.Location = New System.Drawing.Point(150, 111)
         Me.GroupBox21.Name = "GroupBox21"
         Me.GroupBox21.Size = New System.Drawing.Size(102, 59)
@@ -1717,7 +1694,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox7.Location = New System.Drawing.Point(258, 111)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(102, 59)
@@ -1752,7 +1729,7 @@ Partial Class dlgSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox6.Location = New System.Drawing.Point(6, 111)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(136, 81)
@@ -1969,7 +1946,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.lblPosterSize)
         Me.GroupBox14.Controls.Add(Me.cbPosterSize)
         Me.GroupBox14.Controls.Add(Me.chkOverwritePoster)
-        Me.GroupBox14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox14.Location = New System.Drawing.Point(190, 3)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(218, 176)
@@ -2103,7 +2080,7 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.cbFanartSize)
         Me.GroupBox13.Controls.Add(Me.lblFanartSize)
         Me.GroupBox13.Controls.Add(Me.chkOverwriteFanart)
-        Me.GroupBox13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox13.Location = New System.Drawing.Point(190, 185)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(218, 176)
@@ -2238,10 +2215,11 @@ Partial Class dlgSettings
         '
         Me.GroupBox9.Controls.Add(Me.chkNoSaveImagesToNfo)
         Me.GroupBox9.Controls.Add(Me.chkSingleScrapeImages)
-        Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox9.Controls.Add(Me.GroupBox17)
+        Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox9.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(184, 103)
+        Me.GroupBox9.Size = New System.Drawing.Size(184, 153)
         Me.GroupBox9.TabIndex = 0
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -2270,6 +2248,55 @@ Partial Class dlgSettings
         Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
         '
+        'GroupBox17
+        '
+        Me.GroupBox17.Controls.Add(Me.chkUseImgCacheUpdaters)
+        Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
+        Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
+        Me.GroupBox17.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox17.Location = New System.Drawing.Point(4, 70)
+        Me.GroupBox17.Name = "GroupBox17"
+        Me.GroupBox17.Size = New System.Drawing.Size(176, 79)
+        Me.GroupBox17.TabIndex = 1
+        Me.GroupBox17.TabStop = False
+        Me.GroupBox17.Text = "Caching"
+        '
+        'chkUseImgCacheUpdaters
+        '
+        Me.chkUseImgCacheUpdaters.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkUseImgCacheUpdaters.Enabled = False
+        Me.chkUseImgCacheUpdaters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkUseImgCacheUpdaters.Location = New System.Drawing.Point(20, 35)
+        Me.chkUseImgCacheUpdaters.Name = "chkUseImgCacheUpdaters"
+        Me.chkUseImgCacheUpdaters.Size = New System.Drawing.Size(155, 18)
+        Me.chkUseImgCacheUpdaters.TabIndex = 1
+        Me.chkUseImgCacheUpdaters.Text = "Use Cache for Scrapers"
+        Me.chkUseImgCacheUpdaters.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkUseImgCacheUpdaters.UseVisualStyleBackColor = True
+        '
+        'chkPersistImgCache
+        '
+        Me.chkPersistImgCache.AutoSize = True
+        Me.chkPersistImgCache.Enabled = False
+        Me.chkPersistImgCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPersistImgCache.Location = New System.Drawing.Point(20, 58)
+        Me.chkPersistImgCache.Name = "chkPersistImgCache"
+        Me.chkPersistImgCache.Size = New System.Drawing.Size(149, 17)
+        Me.chkPersistImgCache.TabIndex = 2
+        Me.chkPersistImgCache.Text = "Persistent Image Cache*"
+        Me.chkPersistImgCache.UseVisualStyleBackColor = True
+        '
+        'chkUseImgCache
+        '
+        Me.chkUseImgCache.AutoSize = True
+        Me.chkUseImgCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkUseImgCache.Location = New System.Drawing.Point(7, 16)
+        Me.chkUseImgCache.Name = "chkUseImgCache"
+        Me.chkUseImgCache.Size = New System.Drawing.Size(113, 17)
+        Me.chkUseImgCache.TabIndex = 0
+        Me.chkUseImgCache.Text = "Use Image Cache"
+        Me.chkUseImgCache.UseVisualStyleBackColor = True
+        '
         'chkUseETasFA
         '
         Me.chkUseETasFA.CheckAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2286,7 +2313,7 @@ Partial Class dlgSettings
         'Label17
         '
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(10, 380)
+        Me.Label17.Location = New System.Drawing.Point(194, 381)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(329, 16)
         Me.Label17.TabIndex = 63
@@ -2434,6 +2461,7 @@ Partial Class dlgSettings
         'tvSettings
         '
         Me.tvSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tvSettings.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tvSettings.FullRowSelect = True
         Me.tvSettings.HideSelection = False
         Me.tvSettings.ImageIndex = 0
@@ -2464,10 +2492,10 @@ Partial Class dlgSettings
         Me.gbInterface.Controls.Add(Me.Label32)
         Me.gbInterface.Controls.Add(Me.btnDLTrans)
         Me.gbInterface.Controls.Add(Me.cbIntLang)
-        Me.gbInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbInterface.Location = New System.Drawing.Point(7, 3)
         Me.gbInterface.Name = "gbInterface"
-        Me.gbInterface.Size = New System.Drawing.Size(198, 344)
+        Me.gbInterface.Size = New System.Drawing.Size(196, 344)
         Me.gbInterface.TabIndex = 4
         Me.gbInterface.TabStop = False
         Me.gbInterface.Text = "Interface"
@@ -2491,7 +2519,7 @@ Partial Class dlgSettings
         Me.gbProxy.Controls.Add(Me.txtProxyPort)
         Me.gbProxy.Controls.Add(Me.txtProxyURI)
         Me.gbProxy.Controls.Add(Me.chkEnableProxy)
-        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbProxy.Location = New System.Drawing.Point(3, 6)
         Me.gbProxy.Name = "gbProxy"
         Me.gbProxy.Size = New System.Drawing.Size(290, 230)
@@ -2509,7 +2537,7 @@ Partial Class dlgSettings
         Me.gbCreds.Controls.Add(Me.lblProxyPW)
         Me.gbCreds.Controls.Add(Me.chkEnableCredentials)
         Me.gbCreds.Enabled = False
-        Me.gbCreds.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbCreds.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbCreds.Location = New System.Drawing.Point(5, 115)
         Me.gbCreds.Name = "gbCreds"
         Me.gbCreds.Size = New System.Drawing.Size(279, 103)
@@ -2653,7 +2681,7 @@ Partial Class dlgSettings
         'gbGenreFilter
         '
         Me.gbGenreFilter.Controls.Add(Me.lbGenre)
-        Me.gbGenreFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbGenreFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbGenreFilter.Location = New System.Drawing.Point(432, 135)
         Me.gbGenreFilter.Name = "gbGenreFilter"
         Me.gbGenreFilter.Size = New System.Drawing.Size(176, 151)
@@ -2670,7 +2698,7 @@ Partial Class dlgSettings
         Me.gbFilters.Controls.Add(Me.btnAddFilter)
         Me.gbFilters.Controls.Add(Me.txtFilter)
         Me.gbFilters.Controls.Add(Me.lstFilters)
-        Me.gbFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFilters.Location = New System.Drawing.Point(5, 4)
         Me.gbFilters.Name = "gbFilters"
         Me.gbFilters.Size = New System.Drawing.Size(199, 198)
@@ -2751,7 +2779,7 @@ Partial Class dlgSettings
         Me.GroupBox27.Controls.Add(Me.chkMissingNFO)
         Me.GroupBox27.Controls.Add(Me.chkMissingFanart)
         Me.GroupBox27.Controls.Add(Me.chkMissingPoster)
-        Me.GroupBox27.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox27.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox27.Location = New System.Drawing.Point(432, 4)
         Me.GroupBox27.Name = "GroupBox27"
         Me.GroupBox27.Size = New System.Drawing.Size(176, 123)
@@ -2830,10 +2858,10 @@ Partial Class dlgSettings
         Me.GroupBox16.Controls.Add(Me.chkAutoBD)
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(5, 346)
+        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox16.Location = New System.Drawing.Point(243, 315)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(604, 44)
+        Me.GroupBox16.Size = New System.Drawing.Size(366, 69)
         Me.GroupBox16.TabIndex = 6
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Backdrops Folder"
@@ -2842,7 +2870,7 @@ Partial Class dlgSettings
         '
         Me.chkAutoBD.AutoSize = True
         Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(337, 20)
+        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
         Me.chkAutoBD.Name = "chkAutoBD"
         Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
         Me.chkAutoBD.TabIndex = 2
@@ -2852,7 +2880,7 @@ Partial Class dlgSettings
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(306, 16)
+        Me.btnBrowse.Location = New System.Drawing.Point(336, 15)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 1
@@ -2864,7 +2892,7 @@ Partial Class dlgSettings
         Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
         Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(295, 22)
+        Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
         Me.txtBDPath.TabIndex = 0
         '
         'lblCurrent
@@ -2925,7 +2953,7 @@ Partial Class dlgSettings
         Me.GroupBox22.Controls.Add(Me.btnAddNoStack)
         Me.GroupBox22.Controls.Add(Me.txtNoStack)
         Me.GroupBox22.Controls.Add(Me.lstNoStack)
-        Me.GroupBox22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox22.Location = New System.Drawing.Point(203, 192)
         Me.GroupBox22.Name = "GroupBox22"
         Me.GroupBox22.Size = New System.Drawing.Size(194, 199)
@@ -2978,7 +3006,7 @@ Partial Class dlgSettings
         Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
         Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
         Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
-        Me.gbRenamerPatterns.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbRenamerPatterns.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbRenamerPatterns.Location = New System.Drawing.Point(203, 6)
         Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
         Me.gbRenamerPatterns.Size = New System.Drawing.Size(194, 176)
@@ -3052,7 +3080,7 @@ Partial Class dlgSettings
         Me.GroupBox18.Controls.Add(Me.btnAddMovieExt)
         Me.GroupBox18.Controls.Add(Me.txtMovieExt)
         Me.GroupBox18.Controls.Add(Me.lstMovieExts)
-        Me.GroupBox18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox18.Location = New System.Drawing.Point(3, 6)
         Me.GroupBox18.Name = "GroupBox18"
         Me.GroupBox18.Size = New System.Drawing.Size(192, 385)
@@ -3109,7 +3137,7 @@ Partial Class dlgSettings
         Me.pnlSources.Controls.Add(Me.GroupBox16)
         Me.pnlSources.Location = New System.Drawing.Point(187, 165)
         Me.pnlSources.Name = "pnlSources"
-        Me.pnlSources.Size = New System.Drawing.Size(617, 400)
+        Me.pnlSources.Size = New System.Drawing.Size(617, 434)
         Me.pnlSources.TabIndex = 67
         Me.pnlSources.Visible = False
         '
@@ -3137,10 +3165,10 @@ Partial Class dlgSettings
         Me.GroupBox19.Controls.Add(Me.Label21)
         Me.GroupBox19.Controls.Add(Me.txtSkipLessThan)
         Me.GroupBox19.Controls.Add(Me.Label20)
-        Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(233, 225)
+        Me.GroupBox19.Size = New System.Drawing.Size(233, 314)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -3149,9 +3177,9 @@ Partial Class dlgSettings
         '
         Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 179)
+        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 228)
         Me.chkScanOrderModify.Name = "chkScanOrderModify"
-        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 19)
+        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 28)
         Me.chkScanOrderModify.TabIndex = 74
         Me.chkScanOrderModify.Text = "Scan in order of last write time."
         Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3161,33 +3189,36 @@ Partial Class dlgSettings
         '
         Me.chkSortBeforeScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSortBeforeScan.Location = New System.Drawing.Point(5, 123)
+        Me.chkSortBeforeScan.Location = New System.Drawing.Point(5, 140)
         Me.chkSortBeforeScan.Name = "chkSortBeforeScan"
-        Me.chkSortBeforeScan.Size = New System.Drawing.Size(198, 30)
+        Me.chkSortBeforeScan.Size = New System.Drawing.Size(222, 45)
         Me.chkSortBeforeScan.TabIndex = 73
         Me.chkSortBeforeScan.Text = "Sort files into folders before each library update"
+        Me.chkSortBeforeScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSortBeforeScan.UseVisualStyleBackColor = True
         '
         'chkIgnoreLastScan
         '
         Me.chkIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(5, 151)
+        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(5, 190)
         Me.chkIgnoreLastScan.Name = "chkIgnoreLastScan"
-        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(199, 30)
+        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(222, 50)
         Me.chkIgnoreLastScan.TabIndex = 72
         Me.chkIgnoreLastScan.Text = "Ignore last scan time when updating library"
+        Me.chkIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'chkCleanDB
         '
-        Me.chkCleanDB.AutoSize = True
+        Me.chkCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanDB.Location = New System.Drawing.Point(5, 197)
+        Me.chkCleanDB.Location = New System.Drawing.Point(5, 265)
         Me.chkCleanDB.Name = "chkCleanDB"
-        Me.chkCleanDB.Size = New System.Drawing.Size(218, 17)
+        Me.chkCleanDB.Size = New System.Drawing.Size(223, 33)
         Me.chkCleanDB.TabIndex = 71
         Me.chkCleanDB.Text = "Clean database after updating library"
+        Me.chkCleanDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkCleanDB.UseVisualStyleBackColor = True
         '
         'chkAutoDetectVTS
@@ -3196,7 +3227,7 @@ Partial Class dlgSettings
         Me.chkAutoDetectVTS.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkAutoDetectVTS.Location = New System.Drawing.Point(5, 82)
         Me.chkAutoDetectVTS.Name = "chkAutoDetectVTS"
-        Me.chkAutoDetectVTS.Size = New System.Drawing.Size(199, 43)
+        Me.chkAutoDetectVTS.Size = New System.Drawing.Size(222, 55)
         Me.chkAutoDetectVTS.TabIndex = 70
         Me.chkAutoDetectVTS.Text = "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS"""
         Me.chkAutoDetectVTS.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3248,7 +3279,6 @@ Partial Class dlgSettings
         Me.pnlImages.BackColor = System.Drawing.Color.White
         Me.pnlImages.Controls.Add(Me.GroupBox15)
         Me.pnlImages.Controls.Add(Me.Label19)
-        Me.pnlImages.Controls.Add(Me.GroupBox17)
         Me.pnlImages.Controls.Add(Me.GroupBox9)
         Me.pnlImages.Controls.Add(Me.GroupBox13)
         Me.pnlImages.Controls.Add(Me.GroupBox14)
@@ -3256,8 +3286,8 @@ Partial Class dlgSettings
         Me.pnlImages.Controls.Add(Me.GroupBox23)
         Me.pnlImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlImages.Location = New System.Drawing.Point(187, 165)
-        Me.pnlImages.Name = "pnlMovieMedia"
-        Me.pnlImages.Size = New System.Drawing.Size(617, 583)
+        Me.pnlImages.Name = "pnlImages"
+        Me.pnlImages.Size = New System.Drawing.Size(617, 408)
         Me.pnlImages.TabIndex = 68
         Me.pnlImages.Visible = False
         '
@@ -3271,9 +3301,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkSingleScrapeTrailer)
         Me.GroupBox15.Controls.Add(Me.chkUpdaterTrailer)
         Me.GroupBox15.Controls.Add(Me.chkDownloadTrailer)
-        Me.GroupBox15.Location = New System.Drawing.Point(6, 401)
+        Me.GroupBox15.Location = New System.Drawing.Point(4, 161)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(265, 178)
+        Me.GroupBox15.Size = New System.Drawing.Size(183, 241)
         Me.GroupBox15.TabIndex = 64
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "Trailers"
@@ -3284,7 +3314,7 @@ Partial Class dlgSettings
         Me.cbTrailerQuality.Enabled = False
         Me.cbTrailerQuality.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTrailerQuality.FormattingEnabled = True
-        Me.cbTrailerQuality.Location = New System.Drawing.Point(26, 143)
+        Me.cbTrailerQuality.Location = New System.Drawing.Point(33, 214)
         Me.cbTrailerQuality.Name = "cbTrailerQuality"
         Me.cbTrailerQuality.Size = New System.Drawing.Size(106, 21)
         Me.cbTrailerQuality.TabIndex = 69
@@ -3293,7 +3323,7 @@ Partial Class dlgSettings
         '
         Me.lblPreferredQuality.AutoSize = True
         Me.lblPreferredQuality.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPreferredQuality.Location = New System.Drawing.Point(24, 128)
+        Me.lblPreferredQuality.Location = New System.Drawing.Point(31, 199)
         Me.lblPreferredQuality.Name = "lblPreferredQuality"
         Me.lblPreferredQuality.Size = New System.Drawing.Size(97, 13)
         Me.lblPreferredQuality.TabIndex = 70
@@ -3301,14 +3331,15 @@ Partial Class dlgSettings
         '
         'chkDeleteAllTrailers
         '
-        Me.chkDeleteAllTrailers.AutoSize = True
+        Me.chkDeleteAllTrailers.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkDeleteAllTrailers.Enabled = False
         Me.chkDeleteAllTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(25, 107)
+        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(25, 168)
         Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
-        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(157, 17)
+        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(152, 30)
         Me.chkDeleteAllTrailers.TabIndex = 11
         Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
+        Me.chkDeleteAllTrailers.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
         '
         'chkOverwriteTrailer
@@ -3316,7 +3347,7 @@ Partial Class dlgSettings
         Me.chkOverwriteTrailer.AutoSize = True
         Me.chkOverwriteTrailer.Enabled = False
         Me.chkOverwriteTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(25, 89)
+        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(25, 152)
         Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
         Me.chkOverwriteTrailer.Size = New System.Drawing.Size(110, 17)
         Me.chkOverwriteTrailer.TabIndex = 10
@@ -3325,13 +3356,12 @@ Partial Class dlgSettings
         '
         'chkNoDLTrailer
         '
-        Me.chkNoDLTrailer.AutoSize = True
         Me.chkNoDLTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkNoDLTrailer.Enabled = False
         Me.chkNoDLTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoDLTrailer.Location = New System.Drawing.Point(25, 51)
+        Me.chkNoDLTrailer.Location = New System.Drawing.Point(25, 79)
         Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
-        Me.chkNoDLTrailer.Size = New System.Drawing.Size(184, 17)
+        Me.chkNoDLTrailer.Size = New System.Drawing.Size(151, 30)
         Me.chkNoDLTrailer.TabIndex = 8
         Me.chkNoDLTrailer.Text = "Only Get URLs During Scrapers"
         Me.chkNoDLTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3339,13 +3369,12 @@ Partial Class dlgSettings
         '
         'chkSingleScrapeTrailer
         '
-        Me.chkSingleScrapeTrailer.AutoSize = True
         Me.chkSingleScrapeTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeTrailer.Enabled = False
         Me.chkSingleScrapeTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(25, 70)
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(25, 115)
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
-        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(195, 17)
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(154, 35)
         Me.chkSingleScrapeTrailer.TabIndex = 9
         Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
         Me.chkSingleScrapeTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3353,13 +3382,12 @@ Partial Class dlgSettings
         '
         'chkUpdaterTrailer
         '
-        Me.chkUpdaterTrailer.AutoSize = True
         Me.chkUpdaterTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUpdaterTrailer.Enabled = False
         Me.chkUpdaterTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkUpdaterTrailer.Location = New System.Drawing.Point(25, 32)
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
-        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(222, 17)
+        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(151, 43)
         Me.chkUpdaterTrailer.TabIndex = 7
         Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
         Me.chkUpdaterTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3379,60 +3407,11 @@ Partial Class dlgSettings
         'Label19
         '
         Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(10, 364)
+        Me.Label19.Location = New System.Drawing.Point(194, 365)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(267, 16)
         Me.Label19.TabIndex = 2
         Me.Label19.Text = "* When enabled, the cache will be available between sessions"
-        '
-        'GroupBox17
-        '
-        Me.GroupBox17.Controls.Add(Me.chkUseImgCacheUpdaters)
-        Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
-        Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
-        Me.GroupBox17.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox17.Location = New System.Drawing.Point(3, 110)
-        Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Size = New System.Drawing.Size(183, 102)
-        Me.GroupBox17.TabIndex = 1
-        Me.GroupBox17.TabStop = False
-        Me.GroupBox17.Text = "Caching"
-        '
-        'chkUseImgCacheUpdaters
-        '
-        Me.chkUseImgCacheUpdaters.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseImgCacheUpdaters.Enabled = False
-        Me.chkUseImgCacheUpdaters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseImgCacheUpdaters.Location = New System.Drawing.Point(20, 35)
-        Me.chkUseImgCacheUpdaters.Name = "chkUseImgCacheUpdaters"
-        Me.chkUseImgCacheUpdaters.Size = New System.Drawing.Size(158, 18)
-        Me.chkUseImgCacheUpdaters.TabIndex = 1
-        Me.chkUseImgCacheUpdaters.Text = "Use Cache for Scrapers"
-        Me.chkUseImgCacheUpdaters.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseImgCacheUpdaters.UseVisualStyleBackColor = True
-        '
-        'chkPersistImgCache
-        '
-        Me.chkPersistImgCache.AutoSize = True
-        Me.chkPersistImgCache.Enabled = False
-        Me.chkPersistImgCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPersistImgCache.Location = New System.Drawing.Point(20, 53)
-        Me.chkPersistImgCache.Name = "chkPersistImgCache"
-        Me.chkPersistImgCache.Size = New System.Drawing.Size(149, 17)
-        Me.chkPersistImgCache.TabIndex = 2
-        Me.chkPersistImgCache.Text = "Persistent Image Cache*"
-        Me.chkPersistImgCache.UseVisualStyleBackColor = True
-        '
-        'chkUseImgCache
-        '
-        Me.chkUseImgCache.AutoSize = True
-        Me.chkUseImgCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseImgCache.Location = New System.Drawing.Point(7, 16)
-        Me.chkUseImgCache.Name = "chkUseImgCache"
-        Me.chkUseImgCache.Size = New System.Drawing.Size(113, 17)
-        Me.chkUseImgCache.TabIndex = 0
-        Me.chkUseImgCache.Text = "Use Image Cache"
-        Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
         'GroupBox23
         '
@@ -3444,7 +3423,7 @@ Partial Class dlgSettings
         Me.GroupBox23.Controls.Add(Me.chkUseETasFA)
         Me.GroupBox23.Controls.Add(Me.Label15)
         Me.GroupBox23.Controls.Add(Me.chkNoSpoilers)
-        Me.GroupBox23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox23.Location = New System.Drawing.Point(412, 3)
         Me.GroupBox23.Name = "GroupBox23"
         Me.GroupBox23.Size = New System.Drawing.Size(199, 358)
@@ -3484,7 +3463,7 @@ Partial Class dlgSettings
         Me.GroupBox24.Controls.Add(Me.Label29)
         Me.GroupBox24.Controls.Add(Me.rbETCustom)
         Me.GroupBox24.Controls.Add(Me.rbETNative)
-        Me.GroupBox24.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox24.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox24.Location = New System.Drawing.Point(7, 120)
         Me.GroupBox24.Name = "GroupBox24"
         Me.GroupBox24.Size = New System.Drawing.Size(185, 104)
@@ -3640,7 +3619,7 @@ Partial Class dlgSettings
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVScanOrderModify)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVIgnoreLastScan)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVCleanDB)
-        Me.gbMiscTVSourceOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMiscTVSourceOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMiscTVSourceOpts.Location = New System.Drawing.Point(6, 110)
         Me.gbMiscTVSourceOpts.Name = "gbMiscTVSourceOpts"
         Me.gbMiscTVSourceOpts.Size = New System.Drawing.Size(151, 253)
@@ -3733,7 +3712,7 @@ Partial Class dlgSettings
         Me.gbTVNaming.Controls.Add(Me.gbSeasonPosters)
         Me.gbTVNaming.Controls.Add(Me.gbShowFanart)
         Me.gbTVNaming.Controls.Add(Me.gbShowPosters)
-        Me.gbTVNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVNaming.Location = New System.Drawing.Point(161, 110)
         Me.gbTVNaming.Name = "gbTVNaming"
         Me.gbTVNaming.Size = New System.Drawing.Size(437, 253)
@@ -3745,7 +3724,7 @@ Partial Class dlgSettings
         '
         Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllJPG)
         Me.gbAllSeasonPoster.Controls.Add(Me.chkSeasonAllTBN)
-        Me.gbAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbAllSeasonPoster.Location = New System.Drawing.Point(5, 195)
         Me.gbAllSeasonPoster.Name = "gbAllSeasonPoster"
         Me.gbAllSeasonPoster.Size = New System.Drawing.Size(133, 54)
@@ -3789,7 +3768,7 @@ Partial Class dlgSettings
         '
         Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDotFanart)
         Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDashFanart)
-        Me.gbEpisodeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpisodeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpisodeFanart.Location = New System.Drawing.Point(292, 67)
         Me.gbEpisodeFanart.Name = "gbEpisodeFanart"
         Me.gbEpisodeFanart.Size = New System.Drawing.Size(140, 52)
@@ -3823,7 +3802,7 @@ Partial Class dlgSettings
         '
         Me.gbEpisodePosters.Controls.Add(Me.chkEpisodeJPG)
         Me.gbEpisodePosters.Controls.Add(Me.chkEpisodeTBN)
-        Me.gbEpisodePosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpisodePosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpisodePosters.Location = New System.Drawing.Point(292, 15)
         Me.gbEpisodePosters.Name = "gbEpisodePosters"
         Me.gbEpisodePosters.Size = New System.Drawing.Size(140, 52)
@@ -3858,7 +3837,7 @@ Partial Class dlgSettings
         Me.gbSeasonFanart.Controls.Add(Me.chkSeasonDotFanart)
         Me.gbSeasonFanart.Controls.Add(Me.chkSeasonDashFanart)
         Me.gbSeasonFanart.Controls.Add(Me.chkSeasonFanartJPG)
-        Me.gbSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeasonFanart.Location = New System.Drawing.Point(144, 150)
         Me.gbSeasonFanart.Name = "gbSeasonFanart"
         Me.gbSeasonFanart.Size = New System.Drawing.Size(145, 71)
@@ -3908,7 +3887,7 @@ Partial Class dlgSettings
         Me.gbSeasonPosters.Controls.Add(Me.chkSeasonPosterTBN)
         Me.gbSeasonPosters.Controls.Add(Me.chkSeasonXTBN)
         Me.gbSeasonPosters.Controls.Add(Me.chkSeasonXXTBN)
-        Me.gbSeasonPosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeasonPosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeasonPosters.Location = New System.Drawing.Point(143, 15)
         Me.gbSeasonPosters.Name = "gbSeasonPosters"
         Me.gbSeasonPosters.Size = New System.Drawing.Size(145, 130)
@@ -3998,7 +3977,7 @@ Partial Class dlgSettings
         Me.gbShowFanart.Controls.Add(Me.chkShowDotFanart)
         Me.gbShowFanart.Controls.Add(Me.chkShowDashFanart)
         Me.gbShowFanart.Controls.Add(Me.chkShowFanartJPG)
-        Me.gbShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowFanart.Location = New System.Drawing.Point(5, 120)
         Me.gbShowFanart.Name = "gbShowFanart"
         Me.gbShowFanart.Size = New System.Drawing.Size(133, 70)
@@ -4046,7 +4025,7 @@ Partial Class dlgSettings
         Me.gbShowPosters.Controls.Add(Me.chkShowPosterJPG)
         Me.gbShowPosters.Controls.Add(Me.chkShowPosterTBN)
         Me.gbShowPosters.Controls.Add(Me.chkShowFolderJPG)
-        Me.gbShowPosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowPosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowPosters.Location = New System.Drawing.Point(5, 15)
         Me.gbShowPosters.Name = "gbShowPosters"
         Me.gbShowPosters.Size = New System.Drawing.Size(133, 99)
@@ -4322,7 +4301,7 @@ Partial Class dlgSettings
         Me.gbTVListOptions.Controls.Add(Me.gbEpisodeListOptions)
         Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
         Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
-        Me.gbTVListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVListOptions.Location = New System.Drawing.Point(192, 6)
         Me.gbTVListOptions.Name = "gbTVListOptions"
         Me.gbTVListOptions.Size = New System.Drawing.Size(218, 385)
@@ -4346,7 +4325,7 @@ Partial Class dlgSettings
         Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeNfoCol)
         Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeFanartCol)
         Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodePosterCol)
-        Me.gbEpisodeListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpisodeListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpisodeListOptions.Location = New System.Drawing.Point(10, 143)
         Me.gbEpisodeListOptions.Name = "gbEpisodeListOptions"
         Me.gbEpisodeListOptions.Size = New System.Drawing.Size(199, 68)
@@ -4391,7 +4370,7 @@ Partial Class dlgSettings
         '
         Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonFanartCol)
         Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonPosterCol)
-        Me.gbSeasonListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeasonListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeasonListOptions.Location = New System.Drawing.Point(10, 87)
         Me.gbSeasonListOptions.Name = "gbSeasonListOptions"
         Me.gbSeasonListOptions.Size = New System.Drawing.Size(199, 52)
@@ -4426,7 +4405,7 @@ Partial Class dlgSettings
         Me.gbShowListOptions.Controls.Add(Me.chkShowNfoCol)
         Me.gbShowListOptions.Controls.Add(Me.chkShowFanartCol)
         Me.gbShowListOptions.Controls.Add(Me.chkShowPosterCol)
-        Me.gbShowListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowListOptions.Location = New System.Drawing.Point(9, 16)
         Me.gbShowListOptions.Name = "gbShowListOptions"
         Me.gbShowListOptions.Size = New System.Drawing.Size(199, 68)
@@ -4471,7 +4450,7 @@ Partial Class dlgSettings
         '
         Me.gbTVMisc.Controls.Add(Me.lblRatingRegion)
         Me.gbTVMisc.Controls.Add(Me.cbRatingRegion)
-        Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVMisc.Location = New System.Drawing.Point(6, 6)
         Me.gbTVMisc.Name = "gbTVMisc"
         Me.gbTVMisc.Size = New System.Drawing.Size(180, 385)
@@ -4509,7 +4488,7 @@ Partial Class dlgSettings
         Me.gbEpFilter.Controls.Add(Me.btnAddEpFilter)
         Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
         Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
-        Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpFilter.Location = New System.Drawing.Point(416, 184)
         Me.gbEpFilter.Name = "gbEpFilter"
         Me.gbEpFilter.Size = New System.Drawing.Size(193, 207)
@@ -4520,6 +4499,7 @@ Partial Class dlgSettings
         'chkNoFilterEpisode
         '
         Me.chkNoFilterEpisode.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoFilterEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkNoFilterEpisode.Location = New System.Drawing.Point(6, 15)
         Me.chkNoFilterEpisode.Name = "chkNoFilterEpisode"
         Me.chkNoFilterEpisode.Size = New System.Drawing.Size(180, 30)
@@ -4601,7 +4581,7 @@ Partial Class dlgSettings
         Me.gbShowFilter.Controls.Add(Me.btnAddShowFilter)
         Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
         Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
-        Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowFilter.Location = New System.Drawing.Point(416, 6)
         Me.gbShowFilter.Name = "gbShowFilter"
         Me.gbShowFilter.Size = New System.Drawing.Size(193, 172)
@@ -4679,7 +4659,7 @@ Partial Class dlgSettings
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
         Me.pnlTVImages.Location = New System.Drawing.Point(187, 165)
-        Me.pnlTVImages.Name = "pnlTVMedia"
+        Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVImages.TabIndex = 71
         Me.pnlTVImages.Visible = False
@@ -4756,7 +4736,7 @@ Partial Class dlgSettings
         Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterSize)
         Me.gbShowPosterOpts.Controls.Add(Me.cbShowPosterSize)
         Me.gbShowPosterOpts.Controls.Add(Me.chkOverwriteShowPoster)
-        Me.gbShowPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowPosterOpts.Location = New System.Drawing.Point(4, 5)
         Me.gbShowPosterOpts.Name = "gbShowPosterOpts"
         Me.gbShowPosterOpts.Size = New System.Drawing.Size(228, 167)
@@ -4890,7 +4870,7 @@ Partial Class dlgSettings
         Me.gbShowFanartOpts.Controls.Add(Me.cbShowFanartSize)
         Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartSize)
         Me.gbShowFanartOpts.Controls.Add(Me.chkOverwriteShowFanart)
-        Me.gbShowFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowFanartOpts.Location = New System.Drawing.Point(238, 5)
         Me.gbShowFanartOpts.Name = "gbShowFanartOpts"
         Me.gbShowFanartOpts.Size = New System.Drawing.Size(228, 167)
@@ -5035,7 +5015,7 @@ Partial Class dlgSettings
         Me.gbSeaPosterOpts.Controls.Add(Me.lblSeaPosterSize)
         Me.gbSeaPosterOpts.Controls.Add(Me.cbSeaPosterSize)
         Me.gbSeaPosterOpts.Controls.Add(Me.chkSeaOverwritePoster)
-        Me.gbSeaPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeaPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeaPosterOpts.Location = New System.Drawing.Point(4, 5)
         Me.gbSeaPosterOpts.Name = "gbSeaPosterOpts"
         Me.gbSeaPosterOpts.Size = New System.Drawing.Size(228, 167)
@@ -5169,7 +5149,7 @@ Partial Class dlgSettings
         Me.gbSeaFanartOpts.Controls.Add(Me.cbSeaFanartSize)
         Me.gbSeaFanartOpts.Controls.Add(Me.lblSeaFanartSize)
         Me.gbSeaFanartOpts.Controls.Add(Me.chkSeaOverwriteFanart)
-        Me.gbSeaFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeaFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeaFanartOpts.Location = New System.Drawing.Point(238, 5)
         Me.gbSeaFanartOpts.Name = "gbSeaFanartOpts"
         Me.gbSeaFanartOpts.Size = New System.Drawing.Size(228, 167)
@@ -5313,7 +5293,7 @@ Partial Class dlgSettings
         Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterHeight)
         Me.gbEpPosterOpts.Controls.Add(Me.chkResizeEpPoster)
         Me.gbEpPosterOpts.Controls.Add(Me.chkOverwriteEpPoster)
-        Me.gbEpPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpPosterOpts.Location = New System.Drawing.Point(4, 5)
         Me.gbEpPosterOpts.Name = "gbEpPosterOpts"
         Me.gbEpPosterOpts.Size = New System.Drawing.Size(228, 135)
@@ -5427,7 +5407,7 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.Controls.Add(Me.cbEpFanartSize)
         Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartSize)
         Me.gbEpFanartOpts.Controls.Add(Me.chkOverwriteEpFanart)
-        Me.gbEpFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpFanartOpts.Location = New System.Drawing.Point(238, 5)
         Me.gbEpFanartOpts.Name = "gbEpFanartOpts"
         Me.gbEpFanartOpts.Size = New System.Drawing.Size(228, 167)
@@ -5557,7 +5537,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
         Me.pnlTVScraper.Controls.Add(Me.Label48)
         Me.pnlTVScraper.Location = New System.Drawing.Point(187, 165)
-        Me.pnlTVScraper.Name = "pnlTVData"
+        Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
@@ -5566,7 +5546,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox32.Controls.Add(Me.GroupBox35)
         Me.GroupBox32.Controls.Add(Me.GroupBox34)
-        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox32.Location = New System.Drawing.Point(208, 252)
         Me.GroupBox32.Name = "GroupBox32"
         Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
@@ -5585,6 +5565,7 @@ Partial Class dlgSettings
         Me.GroupBox35.Controls.Add(Me.chkScraperShowPlot)
         Me.GroupBox35.Controls.Add(Me.chkScraperShowGenre)
         Me.GroupBox35.Controls.Add(Me.chkScraperShowTitle)
+        Me.GroupBox35.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox35.Location = New System.Drawing.Point(5, 14)
         Me.GroupBox35.Name = "GroupBox35"
         Me.GroupBox35.Size = New System.Drawing.Size(213, 96)
@@ -5693,6 +5674,7 @@ Partial Class dlgSettings
         Me.GroupBox34.Controls.Add(Me.chkScraperEpTitle)
         Me.GroupBox34.Controls.Add(Me.chkScraperEpEpisode)
         Me.GroupBox34.Controls.Add(Me.chkScraperEpSeason)
+        Me.GroupBox34.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox34.Location = New System.Drawing.Point(221, 14)
         Me.GroupBox34.Name = "GroupBox34"
         Me.GroupBox34.Size = New System.Drawing.Size(181, 96)
@@ -5795,7 +5777,7 @@ Partial Class dlgSettings
         Me.GroupBox33.Controls.Add(Me.Label53)
         Me.GroupBox33.Controls.Add(Me.gbEpLocks)
         Me.GroupBox33.Controls.Add(Me.gbShowLocks)
-        Me.GroupBox33.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox33.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox33.Location = New System.Drawing.Point(208, 6)
         Me.GroupBox33.Name = "GroupBox33"
         Me.GroupBox33.Size = New System.Drawing.Size(191, 243)
@@ -5819,6 +5801,7 @@ Partial Class dlgSettings
         Me.gbEpLocks.Controls.Add(Me.chkEpLockTitle)
         Me.gbEpLocks.Controls.Add(Me.chkEpLockRating)
         Me.gbEpLocks.Controls.Add(Me.chkEpLockPlot)
+        Me.gbEpLocks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpLocks.Location = New System.Drawing.Point(5, 112)
         Me.gbEpLocks.Name = "gbEpLocks"
         Me.gbEpLocks.Size = New System.Drawing.Size(181, 66)
@@ -5863,6 +5846,7 @@ Partial Class dlgSettings
         Me.gbShowLocks.Controls.Add(Me.chkShowLockStudio)
         Me.gbShowLocks.Controls.Add(Me.chkShowLockRating)
         Me.gbShowLocks.Controls.Add(Me.chkShowLockTitle)
+        Me.gbShowLocks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbShowLocks.Location = New System.Drawing.Point(5, 13)
         Me.gbShowLocks.Name = "gbShowLocks"
         Me.gbShowLocks.Size = New System.Drawing.Size(181, 96)
@@ -5926,7 +5910,7 @@ Partial Class dlgSettings
         Me.GroupBox31.Controls.Add(Me.cboTVMetaDataOverlay)
         Me.GroupBox31.Controls.Add(Me.Label50)
         Me.GroupBox31.Controls.Add(Me.chkTVScanMetaData)
-        Me.GroupBox31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox31.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox31.Location = New System.Drawing.Point(403, 6)
         Me.GroupBox31.Name = "GroupBox31"
         Me.GroupBox31.Size = New System.Drawing.Size(208, 243)
@@ -5942,7 +5926,7 @@ Partial Class dlgSettings
         Me.gbTVMIDefaults.Controls.Add(Me.btnRemoveTVMetaDataFT)
         Me.gbTVMIDefaults.Controls.Add(Me.btnEditTVMetaDataFT)
         Me.gbTVMIDefaults.Controls.Add(Me.btnNewTVMetaDataFT)
-        Me.gbTVMIDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVMIDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVMIDefaults.Location = New System.Drawing.Point(12, 93)
         Me.gbTVMIDefaults.Name = "gbTVMIDefaults"
         Me.gbTVMIDefaults.Size = New System.Drawing.Size(183, 144)
@@ -6052,7 +6036,7 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.Controls.Add(Me.txtAPIKey)
         Me.gbTVScraperOptions.Controls.Add(Me.txtTVDBMirror)
         Me.gbTVScraperOptions.Controls.Add(Me.gbLanguage)
-        Me.gbTVScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperOptions.Location = New System.Drawing.Point(5, 6)
         Me.gbTVScraperOptions.Name = "gbTVScraperOptions"
         Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 359)
@@ -6121,7 +6105,7 @@ Partial Class dlgSettings
         Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
         Me.gbLanguage.Controls.Add(Me.btnTVLanguageFetch)
         Me.gbLanguage.Controls.Add(Me.cbTVLanguage)
-        Me.gbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbLanguage.Location = New System.Drawing.Point(5, 104)
         Me.gbLanguage.Name = "gbLanguage"
         Me.gbLanguage.Size = New System.Drawing.Size(190, 100)
@@ -6181,15 +6165,15 @@ Partial Class dlgSettings
             "s empty."
         Me.Label52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'Label46
+        'Label42
         '
-        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label46.Location = New System.Drawing.Point(2, 385)
-        Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(590, 10)
-        Me.Label46.TabIndex = 19
-        Me.Label46.Text = "* Scrape Full Crew Must Be Enabled"
-        Me.Label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label42.Location = New System.Drawing.Point(2, 385)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(590, 10)
+        Me.Label42.TabIndex = 19
+        Me.Label42.Text = "* Scrape Full Crew Must Be Enabled"
+        Me.Label42.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'gbOptions
         '
@@ -6218,7 +6202,7 @@ Partial Class dlgSettings
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(8, 187)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(302, 179)
@@ -6509,7 +6493,7 @@ Partial Class dlgSettings
         Me.GroupBox26.Controls.Add(Me.gbRTFormat)
         Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
         Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
-        Me.GroupBox26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox26.Location = New System.Drawing.Point(159, 6)
         Me.GroupBox26.Name = "GroupBox26"
         Me.GroupBox26.Size = New System.Drawing.Size(443, 176)
@@ -6525,7 +6509,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Controls.Add(Me.btnRemoveMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
-        Me.GroupBox28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox28.Location = New System.Drawing.Point(252, 11)
         Me.GroupBox28.Name = "GroupBox28"
         Me.GroupBox28.Size = New System.Drawing.Size(183, 144)
@@ -6553,11 +6537,11 @@ Partial Class dlgSettings
         'Label34
         '
         Me.Label34.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(7, 115)
+        Me.Label34.Location = New System.Drawing.Point(7, 118)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(66, 19)
+        Me.Label34.Size = New System.Drawing.Size(63, 19)
         Me.Label34.TabIndex = 32
-        Me.Label34.Text = "File Type"
+        Me.Label34.Text = "File Type:"
         Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'btnRemoveMetaDataFT
@@ -6632,7 +6616,7 @@ Partial Class dlgSettings
         Me.gbRTFormat.Controls.Add(Me.Label51)
         Me.gbRTFormat.Controls.Add(Me.txtRuntimeFormat)
         Me.gbRTFormat.Enabled = False
-        Me.gbRTFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbRTFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbRTFormat.Location = New System.Drawing.Point(3, 65)
         Me.gbRTFormat.Name = "gbRTFormat"
         Me.gbRTFormat.Size = New System.Drawing.Size(244, 56)
@@ -6642,6 +6626,7 @@ Partial Class dlgSettings
         '
         'Label51
         '
+        Me.Label51.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label51.Location = New System.Drawing.Point(5, 38)
         Me.Label51.Name = "Label51"
         Me.Label51.Size = New System.Drawing.Size(235, 13)
@@ -6690,7 +6675,7 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockRating)
         Me.GroupBox10.Controls.Add(Me.chkLockTagline)
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
-        Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox10.Location = New System.Drawing.Point(8, 6)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(145, 176)
@@ -6789,7 +6774,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(313, 187)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(289, 179)
@@ -6909,234 +6894,12 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.gbOptions)
         Me.pnlScraper.Controls.Add(Me.GroupBox1)
         Me.pnlScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlScraper.Controls.Add(Me.Label46)
+        Me.pnlScraper.Controls.Add(Me.Label42)
         Me.pnlScraper.Location = New System.Drawing.Point(187, 165)
-        Me.pnlScraper.Name = "pnlMovieData"
+        Me.pnlScraper.Name = "pnlScraper"
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 62
         Me.pnlScraper.Visible = False
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox1.Enabled = False
-        Me.TextBox1.Location = New System.Drawing.Point(65, 94)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(38, 20)
-        Me.TextBox1.TabIndex = 3
-        '
-        'TextBox2
-        '
-        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(172, 94)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(38, 20)
-        Me.TextBox2.TabIndex = 4
-        '
-        'Label33
-        '
-        Me.Label33.AutoSize = True
-        Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label33.Location = New System.Drawing.Point(183, 143)
-        Me.Label33.Name = "Label33"
-        Me.Label33.Size = New System.Drawing.Size(32, 16)
-        Me.Label33.TabIndex = 46
-        Me.Label33.Text = "100"
-        '
-        'TrackBar1
-        '
-        Me.TrackBar1.AutoSize = False
-        Me.TrackBar1.BackColor = System.Drawing.Color.White
-        Me.TrackBar1.LargeChange = 10
-        Me.TrackBar1.Location = New System.Drawing.Point(7, 136)
-        Me.TrackBar1.Maximum = 100
-        Me.TrackBar1.Name = "TrackBar1"
-        Me.TrackBar1.Size = New System.Drawing.Size(179, 27)
-        Me.TrackBar1.TabIndex = 5
-        Me.TrackBar1.TickFrequency = 10
-        Me.TrackBar1.Value = 100
-        '
-        'Label37
-        '
-        Me.Label37.AutoSize = True
-        Me.Label37.Location = New System.Drawing.Point(3, 119)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(75, 13)
-        Me.Label37.TabIndex = 44
-        Me.Label37.Text = "Poster Quality:"
-        '
-        'Label38
-        '
-        Me.Label38.AutoSize = True
-        Me.Label38.Location = New System.Drawing.Point(3, 98)
-        Me.Label38.Name = "Label38"
-        Me.Label38.Size = New System.Drawing.Size(61, 13)
-        Me.Label38.TabIndex = 43
-        Me.Label38.Text = "Max Width:"
-        '
-        'Label39
-        '
-        Me.Label39.AutoSize = True
-        Me.Label39.Location = New System.Drawing.Point(106, 98)
-        Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(64, 13)
-        Me.Label39.TabIndex = 42
-        Me.Label39.Text = "Max Height:"
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(6, 76)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(159, 17)
-        Me.CheckBox1.TabIndex = 2
-        Me.CheckBox1.Text = "Automatically Resize Poster:"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'Label40
-        '
-        Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(3, 16)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(106, 13)
-        Me.Label40.TabIndex = 14
-        Me.Label40.Text = "Preferred Poster Size"
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(6, 33)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(148, 21)
-        Me.ComboBox1.TabIndex = 0
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(6, 57)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(143, 17)
-        Me.CheckBox2.TabIndex = 1
-        Me.CheckBox2.Text = "Overwrite Existing Poster"
-        Me.CheckBox2.UseVisualStyleBackColor = True
-        '
-        'TextBox3
-        '
-        Me.TextBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox3.Enabled = False
-        Me.TextBox3.Location = New System.Drawing.Point(65, 93)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(38, 20)
-        Me.TextBox3.TabIndex = 4
-        '
-        'TextBox4
-        '
-        Me.TextBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox4.Enabled = False
-        Me.TextBox4.Location = New System.Drawing.Point(172, 93)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(38, 20)
-        Me.TextBox4.TabIndex = 5
-        '
-        'CheckBox3
-        '
-        Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.Location = New System.Drawing.Point(163, 34)
-        Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(47, 17)
-        Me.CheckBox3.TabIndex = 1
-        Me.CheckBox3.Text = "Only"
-        Me.CheckBox3.UseVisualStyleBackColor = True
-        '
-        'Label41
-        '
-        Me.Label41.AutoSize = True
-        Me.Label41.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label41.Location = New System.Drawing.Point(183, 144)
-        Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(32, 16)
-        Me.Label41.TabIndex = 49
-        Me.Label41.Text = "100"
-        '
-        'TrackBar2
-        '
-        Me.TrackBar2.AutoSize = False
-        Me.TrackBar2.BackColor = System.Drawing.Color.White
-        Me.TrackBar2.LargeChange = 10
-        Me.TrackBar2.Location = New System.Drawing.Point(6, 136)
-        Me.TrackBar2.Maximum = 100
-        Me.TrackBar2.Name = "TrackBar2"
-        Me.TrackBar2.Size = New System.Drawing.Size(180, 27)
-        Me.TrackBar2.TabIndex = 6
-        Me.TrackBar2.TickFrequency = 10
-        Me.TrackBar2.Value = 100
-        '
-        'Label42
-        '
-        Me.Label42.AutoSize = True
-        Me.Label42.Location = New System.Drawing.Point(2, 119)
-        Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(75, 13)
-        Me.Label42.TabIndex = 47
-        Me.Label42.Text = "Fanart Quality:"
-        '
-        'Label43
-        '
-        Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(3, 97)
-        Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(61, 13)
-        Me.Label43.TabIndex = 43
-        Me.Label43.Text = "Max Width:"
-        '
-        'Label44
-        '
-        Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(106, 97)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(64, 13)
-        Me.Label44.TabIndex = 42
-        Me.Label44.Text = "Max Height:"
-        '
-        'CheckBox4
-        '
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.Location = New System.Drawing.Point(6, 76)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(159, 17)
-        Me.CheckBox4.TabIndex = 3
-        Me.CheckBox4.Text = "Automatically Resize Fanart:"
-        Me.CheckBox4.UseVisualStyleBackColor = True
-        '
-        'ComboBox2
-        '
-        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(6, 30)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(148, 21)
-        Me.ComboBox2.TabIndex = 0
-        '
-        'Label45
-        '
-        Me.Label45.AutoSize = True
-        Me.Label45.Location = New System.Drawing.Point(3, 14)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(106, 13)
-        Me.Label45.TabIndex = 15
-        Me.Label45.Text = "Preferred Fanart Size"
-        '
-        'CheckBox5
-        '
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.Location = New System.Drawing.Point(6, 56)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(143, 17)
-        Me.CheckBox5.TabIndex = 2
-        Me.CheckBox5.Text = "Overwrite Existing Fanart"
-        Me.CheckBox5.UseVisualStyleBackColor = True
         '
         'ToolStrip1
         '
@@ -7165,6 +6928,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(828, 751)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
@@ -7173,18 +6937,17 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7227,6 +6990,8 @@ Partial Class dlgSettings
         Me.GroupBox13.PerformLayout()
         CType(Me.tbFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
+        Me.GroupBox17.ResumeLayout(False)
+        Me.GroupBox17.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -7262,8 +7027,6 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox15.ResumeLayout(False)
         Me.GroupBox15.PerformLayout()
-        Me.GroupBox17.ResumeLayout(False)
-        Me.GroupBox17.PerformLayout()
         Me.GroupBox23.ResumeLayout(False)
         Me.GroupBox23.PerformLayout()
         Me.GroupBox24.ResumeLayout(False)
@@ -7357,8 +7120,6 @@ Partial Class dlgSettings
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
-        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -7843,30 +7604,7 @@ Partial Class dlgSettings
     Friend WithEvents cbSeaFanartSize As System.Windows.Forms.ComboBox
     Friend WithEvents lblSeaFanartSize As System.Windows.Forms.Label
     Friend WithEvents chkSeaOverwriteFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents Label33 As System.Windows.Forms.Label
-    Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
-    Friend WithEvents Label37 As System.Windows.Forms.Label
-    Friend WithEvents Label38 As System.Windows.Forms.Label
-    Friend WithEvents Label39 As System.Windows.Forms.Label
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
-    Friend WithEvents Label40 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
-    Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
-    Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
-    Friend WithEvents Label41 As System.Windows.Forms.Label
-    Friend WithEvents TrackBar2 As System.Windows.Forms.TrackBar
     Friend WithEvents Label42 As System.Windows.Forms.Label
-    Friend WithEvents Label43 As System.Windows.Forms.Label
-    Friend WithEvents Label44 As System.Windows.Forms.Label
-    Friend WithEvents CheckBox4 As System.Windows.Forms.CheckBox
-    Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
-    Friend WithEvents Label45 As System.Windows.Forms.Label
-    Friend WithEvents CheckBox5 As System.Windows.Forms.CheckBox
-    Friend WithEvents Label46 As System.Windows.Forms.Label
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtAPIKey As System.Windows.Forms.TextBox
     Friend WithEvents Label48 As System.Windows.Forms.Label
