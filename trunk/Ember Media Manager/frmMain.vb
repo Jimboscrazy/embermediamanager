@@ -185,9 +185,7 @@ Public Class frmMain
     ' ########################################
 
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        While frmSplash.Visible
-            Application.DoEvents()
-        End While
+        Me.BringToFront()
         Me.Activate()
     End Sub
 
