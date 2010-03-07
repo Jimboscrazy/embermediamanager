@@ -51,7 +51,7 @@ Public Class EmberNativeTVScraperModule
         End Set
     End Property
 
-    Public Sub Init() Implements Interfaces.EmberTVScraperModule.Init
+    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule.Init
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
 

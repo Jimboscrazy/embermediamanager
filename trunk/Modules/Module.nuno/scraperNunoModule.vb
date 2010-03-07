@@ -10,8 +10,8 @@ Public Class NunoScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _setup As New frmSettingsHolder
     Private _Name As String = "Nuno's Module"
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupScraperChanged
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
     Public Event Modulesettingschanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
 
     Property ScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule.ScraperEnabled
@@ -38,10 +38,10 @@ Public Class NunoScraperModule
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
-        SPanel.Type = Master.eLang.GetString(36, "Movies")
+        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 110
-        SPanel.Parent = "pnlMovies"
+        SPanel.Parent = "pnlMovieData"
         SPanel.Panel = _setup.pnlSettings
         Return SPanel
     End Function
@@ -77,7 +77,7 @@ Public Class NunoScraperModule
     Public Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As System.Collections.Generic.List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.GetMovieStudio
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    Public Sub Init() Implements Interfaces.EmberMovieScraperModule.Init
+    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
         MyPath = Path.Combine(Functions.AppPath, "Modules")
     End Sub
     Public ReadOnly Property IsPostScraper() As Boolean Implements Interfaces.EmberMovieScraperModule.IsPostScraper

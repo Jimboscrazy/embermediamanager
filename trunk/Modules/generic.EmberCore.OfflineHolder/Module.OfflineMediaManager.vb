@@ -26,7 +26,7 @@ Public Class OfflineHolderModule
     Private _Name As String = "Offline Media Manager"
     Private _setup As frmSettingsHolder
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
@@ -65,7 +65,7 @@ Public Class OfflineHolderModule
     End Function
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._name, State)
+        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -94,7 +94,7 @@ Public Class OfflineHolderModule
 
     End Sub
 
-    Sub Init() Implements Interfaces.EmberExternalModule.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 

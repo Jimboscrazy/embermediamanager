@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.Windows.Forms
+Imports System.IO
 
 Public Class frmInfoSettingsHolder
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
@@ -178,5 +179,31 @@ Public Class frmInfoSettingsHolder
 
     Private Sub chkFullCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCast.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder
+        If order < ModulesManager.Instance.externalScrapersModules.Count - 1 Then
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder = order + 1
+            RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
+            orderChanged()
+        End If
+    End Sub
+
+    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder
+        If order > 0 Then
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder = order - 1
+            RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
+            orderChanged()
+        End If
+
+    End Sub
+    Sub orderChanged()
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder
+        btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Count - 1)
+        btnUp.Enabled = (order > 0)
     End Sub
 End Class

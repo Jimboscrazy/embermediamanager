@@ -11,10 +11,11 @@ Public Class EmberNativeScraperModule
     Private _Name As String = "Ember Native Scraper"
     Private _setup As frmInfoSettingsHolder
     Private _setupPost As frmMediaSettingsHolder
+    Public Shared _AssemblyName As String
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupScraperChanged
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.SetupPostScraperChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
+    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
 
     Property ScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule.ScraperEnabled
@@ -67,7 +68,7 @@ Public Class EmberNativeScraperModule
             MySettings.IMDBURL = "akas.imdb.com"
         End If
         _setup.txtIMDBURL.Text = MySettings.IMDBURL
-
+        _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = _Name
         SPanel.Order = 110
@@ -122,6 +123,7 @@ Public Class EmberNativeScraperModule
 
 
         SaveSettings()
+        ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -197,7 +199,8 @@ Public Class EmberNativeScraperModule
 
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
-    Sub Init() Implements Interfaces.EmberMovieScraperModule.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
+        _AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
     ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule.ModuleName

@@ -4,13 +4,13 @@
         Function InjectSetup() As Containers.SettingsPanel
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Property Enabled() As Boolean
-        Sub Init()
+        Sub Init(ByVal sAssemblyName As String)
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
         Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As ModuleResult
         ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType)
         Event ModuleSettingsChanged()
-        Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean)
+        Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
         Event GenericEvent(ByVal _params As List(Of Object))
     End Interface
 
@@ -26,7 +26,7 @@
         Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean
-        Sub Init()
+        Sub Init(ByVal sAssemblyName As String)
         'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
         Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
@@ -39,8 +39,8 @@
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
         Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
-        Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-        Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event PostScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
         Event ModuleSettingsChanged()
     End Interface
     Public Interface EmberTVScraperModule
@@ -50,7 +50,7 @@
         Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
         Property ScraperEnabled() As Boolean
         Property PostScraperEnabled() As Boolean
-        Sub Init()
+        Sub Init(ByVal sAssemblyName As String)
         'TODO TV Interface need to be redone Need to be more self contained as movies
         Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As ModuleResult
         Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As ModuleResult

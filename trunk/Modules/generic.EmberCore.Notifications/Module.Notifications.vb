@@ -25,7 +25,7 @@ Public Class NotificationsModule
     Private _setup As frmSettingsHolder
     Private eSettings As New NotifySettings
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private dNotify As frmNotify
 
@@ -56,7 +56,7 @@ Public Class NotificationsModule
         End Get
     End Property
 
-    Public Sub Init() Implements Interfaces.EmberExternalModule.Init
+    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         LoadSettings()
     End Sub
 
@@ -94,7 +94,7 @@ Public Class NotificationsModule
     End Function
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._name, State)
+        RaiseEvent ModuleEnabledChanged(Me._name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()

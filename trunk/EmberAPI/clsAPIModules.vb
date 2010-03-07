@@ -189,7 +189,7 @@ Public Class ModulesManager
                                     SetModuleEnable(_externalProcessorModule.AssemblyName, True)
                                 End If
                                 externalProcessorModules.Add(_externalProcessorModule)
-                                ProcessorModule.Init()
+                                ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 ProcessorModule.Enabled = _externalProcessorModule.Enabled
                             End If
                         Catch ex As Exception
@@ -198,6 +198,12 @@ Public Class ModulesManager
                 Catch ex As Exception
                 End Try
             Next
+            Dim c As Integer = 0
+            For Each ext As _externalGenericModuleClass In externalProcessorModules.OrderBy(Function(x) x.ModuleOrder)
+                ext.ModuleOrder = c
+                c += 1
+            Next
+
         End If
     End Sub
 
@@ -249,7 +255,7 @@ Public Class ModulesManager
                                 _externalScraperModule.PostScraperOrder = 999
                             End If
                             externalScrapersModules.Add(_externalScraperModule)
-                            _externalScraperModule.ProcessorModule.Init()
+                            _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             loaded = True
                         End If
                     Next
@@ -259,11 +265,11 @@ Public Class ModulesManager
                 End Try
             Next
             Dim c As Integer = 0
-            For Each ext As _externalScraperModuleClass In externalScrapersModules.Where(Function(x) x.ProcessorModule.ScraperEnabled)
+            For Each ext As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.ScraperOrder) ' .Where(Function(x) x.ProcessorModule.ScraperEnabled)
                 ext.ScraperOrder = c
                 c += 1
             Next
-            For Each ext As _externalScraperModuleClass In externalScrapersModules.Where(Function(x) x.ProcessorModule.PostScraperEnabled)
+            For Each ext As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.PostScraperOrder) '.Where(Function(x) x.ProcessorModule.PostScraperEnabled)
                 ext.PostScraperOrder = c
                 c += 1
             Next
@@ -324,7 +330,7 @@ Public Class ModulesManager
                                 _externaltvScraperModule.PostScraperOrder = 999
                             End If
                             externalTVScrapersModules.Add(_externaltvScraperModule)
-                            _externaltvScraperModule.ProcessorModule.Init()
+                            _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             loaded = True
                         End If
                     Next

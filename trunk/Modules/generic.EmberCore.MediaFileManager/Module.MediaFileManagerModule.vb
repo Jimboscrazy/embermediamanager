@@ -40,7 +40,7 @@ Public Class FileManagerExternalModule
     Private _setup As frmSettingsHolder
     Private MyPath As String
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
 
     Private Structure Arguments
@@ -93,7 +93,7 @@ Public Class FileManagerExternalModule
     End Function
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State)
+        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -136,7 +136,7 @@ Public Class FileManagerExternalModule
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init() Implements Interfaces.EmberExternalModule.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
         Master.eLang.LoadLanguage(Master.eSettings.Language)

@@ -26,8 +26,10 @@ Public Class BulkRenamerModule
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean) Implements Interfaces.EmberExternalModule.ModuleEnabledChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
@@ -78,7 +80,7 @@ Public Class BulkRenamerModule
         tsi.DropDownItems.Remove(MyMenu)
         _enabled = False
     End Sub
-    Sub Init() Implements Interfaces.EmberExternalModule.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
@@ -93,8 +95,6 @@ Public Class BulkRenamerModule
         End Get
     End Property
 
-    'Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
         Using dBulkRename As New dlgBulkRenamer
             Try
