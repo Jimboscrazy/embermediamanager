@@ -149,7 +149,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) y.IsMark = True) 'Using IsMark for to mark files need exporting
+            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
                     If File.Exists(_curMovie.PosterPath) Then
@@ -162,10 +162,10 @@ Public Class dlgExportMovies
                             File.Copy(_curMovie.PosterPath, posterfile, True)
                         End If
                     End If
-                    counter += 1
+
                 Catch
                 End Try
-
+                counter += 1
                 If bwSaveAll.CancellationPending Then
                     Return
                 End If
@@ -181,7 +181,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) y.IsMark = True) 'Using IsMark for to mark files need exporting
+            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
                     If File.Exists(_curMovie.FanartPath) Then
@@ -325,7 +325,7 @@ Public Class dlgExportMovies
         End If
         Return line
     End Function
-
+    Dim FilterMovies As New List(Of Long)
     Private Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String, ByVal doNavigate As Boolean)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
@@ -382,8 +382,8 @@ Public Class dlgExportMovies
 
             HTMLBody.Append(movieheader)
             Dim counter As Integer = 1
+            FilterMovies.Clear()
             For Each _curMovie As Structures.DBMovie In _movies
-
                 Dim _vidDetails As String = String.Empty
                 Dim _vidDimensions As String = String.Empty
                 Dim _audDetails As String = String.Empty
@@ -413,7 +413,7 @@ Public Class dlgExportMovies
                                 Exit For
                             End If
                         Next
-                        _curMovie.IsMark = False
+                        '_curMovie.IsMark = False
                         If Not found Then Continue For
                     Else
                         If (strIn = Master.eLang.GetString(12, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
@@ -423,14 +423,12 @@ Public Class dlgExportMovies
                             'included - build the output
                         Else
                             'filtered out - exclude this one
-                            _curMovie.IsMark = False
+                            '_curMovie.IsMark = False
                             Continue For
                         End If
                     End If
                 End If
-                _curMovie.IsMark = True
-
-
+                FilterMovies.Add(_curMovie.ID)
                 Dim uni As New UnicodeEncoding()
 
                 Dim row As String = movierow
@@ -473,6 +471,7 @@ Public Class dlgExportMovies
 
             If Not Me.isCL Then
                 Dim outFile As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
+                DontSaveExtra = False
                 Me.SaveAll(If(doNavigate, Master.eLang.GetString(16, "Preparing preview. Please wait..."), String.Empty), Path.GetDirectoryName(htmlPath), outFile)
                 If doNavigate Then LoadHTML()
             End If
@@ -624,6 +623,7 @@ Public Class dlgExportMovies
         saveHTML.Filter = "HTML files (*.htm)|*.htm"
         saveHTML.FilterIndex = 2
         saveHTML.RestoreDirectory = True
+
         If saveHTML.ShowDialog() = DialogResult.OK Then
             myStream = saveHTML.OpenFile()
             myStream.Close()
