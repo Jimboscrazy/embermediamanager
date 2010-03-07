@@ -511,7 +511,6 @@ Partial Class frmInfoSettingsHolder
         'btnDown
         '
         Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDown.Enabled = False
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
         Me.btnDown.Location = New System.Drawing.Point(591, 1)
         Me.btnDown.Name = "btnDown"
@@ -522,7 +521,6 @@ Partial Class frmInfoSettingsHolder
         'btnUp
         '
         Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnUp.Enabled = False
         Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
         Me.btnUp.Location = New System.Drawing.Point(566, 1)
         Me.btnUp.Name = "btnUp"
