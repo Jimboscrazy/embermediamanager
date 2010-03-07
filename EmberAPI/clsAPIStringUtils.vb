@@ -199,6 +199,8 @@ Public Class StringUtils
                     Next
                 End If
 
+                movieName = CleanStackingMarkers(movieName.Trim)
+
                 'Convert String To Proper Case
                 If Master.eSettings.ProperCase AndAlso doExtras Then
                     movieName = ProperCase(movieName)
@@ -208,8 +210,8 @@ Public Class StringUtils
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
-            If doExtras Then movieName = FilterTokens(CleanStackingMarkers(movieName.Trim))
-            If remPunct Then movieName = RemovePunctuation(CleanStackingMarkers(movieName.Trim))
+            If doExtras Then movieName = FilterTokens(movieName.Trim)
+            If remPunct Then movieName = RemovePunctuation(movieName.Trim)
 
             Return movieName.Trim
 
