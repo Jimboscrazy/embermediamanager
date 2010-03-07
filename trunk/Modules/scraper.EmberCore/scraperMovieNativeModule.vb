@@ -119,9 +119,6 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
         ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
-
-
-
         SaveSettings()
         ModulesManager.Instance.SaveSettings()
         If DoDispose Then
