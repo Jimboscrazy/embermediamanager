@@ -73,7 +73,7 @@ Public Class FileManagerExternalModule
         _setup = New frmSettingsHolder
         Load()
         Dim li As ListViewItem
-        _setup.ListView1.Clear()
+        _setup.ListView1.Items.Clear()
         _setup.cbEnabled.Checked = _enabled
         For Each e As SettingItem In eSettings.ModuleSettings
             li = New ListViewItem
@@ -119,18 +119,22 @@ Public Class FileManagerExternalModule
 
     Sub Enable()
         MyMenu.Text = "Media File Manager"
+
         MySubMenu1.Text = "Move To"
         MySubMenu1.Tag = "MOVE"
         MySubMenu2.Text = "Copy To"
         MySubMenu2.Tag = "COPY"
         MyMenu.DropDownItems.Add(MySubMenu1)
         MyMenu.DropDownItems.Add(MySubMenu2)
+
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenu)
-
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
+        MyMenuSep.Visible = (eSettings.ModuleSettings.Count > 0)
+        MyMenu.Visible = (eSettings.ModuleSettings.Count > 0)
+
     End Sub
     Sub Disable()
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
@@ -251,6 +255,9 @@ Public Class FileManagerExternalModule
         For Each i In FolderSubMenus
             mnu.DropDownItems.Add(i)
         Next
+
+        MyMenuSep.Visible = (eSettings.ModuleSettings.Count > 0)
+        MyMenu.Visible = (eSettings.ModuleSettings.Count > 0)
     End Sub
 
 
@@ -267,6 +274,7 @@ Public Class FileManagerExternalModule
     End Sub
 
     Public Sub Load()
+        eSettings.ModuleSettings.Clear()
         Dim Names As String() = AdvancedSettings.GetSetting("Names", String.Empty).Split(Convert.ToChar("|"))
         Dim Paths As String() = AdvancedSettings.GetSetting("Paths", String.Empty).Split(Convert.ToChar("|"))
         For n = 0 To Names.Count - 1
