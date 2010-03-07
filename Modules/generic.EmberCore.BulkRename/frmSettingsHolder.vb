@@ -20,7 +20,7 @@
 
 Public Class frmSettingsHolder
 
-    Public Event ModuleEnabledChanged(ByVal State As Boolean)
+    Public Event ModuleEnabledChanged(ByVal State As Boolean, ByVal difforder As Integer)
     Public Event ModuleSettingsChanged()
 
     Private Sub chkOnError_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -28,6 +28,37 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
+    End Sub
+    Sub SetUp()
+        Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
+        Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
+        Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
+        Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
+        Me.lblFolderPattern.Text = Master.eLang.GetString(533, "Folders Pattern")
+    End Sub
+
+    Private Sub chkGenericModule_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenericModule.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkBulRenamer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBulRenamer.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameMulti.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameSingle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class

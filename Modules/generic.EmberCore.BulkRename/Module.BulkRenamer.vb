@@ -29,7 +29,16 @@ Public Class BulkRenamerModule
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private MySettings As New _MySettings
 
+    Structure _MySettings
+        Dim GenericModule As Boolean
+        Dim BulkRenamer As Boolean
+        Dim AutoRenameMulti As Boolean
+        Dim AutoRenameSingle As Boolean
+        Dim FoldersPattern As String
+        Dim FilesPattern As String
+    End Structure
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
@@ -41,16 +50,36 @@ Public Class BulkRenamerModule
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.chkEnabled.Checked = Me._enabled
+        Me._setup.txtFolderPattern.Text = MySettings.FoldersPattern
+        Me._setup.txtFilePattern.Text = MySettings.FilesPattern
+        _setup.chkRenameMulti.Checked = MySettings.AutoRenameMulti
+        _setup.chkRenameSingle.Checked = MySettings.AutoRenameSingle
+        _setup.chkGenericModule.Checked = MySettings.GenericModule
+        _setup.chkBulRenamer.Checked = MySettings.BulkRenamer
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings()
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
+    End Sub
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-
+        MySettings.FoldersPattern = _setup.txtFolderPattern.Text
+        MySettings.FilesPattern = _setup.txtFilePattern.Text
+        MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked
+        MySettings.AutoRenameSingle = _setup.chkRenameSingle.Checked
+        MySettings.GenericModule = _setup.chkGenericModule.Checked
+        MySettings.BulkRenamer = _setup.chkBulRenamer.Checked
+        SaveSettings()
     End Sub
     Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
         Get
@@ -82,6 +111,7 @@ Public Class BulkRenamerModule
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
+        LoadSettings()
     End Sub
 
     ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
@@ -97,6 +127,8 @@ Public Class BulkRenamerModule
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
         Using dBulkRename As New dlgBulkRenamer
+            dBulkRename.txtFolder.Text = MySettings.FoldersPattern
+            dBulkRename.txtFile.Text = MySettings.FilesPattern
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
@@ -111,15 +143,17 @@ Public Class BulkRenamerModule
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
                 Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
                 ' TODO: Some of the Bellow setting should move to Module
-                If Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FilesPattern)) Then
-                    FileFolderRenamer.RenameSingle(tDBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
+                If MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then
+                    FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
                 End If
             Case Enums.ModuleEventType.RenameMovie
-                Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
-                Dim BatchMode As Boolean = DirectCast(_params(1), Boolean)
-                Dim ToNFO As Boolean = DirectCast(_params(2), Boolean)
-                Dim ShowErrors As Boolean = DirectCast(_params(3), Boolean)
-                FileFolderRenamer.RenameSingle(tDBMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, BatchMode, ToNFO, ShowErrors)
+                If MySettings.AutoRenameSingle AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern) Then
+                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
+                    Dim BatchMode As Boolean = DirectCast(_params(1), Boolean)
+                    Dim ToNFO As Boolean = DirectCast(_params(2), Boolean)
+                    Dim ShowErrors As Boolean = DirectCast(_params(3), Boolean)
+                    FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, BatchMode, ToNFO, ShowErrors)
+                End If
             Case Enums.ModuleEventType.RenameMovieManual
                 Using dRenameManual As New dlgRenameManual
                     Select Case dRenameManual.ShowDialog()
@@ -132,4 +166,20 @@ Public Class BulkRenamerModule
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+    Sub LoadSettings()
+        MySettings.FoldersPattern = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}")
+        MySettings.FilesPattern = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}")
+        MySettings.AutoRenameMulti = AdvancedSettings.GetBooleanSetting("AutoRenameMulti", False)
+        MySettings.AutoRenameSingle = AdvancedSettings.GetBooleanSetting("AutoRenameSingle", False)
+        MySettings.BulkRenamer = AdvancedSettings.GetBooleanSetting("BulkRenamer", True)
+        MySettings.GenericModule = AdvancedSettings.GetBooleanSetting("GenericModule", True)
+    End Sub
+    Sub SaveSettings()
+        AdvancedSettings.SetSetting("FoldersPattern", MySettings.FoldersPattern)
+        AdvancedSettings.SetSetting("FilesPattern", MySettings.FilesPattern)
+        AdvancedSettings.SetBooleanSetting("AutoRenameMulti", MySettings.AutoRenameMulti)
+        AdvancedSettings.SetBooleanSetting("AutoRenameSingle", MySettings.AutoRenameSingle)
+        AdvancedSettings.SetBooleanSetting("BulkRenamer", MySettings.BulkRenamer)
+        AdvancedSettings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
+    End Sub
 End Class

@@ -384,8 +384,7 @@ Public Class dlgBulkRenamer
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
-        txtFolder.Text = Master.eSettings.FoldersPattern
-        txtFile.Text = Master.eSettings.FilesPattern
+
     End Sub
 
     Private Sub SetUp()
