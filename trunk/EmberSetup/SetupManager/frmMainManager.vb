@@ -1120,4 +1120,38 @@ Public Class frmMainManager
         SetupSettings.FTPPassword = (TextBox2.Text)
         SetupSettings.Save(Path.Combine(AppPath, "settings.xml"))
     End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Dim sEditor As String = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt"))).Replace("\n", vbCrLf)
+        Using editor As New dlgEditor
+            editor.TextBox1.Text = sEditor
+            If editor.ShowDialog = Windows.Forms.DialogResult.OK Then
+                File.WriteAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt")), editor.TextBox1.Text.Replace(vbCrLf, "\n"))
+            End If
+        End Using
+    End Sub
+
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Dim ftp As New FTPClass
+        Dim dlg As New Uploading
+        Try
+
+            dlg.TopMost = True
+            dlg.Show()
+            dlg.Label1.Text = "Connecting to Server"
+            Application.DoEvents()
+            ftp.setRemoteHost(TextBox3.Text)
+            ftp.setRemoteUser(TextBox1.Text)
+            ftp.setRemotePass(TextBox2.Text)
+            ftp.setRemotePath("/public_html/Updates")
+            ftp.login()
+            dlg.Label1.Text = "Download Files"
+            Application.DoEvents()
+            ftp.download("Changelog.txt", String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt"))
+            ftp.close()
+            dlg.Close()
+        Catch ex As Exception
+
+        End Try
+    End Sub
 End Class
