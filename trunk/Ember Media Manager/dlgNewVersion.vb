@@ -106,6 +106,7 @@ Public Class dlgNewVersion
                 Explorer.Start()
             End Using
         End If
-        Application.Exit()
+        DialogResult = Windows.Forms.DialogResult.Abort
+        Me.Close()
     End Sub
 End Class

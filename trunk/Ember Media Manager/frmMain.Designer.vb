@@ -127,6 +127,8 @@ Partial Class frmMain
         Me.cmnuLockShow = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuChangeAllSeasonPoster = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrapeShow = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuChangeShow = New System.Windows.Forms.ToolStripMenuItem
@@ -392,8 +394,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuChangeAllSeasonPoster = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -894,7 +894,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
         '
         'cmnuTitle
         '
@@ -1144,13 +1144,13 @@ Partial Class frmMain
         'cmnuRenameAuto
         '
         Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
-        Me.cmnuRenameAuto.Size = New System.Drawing.Size(114, 22)
+        Me.cmnuRenameAuto.Size = New System.Drawing.Size(152, 22)
         Me.cmnuRenameAuto.Text = "Auto"
         '
         'cmnuRenameManual
         '
         Me.cmnuRenameManual.Name = "cmnuRenameManual"
-        Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
+        Me.cmnuRenameManual.Size = New System.Drawing.Size(152, 22)
         Me.cmnuRenameManual.Text = "Manual"
         '
         'ToolStripSeparator1
@@ -1232,7 +1232,7 @@ Partial Class frmMain
         '
         Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator20, Me.cmnuChangeAllSeasonPoster, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow, Me.ToolStripSeparator11, Me.RemoveShowToolStripMenuItem})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(216, 254)
+        Me.mnuShows.Size = New System.Drawing.Size(216, 232)
         '
         'cmnuShowTitle
         '
@@ -1279,6 +1279,18 @@ Partial Class frmMain
         Me.cmnuEditShow.Name = "cmnuEditShow"
         Me.cmnuEditShow.Size = New System.Drawing.Size(215, 22)
         Me.cmnuEditShow.Text = "Edit Show"
+        '
+        'ToolStripSeparator20
+        '
+        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(212, 6)
+        '
+        'cmnuChangeAllSeasonPoster
+        '
+        Me.cmnuChangeAllSeasonPoster.Image = CType(resources.GetObject("cmnuChangeAllSeasonPoster.Image"), System.Drawing.Image)
+        Me.cmnuChangeAllSeasonPoster.Name = "cmnuChangeAllSeasonPoster"
+        Me.cmnuChangeAllSeasonPoster.Size = New System.Drawing.Size(215, 22)
+        Me.cmnuChangeAllSeasonPoster.Text = "Change All-Seasons Poster"
         '
         'ToolStripSeparator7
         '
@@ -3568,18 +3580,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'ToolStripSeparator20
-        '
-        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
-        Me.ToolStripSeparator20.Size = New System.Drawing.Size(212, 6)
-        '
-        'cmnuChangeAllSeasonPoster
-        '
-        Me.cmnuChangeAllSeasonPoster.Image = CType(resources.GetObject("cmnuChangeAllSeasonPoster.Image"), System.Drawing.Image)
-        Me.cmnuChangeAllSeasonPoster.Name = "cmnuChangeAllSeasonPoster"
-        Me.cmnuChangeAllSeasonPoster.Size = New System.Drawing.Size(215, 22)
-        Me.cmnuChangeAllSeasonPoster.Text = "Change All-Seasons Poster"
         '
         'frmMain
         '
