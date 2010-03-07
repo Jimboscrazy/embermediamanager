@@ -269,6 +269,7 @@ Public Class ModulesManager
                 ext.ScraperOrder = c
                 c += 1
             Next
+            c = 0
             For Each ext As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.PostScraperOrder) '.Where(Function(x) x.ProcessorModule.PostScraperEnabled)
                 ext.PostScraperOrder = c
                 c += 1
@@ -344,6 +345,7 @@ Public Class ModulesManager
                 ext.ScraperOrder = c
                 c += 1
             Next
+            c = 0
             For Each ext As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(x) x.ProcessorModule.PostScraperEnabled)
                 ext.PostScraperOrder = c
                 c += 1

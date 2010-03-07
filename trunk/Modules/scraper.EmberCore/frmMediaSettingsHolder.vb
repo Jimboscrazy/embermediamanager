@@ -96,4 +96,29 @@ Public Class frmMediaSettingsHolder
     Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder
+        If order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).Count - 1 Then
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.PostScraperOrder = order + 1).PostScraperOrder = order
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder = order + 1
+            RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 1)
+            orderChanged()
+        End If
+    End Sub
+
+    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder
+        If order > 0 Then
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.PostScraperOrder = order - 1).PostScraperOrder = order
+            ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder = order - 1
+            RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, -1)
+            orderChanged()
+        End If
+
+    End Sub
+    Sub orderChanged()
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder
+        btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).Count - 1)
+        btnUp.Enabled = (order > 0)
+    End Sub
 End Class

@@ -4223,23 +4223,20 @@ Public Class dlgSettings
         SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).ImageIndex = If(State, 9, 10)
         Try
             If Not diffOrder = 0 Then
-                Try
-                    Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-                    Dim p As TreeNode = t.Parent
-                    Dim i As Integer = t.Index
-                    If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
-                        SettingsPanels.FirstOrDefault(Function(s) s.Name = t.PrevNode.Name).Order = i + (diffOrder * -1)
-                    End If
-                    If diffOrder > 0 AndAlso Not t.NextNode Is Nothing Then
-                        SettingsPanels.FirstOrDefault(Function(s) s.Name = t.NextNode.Name).Order = i + (diffOrder * -1)
-                    End If
-                    p.Nodes.Remove(t)
-                    p.Nodes.Insert(i + diffOrder, t)
-                    'SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).
-                    t.TreeView.SelectedNode = t
-                    SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).Order = i + diffOrder
-                Catch ex As Exception
-                End Try
+                Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
+                If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
+                Dim p As TreeNode = t.Parent
+                Dim i As Integer = t.Index
+                If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
+                    SettingsPanels.FirstOrDefault(Function(s) s.Name = t.PrevNode.Name).Order = i + (diffOrder * -1)
+                End If
+                If diffOrder > 0 AndAlso Not t.NextNode Is Nothing Then
+                    SettingsPanels.FirstOrDefault(Function(s) s.Name = t.NextNode.Name).Order = i + (diffOrder * -1)
+                End If
+                p.Nodes.Remove(t)
+                p.Nodes.Insert(i + diffOrder, t)
+                t.TreeView.SelectedNode = t
+                SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).Order = i + diffOrder
             End If
             tvSettings.Nodes.Find(Name, True)(0).ImageIndex = If(State, 9, 10)
             tvSettings.Nodes.Find(Name, True)(0).SelectedImageIndex = If(State, 9, 10)

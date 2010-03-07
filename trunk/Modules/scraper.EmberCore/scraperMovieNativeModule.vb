@@ -148,6 +148,7 @@ Public Class EmberNativeScraperModule
         _setupPost.chkUseMPDB.Checked = Master.eSettings.UseMPDB
         _setupPost.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
         _setupPost.chkDownloadTrailer.Checked = MySettings.DownloadTrailers
+        _setupPost.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
         Spanel.Order = 110
