@@ -21,7 +21,6 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 
-'TODO: Default themes in code in case files are missing
 Public Class Theming
     Private rProcs(3) As Regex
     Private _availablecontrols As New List(Of Controls)
@@ -333,78 +332,86 @@ Public Class Theming
 
         Dim tPath As String = String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, sTheme))
         If File.Exists(tPath) Then
-
             ThemeXML = XDocument.Load(tPath)
-
-            'top panel
-            Try
-                Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
-                If xTop.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then tTheme.TopPanelBackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
-                    If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-            'images
-            Try
-                Dim xImages = From xTheme In ThemeXML...<theme>...<images>
-                If xImages.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then tTheme.FanartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
-                    If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
-                    If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then tTheme.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
-                    If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then tTheme.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
-                    If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
-                    If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-            Try
-                'info panel
-                Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
-                If xIPMain.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then tTheme.InfoPanelBackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
-                    If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then tTheme.IPUp = Convert.ToInt32(xIPMain(0).ipup)
-                    If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then tTheme.IPMid = Convert.ToInt32(xIPMain(0).ipmid)
-                End If
-
-                tTheme.Controls.Clear()
-                For Each xIP As XElement In ThemeXML...<theme>...<infopanel>...<object>
-                    If Not String.IsNullOrEmpty(xIP.@name) Then
-                        cName = xIP.@name
-                        Dim xControl = From xCons As Controls In _availablecontrols Where xCons.Control = cName
-                        If xControl.Count > 0 Then
-                            cControl = New Controls
-                            cControl.Control = cName
-                            If Not String.IsNullOrEmpty(xIP.<width>.Value) Then cControl.Width = xIP.<width>.Value
-                            If Not String.IsNullOrEmpty(xIP.<height>.Value) Then cControl.Height = xIP.<height>.Value
-                            If Not String.IsNullOrEmpty(xIP.<left>.Value) Then cControl.Left = xIP.<left>.Value
-                            If Not String.IsNullOrEmpty(xIP.<top>.Value) Then cControl.Top = xIP.<top>.Value
-                            If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then cControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
-                            If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then cControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
-                            If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then cControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
-                            If Not String.IsNullOrEmpty(xIP.<visible>.Value) Then cControl.Visible = Convert.ToBoolean(xIP.<visible>.Value)
-
-                            cFont = "Microsoft Sans Serif"
-                            cFontSize = 8
-                            cFontStyle = FontStyle.Regular
-
-                            If Not String.IsNullOrEmpty(xIP.<font>.Value) Then cFont = xIP.<font>.Value
-                            If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = Convert.ToInt32(xIP.<fontsize>.Value)
-                            If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = DirectCast(Convert.ToInt32(xIP.<fontstyle>.Value), FontStyle)
-                            cControl.Font = New Font(cFont, cFontSize, cFontStyle)
-                            tTheme.Controls.Add(cControl)
-                        End If
-                    End If
-
-                Next
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
+        Else
+            Select Case tType
+                Case "movie"
+                    ThemeXML = XDocument.Parse(My.Resources.movie_Default)
+                Case "tvshow"
+                    ThemeXML = XDocument.Parse(My.Resources.tvshow_Default)
+                Case "tvep"
+                    ThemeXML = XDocument.Parse(My.Resources.tvep_Default)
+            End Select
         End If
+
+        'top panel
+        Try
+            Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
+            If xTop.Count > 0 Then
+                If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then tTheme.TopPanelBackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
+                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        'images
+        Try
+            Dim xImages = From xTheme In ThemeXML...<theme>...<images>
+            If xImages.Count > 0 Then
+                If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then tTheme.FanartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
+                If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
+                If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then tTheme.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
+                If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then tTheme.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
+                If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Try
+            'info panel
+            Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
+            If xIPMain.Count > 0 Then
+                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then tTheme.InfoPanelBackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
+                If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then tTheme.IPUp = Convert.ToInt32(xIPMain(0).ipup)
+                If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then tTheme.IPMid = Convert.ToInt32(xIPMain(0).ipmid)
+            End If
+
+            tTheme.Controls.Clear()
+            For Each xIP As XElement In ThemeXML...<theme>...<infopanel>...<object>
+                If Not String.IsNullOrEmpty(xIP.@name) Then
+                    cName = xIP.@name
+                    Dim xControl = From xCons As Controls In _availablecontrols Where xCons.Control = cName
+                    If xControl.Count > 0 Then
+                        cControl = New Controls
+                        cControl.Control = cName
+                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then cControl.Width = xIP.<width>.Value
+                        If Not String.IsNullOrEmpty(xIP.<height>.Value) Then cControl.Height = xIP.<height>.Value
+                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then cControl.Left = xIP.<left>.Value
+                        If Not String.IsNullOrEmpty(xIP.<top>.Value) Then cControl.Top = xIP.<top>.Value
+                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then cControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
+                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then cControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
+                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then cControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
+                        If Not String.IsNullOrEmpty(xIP.<visible>.Value) Then cControl.Visible = Convert.ToBoolean(xIP.<visible>.Value)
+
+                        cFont = "Microsoft Sans Serif"
+                        cFontSize = 8
+                        cFontStyle = FontStyle.Regular
+
+                        If Not String.IsNullOrEmpty(xIP.<font>.Value) Then cFont = xIP.<font>.Value
+                        If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = Convert.ToInt32(xIP.<fontsize>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = DirectCast(Convert.ToInt32(xIP.<fontstyle>.Value), FontStyle)
+                        cControl.Font = New Font(cFont, cFontSize, cFontStyle)
+                        tTheme.Controls.Add(cControl)
+                    End If
+                End If
+
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
