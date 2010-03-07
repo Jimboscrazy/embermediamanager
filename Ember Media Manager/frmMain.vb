@@ -651,7 +651,10 @@ Public Class frmMain
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
-                            dNewVer.ShowDialog(0)
+                            If dNewVer.ShowDialog(0) = Windows.Forms.DialogResult.Abort Then
+                                Me.Close()
+                                Application.Exit()
+                            End If
                         End Using
                     End If
                 End If
