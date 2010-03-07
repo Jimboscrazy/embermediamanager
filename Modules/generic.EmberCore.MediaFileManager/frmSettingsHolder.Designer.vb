@@ -67,7 +67,7 @@ Partial Class frmSettingsHolder
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(10, 296)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(35, 13)
+        Me.Label3.Size = New System.Drawing.Size(36, 13)
         Me.Label3.TabIndex = 7
         Me.Label3.Text = "Name"
         '
@@ -76,7 +76,7 @@ Partial Class frmSettingsHolder
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(173, 296)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(29, 13)
+        Me.Label4.Size = New System.Drawing.Size(30, 13)
         Me.Label4.TabIndex = 8
         Me.Label4.Text = "Path"
         '
@@ -84,22 +84,22 @@ Partial Class frmSettingsHolder
         '
         Me.TextBox1.Location = New System.Drawing.Point(51, 293)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(120, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(120, 22)
         Me.TextBox1.TabIndex = 9
         '
         'TextBox2
         '
         Me.TextBox2.Location = New System.Drawing.Point(202, 293)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(265, 20)
+        Me.TextBox2.Size = New System.Drawing.Size(265, 22)
         Me.TextBox2.TabIndex = 10
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(470, 294)
+        Me.Button4.Location = New System.Drawing.Point(470, 295)
         Me.Button4.Margin = New System.Windows.Forms.Padding(0)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(23, 20)
+        Me.Button4.Size = New System.Drawing.Size(24, 20)
         Me.Button4.TabIndex = 11
         Me.Button4.Text = "..."
         Me.Button4.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -153,7 +153,7 @@ Partial Class frmSettingsHolder
         Me.cbEnabled.AutoSize = True
         Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
         Me.cbEnabled.TabIndex = 80
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
@@ -182,6 +182,7 @@ Partial Class frmSettingsHolder
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(625, 342)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

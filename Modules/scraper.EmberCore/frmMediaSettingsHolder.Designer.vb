@@ -214,8 +214,8 @@ Partial Class frmMediaSettingsHolder
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.lbTrailerSites)
-        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(151, 9)
+        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.Location = New System.Drawing.Point(151, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(161, 79)
         Me.GroupBox2.TabIndex = 83
@@ -236,7 +236,7 @@ Partial Class frmMediaSettingsHolder
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
         Me.Label1.Location = New System.Drawing.Point(37, 337)
         Me.Label1.Name = "Label1"
@@ -274,10 +274,10 @@ Partial Class frmMediaSettingsHolder
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(500, 7)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(60, 12)
+        Me.Label3.Size = New System.Drawing.Size(58, 12)
         Me.Label3.TabIndex = 87
         Me.Label3.Text = "Scraper order"
         '
@@ -308,7 +308,7 @@ Partial Class frmMediaSettingsHolder
         Me.cbEnabled.AutoSize = True
         Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
         Me.cbEnabled.TabIndex = 82
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
@@ -324,6 +324,7 @@ Partial Class frmMediaSettingsHolder
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(652, 388)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

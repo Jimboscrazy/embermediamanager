@@ -23,10 +23,10 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -41,6 +41,26 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(10, 54)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(160, 17)
+        Me.CheckBox2.TabIndex = 84
+        Me.CheckBox2.Text = "Enable Bulk Renamer Tool"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(10, 31)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(190, 17)
+        Me.CheckBox1.TabIndex = 83
+        Me.CheckBox1.Text = "Enable Generic Rename Module"
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -57,30 +77,10 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.AutoSize = True
         Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
         Me.chkEnabled.Name = "chkEnabled"
-        Me.chkEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 80
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(10, 31)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(180, 17)
-        Me.CheckBox1.TabIndex = 83
-        Me.CheckBox1.Text = "Enable Generic Rename Module"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(10, 54)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(153, 17)
-        Me.CheckBox2.TabIndex = 84
-        Me.CheckBox2.Text = "Enable Bulk Renamer Tool"
-        Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
@@ -88,6 +88,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(643, 356)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmSettingsHolder"
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)

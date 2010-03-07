@@ -136,6 +136,7 @@ Partial Class dlgTranslationDL
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.lvDownload)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

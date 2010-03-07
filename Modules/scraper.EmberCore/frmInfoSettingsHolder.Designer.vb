@@ -84,7 +84,7 @@ Partial Class frmInfoSettingsHolder
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
         Me.Label1.Location = New System.Drawing.Point(37, 336)
         Me.Label1.Name = "Label1"
@@ -394,7 +394,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.GroupBox30.Controls.Add(Me.Label18)
         Me.GroupBox30.Controls.Add(Me.txtIMDBURL)
-        Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox30.Location = New System.Drawing.Point(8, 40)
         Me.GroupBox30.Name = "GroupBox30"
         Me.GroupBox30.Size = New System.Drawing.Size(213, 69)
@@ -426,7 +426,7 @@ Partial Class frmInfoSettingsHolder
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox15.Location = New System.Drawing.Point(8, 114)
         Me.GroupBox15.Name = "GroupBox15"
         Me.GroupBox15.Size = New System.Drawing.Size(213, 87)
@@ -479,7 +479,7 @@ Partial Class frmInfoSettingsHolder
         Me.cbEnabled.AutoSize = True
         Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
         Me.cbEnabled.TabIndex = 80
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
@@ -501,10 +501,10 @@ Partial Class frmInfoSettingsHolder
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(500, 7)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(60, 12)
+        Me.Label2.Size = New System.Drawing.Size(58, 12)
         Me.Label2.TabIndex = 84
         Me.Label2.Text = "Scraper order"
         '
@@ -551,6 +551,7 @@ Partial Class frmInfoSettingsHolder
         Me.ClientSize = New System.Drawing.Size(652, 388)
         Me.Controls.Add(Me.pnlSettings)
         Me.Controls.Add(Me.lblVersion)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

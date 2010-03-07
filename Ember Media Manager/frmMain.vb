@@ -1236,15 +1236,15 @@ Public Class frmMain
             If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvMediaList.Item(11, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
                 ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(10, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
                 Else
                     e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
                     e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
                 End If
             End If
@@ -1291,15 +1291,15 @@ Public Class frmMain
             If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVShows.Item(6, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
                 ElseIf Convert.ToBoolean(Me.dgvTVShows.Item(5, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
                 Else
                     e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
                     e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
                 End If
             End If
@@ -1340,15 +1340,15 @@ Public Class frmMain
             If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVSeasons.Item(8, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
                 ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item(9, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
                 Else
                     e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
                     e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
                 End If
             End If
@@ -1389,15 +1389,15 @@ Public Class frmMain
             If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3) AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
                 ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(7, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Green
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
                 Else
                     e.CellStyle.ForeColor = Color.Black
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
                     e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
                 End If
             End If
@@ -1406,7 +1406,7 @@ Public Class frmMain
 
                 If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Gray
-                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Regular)
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.DarkGray
                 ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
@@ -5177,7 +5177,7 @@ Public Class frmMain
                 .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
                 .Label5.Text = Master.eLang.GetString(49, "Year:")
                 .Label2.Text = Master.eLang.GetString(50, "Source:")
-                .Label3.Text = Master.eLang.GetString(51, "Genre(s):")
+                .Label3.Text = Master.eLang.GetString(51, "Genre:")
                 .lblFilter.Text = Master.eLang.GetString(52, "Filters")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")

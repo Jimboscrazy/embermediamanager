@@ -44,7 +44,7 @@ Partial Class frmSettingsHolder
         Me.cbEnabled.AutoSize = True
         Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
         Me.cbEnabled.TabIndex = 80
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
@@ -64,6 +64,7 @@ Partial Class frmSettingsHolder
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(625, 342)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
