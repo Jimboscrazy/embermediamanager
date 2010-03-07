@@ -39,6 +39,11 @@ Public Class Scanner
         Dim SourceName As String
     End Structure
 
+    Private Structure ProgressValue
+        Dim Type As Integer
+        Dim Message As String
+    End Structure
+
     Public Class Seasons
         Private _season As Integer
         Private _episodes As List(Of Integer)
@@ -1094,7 +1099,7 @@ Public Class Scanner
             End If
 
             If Args.Scan.TV Then
-                bwPrelim.ReportProgress(2, String.Empty)
+                bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
                 htTVShows.Clear()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1156,7 +1161,7 @@ Public Class Scanner
                 End Using
             End If
 
-            Me.bwPrelim.ReportProgress(3, String.Empty)
+            Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
             'remove any db entries that no longer exist
             Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
         Catch ex As Exception
@@ -1167,7 +1172,15 @@ Public Class Scanner
     End Sub
 
     Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
-        RaiseEvent ScannerUpdated(e.ProgressPercentage, e.UserState.ToString)
+        Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
+        RaiseEvent ScannerUpdated(e.ProgressPercentage, tProgressValue.Message)
+
+        Select Case tProgressValue.Type
+            Case 0
+                Functions.Notify("newmovie", 3, Master.eLang.GetString(999, "New Movie Added"), tProgressValue.Message)
+            Case 1
+                Functions.Notify("newep", 4, Master.eLang.GetString(999, "New Episode Added"), tProgressValue.Message)
+        End Select
     End Sub
 
     Private Sub bwPrelim_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPrelim.RunWorkerCompleted
@@ -1411,7 +1424,7 @@ Public Class Scanner
                 'Do the Save
                 tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
 
-                Me.bwPrelim.ReportProgress(0, tmpMovieDB.Movie.Title)
+                Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = tmpMovieDB.Movie.Title})
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1529,7 +1542,7 @@ Public Class Scanner
                                     'Save the All Seasons entry
                                     Master.DB.SaveTVSeasonToDB(New Structures.DBTV With {.ShowID = tmpTVDB.ShowID, .SeasonPosterPath = TVContainer.AllSeasonPoster, .TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}}, True, True)
 
-                                    Me.bwPrelim.ReportProgress(1, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
+                                    Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title)})
                                 Next
                             Next
                         End If

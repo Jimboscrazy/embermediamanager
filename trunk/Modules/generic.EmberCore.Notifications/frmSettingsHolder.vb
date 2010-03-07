@@ -30,4 +30,16 @@ Public Class frmSettingsHolder
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
+
+    Private Sub chkAddNewMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnNewMovie.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkOnMovieScraped_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnMovieScraped.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkOnNewEp_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnNewEp.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 End Class

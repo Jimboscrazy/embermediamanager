@@ -63,6 +63,9 @@ Public Class NotificationsModule
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
         Me._enabled = _setup.chkEnabled.Checked
         eSettings.OnError = _setup.chkOnError.Checked
+        eSettings.OnNewMovie = _setup.chkonnewmovie.checked
+        eSettings.OnMovieScraped = _setup.chkOnMovieScraped.Checked
+        eSettings.OnNewEp = _setup.chkOnNewEp.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -76,6 +79,9 @@ Public Class NotificationsModule
         Me._setup = New frmSettingsHolder
         Me._setup.chkEnabled.Checked = Me._enabled
         Me._setup.chkOnError.Checked = eSettings.OnError
+        Me._setup.chkOnNewMovie.Checked = eSettings.OnNewMovie
+        Me._setup.chkOnMovieScraped.Checked = eSettings.OnMovieScraped
+        Me._setup.chkOnNewEp.Checked = eSettings.OnNewEp
         SPanel.Name = Me._name
         SPanel.Text = Me._name
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
@@ -112,6 +118,12 @@ Public Class NotificationsModule
                 Select Case True
                     Case _params(0).ToString = "error" AndAlso eSettings.OnError
                         ShowIt = True
+                    Case _params(0).ToString = "newmovie" AndAlso eSettings.OnNewMovie
+                        ShowIt = True
+                    Case _params(0).ToString = "moviescraped" AndAlso eSettings.OnMovieScraped
+                        ShowIt = True
+                    Case _params(0).ToString = "newep" AndAlso eSettings.OnNewEp
+                        ShowIt = True
                 End Select
 
                 If ShowIt Then
@@ -128,20 +140,57 @@ Public Class NotificationsModule
 
     Private Sub SaveSettings()
         AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
+        AdvancedSettings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
+        AdvancedSettings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
+        AdvancedSettings.SetBooleanSetting("NotifyOnNewEp", eSettings.OnNewEp)
     End Sub
 
     Private Sub LoadSettings()
         eSettings.OnError = AdvancedSettings.GetBooleanSetting("NotifyOnError", True)
+        eSettings.OnNewMovie = AdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", True)
+        eSettings.OnMovieScraped = AdvancedSettings.GetBooleanSetting("NotifyOnMovieScraped", True)
+        eSettings.OnNewEp = AdvancedSettings.GetBooleanSetting("NotifyOnNewEp", True)
     End Sub
 
     Class NotifySettings
         Private _onerror As Boolean
+        Private _onnewmovie As Boolean
+        Private _onmoviescraped As Boolean
+        Private _onnewep As Boolean
+
         Public Property OnError() As Boolean
             Get
                 Return Me._onerror
             End Get
             Set(ByVal value As Boolean)
                 Me._onerror = value
+            End Set
+        End Property
+
+        Public Property OnNewMovie() As Boolean
+            Get
+                Return Me._onnewmovie
+            End Get
+            Set(ByVal value As Boolean)
+                Me._onnewmovie = value
+            End Set
+        End Property
+
+        Public Property OnMovieScraped() As Boolean
+            Get
+                Return Me._onmoviescraped
+            End Get
+            Set(ByVal value As Boolean)
+                Me._onmoviescraped = value
+            End Set
+        End Property
+
+        Public Property OnNewEp() As Boolean
+            Get
+                Return Me._onnewep
+            End Get
+            Set(ByVal value As Boolean)
+                Me._onnewep = value
             End Set
         End Property
     End Class

@@ -1307,9 +1307,14 @@ Public Class dlgEditMovie
 
     Private Sub RefreshExtraThumbs()
         Try
+            While Me.bwThumbs.IsBusy
+                Application.DoEvents()
+            End While
+
             Thumbs.Clear()
             lvThumbs.Clear()
             ilThumbs.Images.Clear()
+
             Me.bwThumbs.RunWorkerAsync()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
