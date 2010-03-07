@@ -480,14 +480,17 @@ Public Class Scanner
                     Dim hasVob As Integer = 0
                     Dim hasBup As Integer = 0
                     For Each lfile As FileInfo In lFi
-                        If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then hasIfo = 1
-                        If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
-                        If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
-                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then
+                        If lfile.Extension.ToLower = ".ifo" Then hasIfo = 1
+                        If lfile.Extension.ToLower = ".vob" Then hasVob = 1
+                        If lfile.Extension.ToLower = ".bup" Then hasBup = 1
+                        If lfile.Name.ToLower = "video_ts.vob" Then
                             'video_ts.vob takes precedence
                             tFile = lfile.FullName
-                        ElseIf String.IsNullOrEmpty(tFile) AndAlso (Path.GetFileName(lfile.FullName).ToLower = "video_ts.ifo" _
-                        OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.bup") Then
+                        ElseIf String.IsNullOrEmpty(tFile) AndAlso (lfile.Name.ToLower = "video_ts.ifo" _
+                        OrElse lfile.Name.ToLower = "video_ts.bup") Then
+                            tFile = lfile.FullName
+                        ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
+                            'get any vob
                             tFile = lfile.FullName
                         End If
                         vtsSingle = (hasIfo + hasVob + hasBup) > 1
