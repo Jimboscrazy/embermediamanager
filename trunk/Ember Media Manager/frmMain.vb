@@ -382,9 +382,14 @@ Public Class frmMain
         dThread.SetApartmentState(Threading.ApartmentState.STA)
         dThread.Start()
     End Sub
+    Delegate Sub _SetMnuSettings(ByVal b As Boolean)
+    Sub SetMnuSettings(ByVal b As Boolean)
+        SettingsToolStripMenuItem.Enabled = b
+    End Sub
 
     Private Sub ShowSettings()
         Try
+            Me.Invoke(New _SetMnuSettings(AddressOf SetMnuSettings), False)
             Dim MyDelegate = New MySettingsDone(AddressOf SettingsDone)
 
             Using dSettings As New dlgSettings
@@ -392,7 +397,7 @@ Public Class frmMain
                 Me.Invoke(MyDelegate, New Object() {dSettings.ShowDialog})
                 RemoveHandler dSettings.SettingsLoaded, AddressOf SettingsLoaded
             End Using
-
+            Me.Invoke(New _SetMnuSettings(AddressOf SetMnuSettings), True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
