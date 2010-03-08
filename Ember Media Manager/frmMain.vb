@@ -4548,6 +4548,9 @@ Public Class frmMain
 
         Try
             If Not e.Cancelled Then
+                ' TODO Need to check this
+                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(False)
                 Me.fillScreenInfoWithMovie()
             Else
                 Me.SetControlsEnabled(True, True)

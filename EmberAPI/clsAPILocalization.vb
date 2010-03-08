@@ -19,8 +19,6 @@
 ' ################################################################################
 Imports System.Xml.Linq
 Imports System.IO.IsolatedStorage
-
-
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
@@ -126,7 +124,7 @@ Public Class Localization
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                 Else
                     lPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
-                    If Not File.Exists(lPath) Then 'FFailback disabled, possible not need anymore
+                    If Not File.Exists(lPath) Then 'Failback disabled, possible not need anymore
                         'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                         File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf & _
                             "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf & _
