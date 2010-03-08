@@ -147,9 +147,9 @@ Public Class NotificationsModule
 
     Private Sub LoadSettings()
         eSettings.OnError = AdvancedSettings.GetBooleanSetting("NotifyOnError", True)
-        eSettings.OnNewMovie = AdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", True)
+        eSettings.OnNewMovie = AdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", False)
         eSettings.OnMovieScraped = AdvancedSettings.GetBooleanSetting("NotifyOnMovieScraped", True)
-        eSettings.OnNewEp = AdvancedSettings.GetBooleanSetting("NotifyOnNewEp", True)
+        eSettings.OnNewEp = AdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
     End Sub
 
     Class NotifySettings
