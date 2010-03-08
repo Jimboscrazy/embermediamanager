@@ -22,6 +22,7 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTVImageSelect))
         Me.tvList = New System.Windows.Forms.TreeView
         Me.pnlImages = New System.Windows.Forms.Panel
@@ -33,6 +34,7 @@
         Me.btnCancel = New System.Windows.Forms.Button
         Me.pbDelete = New System.Windows.Forms.PictureBox
         Me.pbUndo = New System.Windows.Forms.PictureBox
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlStatus.SuspendLayout()
         CType(Me.pbDelete, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -42,8 +44,11 @@
         'tvList
         '
         Me.tvList.Enabled = False
+        Me.tvList.ImageIndex = 0
+        Me.tvList.ImageList = Me.ImageList1
         Me.tvList.Location = New System.Drawing.Point(3, 4)
         Me.tvList.Name = "tvList"
+        Me.tvList.SelectedImageIndex = 0
         Me.tvList.Size = New System.Drawing.Size(214, 280)
         Me.tvList.TabIndex = 0
         Me.tvList.Visible = False
@@ -138,6 +143,15 @@
         Me.pbUndo.TabStop = False
         Me.pbUndo.Visible = False
         '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "new_page.png")
+        Me.ImageList1.Images.SetKeyName(1, "image.png")
+        Me.ImageList1.Images.SetKeyName(2, "artwork.png")
+        Me.ImageList1.Images.SetKeyName(3, "star_full.png")
+        '
         'dlgTVImageSelect
         '
         Me.AcceptButton = Me.btnOK
@@ -178,4 +192,5 @@
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents pbDelete As System.Windows.Forms.PictureBox
     Friend WithEvents pbUndo As System.Windows.Forms.PictureBox
+    Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
 End Class

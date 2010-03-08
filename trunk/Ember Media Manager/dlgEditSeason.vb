@@ -225,7 +225,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Me.pbPoster.Image)
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Me.pbPoster.Image)
 
         If Not IsNothing(tImage) Then
             Me.Poster.Image = tImage
@@ -234,7 +234,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Me.pbFanart.Image)
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Me.pbFanart.Image)
 
         If Not IsNothing(tImage) Then
             Me.Fanart.Image = tImage

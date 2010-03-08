@@ -60,17 +60,17 @@ Public Class dlgTVImageSelect
 
     Private Sub GenerateList()
         Try
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(821, "Episode Fanart"), Master.eLang.GetString(785, "Show Fanart")), .Tag = "showf"})
-            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp", .ImageIndex = 0, .SelectedImageIndex = 0})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(821, "Episode Fanart"), Master.eLang.GetString(785, "Show Fanart")), .Tag = "showf", .ImageIndex = 1, .SelectedImageIndex = 1})
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp", .ImageIndex = 2, .SelectedImageIndex = 2})
 
             Dim TnS As TreeNode
             If Me._type = Enums.TVImageType.All Then
                 For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
                     Try
-                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season))
-                        TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString)})
-                        If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString)})
+                        TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.Season), 3, 3)
+                        TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString), .ImageIndex = 0, .SelectedImageIndex = 0})
+                        If Master.eSettings.SeasonFanartEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString), .ImageIndex = 1, .SelectedImageIndex = 1})
                         Me.tvList.Nodes.Add(TnS)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
