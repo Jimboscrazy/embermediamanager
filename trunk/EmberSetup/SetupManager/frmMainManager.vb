@@ -740,6 +740,9 @@ Public Class frmMainManager
         Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
         Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
         MasterDB.Connect()
+        LoadAll()
+    End Sub
+    Sub LoadAll()
         LoadSettings()
         LoadOPaths()
         cbPlatform.SelectedIndex = 0
@@ -1122,11 +1125,11 @@ Public Class frmMainManager
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
-        Dim sEditor As String = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt"))).Replace("\n", vbCrLf)
+        Dim sEditor As String = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
         Using editor As New dlgEditor
             editor.TextBox1.Text = sEditor
             If editor.ShowDialog = Windows.Forms.DialogResult.OK Then
-                File.WriteAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt")), editor.TextBox1.Text.Replace(vbCrLf, "\n"))
+                File.WriteAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt")), editor.TextBox1.Text.Replace(vbCrLf, "\n"))
             End If
         End Using
     End Sub
@@ -1145,13 +1148,20 @@ Public Class frmMainManager
             ftp.setRemotePass(TextBox2.Text)
             ftp.setRemotePath("/public_html/Updates")
             ftp.login()
-            dlg.Label1.Text = "Download Files"
+            dlg.Label1.Text = "Download Files: WhatsNew.txt"
             Application.DoEvents()
-            ftp.download("Changelog.txt", String.Concat("Site", Path.DirectorySeparatorChar, "Changelog.txt"))
+            ftp.download("WhatsNew.txt", String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))
+            dlg.Label1.Text = "Download Files: versionlist.xml"
+            Application.DoEvents()
+            ftp.download("versionlist.xml", String.Concat("Site", Path.DirectorySeparatorChar, "versionlist.xml"))
+            dlg.Label1.Text = "Download Files: versions.xml"
+            Application.DoEvents()
+            ftp.download("versions.xml", String.Concat("Site", Path.DirectorySeparatorChar, "versions.xml"))
             ftp.close()
             dlg.Close()
         Catch ex As Exception
-
+            dlg.Close()
         End Try
+        LoadAll()
     End Sub
 End Class
