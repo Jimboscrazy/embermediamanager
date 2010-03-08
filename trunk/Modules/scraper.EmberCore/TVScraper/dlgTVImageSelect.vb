@@ -77,10 +77,13 @@ Public Class dlgTVImageSelect
                     End Try
                 Next
             ElseIf Me._type = Enums.TVImageType.SeasonPoster Then
-                tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(822, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
+                Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(822, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
             ElseIf Me._type = Enums.TVImageType.SeasonFanart Then
-                If Master.eSettings.SeasonFanartEnabled Then tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(823, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
+                If Master.eSettings.SeasonFanartEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(823, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
             End If
+
+            Me.tvList.ExpandAll()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
