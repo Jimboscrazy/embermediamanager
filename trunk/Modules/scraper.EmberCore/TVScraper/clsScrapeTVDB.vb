@@ -956,7 +956,7 @@ Public Class Scraper
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All) = Windows.Forms.DialogResult.OK Then
+                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, Not String.IsNullOrEmpty(sInfo.TVDBID)) = Windows.Forms.DialogResult.OK Then
                                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                                 Else
                                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
@@ -972,7 +972,7 @@ Public Class Scraper
                         Master.currShow = tmpTVDBShow.Show
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All) = Windows.Forms.DialogResult.OK Then
+                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, Not String.IsNullOrEmpty(sInfo.TVDBID)) = Windows.Forms.DialogResult.OK Then
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                             Else
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
@@ -985,7 +985,7 @@ Public Class Scraper
                                 Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
-                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All) = Windows.Forms.DialogResult.OK Then
+                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, Not String.IsNullOrEmpty(sInfo.TVDBID)) = Windows.Forms.DialogResult.OK Then
                                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                                     Else
                                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
