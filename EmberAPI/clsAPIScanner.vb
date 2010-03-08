@@ -486,9 +486,6 @@ Public Class Scanner
                         If lfile.Name.ToLower = "video_ts.vob" Then
                             'video_ts.vob takes precedence
                             tFile = lfile.FullName
-                        ElseIf String.IsNullOrEmpty(tFile) AndAlso (lfile.Name.ToLower = "video_ts.ifo" _
-                        OrElse lfile.Name.ToLower = "video_ts.bup") Then
-                            tFile = lfile.FullName
                         ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
                             'get any vob
                             tFile = lfile.FullName
