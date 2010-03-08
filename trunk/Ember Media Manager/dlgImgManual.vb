@@ -35,6 +35,8 @@ Public Class dlgImgManual
         Try
             If DLType = Enums.ImageType.Fanart Then
                 tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
+            ElseIf DLType = Enums.ImageType.ASPoster Then
+                tmpPathPlus = Path.Combine(Master.TempPath, "asposter.jpg")
             Else
                 tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
             End If

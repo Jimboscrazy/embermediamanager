@@ -75,6 +75,13 @@ Partial Class dlgEditShow
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
+        Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.btnASPosterChangeDL = New System.Windows.Forms.Button
+        Me.btnASPosterRemove = New System.Windows.Forms.Button
+        Me.btnASChangePosterScrape = New System.Windows.Forms.Button
+        Me.btnASChangePoster = New System.Windows.Forms.Button
+        Me.pbASPoster = New System.Windows.Forms.PictureBox
+        Me.lblASSize = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -88,6 +95,8 @@ Partial Class dlgEditShow
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage4.SuspendLayout()
+        CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -143,6 +152,7 @@ Partial Class dlgEditShow
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(4, 70)
         Me.TabControl1.Name = "TabControl1"
@@ -639,6 +649,95 @@ Partial Class dlgEditShow
         Me.OK_Button.TabIndex = 58
         Me.OK_Button.Text = "OK"
         '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.lblASSize)
+        Me.TabPage4.Controls.Add(Me.btnASPosterChangeDL)
+        Me.TabPage4.Controls.Add(Me.btnASPosterRemove)
+        Me.TabPage4.Controls.Add(Me.btnASChangePosterScrape)
+        Me.TabPage4.Controls.Add(Me.btnASChangePoster)
+        Me.TabPage4.Controls.Add(Me.pbASPoster)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "All Seasons Poster"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'btnASPosterChangeDL
+        '
+        Me.btnASPosterChangeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnASPosterChangeDL.Image = CType(resources.GetObject("btnASPosterChangeDL.Image"), System.Drawing.Image)
+        Me.btnASPosterChangeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnASPosterChangeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnASPosterChangeDL.Name = "btnASPosterChangeDL"
+        Me.btnASPosterChangeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnASPosterChangeDL.TabIndex = 32
+        Me.btnASPosterChangeDL.Text = "Change Poster (Download)"
+        Me.btnASPosterChangeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnASPosterChangeDL.UseVisualStyleBackColor = True
+        '
+        'btnASPosterRemove
+        '
+        Me.btnASPosterRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnASPosterRemove.Image = CType(resources.GetObject("btnASPosterRemove.Image"), System.Drawing.Image)
+        Me.btnASPosterRemove.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnASPosterRemove.Location = New System.Drawing.Point(735, 363)
+        Me.btnASPosterRemove.Name = "btnASPosterRemove"
+        Me.btnASPosterRemove.Size = New System.Drawing.Size(96, 83)
+        Me.btnASPosterRemove.TabIndex = 31
+        Me.btnASPosterRemove.Text = "Remove Poster"
+        Me.btnASPosterRemove.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnASPosterRemove.UseVisualStyleBackColor = True
+        '
+        'btnASChangePosterScrape
+        '
+        Me.btnASChangePosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnASChangePosterScrape.Image = CType(resources.GetObject("btnASChangePosterScrape.Image"), System.Drawing.Image)
+        Me.btnASChangePosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnASChangePosterScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnASChangePosterScrape.Name = "btnASChangePosterScrape"
+        Me.btnASChangePosterScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnASChangePosterScrape.TabIndex = 30
+        Me.btnASChangePosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnASChangePosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnASChangePosterScrape.UseVisualStyleBackColor = True
+        '
+        'btnASChangePoster
+        '
+        Me.btnASChangePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnASChangePoster.Image = CType(resources.GetObject("btnASChangePoster.Image"), System.Drawing.Image)
+        Me.btnASChangePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnASChangePoster.Location = New System.Drawing.Point(735, 6)
+        Me.btnASChangePoster.Name = "btnASChangePoster"
+        Me.btnASChangePoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnASChangePoster.TabIndex = 29
+        Me.btnASChangePoster.Text = "Change Poster (Local)"
+        Me.btnASChangePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnASChangePoster.UseVisualStyleBackColor = True
+        '
+        'pbASPoster
+        '
+        Me.pbASPoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbASPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbASPoster.Location = New System.Drawing.Point(6, 6)
+        Me.pbASPoster.Name = "pbASPoster"
+        Me.pbASPoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbASPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbASPoster.TabIndex = 28
+        Me.pbASPoster.TabStop = False
+        '
+        'lblASSize
+        '
+        Me.lblASSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblASSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblASSize.Name = "lblASSize"
+        Me.lblASSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblASSize.TabIndex = 33
+        Me.lblASSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblASSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblASSize.Visible = False
+        '
         'dlgEditShow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -672,6 +771,8 @@ Partial Class dlgEditShow
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage4.ResumeLayout(False)
+        CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -727,5 +828,12 @@ Partial Class dlgEditShow
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
+    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents lblASSize As System.Windows.Forms.Label
+    Friend WithEvents btnASPosterChangeDL As System.Windows.Forms.Button
+    Friend WithEvents btnASPosterRemove As System.Windows.Forms.Button
+    Friend WithEvents btnASChangePosterScrape As System.Windows.Forms.Button
+    Friend WithEvents btnASChangePoster As System.Windows.Forms.Button
+    Friend WithEvents pbASPoster As System.Windows.Forms.PictureBox
 
 End Class

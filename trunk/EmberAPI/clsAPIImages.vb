@@ -442,7 +442,7 @@ Public Class Images : Implements IDisposable
                     If Master.eSettings.SeasonNameTBN Then
                         pPath = Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn"))
                         If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
-                            'Save(pPath, Master.eSettings.SeasonPosterQuality)
+                            Save(pPath, Master.eSettings.SeasonPosterQuality)
                             strReturn = pPath
                         End If
                     End If
@@ -1036,7 +1036,6 @@ Public Class Images : Implements IDisposable
         Try
             Dim tPath As String = mShow.ShowPath
 
-            Delete(Path.Combine(tPath, "season-all.tbn"))
             Delete(Path.Combine(tPath, "folder.jpg"))
             Delete(Path.Combine(tPath, "poster.tbn"))
             Delete(Path.Combine(tPath, "poster.jpg"))
@@ -1052,6 +1051,49 @@ Public Class Images : Implements IDisposable
 
             Delete(String.Concat(tPath, ".tbn"))
             Delete(String.Concat(tPath, ".jpg"))
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub DeleteSeasonPosters(ByVal mShow As Structures.DBTV)
+        Try
+            Dim tPath As String = String.Empty
+            Dim tDir As New DirectoryInfo(mShow.ShowPath)
+
+            Try
+                tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+            Catch
+            End Try
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                Delete(Path.Combine(tPath, "Poster.tbn"))
+                Delete(Path.Combine(tPath, "Poster.jpg"))
+                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
+                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
+                Delete(Path.Combine(tPath, "Folder.jpg"))
+            End If
+
+            If mShow.TVEp.Season = 0 Then
+                Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
+                Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
+            Else
+                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
+                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub DeleteAllSeasonPosters(ByVal mShow As Structures.DBTV)
+        Try
+            Dim tPath As String = mShow.ShowPath
+
+            Delete(Path.Combine(tPath, "season-all.tbn"))
+            Delete(Path.Combine(tPath, "season-all.jpg"))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1106,4 +1148,24 @@ Public Class Images : Implements IDisposable
         End Try
     End Sub
 
+    Public Sub DeleteSeasonFanart(ByVal mShow As Structures.DBTV)
+        Try
+            Dim tPath As String = String.Empty
+            Dim tDir As New DirectoryInfo(mShow.ShowPath)
+
+            Try
+                tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+            Catch ex As Exception
+            End Try
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".fanart.jpg")))
+                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), "-fanart.jpg")))
+                Delete(Path.Combine(tPath, "Fanart.jpg"))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

@@ -229,6 +229,7 @@ Public Class Enums
     Public Enum ImageType As Integer
         Posters = 0
         Fanart = 1
+        ASPoster = 2
     End Enum
 
     Public Enum ScrapeType As Integer

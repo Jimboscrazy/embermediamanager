@@ -768,8 +768,8 @@
   <string id="766">Re-scrape theTVDB</string>
   <string id="767">Change Show</string>
   <string id="768">Delete TV Show</string>
-  <string id="769">Change Poster</string>
-  <string id="770">Change Fanart</string>
+  <string id="769">Edit Season</string>
+  <string id="770">Change Images</string>
   <string id="771">Delete Season</string>
   <string id="772">Change Episode</string>
   <string id="773">Delete Episode</string>
@@ -829,4 +829,5 @@
   <string id="827">Move from {0} To {1}</string>
   <string id="828">Copy from {0} To {1}</string>
   <string id="829">Watch for ""Dump"" Folder</string>
+  <string id="830">Edit the details for the selected season.</string>
 </strings>
