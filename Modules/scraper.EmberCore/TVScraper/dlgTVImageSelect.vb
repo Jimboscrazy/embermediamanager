@@ -61,7 +61,7 @@ Public Class dlgTVImageSelect
     Private Sub GenerateList()
         Try
             If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(784, "Show Poster"), .Tag = "showp"})
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(999, "Episode Fanart"), Master.eLang.GetString(785, "Show Fanart")), .Tag = "showf"})
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.TVImageType.EpisodeFanart, Master.eLang.GetString(821, "Episode Fanart"), Master.eLang.GetString(785, "Show Fanart")), .Tag = "showf"})
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(786, "All Seasons Poster"), .Tag = "allp"})
 
             Dim TnS As TreeNode
@@ -77,9 +77,9 @@ Public Class dlgTVImageSelect
                     End Try
                 Next
             ElseIf Me._type = Enums.TVImageType.SeasonPoster Then
-                tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(999, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
+                tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(822, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
             ElseIf Me._type = Enums.TVImageType.SeasonFanart Then
-                If Master.eSettings.SeasonFanartEnabled Then tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(999, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
+                If Master.eSettings.SeasonFanartEnabled Then tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(823, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

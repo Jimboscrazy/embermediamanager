@@ -36,25 +36,19 @@ Public Class dlgNewVersion
 
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal iNew As Integer) As Windows.Forms.DialogResult
-
-        'Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available."), iNew)
-        Me.lblNew.Text = String.Format(Master.eLang.GetString(999, "A New Version is now available.")) 'Maybe just a module.. don't know what version
-        Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", vbNewLine)
-
-        Return MyBase.ShowDialog()
-    End Function
-
     Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
 
     Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", vbNewLine)
+
         Me.SetUp()
     End Sub
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
+        Me.lblNew.Text = Me.Text
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
         Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
@@ -82,7 +76,7 @@ Public Class dlgNewVersion
         Else
             lblStart.Visible = False
             pbUpgrade.Visible = False
-            Me.lblUpgrade.Text = Master.eLang.GetString(999, "Failed to Load Upgrade Application")
+            Me.lblUpgrade.Text = Master.eLang.GetString(210, "Failed to Load Upgrade Application")
             lblUpgrade.Visible = True
             'Error
         End If

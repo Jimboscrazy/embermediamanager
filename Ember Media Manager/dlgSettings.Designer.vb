@@ -3314,9 +3314,9 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkDownloadTrailer.Location = New System.Drawing.Point(12, 16)
         Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(169, 17)
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(135, 17)
         Me.chkDownloadTrailer.TabIndex = 6
-        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
+        Me.chkDownloadTrailer.Text = "Enable Downloading"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
         'Label19
@@ -6843,6 +6843,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(883, 751)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
@@ -6851,18 +6852,17 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

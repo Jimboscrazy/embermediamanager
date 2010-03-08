@@ -47,6 +47,12 @@ Public Class dlgWizard
             Case Me.Panel3.Visible
                 Me.Panel3.Visible = False
                 Me.Panel4.Visible = True
+            Case Me.Panel4.Visible
+                Me.Panel4.Visible = False
+                Me.Panel5.Visible = True
+            Case Me.Panel5.Visible
+                Me.Panel5.Visible = False
+                Me.Panel6.Visible = True
                 Me.btnNext.Enabled = False
                 Me.OK_Button.Enabled = True
         End Select
@@ -64,6 +70,12 @@ Public Class dlgWizard
             Case Me.Panel4.Visible
                 Me.Panel4.Visible = False
                 Me.Panel3.Visible = True
+            Case Me.Panel5.Visible
+                Me.Panel5.Visible = False
+                Me.Panel4.Visible = True
+            Case Me.Panel6.Visible
+                Me.Panel6.Visible = False
+                Me.Panel5.Visible = True
                 Me.btnNext.Enabled = True
                 Me.OK_Button.Enabled = False
         End Select
@@ -142,7 +154,9 @@ Public Class dlgWizard
         Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
         Me.Label5.Text = Master.eLang.GetString(406, "TIP: Selections containing the text <movie> means that Ember Media Manager will use the filename of the movie.")
         Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
+        Me.btnTVAddSource.Text = Me.btnMovieAddFolder.Text
         Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
         Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -152,14 +166,26 @@ Public Class dlgWizard
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
         Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
         Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-        Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where all our movies are.  If each of your movie files are in a separate folder, add a Folder Path pointing to the parent folder.  If all your movie files are in the same folder, add a Files Path pointing to the parent folder. You can select as many Folder Paths, File Paths, or any combination of both that you wish.")
+        Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
         Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
+        Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
+        Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
+        Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
+        Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
+        Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
+        Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
+        Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
+        Me.lblInsideSeason.Text = Master.eLang.GetString(689, "* Inside Season directory")
+        Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
+
     End Sub
 
     Private Sub FillSettings()
         Me.RefreshSources()
+        Me.RefreshTVSources()
 
         Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
         Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
@@ -175,6 +201,30 @@ Public Class dlgWizard
         Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
         Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
         Me.cbIntLang.SelectedItem = Master.eSettings.Language
+        Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
+        Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
+        Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
+        Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
+        Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
+        Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
+        Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
+        Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
+        Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
+        Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
+        Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
+        Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
+        Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
+        Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
+        Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
+        Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
+        Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
+        Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
+        Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
+        Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
+        Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
+        Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
+        Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
+        Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
     End Sub
 
     Private Sub RefreshSources()
@@ -211,6 +261,30 @@ Public Class dlgWizard
         Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
         Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
         Master.eSettings.Language = Me.cbIntLang.Text
+        Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
+        Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
+        Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
+        Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
+        Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
+        Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
+        Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
+        Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
+        Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
+        Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
+        Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
+        Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
+        Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
+        Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
+        Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
+        Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
+        Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
+        Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
+        Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
+        Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
+        Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
+        Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
+        Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
+        Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
     End Sub
 
     Private Sub dlgWizard_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -236,6 +310,83 @@ Public Class dlgWizard
 
     Private Sub lvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvMovies.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveSource()
+    End Sub
+
+    Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
+        Using dSource As New dlgTVSource
+            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+                RefreshTVSources()
+            End If
+        End Using
+    End Sub
+
+    Private Sub RefreshTVSources()
+        Dim lvItem As ListViewItem
+        lvTVSources.Items.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    lvItem = New ListViewItem(SQLreader("ID").ToString)
+                    lvItem.SubItems.Add(SQLreader("Name").ToString)
+                    lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    lvTVSources.Items.Add(lvItem)
+                End While
+            End Using
+        End Using
+    End Sub
+
+    Private Sub btnTVRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVRemoveSource.Click
+        Me.RemoveTVSource()
+    End Sub
+
+    Private Sub RemoveTVSource()
+        Try
+            If Me.lvTVSources.SelectedItems.Count > 0 Then
+                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                    Me.lvTVSources.BeginUpdate()
+
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            While Me.lvTVSources.SelectedItems.Count > 0
+                                parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
+                                SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
+                                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                                    While SQLReader.Read
+                                        Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End While
+                                End Using
+                                SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                                SQLcommand.ExecuteNonQuery()
+                                lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
+                            End While
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
+
+                    Me.lvTVSources.Sort()
+                    Me.lvTVSources.EndUpdate()
+                    Me.lvTVSources.Refresh()
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
+        If lvTVSources.SelectedItems.Count > 0 Then
+            Using dTVSource As New dlgTVSource
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshTVSources()
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVSource()
     End Sub
 
 End Class

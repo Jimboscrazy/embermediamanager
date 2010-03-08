@@ -674,7 +674,7 @@ Public Class frmMain
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
-                            If dNewVer.ShowDialog(0) = Windows.Forms.DialogResult.Abort Then
+                            If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                                 Me.Close()
                                 Application.Exit()
                             End If
@@ -798,10 +798,6 @@ Public Class frmMain
     End Sub
 
     Private Sub tsbRefreshMedia_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRefreshMedia.ButtonClick
-
-        '//
-        ' Reload media type when "Rescan Media" is clicked
-        '\\
 
         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
 
@@ -4574,10 +4570,6 @@ Public Class frmMain
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
 
-        '//
-        ' Thread to load media images and information (from nfo) then display on screen
-        '\\
-
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -4621,18 +4613,16 @@ Public Class frmMain
             e.Cancel = True
         End Try
 
-
     End Sub
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
 
-        '//
-        ' Thread finished: display it
-        '\\
-
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithMovie()
+            Else
+                Me.SetControlsEnabled(True, True)
+                Me.EnableFilters(True)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4684,13 +4674,11 @@ Public Class frmMain
 
     Private Sub bwLoadShowInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadShowInfo.RunWorkerCompleted
 
-        '//
-        ' Thread finished: display it
-        '\\
-
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithShow()
+            Else
+                Me.SetControlsEnabled(True, True)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4752,6 +4740,8 @@ Public Class frmMain
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithSeason()
+            Else
+                Me.SetControlsEnabled(True, True)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4815,13 +4805,11 @@ Public Class frmMain
 
     Private Sub bwLoadEpInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadEpInfo.RunWorkerCompleted
 
-        '//
-        ' Thread finished: display it
-        '\\
-
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithEpisode()
+            Else
+                Me.SetControlsEnabled(True, True)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5404,11 +5392,6 @@ Public Class frmMain
 
     Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
 
-        '//
-        ' Begin threads to fill datagrid with media data
-        '\\
-
-
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -5441,6 +5424,8 @@ Public Class frmMain
 
         Catch ex As Exception
             Me.LoadingDone = True
+            Me.EnableFilters(True)
+            Me.SetControlsEnabled(True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -5448,10 +5433,6 @@ Public Class frmMain
     End Sub
 
     Private Sub LoadInfo(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, Optional ByVal setEnabled As Boolean = False)
-
-        '//
-        ' Begin threads to load images and media info from nfos
-        '\\
 
         Try
             Me.SetControlsEnabled(False, True)
@@ -5476,6 +5457,7 @@ Public Class frmMain
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
         Catch ex As Exception
+            Me.SetControlsEnabled(True, True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -5498,6 +5480,7 @@ Public Class frmMain
             Me.FillSeasons(ID)
 
         Catch ex As Exception
+            Me.SetControlsEnabled(True, True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -5521,6 +5504,7 @@ Public Class frmMain
             Me.FillEpisodes(ShowID, Season)
 
         Catch ex As Exception
+            Me.SetControlsEnabled(True, True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -5539,7 +5523,9 @@ Public Class frmMain
             Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+
         Catch ex As Exception
+            Me.SetControlsEnabled(True, True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -5811,7 +5797,7 @@ Public Class frmMain
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True)
+                Me.SetControlsEnabled(True, True)
                 Me.EnableFilters(True)
             End If
 
@@ -5945,7 +5931,7 @@ Public Class frmMain
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True)
+                Me.SetControlsEnabled(True, True)
             End If
 
         Catch ex As Exception
@@ -6078,7 +6064,7 @@ Public Class frmMain
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True)
+                Me.SetControlsEnabled(True, True)
             End If
 
         Catch ex As Exception
@@ -6215,7 +6201,7 @@ Public Class frmMain
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True)
+                Me.SetControlsEnabled(True, True)
             End If
 
         Catch ex As Exception
@@ -6551,7 +6537,7 @@ doCancel:
                     NewTitle = DBScrapeMovie.ListTitle
 
                     If Not NewTitle = OldTitle Then
-                        bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(999, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
+                        bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                     End If
 
                     MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
@@ -6564,7 +6550,7 @@ doCancel:
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
 
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(999, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
+                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
                 End If
@@ -6577,7 +6563,7 @@ doCancel:
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            Functions.Notify("moviescraped", 3, Master.eLang.GetString(999, "Movie Scraped"), e.UserState.ToString)
+            Functions.Notify("moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString)
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -7651,13 +7637,13 @@ doCancel:
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
         Select Case iType
             Case 1
-                Me.SetStatus(String.Concat(Master.eLang.GetString(999, "Added Episode: "), sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode: "), sText))
             Case 2
                 Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case 3
                 Me.SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Else
-                Me.SetStatus(String.Concat(Master.eLang.GetString(999, "Added Movie: "), sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie: "), sText))
         End Select
     End Sub
 

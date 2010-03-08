@@ -129,8 +129,8 @@ Only a handful of settings will be covered in this wizard. You can change these 
   <data name="btnMovieRem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK7gAA
-        Cu4BrzForAAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6wAA
+        CusBgosNWgAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
         Kfy/bqW7Bd2QG3YGjZd1lf9f1lH6f8PesPf/wZmMIDVgA656WHGd1lH+f1xRGoxPqcv9v2iJMOSyrUHj
         aW0loJwUGJ/SVPx/3kzbFG7ATk4uxgOK0j0HlGX+gzFQ0SE1uf9nLHVXnLM3rDmqrfh/P1AMLq8kvf+A
         rAQ33ACYc3cqy/TuUJL+vxOIdyhI/d8DdMk+LcX/2xUkIWIQuf1LNBVZYHowYmAj0JANQIVgDLR1PdAg
@@ -144,8 +144,8 @@ Only a handful of settings will be covered in this wizard. You can change these 
   <data name="btnMovieAddFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK7gAA
-        Cu4BrzForAAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6wAA
+        CusBgosNWgAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
         zOsslWLdzMjMJCjDaWoPywdzrfA+15zOy9zV7cw5zXbO2fj13wFHom8e+HI48P9/zv+c/zk8ALz1FJjs
         maqKpI1PEhiTLJ42Pye9iKcttfG0tc5fgsf86thaN+IA92BeKGuWsV7bS3hna+G1v4bX8QY+qgE+ZyN8
         riauP+ZPpTNObPwf4oD5vuxwxvAI7MxDsMYqsKYasObH8Fpk8FqfwQ/7Zp9iwdIFB7VotNtnJU4nFeyf
@@ -160,9 +160,6 @@ Only a handful of settings will be covered in this wizard. You can change these 
         QmCC
 </value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
-    <value>First, let's tell Ember Media Manager where all our movies are.  If each of your movie files are in a separate folder, add a Folder Path pointing to the parent folder.  If all your movie files are in the same folder, add a Files Path pointing to the parent folder. You can select as many Folder Paths, File Paths, or any combination of both that you wish.</value>
-  </data>
   <data name="Label8.Text" xml:space="preserve">
     <value>Some options you may be interested in:
 
@@ -171,5 +168,42 @@ Custom Filters - If your movie files have things like "DVDRip", "BluRay", "x264"
 Images - This section allows you to select which websites to "scrape" images from as well as select a preferred size for the images Ember Media Manager selects.
 
 Locks - This section allows you to "lock" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes.</value>
+  </data>
+  <data name="btnTVRemoveSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6gAA
+        CuoBUMzvvgAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
+        Kfy/bqW7Bd2QG3YGjZd1lf9f1lH6f8PesPf/wZmMIDVgA656WHGd1lH+f1xRGoxPqcv9v2iJMOSyrUHj
+        aW0loJwUGJ/SVPx/3kzbFG7ATk4uxgOK0j0HlGX+gzFQ0SE1uf9nLHVXnLM3rDmqrfh/P1AMLq8kvf+A
+        rAQ33ACYc3cqy/TuUJL+vxOIdyhI/d8DdMk+LcX/2xUkIWIQuf1LNBVZYHowYmAj0JANQIVgDLR1PdAg
+        GH+jkvTe+doqrFgDEVlwhZL08RXAsEDD7zaZGsBtxumCBYrSDQsVpP4A8X90vEBRaiN67KB4YYaidONM
+        oEYYngFkgzCqmPSW/0+/w/WBGRNU5RkmKkg1TJSX+g/DE0BsBenNkxSku8BsZKwgtWWSihwHPBZ61RS4
+        OuUl/6Ph/bX6qkwgRV0KUr0daPJditJmKNHYoSSb2AS0pUlO8j+Q3vctwBusGYab5aW6wXJA3KIoM/2x
+        sxVYnoGZAYwFgBRvnKRofba02BZuFmYDIF8HKG4MwkA2iK+QIik6N1NafCGQLQLEfHAXABUxAzHYT2BB
+        BgZOIJ8XGQPFeJDk2UB6MFIiOdkaALyqHwCXXFYvAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnTVAddSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6gAA
+        CuoBUMzvvgAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
+        zOsslWLdzMjMJCjDaWoPywdzrfA+15zOy9zV7cw5zXbO2fj13wFHom8e+HI48P9/zv+c/zk8ALz1FJjs
+        maqKpI1PEhiTLJ42Pye9iKcttfG0tc5fgsf86thaN+IA92BeKGuWsV7bS3hna+G1v4bX8QY+qgE+ZyN8
+        riauP+ZPpTNObPwf4oD5vuxwxvAI7MxDsMYqsKYasObH8Fpk8FqfwQ/7Zp9iwdIFB7VotNtnJU4nFeyf
+        ywFOVQafniwBM/mAVARmqphUCma6HKxBysFeYxncpk643B5QlAME2RcA7N3JfHq8EMx4Ppix2+R8F4y+
+        AMzEPZKEQ9mJO5g3yDE3/xcOh32aIBsCgK1LyPeMikFrRaB/Z5FzNujRXECXD4wRiKCs7iZck82gXEt+
+        IG/5PXCPYPp6jr80IoJnOJ2UBlqdDnbkBgaHBPg1dIKgGXBrSkDZraCccx6y/G0rgMnWeP5CfyYWeq9i
+        sTcFbN81MAPpkKnCUKHcjsVBIZZ0TXC6fbDZrI2rdmH042n+3M/rcCmTQfVcgk6ZCK0qCTXfI1HeHQG1
+        SgDtcBEsZAWm/nfFqwD1+1N8e3caXF1XoP52BpmKMOQoIlCg2INCUo5iNzI6t0Cp/wCPpqViFfCj7ni4
+        QZEKU8dFaNoTUNl2kEvUGo1MeRSkbTGo7IxDx4Acmp666lXAwFtBiPZLCjPy+Ty0zUkwtFzAlFyI1IYY
+        JNZHQ992FvoOCbTynHpr+8ldK4AgHndsFl/eL6jOjSuUZh2WVN6KLaoUxd4/WrLXeKQs2i3JPiQVC6PE
+        ZFwEKYzMCSeFBL4DchG05o+yI3RryIGdoYEt4/E2kbH+gpfnrOtX9sP/AIt1021BwrQaAAAAAElFTkSu
+        QmCC
+</value>
+  </data>
+  <data name="Label11.Text" xml:space="preserve">
+    <value>And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
   </data>
 </root>
