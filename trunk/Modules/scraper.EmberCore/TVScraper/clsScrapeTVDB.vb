@@ -1183,7 +1183,7 @@ Public Class Scraper
                                 End If
                             End Using
                         Else
-                            MsgBox(Master.eLang.GetString(999, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(999, "No Poster Available"))
+                            MsgBox(Master.eLang.GetString(819, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(820, "No Poster Available"))
                             Return Nothing
                         End If
                     Else

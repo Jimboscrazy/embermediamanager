@@ -29,7 +29,7 @@ Public Class frmMediaSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.chkTrailerDump.Text = Master.eLang.GetString(999, "Watch for ""Dump"" Folder")
+        Me.chkTrailerDump.Text = Master.eLang.GetString(829, "Watch for ""Dump"" Folder")
     End Sub
 
     Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

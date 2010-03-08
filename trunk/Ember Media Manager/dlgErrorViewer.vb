@@ -44,7 +44,16 @@ Public Class dlgErrorViewer
     End Sub
 
     Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
         Me.BuildErrorLog()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(808, "Error Log Viewer")
+        Me.lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
+        Me.llblURL.Text = Master.eLang.GetString(810, "http://www.embermm.com/projects/embermm/issues")
+        Me.lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
     End Sub
 
     Private Sub BuildErrorLog()
@@ -75,13 +84,13 @@ Public Class dlgErrorViewer
         Me.txtError.Text = Me.sBuilder.ToString
 
         If Me.txtError.Lines.Count > 50 Then
-            Me.btnCopy.Text = Master.eLang.GetString(999, "Send to PasteBin.com")
+            Me.btnCopy.Text = Master.eLang.GetString(805, "Send to PasteBin.com")
             Me.btnCopy.Tag = "p"
             Me.btnCopy.Visible = True
             Me.txtPastebinURL.Visible = True
             Me.lblPastebinURL.Visible = True
         Else
-            Me.btnCopy.Text = Master.eLang.GetString(999, "Copy to Clipboard")
+            Me.btnCopy.Text = Master.eLang.GetString(806, "Copy to Clipboard")
             Me.btnCopy.Tag = "c"
             Me.btnCopy.Visible = True
             Me.txtPastebinURL.Visible = False
@@ -108,7 +117,7 @@ Public Class dlgErrorViewer
                 If Not String.IsNullOrEmpty(bReturn) OrElse Not bReturn.ToLower.Contains("error") Then
                     Me.txtPastebinURL.Text = bReturn
                 Else
-                    Me.txtPastebinURL.Text = Master.eLang.GetString(999, "An error occurred when attempting to send data to Pastebin.com")
+                    Me.txtPastebinURL.Text = Master.eLang.GetString(807, "An error occurred when attempting to send data to Pastebin.com")
                 End If
             Case Else
                 Clipboard.SetText(Me.sBuilder.ToString)

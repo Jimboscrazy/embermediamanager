@@ -62,7 +62,7 @@ Public Class frmMediaSettingsHolder
         Me.chkUseTMDB.Text = Master.eLang.GetString(501, "TheMovieDB.org")
         Me.chkUseIMPA.Text = Master.eLang.GetString(502, "IMPAwards.com")
         Me.GroupBox9.Text = Master.eLang.GetString(798, "Get Images From:")
-        Me.chkDownloadTrailer.Text = Master.eLang.GetString(999, "Enable Downloading")
+        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Downloading")
     End Sub
 
     Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

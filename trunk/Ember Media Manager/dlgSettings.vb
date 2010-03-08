@@ -3503,7 +3503,7 @@ Public Class dlgSettings
 
         Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get Trailers During ""All Items"" Scrapers")
 
-        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Downloading")
+        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Downloading")
         Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
 
         Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Video Extensions")
