@@ -23,7 +23,7 @@ Public Class EmberXMLScraperModule
     Implements Interfaces.EmberMovieScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-    Private _setup As New frmXMLSettingsHolder
+    Private _setup As frmXMLSettingsHolder
     Private _Name As String = "Ember XML Scraper"
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
@@ -48,6 +48,7 @@ Public Class EmberXMLScraperModule
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
+        _setup = New frmXMLSettingsHolder
         Spanel.Name = Me._Name
         Spanel.Text = Me._Name
         Spanel.Type = Master.eLang.GetString(36, "Movies")
