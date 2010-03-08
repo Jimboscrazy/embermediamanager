@@ -25,6 +25,10 @@ Public Class MovieExporterModule
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
     Private _setup As frmSettingsHolder
+
+    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
@@ -78,16 +82,24 @@ Public Class MovieExporterModule
 
     Sub Enable()
         Dim tmpExportMovies As New dlgExportMovies
+        Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
         MyMenu.Text = "Export Movie List"
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
+        MyTrayMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
+        MyTrayMenu.Text = "Export Movie List"
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyTrayMenu)
         tmpExportMovies.Dispose()
 
     End Sub
     Sub Disable()
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As New ToolStripMenuItem
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyTrayMenu)
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
@@ -104,9 +116,13 @@ Public Class MovieExporterModule
         End Get
     End Property
 
-    'Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
+        Using dExportMovies As New dlgExportMovies
+            dExportMovies.ShowDialog()
+        End Using
+    End Sub
+
+    Private Sub MyTrayMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyTrayMenu.Click
         Using dExportMovies As New dlgExportMovies
             dExportMovies.ShowDialog()
         End Using

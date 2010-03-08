@@ -64,7 +64,7 @@ Public Class HTTP
 
     Public Function DownloadZip(ByVal URL As String) As Byte()
         Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-        wrRequest.Timeout = 10000
+        wrRequest.Timeout = 20000
 
         If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
             Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -92,7 +92,7 @@ Public Class HTTP
         Try
 
             Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            wrRequest.Timeout = 10000
+            wrRequest.Timeout = 20000
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
@@ -167,7 +167,7 @@ Public Class HTTP
 
         Try
             Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            wrRequest.Timeout = 5000
+            wrRequest.Timeout = 20000
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -260,7 +260,7 @@ Public Class HTTP
         Try
             If StringUtils.isValidURL(Me._URL) Then
                 wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
-                wrRequest.Timeout = 5000
+                wrRequest.Timeout = 20000
 
                 If Me._cancel Then Return
 
