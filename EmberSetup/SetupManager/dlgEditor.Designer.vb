@@ -51,6 +51,7 @@ Partial Class dlgEditor
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
+        Me.OK_Button.TabStop = False
         Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
@@ -61,10 +62,12 @@ Partial Class dlgEditor
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
+        Me.Cancel_Button.TabStop = False
         Me.Cancel_Button.Text = "Cancel"
         '
         'TextBox1
         '
+        Me.TextBox1.AcceptsReturn = True
         Me.TextBox1.Location = New System.Drawing.Point(3, 12)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
