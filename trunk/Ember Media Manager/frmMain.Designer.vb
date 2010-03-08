@@ -3653,7 +3653,7 @@ Partial Class frmMain
         '
         Me.cmnuTrayIcon.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayIconTitle, Me.ToolStripSeparator21, Me.cmnuTrayIconUpdateMedia, Me.cmnuTrayIconScrapeMedia, Me.cmnuTrayIconXBMCUpdate, Me.ToolStripSeparator23, Me.cmnuTrayIconTools, Me.ToolStripSeparator22, Me.cmnuTrayIconSettings, Me.ToolStripSeparator13, Me.cmnuTrayIconExit})
         Me.cmnuTrayIcon.Name = "cmnuTrayIcon"
-        Me.cmnuTrayIcon.Size = New System.Drawing.Size(195, 204)
+        Me.cmnuTrayIcon.Size = New System.Drawing.Size(195, 182)
         '
         'cmnuTrayIconTitle
         '
