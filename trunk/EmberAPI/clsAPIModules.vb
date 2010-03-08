@@ -67,6 +67,7 @@ Public Class ModulesManager
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         Private _MainTool As System.Windows.Forms.ToolStrip
+        Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
 
         Public Sub DelegateLoadMedia(ByRef lm As LoadMedia) 'Setup from EmberAPP
             _LoadMedia = lm
@@ -110,6 +111,14 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As System.Windows.Forms.DataGridView)
                 _MediaList = value
+            End Set
+        End Property
+        Public Property TrayMenu() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _TrayMenu
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _TrayMenu = value
             End Set
         End Property
     End Class

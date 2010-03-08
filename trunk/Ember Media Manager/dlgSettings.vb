@@ -24,6 +24,8 @@ Imports System.IO
 
 Public Class dlgSettings
 
+    Public Event SettingsLoaded()
+
     Private didApply As Boolean = False
     Private sResult As New Structures.SettingsResult
     Private XComs As New List(Of Settings.XBMCCom)
@@ -1217,6 +1219,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        RaiseEvent SettingsLoaded()
         Me.Activate()
     End Sub
 

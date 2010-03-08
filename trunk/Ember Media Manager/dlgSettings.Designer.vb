@@ -2357,7 +2357,7 @@ Partial Class dlgSettings
         'btnOK
         '
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(748, 571)
+        Me.btnOK.Location = New System.Drawing.Point(802, 571)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 22
@@ -2368,7 +2368,7 @@ Partial Class dlgSettings
         '
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnApply.Location = New System.Drawing.Point(585, 571)
+        Me.btnApply.Location = New System.Drawing.Point(639, 571)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 20
@@ -2379,7 +2379,7 @@ Partial Class dlgSettings
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(667, 571)
+        Me.btnCancel.Location = New System.Drawing.Point(721, 571)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 21
@@ -2396,7 +2396,7 @@ Partial Class dlgSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(828, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(883, 64)
         Me.pnlTop.TabIndex = 57
         '
         'Label2
@@ -2463,7 +2463,7 @@ Partial Class dlgSettings
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
-        Me.tvSettings.Size = New System.Drawing.Size(178, 401)
+        Me.tvSettings.Size = New System.Drawing.Size(234, 401)
         Me.tvSettings.TabIndex = 58
         '
         'pnlGeneral
@@ -2472,7 +2472,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
         Me.pnlGeneral.Controls.Add(Me.Label36)
-        Me.pnlGeneral.Location = New System.Drawing.Point(187, 165)
+        Me.pnlGeneral.Location = New System.Drawing.Point(241, 165)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 59
@@ -2497,7 +2497,7 @@ Partial Class dlgSettings
         Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
         Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
         Me.pnlXBMCCom.Controls.Add(Me.GroupBox11)
-        Me.pnlXBMCCom.Location = New System.Drawing.Point(187, 165)
+        Me.pnlXBMCCom.Location = New System.Drawing.Point(241, 165)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
         Me.pnlXBMCCom.Size = New System.Drawing.Size(617, 400)
         Me.pnlXBMCCom.TabIndex = 60
@@ -2664,7 +2664,7 @@ Partial Class dlgSettings
         Me.pnlMovies.Controls.Add(Me.GroupBox27)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
         Me.pnlMovies.Controls.Add(Me.GroupBox2)
-        Me.pnlMovies.Location = New System.Drawing.Point(187, 165)
+        Me.pnlMovies.Location = New System.Drawing.Point(241, 165)
         Me.pnlMovies.Name = "pnlMovies"
         Me.pnlMovies.Size = New System.Drawing.Size(617, 400)
         Me.pnlMovies.TabIndex = 61
@@ -2904,7 +2904,7 @@ Partial Class dlgSettings
         Me.pnlCurrent.BackColor = System.Drawing.Color.SteelBlue
         Me.pnlCurrent.Location = New System.Drawing.Point(351, 137)
         Me.pnlCurrent.Name = "pnlCurrent"
-        Me.pnlCurrent.Size = New System.Drawing.Size(472, 25)
+        Me.pnlCurrent.Size = New System.Drawing.Size(526, 25)
         Me.pnlCurrent.TabIndex = 64
         '
         'Panel1
@@ -2932,7 +2932,7 @@ Partial Class dlgSettings
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.GroupBox3)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
-        Me.pnlExtensions.Location = New System.Drawing.Point(187, 165)
+        Me.pnlExtensions.Location = New System.Drawing.Point(241, 165)
         Me.pnlExtensions.Name = "pnlExtensions"
         Me.pnlExtensions.Size = New System.Drawing.Size(617, 400)
         Me.pnlExtensions.TabIndex = 66
@@ -3050,7 +3050,7 @@ Partial Class dlgSettings
         Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
         Me.pnlSources.Controls.Add(Me.GroupBox8)
         Me.pnlSources.Controls.Add(Me.GroupBox16)
-        Me.pnlSources.Location = New System.Drawing.Point(187, 165)
+        Me.pnlSources.Location = New System.Drawing.Point(241, 165)
         Me.pnlSources.Name = "pnlSources"
         Me.pnlSources.Size = New System.Drawing.Size(617, 434)
         Me.pnlSources.TabIndex = 67
@@ -3200,7 +3200,7 @@ Partial Class dlgSettings
         Me.pnlImages.Controls.Add(Me.Label17)
         Me.pnlImages.Controls.Add(Me.GroupBox23)
         Me.pnlImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlImages.Location = New System.Drawing.Point(187, 165)
+        Me.pnlImages.Location = New System.Drawing.Point(241, 165)
         Me.pnlImages.Name = "pnlImages"
         Me.pnlImages.Size = New System.Drawing.Size(617, 408)
         Me.pnlImages.TabIndex = 68
@@ -3468,7 +3468,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.Controls.Add(Me.TabControl2)
-        Me.pnlTVSources.Location = New System.Drawing.Point(187, 165)
+        Me.pnlTVSources.Location = New System.Drawing.Point(241, 165)
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVSources.TabIndex = 69
@@ -4204,7 +4204,7 @@ Partial Class dlgSettings
         Me.pnlShows.Controls.Add(Me.gbTVMisc)
         Me.pnlShows.Controls.Add(Me.gbEpFilter)
         Me.pnlShows.Controls.Add(Me.gbShowFilter)
-        Me.pnlShows.Location = New System.Drawing.Point(187, 165)
+        Me.pnlShows.Location = New System.Drawing.Point(241, 165)
         Me.pnlShows.Name = "pnlShows"
         Me.pnlShows.Size = New System.Drawing.Size(617, 400)
         Me.pnlShows.TabIndex = 70
@@ -4573,7 +4573,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
-        Me.pnlTVImages.Location = New System.Drawing.Point(187, 165)
+        Me.pnlTVImages.Location = New System.Drawing.Point(241, 165)
         Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVImages.TabIndex = 71
@@ -5451,7 +5451,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.GroupBox31)
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
         Me.pnlTVScraper.Controls.Add(Me.Label48)
-        Me.pnlTVScraper.Location = New System.Drawing.Point(187, 165)
+        Me.pnlTVScraper.Location = New System.Drawing.Point(241, 165)
         Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVScraper.TabIndex = 72
@@ -6810,7 +6810,7 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.GroupBox1)
         Me.pnlScraper.Controls.Add(Me.GroupBox26)
         Me.pnlScraper.Controls.Add(Me.Label42)
-        Me.pnlScraper.Location = New System.Drawing.Point(187, 165)
+        Me.pnlScraper.Location = New System.Drawing.Point(241, 165)
         Me.pnlScraper.Name = "pnlScraper"
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 62
@@ -6822,7 +6822,7 @@ Partial Class dlgSettings
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 64)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(828, 0)
+        Me.ToolStrip1.Size = New System.Drawing.Size(883, 0)
         Me.ToolStrip1.TabIndex = 74
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -6831,7 +6831,7 @@ Partial Class dlgSettings
         Me.pnlMain.AutoScroll = True
         Me.pnlMain.BackColor = System.Drawing.Color.White
         Me.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlMain.Location = New System.Drawing.Point(187, 165)
+        Me.pnlMain.Location = New System.Drawing.Point(241, 165)
         Me.pnlMain.Name = "pnlMain"
         Me.pnlMain.Size = New System.Drawing.Size(636, 402)
         Me.pnlMain.TabIndex = 75
@@ -6842,7 +6842,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(828, 751)
+        Me.ClientSize = New System.Drawing.Size(883, 751)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)

@@ -25,6 +25,10 @@ Public Class OfflineHolderModule
     Private _enabled As Boolean = False
     Private _Name As String = "Offline Media Manager"
     Private _setup As frmSettingsHolder
+
+    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
@@ -78,19 +82,27 @@ Public Class OfflineHolderModule
 
     Sub Enable()
 
+        Dim tsi As New ToolStripMenuItem
         Dim tmpOfflineHolder As New dlgOfflineHolder
         MyMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
         MyMenu.Text = "Offline Media Manager"
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
+        MyTrayMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
+        MyTrayMenu.Text = "Offline Media Manager"
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyTrayMenu)
         tmpOfflineHolder.Dispose()
 
     End Sub
 
     Sub Disable()
 
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As New ToolStripMenuItem
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyTrayMenu)
 
     End Sub
 
@@ -110,9 +122,15 @@ Public Class OfflineHolderModule
         End Get
     End Property
 
-    'Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
+        Using dOfflineHolder As New dlgOfflineHolder
+            If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+            End If
+        End Using
+    End Sub
+
+    Private Sub MyTrayMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyTrayMenu.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)

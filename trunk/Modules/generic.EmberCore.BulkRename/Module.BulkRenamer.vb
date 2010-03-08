@@ -29,6 +29,7 @@ Public Class BulkRenamerModule
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private MySettings As New _MySettings
 
     Structure _MySettings
@@ -96,17 +97,25 @@ Public Class BulkRenamerModule
     End Property
     Sub Enable()
         Dim tmpBulkRenamer As New dlgBulkRenamer
+        Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
         MyMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
+        MyTrayMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
+        MyTrayMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyTrayMenu)
         _enabled = True
         tmpBulkRenamer.Dispose()
     End Sub
     Sub Disable()
-        Dim tsi As ToolStripMenuItem = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        Dim tsi As New ToolStripMenuItem
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyTrayMenu)
         _enabled = False
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
@@ -126,6 +135,19 @@ Public Class BulkRenamerModule
     End Property
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
+        Using dBulkRename As New dlgBulkRenamer
+            dBulkRename.txtFolder.Text = MySettings.FoldersPattern
+            dBulkRename.txtFile.Text = MySettings.FilesPattern
+            Try
+                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                End If
+            Catch ex As Exception
+            End Try
+        End Using
+    End Sub
+
+    Private Sub MyTrayMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyTrayMenu.Click
         Using dBulkRename As New dlgBulkRenamer
             dBulkRename.txtFolder.Text = MySettings.FoldersPattern
             dBulkRename.txtFile.Text = MySettings.FilesPattern
