@@ -3206,7 +3206,7 @@ Public Class Settings
         Me._scanordermodify = False
         Me._tvscanordermodify = False
         Me._tvupdatetime = Enums.TVUpdateTime.Week
-        Me._nofilterepisode = False
+        Me._nofilterepisode = True
         Me._onlytvimagesforselectedlangauge = True
         Me._alwaysgetenglishtvimages = True
         Me._displaymissingepisodes = False
