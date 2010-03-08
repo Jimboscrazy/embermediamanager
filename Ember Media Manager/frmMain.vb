@@ -379,6 +379,7 @@ Public Class frmMain
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
         pnlLoadingSettings.Visible = True
         Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
+        dThread.SetApartmentState(Threading.ApartmentState.STA)
         dThread.Start()
     End Sub
 

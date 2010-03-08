@@ -23,16 +23,13 @@
 Imports System.IO
 Imports System.IO.Compression
 
-<Serializable()> _
 Public Class HTTP
 
     Private _responseuri As String
     Private _image As Image
     Private _cancel As Boolean
     Private _URL As String = String.Empty
-    <NonSerialized()> _
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
-    <NonSerialized()> _
     Private wrRequest As HttpWebRequest
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)

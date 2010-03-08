@@ -129,42 +129,16 @@ Public Class NotificationsModule
                 End Select
 
                 If ShowIt Then
-                    Dim t As New Thread(AddressOf ThreadProc)
-                    Dim args As New threadArgs
-                    args._type = _params(0).ToString
-                    args._icon = Convert.ToInt32(_params(1))
-                    args._title = _params(2).ToString
-                    args._message = _params(3).ToString
-                    args._customicon = If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing)
-                    t.Start(args)
-                    'dNotify = New frmNotify
-                    'AddHandler dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
-                    'AddHandler dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
-                    'dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
+                    dNotify = New frmNotify
+                    AddHandler dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
+                    AddHandler dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
+                    dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(Not IsNothing(_params(4)), DirectCast(_params(4), Image), Nothing))
                 End If
             End If
         Catch ex As Exception
         End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    Structure threadArgs
-        Dim _type As String
-        Dim _icon As Integer
-        Dim _title As String
-        Dim _message As String
-        Dim _customicon As Image
-    End Structure
-
-    Sub ThreadProc(ByVal o As Object)
-        Dim args As threadArgs = DirectCast(o, threadArgs)
-        Dim dLNotify As New frmNotify
-        AddHandler dLNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
-        AddHandler dLNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
-        dLNotify.Show(args._type, args._icon, args._title, args._message, args._customicon)
-        While Not dLNotify Is Nothing
-            Application.DoEvents()
-        End While
-    End Sub
 
     Private Sub SaveSettings()
         AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)

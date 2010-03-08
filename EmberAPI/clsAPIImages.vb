@@ -18,19 +18,17 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Drawing.Imaging
 
 <Serializable()> _
 Public Class Images : Implements IDisposable
-
     Private _image As Image
     Private _isedit As Boolean
     Private Ret As Byte()
     Private ms As MemoryStream = New MemoryStream()
+    <NonSerialized()> _
     Private sHTTP As New HTTP
 
     Public Property [Image]() As Image
