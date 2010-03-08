@@ -23,6 +23,7 @@ Public Class dlgTVDBSearchResults
 
     Private sHTTP As New HTTP
     Private sInfo As Structures.ScrapeInfo
+    Private _skipdownload As Boolean = False
 
     Private Structure Results
         Dim Result As Image
@@ -65,7 +66,13 @@ Public Class dlgTVDBSearchResults
             Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             Me.sInfo.TVDBID = sResults.ID.ToString
             Me.sInfo.SelectedLang = sResults.Language.ShortLang
-            Scraper.sObject.DownloadSeriesAsync(sInfo)
+
+            If _skipdownload Then
+                Scraper.sObject.DownloadSeriesAsync(sInfo)
+            End If
+
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
         End If
 
     End Sub
@@ -138,12 +145,25 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
-
         Me.sInfo = _sInfo
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
+    End Function
+
+    Public Overloads Function ShowDialog(ByVal _sinfo As Structures.ScrapeInfo, ByVal SkipDownload As Boolean) As Structures.ScrapeInfo
+        Me.sInfo = _sinfo
+        Me._skipdownload = SkipDownload
+
+        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sInfo.ShowTitle)
+        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+
+        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Return Me.sInfo
+        Else
+            Return _sinfo
+        End If
     End Function
 
     Private Sub lvSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSearchResults.GotFocus

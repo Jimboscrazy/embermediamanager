@@ -287,9 +287,29 @@ Public Class frmMain
         End Try
     End Sub
 
-    Delegate Sub MySettingsDone(ByVal dResult As Structures.SettingsResult)
-    Private Sub SettingsDone(ByVal dResult As Structures.SettingsResult)
-        If Not dResult.DidCancel Then
+    Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
+        Try
+            Me.SettingsToolStripMenuItem.Enabled = False
+            Me.pnlLoadingSettings.Visible = True
+
+            Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
+            dThread.SetApartmentState(Threading.ApartmentState.STA)
+            dThread.Start()
+        Catch ex As Exception
+            Me.SettingsToolStripMenuItem.Enabled = True
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Delegate Sub MySettingsShow(ByVal dlg As dlgSettings)
+    Sub SettingsShow(ByVal dlg As dlgSettings)
+
+        Dim dresult As Structures.SettingsResult = dlg.ShowDialog()
+
+        Me.SettingsToolStripMenuItem.Enabled = True
+        Me.pnlLoadingSettings.Visible = False
+
+        If Not dresult.DidCancel Then
 
             If Not Master.eSettings.DisplayMissingEpisodes Then
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -336,8 +356,8 @@ Public Class frmMain
                 Application.DoEvents()
             End While
 
-            If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
-                If dResult.NeedsRefresh Then
+            If dresult.NeedsRefresh OrElse dresult.NeedsUpdate Then
+                If dresult.NeedsRefresh Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
@@ -345,7 +365,7 @@ Public Class frmMain
                         Me.RefreshAllMovies()
                     End If
                 End If
-                If dResult.NeedsUpdate Then
+                If dresult.NeedsUpdate Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
@@ -364,23 +384,6 @@ Public Class frmMain
             Me.SetMenus(False)
         End If
 
-    End Sub
-
-    Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
-        Try
-            pnlLoadingSettings.Visible = True
-            Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
-            dThread.SetApartmentState(Threading.ApartmentState.STA)
-            dThread.Start()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Delegate Sub MySettingsShow(ByVal frm As Form)
-    Sub SettingsShow(ByVal frm As Form)
-        frm.ShowDialog()
-        pnlLoadingSettings.Visible = False
     End Sub
 
     Private Sub ShowSettings()
@@ -1634,10 +1637,6 @@ Public Class frmMain
         Try
 
             If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
-
-                Dim tRow As DataGridViewRow = Me.dgvTVSeasons.SelectedRows(0)
-                Me.dgvTVSeasons.CurrentCell = Nothing
-                tRow.Selected = True
 
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
@@ -3538,7 +3537,7 @@ Public Class frmMain
 
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions, True)
 
     End Sub
 
@@ -4234,7 +4233,7 @@ Public Class frmMain
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
 
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse IsNothing(Me.dgvTVSeasons.CurrentCell) Then
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
                             Me.mnuSeasons.Enabled = False
                         End If
 
@@ -4242,7 +4241,7 @@ Public Class frmMain
                         Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse IsNothing(Me.dgvTVSeasons.CurrentCell) Then
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
                             Me.dgvTVSeasons.ClearSelection()
                             Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
@@ -4343,7 +4342,7 @@ Public Class frmMain
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions, False)
     End Sub
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
@@ -7643,8 +7642,6 @@ doCancel:
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                 Me.FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item(2, 0).Value))
-                .dgvTVSeasons.CurrentCell = Nothing
-                .dgvTVSeasons.Rows(0).Selected = True
             End With
         End If
 
@@ -7711,7 +7708,7 @@ doCancel:
 
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
-                .dgvTVEpisodes.SelectedRows(0).Selected = False
+                .dgvTVEpisodes.ClearSelection()
 
             End With
         End If

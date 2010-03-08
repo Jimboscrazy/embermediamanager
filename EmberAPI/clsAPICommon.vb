@@ -452,6 +452,7 @@ Public Class Structures
         Dim SelectedLang As String
         Dim ImageType As Enums.TVImageType
         Dim CurrentImage As Image
+        Dim WithCurrent As Boolean
     End Structure
 
 End Class
