@@ -287,16 +287,6 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub SettingsLoaded()
-        Dim MyDelegate = New MyHidePanel(AddressOf HidePanel)
-        Me.Invoke(MyDelegate)
-    End Sub
-
-    Delegate Sub MyHidePanel()
-    Private Sub HidePanel()
-        pnlLoadingSettings.Visible = False
-    End Sub
-
     Delegate Sub MySettingsDone(ByVal dResult As Structures.SettingsResult)
     Private Sub SettingsDone(ByVal dResult As Structures.SettingsResult)
         If Not dResult.DidCancel Then
@@ -377,32 +367,28 @@ Public Class frmMain
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
-        pnlLoadingSettings.Visible = True
-        Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
-        dThread.SetApartmentState(Threading.ApartmentState.STA)
-        dThread.Start()
-    End Sub
-    Delegate Sub _SetMnuSettings(ByVal b As Boolean)
-    Sub SetMnuSettings(ByVal b As Boolean)
-        SettingsToolStripMenuItem.Enabled = b
-    End Sub
-
-    Private Sub ShowSettings()
         Try
-            Me.Invoke(New _SetMnuSettings(AddressOf SetMnuSettings), False)
-            Dim MyDelegate = New MySettingsDone(AddressOf SettingsDone)
-
-            Using dSettings As New dlgSettings
-                AddHandler dSettings.SettingsLoaded, AddressOf SettingsLoaded
-                Me.Invoke(MyDelegate, New Object() {dSettings.ShowDialog})
-                RemoveHandler dSettings.SettingsLoaded, AddressOf SettingsLoaded
-            End Using
-            Me.Invoke(New _SetMnuSettings(AddressOf SetMnuSettings), True)
+            pnlLoadingSettings.Visible = True
+            Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
+            dThread.SetApartmentState(Threading.ApartmentState.STA)
+            dThread.Start()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
     End Sub
+
+    Delegate Sub MySettingsShow(ByVal frm As Form)
+    Sub SettingsShow(ByVal frm As Form)
+        frm.ShowDialog()
+        pnlLoadingSettings.Visible = False
+    End Sub
+
+    Private Sub ShowSettings()
+        Using dSettings As New dlgSettings
+            Me.Invoke(New MySettingsShow(AddressOf SettingsShow), dSettings)
+        End Using
+    End Sub
+
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
         Dim asm As Assembly = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly

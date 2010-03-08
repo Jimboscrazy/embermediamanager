@@ -24,8 +24,6 @@ Imports System.IO
 
 Public Class dlgSettings
 
-    Public Event SettingsLoaded()
-
     Private didApply As Boolean = False
     Private sResult As New Structures.SettingsResult
     Private XComs As New List(Of Settings.XBMCCom)
@@ -137,6 +135,7 @@ Public Class dlgSettings
             Me.sResult.NeedsRefresh = False
             Me.sResult.DidCancel = False
             Me.didApply = False
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1219,7 +1218,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        RaiseEvent SettingsLoaded()
         Me.Activate()
     End Sub
 
@@ -2027,7 +2025,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        ' *####  Me.cbTVLanguage.DataSource = Master.TVScraper.GetLangs(Master.eSettings.TVDBMirror)
         Me.cbTVLanguage.DataSource = ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror)
         Me.cbTVLanguage.DisplayMember = "LongLang"
         Me.cbTVLanguage.ValueMember = "ShortLang"
