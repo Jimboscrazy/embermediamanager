@@ -1378,7 +1378,6 @@ Public Class frmMain
             End If
 
             If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 4 AndAlso e.RowIndex >= 0 Then
-
                 If Convert.ToBoolean(Me.dgvTVSeasons.Item(7, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
@@ -1613,6 +1612,8 @@ Public Class frmMain
         Me.tmrWaitSeason.Enabled = False
         Me.tmrLoadSeason.Enabled = False
         Try
+            Me.dgvTVSeasons.Rows(0).Tag = String.Empty
+
             If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
 
                 If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
@@ -1645,7 +1646,12 @@ Public Class frmMain
         Me.tmrWaitEp.Enabled = False
         Me.tmrLoadEp.Enabled = False
         Try
+
             If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+
+                Dim tRow As DataGridViewRow = Me.dgvTVSeasons.SelectedRows(0)
+                Me.dgvTVSeasons.CurrentCell = Nothing
+                tRow.Selected = True
 
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
@@ -3347,8 +3353,6 @@ Public Class frmMain
                         Me.ToolStripSeparator8.Visible = False
                         Me.cmnuEditShow.Visible = False
                         Me.ToolStripSeparator7.Visible = False
-                        Me.cmnuChangeAllSeasonPoster.Visible = False
-                        Me.ToolStripSeparator20.Visible = False
                         Me.cmnuRescrapeShow.Visible = False
                         Me.cmnuChangeShow.Visible = False
 
@@ -3375,8 +3379,6 @@ Public Class frmMain
                         Me.ToolStripSeparator8.Visible = True
                         Me.cmnuEditShow.Visible = True
                         Me.ToolStripSeparator7.Visible = True
-                        Me.cmnuChangeAllSeasonPoster.Visible = Master.eSettings.AllSeasonPosterEnabled
-                        Me.ToolStripSeparator20.Visible = Master.eSettings.AllSeasonPosterEnabled
                         Me.cmnuRescrapeShow.Visible = True
                         Me.cmnuChangeShow.Visible = True
 
@@ -4218,8 +4220,7 @@ Public Class frmMain
 
                         Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.ToolStripSeparator16.Visible = False
-                        Me.cmnuSeasonChangePoster.Visible = False
-                        Me.cmnuSeasonChangeFanart.Visible = False
+                        Me.cmnuSeasonChangeImages.Visible = False
                         Me.ToolStripSeparator14.Visible = False
                         Me.cmnuSeasonRescrape.Visible = False
 
@@ -4243,12 +4244,11 @@ Public Class frmMain
 
                     Else
                         Me.ToolStripSeparator16.Visible = True
-                        Me.cmnuSeasonChangePoster.Visible = True
-                        Me.cmnuSeasonChangeFanart.Visible = Master.eSettings.SeasonFanartEnabled
+                        Me.cmnuSeasonChangeImages.Visible = True
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
 
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse IsNothing(Me.dgvTVSeasons.CurrentCell) Then
                             Me.mnuSeasons.Enabled = False
                         End If
 
@@ -4256,7 +4256,7 @@ Public Class frmMain
                         Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse IsNothing(Me.dgvTVSeasons.CurrentCell) Then
                             Me.dgvTVSeasons.ClearSelection()
                             Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
@@ -4360,71 +4360,9 @@ Public Class frmMain
         ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions)
     End Sub
 
-    Private Sub cmnuSeasonChangePoster_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangePoster.Click
-
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-
-        Using tmpImage As New Images
-            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
-            Dim PosterPath As String = Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
-
-            If Not String.IsNullOrEmpty(PosterPath) Then
-                tmpImage.FromFile(PosterPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonPoster, iSeason, 0, Me.tmpLang, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBSeason.SeasonPosterPath = tmpImage.SaveAsSeasonPoster(DBSeason)
-                Me.dgvTVSeasons.Item(5, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonPosterPath
-                Master.DB.SaveTVSeasonToDB(DBSeason, False)
-            End If
-        End Using
-    End Sub
-
-    Private Sub cmnuSeasonChangeFanart_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeFanart.Click
-
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-        Dim iSeason As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value)
-
-        Using tmpImage As New Images
-            Dim DBSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ShowID, iSeason, True)
-            Dim FanartPath As String = Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value.ToString
-
-            If Not String.IsNullOrEmpty(FanartPath) Then
-                tmpImage.FromFile(FanartPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.tmpTVDB, Enums.TVImageType.SeasonFanart, iSeason, 0, Me.tmpLang, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBSeason.SeasonFanartPath = tmpImage.SaveAsSeasonFanart(DBSeason)
-                Me.dgvTVSeasons.Item(6, Me.dgvTVSeasons.SelectedRows(0).Index).Value = DBSeason.SeasonFanartPath
-                Master.DB.SaveTVSeasonToDB(DBSeason, False)
-            End If
-        End Using
-    End Sub
-
-    Private Sub cmnuChangeAllSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeAllSeasonPoster.Click
-        Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)
-        Using tmpImage As New Images
-            Dim DBAllSeason As Structures.DBTV = Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
-            Dim PosterPath As String = DBAllSeason.SeasonPosterPath
-
-            If Not String.IsNullOrEmpty(PosterPath) Then
-                tmpImage.FromFile(PosterPath)
-            End If
-
-            Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(ShowID, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Enums.TVImageType.AllSeasonPoster, 0, 0, Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, tmpImage.Image)
-
-            If Not IsNothing(tImage) Then
-                tmpImage.Image = tImage
-                DBAllSeason.SeasonPosterPath = tmpImage.SaveAsAllSeasonPoster(DBAllSeason)
-                Master.DB.SaveTVSeasonToDB(DBAllSeason, False)
-            End If
+    Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
+        Using dEditSeason As New dlgEditSeason
+            dEditSeason.ShowDialog()
         End Using
     End Sub
 
@@ -4649,7 +4587,11 @@ Public Class frmMain
                 Return
             End If
 
-            Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID)
+            If Master.eSettings.AllSeasonPosterEnabled Then
+                Master.currShow = Master.DB.LoadTVAllSeasonFromDB(Args.ID, True)
+            Else
+                Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID)
+            End If
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -5314,8 +5256,7 @@ Public Class frmMain
                 .cmnuReloadSeason.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMarkSeason.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLockSeason.Text = Master.eLang.GetString(24, "Lock")
-                .cmnuSeasonChangePoster.Text = Master.eLang.GetString(769, "Change Poster")
-                .cmnuSeasonChangeFanart.Text = Master.eLang.GetString(770, "Change Fanart")
+                .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonRescrape.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
                 .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
@@ -7715,9 +7656,8 @@ doCancel:
 
                 .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                .dgvTVSeasons.SelectedRows(0).Selected = False
-
                 Me.FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item(2, 0).Value))
+                .dgvTVSeasons.CurrentCell = Nothing
                 .dgvTVSeasons.Rows(0).Selected = True
             End With
         End If

@@ -786,6 +786,8 @@ Public Class Scraper
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
+            Else
+                sID = sInfo.TVDBID
             End If
             'and finally the images
             Try
@@ -1161,6 +1163,8 @@ Public Class Scraper
         End Function
 
         Public Function GetSingleImage(ByVal sInfo As Structures.ScrapeInfo) As Image
+            tmpTVDBShow = New TVDBShow
+
             If sInfo.ImageType = Enums.TVImageType.EpisodePoster Then
                 Using tImage As New Images
                     Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)

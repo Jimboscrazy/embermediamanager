@@ -25,12 +25,14 @@ Public Class dlgEditShow
     Private tmpRating As String
     Private Poster As New Images With {.IsEdit = True}
     Private Fanart As New Images With {.IsEdit = True}
+    Private ASPoster As New Images With {.IsEdit = True}
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
 
             Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
+            Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
             Me.CleanUp()
 
@@ -48,6 +50,9 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        If Not Master.eSettings.AllSeasonPosterEnabled Then Me.TabControl1.TabPages.Remove(TabPage4)
+
         Me.SetUp()
 
         Me.lvwActorSorter = New ListViewColumnSorter()
@@ -124,6 +129,16 @@ Public Class dlgEditShow
 
                 .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                 .lblPosterSize.Visible = True
+            End If
+
+            If Master.eSettings.AllSeasonPosterEnabled Then
+                .ASPoster.FromFile(Master.currShow.SeasonPosterPath)
+                If Not IsNothing(.ASPoster.Image) Then
+                    .pbASPoster.Image = .ASPoster.Image
+
+                    .lblASSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbASPoster.Image.Width, .pbASPoster.Image.Height)
+                    .lblASSize.Visible = True
+                End If
             End If
         End With
     End Sub
@@ -256,6 +271,10 @@ Public Class dlgEditShow
                 File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
             End If
 
+            If File.Exists(Path.Combine(Master.TempPath, "asposter.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "asposter.jpg"))
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -303,19 +322,26 @@ Public Class dlgEditShow
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsShowFanart(Master.currShow)
-                    Master.currShow.ShowFanartPath = fPath
+                    Master.currShow.ShowFanartPath = .Fanart.SaveAsShowFanart(Master.currShow)
                 Else
                     .Fanart.DeleteShowFanart(Master.currShow)
                     Master.currShow.ShowFanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsShowPoster(Master.currShow)
-                    Master.currShow.ShowPosterPath = pPath
+                    Master.currShow.ShowPosterPath = .Poster.SaveAsShowPoster(Master.currShow)
                 Else
                     .Poster.DeleteShowPosters(Master.currShow)
                     Master.currShow.ShowPosterPath = String.Empty
+                End If
+
+                If Master.eSettings.AllSeasonPosterEnabled Then
+                    If Not IsNothing(.ASPoster.Image) Then
+                        Master.currShow.SeasonPosterPath = .ASPoster.SaveAsAllSeasonPoster(Master.currShow)
+                    Else
+                        .ASPoster.DeleteAllSeasonPosters(Master.currShow)
+                        Master.currShow.SeasonPosterPath = String.Empty
+                    End If
                 End If
             End With
         Catch ex As Exception
@@ -628,6 +654,11 @@ Public Class dlgEditShow
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.TabPage4.Text = Master.eLang.GetString(786, "All Seasons Poster")
+        Me.btnASPosterRemove.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnASChangePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnASChangePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnASPosterChangeDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
     End Sub
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
@@ -670,5 +701,51 @@ Public Class dlgEditShow
             Me.Fanart.Image = tImage
             Me.pbFanart.Image = tImage
         End If
+    End Sub
+
+    Private Sub btnASChangePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASChangePosterScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonPoster, 0, 0, Master.currShow.ShowLanguage, Me.pbASPoster.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.ASPoster.Image = tImage
+            Me.pbASPoster.Image = tImage
+        End If
+
+    End Sub
+
+    Private Sub btnASChangePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASChangePoster.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                ASPoster.FromFile(ofdImage.FileName)
+                pbASPoster.Image = ASPoster.Image
+
+                Me.lblASSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASPoster.Image.Width, Me.pbASPoster.Image.Height)
+                Me.lblASSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnASPosterChangeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASPosterChangeDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Enums.ImageType.ASPoster) = DialogResult.OK Then
+                    ASPoster.FromFile(Path.Combine(Master.TempPath, "asposter.jpg"))
+                    pbASPoster.Image = ASPoster.Image
+
+                    Me.lblASSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASPoster.Image.Width, Me.pbASPoster.Image.Height)
+                    Me.lblASSize.Visible = True
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 End Class

@@ -742,20 +742,6 @@
         aKhKiIryDYGUSEwupTgzAQBIHYDsbIj23gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="cmnuChangeAllSeasonPoster.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAAZdJREFUOE+lk71PwkAUwBtNjAlxdfBj8S/zT9DgX+Dix4aDDuquCS4wOBEon4nbERAG
-        DFJaoNfr9Ro+ItPzXVsQkFt0+KV313e/e+/1qgGA9h+WNlNKjxyHniJxCXOcuMf5Wa1aPVYdsiKw3zh3
-        wfM4CM8DITwYj8eQz+twk0jcrpMsCfDUWrAZNwohwEcmkwnkdR2ury7h8eH+blWyKiChQMwFvu9Dz7Ig
-        nU5BOpWCSqV8sShZL4jSn2UxGg5hOv3CckbguiyrFFBqE44ZeFIwl4S9kHPOOTDmvCoFg0GfyCbONgSS
-        CCmV5WGf1AKslTDGwq8QNHIBmYHrAh6iFnS7BnEoDQKlZIkwfbAsUy34bLeJbdsYyGSzEPcHXMMegWF0
-        1IJmo0Es0wwCZSZYL+KEY6Tf68FHq6UWVAlpGp0O1jkAmQle7RAcy7mJ8vd6PbP2K2xo2tZLMnmezWQo
-        3jxWLBRYuVhk5VKJlfAp53ouZz8/PZ1g7PZMMr9Im7ioaVoM2UX2kAPkMEKO96N3Oxgb+yX46y/9DWcE
-        HQvCUsBaAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="cmnuRescrapeShow.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -909,20 +895,7 @@
         IOYBYj4oBomDxEByPCDLMAwgN0sDAGBCnQliyz9oAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="cmnuSeasonChangePoster.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAAYJJREFUOE+lk8tOwlAQQBtNjAlx68LHxh/zFzT4BW58rNSFJuoHQIIbMXFl5CHUuLuI
-        CFqg0ifllkeo63GmtqRUbkx0cdLeOzPnTqetBADSf5gqdpzuRq/nbHPeSxIu58lhf7DzXKlsig6JC56w
-        EAgsBtfl4I3HUMjn4OT46HSWZEqAp1ejxX3XhU/PQ0EeDg/24fLi/CwuiQtYXDAcDMAyTbjJXiNZkOXy
-        XlTyq4C6IInnjWE0GtJj3QsFOES/g2gXNAcfnEkQuxUKbNtiOIcw8XuQAaEY42KBaRqsa9sQlYSFdKV9
-        jIsFuqYxlAB2Avg4fkEIrS3LBNMwxAJVbTOt0wFD14FEVBBCa13XAONiQaNeZ61mEz5UlRIBO/LRtI6/
-        pv2moogFFcbqL9UqvDUalAjtVmuC8q4AHgCvtdrdzLcwJ0kLV5nMbj6Xcx6KRV4ulfijLE+QcV0sFLrp
-        VGoLcxdDyeRDmsdNSZISyDKygqwh6wF0vxrEljA38UPw11/6C+MxGK5f1bXuAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="cmnuSeasonChangeFanart.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="cmnuSeasonChangeImages.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK8gAA
@@ -4278,7 +4251,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABC
-        GgAAAk1TRnQBSQFMAgEBBgEAAewBBQHsAQUBEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        GgAAAk1TRnQBSQFMAgEBBgEAAQwBBgEMAQYBEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABIAMAAQEBAAEgBgABIP8AVwADAgEDJAADBAEGAwcBCgMFAQcDAgEDiAADDAEQAxgBIgMdASkDHwEt
         AyIBMQMiATIDIwEzAyMBMwMiATIDHwEsAxgBIgM3AVsDGgElAwsBDwgAAwcBCgNJAYcDWAG7A1gBuwNa
         Ab0DWgG9A1kBvgNZAb4DWQG/A1UBsgMmATkDFAEbAxgBIQMMARCIAAMCAQMDBQQHAQkDCAELAwkBDAMK
