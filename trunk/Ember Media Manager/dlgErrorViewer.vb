@@ -61,7 +61,7 @@ Public Class dlgErrorViewer
 
         Me.sBuilder = New StringBuilder
 
-        Dim sPath As String = Path.Combine(Functions.AppPath, "Log")
+        Dim sPath As String = String.Concat(Functions.AppPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
 
         Me.sBuilder.AppendLine("################# <Assembly Versions> #################")
         Me.sBuilder.AppendLine(String.Concat("Platform: ", If(Master.is64Bit, "x64", "x86")))
@@ -73,13 +73,15 @@ Public Class dlgErrorViewer
         Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine(String.Empty)
 
-        Using fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Open, FileAccess.Read)
-            Using sr As New StreamReader(fs)
-                While Not sr.EndOfStream
-                    Me.sBuilder.AppendLine(sr.ReadLine)
-                End While
+        If File.Exists(sPath) Then
+            Using fs As FileStream = New FileStream(sPath, FileMode.Open, FileAccess.Read)
+                Using sr As New StreamReader(fs)
+                    While Not sr.EndOfStream
+                        Me.sBuilder.AppendLine(sr.ReadLine)
+                    End While
+                End Using
             End Using
-        End Using
+        End If
 
         Me.txtError.Text = Me.sBuilder.ToString
 

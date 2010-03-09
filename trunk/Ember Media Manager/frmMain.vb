@@ -4347,6 +4347,7 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
+        Me.SetControlsEnabled(False, True)
         ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
     End Sub
 
@@ -7878,6 +7879,7 @@ doCancel:
             Case Enums.TVScraperEventType.Progress
                 Select Case Parameter.ToString
                     Case "max"
+                        Me.tspbLoading.Value = 0
                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
                         Me.tspbLoading.Maximum = iProgress
                     Case "progress"
@@ -8005,6 +8007,5 @@ doCancel:
         End Try
     End Sub
 #End Region '*** Routines/Functions
-
 End Class
 
