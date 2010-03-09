@@ -186,6 +186,27 @@ Public Class dlgSettings
         Me.RemoveEpFilter()
     End Sub
 
+    Private Sub chkDownloadTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
+
+        Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkDeleteAllTrailers.Enabled = Me.chkDownloadTrailer.Checked
+
+
+        Me.chkUpdaterTrailer.Checked = Me.chkDownloadTrailer.Checked
+        Me.chkSingleScrapeTrailer.Checked = Me.chkDownloadTrailer.Checked
+        Me.chkNoDLTrailer.Checked = Me.chkDownloadTrailer.Checked
+        Me.chkOverwriteTrailer.Checked = Me.chkDownloadTrailer.Checked
+        Me.chkDeleteAllTrailers.Checked = Me.chkDownloadTrailer.Checked
+        Me.cbTrailerQuality.Enabled = Me.chkDownloadTrailer.Checked
+        If Not Me.chkDownloadTrailer.Checked Then
+            Me.cbTrailerQuality.SelectedIndex = -1
+        End If
+    End Sub
+
     Private Sub chkScanMediaInfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
         Me.SetApplyButton(True)
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
@@ -868,24 +889,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-        Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
 
-        Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
-        Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
-        Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
-        Me.chkDeleteAllTrailers.Enabled = Me.chkDownloadTrailer.Checked
-
-        If Not Me.chkDownloadTrailer.Checked Then
-            Me.chkUpdaterTrailer.Checked = False
-            Me.chkSingleScrapeTrailer.Checked = False
-            Me.chkNoDLTrailer.Checked = False
-            Me.chkOverwriteTrailer.Checked = False
-            Me.chkDeleteAllTrailers.Checked = False
-
-            Me.cbTrailerQuality.SelectedIndex = -1
-            Me.cbTrailerQuality.Enabled = False
-        End If
     End Sub
 
 
@@ -4245,5 +4249,4 @@ Public Class dlgSettings
         End If
     End Sub
 #End Region '*** Routines/Functions
-
 End Class

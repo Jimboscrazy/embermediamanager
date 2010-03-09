@@ -3262,7 +3262,7 @@ Partial Class dlgSettings
         Me.chkOverwriteTrailer.AutoSize = True
         Me.chkOverwriteTrailer.Enabled = False
         Me.chkOverwriteTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(25, 152)
+        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(25, 145)
         Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
         Me.chkOverwriteTrailer.Size = New System.Drawing.Size(110, 17)
         Me.chkOverwriteTrailer.TabIndex = 10
@@ -3274,7 +3274,7 @@ Partial Class dlgSettings
         Me.chkNoDLTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkNoDLTrailer.Enabled = False
         Me.chkNoDLTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoDLTrailer.Location = New System.Drawing.Point(25, 79)
+        Me.chkNoDLTrailer.Location = New System.Drawing.Point(25, 75)
         Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
         Me.chkNoDLTrailer.Size = New System.Drawing.Size(151, 30)
         Me.chkNoDLTrailer.TabIndex = 8
@@ -3287,9 +3287,9 @@ Partial Class dlgSettings
         Me.chkSingleScrapeTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeTrailer.Enabled = False
         Me.chkSingleScrapeTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(25, 115)
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(25, 109)
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
-        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(154, 35)
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(154, 34)
         Me.chkSingleScrapeTrailer.TabIndex = 9
         Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
         Me.chkSingleScrapeTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3300,9 +3300,9 @@ Partial Class dlgSettings
         Me.chkUpdaterTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUpdaterTrailer.Enabled = False
         Me.chkUpdaterTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(25, 32)
+        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(25, 38)
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
-        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(151, 43)
+        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(151, 33)
         Me.chkUpdaterTrailer.TabIndex = 7
         Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
         Me.chkUpdaterTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
