@@ -3366,21 +3366,17 @@ Public Class frmMain
                         Me.cmnuRescrapeShow.Visible = True
                         Me.cmnuChangeShow.Visible = True
 
-                        ' If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                         Me.mnuShows.Enabled = False
-                        'End If
 
                         Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(6, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(10, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        'If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.dgvTVShows.CurrentCell = Nothing
                         Me.dgvTVShows.ClearSelection()
                         Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
                         Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
-                        'End If
 
-                        Me.SelectShowRow(dgvHTI.RowIndex)
                     End If
                 End If
             End If
@@ -3488,23 +3484,17 @@ Public Class frmMain
                         Me.cmnuChangeEp.Visible = True
                         Me.ToolStripSeparator10.Visible = True
 
-                        '   If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
                         Me.mnuEpisodes.Enabled = False
-                        'End If
 
                         cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        'If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-
-                        'If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.dgvTVEpisodes.CurrentCell = Nothing
                         Me.dgvTVEpisodes.ClearSelection()
                         Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
                         Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
-                        'End If
 
-                        Me.SelectEpisodeRow(dgvHTI.RowIndex)
                     End If
                 End If
             End If
@@ -4235,21 +4225,17 @@ Public Class frmMain
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
 
-                        'If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
                         Me.mnuSeasons.Enabled = False
-                        'End If
 
                         Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        'If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.dgvTVSeasons.CurrentCell = Nothing
                         Me.dgvTVSeasons.ClearSelection()
                         Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
                         Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
-                        'End If
 
-                        Me.SelectSeasonRow(dgvHTI.RowIndex)
                     End If
                 End If
             End If
@@ -7508,7 +7494,6 @@ doCancel:
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
-
 
                 Master.currShow = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
 
