@@ -6533,23 +6533,25 @@ doCancel:
                 Case Enums.MovieScraperEventType.ListTitle
                     dScrapeRow.Item(3) = DirectCast(Parameter, String)
             End Select
+            ' seems like dgv selected rows dont get updated when update binded datatable, only after unselected
+            ' if is true this will update directly the internal state of the selected row (i hope)
             If False Then ' TODO need to test this at Home
-                If dgvMediaList.SelectedRows.Count = 1 AndAlso dScrapeRow.Item(0) Is DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(0) Then
+                If dgvMediaList.SelectedRows.Count = 1 AndAlso dScrapeRow.Item(0) Is DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(0) Then
                     Select Case eType
                         Case Enums.MovieScraperEventType.PosterItem
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(4) = DirectCast(Parameter, Boolean)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(4) = DirectCast(Parameter, Boolean)
                         Case Enums.MovieScraperEventType.FanartItem
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(5) = DirectCast(Parameter, Boolean)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(5) = DirectCast(Parameter, Boolean)
                         Case Enums.MovieScraperEventType.NFOItem
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(6) = DirectCast(Parameter, Boolean)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(6) = DirectCast(Parameter, Boolean)
                         Case Enums.MovieScraperEventType.TrailerItem
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(7) = DirectCast(Parameter, Boolean)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(7) = DirectCast(Parameter, Boolean)
                         Case Enums.MovieScraperEventType.ThumbsItem
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(9) = DirectCast(Parameter, Boolean)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(9) = DirectCast(Parameter, Boolean)
                         Case Enums.MovieScraperEventType.SortTitle
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(50) = DirectCast(Parameter, String)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(50) = DirectCast(Parameter, String)
                         Case Enums.MovieScraperEventType.ListTitle
-                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(3) = DirectCast(Parameter, String)
+                            DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow).Item(3) = DirectCast(Parameter, String)
                     End Select
                 End If
             End If
