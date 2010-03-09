@@ -48,6 +48,11 @@ Public Class frmMainManager
 
     Dim excludesFiles As New ArrayList
     Dim excludesDirs As New ArrayList
+    Dim excludesFilesInFolders As New List(Of FilesInFolders)
+    Structure FilesInFolders
+        Dim Filename As String
+        Dim EmberPath As String
+    End Structure
 
     Friend WithEvents bwFF As New System.ComponentModel.BackgroundWorker
 
@@ -121,6 +126,14 @@ Public Class frmMainManager
                              ");"
                         SQLcommand.ExecuteNonQuery()
                     End Using
+                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS ExcludeFilesInFolders(" & _
+                            "Filename TEXT NOT NULL, " & _
+                            "EmberPath TEXT NOT NULL, " & _
+                            "PRIMARY KEY (Filename,EmberPath) " & _
+                             ");"
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
                     SQLtransaction.Commit()
                 End Using
             Catch ex As Exception
@@ -140,6 +153,26 @@ Public Class frmMainManager
                 SQLcommandFilename.CommandText = String.Concat("DELETE FROM ExcludeFiles Where Filename=(?);")
                 Dim parFilename As SQLite.SQLiteParameter = SQLcommandFilename.Parameters.Add("parFilename", DbType.String, 0, "Filename")
                 parFilename.Value = s
+                SQLcommandFilename.ExecuteNonQuery()
+            End Using
+        End Sub
+        Public Sub DBAddChangeExcludeFileInFolder(ByVal p As String, ByVal f As String)
+            Using SQLcommandFilename As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommandFilename.CommandText = String.Concat("INSERT OR REPLACE INTO ExcludeFilesInFolders (Filename,EmberPath) VALUES (?,?);")
+                Dim parFilename As SQLite.SQLiteParameter = SQLcommandFilename.Parameters.Add("parFilename", DbType.String, 0, "Filename")
+                Dim parEmberPath As SQLite.SQLiteParameter = SQLcommandFilename.Parameters.Add("parEmberPath", DbType.String, 0, "EmberPath")
+                parFilename.Value = p
+                parEmberPath.Value = f
+                SQLcommandFilename.ExecuteNonQuery()
+            End Using
+        End Sub
+        Public Sub DBDeleteExcludeFileInFolder(ByVal s As String, ByVal f As String)
+            Using SQLcommandFilename As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommandFilename.CommandText = String.Concat("DELETE FROM ExcludeFilesInFolders Where Filename=(?) And EmberPath=(?);")
+                Dim parFilename As SQLite.SQLiteParameter = SQLcommandFilename.Parameters.Add("parFilename", DbType.String, 0, "Filename")
+                Dim parEmberPath As SQLite.SQLiteParameter = SQLcommandFilename.Parameters.Add("parEmberPath", DbType.String, 0, "EmberPath")
+                parFilename.Value = s
+                parEmberPath.Value = f
                 SQLcommandFilename.ExecuteNonQuery()
             End Using
         End Sub
@@ -285,6 +318,17 @@ Public Class frmMainManager
                 End While
             End Using
         End Using
+        excludesFilesInFolders.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = MasterDB.SQLcn.CreateCommand
+            SQLcommand.CommandText = String.Concat("SELECT * FROM ExcludeFilesInFolders;")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("EmberPath")) AndAlso Not DBNull.Value.Equals(SQLreader("FileName")) Then
+                        excludesFilesInFolders.Add(New FilesInFolders With {.EmberPath = SQLreader("EmberPath").ToString, .Filename = SQLreader("Filename").ToString})
+                    End If
+                End While
+            End Using
+        End Using
     End Sub
 
     Public Sub DoPopulateFiles()
@@ -331,8 +375,8 @@ Public Class frmMainManager
                         'Me.bwFF.ReportProgress(1, New Object() {ChildFile.FullName, op})
                         AddToDB(ChildFile.FullName, op)
                     Next
-        Catch ex As Exception
-        End Try
+                Catch ex As Exception
+                End Try
                 If recurse Then
                     Dim SubDir As DirectoryInfo
                     Try
@@ -361,9 +405,11 @@ Public Class frmMainManager
         fti.FTI.Filename = Path.GetFileName(s)
         fti.FTI.Hash = GetHash(s)
         fti.FTI.Platform = op.platform
-        If Not excludesFiles.Contains(fti.FTI.Filename) Then
-            fti.UseFile = True
-        Else
+        fti.UseFile = True
+        If excludesFiles.Contains(fti.FTI.Filename) Then
+            fti.UseFile = False
+        End If
+        If excludesFilesInFolders.Contains(New FilesInFolders With {.Filename = fti.FTI.Filename, .EmberPath = fti.FTI.EmberPath}) Then
             fti.UseFile = False
         End If
         MasterDB.DBAddChangeEmberFile(fti)
@@ -831,6 +877,14 @@ Public Class frmMainManager
             Else
                 RemoveFolderExclusionToolStripMenuItem.Visible = False
             End If
+            If excludesFilesInFolders.Contains(New FilesInFolders With {.Filename = lstFiles.SelectedItems(0).SubItems(1).Text, .EmberPath = lstFiles.SelectedItems(0).SubItems(2).Text}) Then
+                AllwaysExcludeFileinFolderMenuItem.Visible = False
+                RemoveExcludeFileinFolderToolStripMenuItem.Visible = True
+            Else
+                AllwaysExcludeFileinFolderMenuItem.Visible = True
+                RemoveExcludeFileinFolderToolStripMenuItem.Visible = False
+            End If
+
         End If
     End Sub
 
@@ -1125,7 +1179,10 @@ Public Class frmMainManager
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
-        Dim sEditor As String = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
+        Dim sEditor As String = String.Empty
+        If File.Exists(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))) Then
+            File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
+        End If
         Using editor As New dlgEditor
             editor.TextBox1.Text = sEditor
             If editor.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -1163,5 +1220,22 @@ Public Class frmMainManager
             dlg.Close()
         End Try
         LoadAll()
+    End Sub
+
+    Private Sub ToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AllwaysExcludeFileinFolderMenuItem.Click
+        If lstFiles.SelectedItems.Count > 0 Then
+            Dim ee As New EmberFiles
+            ee = MasterDB.DBGetEmberFile(lstFiles.SelectedItems(0).Text, lstFiles.SelectedItems(0).SubItems(1).Text)
+            ee.UseFile = False
+            MasterDB.DBAddChangeEmberFile(ee)
+            MasterDB.DBAddChangeExcludeFileInFolder(ee.FTI.Filename, ee.FTI.EmberPath)
+            LoadExcludes()
+            LoadFiles(CheckBox1.Checked)
+        End If
+    End Sub
+
+    Private Sub ToolStripMenuItem2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveExcludeFileinFolderToolStripMenuItem.Click
+        MasterDB.DBDeleteExcludeFileInFolder(lstFiles.SelectedItems(0).SubItems(1).Text, lstFiles.SelectedItems(0).SubItems(2).Text)
+        LoadExcludes()
     End Sub
 End Class
