@@ -18,7 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.Runtime.InteropServices
+
 Public Class frmNotify
+
+    <DllImport("user32.dll", SetLastError:=True)> _
+    Private Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As IntPtr, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As UInt32) As Boolean
+    End Function
 
     Private Shared DisplayedForms As New List(Of frmNotify)
     Public Shared MasterIndex As Integer = 0
@@ -80,6 +86,7 @@ Public Class frmNotify
     End Sub
 
     Private Sub frmNotify_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        SetWindowPos(Me.Handle, New IntPtr(-1), Screen.PrimaryScreen.WorkingArea.Width - Me.Width - 5, Screen.PrimaryScreen.WorkingArea.Height - 5, 315, 0, &H10)
 
         AddHandler AnimationTimer.Tick, AddressOf OnTimer
 
@@ -87,8 +94,6 @@ Public Class frmNotify
         If frmNotify.DisplayedForms.Count = 6 Then
             frmNotify.DisplayedForms(0).Close()
         End If
-
-        Me.SetBounds(Screen.PrimaryScreen.WorkingArea.Width - Me.Width - 5, Screen.PrimaryScreen.WorkingArea.Height - 5, 315, 0)
 
         For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms
             DisplayedForm.Top -= 5
