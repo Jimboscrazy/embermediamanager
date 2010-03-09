@@ -373,11 +373,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlLoadingSettings = New System.Windows.Forms.Panel
-        Me.Panel3 = New System.Windows.Forms.Panel
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.cmnuTrayIcon = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTrayIconTitle = New System.Windows.Forms.ToolStripMenuItem
@@ -487,6 +482,11 @@ Partial Class frmMain
         Me.cmnuTrayIconSettings = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuTrayIconExit = New System.Windows.Forms.ToolStripMenuItem
+        Me.Panel3 = New System.Windows.Forms.Panel
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox
+        Me.pnlLoadingSettings = New System.Windows.Forms.Panel
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -550,10 +550,10 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLoadingSettings.SuspendLayout()
+        Me.cmnuTrayIcon.SuspendLayout()
         Me.Panel3.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuTrayIcon.SuspendLayout()
+        Me.pnlLoadingSettings.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -3569,57 +3569,6 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
-        'pnlLoadingSettings
-        '
-        Me.pnlLoadingSettings.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlLoadingSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlLoadingSettings.Controls.Add(Me.Panel3)
-        Me.pnlLoadingSettings.Location = New System.Drawing.Point(380, 287)
-        Me.pnlLoadingSettings.Name = "pnlLoadingSettings"
-        Me.pnlLoadingSettings.Size = New System.Drawing.Size(257, 119)
-        Me.pnlLoadingSettings.TabIndex = 13
-        Me.pnlLoadingSettings.Visible = False
-        '
-        'Panel3
-        '
-        Me.Panel3.BackColor = System.Drawing.Color.White
-        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.PictureBox2)
-        Me.Panel3.Controls.Add(Me.Label7)
-        Me.Panel3.Controls.Add(Me.ProgressBar1)
-        Me.Panel3.Location = New System.Drawing.Point(3, 3)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(249, 111)
-        Me.Panel3.TabIndex = 2
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(12, 11)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox2.TabIndex = 2
-        Me.PictureBox2.TabStop = False
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(83, 24)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(150, 21)
-        Me.Label7.TabIndex = 0
-        Me.Label7.Text = "Loading Settings..."
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(8, 68)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(231, 23)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 1
-        '
         'TrayIcon
         '
         Me.TrayIcon.ContextMenuStrip = Me.cmnuTrayIcon
@@ -4301,6 +4250,57 @@ Partial Class frmMain
         Me.cmnuTrayIconExit.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayIconExit.Text = "Exit"
         '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.White
+        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Controls.Add(Me.PictureBox2)
+        Me.Panel3.Controls.Add(Me.Label7)
+        Me.Panel3.Controls.Add(Me.ProgressBar1)
+        Me.Panel3.Location = New System.Drawing.Point(3, 3)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(249, 111)
+        Me.Panel3.TabIndex = 2
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(8, 68)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(231, 23)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 1
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(83, 24)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(150, 21)
+        Me.Label7.TabIndex = 0
+        Me.Label7.Text = "Loading Settings..."
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(12, 11)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(48, 48)
+        Me.PictureBox2.TabIndex = 2
+        Me.PictureBox2.TabStop = False
+        '
+        'pnlLoadingSettings
+        '
+        Me.pnlLoadingSettings.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlLoadingSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLoadingSettings.Controls.Add(Me.Panel3)
+        Me.pnlLoadingSettings.Location = New System.Drawing.Point(380, 287)
+        Me.pnlLoadingSettings.Name = "pnlLoadingSettings"
+        Me.pnlLoadingSettings.Size = New System.Drawing.Size(257, 119)
+        Me.pnlLoadingSettings.TabIndex = 13
+        Me.pnlLoadingSettings.Visible = False
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -4395,11 +4395,11 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlLoadingSettings.ResumeLayout(False)
+        Me.cmnuTrayIcon.ResumeLayout(False)
         Me.Panel3.ResumeLayout(False)
         Me.Panel3.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.cmnuTrayIcon.ResumeLayout(False)
+        Me.pnlLoadingSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -4749,11 +4749,6 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator19 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ErrorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuRescrape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents pnlLoadingSettings As System.Windows.Forms.Panel
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents TrayIcon As System.Windows.Forms.NotifyIcon
     Friend WithEvents cmnuTrayIcon As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
@@ -4863,4 +4858,9 @@ Partial Class frmMain
     Friend WithEvents mnuTrayNewAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuTrayMarkAutoMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuTrayMarkAskMI As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlLoadingSettings As System.Windows.Forms.Panel
 End Class

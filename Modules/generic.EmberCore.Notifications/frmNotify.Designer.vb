@@ -74,7 +74,6 @@ Partial Class frmNotify
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmNotify"
         Me.ShowInTaskbar = False
-        Me.TopMost = True
         CType(Me.pbIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
