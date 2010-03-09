@@ -195,15 +195,16 @@ Public Class dlgSettings
         Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkDeleteAllTrailers.Enabled = Me.chkDownloadTrailer.Checked
 
-
-        Me.chkUpdaterTrailer.Checked = Me.chkDownloadTrailer.Checked
-        Me.chkSingleScrapeTrailer.Checked = Me.chkDownloadTrailer.Checked
-        Me.chkNoDLTrailer.Checked = Me.chkDownloadTrailer.Checked
-        Me.chkOverwriteTrailer.Checked = Me.chkDownloadTrailer.Checked
-        Me.chkDeleteAllTrailers.Checked = Me.chkDownloadTrailer.Checked
-        Me.cbTrailerQuality.Enabled = Me.chkDownloadTrailer.Checked
         If Not Me.chkDownloadTrailer.Checked Then
+            Me.chkUpdaterTrailer.Checked = False
+            Me.chkSingleScrapeTrailer.Checked = False
+            Me.chkNoDLTrailer.Checked = False
+            Me.chkOverwriteTrailer.Checked = False
+            Me.chkDeleteAllTrailers.Checked = False
+            Me.cbTrailerQuality.Enabled = False
             Me.cbTrailerQuality.SelectedIndex = -1
+        Else
+            Me.cbTrailerQuality.Enabled = True
         End If
     End Sub
 
