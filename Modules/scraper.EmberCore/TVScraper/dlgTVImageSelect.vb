@@ -708,6 +708,28 @@ Public Class dlgTVImageSelect
                             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
+                Else
+                    For Each sEpisode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
+                        Try
+                            iSeason = sEpisode.TVEp.Season
+
+                            If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
+                                cSI = New Scraper.TVDBSeasonImage
+                                cSI.Season = iSeason
+                                Scraper.TVDBImages.SeasonImageList.Add(cSI)
+                            End If
+
+                            If Me.bwLoadData.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
+
+                            Me.bwLoadData.ReportProgress(iProgress, "progress")
+                            iProgress += 1
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    Next
                 End If
         End Select
 
