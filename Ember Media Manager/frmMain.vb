@@ -6358,6 +6358,21 @@ doCancel:
             End Try
         End Using
     End Sub
+
+    Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
+        If Not isCL Then
+            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
+                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+                    Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+                End If
+            Else
+                Me.SetStatus(e.UserState.ToString)
+                Me.tspbLoading.Value = e.ProgressPercentage
+            End If
+        End If
+
+        Me.dgvMediaList.Invalidate()
+    End Sub
     Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
@@ -6476,6 +6491,7 @@ doCancel:
 
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
+                    bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
                 End If
@@ -6488,10 +6504,18 @@ doCancel:
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = dScrapeRow.Item(0).ToString Then
-                Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
-            End If
             Functions.Notify("moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString)
+        ElseIf e.ProgressPercentage = -2 Then
+            If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
+                If Me.dgvMediaList.CurrentCell Is Me.dgvMediaList.SelectedRows(0).Cells(3) Then
+                    Dim tCell As DataGridViewCell = Me.dgvMediaList.SelectedRows(0).Cells(3)
+                    Me.dgvMediaList.CurrentCell = Nothing
+                    Application.DoEvents()
+                    Me.dgvMediaList.CurrentCell = tCell
+                    'Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+                End If
+
+            End If
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
