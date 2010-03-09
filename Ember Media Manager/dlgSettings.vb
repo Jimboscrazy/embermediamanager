@@ -906,7 +906,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdaterTrailer.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1576,7 +1576,25 @@ Public Class dlgSettings
     Private Sub lvShowRegex_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvShowRegex.SelectedIndexChanged
         If Not String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then Me.ClearRegex()
     End Sub
+    Private Sub chkNoDLTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 
+    Private Sub chkSingleScrapeTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkOverwriteTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkDeleteAllTrailers_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbTrailerQuality_SelectedIndexChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
     Private Sub btnAddShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddShowRegex.Click
         If String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.TVShowRegEx In Me.ShowRegex Select lRegex.ID).Max
@@ -4250,4 +4268,5 @@ Public Class dlgSettings
         End If
     End Sub
 #End Region '*** Routines/Functions
+
 End Class
