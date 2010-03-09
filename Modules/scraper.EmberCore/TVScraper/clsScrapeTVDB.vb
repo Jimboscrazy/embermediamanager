@@ -950,7 +950,8 @@ Public Class Scraper
         End Sub
 
         Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
-            Dim withCurrent As Boolean = Not String.IsNullOrEmpty(sInfo.TVDBID)
+
+            Dim withCurrent As Boolean = Not String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.WithCurrent
 
             Try
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
@@ -960,7 +961,7 @@ Public Class Scraper
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
                                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                                 Else
                                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
@@ -976,7 +977,7 @@ Public Class Scraper
                         Master.currShow = tmpTVDBShow.Show
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                             Else
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
@@ -989,7 +990,7 @@ Public Class Scraper
                                 Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
-                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
                                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
                                     Else
                                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
@@ -1172,6 +1173,8 @@ Public Class Scraper
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         sInfo = dTVDBSearch.ShowDialog(sInfo, True)
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
+                            Master.currShow.TVShow.ID = sInfo.TVDBID
+
                             Using tImage As New Images
                                 Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
                                 If Not IsNothing(tmpEp) Then
@@ -1243,6 +1246,7 @@ Public Class Scraper
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         sInfo = dTVDBSearch.ShowDialog(sInfo, True)
                         If Not String.IsNullOrEmpty(sInfo.TVDBID) Then
+                            Master.currShow.TVShow.ID = sInfo.TVDBID
                             Me.DownloadSeries(sInfo, True)
                             Using dImageSelect As New dlgTVImageSelect
                                 Return dImageSelect.ShowDialog(sInfo.ShowID, sInfo.ImageType, sInfo.iSeason, sInfo.CurrentImage)
@@ -1437,7 +1441,7 @@ qExit:
 
                 tmpTVDBShow = New TVDBShow
 
-                tmpTVDBShow.Show = Master.DB.LoadTVShowFromDB(_ID)
+                tmpTVDBShow.Show = Master.DB.LoadTVFullShowFromDB(_ID)
                 tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
                 Using SQLCount As SQLite.SQLiteCommand = Master.DB.CreateCommand

@@ -1218,14 +1218,14 @@ Public Class Database
 
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
-        _TVDB.IsNewShow = _tmpTVDB.IsNewShow
         _TVDB.ShowFanartPath = _tmpTVDB.ShowFanartPath
         _TVDB.ShowPosterPath = _tmpTVDB.ShowPosterPath
         _TVDB.ShowNeedsSave = _tmpTVDB.ShowNeedsSave
         _TVDB.ShowNfoPath = _tmpTVDB.ShowNfoPath
         _TVDB.ShowPath = _tmpTVDB.ShowPath
-        _TVDB.TVShow = _tmpTVDB.TVShow
+        _TVDB.Source = _tmpTVDB.Source
         _TVDB.ShowLanguage = _tmpTVDB.ShowLanguage
+        _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
     Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)
@@ -1238,6 +1238,15 @@ Public Class Database
         _TVDB.SeasonPosterPath = _tmpTVDB.SeasonPosterPath
         _TVDB.SeasonFanartPath = _tmpTVDB.SeasonFanartPath
     End Sub
+
+    Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
+        If Master.eSettings.AllSeasonPosterEnabled Then
+            Return Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
+        Else
+            Return Master.DB.LoadTVShowFromDB(ShowID)
+        End If
+    End Function
+
     ''' <summary>
     ''' Load all the information for a TV Show.
     ''' </summary>

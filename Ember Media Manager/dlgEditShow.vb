@@ -32,7 +32,8 @@ Public Class dlgEditShow
             Me.SetInfo()
 
             Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
-            Master.DB.SaveTVSeasonToDB(Master.currShow, False)
+
+            If Master.eSettings.AllSeasonPosterEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
             Me.CleanUp()
 
