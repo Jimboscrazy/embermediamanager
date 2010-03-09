@@ -770,7 +770,7 @@ Public Class Functions
     Public Shared Function GetChangelog() As String
         Try
             Dim sHTTP As New HTTP
-            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Changelog.txt")
+            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/WhatsNew.txt")
             sHTTP = Nothing
 
             If strChangelog.Length > 0 Then

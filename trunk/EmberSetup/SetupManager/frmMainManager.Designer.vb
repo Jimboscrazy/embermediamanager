@@ -663,7 +663,7 @@ Partial Class frmMainManager
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(115, 23)
         Me.Button4.TabIndex = 15
-        Me.Button4.Text = "3. Edit Changelog"
+        Me.Button4.Text = "3. Edit Whats New"
         Me.Button4.UseVisualStyleBackColor = True
         '
         'Button5
