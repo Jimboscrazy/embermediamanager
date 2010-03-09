@@ -6487,6 +6487,9 @@ doCancel:
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
+            If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = dScrapeRow.Item(0).ToString Then
+                Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+            End If
             Functions.Notify("moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString)
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
