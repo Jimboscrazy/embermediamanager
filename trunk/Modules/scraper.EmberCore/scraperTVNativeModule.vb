@@ -103,6 +103,11 @@ Public Class EmberNativeTVScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
+    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
+        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Options)
+        Return New Interfaces.ModuleResult With {.breakChain = True}
+    End Function
+
     Public Sub Handler_ScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
     End Sub
