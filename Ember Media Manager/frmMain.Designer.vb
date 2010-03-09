@@ -483,9 +483,9 @@ Partial Class frmMain
         Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuTrayIconExit = New System.Windows.Forms.ToolStripMenuItem
         Me.Panel3 = New System.Windows.Forms.Panel
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.Label7 = New System.Windows.Forms.Label
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
@@ -4262,14 +4262,14 @@ Partial Class frmMain
         Me.Panel3.Size = New System.Drawing.Size(249, 111)
         Me.Panel3.TabIndex = 2
         '
-        'ProgressBar1
+        'PictureBox2
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(8, 68)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(231, 23)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 1
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(12, 11)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(48, 48)
+        Me.PictureBox2.TabIndex = 2
+        Me.PictureBox2.TabStop = False
         '
         'Label7
         '
@@ -4281,14 +4281,14 @@ Partial Class frmMain
         Me.Label7.TabIndex = 0
         Me.Label7.Text = "Loading Settings..."
         '
-        'PictureBox2
+        'ProgressBar1
         '
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(12, 11)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox2.TabIndex = 2
-        Me.PictureBox2.TabStop = False
+        Me.ProgressBar1.Location = New System.Drawing.Point(8, 68)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(231, 23)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 1
         '
         'pnlLoadingSettings
         '

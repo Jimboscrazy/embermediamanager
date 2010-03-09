@@ -551,7 +551,7 @@ Public Class Scraper
     End Function
 
     Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean)
-        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Options = Options, .WithCurrent = WithCurrent})
+        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Options = Options, .WithCurrent = WithCurrent, .iSeason = -999})
     End Sub
 
     Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
