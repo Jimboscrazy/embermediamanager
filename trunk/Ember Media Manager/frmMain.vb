@@ -239,7 +239,7 @@ Public Class frmMain
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
             If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
-            ' *#### If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
+            If ModulesManager.Instance.TVIsBusy Then ModulesManager.Instance.TVCancelAsync()
 
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
@@ -251,7 +251,7 @@ Public Class frmMain
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
             OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
-            OrElse Me.bwLoadSeasonInfo.IsBusy ' *#### OrElse Master.TVScraper.IsBusy
+            OrElse Me.bwLoadSeasonInfo.IsBusy OrElse ModulesManager.Instance.TVIsBusy
                 Application.DoEvents()
             End While
 

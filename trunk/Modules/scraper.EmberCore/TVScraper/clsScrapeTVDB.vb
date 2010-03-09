@@ -570,7 +570,7 @@ Public Class Scraper
         Return sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .SelectedLang = Lang, .CurrentImage = CurrentImage})
     End Function
 
-    Public Sub Cancel()
+    Public Sub CancelAsync()
         sObject.CancelAsync()
     End Sub
 
@@ -1266,10 +1266,6 @@ Public Class Scraper
 
         Public Sub CancelAsync()
             If bwTVDB.IsBusy Then bwTVDB.CancelAsync()
-
-            While bwTVDB.IsBusy
-                Application.DoEvents()
-            End While
         End Sub
 
         Public Function IsBusy() As Boolean
@@ -1349,6 +1345,8 @@ Public Class Scraper
                     For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                         Try
+                            If Me.bwTVDB.CancellationPending Then Return
+
                             Episode.ShowID = Master.currShow.ShowID
 
                             iEp = Episode.TVEp.Episode
@@ -1361,13 +1359,15 @@ Public Class Scraper
                                 tShow = Episode
                             End If
 
+                            If Me.bwTVDB.CancellationPending Then Return
+
                             If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
 
-                            If Me.bwTVDB.CancellationPending Then GoTo qExit
+                            If Me.bwTVDB.CancellationPending Then Return
 
                             If Master.eSettings.EpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsEpFanart(Episode)
 
-                            If Me.bwTVDB.CancellationPending Then GoTo qExit
+                            If Me.bwTVDB.CancellationPending Then Return
 
                             Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                             If cSea.Count > 0 Then
@@ -1390,13 +1390,13 @@ Public Class Scraper
                                 End If
                             End If
 
-                            If Me.bwTVDB.CancellationPending Then GoTo qExit
+                            If Me.bwTVDB.CancellationPending Then Return
 
                             If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Episode)
 
                             Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
 
-                            If Me.bwTVDB.CancellationPending Then GoTo qExit
+                            If Me.bwTVDB.CancellationPending Then Return
 
                             Me.bwTVDB.ReportProgress(iProgress, "progress")
                             iProgress += 1
@@ -1423,14 +1423,13 @@ Public Class Scraper
                         End If
                     End If
 
-                    If Me.bwTVDB.CancellationPending Then GoTo qExit
+                    If Me.bwTVDB.CancellationPending Then Return
 
                     SQLTrans.Commit()
 
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
-qExit:
 
             End Using
 
