@@ -263,7 +263,7 @@ Public Class frmMain
                 Me.ClearCache()
             End If
         Catch
-            'force close
+            'Application exit can not be used without the close of the form... this is reported somewher in MS 
             Application.Exit()
         End Try
 
