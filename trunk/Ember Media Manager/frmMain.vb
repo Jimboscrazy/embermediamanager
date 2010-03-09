@@ -3301,7 +3301,8 @@ Public Class frmMain
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
-            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Master.currShow = Master.DB.LoadTVFullShowFromDB(ID)
 
             Using dEditShow As New dlgEditShow
 
@@ -3392,7 +3393,8 @@ Public Class frmMain
         Try
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
-            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Master.currShow = Master.DB.LoadTVFullShowFromDB(ID)
 
             Using dEditShow As New dlgEditShow
 
@@ -4573,11 +4575,7 @@ Public Class frmMain
                 Return
             End If
 
-            If Master.eSettings.AllSeasonPosterEnabled Then
-                Master.currShow = Master.DB.LoadTVAllSeasonFromDB(Args.ID, True)
-            Else
-                Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID)
-            End If
+            Master.currShow = Master.DB.LoadTVFullShowFromDB(Args.ID)
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -6776,7 +6774,7 @@ doCancel:
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = Master.DB.BeginTransaction
 
-            tmpShowDb = Master.DB.LoadTVShowFromDB(ID)
+            tmpShowDb = Master.DB.LoadTVFullShowFromDB(ID)
 
             If Directory.Exists(tmpShowDb.ShowPath) Then
 
@@ -7511,11 +7509,8 @@ doCancel:
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
 
-                If Master.eSettings.AllSeasonPosterEnabled Then
-                    Master.currShow = Master.DB.LoadTVAllSeasonFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value), True)
-                Else
-                    Master.currShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
-                End If
+
+                Master.currShow = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
 
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
 
@@ -8018,5 +8013,8 @@ doCancel:
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
+
+    End Sub
 End Class
 

@@ -1467,7 +1467,7 @@ Public Class Scanner
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 
                 Else
-                    tmpTVDB = Master.DB.LoadTVShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))
+                    tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))
                 End If
                 If tmpTVDB.ShowID > -1 Then
                     For Each Episode In TVContainer.Episodes

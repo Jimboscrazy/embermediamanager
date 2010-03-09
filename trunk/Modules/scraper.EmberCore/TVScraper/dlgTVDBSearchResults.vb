@@ -61,18 +61,19 @@ Public Class dlgTVDBSearchResults
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         If Me.lvSearchResults.SelectedItems.Count > 0 Then
-            Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
-            Me.pnlLoading.Visible = True
             Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             Me.sInfo.TVDBID = sResults.ID.ToString
             Me.sInfo.SelectedLang = sResults.Language.ShortLang
 
-            If _skipdownload Then
+            If Not _skipdownload Then
+                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
+                Me.pnlLoading.Visible = True
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
+            Else
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
             End If
 
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
         End If
 
     End Sub
