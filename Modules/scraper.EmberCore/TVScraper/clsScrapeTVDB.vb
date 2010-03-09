@@ -558,6 +558,10 @@ Public Class Scraper
         sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Lang, .Options = Options})
     End Sub
 
+    Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions)
+        sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .SelectedLang = Lang, .Options = Options})
+    End Sub
+
     Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
         Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID})
     End Function
@@ -586,7 +590,6 @@ Public Class Scraper
         Private sXML As String = String.Empty
         Private bXML As String = String.Empty
         Private aXML As String = String.Empty
-
 
         Public Event ScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
@@ -962,7 +965,11 @@ Public Class Scraper
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
                                 If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
-                                    RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                    If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                        Me.SaveImages()
+                                    Else
+                                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                    End If
                                 Else
                                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                                 End If
@@ -978,7 +985,11 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
                             If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
-                                RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                    Me.SaveImages()
+                                Else
+                                    RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                End If
                             Else
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
@@ -991,7 +1002,11 @@ Public Class Scraper
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
                                     If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
-                                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                        If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
+                                            Me.SaveImages()
+                                        Else
+                                            RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                        End If
                                     Else
                                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                                     End If
@@ -1005,6 +1020,13 @@ Public Class Scraper
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+        End Sub
+
+        Public Sub ScrapeSeason(ByVal sInfo As Structures.ScrapeInfo)
+            RaiseEvent ScraperEvent(Enums.TVScraperEventType.LoadingEpisodes, 0, Nothing)
+            bwTVDB.WorkerReportsProgress = True
+            bwTVDB.WorkerSupportsCancellation = True
+            bwTVDB.RunWorkerAsync(New Arguments With {.Type = 4, .Parameter = sInfo})
         End Sub
 
         Public Sub ScrapeEpisode(ByVal sInfo As Structures.ScrapeInfo)
@@ -1028,7 +1050,7 @@ Public Class Scraper
 
                             If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                            RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 2, Nothing)
+                            RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 1, Nothing)
                         Else
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                         End If
@@ -1047,7 +1069,7 @@ Public Class Scraper
 
                         If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 2, Nothing)
+                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 1, Nothing)
                     Else
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
@@ -1063,7 +1085,7 @@ Public Class Scraper
 
                                 If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
 
-                                RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 2, Nothing)
+                                RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 1, Nothing)
                             Else
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
@@ -1278,16 +1300,20 @@ Public Class Scraper
             Try
                 Select Case Args.Type
                     Case 0 'search
-                        e.Result = New Results With {.Type = Args.Type, .Result = SearchSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))}
+                        e.Result = New Results With {.Type = 0, .Result = SearchSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))}
                     Case 1 'show download
                         Me.DownloadSeries(DirectCast(Args.Parameter, Structures.ScrapeInfo))
-                        e.Result = New Results With {.Type = Args.Type}
+                        e.Result = New Results With {.Type = 1}
                     Case 2 'load episodes
-                        LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID)
-                        e.Result = New Results With {.Type = Args.Type, .Result = Args.Parameter}
+                        LoadAllEpisodes(DirectCast(Args.Parameter, Structures.ScrapeInfo).ShowID, 999)
+                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                     Case 3 'save
                         Me.SaveAllTVInfo()
-                        e.Result = New Results With {.Type = Args.Type}
+                        e.Result = New Results With {.Type = 3}
+                    Case 4
+                        Dim sInfo As Structures.ScrapeInfo = DirectCast(Args.Parameter, Structures.ScrapeInfo)
+                        LoadAllEpisodes(sInfo.ShowID, sInfo.iSeason)
+                        e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1435,7 +1461,7 @@ Public Class Scraper
 
         End Sub
 
-        Public Shared Sub LoadAllEpisodes(ByVal _ID As Integer)
+        Public Shared Sub LoadAllEpisodes(ByVal _ID As Integer, ByVal OnlySeason As Integer)
             Try
 
                 tmpTVDBShow = New TVDBShow
@@ -1444,11 +1470,19 @@ Public Class Scraper
                 tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
                 Using SQLCount As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                    If OnlySeason = 999 Then
+                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                    Else
+                        SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                    End If
                     Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
                         If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                                If OnlySeason = 999 Then
+                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                                Else
+                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                                End If
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                     While SQLReader.Read
                                         If Not Convert.ToBoolean(SQLReader("Lock")) Then tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))

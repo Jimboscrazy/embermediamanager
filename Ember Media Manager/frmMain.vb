@@ -4345,6 +4345,11 @@ Public Class frmMain
         Functions.SetScraperMod(Enums.ModType.All, True, False)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
     End Sub
+
+    Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
+        ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -7853,8 +7858,7 @@ doCancel:
                                 ModulesManager.Instance.TVSaveImages()
                             End If
                         End Using
-                    Case 1 ' season
-                    Case 2 ' episode
+                    Case 1 ' episode
                         Me.tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode:")
                         Me.tspbLoading.Visible = True
                         Me.tslLoading.Visible = True
@@ -7998,8 +8002,5 @@ doCancel:
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
-
-    End Sub
 End Class
 
