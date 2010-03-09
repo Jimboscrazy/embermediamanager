@@ -6534,7 +6534,7 @@ doCancel:
                     dScrapeRow.Item(3) = DirectCast(Parameter, String)
             End Select
             If False Then ' TODO need to test this at Home
-                If dgvMediaList.SelectedRows.Count = 1 AndAlso dScrapeRow.Item(1) Is DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(1) Then
+                If dgvMediaList.SelectedRows.Count = 1 AndAlso dScrapeRow.Item(0) Is DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(0) Then
                     Select Case eType
                         Case Enums.MovieScraperEventType.PosterItem
                             DirectCast(dgvMediaList.SelectedRows(0).DataBoundItem, DataRow)(4) = DirectCast(Parameter, Boolean)
