@@ -549,7 +549,7 @@
   <string id="547">Caching</string>
   <string id="548">Use Cache for Scrapers</string>
   <string id="549">* When enabled, the cache will be available between sessions</string>
-  <string id="550">Persistent Image Cache**</string>
+  <string id="550">Persistent Image Cache</string>
   <string id="551">Use Image Cache*</string>
   <string id="552">Select the folder where you wish to store your backdrops.</string>
   <string id="553">File System</string>
