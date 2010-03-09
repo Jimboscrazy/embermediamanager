@@ -632,6 +632,23 @@ Public Class ModulesManager
         Next
         Return Image
     End Function
+
+    Public ReadOnly Property TVIsBusy() As Boolean
+        Get
+            Dim ret As Boolean = False
+            For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
+                ret = ret OrElse _externaltvScraperModule.ProcessorModule.IsBusy
+            Next
+            Return ret
+        End Get
+    End Property
+
+    Public Sub TVCancelAsync()
+        For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
+            _externaltvScraperModule.ProcessorModule.CancelAsync()
+        Next
+    End Sub
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)

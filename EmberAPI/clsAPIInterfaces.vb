@@ -64,7 +64,8 @@
         ReadOnly Property ModuleVersion() As String
         ReadOnly Property IsScraper() As Boolean
         ReadOnly Property IsPostScraper() As Boolean
-
+        ReadOnly Property IsBusy() As Boolean
+        Sub CancelAsync()
         Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
         Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)

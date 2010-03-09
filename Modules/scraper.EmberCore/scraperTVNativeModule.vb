@@ -34,7 +34,7 @@ Public Class EmberNativeTVScraperModule
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberTVScraperModule.SetupPostScraperChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberTVScraperModule.ModuleSettingsChanged
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.ScraperEnabled
+    Public Property ScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.ScraperEnabled
         Get
             Return _ScraperEnabled
         End Get
@@ -42,7 +42,8 @@ Public Class EmberNativeTVScraperModule
             _ScraperEnabled = value
         End Set
     End Property
-    Property PostScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.PostScraperEnabled
+
+    Public Property PostScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.PostScraperEnabled
         Get
             Return _PostScraperEnabled
         End Get
@@ -80,29 +81,33 @@ Public Class EmberNativeTVScraperModule
     End Property
 
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PostScraper
-
     End Function
-    Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetLangs
+
+    Public Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetLangs
         Langs = TVScraper.GetLangs(sMirror)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.SaveImages
+
+    Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.SaveImages
         TVScraper.SaveImages()
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
+
+    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Options, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
-    Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
+
+    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
         TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
+
     Public Sub Handler_ScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
         RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
     End Sub
 
-    Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleEpisode
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleEpisode
         epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
@@ -111,10 +116,11 @@ Public Class EmberNativeTVScraperModule
         Image = TVScraper.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, CurrentImage)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
+
     Public Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object) Implements Interfaces.EmberTVScraperModule.TVScraperEvent
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupScraper
+    Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
@@ -125,12 +131,14 @@ Public Class EmberNativeTVScraperModule
         SPanel.Parent = "pnlTVData"
         Return SPanel
     End Function
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupScraper
-    End Sub
-    Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
+
+    Public Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupScraper
     End Sub
 
-    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupPostScraper
+    Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
+    End Sub
+
+    Public Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
@@ -142,11 +150,20 @@ Public Class EmberNativeTVScraperModule
         Return SPanel
     End Function
 
-
-    Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ChangeEpisode
+    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ChangeEpisode
         epDet = TVScraper.ChangeEpisode(ShowID, TVDBID)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
+
+    Public ReadOnly Property IsBusy() As Boolean Implements Interfaces.EmberTVScraperModule.IsBusy
+        Get
+            Return TVScraper.IsBusy
+        End Get
+    End Property
+
+    Public Sub CancelAsync() Implements Interfaces.EmberTVScraperModule.CancelAsync
+        TVScraper.CancelAsync()
+    End Sub
 End Class
 
 
