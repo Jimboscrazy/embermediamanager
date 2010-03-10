@@ -667,6 +667,7 @@ Public Class dlgSettings
         Me.currPanel.Location = New Point(0, 0)
         Me.pnlMain.Controls.Add(Me.currPanel)
         Me.currPanel.Visible = True
+        Me.pnlMain.Refresh()
 
     End Sub
 
