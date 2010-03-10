@@ -4270,11 +4270,11 @@ Public Class frmMain
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                            SQLDelCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
+                            SQLDelCommand.CommandText = String.Concat("SELECT ID, TVEpPathID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
                             Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
                                 While SQLDelReader.Read
                                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("ID"), ";")
+                                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
                                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                             If SQLReader.HasRows Then
                                                 If Regex.IsMatch(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) Then
