@@ -630,12 +630,18 @@ Public Class frmMainSetup
                                 If f.NeedInstall = True Then 'OrElse CurrentEmberVersion = String.Empty 
                                     f.NeedInstall = True
                                     'getFile = String.Format("Files/{0}.gz", f.Filename)
-                                    getFile = String.Format("Files/{0}.emm", f.Hash)
+
                                     If f.inCache Then
                                         LogWrite(String.Format("--- Main: File in cache: skiping ({0})", f.Filename))
                                         Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("In Cache: {0}", f.Filename)})
                                     Else
                                         Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
+                                        If Path.GetExtension(f.Filename) = ".dll" OrElse Path.GetExtension(f.Filename) = ".exe" Then
+                                            getFile = String.Format("download.php?fname=({2}) {0}&hfname=Files/{1}.emm", f.Filename, f.Hash, CurrentEmberPlatform)
+                                        Else
+                                            getFile = String.Format("Files/{0}.emm", f.Hash)
+                                        End If
+
                                         If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))) Then
                                             ' Error Downloading File... Abort
                                             LogWrite(String.Format("+++ Main: Error downloading: {0}", f.Filename))
