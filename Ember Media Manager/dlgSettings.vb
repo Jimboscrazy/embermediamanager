@@ -34,6 +34,7 @@ Public Class dlgSettings
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private currPanel As New Panel
     Private currText As String = String.Empty
+    Private tLangList As New List(Of Containers.TVLanguage)
 
 #Region "Form/Controls"
 
@@ -2049,9 +2050,9 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Me.cbTVLanguage.DataSource = ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror)
-        Me.cbTVLanguage.DisplayMember = "LongLang"
-        Me.cbTVLanguage.ValueMember = "ShortLang"
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
@@ -2787,12 +2788,13 @@ Public Class dlgSettings
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
-            If Not IsNothing(Me.cbTVLanguage.SelectedValue) Then
-                Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
+            Dim tLang As String = tLangList.SingleOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Not String.IsNullOrEmpty(tLang) Then
+                Master.eSettings.TVDBLanguage = tLang
             Else
                 Master.eSettings.TVDBLanguage = "en"
             End If
-            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of Containers.TVLanguage))
+            Master.eSettings.TVDBLanguages = Me.tLangList
             If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
                 Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)
             Else
@@ -3168,11 +3170,11 @@ Public Class dlgSettings
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
             Me.chkSourceFromFolder.Checked = Master.eSettings.SourceFromFolder
             Me.chkSortBeforeScan.Checked = Master.eSettings.SortBeforeScan
-            Me.cbTVLanguage.DataSource = Master.eSettings.TVDBLanguages
-            Me.cbTVLanguage.DisplayMember = "LongLang"
-            Me.cbTVLanguage.ValueMember = "ShortLang"
+            Me.tLangList.Clear()
+            Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+            Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
             If Me.cbTVLanguage.Items.Count > 0 Then
-                Me.cbTVLanguage.SelectedValue = Master.eSettings.TVDBLanguage
+                Me.cbTVLanguage.Text = Me.tLangList.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
             End If
             Me.txtTVDBMirror.Text = Master.eSettings.TVDBMirror
 
@@ -4269,5 +4271,4 @@ Public Class dlgSettings
         End If
     End Sub
 #End Region '*** Routines/Functions
-
 End Class
