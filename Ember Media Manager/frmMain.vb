@@ -4949,7 +4949,7 @@ Public Class frmMain
 
         Try
             With Me
-                .MinimumSize = New Size(1024, 768)
+                .MinimumSize = New Size(800, 600)
 
                 .btnSortDate.Tag = String.Empty
                 .pnlFilterGenre.Tag = String.Empty

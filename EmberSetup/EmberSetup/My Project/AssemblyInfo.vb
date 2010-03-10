@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Ember Setup")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("cube3 Studios")> 
+<Assembly: AssemblyDescription("www.embermm.com")> 
+<Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("Ember Setup")> 
 <Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 

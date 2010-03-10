@@ -56,7 +56,7 @@ Partial Class dlgVersions
         '
         'ColumnHeader16
         '
-        Me.ColumnHeader16.Text = "Version"
+        Me.ColumnHeader16.Text = "Revision"
         Me.ColumnHeader16.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader16.Width = 99
         '

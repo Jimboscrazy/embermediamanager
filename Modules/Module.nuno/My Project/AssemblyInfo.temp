@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("scraper.nuno")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyDescription("www.embermm.com")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("scraper.nuno")> 
-<Assembly: AssemblyCopyright("Copyright ©  2010")> 
+<Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

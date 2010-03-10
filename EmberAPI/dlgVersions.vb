@@ -35,7 +35,7 @@ Public Class dlgVersions
     Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
         Dim sVersions As New StringBuilder
         For Each lItem As ListViewItem In lstVersions.Items
-            sVersions.AppendLine(String.Format("{0} (Version: {1})", lItem.Text, lItem.SubItems(1).Text))
+            sVersions.AppendLine(String.Format("{0} (Revision: {1})", lItem.Text, lItem.SubItems(1).Text))
         Next
         Clipboard.SetText(sVersions.ToString)
         sVersions = Nothing

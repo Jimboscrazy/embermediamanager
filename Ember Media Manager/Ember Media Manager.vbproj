@@ -26,7 +26,7 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>television.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <PublishUrl>C:\Users\Jason\Desktop\New Folder\Publish\</PublishUrl>
     <Install>true</Install>
@@ -481,7 +481,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="television.ico" />
+    <Content Include="logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">

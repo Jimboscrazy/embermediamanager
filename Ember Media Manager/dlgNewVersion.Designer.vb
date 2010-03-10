@@ -68,7 +68,7 @@ Partial Class dlgNewVersion
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.Ember_Media_Manager.My.Resources.Resources.Logo
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(9, 9)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(75, 78)

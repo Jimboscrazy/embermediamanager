@@ -207,7 +207,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\app.manifest" />
-    <None Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="television.ico" />
