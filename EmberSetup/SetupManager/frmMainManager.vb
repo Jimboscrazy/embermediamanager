@@ -1181,7 +1181,7 @@ Public Class frmMainManager
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim sEditor As String = String.Empty
         If File.Exists(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))) Then
-            File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
+            sEditor = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
         End If
         Using editor As New dlgEditor
             editor.TextBox1.Text = sEditor
