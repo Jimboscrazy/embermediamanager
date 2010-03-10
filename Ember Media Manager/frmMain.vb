@@ -3132,7 +3132,7 @@ Public Class frmMain
 
     Private Sub dgvMediaList_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMediaList.KeyDown
         'stop enter key from selecting next list item
-        e.Handled = e.KeyCode = Keys.Enter
+        e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
     Private Sub dgvTVShows_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVShows.KeyDown
@@ -5725,6 +5725,7 @@ Public Class frmMain
             Else
                 Me.dgvMediaList.Enabled = True
             End If
+            Me.dgvMediaList.Focus()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5857,6 +5858,12 @@ Public Class frmMain
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True, True)
+                Me.dgvTVShows.Focus()
+            Else
+                Me.dgvTVEpisodes.Enabled = True
+                Me.dgvTVSeasons.Enabled = True
+                Me.dgvTVShows.Enabled = True
+                Me.dgvTVShows.Focus()
             End If
 
         Catch ex As Exception
@@ -5990,6 +5997,12 @@ Public Class frmMain
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True, True)
+                Me.dgvTVSeasons.Focus()
+            Else
+                Me.dgvTVEpisodes.Enabled = True
+                Me.dgvTVSeasons.Enabled = True
+                Me.dgvTVShows.Enabled = True
+                Me.dgvTVSeasons.Focus()
             End If
 
         Catch ex As Exception
@@ -6127,6 +6140,12 @@ Public Class frmMain
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True, True)
+                Me.dgvTVEpisodes.Focus()
+            Else
+                Me.dgvTVEpisodes.Enabled = True
+                Me.dgvTVSeasons.Enabled = True
+                Me.dgvTVShows.Enabled = True
+                Me.dgvTVEpisodes.Focus()
             End If
 
         Catch ex As Exception
