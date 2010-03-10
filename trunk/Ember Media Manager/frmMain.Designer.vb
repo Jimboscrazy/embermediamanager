@@ -4314,7 +4314,7 @@ Partial Class frmMain
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip
-        Me.MinimumSize = New System.Drawing.Size(1024, 764)
+        Me.MinimumSize = New System.Drawing.Size(800, 600)
         Me.Name = "frmMain"
         Me.Text = "Ember Media Manager"
         Me.StatusStrip.ResumeLayout(False)

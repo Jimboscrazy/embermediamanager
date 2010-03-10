@@ -66,7 +66,7 @@ Public Class dlgErrorViewer
         Me.sBuilder.AppendLine("################# <Assembly Versions> #################")
         Me.sBuilder.AppendLine(String.Concat("Platform: ", If(Master.is64Bit, "x64", "x86")))
         For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
-            Me.sBuilder.AppendLine(String.Format("{0} (Version: {1})", v.Name, v.Version))
+            Me.sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.Name, v.Version))
         Next
         Me.sBuilder.AppendLine("################# <Assembly Versions> #################")
 

@@ -29,13 +29,14 @@ Partial Class frmSplash
         '
         'Version
         '
-        Me.Version.BackColor = System.Drawing.Color.White
-        Me.Version.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Version.Location = New System.Drawing.Point(49, 170)
+        Me.Version.BackColor = System.Drawing.Color.FromArgb(CType(CType(10, Byte), Integer), CType(CType(10, Byte), Integer), CType(CType(10, Byte), Integer))
+        Me.Version.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Version.ForeColor = System.Drawing.Color.White
+        Me.Version.Location = New System.Drawing.Point(222, 5)
         Me.Version.Name = "Version"
-        Me.Version.Size = New System.Drawing.Size(253, 11)
+        Me.Version.Size = New System.Drawing.Size(83, 11)
         Me.Version.TabIndex = 2
-        Me.Version.Text = "Version {0}.{1}.{2}"
+        Me.Version.Text = "Version r1.0.XXXX"
         Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'PictureBox1
