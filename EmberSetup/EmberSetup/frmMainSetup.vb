@@ -1233,7 +1233,7 @@ Public Class frmMainSetup
                 End If
                 'If NeedDoEvents Then Application.DoEvents()
                 'If pbFiles.Visible Then pbFiles.Refresh()
-                'Me.MyBackGround.Invalidate()
+                Me.MyBackGround.Invalidate()
             Catch ex As Exception
             End Try
         End SyncLock
