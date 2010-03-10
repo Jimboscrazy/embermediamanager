@@ -8,7 +8,7 @@ Public Class NunoScraperModule
 
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-    Private _setup As New frmSettingsHolder
+    Private _setup As frmSettingsHolder
     Private _Name As String = "Nuno's Module"
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
@@ -33,6 +33,7 @@ Public Class NunoScraperModule
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
+        _setup = New frmSettingsHolder
         Me._setup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
         Me._setup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)

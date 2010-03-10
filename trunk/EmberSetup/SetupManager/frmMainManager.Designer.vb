@@ -32,7 +32,7 @@ Partial Class frmMainManager
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Button4 = New System.Windows.Forms.Button
+        Me.btnEditNews = New System.Windows.Forms.Button
         Me.Button3 = New System.Windows.Forms.Button
         Me.Label11 = New System.Windows.Forms.Label
         Me.TextBox3 = New System.Windows.Forms.TextBox
@@ -42,8 +42,8 @@ Partial Class frmMainManager
         Me.Label9 = New System.Windows.Forms.Label
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
+        Me.btnUpload = New System.Windows.Forms.Button
+        Me.btnPack = New System.Windows.Forms.Button
         Me.btnSaveVersion = New System.Windows.Forms.Button
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.lstFiles = New System.Windows.Forms.ListView
@@ -54,6 +54,8 @@ Partial Class frmMainManager
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AllwaysExcludeFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveExclusionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AllwaysExcludeFileinFolderMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RemoveExcludeFileinFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AllwaysExcludeFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveFolderExclusionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.txtEMMVersion = New System.Windows.Forms.TextBox
@@ -86,9 +88,7 @@ Partial Class frmMainManager
         Me.Label4 = New System.Windows.Forms.Label
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
-        Me.Button5 = New System.Windows.Forms.Button
-        Me.AllwaysExcludeFileinFolderMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.RemoveExcludeFileinFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.btnUpdateFrom = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -185,7 +185,7 @@ Partial Class frmMainManager
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.Button4)
+        Me.GroupBox1.Controls.Add(Me.btnEditNews)
         Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.TextBox3)
@@ -195,8 +195,8 @@ Partial Class frmMainManager
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.TextBox2)
         Me.GroupBox1.Controls.Add(Me.TextBox1)
-        Me.GroupBox1.Controls.Add(Me.Button2)
-        Me.GroupBox1.Controls.Add(Me.Button1)
+        Me.GroupBox1.Controls.Add(Me.btnUpload)
+        Me.GroupBox1.Controls.Add(Me.btnPack)
         Me.GroupBox1.Controls.Add(Me.btnSaveVersion)
         Me.GroupBox1.Location = New System.Drawing.Point(6, 391)
         Me.GroupBox1.Name = "GroupBox1"
@@ -204,14 +204,14 @@ Partial Class frmMainManager
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
         '
-        'Button4
+        'btnEditNews
         '
-        Me.Button4.Location = New System.Drawing.Point(346, 17)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(115, 23)
-        Me.Button4.TabIndex = 15
-        Me.Button4.Text = "3. Edit Whats New"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.btnEditNews.Location = New System.Drawing.Point(346, 17)
+        Me.btnEditNews.Name = "btnEditNews"
+        Me.btnEditNews.Size = New System.Drawing.Size(115, 23)
+        Me.btnEditNews.TabIndex = 15
+        Me.btnEditNews.Text = "3. Edit Whats New"
+        Me.btnEditNews.UseVisualStyleBackColor = True
         '
         'Button3
         '
@@ -289,23 +289,23 @@ Partial Class frmMainManager
         Me.TextBox1.Size = New System.Drawing.Size(66, 20)
         Me.TextBox1.TabIndex = 8
         '
-        'Button2
+        'btnUpload
         '
-        Me.Button2.Location = New System.Drawing.Point(472, 17)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(115, 23)
-        Me.Button2.TabIndex = 7
-        Me.Button2.Text = "4. Upload Files"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.btnUpload.Location = New System.Drawing.Point(472, 17)
+        Me.btnUpload.Name = "btnUpload"
+        Me.btnUpload.Size = New System.Drawing.Size(115, 23)
+        Me.btnUpload.TabIndex = 7
+        Me.btnUpload.Text = "4. Upload Files"
+        Me.btnUpload.UseVisualStyleBackColor = True
         '
-        'Button1
+        'btnPack
         '
-        Me.Button1.Location = New System.Drawing.Point(225, 17)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(115, 23)
-        Me.Button1.TabIndex = 6
-        Me.Button1.Text = "2. Pack Version Files"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnPack.Location = New System.Drawing.Point(225, 17)
+        Me.btnPack.Name = "btnPack"
+        Me.btnPack.Size = New System.Drawing.Size(115, 23)
+        Me.btnPack.TabIndex = 6
+        Me.btnPack.Text = "2. Pack Version Files"
+        Me.btnPack.UseVisualStyleBackColor = True
         '
         'btnSaveVersion
         '
@@ -365,7 +365,7 @@ Partial Class frmMainManager
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllwaysExcludeFileToolStripMenuItem, Me.RemoveExclusionToolStripMenuItem, Me.AllwaysExcludeFileinFolderMenuItem, Me.RemoveExcludeFileinFolderToolStripMenuItem, Me.AllwaysExcludeFolderToolStripMenuItem, Me.RemoveFolderExclusionToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(250, 158)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(250, 136)
         '
         'AllwaysExcludeFileToolStripMenuItem
         '
@@ -378,6 +378,18 @@ Partial Class frmMainManager
         Me.RemoveExclusionToolStripMenuItem.Name = "RemoveExclusionToolStripMenuItem"
         Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveExclusionToolStripMenuItem.Text = "Remove File Exclusion"
+        '
+        'AllwaysExcludeFileinFolderMenuItem
+        '
+        Me.AllwaysExcludeFileinFolderMenuItem.Name = "AllwaysExcludeFileinFolderMenuItem"
+        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.AllwaysExcludeFileinFolderMenuItem.Text = "Allways Exclude File in this Folder"
+        '
+        'RemoveExcludeFileinFolderToolStripMenuItem
+        '
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Name = "RemoveExcludeFileinFolderToolStripMenuItem"
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Text = "Remove File in Folder Exclusion"
         '
         'AllwaysExcludeFolderToolStripMenuItem
         '
@@ -668,33 +680,21 @@ Partial Class frmMainManager
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         '
-        'Button5
+        'btnUpdateFrom
         '
-        Me.Button5.Location = New System.Drawing.Point(5, 432)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(121, 23)
-        Me.Button5.TabIndex = 13
-        Me.Button5.Text = "Update from Site"
-        Me.Button5.UseVisualStyleBackColor = True
-        '
-        'AllwaysExcludeFileinFolderMenuItem
-        '
-        Me.AllwaysExcludeFileinFolderMenuItem.Name = "AllwaysExcludeFileinFolderMenuItem"
-        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(249, 22)
-        Me.AllwaysExcludeFileinFolderMenuItem.Text = "Allways Exclude File in this Folder"
-        '
-        'RemoveExcludeFileinFolderToolStripMenuItem
-        '
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Name = "RemoveExcludeFileinFolderToolStripMenuItem"
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Text = "Remove File in Folder Exclusion"
+        Me.btnUpdateFrom.Location = New System.Drawing.Point(5, 432)
+        Me.btnUpdateFrom.Name = "btnUpdateFrom"
+        Me.btnUpdateFrom.Size = New System.Drawing.Size(121, 23)
+        Me.btnUpdateFrom.TabIndex = 13
+        Me.btnUpdateFrom.Text = "Update from Site"
+        Me.btnUpdateFrom.UseVisualStyleBackColor = True
         '
         'frmMainManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(996, 499)
-        Me.Controls.Add(Me.Button5)
+        Me.Controls.Add(Me.btnUpdateFrom)
         Me.Controls.Add(Me.pnlWork)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.Label1)
@@ -753,7 +753,7 @@ Partial Class frmMainManager
     Friend WithEvents AllwaysExcludeFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveFolderExclusionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnPack As System.Windows.Forms.Button
     Friend WithEvents lstCommands As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
@@ -768,7 +768,7 @@ Partial Class frmMainManager
     Friend WithEvents txtCommand As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents btnUpload As System.Windows.Forms.Button
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
@@ -785,8 +785,8 @@ Partial Class frmMainManager
     Friend WithEvents lstModulesx64 As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Button4 As System.Windows.Forms.Button
-    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents btnEditNews As System.Windows.Forms.Button
+    Friend WithEvents btnUpdateFrom As System.Windows.Forms.Button
     Friend WithEvents AllwaysExcludeFileinFolderMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveExcludeFileinFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 

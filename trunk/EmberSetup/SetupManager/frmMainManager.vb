@@ -472,7 +472,7 @@ Public Class frmMainManager
                                 lstModulesx64.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
                             End If
                         End If
-                        If SQLreader("Filename").ToString.ToLower = "dll" Then
+                        If SQLreader("Filename").ToString.ToLower = "emberapi.dll" Then
                             Dim v As String = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
                             ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPI", .Platform = SQLreader("Platform").ToString})
                             If SQLreader("Platform").ToString = "x86" Then
@@ -662,7 +662,10 @@ Public Class frmMainManager
         CheckBox1.Enabled = False
         lstFiles.Enabled = False
         ContextMenuStrip1.Enabled = False
-        Button1.Enabled = False
+        btnPack.Enabled = False
+        btnEditNews.Enabled = False
+        btnUpload.Enabled = False
+        btnUpdateFrom.Enabled = False
     End Sub
 
     Sub EnableGui()
@@ -675,7 +678,11 @@ Public Class frmMainManager
         CheckBox1.Enabled = True
         lstFiles.Enabled = True
         ContextMenuStrip1.Enabled = True
-        Button1.Enabled = True
+        btnPack.Enabled = True
+        btnEditNews.Enabled = True
+        btnUpload.Enabled = True
+        btnUpdateFrom.Enabled = True
+
     End Sub
 
     Public Shared Sub DeleteDirectory(ByVal sPath As String)
@@ -915,7 +922,7 @@ Public Class frmMainManager
         End If
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPack.Click
         pnlWork.Visible = True
         Application.DoEvents()
         DeleteDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
@@ -1098,7 +1105,7 @@ Public Class frmMainManager
         End If
         AddCommand = False
     End Sub
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpload.Click
         ' Dim state = New FtpState
         Dim ftp As New FTPClass
         Dim dlg As New Uploading
@@ -1178,7 +1185,7 @@ Public Class frmMainManager
         SetupSettings.Save(Path.Combine(AppPath, "settings.xml"))
     End Sub
 
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditNews.Click
         Dim sEditor As String = String.Empty
         If File.Exists(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))) Then
             sEditor = File.ReadAllText(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))).Replace("\n", vbCrLf)
@@ -1191,7 +1198,7 @@ Public Class frmMainManager
         End Using
     End Sub
 
-    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpdateFrom.Click
         Dim ftp As New FTPClass
         Dim dlg As New Uploading
         Try
