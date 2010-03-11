@@ -353,19 +353,21 @@ Public Class dlgEditMovie
     End Sub
     Private Sub EditActor()
         Try
-            Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-            Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
-            Using dAddEditActor As New dlgAddEditActor
-                eActor = dAddEditActor.ShowDialog(False, eActor)
-            End Using
-            If Not IsNothing(eActor) Then
-                lvwItem.Text = eActor.Name
-                lvwItem.SubItems(1).Text = eActor.Role
-                lvwItem.SubItems(2).Text = eActor.Thumb
-                lvwItem.Selected = True
-                lvwItem.EnsureVisible()
+            If Me.lvActors.SelectedItems.Count > 0 Then
+                Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
+                Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+                Using dAddEditActor As New dlgAddEditActor
+                    eActor = dAddEditActor.ShowDialog(False, eActor)
+                End Using
+                If Not IsNothing(eActor) Then
+                    lvwItem.Text = eActor.Name
+                    lvwItem.SubItems(1).Text = eActor.Role
+                    lvwItem.SubItems(2).Text = eActor.Thumb
+                    lvwItem.Selected = True
+                    lvwItem.EnsureVisible()
+                End If
+                eActor = Nothing
             End If
-            eActor = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1595,7 +1597,7 @@ Public Class dlgEditMovie
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
         Try
-            If Me.lvActors.Items.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
+            If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
                 Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
                 Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
                 Me.lvActors.Items.RemoveAt(iIndex + 1)
@@ -1608,7 +1610,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
-        If Me.lvActors.Items.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
+        If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
             Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
             Me.lvActors.Items.RemoveAt(iIndex)
