@@ -6662,7 +6662,8 @@ doCancel:
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             ' ##*** FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {Master.currMovie, False, False, True}))
+                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {Master.currMovie, False, False, True}))
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
                             Me.SetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
@@ -6684,6 +6685,8 @@ doCancel:
         End Try
 
         Master.currMovie.ClearExtras = False
+
+
 
         Me.pnlCancel.Visible = False
         Me.tslLoading.Visible = False
@@ -6754,13 +6757,12 @@ doCancel:
                         tmpMovieDb.ListTitle = tTitle
                     End If
                 End If
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
-                    'update genre
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
-                End If
+                Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
+                Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
+                Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
+                'update genre
+                Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
+
 
 
 
@@ -6768,20 +6770,26 @@ doCancel:
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
                 fScanner.GetMovieFolderContents(mContainer)
                 tmpMovieDb.PosterPath = mContainer.Poster
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
                 tmpMovieDb.FanartPath = mContainer.Fanart
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
                 'assume invalid nfo if no title
                 tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo)
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
-                tmpMovieDb.TrailerPath = mContainer.Trailer
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
-                tmpMovieDb.SubPath = mContainer.Subs
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
-                tmpMovieDb.ExtraPath = mContainer.Extra
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
 
-                If Me.InvokeRequired Then Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
+                Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
+                tmpMovieDb.TrailerPath = mContainer.Trailer
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
+                tmpMovieDb.SubPath = mContainer.Subs
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
+                tmpMovieDb.ExtraPath = mContainer.Extra
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
                 tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
                 tmpMovieDb.IsLock = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(14))
 
