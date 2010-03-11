@@ -790,7 +790,8 @@ Public Class frmMainSetup
                         _teste = Nothing
                         '###################################################################################
                     End If
-                    If NeedReload Then
+                    '### DISABLING THIS STUFF FOR NOW
+                    If False AndAlso NeedReload Then
                         LogWrite(String.Format("*** Main: EmberSetup Will Start Again For DB Setup ({0})", Now))
                         StartSetup()
                         ExitMe = True
@@ -808,73 +809,80 @@ Public Class frmMainSetup
                 LogWrite(String.Format("--- Main: Installing Version {0}", InstallVersion))
                 System.Threading.Thread.Sleep(3000)
                 If bwDoInstall.CancellationPending Then Return False
-                Me.bwDoInstall.ReportProgress(0, New Object() {2, "Applying Database Changes"})
-                LogWrite(String.Format("*** Main: Commands START"))
-                Dim cmds As New Commands(emberPath)
-                Dim dbExist As Boolean = File.Exists(Path.Combine(emberPath, "Media.emm"))
-                cmds.DB.Connect()
-                Dim getFile As String
-                Dim xmlSer As XmlSerializer
-                Dim _cmds As New InstallCommands
-                If Not dbExist Then
-                    getFile = "commands_base.xml"
-                    If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
-                        xmlSer = New XmlSerializer(GetType(InstallCommands))
-                        Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
-                            _cmds = xmlSer.Deserialize(xmlSW)
-                        End Using
-                        Me.bwDoInstall.ReportProgress(5, "Creating Database")
-                        LogWrite(String.Format("*** Execute DB File: {0}", getFile))
-                        For Each s As InstallCommand In _cmds.Command
-                            If s.CommandType = "DB" Then
-                                LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
-                                cmds.DB.Execute(s.CommandExecute)
-                            End If
-                        Next
-                    Else
-                        LogWrite(String.Format("*** Main: Commands: File Not Found: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))))
-                    End If
-                End If
-                System.Threading.Thread.Sleep(1000)
-                Dim di As New DirectoryInfo(Path.Combine(Path.GetDirectoryName(emberPath), "updates"))
-                Dim fis As FileInfo() = di.GetFiles
-                Array.Sort(fis, New Comparer)
 
-                For Each f As FileInfo In fis
-                    If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
-                        Me.bwDoInstall.ReportProgress(5, String.Format("Executing Commands for Version: {0}", f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
-                        xmlSer = New XmlSerializer(GetType(InstallCommands))
-                        Using xmlSW As New StreamReader(f.FullName)
-                            _cmds = xmlSer.Deserialize(xmlSW)
-                        End Using
-                        LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
-                        For Each s As InstallCommand In _cmds.Command
-                            If s.CommandType = "DB" Then
-                                LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
-                                cmds.DB.Execute(s.CommandExecute)
-                            End If
-                        Next
+                '### DISABLING THIS STUFF FOR NOW
+                If False Then
+                    Me.bwDoInstall.ReportProgress(0, New Object() {2, "Applying Database Changes"})
+                    LogWrite(String.Format("*** Main: Commands START"))
+                    Dim cmds As New Commands(emberPath)
+                    Dim dbExist As Boolean = File.Exists(Path.Combine(emberPath, "Media.emm"))
+                    cmds.DB.Connect()
+                    Dim getFile As String
+                    Dim xmlSer As XmlSerializer
+                    Dim _cmds As New InstallCommands
+                    If Not dbExist Then
+                        getFile = "commands_base.xml"
+                        If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
+                            xmlSer = New XmlSerializer(GetType(InstallCommands))
+                            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
+                                _cmds = xmlSer.Deserialize(xmlSW)
+                            End Using
+                            Me.bwDoInstall.ReportProgress(5, "Creating Database")
+                            LogWrite(String.Format("*** Execute DB File: {0}", getFile))
+                            For Each s As InstallCommand In _cmds.Command
+                                If s.CommandType = "DB" Then
+                                    LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                    cmds.DB.Execute(s.CommandExecute)
+                                End If
+                            Next
+                        Else
+                            LogWrite(String.Format("*** Main: Commands: File Not Found: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates\", getFile))))
+                        End If
                     End If
-                Next
-                System.Threading.Thread.Sleep(1000)
-                cmds.DB.Close()
-                If bwDoInstall.CancellationPending Then Return False
-                LogWrite(String.Format("*** Main: Commands END"))
+                    System.Threading.Thread.Sleep(1000)
+                    Dim di As New DirectoryInfo(Path.Combine(Path.GetDirectoryName(emberPath), "updates"))
+                    Dim fis As FileInfo() = di.GetFiles
+                    Array.Sort(fis, New Comparer)
+
+                    For Each f As FileInfo In fis
+                        If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
+                            Me.bwDoInstall.ReportProgress(5, String.Format("Executing Commands for Version: {0}", f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
+                            xmlSer = New XmlSerializer(GetType(InstallCommands))
+                            Using xmlSW As New StreamReader(f.FullName)
+                                _cmds = xmlSer.Deserialize(xmlSW)
+                            End Using
+                            LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
+                            For Each s As InstallCommand In _cmds.Command
+                                If s.CommandType = "DB" Then
+                                    LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                    cmds.DB.Execute(s.CommandExecute)
+                                End If
+                            Next
+                        End If
+                    Next
+                    System.Threading.Thread.Sleep(1000)
+                    cmds.DB.Close()
+
+
+                    If bwDoInstall.CancellationPending Then Return False
+                    LogWrite(String.Format("*** Main: Commands END"))
+                End If
+                '### END OF - DISABLING THIS STUFF FOR NOW
             Catch ex As Exception
                 LogWrite(String.Format("*** Main: Error {0}", ex.Message))
             End Try
 
-            '###################################################################################
-            Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
-            RemoveSetupFolders(Path.GetDirectoryName(emberPath))
-            System.Threading.Thread.Sleep(2000)
-            LogWrite(String.Format("*** Main: Installation Finished with Success"))
-            Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
+        '###################################################################################
+        Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
+        RemoveSetupFolders(Path.GetDirectoryName(emberPath))
+        System.Threading.Thread.Sleep(2000)
+        LogWrite(String.Format("*** Main: Installation Finished with Success"))
+        Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
 
-            '###################################################################################
+        '###################################################################################
         Else
-            Me.bwDoInstall.ReportProgress(2, "No Instalation Path Found") '  Error
-            'No Instalation Path, This never should happen
+        Me.bwDoInstall.ReportProgress(2, "No Instalation Path Found") '  Error
+        'No Instalation Path, This never should happen
         End If
         Return True
     End Function

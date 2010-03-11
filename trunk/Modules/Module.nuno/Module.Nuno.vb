@@ -94,9 +94,9 @@
     End Sub
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
-        Using dBulkRename As New dlgTest
+        Using dTest As New dlgTest
             Try
-                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If dTest.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     'ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                 End If
             Catch ex As Exception
