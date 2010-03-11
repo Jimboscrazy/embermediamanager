@@ -3574,7 +3574,6 @@ Partial Class frmMain
         'TrayIcon
         '
         Me.TrayIcon.ContextMenuStrip = Me.cmnuTrayIcon
-        Me.TrayIcon.Icon = CType(resources.GetObject("TrayIcon.Icon"), System.Drawing.Icon)
         Me.TrayIcon.Text = "Ember Media Manager"
         Me.TrayIcon.Visible = True
         '
