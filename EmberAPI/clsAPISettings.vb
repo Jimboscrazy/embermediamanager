@@ -3073,7 +3073,7 @@ Public Class Settings
         Me._infopanelstate = 0
         Me._showinfopanelstate = 0
         Me._filterPanelState = False
-        Me._scmainstate = 305
+        Me._scmainstate = 364
         Me._infopanelanim = True
         Me._checkupdates = True
         Me._bdpath = String.Empty
