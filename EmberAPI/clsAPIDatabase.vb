@@ -20,6 +20,7 @@
 
 Imports System
 Imports System.IO
+Imports System.Xml.Serialization
 
 Public Class Database
     Public SQLcn As New SQLite.SQLiteConnection()
@@ -2156,4 +2157,29 @@ Public Class Database
             Me._single = False
         End Sub
     End Class
+
+    <XmlRoot("CommandFile")> _
+    Public Class InstallCommands
+        <XmlArray("Commands")> _
+        <XmlArrayItem("Command")> _
+        Public Command As List(Of InstallCommand)
+
+        Public Sub Save(ByVal fpath As String)
+            Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
+            Using xmlSW As New StreamWriter(fpath)
+                xmlSer.Serialize(xmlSW, Me)
+            End Using
+        End Sub
+    End Class
+
+    Public Class InstallCommand
+        <XmlElement("Description")> _
+        Public CommandDescription As String
+        <XmlAttribute("Type")> _
+        Public CommandType As String
+        <XmlElement("Execute")> _
+        Public CommandExecute As String
+    End Class
+
+
 End Class
