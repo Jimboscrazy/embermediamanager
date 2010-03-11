@@ -27,7 +27,7 @@ Public Class BulkRenamerModule
     Private _Name As String = "Renamer"
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
-    Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private MySettings As New _MySettings

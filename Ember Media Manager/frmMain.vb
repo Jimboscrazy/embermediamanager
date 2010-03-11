@@ -453,11 +453,7 @@ Public Class frmMain
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
         AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
         AddHandler Master.eLog.ErrorOccurred, AddressOf ErrorOccurred
-
-        Master.NotifierModule = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(m) m.ProcessorModule.Enabled AndAlso m.Type.Contains(Enums.ModuleEventType.Notification)).ProcessorModule
-        If Not IsNothing(Master.NotifierModule) Then
-            AddHandler Master.NotifierModule.GenericEvent, AddressOf Me.NotifierClicked
-        End If
+        AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
 
         Functions.DGVDoubleBuffer(Me.dgvMediaList)
         Functions.DGVDoubleBuffer(Me.dgvTVShows)
@@ -6532,7 +6528,7 @@ doCancel:
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            Functions.Notify("moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString)
+            Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString}))
         ElseIf e.ProgressPercentage = -2 Then
             If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
                 If Me.dgvMediaList.CurrentCell Is Me.dgvMediaList.SelectedRows(0).Cells(3) Then
@@ -8059,13 +8055,17 @@ doCancel:
         If dlgErrorViewer.Visible Then dlgErrorViewer.UpdateLog()
     End Sub
 
-    Private Sub NotifierClicked(ByVal _params As List(Of Object))
-        Select Case _params(0).ToString
-            Case "error"
-                dlgErrorViewer.Show(Me)
-            Case Else
-                Me.Activate()
+    Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        Select Case mType
+            Case Enums.ModuleEventType.Notification
+                Select Case _params(0).ToString
+                    Case "error"
+                        dlgErrorViewer.Show(Me)
+                    Case Else
+                        Me.Activate()
+                End Select
         End Select
+
     End Sub
 
     Private Sub CleanFiles()

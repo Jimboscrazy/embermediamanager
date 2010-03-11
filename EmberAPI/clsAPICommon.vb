@@ -860,13 +860,8 @@ Public Class Functions
             Return "ffmpeg"
         End If
     End Function
-
-    Public Shared Sub Notify(ByVal Type As String, ByVal Icon As Integer, ByVal Title As String, ByVal Message As String, Optional ByVal CustomIcon As Image = Nothing)
-        Try
-            If Not IsNothing(Master.NotifierModule) Then
-                Master.NotifierModule.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {Type, Icon, Title, Message, CustomIcon}))
-            End If
-        Catch
-        End Try
+    'Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg}))
+    Public Shared Sub ProcessHook(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, _params)
     End Sub
 End Class
