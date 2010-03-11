@@ -187,6 +187,7 @@ Public Class frmMain
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.BringToFront()
         Me.Activate()
+        Me.cmnuTrayIcon.Enabled = True
     End Sub
 
     Private Sub GenreListToolStripComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.DropDown
@@ -932,8 +933,10 @@ Public Class frmMain
         '\\
 
         If Me.tabsMain.SelectedIndex = 0 Then
-            Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
-        ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Filename) AndAlso Me.dgvMediaList.SelectedRows.Count > 0 Then
+                Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
+            End If
+        ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False)
 
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
@@ -1179,13 +1182,9 @@ Public Class frmMain
     End Sub
 
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved
-
-        '//
-        ' Some generic resizing when pane sizes are changed
-        '\\
-
         Try
             If Me.Created Then
+                Me.SuspendLayout()
                 Me.MoveMPAA()
                 Me.MoveGenres()
 
@@ -1195,6 +1194,15 @@ Public Class frmMain
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
+
+                Select Case Me.tabsMain.SelectedIndex
+                    Case 0
+                        Me.dgvMediaList.Focus()
+                    Case 1
+                        Me.dgvTVShows.Focus()
+                End Select
+
+                Me.ResumeLayout(True)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3206,38 +3214,44 @@ Public Class frmMain
     End Sub
 
     Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click
-        If Me.btnSortDate.Tag.ToString = "DESC" Then
-            Me.btnSortDate.Tag = "ASC"
-            Me.btnSortDate.Image = My.Resources.desc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Descending)
-        Else
-            Me.btnSortDate.Tag = "DESC"
-            Me.btnSortDate.Image = My.Resources.asc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+        If Me.dgvMediaList.RowCount > 0 Then
+            If Me.btnSortDate.Tag.ToString = "DESC" Then
+                Me.btnSortDate.Tag = "ASC"
+                Me.btnSortDate.Image = My.Resources.desc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnSortDate.Tag = "DESC"
+                Me.btnSortDate.Image = My.Resources.asc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+            End If
         End If
     End Sub
 
     Private Sub btnSortTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortTitle.Click
-        If Me.btnSortTitle.Tag.ToString = "DESC" Then
-            Me.btnSortTitle.Tag = "ASC"
-            Me.btnSortTitle.Image = My.Resources.desc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
-        Else
-            Me.btnSortTitle.Tag = "DESC"
-            Me.btnSortTitle.Image = My.Resources.asc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
+        If Me.dgvMediaList.RowCount > 0 Then
+            If Me.btnSortTitle.Tag.ToString = "DESC" Then
+                Me.btnSortTitle.Tag = "ASC"
+                Me.btnSortTitle.Image = My.Resources.desc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnSortTitle.Tag = "DESC"
+                Me.btnSortTitle.Image = My.Resources.asc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
+            End If
         End If
     End Sub
 
     Private Sub btnIMDBRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIMDBRating.Click
-        If Me.btnIMDBRating.Tag.ToString = "DESC" Then
-            Me.btnIMDBRating.Tag = "ASC"
-            Me.btnIMDBRating.Image = My.Resources.desc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Descending)
-        Else
-            Me.btnIMDBRating.Tag = "DESC"
-            Me.btnIMDBRating.Image = My.Resources.asc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Ascending)
+        If Me.dgvMediaList.RowCount > 0 Then
+            If Me.btnIMDBRating.Tag.ToString = "DESC" Then
+                Me.btnIMDBRating.Tag = "ASC"
+                Me.btnIMDBRating.Image = My.Resources.desc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnIMDBRating.Tag = "DESC"
+                Me.btnIMDBRating.Image = My.Resources.asc
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Ascending)
+            End If
         End If
     End Sub
 

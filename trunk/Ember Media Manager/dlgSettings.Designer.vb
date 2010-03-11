@@ -1390,7 +1390,6 @@ Partial Class dlgSettings
         Me.chkYAMJCompatibleSets.Size = New System.Drawing.Size(138, 17)
         Me.chkYAMJCompatibleSets.TabIndex = 63
         Me.chkYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
-        Me.ToolTips.SetToolTip(Me.chkYAMJCompatibleSets, "This will save sets in a way that is friendly to XBMC")
         Me.chkYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'chkMarkNew
@@ -1626,9 +1625,9 @@ Partial Class dlgSettings
         '
         Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(199, 70)
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(195, 70)
         Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(161, 42)
+        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(167, 43)
         Me.chkMovieNameMultiOnly.TabIndex = 5
         Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
         Me.chkMovieNameMultiOnly.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -1674,9 +1673,9 @@ Partial Class dlgSettings
         '
         Me.chkVideoTSParent.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkVideoTSParent.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVideoTSParent.Location = New System.Drawing.Point(199, 22)
+        Me.chkVideoTSParent.Location = New System.Drawing.Point(195, 22)
         Me.chkVideoTSParent.Name = "chkVideoTSParent"
-        Me.chkVideoTSParent.Size = New System.Drawing.Size(160, 48)
+        Me.chkVideoTSParent.Size = New System.Drawing.Size(167, 48)
         Me.chkVideoTSParent.TabIndex = 1
         Me.chkVideoTSParent.Text = "YAMJ Compatible VIDEO_TS File Placement/Naming"
         Me.chkVideoTSParent.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -6850,8 +6849,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
@@ -6862,6 +6859,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
