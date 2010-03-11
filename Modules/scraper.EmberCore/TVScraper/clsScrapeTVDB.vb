@@ -928,8 +928,12 @@ Public Class Scraper
                         If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
                             sLang = xS.Element("language").Value
                             cResult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                        ElseIf Not IsNothing(xS.Element("language")) Then
+                            sLang = xS.Element("language").Value
+                            cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
                         Else
-                            cResult.Language = New Containers.TVLanguage With {.LongLang = "Unknown", .ShortLang = "?"}
+                            'no language info available... don't bother adding it
+                            Continue For
                         End If
                         cResult.Aired = If(Not IsNothing(xS.Element("FirstAired")), xS.Element("FirstAired").Value, String.Empty)
                         cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value, String.Empty)
