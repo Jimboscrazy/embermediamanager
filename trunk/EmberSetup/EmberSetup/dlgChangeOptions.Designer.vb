@@ -107,7 +107,7 @@ Partial Class dlgChangeOptions
         Me.GroupBox1.Size = New System.Drawing.Size(406, 150)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Ember Media Manager Instalation Path"
+        Me.GroupBox1.Text = "Ember Media Manager Installation Path"
         Me.GroupBox1.UseCompatibleTextRendering = True
         '
         'pnlCancel
@@ -140,7 +140,7 @@ Partial Class dlgChangeOptions
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(256, 39)
         Me.lblStatus.TabIndex = 1
-        Me.lblStatus.Text = "Searching for possible Ember Media Manager Instalations"
+        Me.lblStatus.Text = "Searching for possible Ember Media Manager Installations"
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'pbCancel
@@ -170,7 +170,7 @@ Partial Class dlgChangeOptions
         Me.btnFindPaths.Name = "btnFindPaths"
         Me.btnFindPaths.Size = New System.Drawing.Size(110, 23)
         Me.btnFindPaths.TabIndex = 5
-        Me.btnFindPaths.Text = "Find Ember Instalations"
+        Me.btnFindPaths.Text = "Find Ember Installations"
         Me.btnFindPaths.UseVisualStyleBackColor = True
         '
         'lstEMMPaths
