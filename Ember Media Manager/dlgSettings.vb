@@ -2788,9 +2788,13 @@ Public Class dlgSettings
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
-            Dim tLang As String = tLangList.SingleOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
-            If Not String.IsNullOrEmpty(tLang) Then
-                Master.eSettings.TVDBLanguage = tLang
+            If tLangList.Count > 0 Then
+                Dim tLang As String = tLangList.SingleOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+                If Not String.IsNullOrEmpty(tLang) Then
+                    Master.eSettings.TVDBLanguage = tLang
+                Else
+                    Master.eSettings.TVDBLanguage = "en"
+                End If
             Else
                 Master.eSettings.TVDBLanguage = "en"
             End If
