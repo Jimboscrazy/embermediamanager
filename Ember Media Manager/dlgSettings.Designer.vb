@@ -2902,9 +2902,9 @@ Partial Class dlgSettings
         'pnlCurrent
         '
         Me.pnlCurrent.BackColor = System.Drawing.Color.SteelBlue
-        Me.pnlCurrent.Location = New System.Drawing.Point(351, 137)
+        Me.pnlCurrent.Location = New System.Drawing.Point(516, 137)
         Me.pnlCurrent.Name = "pnlCurrent"
-        Me.pnlCurrent.Size = New System.Drawing.Size(526, 25)
+        Me.pnlCurrent.Size = New System.Drawing.Size(361, 25)
         Me.pnlCurrent.TabIndex = 64
         '
         'Panel1
@@ -2914,7 +2914,7 @@ Partial Class dlgSettings
         Me.Panel1.Controls.Add(Me.lblCurrent)
         Me.Panel1.Location = New System.Drawing.Point(5, 137)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(351, 25)
+        Me.Panel1.Size = New System.Drawing.Size(515, 25)
         Me.Panel1.TabIndex = 65
         '
         'pbCurrent
