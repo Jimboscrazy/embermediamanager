@@ -21,5 +21,5 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared tmpMovie As New MediaContainers.Movie
 
-    Public Shared NotifierModule As Interfaces.EmberExternalModule
+
 End Class

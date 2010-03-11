@@ -58,7 +58,7 @@ Public Class ErrorLogger
                     End Using
                 End Using
 
-                Functions.Notify("error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg)
+                Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg}))
 
                 RaiseEvent ErrorOccurred()
             End If

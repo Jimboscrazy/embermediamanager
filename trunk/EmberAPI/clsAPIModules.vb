@@ -32,6 +32,7 @@ Public Class ModulesManager
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Public externalTVScrapersModules As New List(Of _externalTVScraperModuleClass)
     Public Shared AssemblyList As New List(Of AssemblyListItem)
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
     'Singleton Instace for module manager .. allways use this one
     Private Shared Singleton As ModulesManager = Nothing
     Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
@@ -199,6 +200,7 @@ Public Class ModulesManager
                                 End If
                                 externalProcessorModules.Add(_externalProcessorModule)
                                 ProcessorModule.Init(_externalProcessorModule.AssemblyName)
+                                AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
                                 ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
                             End If
                         Catch ex As Exception
@@ -215,7 +217,9 @@ Public Class ModulesManager
 
         End If
     End Sub
-
+    Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        RaiseEvent GenericEvent(mType, _params)
+    End Sub
     ''' <summary>
     ''' Load all Scraper Modules and field in externalScrapersModules List
     ''' </summary>

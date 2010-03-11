@@ -28,7 +28,7 @@ Public Class NotificationsModule
     Private eSettings As New NotifySettings
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
-    Public Event GenericEvent(ByVal _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
     Private dNotify As frmNotify
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
@@ -104,7 +104,7 @@ Public Class NotificationsModule
     End Sub
 
     Private Sub Handle_NotifierClicked(ByVal _type As String)
-        RaiseEvent GenericEvent(New List(Of Object)(New Object() {_type}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {_type}))
     End Sub
 
     Private Sub Handle_NotifierClosed()

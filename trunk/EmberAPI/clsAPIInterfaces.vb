@@ -11,7 +11,7 @@
         ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType)
         Event ModuleSettingsChanged()
         Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
-        Event GenericEvent(ByVal _params As List(Of Object))
+        Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
     End Interface
 
     Public Structure ModuleResult
