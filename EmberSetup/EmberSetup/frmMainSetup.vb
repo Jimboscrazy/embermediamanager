@@ -846,7 +846,7 @@ Public Class frmMainSetup
 
         '###################################################################################
         Else
-        Me.bwDoInstall.ReportProgress(2, "No Instalation Path Found") '  Error
+            Me.bwDoInstall.ReportProgress(2, "No Installation Path Found") '  Error
         'No Instalation Path, This never should happen
         End If
         Return True
@@ -1066,19 +1066,22 @@ Public Class frmMainSetup
                     CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
                     LogWrite(String.Format("--- Main: Found Ember Platform: {0}", CurrentEmberPlatform))
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
-                    lblInfo.Text = String.Format("We have found a EMM instalation in {0}", vbCrLf)
+                    lblInfo.Text = String.Format("We have found a EMM Installation in {0}", vbCrLf)
                     lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
                     If Not Force Then
                         lblInfo.Text += "If you want to change this please use [Change Options]"
                     End If
 
                 Else
+                    emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager\")
                     CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
                     lblInfo.Text = String.Format("No Ember Media Manager Installation Found{0}", vbCrLf)
-                    lblInfo.Text += "Please use [Change Options] to choose the Instalation Folder"
+                    lblInfo.Text += String.Format("Default Installation Folder{0}", vbCrLf)
+                    lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
+                    lblInfo.Text += "Please use [Change Options] to change the Installation Folder"
                 End If
-                lblStatus.Text = "Welcome to Ember Media Manager Instalation"
+                lblStatus.Text = "Welcome to Ember Media Manager Installation"
             End If
             If Not emberPath = String.Empty AndAlso Not CurrentEmberPlatform = String.Empty Then
                 btnInstall.Enabled = True
@@ -1135,7 +1138,7 @@ Public Class frmMainSetup
                 lblInfo.TextAlign = ContentAlignment.MiddleCenter
                 lblInfo.ForeColor = Color.Black
                 lblInfo.Font = New Font("Arial", 11, FontStyle.Regular)
-                lblInfo.Text = String.Format("Ember Media Manager Instalation Path:{0}""{1}""", vbCrLf, emberPath)
+                lblInfo.Text = String.Format("Ember Media Manager Installation Path:{0}""{1}""", vbCrLf, emberPath)
             Else
                 NeedDoEvents = False
             End If

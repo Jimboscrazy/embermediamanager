@@ -42,9 +42,9 @@ Partial Class frmMainSetup
         'btnInstall
         '
         Me.btnInstall.Enabled = False
-        Me.btnInstall.Location = New System.Drawing.Point(108, 258)
+        Me.btnInstall.Location = New System.Drawing.Point(98, 259)
         Me.btnInstall.Name = "btnInstall"
-        Me.btnInstall.Size = New System.Drawing.Size(91, 23)
+        Me.btnInstall.Size = New System.Drawing.Size(101, 23)
         Me.btnInstall.TabIndex = 0
         Me.btnInstall.Text = "Install"
         Me.btnInstall.UseVisualStyleBackColor = True
@@ -63,7 +63,7 @@ Partial Class frmMainSetup
         '
         Me.btnOptions.Location = New System.Drawing.Point(302, 258)
         Me.btnOptions.Name = "btnOptions"
-        Me.btnOptions.Size = New System.Drawing.Size(91, 23)
+        Me.btnOptions.Size = New System.Drawing.Size(101, 23)
         Me.btnOptions.TabIndex = 4
         Me.btnOptions.Text = "Change Options"
         Me.btnOptions.UseVisualStyleBackColor = True
@@ -99,9 +99,9 @@ Partial Class frmMainSetup
         '
         'btnRunEmber
         '
-        Me.btnRunEmber.Location = New System.Drawing.Point(177, 230)
+        Me.btnRunEmber.Location = New System.Drawing.Point(170, 231)
         Me.btnRunEmber.Name = "btnRunEmber"
-        Me.btnRunEmber.Size = New System.Drawing.Size(149, 23)
+        Me.btnRunEmber.Size = New System.Drawing.Size(161, 23)
         Me.btnRunEmber.TabIndex = 8
         Me.btnRunEmber.Text = "Start Ember Media Manager"
         Me.btnRunEmber.UseVisualStyleBackColor = True
