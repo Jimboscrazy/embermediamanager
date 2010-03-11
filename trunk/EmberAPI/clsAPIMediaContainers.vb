@@ -1007,7 +1007,7 @@ Namespace MediaContainers
                 Return Me._id
             End Get
             Set(ByVal value As String)
-                Me._id = value
+                If IsNumeric(value) Then Me._id = value
             End Set
         End Property
 
@@ -1016,6 +1016,16 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(Me._id)
             End Get
+        End Property
+
+        <XmlIgnore()> _
+        Public Property TVDBID() As String
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As String)
+                Me._id = value
+            End Set
         End Property
 
         <XmlElement("rating")> _
