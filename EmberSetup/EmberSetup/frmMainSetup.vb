@@ -783,11 +783,14 @@ Public Class frmMainSetup
                         LogWrite(String.Format("*** Main: EmberSetup in Ember Folder"))
                         '###################################################################################
                         ' Test System.Data.SQLite.dll Load
-                        Dim _teste As New Commands(emberPath)
-                        If _teste.Loaded Then
-                            NeedReload = False
+                        '### DISABLING THIS STUFF FOR NOW
+                        If False Then
+                            Dim _teste As New Commands(emberPath)
+                            If _teste.Loaded Then
+                                NeedReload = False
+                            End If
+                            _teste = Nothing
                         End If
-                        _teste = Nothing
                         '###################################################################################
                     End If
                     '### DISABLING THIS STUFF FOR NOW
