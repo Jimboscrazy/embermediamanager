@@ -21,7 +21,7 @@
     </TargetFrameworkSubset>
     <ManifestCertificateThumbprint>143772A0FBFA035017D7EF698CC535CAFDF2643B</ManifestCertificateThumbprint>
     <ManifestKeyFile>Ultimate Media Manager_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <SignManifests>false</SignManifests>

@@ -289,7 +289,7 @@ Public Class frmMainManager
             If (kinds And PortableExecutableKinds.PE32Plus) = PortableExecutableKinds.PE32Plus Then
                 Return "64"
             End If
-        Catch
+        Catch ex As Exception
         End Try
         Return "32"
     End Function
