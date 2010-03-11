@@ -52,7 +52,7 @@ Public Class frmMainSetup
     Private BackAlpha As Integer = 0
     Private LogoStop As Boolean = True
     Private ShowCredits As Boolean = False
-
+    Private DisablePaint As Boolean = False
 
     Dim CredList As New List(Of CredLine)
     Dim PicY As Single
@@ -632,7 +632,7 @@ Public Class frmMainSetup
                                     'getFile = String.Format("Files/{0}.gz", f.Filename)
 
                                     If f.inCache Then
-                                        LogWrite(String.Format("--- Main: File in cache: skiping ({0})", f.Filename))
+                                        LogWrite(String.Format("--- Main: File in cache: skipping ({0})", f.Filename))
                                         Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("In Cache: {0}", f.Filename)})
                                     Else
                                         Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
@@ -1000,7 +1000,6 @@ Public Class frmMainSetup
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            Me.TopMost = True
             SetupMyControls()
             InitCredits()
             'Me.lblStatus.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint Or ControlStyles.SupportsTransparentBackColor, True)
@@ -1129,7 +1128,7 @@ Public Class frmMainSetup
 
     Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
         If btnExit.Text = "Exit" Then
-            Me.Close()
+            Application.Exit()
         Else
             If bwDoInstall.IsBusy Then
                 bwDoInstall.CancelAsync()
@@ -1145,11 +1144,11 @@ Public Class frmMainSetup
 
     Private Sub btnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOptions.Click
         LogWrite(String.Format("--- Options: Enter"))
+        Me.DisablePaint = True
         btnOptions.Enabled = False
         Using chgOptons As New dlgChangeOptions
             NeedDoEvents = True
-            chgOptons.TopMost = True
-            If chgOptons.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If chgOptons.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 NeedDoEvents = False
                 If Not emberPath = String.Empty Then
                     LogWrite(String.Format("--- Options: Setting Install Path: {0}", emberPath))
@@ -1164,6 +1163,9 @@ Public Class frmMainSetup
             Else
                 NeedDoEvents = False
             End If
+
+            Me.DisablePaint = False
+            MyBackGround.Invalidate()
 
         End Using
         btnOptions.Enabled = True
@@ -1222,6 +1224,7 @@ Public Class frmMainSetup
                 Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
                 Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
                 g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
+                If DisablePaint Then Return
                 UpdateBackgorund()
 
                 If ShowCredits Then
@@ -1488,7 +1491,7 @@ Public Class Commands
         End Sub
         Public Function Execute(ByVal s As String) As Integer
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = s
+                SQLcommand.CommandText = String.Concat(s, ";")
                 Return SQLcommand.ExecuteNonQuery()
             End Using
         End Function

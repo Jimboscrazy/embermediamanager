@@ -87,6 +87,7 @@ Public Class dlgChangeOptions
 
     Private Sub btnGetEMMPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetEMMPath.Click
         Using d As New FolderBrowserDialog
+            d.Description = "Select the folder in which you would like to install Ember Media Manager."
             If d.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 localPath = d.SelectedPath
                 txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & "\").Replace("\\", "\")
