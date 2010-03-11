@@ -420,7 +420,7 @@ Public Class APIXML
                     For i As Integer = 0 To xGenre.Count - 1
                         splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
                         For Each strGen As String In splitLang
-                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
+                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
                                 retGenre.Add(xGenre(i).searchstring)
                             End If
                         Next

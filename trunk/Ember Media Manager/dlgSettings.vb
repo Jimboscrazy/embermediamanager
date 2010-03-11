@@ -2653,8 +2653,8 @@ Public Class dlgSettings
             'End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
-                If Me.lbGenre.CheckedItems.Contains(String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))) Then
-                    Master.eSettings.GenreFilter = String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))
+                If Me.lbGenre.CheckedItems.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) Then
+                    Master.eSettings.GenreFilter = String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))
                 Else
                     Dim strGenre As String = String.Empty
                     Dim iChecked = From iCheck In Me.lbGenre.CheckedItems
