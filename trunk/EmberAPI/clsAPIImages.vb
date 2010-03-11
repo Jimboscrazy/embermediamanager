@@ -415,10 +415,9 @@ Public Class Images : Implements IDisposable
             If Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse Master.eSettings.SeasonNameTBN OrElse _
             Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
                 Dim tPath As String = String.Empty
-                Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
                 Try
-                    tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+                    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
                 Catch
                 End Try
 
@@ -723,10 +722,9 @@ Public Class Images : Implements IDisposable
                 End If
 
                 Dim tPath As String = String.Empty
-                Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
                 Try
-                    tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+                    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
                 Catch ex As Exception
                 End Try
 
@@ -1060,10 +1058,9 @@ Public Class Images : Implements IDisposable
     Public Sub DeleteSeasonPosters(ByVal mShow As Structures.DBTV)
         Try
             Dim tPath As String = String.Empty
-            Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
             Try
-                tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+                tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
             Catch
             End Try
 
@@ -1151,10 +1148,9 @@ Public Class Images : Implements IDisposable
     Public Sub DeleteSeasonFanart(ByVal mShow As Structures.DBTV)
         Try
             Dim tPath As String = String.Empty
-            Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
             Try
-                tPath = tDir.GetDirectories.FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"), RegexOptions.IgnoreCase)).FullName
+                tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
             Catch ex As Exception
             End Try
 

@@ -860,6 +860,36 @@ Public Class Functions
             Return "ffmpeg"
         End If
     End Function
+
+    Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
+
+        Dim dInfo As New DirectoryInfo(ShowPath)
+
+        For Each sDir As DirectoryInfo In dInfo.GetDirectories
+            For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
+                For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                    Try
+                        If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
+                            Return sDir.FullName
+                        End If
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            Next
+        Next
+        'no matches
+        Return String.Empty
+    End Function
+
+    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
+        For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
+            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), rShow.SeasonRegex, RegexOptions.IgnoreCase) Then Return True
+        Next
+        'no matches
+        Return False
+    End Function
+
     'Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg}))
     Public Shared Sub ProcessHook(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, _params)

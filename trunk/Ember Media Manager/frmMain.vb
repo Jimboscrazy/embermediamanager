@@ -404,6 +404,9 @@ Public Class frmMain
         Return asm
     End Function
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        Me.TrayIcon.Icon = Me.Icon
+
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
                 .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
@@ -4282,7 +4285,7 @@ Public Class frmMain
                                         SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
                                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                             If SQLReader.HasRows Then
-                                                If Regex.IsMatch(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) Then
+                                                If Functions.IsSeasonDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName) Then
                                                     FileUtils.Delete.DeleteDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName)
                                                     Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
                                                     Exit While
