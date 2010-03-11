@@ -735,6 +735,10 @@ Public Class frmMain
                     Me.Visible = True
                 Else
                     Master.DB.Connect(True, False)
+                    If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+                        ' Place to put DB Patching
+                        File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+                    End If
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
