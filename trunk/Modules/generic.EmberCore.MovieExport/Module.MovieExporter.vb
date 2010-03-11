@@ -63,7 +63,7 @@ Public Class MovieExporterModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-
+        Me._enabled = Me._setup.cbEnabled.Checked
     End Sub
 
     Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled

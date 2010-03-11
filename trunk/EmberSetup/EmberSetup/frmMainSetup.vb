@@ -1103,6 +1103,7 @@ Public Class frmMainSetup
 
     Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
         If btnExit.Text = "Exit" Then
+            Me.Close()
             Application.Exit()
         Else
             If bwDoInstall.IsBusy Then

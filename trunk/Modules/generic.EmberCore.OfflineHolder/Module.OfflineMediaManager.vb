@@ -77,7 +77,7 @@ Public Class OfflineHolderModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-
+        Me._enabled = Me._setup.cbEnabled.Checked
     End Sub
 
     Sub Enable()

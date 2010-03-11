@@ -135,7 +135,7 @@ Public Class ModulesManager
     End Class
     Class _externalGenericModuleClass
         Public ProcessorModule As Interfaces.EmberExternalModule 'Object
-        Public Enabled As Boolean
+        'Public Enabled As Boolean
         Public AssemblyName As String
         Public AssemblyFileName As String
         Public Type As List(Of Enums.ModuleEventType)
@@ -189,17 +189,17 @@ Public Class ModulesManager
                                 Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
-                                        _externalProcessorModule.Enabled = i.Enabled
+                                        _externalProcessorModule.ProcessorModule.Enabled = i.Enabled
                                         found = True
                                     End If
                                 Next
                                 If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
-                                    _externalProcessorModule.Enabled = True
+                                    _externalProcessorModule.ProcessorModule.Enabled = True
                                     SetModuleEnable(_externalProcessorModule.AssemblyName, True)
                                 End If
                                 externalProcessorModules.Add(_externalProcessorModule)
                                 ProcessorModule.Init(_externalProcessorModule.AssemblyName)
-                                ProcessorModule.Enabled = _externalProcessorModule.Enabled
+                                ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
                             End If
                         Catch ex As Exception
                         End Try
@@ -388,7 +388,7 @@ Public Class ModulesManager
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
-            li.SubItems.Add(If(_externalProcessorModule.Enabled, Master.eLang.GetString(774, "Enabled"), Master.eLang.GetString(775, "Disabled")))
+            li.SubItems.Add(If(_externalProcessorModule.ProcessorModule.Enabled, Master.eLang.GetString(774, "Enabled"), Master.eLang.GetString(775, "Disabled")))
             li.Tag = _externalProcessorModule.AssemblyName
         Next
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.OrderBy(Function(x) x.ScraperOrder)
@@ -452,7 +452,7 @@ Public Class ModulesManager
 
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalProcessorModule.Enabled = value
+            _externalProcessorModule.ProcessorModule.Enabled = value
             _externalProcessorModule.ProcessorModule.Enabled = value
         Next
     End Sub
@@ -659,7 +659,7 @@ Public Class ModulesManager
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalProcessorModule.AssemblyName
             t.AssemblyFileName = _externalProcessorModule.AssemblyFileName
-            t.Enabled = _externalProcessorModule.Enabled
+            t.Enabled = _externalProcessorModule.ProcessorModule.Enabled
             tmpForXML.Add(t)
         Next
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules

@@ -2865,7 +2865,7 @@ Public Class dlgSettings
                 If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
-                If s.ProcessorModule.Enabled Then s.ProcessorModule.SaveSetup(Not isApply)
+                s.ProcessorModule.SaveSetup(Not isApply)
             Next
             ModulesManager.Instance.SaveSettings()
 
@@ -4244,9 +4244,9 @@ Public Class dlgSettings
     Private Sub Handle_ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
         SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).ImageIndex = If(State, 9, 10)
         Try
+            Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
+            If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
             If Not diffOrder = 0 Then
-                Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-                If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
                 Dim p As TreeNode = t.Parent
                 Dim i As Integer = t.Index
                 If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
@@ -4260,8 +4260,8 @@ Public Class dlgSettings
                 t.TreeView.SelectedNode = t
                 SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).Order = i + diffOrder
             End If
-            tvSettings.Nodes.Find(Name, True)(0).ImageIndex = If(State, 9, 10)
-            tvSettings.Nodes.Find(Name, True)(0).SelectedImageIndex = If(State, 9, 10)
+            t.ImageIndex = If(State, 9, 10)
+            t.SelectedImageIndex = If(State, 9, 10)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

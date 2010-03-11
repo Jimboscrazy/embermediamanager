@@ -291,6 +291,8 @@ Public Class frmMain
         Try
             Me.SettingsToolStripMenuItem.Enabled = False
             Me.pnlLoadingSettings.Visible = True
+            Me.cmnuTrayIconSettings.Enabled = False
+            Me.cmnuTrayIconExit.Enabled = False
 
             Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
             dThread.SetApartmentState(Threading.ApartmentState.STA)
@@ -308,7 +310,8 @@ Public Class frmMain
 
         Me.SettingsToolStripMenuItem.Enabled = True
         Me.pnlLoadingSettings.Visible = False
-
+        Me.cmnuTrayIconSettings.Enabled = True
+        Me.cmnuTrayIconExit.Enabled = True
         If Not dresult.DidCancel Then
 
             If Not Master.eSettings.DisplayMissingEpisodes Then
@@ -451,7 +454,7 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
         AddHandler Master.eLog.ErrorOccurred, AddressOf ErrorOccurred
 
-        Master.NotifierModule = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(m) m.Enabled AndAlso m.Type.Contains(Enums.ModuleEventType.Notification)).ProcessorModule
+        Master.NotifierModule = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(m) m.ProcessorModule.Enabled AndAlso m.Type.Contains(Enums.ModuleEventType.Notification)).ProcessorModule
         If Not IsNothing(Master.NotifierModule) Then
             AddHandler Master.NotifierModule.GenericEvent, AddressOf Me.NotifierClicked
         End If
@@ -752,6 +755,8 @@ Public Class frmMain
 
                 Me.SetMenus(True)
                 Functions.GetListOfSources()
+                cmnuTrayIconExit.Enabled = True
+                cmnuTrayIconSettings.Enabled = True
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

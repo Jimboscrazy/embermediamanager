@@ -73,7 +73,8 @@ Public Class BulkRenamerModule
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
         RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
     End Sub
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+    Sub EmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+        Me._enabled = _setup.chkEnabled.Checked
         MySettings.FoldersPattern = _setup.txtFolderPattern.Text
         MySettings.FilesPattern = _setup.txtFilePattern.Text
         MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked
