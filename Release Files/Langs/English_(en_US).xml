@@ -82,7 +82,7 @@
   <string id="80">Marked Movies</string>
   <string id="81">Custom Scraper...</string>
   <string id="82">Update Library</string>
-  <string id="83">Initiate XBMC Update</string>
+  <string id="83">Media Centers</string>
   <string id="84">Scrape/download data from the internet for multiple movies.</string>
   <string id="85">Scans sources for new content and cleans database.</string>
   <string id="86">Sends a command to XBMC to begin its internal "Update Library" process.</string>
@@ -145,8 +145,8 @@
   <string id="143">Update {0} Only</string>
   <string id="144">Update</string>
   <string id="145">Only</string>
-  <string id="146">There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings.</string>
-  <string id="147">Unable to Start XBMC Update for {0}</string>
+  <string id="146">There was a problem communicating with {0}{1}</string>
+  <string id="147">Unable to Start XBMC Update</string>
   <string id="148">Poster</string>
   <string id="149">Fanart</string>
   <string id="150">Nfo</string>

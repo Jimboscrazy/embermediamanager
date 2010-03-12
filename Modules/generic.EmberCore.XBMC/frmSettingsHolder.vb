@@ -146,4 +146,19 @@ Public Class frmSettingsHolder
 
         btnEditCom.Enabled = True
     End Sub
+    Sub SetUp()
+        Me.GroupBox11.Text = Master.eLang.GetString(554, "XBMC Communication")
+        Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
+        Me.Label16.Text = Master.eLang.GetString(423, "Name:")
+        Me.btnAddCom.Text = Master.eLang.GetString(424, "Add New")
+        Me.Label13.Text = Master.eLang.GetString(425, "Username:")
+        Me.Label14.Text = Master.eLang.GetString(426, "Password:")
+        Me.Label7.Text = Master.eLang.GetString(427, "XBMC IP:")
+        Me.Label6.Text = Master.eLang.GetString(428, "XBMC Port:")
+        Me.btnRemoveCom.Text = Master.eLang.GetString(519, "Remove Selected")
+    End Sub
+
+    Private Sub frmSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SetUp()
+    End Sub
 End Class

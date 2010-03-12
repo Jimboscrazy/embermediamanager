@@ -357,7 +357,7 @@ Partial Class frmMain
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
         Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
-        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
+        Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -465,7 +465,7 @@ Partial Class frmMain
         Me.mnuTrayFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuTrayFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.TrayCustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuTrayIconXBMCUpdate = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuTrayIconMediaCenters = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuTrayIconTools = New System.Windows.Forms.ToolStripMenuItem
         Me.CleanFilesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -2924,7 +2924,7 @@ Partial Class frmMain
         Me.tsMain.CanOverflow = False
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.tsbUpdateXBMC})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.tsbMediaCenters})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -3475,25 +3475,25 @@ Partial Class frmMain
         'mnuMoviesUpdate
         '
         Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
-        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(123, 22)
         Me.mnuMoviesUpdate.Text = "Movies"
         '
         'mnuTVShowUpdate
         '
         Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
-        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(123, 22)
         Me.mnuTVShowUpdate.Text = "TV Shows"
         '
-        'tsbUpdateXBMC
+        'tsbMediaCenters
         '
-        Me.tsbUpdateXBMC.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tsbUpdateXBMC.Enabled = False
-        Me.tsbUpdateXBMC.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
-        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
-        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(149, 22)
-        Me.tsbUpdateXBMC.Text = "Initiate XBMC Update"
+        Me.tsbMediaCenters.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tsbMediaCenters.Enabled = False
+        Me.tsbMediaCenters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.tsbMediaCenters.Image = CType(resources.GetObject("tsbMediaCenters.Image"), System.Drawing.Image)
+        Me.tsbMediaCenters.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbMediaCenters.Name = "tsbMediaCenters"
+        Me.tsbMediaCenters.Size = New System.Drawing.Size(113, 22)
+        Me.tsbMediaCenters.Text = "Media Centers"
         '
         'pbFanartCache
         '
@@ -3580,7 +3580,7 @@ Partial Class frmMain
         'cmnuTrayIcon
         '
         Me.cmnuTrayIcon.Enabled = False
-        Me.cmnuTrayIcon.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayIconTitle, Me.ToolStripSeparator21, Me.cmnuTrayIconUpdateMedia, Me.cmnuTrayIconScrapeMedia, Me.cmnuTrayIconXBMCUpdate, Me.ToolStripSeparator23, Me.cmnuTrayIconTools, Me.ToolStripSeparator22, Me.cmnuTrayIconSettings, Me.ToolStripSeparator13, Me.cmnuTrayIconExit})
+        Me.cmnuTrayIcon.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayIconTitle, Me.ToolStripSeparator21, Me.cmnuTrayIconUpdateMedia, Me.cmnuTrayIconScrapeMedia, Me.cmnuTrayIconMediaCenters, Me.ToolStripSeparator23, Me.cmnuTrayIconTools, Me.ToolStripSeparator22, Me.cmnuTrayIconSettings, Me.ToolStripSeparator13, Me.cmnuTrayIconExit})
         Me.cmnuTrayIcon.Name = "cmnuTrayIcon"
         Me.cmnuTrayIcon.Size = New System.Drawing.Size(195, 182)
         Me.cmnuTrayIcon.Text = "Ember Media Manager"
@@ -4147,13 +4147,13 @@ Partial Class frmMain
         Me.TrayCustomUpdaterToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
         Me.TrayCustomUpdaterToolStripMenuItem.Text = "Custom Scraper..."
         '
-        'cmnuTrayIconXBMCUpdate
+        'cmnuTrayIconMediaCenters
         '
-        Me.cmnuTrayIconXBMCUpdate.Enabled = False
-        Me.cmnuTrayIconXBMCUpdate.Image = CType(resources.GetObject("cmnuTrayIconXBMCUpdate.Image"), System.Drawing.Image)
-        Me.cmnuTrayIconXBMCUpdate.Name = "cmnuTrayIconXBMCUpdate"
-        Me.cmnuTrayIconXBMCUpdate.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayIconXBMCUpdate.Text = "Initiate XBMC Update"
+        Me.cmnuTrayIconMediaCenters.Enabled = False
+        Me.cmnuTrayIconMediaCenters.Image = CType(resources.GetObject("cmnuTrayIconMediaCenters.Image"), System.Drawing.Image)
+        Me.cmnuTrayIconMediaCenters.Name = "cmnuTrayIconMediaCenters"
+        Me.cmnuTrayIconMediaCenters.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayIconMediaCenters.Text = "Initiate XBMC Update"
         '
         'ToolStripSeparator23
         '
@@ -4516,7 +4516,7 @@ Partial Class frmMain
     Friend WithEvents rbFilterOr As System.Windows.Forms.RadioButton
     Friend WithEvents rbFilterAnd As System.Windows.Forms.RadioButton
     Friend WithEvents chkFilterDupe As System.Windows.Forms.CheckBox
-    Friend WithEvents tsbUpdateXBMC As System.Windows.Forms.ToolStripSplitButton
+    Friend WithEvents tsbMediaCenters As System.Windows.Forms.ToolStripSplitButton
     Friend WithEvents mnuMediaList As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents cmnuMark As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
@@ -4769,7 +4769,7 @@ Partial Class frmMain
     Friend WithEvents cmnuTrayIconTools As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator22 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuTrayIconSettings As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayIconXBMCUpdate As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayIconMediaCenters As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator23 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuTrayIconUpdateMovies As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayIconUpdateTV As System.Windows.Forms.ToolStripMenuItem

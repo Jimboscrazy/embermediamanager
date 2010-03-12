@@ -181,7 +181,6 @@ Public Class Settings
     Private _nodisplayposter As Boolean
     Private _nodisplayfanart As Boolean
     Private _outlineforplot As Boolean
-    Private _xbmccoms As List(Of XBMCCom)
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
@@ -1739,15 +1738,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property XBMCComs() As List(Of XBMCCom)
-        Get
-            Return Me._xbmccoms
-        End Get
-        Set(ByVal value As List(Of XBMCCom))
-            Me._xbmccoms = value
-        End Set
-    End Property
-
     Public Property SortPath() As String
         Get
             Return Me._sortpath
@@ -3102,7 +3092,6 @@ Public Class Settings
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
         Me._outlineforplot = False
-        Me._xbmccoms = New List(Of XBMCCom)
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
@@ -3371,80 +3360,6 @@ Public Class Settings
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
     End Sub
-
-    Public Class XBMCCom
-
-        Private _xbmcname As String
-        Private _xbmcport As String
-        Private _xbmcip As String
-        Private _xbmcusername As String
-        Private _xbmcpassword As String
-
-        Public Property Name() As String
-            Get
-                Return Me._xbmcname
-            End Get
-            Set(ByVal value As String)
-                Me._xbmcname = value
-            End Set
-        End Property
-
-        Public Property IP() As String
-            Get
-                Return Me._xbmcip
-            End Get
-            Set(ByVal value As String)
-                Me._xbmcip = value
-            End Set
-        End Property
-
-        Public Property Port() As String
-            Get
-                Return Me._xbmcport
-            End Get
-            Set(ByVal value As String)
-                Me._xbmcport = value
-            End Set
-        End Property
-
-        Public Property Username() As String
-            Get
-                Return Me._xbmcusername
-            End Get
-            Set(ByVal value As String)
-                Me._xbmcusername = value
-            End Set
-        End Property
-
-        Public Property Password() As String
-            Get
-                If String.IsNullOrEmpty(Me._xbmcpassword) Then
-                    Return String.Empty
-                Else
-                    Return StringUtils.Decode(Me._xbmcpassword)
-                End If
-            End Get
-            Set(ByVal value As String)
-                If String.IsNullOrEmpty(value) Then
-                    Me._xbmcpassword = value
-                Else
-                    Me._xbmcpassword = StringUtils.Encode(value)
-                End If
-            End Set
-        End Property
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-        Public Sub Clear()
-            Me._xbmcname = String.Empty
-            Me._xbmcip = String.Empty
-            Me._xbmcport = String.Empty
-            Me._xbmcusername = String.Empty
-            Me._xbmcpassword = String.Empty
-        End Sub
-    End Class
 
     Public Class MetadataPerType
 
