@@ -1131,6 +1131,7 @@ Public Class dlgImgSelect
         Me.tMovie = mMovie
         Me.DLType = _DLType
         Me.isEdit = _isEdit
+        Me.isShown = True
 
         MyBase.ShowDialog()
         Return Results

@@ -17,6 +17,7 @@ Public Class EmberNativeScraperModule
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
+    Private dFImgSelect As dlgImgSelect = Nothing
 
     Property ScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule.ScraperEnabled
         Get
@@ -221,14 +222,24 @@ Public Class EmberNativeScraperModule
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
-        Using dImgSelect As New dlgImgSelect
-            If preload Then dImgSelect.PreLoad(mMovie, _DLType, _isEdit)
-            dImgSelect.IMDBURL = MySettings.IMDBURL
-            pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
-        End Using
+        If preload AndAlso _DLType = Enums.ImageType.Fanart AndAlso Not IsNothing(dFImgSelect) Then
+            pResults = dFImgSelect.ShowDialog()
+            dFImgSelect = Nothing
+        Else
+            Using dImgSelect As New dlgImgSelect
+                If preload Then
+                    dFImgSelect = New dlgImgSelect
+                    dFImgSelect.PreLoad(mMovie, Enums.ImageType.Fanart, _isEdit)
+                End If
+                dImgSelect.IMDBURL = MySettings.IMDBURL
+                pResults = dImgSelect.ShowDialog(mMovie, _DLType, _isEdit)
+            End Using
+        End If
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
         Using dTrailer As New dlgTrailer
             sURL = dTrailer.ShowDialog(DBMovie.Movie.IMDBID, DBMovie.Filename)

@@ -698,7 +698,7 @@ Partial Class dlgSettings
         Me.GroupBox11.Location = New System.Drawing.Point(298, 6)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(308, 386)
-        Me.GroupBox11.TabIndex = 2
+        Me.GroupBox11.TabIndex = 1
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
         '
@@ -711,7 +711,7 @@ Partial Class dlgSettings
         Me.btnEditCom.Location = New System.Drawing.Point(17, 309)
         Me.btnEditCom.Name = "btnEditCom"
         Me.btnEditCom.Size = New System.Drawing.Size(91, 23)
-        Me.btnEditCom.TabIndex = 5
+        Me.btnEditCom.TabIndex = 7
         Me.btnEditCom.Text = "Commit Edit"
         Me.btnEditCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnEditCom.UseVisualStyleBackColor = True
@@ -735,7 +735,7 @@ Partial Class dlgSettings
         Me.txtName.Location = New System.Drawing.Point(58, 216)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(238, 22)
-        Me.txtName.TabIndex = 0
+        Me.txtName.TabIndex = 2
         '
         'lbXBMCCom
         '
@@ -763,7 +763,7 @@ Partial Class dlgSettings
         Me.txtPassword.Location = New System.Drawing.Point(226, 276)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(70, 22)
-        Me.txtPassword.TabIndex = 4
+        Me.txtPassword.TabIndex = 6
         Me.txtPassword.UseSystemPasswordChar = True
         '
         'btnAddCom
@@ -774,7 +774,7 @@ Partial Class dlgSettings
         Me.btnAddCom.Location = New System.Drawing.Point(219, 309)
         Me.btnAddCom.Name = "btnAddCom"
         Me.btnAddCom.Size = New System.Drawing.Size(77, 23)
-        Me.btnAddCom.TabIndex = 6
+        Me.btnAddCom.TabIndex = 8
         Me.btnAddCom.Text = "Add New"
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
@@ -785,7 +785,7 @@ Partial Class dlgSettings
         Me.txtUsername.Location = New System.Drawing.Point(86, 276)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(70, 22)
-        Me.txtUsername.TabIndex = 3
+        Me.txtUsername.TabIndex = 5
         '
         'Label13
         '
@@ -833,7 +833,7 @@ Partial Class dlgSettings
         Me.txtPort.Location = New System.Drawing.Point(245, 246)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(51, 22)
-        Me.txtPort.TabIndex = 2
+        Me.txtPort.TabIndex = 4
         '
         'txtIP
         '
@@ -841,7 +841,7 @@ Partial Class dlgSettings
         Me.txtIP.Location = New System.Drawing.Point(69, 246)
         Me.txtIP.Name = "txtIP"
         Me.txtIP.Size = New System.Drawing.Size(103, 22)
-        Me.txtIP.TabIndex = 1
+        Me.txtIP.TabIndex = 3
         '
         'GroupBox4
         '
@@ -2514,7 +2514,7 @@ Partial Class dlgSettings
         Me.gbProxy.Location = New System.Drawing.Point(3, 6)
         Me.gbProxy.Name = "gbProxy"
         Me.gbProxy.Size = New System.Drawing.Size(290, 230)
-        Me.gbProxy.TabIndex = 3
+        Me.gbProxy.TabIndex = 0
         Me.gbProxy.TabStop = False
         Me.gbProxy.Text = "Proxy"
         '
@@ -2532,7 +2532,7 @@ Partial Class dlgSettings
         Me.gbCreds.Location = New System.Drawing.Point(5, 115)
         Me.gbCreds.Name = "gbCreds"
         Me.gbCreds.Size = New System.Drawing.Size(279, 103)
-        Me.gbCreds.TabIndex = 6
+        Me.gbCreds.TabIndex = 3
         Me.gbCreds.TabStop = False
         Me.gbCreds.Text = "Credentials"
         '
@@ -2543,7 +2543,7 @@ Partial Class dlgSettings
         Me.txtProxyDomain.Location = New System.Drawing.Point(64, 69)
         Me.txtProxyDomain.Name = "txtProxyDomain"
         Me.txtProxyDomain.Size = New System.Drawing.Size(209, 22)
-        Me.txtProxyDomain.TabIndex = 16
+        Me.txtProxyDomain.TabIndex = 3
         '
         'lblProxyDomain
         '
@@ -2562,7 +2562,7 @@ Partial Class dlgSettings
         Me.txtProxyPassword.Location = New System.Drawing.Point(201, 39)
         Me.txtProxyPassword.Name = "txtProxyPassword"
         Me.txtProxyPassword.Size = New System.Drawing.Size(72, 22)
-        Me.txtProxyPassword.TabIndex = 13
+        Me.txtProxyPassword.TabIndex = 2
         Me.txtProxyPassword.UseSystemPasswordChar = True
         '
         'txtProxyUsername
@@ -2572,7 +2572,7 @@ Partial Class dlgSettings
         Me.txtProxyUsername.Location = New System.Drawing.Point(64, 39)
         Me.txtProxyUsername.Name = "txtProxyUsername"
         Me.txtProxyUsername.Size = New System.Drawing.Size(72, 22)
-        Me.txtProxyUsername.TabIndex = 12
+        Me.txtProxyUsername.TabIndex = 1
         '
         'lblProxyUN
         '
@@ -2632,7 +2632,7 @@ Partial Class dlgSettings
         Me.txtProxyPort.Location = New System.Drawing.Point(72, 84)
         Me.txtProxyPort.Name = "txtProxyPort"
         Me.txtProxyPort.Size = New System.Drawing.Size(51, 22)
-        Me.txtProxyPort.TabIndex = 3
+        Me.txtProxyPort.TabIndex = 2
         '
         'txtProxyURI
         '
@@ -6849,18 +6849,18 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

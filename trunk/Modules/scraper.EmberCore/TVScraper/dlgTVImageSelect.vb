@@ -404,6 +404,7 @@ Public Class dlgTVImageSelect
             ClearImages()
             If Not IsNothing(e.Node.Tag) AndAlso Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
                 Me.pbCurrent.Visible = True
+                Me.lblCurrentImage.Visible = True
                 If e.Node.Tag.ToString = "showp" Then
                     Me.SelSeason = -999
                     Me.SelIsPoster = True
@@ -501,6 +502,7 @@ Public Class dlgTVImageSelect
             Else
                 Me.pbCurrent.Image = Nothing
                 Me.pbCurrent.Visible = False
+                Me.lblCurrentImage.Visible = False
             End If
 
             Me.CheckCurrentImage()
@@ -875,6 +877,7 @@ Public Class dlgTVImageSelect
         End If
 
         Me.pbCurrent.Visible = True
+        Me.lblCurrentImage.Visible = True
     End Sub
 
     Private Function DownloadFanart(ByVal iTag As ImageTag) As Image
@@ -1052,5 +1055,6 @@ Public Class dlgTVImageSelect
         Me.Text = Master.eLang.GetString(791, "TV Image Selection")
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lblCurrentImage.Text = Master.eLang.GetString(831, "Current Image:")
     End Sub
 End Class
