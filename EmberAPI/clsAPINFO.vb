@@ -975,9 +975,7 @@ Public Class NFO
                 End If
             End If
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-
+        Catch
             'not really anything else to do with non-conforming nfos aside from rename them
             If Not Master.eSettings.OverwriteNfo Then
                 RenameEpNonConfNfo(sPath, True)
@@ -1004,9 +1002,7 @@ Public Class NFO
                 End If
             End If
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-
+        Catch
             'not really anything else to do with non-conforming nfos aside from rename them
             If Not Master.eSettings.OverwriteNfo Then
                 RenameShowNonConfNfo(sPath, True)
