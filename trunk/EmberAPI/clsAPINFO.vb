@@ -167,22 +167,25 @@ Public Class NFO
             Catch
             End Try
         Else
-            Dim fName As String = Path.GetFileNameWithoutExtension(sPath)
-            Dim oName As String = Directory.GetParent(sPath).Name
+            Dim fName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)).ToLower
+            Dim oName As String = Path.GetFileNameWithoutExtension(sPath)
+            fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
+            oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))
+
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.nfo")))
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".nfo")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.nfo")))
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".nfo")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.info")))
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".info")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.info")))
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".info")))
             Catch
             End Try
         End If
