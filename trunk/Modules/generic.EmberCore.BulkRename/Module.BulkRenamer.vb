@@ -25,6 +25,7 @@ Public Class BulkRenamerModule
     Private _setup As frmSettingsHolder
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
+    Private _AssemblyName As String = String.Empty
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
@@ -73,7 +74,7 @@ Public Class BulkRenamerModule
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
         RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
     End Sub
-    Sub EmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
         Me._enabled = _setup.chkEnabled.Checked
         MySettings.FoldersPattern = _setup.txtFolderPattern.Text
         MySettings.FilesPattern = _setup.txtFilePattern.Text
@@ -121,6 +122,7 @@ Public Class BulkRenamerModule
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         'Master.eLang.LoadLanguage(Master.eSettings.Language)
+        _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
 
