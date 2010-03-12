@@ -95,14 +95,41 @@ Public Class NFO
 
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New MediaContainers.Movie
-        Try
-            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                Using xmlSR As StreamReader = New StreamReader(sPath)
-                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
-                End Using
-            Else
+
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
+                        xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
+                    End Using
+                Else
+                    If Not String.IsNullOrEmpty(sPath) Then
+                        Dim sReturn As New NonConf
+                        sReturn = GetIMDBFromNonConf(sPath, isSingle)
+                        xmlMov.IMDBID = sReturn.IMDBID
+                        Try
+                            If Not String.IsNullOrEmpty(sReturn.Text) Then
+                                Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
+                                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                                    xmlMov.IMDBID = sReturn.IMDBID
+                                End Using
+                            End If
+                        Catch
+                        End Try
+                    End If
+                End If
+
+            Catch
+                xmlMov.Clear()
                 If Not String.IsNullOrEmpty(sPath) Then
+
+                    'go ahead and rename it now, will still be picked up in getimdbfromnonconf
+                    If Not Master.eSettings.OverwriteNfo Then
+                        RenameNonConfNfo(sPath, True)
+                    End If
+
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(sPath, isSingle)
                     xmlMov.IMDBID = sReturn.IMDBID
@@ -117,35 +144,11 @@ Public Class NFO
                     Catch
                     End Try
                 End If
+            End Try
+
+            If Not IsNothing(xmlSer) Then
+                xmlSer = Nothing
             End If
-
-        Catch
-            xmlMov.Clear()
-            If Not String.IsNullOrEmpty(sPath) Then
-
-                'go ahead and rename it now, will still be picked up in getimdbfromnonconf
-                If Not Master.eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(sPath, True)
-                End If
-
-                Dim sReturn As New NonConf
-                sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                xmlMov.IMDBID = sReturn.IMDBID
-                Try
-                    If Not String.IsNullOrEmpty(sReturn.Text) Then
-                        Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                            xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                            xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                            xmlMov.IMDBID = sReturn.IMDBID
-                        End Using
-                    End If
-                Catch
-                End Try
-            End If
-        End Try
-
-        If Not IsNothing(xmlSer) Then
-            xmlSer = Nothing
         End If
 
         Return xmlMov
@@ -553,69 +556,16 @@ Public Class NFO
 
         Try
 
-            Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
+            If Not String.IsNullOrEmpty(movieToSave.Filename) Then
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
 
-            Dim tPath As String = String.Empty
-            Dim nPath As String = String.Empty
-            Dim doesExist As Boolean = False
-            Dim fAtt As New FileAttributes
+                Dim tPath As String = String.Empty
+                Dim nPath As String = String.Empty
+                Dim doesExist As Boolean = False
+                Dim fAtt As New FileAttributes
 
-            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
-
-                If Not Master.eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        File.SetAttributes(tPath, FileAttributes.Normal)
-                    End If
-
-                    Using xmlSW As New StreamWriter(tPath)
-                        movieToSave.NfoPath = tPath
-                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                    End Using
-
-                    If doesExist Then File.SetAttributes(tPath, fAtt)
-                End If
-            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).Name), ".nfo")
-
-                If Not Master.eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        File.SetAttributes(tPath, FileAttributes.Normal)
-                    End If
-
-                    Using xmlSW As New StreamWriter(tPath)
-                        movieToSave.NfoPath = tPath
-                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                    End Using
-
-                    If doesExist Then File.SetAttributes(tPath, fAtt)
-                End If
-            Else
-                Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
-                nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, tmpName)
-
-                If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
-                    ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                        tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "index.nfo")
-                    Else
-                        tPath = String.Concat(nPath, ".nfo")
-                    End If
+                If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(movieToSave.Filename) Then
+                    tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
 
                     If Not Master.eSettings.OverwriteNfo Then
                         RenameNonConfNfo(tPath, False)
@@ -636,10 +586,8 @@ Public Class NFO
 
                         If doesExist Then File.SetAttributes(tPath, fAtt)
                     End If
-                End If
-
-                If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
-                    tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+                ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(movieToSave.Filename) Then
+                    tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).Name), ".nfo")
 
                     If Not Master.eSettings.OverwriteNfo Then
                         RenameNonConfNfo(tPath, False)
@@ -659,6 +607,63 @@ Public Class NFO
                         End Using
 
                         If doesExist Then File.SetAttributes(tPath, fAtt)
+                    End If
+                Else
+                    Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
+                    nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, tmpName)
+
+                    If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
+                        If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
+                            tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
+                        ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
+                            tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "index.nfo")
+                        Else
+                            tPath = String.Concat(nPath, ".nfo")
+                        End If
+
+                        If Not Master.eSettings.OverwriteNfo Then
+                            RenameNonConfNfo(tPath, False)
+                        End If
+
+                        doesExist = File.Exists(tPath)
+                        If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                            If doesExist Then
+                                fAtt = File.GetAttributes(tPath)
+                                File.SetAttributes(tPath, FileAttributes.Normal)
+                            End If
+
+                            Using xmlSW As New StreamWriter(tPath)
+                                movieToSave.NfoPath = tPath
+                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                            End Using
+
+                            If doesExist Then File.SetAttributes(tPath, fAtt)
+                        End If
+                    End If
+
+                    If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
+                        tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+
+                        If Not Master.eSettings.OverwriteNfo Then
+                            RenameNonConfNfo(tPath, False)
+                        End If
+
+                        doesExist = File.Exists(tPath)
+                        If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                            If doesExist Then
+                                fAtt = File.GetAttributes(tPath)
+                                File.SetAttributes(tPath, FileAttributes.Normal)
+                            End If
+
+                            Using xmlSW As New StreamWriter(tPath)
+                                movieToSave.NfoPath = tPath
+                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                            End Using
+
+                            If doesExist Then File.SetAttributes(tPath, fAtt)
+                        End If
                     End If
                 End If
             End If
@@ -700,14 +705,12 @@ Public Class NFO
         End Try
     End Sub
 
-    Private Shared Sub RenameShowNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
+    Private Shared Sub RenameShowNonConfNfo(ByVal sPath As String)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If isChecked OrElse Not IsConformingShowNfo(sPath) Then
-                If isChecked OrElse File.Exists(sPath) Then
-                    RenameToInfo(sPath)
-                End If
+            If File.Exists(sPath) AndAlso Not IsConformingShowNfo(sPath) Then
+                RenameToInfo(sPath)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -718,10 +721,8 @@ Public Class NFO
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If isChecked OrElse Not IsConformingEpNfo(sPath) Then
-                If isChecked OrElse File.Exists(sPath) Then
-                    RenameToInfo(sPath)
-                End If
+            If File.Exists(sPath) AndAlso Not IsConformingEpNfo(sPath) Then
+                RenameToInfo(sPath)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -835,35 +836,35 @@ Public Class NFO
         '\\
 
         Try
+            If Not String.IsNullOrEmpty(tvShowToSave.ShowPath) Then
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
 
-            Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
+                Dim tPath As String = String.Empty
+                Dim doesExist As Boolean = False
+                Dim fAtt As New FileAttributes
 
-            Dim tPath As String = String.Empty
-            Dim doesExist As Boolean = False
-            Dim fAtt As New FileAttributes
+                tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
 
-            tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
-
-            If Not Master.eSettings.OverwriteNfo Then
-                RenameShowNonConfNfo(tPath, False)
-            End If
-
-            doesExist = File.Exists(tPath)
-            If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                If doesExist Then
-                    fAtt = File.GetAttributes(tPath)
-                    File.SetAttributes(tPath, FileAttributes.Normal)
+                If Not Master.eSettings.OverwriteNfo Then
+                    RenameShowNonConfNfo(tPath)
                 End If
 
-                Using xmlSW As New StreamWriter(tPath)
-                    tvShowToSave.ShowNfoPath = tPath
-                    xmlSer.Serialize(xmlSW, tvShowToSave.TVShow)
-                End Using
+                doesExist = File.Exists(tPath)
+                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
 
-                If doesExist Then File.SetAttributes(tPath, fAtt)
+                    If doesExist Then
+                        fAtt = File.GetAttributes(tPath)
+                        File.SetAttributes(tPath, FileAttributes.Normal)
+                    End If
+
+                    Using xmlSW As New StreamWriter(tPath)
+                        tvShowToSave.ShowNfoPath = tPath
+                        xmlSer.Serialize(xmlSW, tvShowToSave.TVShow)
+                    End Using
+
+                    If doesExist Then File.SetAttributes(tPath, fAtt)
+                End If
             End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -873,65 +874,67 @@ Public Class NFO
 
         Try
 
-            Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
+            If Not String.IsNullOrEmpty(tvEpToSave.Filename) Then
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
-            Dim tPath As String = String.Empty
-            Dim doesExist As Boolean = False
-            Dim fAtt As New FileAttributes
-            Dim EpList As New List(Of MediaContainers.EpisodeDetails)
-            Dim sBuilder As New StringBuilder
+                Dim tPath As String = String.Empty
+                Dim doesExist As Boolean = False
+                Dim fAtt As New FileAttributes
+                Dim EpList As New List(Of MediaContainers.EpisodeDetails)
+                Dim sBuilder As New StringBuilder
 
-            Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
-            tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
+                Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
+                tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
 
-            If Not Master.eSettings.OverwriteNfo Then
-                RenameEpNonConfNfo(tPath, False)
-            End If
-
-            doesExist = File.Exists(tPath)
-            If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                If doesExist Then
-                    fAtt = File.GetAttributes(tPath)
-                    File.SetAttributes(tPath, FileAttributes.Normal)
+                If Not Master.eSettings.OverwriteNfo Then
+                    RenameEpNonConfNfo(tPath, False)
                 End If
 
-                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
-                    Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
-                    Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
+                doesExist = File.Exists(tPath)
+                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
 
-                    parID.Value = tvEpToSave.EpID
-                    parTVEpPath.Value = tvEpToSave.Filename
-
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                        While SQLreader.Read
-                            EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), False).TVEp)
-                        End While
-                    End Using
-
-                    EpList.Add(tvEpToSave.TVEp)
-
-                    For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
-                        Using xmlSW As New StringWriter
-                            xmlSer.Serialize(xmlSW, tvEp)
-                            If sBuilder.Length > 0 Then
-                                sBuilder.Append(vbNewLine)
-                                xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(vbNewLine) + 1)
-                            End If
-                            sBuilder.Append(xmlSW.ToString)
-                        End Using
-                    Next
-
-                    tvEpToSave.EpNfoPath = tPath
-
-                    If sBuilder.Length > 0 Then
-                        Using fSW As New StreamWriter(tPath)
-                            fSW.Write(sBuilder.ToString)
-                        End Using
+                    If doesExist Then
+                        fAtt = File.GetAttributes(tPath)
+                        File.SetAttributes(tPath, FileAttributes.Normal)
                     End If
-                End Using
-                If doesExist Then File.SetAttributes(tPath, fAtt)
+
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
+                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
+                        Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
+
+                        parID.Value = tvEpToSave.EpID
+                        parTVEpPath.Value = tvEpToSave.Filename
+
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                            While SQLreader.Read
+                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), False).TVEp)
+                            End While
+                        End Using
+
+                        EpList.Add(tvEpToSave.TVEp)
+
+                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
+                            Using xmlSW As New StringWriter
+                                xmlSer.Serialize(xmlSW, tvEp)
+                                If sBuilder.Length > 0 Then
+                                    sBuilder.Append(vbNewLine)
+                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(vbNewLine) + 1)
+                                End If
+                                sBuilder.Append(xmlSW.ToString)
+                            End Using
+                        Next
+
+                        tvEpToSave.EpNfoPath = tPath
+
+                        If sBuilder.Length > 0 Then
+                            Using fSW As New StreamWriter(tPath)
+                                fSW.Write(sBuilder.ToString)
+                            End Using
+                        End If
+                    End Using
+                    If doesExist Then File.SetAttributes(tPath, fAtt)
+                End If
             End If
 
         Catch ex As Exception
@@ -942,45 +945,48 @@ Public Class NFO
     Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer) As MediaContainers.EpisodeDetails
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim xmlEp As New MediaContainers.EpisodeDetails
-        Try
-            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                'better way to read multi-root xml??
-                Using xmlSR As StreamReader = New StreamReader(sPath)
-                    Dim xmlStr As String = xmlSR.ReadToEnd
-                    Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
-                    If rMatches.Count = 1 Then
-                        'only one episodedetail... assume it's the proper one
-                        Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
-                            xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                            xmlSer = Nothing
-                            Return xmlEp
-                        End Using
-                    ElseIf rMatches.Count > 1 Then
-                        For Each xmlReg As Match In rMatches
-                            Using xmlRead As StringReader = New StringReader(xmlReg.Value)
-                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                If xmlEp.Episode = EpisodeNumber AndAlso xmlEp.Season = SeasonNumber Then
-                                    xmlSer = Nothing
-                                    Return xmlEp
-                                End If
-                            End Using
-                        Next
-                    End If
-                End Using
 
-            Else
+        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= 0 Then
+            Try
+                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                    'better way to read multi-root xml??
+                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                        Dim xmlStr As String = xmlSR.ReadToEnd
+                        Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
+                        If rMatches.Count = 1 Then
+                            'only one episodedetail... assume it's the proper one
+                            Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
+                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                xmlSer = Nothing
+                                Return xmlEp
+                            End Using
+                        ElseIf rMatches.Count > 1 Then
+                            For Each xmlReg As Match In rMatches
+                                Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
+                                    If xmlEp.Episode = EpisodeNumber AndAlso xmlEp.Season = SeasonNumber Then
+                                        xmlSer = Nothing
+                                        Return xmlEp
+                                    End If
+                                End Using
+                            Next
+                        End If
+                    End Using
+
+                Else
+                    'not really anything else to do with non-conforming nfos aside from rename them
+                    If Not Master.eSettings.OverwriteNfo Then
+                        RenameEpNonConfNfo(sPath, True)
+                    End If
+                End If
+
+            Catch
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.OverwriteNfo Then
                     RenameEpNonConfNfo(sPath, True)
                 End If
-            End If
-
-        Catch
-            'not really anything else to do with non-conforming nfos aside from rename them
-            If Not Master.eSettings.OverwriteNfo Then
-                RenameEpNonConfNfo(sPath, True)
-            End If
-        End Try
+            End Try
+        End If
 
         Return New MediaContainers.EpisodeDetails
     End Function
@@ -989,28 +995,31 @@ Public Class NFO
 
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlShow As New MediaContainers.TVShow
-        Try
-            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                Using xmlSR As StreamReader = New StreamReader(sPath)
-                    xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
-                    xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
-                End Using
-            Else
+
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
+                        xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
+                    End Using
+                Else
+                    'not really anything else to do with non-conforming nfos aside from rename them
+                    If Not Master.eSettings.OverwriteNfo Then
+                        RenameShowNonConfNfo(sPath)
+                    End If
+                End If
+
+            Catch
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.OverwriteNfo Then
-                    RenameShowNonConfNfo(sPath, True)
+                    RenameShowNonConfNfo(sPath)
                 End If
-            End If
+            End Try
 
-        Catch
-            'not really anything else to do with non-conforming nfos aside from rename them
-            If Not Master.eSettings.OverwriteNfo Then
-                RenameShowNonConfNfo(sPath, True)
+            If Not IsNothing(xmlSer) Then
+                xmlSer = Nothing
             End If
-        End Try
-
-        If Not IsNothing(xmlSer) Then
-            xmlSer = Nothing
         End If
 
         Return xmlShow

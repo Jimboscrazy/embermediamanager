@@ -1365,13 +1365,6 @@ Public Class Scraper
 
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Try
-                    If Master.eSettings.AllSeasonPosterEnabled AndAlso Not IsNothing(TVDBImages.AllSeasonPoster.Image.Image) Then
-                        Dim aSeason As New Structures.DBTV
-                        aSeason = tmpTVDBShow.AllSeason
-                        aSeason.SeasonPosterPath = TVDBImages.AllSeasonPoster.Image.SaveAsAllSeasonPoster(tmpTVDBShow.Show)
-                        Master.DB.SaveTVSeasonToDB(aSeason, False, True)
-                    End If
-
                     For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                         Try
