@@ -1542,9 +1542,9 @@ Public Class frmMain
 
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         If Not Me.prevRow = Me.currRow Then
+            Me.prevRow = Me.currRow
             Me.tmrLoad.Enabled = True
         Else
-            Me.prevRow = Me.currRow
             Me.tmrLoad.Enabled = False
         End If
     End Sub
@@ -1574,9 +1574,9 @@ Public Class frmMain
         Me.tmrWaitEp.Enabled = False
 
         If Not Me.prevShowRow = Me.currShowRow Then
+            Me.prevShowRow = Me.currShowRow
             Me.tmrLoadShow.Enabled = True
         Else
-            Me.prevShowRow = Me.currShowRow
             Me.tmrLoadShow.Enabled = False
         End If
     End Sub
@@ -1606,9 +1606,9 @@ Public Class frmMain
         Me.tmrWaitEp.Enabled = False
 
         If Not Me.prevSeasonRow = Me.currSeasonRow Then
+            Me.prevSeasonRow = Me.currSeasonRow
             Me.tmrLoadSeason.Enabled = True
         Else
-            Me.prevSeasonRow = Me.currSeasonRow
             Me.tmrLoadSeason.Enabled = False
         End If
     End Sub
@@ -1638,9 +1638,9 @@ Public Class frmMain
         Me.tmrWaitShow.Enabled = False
 
         If Not Me.prevEpRow = Me.currEpRow Then
+            Me.prevEpRow = Me.currEpRow
             Me.tmrLoadEp.Enabled = True
         Else
-            Me.prevEpRow = Me.currEpRow
             Me.tmrLoadEp.Enabled = False
         End If
     End Sub
