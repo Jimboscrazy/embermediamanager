@@ -1129,6 +1129,7 @@ Public Class frmMainSetup
             NeedDoEvents = True
             If chgOptons.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 NeedDoEvents = False
+                emberPath = If(Not emberPath.EndsWith(Path.DirectorySeparatorChar), String.Concat(emberPath, Path.DirectorySeparatorChar), emberPath)
                 If Not emberPath = String.Empty Then
                     LogWrite(String.Format("--- Options: Setting Install Path: {0}", emberPath))
                     CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
