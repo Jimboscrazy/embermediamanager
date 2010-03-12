@@ -585,6 +585,7 @@ Public Class frmMainManager
     End Sub
 
     Sub PackFiles()
+        Dim terror As Boolean = False
         Dim o As New FileOfList
         Using SQLcommandEmberFiles As SQLite.SQLiteCommand = MasterDB.SQLcn.CreateCommand
             SQLcommandEmberFiles.CommandText = String.Concat("Select * FROM EmberFiles;")
@@ -598,13 +599,15 @@ Public Class frmMainManager
                             If File.Exists(dstFile) Then File.Delete(dstFile)
                             File.Copy(srcFile, dstFile)
                         Catch ex As Exception
+                            terror = True
+                            File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
                         End Try
                         'CompressFile(srcFile, dstFile)
                     End If
                 End While
             End Using
         End Using
-
+        If terror Then MsgBox("Some Errors Fonud ... look in errors.log", MsgBoxStyle.Critical, AcceptButton)
     End Sub
 
     Public Shared Sub CompressFile(ByVal spath As String, ByVal dpath As String)
@@ -793,6 +796,9 @@ Public Class frmMainManager
         Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
         Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
         MasterDB.Connect()
+        If File.Exists(Path.Combine(AppPath, "errors.log")) Then
+            File.Delete(Path.Combine(AppPath, "errors.log"))
+        End If
         LoadAll()
     End Sub
     Sub LoadAll()
@@ -1138,11 +1144,16 @@ Public Class frmMainManager
             Dim done As Integer = 0
             Dim skiped As Integer = 0
 
-
             For Each s In Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
                 Try
+                    dlg.Label1.Text = String.Format(" File {0} of {1} - Uploaded {2} , Skiped {3}", done + skiped, inDisk, done, skiped)
+                    dlg.Refresh()
+                    Application.DoEvents()
                     If Not dirFiles.Contains(Path.GetFileName(s)) Then
                         dirFiles.Remove(Path.GetFileName(s))
+                        dlg.Label2.Text = String.Concat("Uploading: ", Path.GetFileName(s))
+                        dlg.Refresh()
+                        Application.DoEvents()
                         ftp.upload(s)
                         ftp.chmod("644", Path.GetFileName(s))
                         done += 1
@@ -1150,10 +1161,9 @@ Public Class frmMainManager
                         dirFiles.Remove(Path.GetFileName(s))
                         skiped += 1
                     End If
-                    dlg.Label1.Text = String.Format(" File {0} of {1} - Uploaded {2} , Skiped {3}", done + skiped, inDisk, done, skiped)
-                    dlg.Refresh()
-                    Application.DoEvents()
+                    dlg.Label2.Text = ""
                 Catch ex As Exception
+                    File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
                 End Try
             Next
             inDisk = dirFiles.Count
@@ -1173,6 +1183,7 @@ Public Class frmMainManager
             Next
             ftp.close()
         Catch ex As Exception
+            File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
         End Try
         dlg.Close()
 
