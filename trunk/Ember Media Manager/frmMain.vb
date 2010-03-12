@@ -758,7 +758,7 @@ Public Class frmMain
                 Functions.GetListOfSources()
                 cmnuTrayIconExit.Enabled = True
                 cmnuTrayIconSettings.Enabled = True
-
+                tsbMediaCenters.Enabled = True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -1734,16 +1734,6 @@ Public Class frmMain
         End Try
         Me.tmrSearch.Enabled = False
     End Sub
-
-    Private Sub tsbUpdateXBMC_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.ButtonClick
-        Try
-            For Each xCom As Settings.XBMCCom In Master.eSettings.XBMCComs
-                Me.DoXCom(xCom)
-            Next
-        Catch
-        End Try
-    End Sub
-
     Private Sub CleanFoldersToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanFoldersToolStripMenuItem.Click, CleanFilesToolStripMenuItem.Click
         Me.CleanFiles()
     End Sub
@@ -5262,8 +5252,8 @@ Public Class frmMain
                 .TrayCustomUpdaterToolStripMenuItem.Text = .CustomUpdaterToolStripMenuItem.Text
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .cmnuTrayIconUpdateMedia.Text = Master.eLang.GetString(82, "Update Library")
-                .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
-                .cmnuTrayIconXBMCUpdate.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
+                .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
+                .cmnuTrayIconMediaCenters.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
                 .Label6.Text = Master.eLang.GetString(579, "File Source:")
                 .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
@@ -5304,7 +5294,7 @@ Public Class frmMain
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
                 .tsbRefreshMedia.ToolTipText = Master.eLang.GetString(85, "Scans sources for new content and cleans database.")
-                .tsbUpdateXBMC.ToolTipText = Master.eLang.GetString(86, "Sends a command to XBMC to begin its internal ""Update Library"" process.")
+                ' XBMC  .tsbMediaCenters.ToolTipText = Master.eLang.GetString(86, "Sends a command to XBMC to begin its internal ""Update Library"" process.")
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearch, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
@@ -7055,20 +7045,6 @@ doCancel:
                     Me.CleanFoldersToolStripMenuItem.Enabled = False
                 End If
 
-                If .XBMCComs.Count > 0 Then
-                    Me.tsbUpdateXBMC.Enabled = True
-                    Me.cmnuTrayIconXBMCUpdate.Enabled = True
-                    Me.tsbUpdateXBMC.DropDownItems.Clear()
-                    Me.cmnuTrayIconXBMCUpdate.DropDownItems.Clear()
-                    For Each xCom As Settings.XBMCCom In .XBMCComs
-                        Me.tsbUpdateXBMC.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), Nothing, New System.EventHandler(AddressOf XComSubClick))
-                        Me.cmnuTrayIconXBMCUpdate.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), Nothing, New System.EventHandler(AddressOf XComSubClick))
-                    Next
-                Else
-                    Me.tsbUpdateXBMC.Enabled = False
-                    Me.cmnuTrayIconXBMCUpdate.Enabled = False
-                End If
-
                 Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
 
                 Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
@@ -7385,35 +7361,6 @@ doCancel:
     Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
         Me.LoadMedia(New Structures.Scans With {.TV = True}, SourceName)
-    End Sub
-
-    Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim xComName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update"), String.Empty).Replace(Master.eLang.GetString(145, "Only"), String.Empty).Trim
-        Dim xCom = From x As Settings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
-        If xCom.Count > 0 Then
-            DoXCom(xCom(0))
-        End If
-    End Sub
-
-    Private Sub DoXCom(ByVal xCom As Settings.XBMCCom)
-        Try
-            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
-            Wr.Timeout = 2500
-
-            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-            End If
-
-            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-                If Not Sr.Contains("OK") Then
-                    MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
-                End If
-            End Using
-            Wr = Nothing
-        Catch
-            MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
-        End Try
     End Sub
 
     Private Sub FillList(ByVal iIndex As Integer)

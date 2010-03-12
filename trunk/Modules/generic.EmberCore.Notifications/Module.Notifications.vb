@@ -126,6 +126,8 @@ Public Class NotificationsModule
                         ShowIt = True
                     Case _params(0).ToString = "newep" AndAlso eSettings.OnNewEp
                         ShowIt = True
+                    Case _params(0).ToString = "info"
+                        ShowIt = True
                 End Select
 
                 If ShowIt Then
