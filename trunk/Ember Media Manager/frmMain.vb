@@ -89,6 +89,7 @@ Public Class frmMain
     Private prevSeasonRow As Integer = -1
     Private currEpRow As Integer = -1
     Private prevEpRow As Integer = -1
+    Private currList As Integer = 0
 
     'Theme Information
     Private _postermaxheight As Integer = 160
@@ -980,6 +981,11 @@ Public Class frmMain
             End If
 
             Me.currShowRow = Me.dgvTVShows.SelectedRows(0).Index
+            If Not Me.currList = 0 Then
+                Me.currList = 0
+                Me.prevShowRow = -1
+                Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+            End If
         End If
     End Sub
 
@@ -994,6 +1000,11 @@ Public Class frmMain
             End If
 
             Me.currSeasonRow = Me.dgvTVSeasons.SelectedRows(0).Index
+            If Not Me.currList = 1 Then
+                Me.currList = 1
+                Me.prevSeasonRow = -1
+                Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+            End If
         End If
     End Sub
 
@@ -1009,6 +1020,11 @@ Public Class frmMain
             End If
 
             Me.currEpRow = Me.dgvTVEpisodes.SelectedRows(0).Index
+            If Not Me.currList = 2 Then
+                Me.currList = 2
+                Me.prevEpRow = -1
+                Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+            End If
         End If
     End Sub
 
@@ -1475,8 +1491,6 @@ Public Class frmMain
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
 
         Try
-            If Not Me.tabsMain.SelectedIndex = 1 Then Return
-
             Me.tmrWait.Enabled = False
             Me.tmrWaitSeason.Enabled = False
             Me.tmrWaitEp.Enabled = False
@@ -1486,6 +1500,7 @@ Public Class frmMain
             Me.tmrLoadEp.Enabled = False
             Me.tmrLoadShow.Enabled = False
 
+            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 0 Then Return
 
             Me.currShowRow = e.RowIndex
             Me.tmrWaitShow.Enabled = True
@@ -1497,7 +1512,6 @@ Public Class frmMain
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
 
         Try
-            If Not Me.tabsMain.SelectedIndex = 1 Then Return
 
             Me.tmrWaitShow.Enabled = False
             Me.tmrWait.Enabled = False
@@ -1508,6 +1522,7 @@ Public Class frmMain
             Me.tmrLoadEp.Enabled = False
             Me.tmrLoadSeason.Enabled = False
 
+            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 1 Then Return
 
             Me.currSeasonRow = e.RowIndex
             Me.tmrWaitSeason.Enabled = True
@@ -1520,7 +1535,6 @@ Public Class frmMain
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
 
         Try
-            If Not Me.tabsMain.SelectedIndex = 1 Then Return
 
             Me.tmrWaitShow.Enabled = False
             Me.tmrWaitSeason.Enabled = False
@@ -1531,6 +1545,7 @@ Public Class frmMain
             Me.tmrLoad.Enabled = False
             Me.tmrLoadEp.Enabled = False
 
+            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 2 Then Return
 
             Me.currEpRow = e.RowIndex
             Me.tmrWaitEp.Enabled = True
@@ -3388,17 +3403,22 @@ Public Class frmMain
                         Me.cmnuRescrapeShow.Visible = True
                         Me.cmnuChangeShow.Visible = True
 
-                        Me.mnuShows.Enabled = False
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
+                            Me.mnuShows.Enabled = False
+                        End If
 
                         Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(6, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(10, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        Me.dgvTVShows.CurrentCell = Nothing
-                        Me.dgvTVShows.ClearSelection()
-                        Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
-                        Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
-
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
+                            Me.prevShowRow = -1
+                            Me.currList = 0
+                            Me.dgvTVShows.CurrentCell = Nothing
+                            Me.dgvTVShows.ClearSelection()
+                            Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
+                        End If
                     End If
                 End If
             End If
@@ -3506,17 +3526,22 @@ Public Class frmMain
                         Me.cmnuChangeEp.Visible = True
                         Me.ToolStripSeparator10.Visible = True
 
-                        Me.mnuEpisodes.Enabled = False
+                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
+                            Me.mnuEpisodes.Enabled = False
+                        End If
 
                         cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        Me.dgvTVEpisodes.CurrentCell = Nothing
-                        Me.dgvTVEpisodes.ClearSelection()
-                        Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
-                        Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
-
+                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
+                            Me.prevEpRow = -1
+                            Me.currList = 2
+                            Me.dgvTVEpisodes.CurrentCell = Nothing
+                            Me.dgvTVEpisodes.ClearSelection()
+                            Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
+                        End If
                     End If
                 End If
             End If
@@ -4247,17 +4272,22 @@ Public Class frmMain
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
 
-                        Me.mnuSeasons.Enabled = False
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
+                            Me.mnuSeasons.Enabled = False
+                        End If
 
                         Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
-                        Me.dgvTVSeasons.CurrentCell = Nothing
-                        Me.dgvTVSeasons.ClearSelection()
-                        Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
-                        Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
-
+                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
+                            Me.prevSeasonRow = -1
+                            Me.currList = 1
+                            Me.dgvTVSeasons.CurrentCell = Nothing
+                            Me.dgvTVSeasons.ClearSelection()
+                            Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
+                        End If
                     End If
                 End If
             End If
@@ -5445,8 +5475,6 @@ Public Class frmMain
             Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
             Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
-
-            Me.FillEpisodes(ShowID, Season)
 
         Catch ex As Exception
             Me.SetControlsEnabled(True, True)
@@ -7533,7 +7561,7 @@ doCancel:
                         .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                         If .dgvTVShows.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 1 Then
-                            'Set current cell and automatically load the info for the first movie in the list
+                            'Set current cell and automatically load the info for the first show in the list
                             .dgvTVShows.Rows(iIndex).Cells(1).Selected = True
                             .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(1)
 
@@ -7825,6 +7853,7 @@ doCancel:
                 .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(2), ComponentModel.ListSortDirection.Ascending)
 
                 .dgvTVEpisodes.ClearSelection()
+                .dgvTVEpisodes.CurrentCell = Nothing
 
             End With
         End If
@@ -8124,5 +8153,6 @@ doCancel:
         End Try
     End Sub
 #End Region '*** Routines/Functions
+
 End Class
 
