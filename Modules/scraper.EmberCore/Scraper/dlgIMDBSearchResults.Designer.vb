@@ -162,7 +162,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.txtIMDBID.Enabled = False
         Me.txtIMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIMDBID.Location = New System.Drawing.Point(131, 398)
+        Me.txtIMDBID.Location = New System.Drawing.Point(139, 398)
         Me.txtIMDBID.Name = "txtIMDBID"
         Me.txtIMDBID.Size = New System.Drawing.Size(100, 22)
         Me.txtIMDBID.TabIndex = 2
@@ -230,7 +230,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.btnVerify.Enabled = False
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(237, 398)
+        Me.btnVerify.Location = New System.Drawing.Point(245, 398)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 3

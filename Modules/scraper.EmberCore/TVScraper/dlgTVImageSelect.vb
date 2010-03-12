@@ -924,6 +924,9 @@ Public Class dlgTVImageSelect
                     Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
                 End If
             End If
+            If Master.eSettings.AllSeasonPosterEnabled AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
+                Master.currShow.SeasonPosterPath = Scraper.TVDBImages.AllSeasonPoster.LocalFile
+            End If
         ElseIf Me._type = Enums.TVImageType.SeasonFanart AndAlso Me._fanartchanged Then
             Me.lblStatus.Text = Master.eLang.GetString(790, "Downloading Fullsize Fanart Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
