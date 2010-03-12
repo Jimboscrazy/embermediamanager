@@ -6435,19 +6435,25 @@ doCancel:
         Else
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
+
+                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+
                 Select Case sType
-                    Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.FullAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
-                        Select Case sType
-                            Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
-                                If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                            Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
-                                If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                            Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
-                                Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
-                                If Not index >= 0 Then Continue For
-                        End Select
+                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
+                        If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
+                        If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
+                        Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
+                        If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
-                        If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+                        If Not ((Master.GlobalScrapeMod.Poster AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+                                (Master.GlobalScrapeMod.NFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
+                                (Master.GlobalScrapeMod.Trailer AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
+                                (Master.GlobalScrapeMod.Extra AndAlso Not Convert.ToBoolean(drvRow.Item(9)))) Then
+                            Continue For
+                        End If
                 End Select
 
                 ScrapeList.Add(drvRow)
@@ -6509,12 +6515,13 @@ doCancel:
             Dim DBScrapeMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
 
             If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
                 If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
                     MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+
                     NewTitle = DBScrapeMovie.ListTitle
 
                     If Not NewTitle = OldTitle Then
@@ -6545,9 +6552,9 @@ doCancel:
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
+            If Me.dgvMediaList.SelectedRows.Count > 0 AndAlso Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
                 If Me.dgvMediaList.CurrentCell Is Me.dgvMediaList.SelectedRows(0).Cells(3) Then
                     Dim tCell As DataGridViewCell = Me.dgvMediaList.SelectedRows(0).Cells(3)
                     Me.dgvMediaList.CurrentCell = Nothing
@@ -6646,7 +6653,7 @@ doCancel:
                         Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                         Application.DoEvents()
                         Dim fResults As New Containers.ImgResult
-                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True, AllowFA)
+                        ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True, True)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             Master.currMovie.FanartPath = fResults.ImagePath
                             If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart

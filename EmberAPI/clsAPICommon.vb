@@ -889,9 +889,4 @@ Public Class Functions
         'no matches
         Return False
     End Function
-
-    'Functions.ProcessHook(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg}))
-    Public Shared Sub ProcessHook(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, _params)
-    End Sub
 End Class

@@ -25,6 +25,7 @@
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTVImageSelect))
         Me.tvList = New System.Windows.Forms.TreeView
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlImages = New System.Windows.Forms.Panel
         Me.pbCurrent = New System.Windows.Forms.PictureBox
         Me.pnlStatus = New System.Windows.Forms.Panel
@@ -34,7 +35,7 @@
         Me.btnCancel = New System.Windows.Forms.Button
         Me.pbDelete = New System.Windows.Forms.PictureBox
         Me.pbUndo = New System.Windows.Forms.PictureBox
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+        Me.lblCurrentImage = New System.Windows.Forms.Label
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlStatus.SuspendLayout()
         CType(Me.pbDelete, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -49,9 +50,18 @@
         Me.tvList.Location = New System.Drawing.Point(3, 4)
         Me.tvList.Name = "tvList"
         Me.tvList.SelectedImageIndex = 0
-        Me.tvList.Size = New System.Drawing.Size(214, 280)
+        Me.tvList.Size = New System.Drawing.Size(214, 262)
         Me.tvList.TabIndex = 0
         Me.tvList.Visible = False
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "new_page.png")
+        Me.ImageList1.Images.SetKeyName(1, "image.png")
+        Me.ImageList1.Images.SetKeyName(2, "artwork.png")
+        Me.ImageList1.Images.SetKeyName(3, "star_full.png")
         '
         'pnlImages
         '
@@ -143,14 +153,16 @@
         Me.pbUndo.TabStop = False
         Me.pbUndo.Visible = False
         '
-        'ImageList1
+        'lblCurrentImage
         '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "new_page.png")
-        Me.ImageList1.Images.SetKeyName(1, "image.png")
-        Me.ImageList1.Images.SetKeyName(2, "artwork.png")
-        Me.ImageList1.Images.SetKeyName(3, "star_full.png")
+        Me.lblCurrentImage.AutoSize = True
+        Me.lblCurrentImage.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCurrentImage.Location = New System.Drawing.Point(0, 274)
+        Me.lblCurrentImage.Name = "lblCurrentImage"
+        Me.lblCurrentImage.Size = New System.Drawing.Size(100, 17)
+        Me.lblCurrentImage.TabIndex = 15
+        Me.lblCurrentImage.Text = "Current Image:"
+        Me.lblCurrentImage.Visible = False
         '
         'dlgTVImageSelect
         '
@@ -159,6 +171,7 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(849, 459)
+        Me.Controls.Add(Me.lblCurrentImage)
         Me.Controls.Add(Me.pbUndo)
         Me.Controls.Add(Me.pbDelete)
         Me.Controls.Add(Me.btnCancel)
@@ -180,6 +193,7 @@
         CType(Me.pbDelete, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbUndo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents tvList As System.Windows.Forms.TreeView
@@ -193,4 +207,5 @@
     Friend WithEvents pbDelete As System.Windows.Forms.PictureBox
     Friend WithEvents pbUndo As System.Windows.Forms.PictureBox
     Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
+    Friend WithEvents lblCurrentImage As System.Windows.Forms.Label
 End Class
