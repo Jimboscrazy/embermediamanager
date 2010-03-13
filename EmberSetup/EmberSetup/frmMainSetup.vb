@@ -574,6 +574,7 @@ Public Class frmMainSetup
                         Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
                             _NewFiles = xmlSer.Deserialize(xmlSW)
                         End Using
+                        _NewFiles.ConvertToPlatform()
                         '###################################################################################
                         'At this point it have current a new file list and all commands
                         'Need to mark files changed by user, and download all new (hash based) files
@@ -587,6 +588,7 @@ Public Class frmMainSetup
                                 _CurrentFiles = xmlSer.Deserialize(xmlSW)
                             End Using
                         End If
+                        _CurrentFiles.ConvertToPlatform()
                         Dim fpath As String = String.Empty
                         Dim hash As String = String.Empty
                         Dim curr_hash As String = String.Empty
@@ -674,7 +676,7 @@ Public Class frmMainSetup
                                 'UncompressFile(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)), Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename)))
                                 'File.Delete(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)))
                                 'Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))
-                                Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.emm", f.Hash))
+                                Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates{0}{1}.emm", Path.DirectorySeparatorChar, f.Hash))
                                 Dim dpath As String = Path.Combine(Path.Combine(Path.GetDirectoryName(emberPath), f.Path.Substring(1)), f.Filename)
                                 Try
                                     'Check File Hash to be sure was not tampered
@@ -736,6 +738,8 @@ Public Class frmMainSetup
                                     installedFiles += 1
                                 Catch ex As Exception
                                     Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0} {1}", dpath, ex.Message))
+                                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                                    LogWrite(ex.StackTrace)
                                     Return True
                                 End Try
                                 Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Installed: {0}", f.Filename)})
@@ -750,6 +754,8 @@ Public Class frmMainSetup
                     End If
                 Catch ex As Exception
                     Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0}", ex.Message))
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                     Return True
                 End Try
             End If
@@ -774,10 +780,14 @@ Public Class frmMainSetup
                             If File.Exists(Path.Combine(emberPath, "EmberSetup.exe")) Then
                                 File.Delete(Path.Combine(emberPath, "EmberSetup.exe"))
                             End If
+                            If File.Exists(Path.Combine(emberPath, "install.log")) Then
+                                File.Delete(Path.Combine(emberPath, "install.log"))
+                            End If
                         Catch ex As Exception
                         End Try
                         Try
                             File.Copy(Path.Combine(AppPath, "EmberSetup.exe"), Path.Combine(emberPath, "EmberSetup.exe"))
+                            File.Copy(Path.Combine(AppPath, "install.log"), Path.Combine(emberPath, "install.log"))
                         Catch ex As Exception
                         End Try
                     Else
@@ -1072,7 +1082,12 @@ Public Class frmMainSetup
                     End If
 
                 Else
-                    emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager\")
+                    If CheckIfWindows() Then
+                        emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")
+                    Else
+                        emberPath = Path.Combine(String.Concat("~", Path.DirectorySeparatorChar), "Ember Media Manager")
+                    End If
+                    emberPath = If(Not emberPath.EndsWith(Path.DirectorySeparatorChar), String.Concat(emberPath, Path.DirectorySeparatorChar), emberPath)
                     CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
                     lblInfo.Text = String.Format("No Ember Media Manager Installation Found{0}", vbCrLf)
@@ -1093,6 +1108,8 @@ Public Class frmMainSetup
             End If
         Catch ex As Exception
             LogWrite(String.Format("+++ Main: ERROR ON LOAD ... EXIT"))
+            LogWrite(ex.Message)
+            LogWrite(ex.StackTrace)
             Me.Close()
         End Try
     End Sub
@@ -1158,7 +1175,12 @@ Public Class frmMainSetup
     End Sub
 
     Private Sub btnRunEmber_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunEmber.Click
-        Shell(Path.Combine(emberPath, "Ember Media Manager.exe"), AppWinStyle.NormalFocus)
+        If CheckIfWindows() Then
+            Shell(Path.Combine(emberPath, "Ember Media Manager.exe"), AppWinStyle.NormalFocus)
+        Else
+            Shell(String.Concat("mono", " """, Path.Combine(emberPath, "Ember Media Manager.exe"), """"), AppWinStyle.NormalFocus)
+        End If
+
         Close()
     End Sub
 

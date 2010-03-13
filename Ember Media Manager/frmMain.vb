@@ -681,15 +681,6 @@ Public Class frmMain
                         End Using
                     End If
                 End If
-                ' Checks for new Ember Version
-                'If Master.eSettings.CheckUpdates Then
-                'Dim tmpNew As Integer = Functions.CheckUpdate
-                'If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
-                'Using dNewVer As New dlgNewVersion
-                'dNewVer.ShowDialog(tmpNew)
-                'End Using
-                'End If
-                'End If
 
                 Me.Location = Master.eSettings.WindowLoc
                 Me.Size = Master.eSettings.WindowSize

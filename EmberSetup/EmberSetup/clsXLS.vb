@@ -64,6 +64,13 @@ Public Class FilesList
             xmlSer.Serialize(xmlSW, Me)
         End Using
     End Sub
+    Public Sub ConvertToPlatform()
+        If Not Files Is Nothing Then
+            For Each f As FileOfList In Files
+                f.Path = f.Path.Replace("\", Path.DirectorySeparatorChar)
+            Next
+        End If
+    End Sub
 End Class
 
 Public Class FileOfList
