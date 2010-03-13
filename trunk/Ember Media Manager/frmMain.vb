@@ -7952,6 +7952,13 @@ doCancel:
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
                                 ModulesManager.Instance.TVSaveImages()
+                            Else
+                                Me.tspbLoading.Visible = False
+                                Me.tslLoading.Visible = False
+
+                                Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
+
+                                Me.SetControlsEnabled(True, True)
                             End If
                         End Using
                     Case 1 ' episode

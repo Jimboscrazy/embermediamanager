@@ -304,13 +304,20 @@ Public Class dlgTVImageSelect
             Me.bwLoadImages.ReportProgress(2, "progress")
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
-                Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
-                'no preferred size setting for all seasons poster so just grab anything
-                If Not IsNothing(tSP) Then
-                    Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
-                    Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSP.LocalFile
-                    Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
+                Dim tP As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                If Not IsNothing(tP) Then
+                    Scraper.TVDBImages.AllSeasonPoster.Image.Image = tP.Image.Image
+                    Scraper.TVDBImages.AllSeasonPoster.LocalFile = tP.LocalFile
+                    Scraper.TVDBImages.AllSeasonPoster.URL = tP.URL
+                Else
+                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                    If Not IsNothing(tSP) Then
+                        Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
+                        Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSP.LocalFile
+                        Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
+                    End If
                 End If
+                'no preferred size setting for all seasons poster so just grab anything
             End If
 
             If Me.bwLoadImages.CancellationPending Then
@@ -451,16 +458,17 @@ Public Class dlgTVImageSelect
                     Else
                         Me.pbCurrent.Image = Nothing
                     End If
-                    iCount = ShowPosterList.Count
-                    For i = 0 To iCount - 1
-                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) Then
-                            Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
-                        End If
-                    Next
 
                     For i = 0 To GenericPosterList.Count - 1
                         If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) Then
                             Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
+                        End If
+                    Next
+
+                    iCount = ShowPosterList.Count
+                    For i = 0 To iCount - 1
+                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) Then
+                            Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
                 Else

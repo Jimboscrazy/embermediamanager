@@ -751,4 +751,9 @@ Public Class dlgEditShow
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Sub btnASPosterRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASPosterRemove.Click
+        Me.pbASPoster.Image = Nothing
+        Me.ASPoster.Image = Nothing
+    End Sub
 End Class
