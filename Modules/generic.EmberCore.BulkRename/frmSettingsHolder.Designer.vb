@@ -23,10 +23,6 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
-        Me.chkBulRenamer = New System.Windows.Forms.CheckBox
-        Me.chkGenericModule = New System.Windows.Forms.CheckBox
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
         Me.chkRenameSingle = New System.Windows.Forms.CheckBox
         Me.chkRenameMulti = New System.Windows.Forms.CheckBox
@@ -34,62 +30,26 @@ Partial Class frmSettingsHolder
         Me.lblFolderPattern = New System.Windows.Forms.Label
         Me.txtFilePattern = New System.Windows.Forms.TextBox
         Me.txtFolderPattern = New System.Windows.Forms.TextBox
+        Me.chkBulkRenamer = New System.Windows.Forms.CheckBox
+        Me.chkGenericModule = New System.Windows.Forms.CheckBox
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
-        Me.Panel1.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
         Me.pnlSettings.BackColor = System.Drawing.Color.White
         Me.pnlSettings.Controls.Add(Me.gbRenamerPatterns)
-        Me.pnlSettings.Controls.Add(Me.chkBulRenamer)
+        Me.pnlSettings.Controls.Add(Me.chkBulkRenamer)
         Me.pnlSettings.Controls.Add(Me.chkGenericModule)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
-        '
-        'chkBulRenamer
-        '
-        Me.chkBulRenamer.AutoSize = True
-        Me.chkBulRenamer.Location = New System.Drawing.Point(391, 31)
-        Me.chkBulRenamer.Name = "chkBulRenamer"
-        Me.chkBulRenamer.Size = New System.Drawing.Size(160, 17)
-        Me.chkBulRenamer.TabIndex = 84
-        Me.chkBulRenamer.Text = "Enable Bulk Renamer Tool"
-        Me.chkBulRenamer.UseVisualStyleBackColor = True
-        '
-        'chkGenericModule
-        '
-        Me.chkGenericModule.AutoSize = True
-        Me.chkGenericModule.Location = New System.Drawing.Point(10, 31)
-        Me.chkGenericModule.Name = "chkGenericModule"
-        Me.chkGenericModule.Size = New System.Drawing.Size(190, 17)
-        Me.chkGenericModule.TabIndex = 83
-        Me.chkGenericModule.Text = "Enable Generic Rename Module"
-        Me.chkGenericModule.UseVisualStyleBackColor = True
-        '
-        'Panel1
-        '
-        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Panel1.Controls.Add(Me.chkEnabled)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(617, 25)
-        Me.Panel1.TabIndex = 82
-        '
-        'chkEnabled
-        '
-        Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
-        Me.chkEnabled.Name = "chkEnabled"
-        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
-        Me.chkEnabled.TabIndex = 80
-        Me.chkEnabled.Text = "Enabled"
-        Me.chkEnabled.UseVisualStyleBackColor = True
         '
         'gbRenamerPatterns
         '
@@ -167,6 +127,46 @@ Partial Class frmSettingsHolder
         Me.txtFolderPattern.Size = New System.Drawing.Size(177, 22)
         Me.txtFolderPattern.TabIndex = 0
         '
+        'chkBulkRenamer
+        '
+        Me.chkBulkRenamer.AutoSize = True
+        Me.chkBulkRenamer.Location = New System.Drawing.Point(391, 31)
+        Me.chkBulkRenamer.Name = "chkBulkRenamer"
+        Me.chkBulkRenamer.Size = New System.Drawing.Size(160, 17)
+        Me.chkBulkRenamer.TabIndex = 84
+        Me.chkBulkRenamer.Text = "Enable Bulk Renamer Tool"
+        Me.chkBulkRenamer.UseVisualStyleBackColor = True
+        '
+        'chkGenericModule
+        '
+        Me.chkGenericModule.AutoSize = True
+        Me.chkGenericModule.Location = New System.Drawing.Point(10, 31)
+        Me.chkGenericModule.Name = "chkGenericModule"
+        Me.chkGenericModule.Size = New System.Drawing.Size(190, 17)
+        Me.chkGenericModule.TabIndex = 83
+        Me.chkGenericModule.Text = "Enable Generic Rename Module"
+        Me.chkGenericModule.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.chkEnabled)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(617, 25)
+        Me.Panel1.TabIndex = 82
+        '
+        'chkEnabled
+        '
+        Me.chkEnabled.AutoSize = True
+        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
+        Me.chkEnabled.Name = "chkEnabled"
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkEnabled.TabIndex = 80
+        Me.chkEnabled.Text = "Enabled"
+        Me.chkEnabled.UseVisualStyleBackColor = True
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -178,17 +178,17 @@ Partial Class frmSettingsHolder
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         Me.gbRenamerPatterns.ResumeLayout(False)
         Me.gbRenamerPatterns.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents chkBulRenamer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkBulkRenamer As System.Windows.Forms.CheckBox
     Friend WithEvents chkGenericModule As System.Windows.Forms.CheckBox
     Friend WithEvents gbRenamerPatterns As System.Windows.Forms.GroupBox
     Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox

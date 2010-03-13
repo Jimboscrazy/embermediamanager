@@ -449,6 +449,10 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
         ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
         ModulesManager.Instance.LoadAllModules()
+
+        'compile help strings after loading all modules
+        Master.eLang.LoadHelpStrings(Master.eSettings.Language)
+
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)

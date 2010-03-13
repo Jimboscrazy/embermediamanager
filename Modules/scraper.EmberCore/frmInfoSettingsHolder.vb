@@ -36,9 +36,9 @@ Public Class frmInfoSettingsHolder
         Me.chkOFDBTitle.Text = Master.eLang.GetString(477, "Use OFDB Title")
         Me.Label18.Text = Master.eLang.GetString(509, "IMDB Mirror:")
         Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew**")
-        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By**")
-        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers**")
+        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
@@ -55,7 +55,6 @@ Public Class frmInfoSettingsHolder
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.Label46.Text = Master.eLang.GetString(797, "*Scrape Full Crew Must Be Enabled")
         Me.Label1.Text = Master.eLang.GetString(833, "These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.").Replace("\n", vbCrLf)
     End Sub
 

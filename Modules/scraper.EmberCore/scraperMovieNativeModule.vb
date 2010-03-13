@@ -72,7 +72,7 @@ Public Class EmberNativeScraperModule
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = _Name
-        SPanel.Prefix = "NativeMovie_"
+        SPanel.Prefix = "NativeMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
@@ -150,6 +150,7 @@ Public Class EmberNativeScraperModule
         _setupPost.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
+        Spanel.Prefix = "NativeMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
         Spanel.Type = Master.eLang.GetString(36, "Movies")

@@ -161,7 +161,6 @@ Public Class Localization
             ' Need to change Globaly Langs_all
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
 
-            Me.LoadHelpStrings(Language)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -169,24 +168,23 @@ Public Class Localization
     End Sub
 
     Public Sub LoadHelpStrings(ByVal Language As String)
-        Try
-            If Not String.IsNullOrEmpty(Language) Then
-                Dim lPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
-                If File.Exists(lPath) Then
-                    htHelpStrings = New Hashtable
-                    htHelpStrings.Clear()
+        htHelpStrings = New Hashtable
+        htHelpStrings.Clear()
 
-                    Dim LangXML As XDocument = XDocument.Load(lPath)
+        Dim hPath As String = String.Empty
+        Try
+            For Each tLoc As Locs In htArrayStrings
+                hPath = tLoc.FileName.Replace(".xml", "-Help.xml")
+                If File.Exists(hPath) Then
+                    Dim LangXML As XDocument = XDocument.Load(hPath)
                     Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
                     If xLanguage.Count > 0 Then
                         For i As Integer = 0 To xLanguage.Count - 1
                             htHelpStrings.Add(xLanguage(i).control, xLanguage(i).Value)
                         Next
                     End If
-                Else
-                    MsgBox(String.Concat(String.Format("Cannot find {0}-Help.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
                 End If
-            End If
+            Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
