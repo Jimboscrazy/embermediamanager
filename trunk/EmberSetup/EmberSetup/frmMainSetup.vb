@@ -245,7 +245,6 @@ Public Class frmMainSetup
             'Temporary Buffer and block size  
             Dim bufferSize As Integer = 4096 '512 for debug slow down
             Dim Buffer(bufferSize) As Byte, BlockSize As Integer
-            'Memory stream to store data  
             Dim TempStream As New IO.FileStream(FName, IO.FileMode.Create)
             Do
                 BlockSize = readStream.Read(Buffer, 0, bufferSize)
