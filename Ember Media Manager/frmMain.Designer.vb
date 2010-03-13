@@ -132,6 +132,8 @@ Partial Class frmMain
         Me.cmnuRescrapeShow = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuChangeShow = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuShowOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator
         Me.RemoveShowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRemoveTVShow = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuDeleteTVShow = New System.Windows.Forms.ToolStripMenuItem
@@ -148,6 +150,8 @@ Partial Class frmMain
         Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuSeasonRescrape = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSeasonOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuSeasonRemove = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRemoveSeasonFromDB = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuDeleteSeason = New System.Windows.Forms.ToolStripMenuItem
@@ -164,6 +168,8 @@ Partial Class frmMain
         Me.cmnuRescrapeEp = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuChangeEp = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEpOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator
         Me.RemoveEpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRemoveTVEp = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuDeleteTVEp = New System.Windows.Forms.ToolStripMenuItem
@@ -487,12 +493,9 @@ Partial Class frmMain
         Me.Label7 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel
-        Me.cmnuShowOpenFolder = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuSeasonOpenFolder = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuEpOpenFolder = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator
+        Me.pbAllSeasonCache = New System.Windows.Forms.PictureBox
+        Me.pnlAllSeason = New System.Windows.Forms.Panel
+        Me.pbAllSeason = New System.Windows.Forms.PictureBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -560,6 +563,9 @@ Partial Class frmMain
         Me.Panel3.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoadingSettings.SuspendLayout()
+        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlAllSeason.SuspendLayout()
+        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -850,6 +856,8 @@ Partial Class frmMain
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.DimGray
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
+        Me.scMain.Panel2.Controls.Add(Me.pnlAllSeason)
+        Me.scMain.Panel2.Controls.Add(Me.pbAllSeasonCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
@@ -1343,7 +1351,7 @@ Partial Class frmMain
         '
         Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.RemoveShowToolStripMenuItem})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(202, 254)
+        Me.mnuShows.Size = New System.Drawing.Size(202, 232)
         '
         'cmnuShowTitle
         '
@@ -1414,6 +1422,18 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
         Me.ToolStripSeparator11.Size = New System.Drawing.Size(198, 6)
+        '
+        'cmnuShowOpenFolder
+        '
+        Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
+        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
+        '
+        'ToolStripSeparator20
+        '
+        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(198, 6)
         '
         'RemoveShowToolStripMenuItem
         '
@@ -1552,6 +1572,18 @@ Partial Class frmMain
         Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
         Me.ToolStripSeparator15.Size = New System.Drawing.Size(198, 6)
         '
+        'cmnuSeasonOpenFolder
+        '
+        Me.cmnuSeasonOpenFolder.Image = CType(resources.GetObject("cmnuSeasonOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuSeasonOpenFolder.Name = "cmnuSeasonOpenFolder"
+        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuSeasonOpenFolder.Text = "Open Contianing Folder"
+        '
+        'ToolStripSeparator27
+        '
+        Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
+        Me.ToolStripSeparator27.Size = New System.Drawing.Size(198, 6)
+        '
         'cmnuSeasonRemove
         '
         Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuDeleteSeason})
@@ -1675,6 +1707,18 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
         Me.ToolStripSeparator12.Size = New System.Drawing.Size(198, 6)
+        '
+        'cmnuEpOpenFolder
+        '
+        Me.cmnuEpOpenFolder.Image = CType(resources.GetObject("cmnuEpOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuEpOpenFolder.Name = "cmnuEpOpenFolder"
+        Me.cmnuEpOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuEpOpenFolder.Text = "Open Contianing Folder"
+        '
+        'ToolStripSeparator28
+        '
+        Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
+        Me.ToolStripSeparator28.Size = New System.Drawing.Size(198, 6)
         '
         'RemoveEpToolStripMenuItem
         '
@@ -4316,41 +4360,34 @@ Partial Class frmMain
         Me.pnlLoadingSettings.TabIndex = 13
         Me.pnlLoadingSettings.Visible = False
         '
-        'cmnuShowOpenFolder
+        'pbAllSeasonCache
         '
-        Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
-        Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
-        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(201, 22)
-        Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
+        Me.pbAllSeasonCache.Location = New System.Drawing.Point(333, 107)
+        Me.pbAllSeasonCache.Name = "pbAllSeasonCache"
+        Me.pbAllSeasonCache.Size = New System.Drawing.Size(115, 111)
+        Me.pbAllSeasonCache.TabIndex = 13
+        Me.pbAllSeasonCache.TabStop = False
+        Me.pbAllSeasonCache.Visible = False
         '
-        'ToolStripSeparator20
+        'pnlAllSeason
         '
-        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
-        Me.ToolStripSeparator20.Size = New System.Drawing.Size(198, 6)
+        Me.pnlAllSeason.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlAllSeason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlAllSeason.Controls.Add(Me.pbAllSeason)
+        Me.pnlAllSeason.Location = New System.Drawing.Point(508, 112)
+        Me.pnlAllSeason.Name = "pnlAllSeason"
+        Me.pnlAllSeason.Size = New System.Drawing.Size(131, 169)
+        Me.pnlAllSeason.TabIndex = 3
+        Me.pnlAllSeason.Visible = False
         '
-        'cmnuSeasonOpenFolder
+        'pbAllSeason
         '
-        Me.cmnuSeasonOpenFolder.Image = CType(resources.GetObject("cmnuSeasonOpenFolder.Image"), System.Drawing.Image)
-        Me.cmnuSeasonOpenFolder.Name = "cmnuSeasonOpenFolder"
-        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(201, 22)
-        Me.cmnuSeasonOpenFolder.Text = "Open Contianing Folder"
-        '
-        'ToolStripSeparator27
-        '
-        Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
-        Me.ToolStripSeparator27.Size = New System.Drawing.Size(198, 6)
-        '
-        'cmnuEpOpenFolder
-        '
-        Me.cmnuEpOpenFolder.Image = CType(resources.GetObject("cmnuEpOpenFolder.Image"), System.Drawing.Image)
-        Me.cmnuEpOpenFolder.Name = "cmnuEpOpenFolder"
-        Me.cmnuEpOpenFolder.Size = New System.Drawing.Size(201, 22)
-        Me.cmnuEpOpenFolder.Text = "Open Contianing Folder"
-        '
-        'ToolStripSeparator28
-        '
-        Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
-        Me.ToolStripSeparator28.Size = New System.Drawing.Size(198, 6)
+        Me.pbAllSeason.BackColor = System.Drawing.SystemColors.Control
+        Me.pbAllSeason.Location = New System.Drawing.Point(4, 4)
+        Me.pbAllSeason.Name = "pbAllSeason"
+        Me.pbAllSeason.Size = New System.Drawing.Size(121, 159)
+        Me.pbAllSeason.TabIndex = 0
+        Me.pbAllSeason.TabStop = False
         '
         'frmMain
         '
@@ -4451,6 +4488,9 @@ Partial Class frmMain
         Me.Panel3.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoadingSettings.ResumeLayout(False)
+        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlAllSeason.ResumeLayout(False)
+        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -4920,4 +4960,7 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator27 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEpOpenFolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator28 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents pnlAllSeason As System.Windows.Forms.Panel
+    Friend WithEvents pbAllSeason As System.Windows.Forms.PictureBox
+    Friend WithEvents pbAllSeasonCache As System.Windows.Forms.PictureBox
 End Class

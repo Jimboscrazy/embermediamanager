@@ -146,7 +146,7 @@ Public Class dlgTVImageSelect
                 Next
             End If
 
-            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster Then
+            If Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster OrElse Me._type = Enums.TVImageType.AllSeasonPoster Then
                 For Each SPost As Scraper.TVDBShowPoster In Scraper.tmpTVDBShow.ShowPosters
                     Try
                         If Not File.Exists(SPost.LocalFile) Then

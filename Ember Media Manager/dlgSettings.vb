@@ -2330,6 +2330,10 @@ Public Class dlgSettings
         currText = DirectCast(sender, ToolStripButton).Text
         Me.FillList(currText)
     End Sub
+
+    Private Sub chkDisplayAllSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayAllSeason.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2745,6 +2749,7 @@ Public Class dlgSettings
             Master.eSettings.ScraperEpDirector = Me.chkScraperEpDirector.Checked
             Master.eSettings.ScraperEpCredits = Me.chkScraperEpCredits.Checked
             Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
+            Master.eSettings.DisplayAllSeason = Me.chkDisplayAllSeason.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3115,6 +3120,7 @@ Public Class dlgSettings
             Me.chkScraperEpDirector.Checked = Master.eSettings.ScraperEpDirector
             Me.chkScraperEpCredits.Checked = Master.eSettings.ScraperEpCredits
             Me.chkScraperEpActors.Checked = Master.eSettings.ScraperEpActors
+            Me.chkDisplayAllSeason.Checked = Master.eSettings.DisplayAllSeason
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3615,6 +3621,7 @@ Public Class dlgSettings
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
+        Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -4139,4 +4146,5 @@ Public Class dlgSettings
         End If
     End Sub
 #End Region '*** Routines/Functions
+
 End Class

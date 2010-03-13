@@ -56,7 +56,7 @@ Public Class frmInfoSettingsHolder
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.Label46.Text = Master.eLang.GetString(797, "*Scrape Full Crew Must Be Enabled")
-        Me.Label1.Text = Master.eLang.GetString(9999, "This are Scraper specific Settings, and act as a filter.\nYou should check Ember Global Setting also.").Replace("\n", vbCrLf)
+        Me.Label1.Text = Master.eLang.GetString(833, "These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.").Replace("\n", vbCrLf)
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
