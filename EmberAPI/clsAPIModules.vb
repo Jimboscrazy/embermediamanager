@@ -289,11 +289,11 @@ Public Class ModulesManager
             Next
             If Not ScraperAnyEnabled Then
                 SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-                SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
+                'SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
             If Not PostScraperAnyEnabled Then
                 SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-                SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
+                'SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
         End If
     End Sub
@@ -366,12 +366,12 @@ Public Class ModulesManager
             Next
             If Not ScraperAnyEnabled Then
                 SetTVScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", True)
-                SetTVScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
+                'SetTVScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
 
             End If
             If Not PostScraperAnyEnabled Then
                 SetTVPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", True)
-                SetTVPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
+                'SetTVPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
             End If
         End If
     End Sub

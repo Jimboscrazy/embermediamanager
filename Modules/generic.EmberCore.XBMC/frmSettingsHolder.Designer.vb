@@ -70,7 +70,7 @@ Partial Class frmSettingsHolder
         '
         Me.pnlSettings.Controls.Add(Me.GroupBox11)
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
+        Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 83
@@ -245,7 +245,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(625, 342)
+        Me.ClientSize = New System.Drawing.Size(653, 366)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
