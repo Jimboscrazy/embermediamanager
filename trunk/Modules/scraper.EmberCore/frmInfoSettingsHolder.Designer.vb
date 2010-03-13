@@ -27,7 +27,6 @@ Partial Class frmInfoSettingsHolder
         Me.Label1 = New System.Windows.Forms.Label
         Me.lblVersion = New System.Windows.Forms.Label
         Me.gbOptions = New System.Windows.Forms.GroupBox
-        Me.Label46 = New System.Windows.Forms.Label
         Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.chkCrew = New System.Windows.Forms.CheckBox
         Me.chkMusicBy = New System.Windows.Forms.CheckBox
@@ -104,7 +103,6 @@ Partial Class frmInfoSettingsHolder
         '
         'gbOptions
         '
-        Me.gbOptions.Controls.Add(Me.Label46)
         Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkMusicBy)
@@ -135,16 +133,6 @@ Partial Class frmInfoSettingsHolder
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
         '
-        'Label46
-        '
-        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label46.Location = New System.Drawing.Point(6, 139)
-        Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(202, 19)
-        Me.Label46.TabIndex = 19
-        Me.Label46.Text = "*Scrape Full Crew Must Be Enabled"
-        Me.Label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'chkTop250
         '
         Me.chkTop250.AutoSize = True
@@ -163,9 +151,9 @@ Partial Class frmInfoSettingsHolder
         Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkCrew.Location = New System.Drawing.Point(237, 83)
         Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Size = New System.Drawing.Size(90, 17)
+        Me.chkCrew.Size = New System.Drawing.Size(85, 17)
         Me.chkCrew.TabIndex = 18
-        Me.chkCrew.Text = "Other Crew*"
+        Me.chkCrew.Text = "Other Crew"
         Me.chkCrew.UseVisualStyleBackColor = True
         '
         'chkMusicBy
@@ -175,9 +163,9 @@ Partial Class frmInfoSettingsHolder
         Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMusicBy.Location = New System.Drawing.Point(237, 67)
         Me.chkMusicBy.Name = "chkMusicBy"
-        Me.chkMusicBy.Size = New System.Drawing.Size(76, 17)
+        Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
         Me.chkMusicBy.TabIndex = 17
-        Me.chkMusicBy.Text = "Music By*"
+        Me.chkMusicBy.Text = "Music By"
         Me.chkMusicBy.UseVisualStyleBackColor = True
         '
         'chkFullCrew
@@ -209,9 +197,9 @@ Partial Class frmInfoSettingsHolder
         Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkProducers.Location = New System.Drawing.Point(237, 19)
         Me.chkProducers.Name = "chkProducers"
-        Me.chkProducers.Size = New System.Drawing.Size(82, 17)
+        Me.chkProducers.Size = New System.Drawing.Size(77, 17)
         Me.chkProducers.TabIndex = 16
-        Me.chkProducers.Text = "Producers*"
+        Me.chkProducers.Text = "Producers"
         Me.chkProducers.UseVisualStyleBackColor = True
         '
         'chkWriters
@@ -573,7 +561,6 @@ Partial Class frmInfoSettingsHolder
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblVersion As System.Windows.Forms.Label
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents Label46 As System.Windows.Forms.Label
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents chkMusicBy As System.Windows.Forms.CheckBox

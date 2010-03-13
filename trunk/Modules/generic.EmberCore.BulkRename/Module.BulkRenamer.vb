@@ -57,7 +57,7 @@ Public Class BulkRenamerModule
         _setup.chkRenameMulti.Checked = MySettings.AutoRenameMulti
         _setup.chkRenameSingle.Checked = MySettings.AutoRenameSingle
         _setup.chkGenericModule.Checked = MySettings.GenericModule
-        _setup.chkBulRenamer.Checked = MySettings.BulkRenamer
+        _setup.chkBulkRenamer.Checked = MySettings.BulkRenamer
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
         SPanel.Prefix = "Renamer_"
@@ -82,7 +82,7 @@ Public Class BulkRenamerModule
         MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked
         MySettings.AutoRenameSingle = _setup.chkRenameSingle.Checked
         MySettings.GenericModule = _setup.chkGenericModule.Checked
-        MySettings.BulkRenamer = _setup.chkBulRenamer.Checked
+        MySettings.BulkRenamer = _setup.chkBulkRenamer.Checked
         SaveSettings()
     End Sub
     Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled

@@ -102,7 +102,7 @@ Partial Class frmMediaSettingsHolder
         Me.chkUseMPDB.Name = "chkUseMPDB"
         Me.chkUseMPDB.Size = New System.Drawing.Size(150, 22)
         Me.chkUseMPDB.TabIndex = 2
-        Me.chkUseMPDB.Text = "MoviePostersDB"
+        Me.chkUseMPDB.Text = "MoviePosterDB.com"
         Me.chkUseMPDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseMPDB.UseVisualStyleBackColor = True
         '
@@ -126,7 +126,7 @@ Partial Class frmMediaSettingsHolder
         Me.chkUseIMPA.Name = "chkUseIMPA"
         Me.chkUseIMPA.Size = New System.Drawing.Size(149, 20)
         Me.chkUseIMPA.TabIndex = 1
-        Me.chkUseIMPA.Text = "IMPAwards"
+        Me.chkUseIMPA.Text = "IMPAwards.com"
         Me.chkUseIMPA.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseIMPA.UseVisualStyleBackColor = True
         '

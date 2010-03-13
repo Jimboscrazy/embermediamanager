@@ -35,7 +35,7 @@ Public Class dlgSettings
     Private currPanel As New Panel
     Private currText As String = String.Empty
     Private tLangList As New List(Of Containers.TVLanguage)
-    Private dHelp As New Dictionary(Of Object, String)
+    Private dHelp As New Dictionary(Of String, String)
 
 #Region "Form/Controls"
 
@@ -2586,7 +2586,10 @@ Public Class dlgSettings
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
-            If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
+            If Not cbIntLang.Text = Master.eSettings.Language Then
+                Master.eLang.LoadLanguage(cbIntLang.Text)
+                Me.RefreshHelpStrings(cbIntLang.Text)
+            End If
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
             LoadGenreLangs()
@@ -4146,13 +4149,17 @@ Public Class dlgSettings
     End Sub
 
     Private Sub AddHelpHandlers(ByVal Parent As Control, ByVal Prefix As String)
+        Dim pfName As String = String.Empty
+
         For Each ctrl As Control In Parent.Controls
             If Not TypeOf ctrl Is GroupBox AndAlso Not TypeOf ctrl Is Panel AndAlso Not TypeOf ctrl Is Label AndAlso _
             Not TypeOf ctrl Is TreeView AndAlso Not TypeOf ctrl Is ToolStrip AndAlso Not TypeOf ctrl Is PictureBox AndAlso _
             Not TypeOf ctrl Is TabControl Then
+                pfName = String.Concat(Prefix, ctrl.Name)
+                ctrl.AccessibleDescription = pfName
                 AddHandler ctrl.MouseEnter, AddressOf HelpMouseEnter
                 AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
-                dHelp.Add(ctrl, Master.eLang.GetHelpString(String.Concat(Prefix, ctrl.Name)))
+                dHelp.Add(pfName, Master.eLang.GetHelpString(pfName))
             End If
             If ctrl.HasChildren Then
                 AddHelpHandlers(ctrl, Prefix)
@@ -4161,11 +4168,19 @@ Public Class dlgSettings
     End Sub
 
     Private Sub HelpMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.lblHelp.Text = dHelp.Item(sender)
+        Me.lblHelp.Text = dHelp.Item(DirectCast(sender, Control).AccessibleDescription)
     End Sub
 
     Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.lblHelp.Text = String.Empty
+    End Sub
+
+    Private Sub RefreshHelpStrings(ByVal Language As String)
+        Master.eLang.LoadHelpStrings(cbIntLang.Text)
+
+        For Each sKey As String In dHelp.Keys
+            dHelp.Item(sKey) = Master.eLang.GetHelpString(sKey)
+        Next
     End Sub
 #End Region '*** Routines/Functions
 
