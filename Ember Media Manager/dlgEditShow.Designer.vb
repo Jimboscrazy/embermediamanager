@@ -72,16 +72,16 @@ Partial Class dlgEditShow
         Me.btnSetFanartScrape = New System.Windows.Forms.Button
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
-        Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.lblASSize = New System.Windows.Forms.Label
         Me.btnASPosterChangeDL = New System.Windows.Forms.Button
         Me.btnASPosterRemove = New System.Windows.Forms.Button
         Me.btnASChangePosterScrape = New System.Windows.Forms.Button
         Me.btnASChangePoster = New System.Windows.Forms.Button
         Me.pbASPoster = New System.Windows.Forms.PictureBox
-        Me.lblASSize = New System.Windows.Forms.Label
+        Me.Cancel_Button = New System.Windows.Forms.Button
+        Me.OK_Button = New System.Windows.Forms.Button
+        Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -632,23 +632,6 @@ Partial Class dlgEditShow
         Me.pbFanart.TabIndex = 1
         Me.pbFanart.TabStop = False
         '
-        'Cancel_Button
-        '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 59
-        Me.Cancel_Button.Text = "Cancel"
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 58
-        Me.OK_Button.Text = "OK"
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.lblASSize)
@@ -663,6 +646,17 @@ Partial Class dlgEditShow
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "All Seasons Poster"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'lblASSize
+        '
+        Me.lblASSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblASSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblASSize.Name = "lblASSize"
+        Me.lblASSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblASSize.TabIndex = 33
+        Me.lblASSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblASSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblASSize.Visible = False
         '
         'btnASPosterChangeDL
         '
@@ -727,16 +721,22 @@ Partial Class dlgEditShow
         Me.pbASPoster.TabIndex = 28
         Me.pbASPoster.TabStop = False
         '
-        'lblASSize
+        'Cancel_Button
         '
-        Me.lblASSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblASSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblASSize.Name = "lblASSize"
-        Me.lblASSize.Size = New System.Drawing.Size(104, 23)
-        Me.lblASSize.TabIndex = 33
-        Me.lblASSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblASSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblASSize.Visible = False
+        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
+        Me.Cancel_Button.Name = "Cancel_Button"
+        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
+        Me.Cancel_Button.TabIndex = 59
+        Me.Cancel_Button.Text = "Cancel"
+        '
+        'OK_Button
+        '
+        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
+        Me.OK_Button.Name = "OK_Button"
+        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
+        Me.OK_Button.TabIndex = 58
+        Me.OK_Button.Text = "OK"
         '
         'dlgEditShow
         '
