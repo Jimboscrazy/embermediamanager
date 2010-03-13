@@ -89,6 +89,12 @@ Partial Class frmMainManager
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
+        Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.lstStats = New System.Windows.Forms.ListView
+        Me.ColumnHeader12 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader13 = New System.Windows.Forms.ColumnHeader
+        Me.Label14 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -98,6 +104,7 @@ Partial Class frmMainManager
         Me.gbCommands.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.pnlWork.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.SuspendLayout()
         '
         'lstVersions
@@ -140,6 +147,7 @@ Partial Class frmMainManager
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Location = New System.Drawing.Point(3, 0)
         Me.TabControl1.Multiline = True
         Me.TabControl1.Name = "TabControl1"
@@ -689,6 +697,55 @@ Partial Class frmMainManager
         Me.btnUpdateFrom.Text = "Update from Site"
         Me.btnUpdateFrom.UseVisualStyleBackColor = True
         '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.Label14)
+        Me.TabPage4.Controls.Add(Me.lstStats)
+        Me.TabPage4.Controls.Add(Me.Button1)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(850, 471)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "Stats"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(3, 3)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(121, 23)
+        Me.Button1.TabIndex = 5
+        Me.Button1.Text = "Update Stats"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'lstStats
+        '
+        Me.lstStats.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader12, Me.ColumnHeader13})
+        Me.lstStats.FullRowSelect = True
+        Me.lstStats.Location = New System.Drawing.Point(3, 32)
+        Me.lstStats.Name = "lstStats"
+        Me.lstStats.Size = New System.Drawing.Size(330, 431)
+        Me.lstStats.TabIndex = 6
+        Me.lstStats.UseCompatibleStateImageBehavior = False
+        Me.lstStats.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader12
+        '
+        Me.ColumnHeader12.Text = "Name"
+        Me.ColumnHeader12.Width = 244
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Text = "Count"
+        '
+        'Label14
+        '
+        Me.Label14.Location = New System.Drawing.Point(133, 8)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(200, 18)
+        Me.Label14.TabIndex = 7
+        Me.Label14.Text = "Label14"
+        '
         'frmMainManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -719,6 +776,7 @@ Partial Class frmMainManager
         Me.TabPage3.PerformLayout()
         Me.pnlWork.ResumeLayout(False)
         Me.pnlWork.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -789,5 +847,11 @@ Partial Class frmMainManager
     Friend WithEvents btnUpdateFrom As System.Windows.Forms.Button
     Friend WithEvents AllwaysExcludeFileinFolderMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveExcludeFileinFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents lstStats As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader12 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader13 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Label14 As System.Windows.Forms.Label
 
 End Class

@@ -555,7 +555,7 @@ Public Class frmMainManager
         lstVersions.Items.Clear()
         Me.lstVersions.ListViewItemSorter = New ListViewItemComparer(0)
         For Each v As Versions In EmberVersions.VersionList
-            lstVersions.Items.Add(v.Version)
+            If IsNumeric(v.Version) Then lstVersions.Items.Add(v.Version)
         Next
     End Sub
 
@@ -800,6 +800,9 @@ Public Class frmMainManager
             File.Delete(Path.Combine(AppPath, "errors.log"))
         End If
         LoadAll()
+        If File.Exists(Path.Combine(AppPath, "download.log")) Then
+            UpdateStats()
+        End If
     End Sub
     Sub LoadAll()
         LoadSettings()
@@ -1255,5 +1258,39 @@ Public Class frmMainManager
     Private Sub ToolStripMenuItem2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveExcludeFileinFolderToolStripMenuItem.Click
         MasterDB.DBDeleteExcludeFileInFolder(lstFiles.SelectedItems(0).SubItems(1).Text, lstFiles.SelectedItems(0).SubItems(2).Text)
         LoadExcludes()
+    End Sub
+
+    Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Dim ftp As New FTPClass
+        Dim dlg As New Uploading
+        Try
+
+            dlg.TopMost = True
+            dlg.Show()
+            dlg.Label1.Text = "Connecting to Server"
+            Application.DoEvents()
+            ftp.setRemoteHost(TextBox3.Text)
+            ftp.setRemoteUser(TextBox1.Text)
+            ftp.setRemotePass(TextBox2.Text)
+            ftp.setRemotePath("/public_html/Updates")
+            ftp.login()
+            dlg.Label1.Text = "Downloading File"
+            Application.DoEvents()
+            ftp.download("download.log", "download.log")
+            ftp.close()
+            dlg.Close()
+            UpdateStats()
+        Catch ex As Exception
+            dlg.Close()
+        End Try
+    End Sub
+    Sub UpdateStats()
+
+        lstStats.Items.Clear()
+        Dim t As String() = File.ReadAllLines(Path.Combine(AppPath, "download.log"))
+        For Each s As String In t
+            Dim i As String() = s.Split(Convert.ToChar(vbTab))
+            lstStats.Items.Add(i(0)).SubItems.Add(i(1))
+        Next
     End Sub
 End Class
