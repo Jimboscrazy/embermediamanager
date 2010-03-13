@@ -31,7 +31,7 @@ Public Class ErrorLogger
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
-    Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String)
+    Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
 
         Try
             If Master.eSettings.LogErrors Then
@@ -58,7 +58,7 @@ Public Class ErrorLogger
                     End Using
                 End Using
 
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
+                If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
 
                 RaiseEvent ErrorOccurred()
             End If

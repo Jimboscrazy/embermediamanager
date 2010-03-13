@@ -1461,7 +1461,7 @@ Public Class Scanner
                     tmpTVDB.ShowFanartPath = TVContainer.Fanart
                     tmpTVDB.IsNewShow = True
                     tmpTVDB.IsLockShow = False
-                    tmpTVDB.IsMarkShow = Master.eSettings.MarkNew
+                    tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
@@ -1479,7 +1479,7 @@ Public Class Scanner
                             tmpTVDB.Source = Episode.Source
                             tmpTVDB.IsNewEp = True
                             tmpTVDB.IsLockEp = False
-                            tmpTVDB.IsMarkEp = Master.eSettings.MarkNew
+                            tmpTVDB.IsMarkEp = False
                             tmpTVDB.IsNewSeason = True
                             tmpTVDB.IsLockSeason = False
                             tmpTVDB.IsMarkSeason = tmpTVDB.IsMarkEp

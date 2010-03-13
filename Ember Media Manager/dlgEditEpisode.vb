@@ -557,7 +557,7 @@ Public Class dlgEditEpisode
             PreviousFrameValue = 0
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
@@ -630,7 +630,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             PreviousFrameValue = 0
             lblTime.Text = String.Empty
             tbFrame.Maximum = 0
