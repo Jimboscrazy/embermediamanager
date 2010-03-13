@@ -851,7 +851,6 @@ Public Class frmMainSetup
                 If bwDoInstall.CancellationPending Then Return False
                 LogWrite(String.Format("*** Main: Commands END"))
 
-                '### END OF - DISABLING THIS STUFF FOR NOW
             Catch ex As Exception
                 LogWrite(String.Format("*** Main: Error {0}", ex.Message))
             End Try
@@ -1186,9 +1185,17 @@ Public Class frmMainSetup
 
     Private Sub btnRunEmber_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunEmber.Click
         If CheckIfWindows() Then
-            Shell(Path.Combine(emberPath, "Ember Media Manager.exe"), AppWinStyle.NormalFocus)
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = Path.Combine(emberPath, "Ember Media Manager.exe")
+
+                Explorer.Start()
+            End Using
         Else
-            Shell(String.Concat("mono", " """, Path.Combine(emberPath, "Ember Media Manager.exe"), """"), AppWinStyle.NormalFocus)
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "~mono"
+                Explorer.StartInfo.Arguments = String.Concat("""", Path.Combine(emberPath, "Ember Media Manager.exe"), """")
+                Explorer.Start()
+            End Using
         End If
 
         Close()
