@@ -390,9 +390,9 @@
   <string id="388">Modifiers</string>
   <string id="389">Begin</string>
   <string id="390">Options</string>
-  <string id="391">Other Crew**</string>
-  <string id="392">Music By**</string>
-  <string id="393">Producers**</string>
+  <string id="391">Other Crew</string>
+  <string id="392">Music By</string>
+  <string id="393">Producers</string>
   <string id="394">Writers</string>
   <string id="395">Studio</string>
   <string id="396">Runtime</string>
@@ -457,8 +457,8 @@
   <string id="455">Do Not Display Fanart</string>
   <string id="456">Do Not Display Poster</string>
   <string id="457">Display Image Dimensions</string>
-  <string id="458">* New movies will still display in green if not checked.</string>
-  <string id="459">Mark New Movies*</string>
+  <string id="458">     Help</string>
+  <string id="459">Mark New Movies</string>
   <string id="460">Media List Options</string>
   <string id="461">Mismatch Tolerance:</string>
   <string id="462">Check Title Match Confidence</string>
@@ -487,7 +487,7 @@
   <string id="485">Automatically Resize Fanart:</string>
   <string id="486">Preferred Fanart Size</string>
   <string id="487">Overwrite Existing Fanart</string>
-  <string id="488">Global Locks*</string>
+  <string id="488">Global Locks</string>
   <string id="489">Lock Trailer</string>
   <string id="490">Lock Genre</string>
   <string id="491">Lock Studio</string>
@@ -503,8 +503,8 @@
   <string id="501">TheMovideDB.org</string>
   <string id="502">IMPAwards.com</string>
   <string id="503">Use Extrathumb if no Fanart Found</string>
-  <string id="504">** If checked, Ember will use only the first half of the movie to extract thumbs</string>
-  <string id="505">No Spoilers**</string>
+  <string id="504"></string>
+  <string id="505">No Spoilers</string>
   <string id="506">Number To Create:</string>
   <string id="507">Automatically Extract Extrathumbs During Scrapers</string>
   <string id="508">Use Outline for Plot if Plot is Empty</string>
@@ -548,9 +548,9 @@
   <string id="546">Use Native Resolution</string>
   <string id="547">Caching</string>
   <string id="548">Use Cache for Scrapers</string>
-  <string id="549">* When enabled, the cache will be available between sessions</string>
+  <string id="549"></string>
   <string id="550">Persistent Image Cache</string>
-  <string id="551">Use Image Cache*</string>
+  <string id="551">Use Image Cache</string>
   <string id="552">Select the folder where you wish to store your backdrops.</string>
   <string id="553">File System</string>
   <string id="554">XBMC Communication</string>
@@ -620,7 +620,7 @@
   <string id="618">Audio Stream</string>
   <string id="619">Subtitle Stream</string>
   <string id="620">Movie Theme</string>
-  <string id="621">* You must restart Ember before changes will take effect.</string>
+  <string id="621"></string>
   <string id="622">Scraping Media (Current Filter - Ask):</string>
   <string id="623">Scraping Media (Current Filter - Auto):</string>
   <string id="624">Current Filter</string>
@@ -628,7 +628,7 @@
   <string id="626">File Type</string>
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
-  <string id="629">Themes*</string>
+  <string id="629">Themes</string>
   <string id="630">Auto</string>
   <string id="631">Manual</string>
   <string id="632">Manual Rename</string>
@@ -688,7 +688,7 @@
   <string id="686">Season Fanart</string>
   <string id="687">Episode Posters</string>
   <string id="688">Episode Fanart</string>
-  <string id="689">* Inside Season directory</string>
+  <string id="689"></string>
   <string id="690">Edit Regex</string>
   <string id="691">Show Match Regex</string>
   <string id="692">Season Match Regex:</string>
@@ -730,15 +730,15 @@
   <string id="728">Aired</string>
   <string id="729">Credits</string>
   <string id="730">Preferred Poster Type</string>
-  <string id="731">* Enabling locks will disable updating the item during scraping unless the item is empty.</string>
+  <string id="731"></string>
   <string id="732">&lt;h&gt; = Hours, &lt;m&gt; = Minutes</string>
   <string id="733">Display Missing Episodes</string>
   <string id="734">Build Episode Title Instead of Filtering</string>
   <string id="735">All Season Posters</string>
   <string id="736">Only Get Images for the Selected Language</string>
   <string id="737">Also Get English Images</string>
-  <string id="738">API Key*:</string>
-  <string id="739">* This is not necessary for Ember to function. It is only used when saving the Episode Guide URL to the nfo. You should enter the API Key of the media center/player you use.</string>
+  <string id="738">API Key:</string>
+  <string id="739"></string>
   <string id="740">Re-download Show Information Every:</string>
   <string id="741">Preferred Language:</string>
   <string id="742">Fetch Available Languages</string>
@@ -796,7 +796,7 @@
   <string id="794">&amp;Module Settings...</string>
   <string id="795">Interface</string>
   <string id="796">Scan in order of last write time</string>
-  <string id="797">* Scrape Full Crew must be enabled</string>
+  <string id="797"></string>
   <string id="798">Get Images From:</string>
   <string id="799">Scraper - Trailers</string>
   <string id="800">Preferred Quality:</string>
