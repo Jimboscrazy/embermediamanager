@@ -72,6 +72,7 @@ Public Class EmberNativeScraperModule
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = _Name
+        SPanel.Prefix = "NativeMovie_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")

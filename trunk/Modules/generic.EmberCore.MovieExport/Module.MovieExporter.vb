@@ -45,6 +45,7 @@ Public Class MovieExporterModule
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
+        SPanel.Prefix = "Exporter_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100

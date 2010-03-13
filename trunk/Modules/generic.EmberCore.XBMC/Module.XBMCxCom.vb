@@ -95,6 +95,7 @@ Public Class XBMCxCom
         _setup.LoadXComs()
         SPanel.Name = Me._name
         SPanel.Text = Me._name
+        SPanel.Prefix = "XBMCCom_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100

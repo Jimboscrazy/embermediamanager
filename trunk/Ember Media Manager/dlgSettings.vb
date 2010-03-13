@@ -4065,7 +4065,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, "")
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4075,7 +4075,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.PostScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, "")
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -4084,7 +4084,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, "")
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4093,7 +4093,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, "")
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
@@ -4103,7 +4103,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, "")
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
     End Sub
 

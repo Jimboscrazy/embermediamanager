@@ -83,6 +83,7 @@ Public Class FileManagerExternalModule
         Next
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
+        SPanel.Prefix = "FileManager_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100

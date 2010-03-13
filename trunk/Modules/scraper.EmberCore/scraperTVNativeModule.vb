@@ -129,6 +129,7 @@ Public Class EmberNativeTVScraperModule
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
+        SPanel.Prefix = "NativeTV_"
         SPanel.Type = Master.eLang.GetString(698, "TV Shows")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
