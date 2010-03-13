@@ -100,9 +100,9 @@ Public Class Containers
     Public Class SettingsPanel
         Dim _name As String
         Dim _text As String
+        Dim _prefix As String
         Dim _imageindex As Integer
         Dim _type As String
-
         Dim _panel As Panel
         Dim _order As Integer
         Dim _parent As String
@@ -125,6 +125,15 @@ Public Class Containers
             End Set
         End Property
 
+        Public Property Prefix() As String
+            Get
+                Return Me._prefix
+            End Get
+            Set(ByVal value As String)
+                Me._prefix = value
+            End Set
+        End Property
+
         Public Property ImageIndex() As Integer
             Get
                 Return Me._imageindex
@@ -142,6 +151,7 @@ Public Class Containers
                 Me._type = value
             End Set
         End Property
+
         <System.Xml.Serialization.XmlIgnore()> _
         Public Property Panel() As Panel
             Get
@@ -177,6 +187,7 @@ Public Class Containers
         Public Sub Clear()
             Me._name = String.Empty
             Me._text = String.Empty
+            Me._prefix = String.Empty
             Me._imageindex = 0
             Me._type = String.Empty
             Me._panel = New Panel

@@ -86,6 +86,7 @@ Public Class NotificationsModule
         Me._setup.chkOnNewEp.Checked = eSettings.OnNewEp
         SPanel.Name = Me._name
         SPanel.Text = Me._name
+        SPanel.Prefix = "Notify_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100

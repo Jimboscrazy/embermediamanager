@@ -1,5 +1,5 @@
 ﻿' ################################################################################
-' #                             EMBER ProxyMEdia MANAGER                              #
+' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
 ' # This file is part of Ember Media Manager.                                    #
@@ -69,6 +69,7 @@ Public Class EmberXMLScraperModule
         Dim Spanel As New Containers.SettingsPanel
         Spanel.Name = Me._Name
         Spanel.Text = Me._Name
+        Spanel.Prefix = "XMLMovie_"
         Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Order = 110

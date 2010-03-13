@@ -39,6 +39,7 @@ Public Class NunoScraperModule
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
         SPanel.Name = Me._Name
         SPanel.Text = Me._Name
+        SPanel.Prefix = "Nuno_"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 110
