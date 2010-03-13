@@ -1935,6 +1935,24 @@ Public Class frmMain
                         Exit For
                     End If
                 Next
+            ElseIf e.KeyChar = Chr(13) Then
+                If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+                Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+
+                Master.currShow = Master.DB.LoadTVFullShowFromDB(ID)
+
+                Using dEditShow As New dlgEditShow
+
+                    Select Case dEditShow.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            If Me.RefreshShow(ID, False, True, False, False) Then
+                                Me.FillList(0)
+                            End If
+                    End Select
+
+                End Using
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1953,6 +1971,22 @@ Public Class frmMain
                         Exit For
                     End If
                 Next
+            ElseIf e.KeyChar = Chr(13) Then
+                If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+                Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
+                Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+
+                Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                Using dEditSeason As New dlgEditSeason
+                    If dEditSeason.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        If Me.RefreshSeason(ShowID, Season, False) Then
+                            Me.FillSeasons(ShowID)
+                        End If
+                    End If
+                End Using
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1971,6 +2005,23 @@ Public Class frmMain
                         Exit For
                     End If
                 Next
+            ElseIf e.KeyChar = Chr(13) Then
+                If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+                Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+                Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+                Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
+
+                Using dEditEpisode As New dlgEditEpisode
+
+                    Select Case dEditEpisode.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            If Me.RefreshEpisode(ID) Then
+                                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                            End If
+                    End Select
+
+                End Using
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4393,6 +4444,32 @@ Public Class frmMain
         ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
     End Sub
 
+    Private Sub dgvTVSeasons_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellDoubleClick
+        Try
+
+            If e.RowIndex < 0 Then Exit Sub
+
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
+            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+
+            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+            Using dEditSeason As New dlgEditSeason
+                If dEditSeason.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    If Me.RefreshSeason(ShowID, Season, False) Then
+                        Me.FillSeasons(ShowID)
+                    End If
+                End If
+            End Using
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -4783,74 +4860,10 @@ Public Class frmMain
 
     End Sub
 
-    Delegate Sub MydtMediaUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-    Sub dtMediaUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+    Delegate Sub MydtListUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+    Sub dtListUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
         drow.Item(i) = v
     End Sub
-
-    Delegate Sub MydtShowsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-    Sub dtShowsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-        drow.Item(i) = v
-    End Sub
-
-    Delegate Sub MydtEpsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-    Sub dtEpsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
-        drow.Item(i) = v
-    End Sub
-
-
-
-    'Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
-    'If Not isCL Then
-    'If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
-    'If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-    'Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
-    'End If
-    'Else
-    'Me.SetStatus(e.UserState.ToString)
-    'Me.tspbLoading.Value = e.ProgressPercentage
-    'End If
-    'End If
-
-    'Me.dgvMediaList.Invalidate()
-    'End Sub
-
-    'Private Sub bwScraper_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwScraper.RunWorkerCompleted
-    '//
-    ' Thread finished: re-fill media list and load info for first item
-    '\\
-    'Try
-    'If isCL Then
-    'Me.ScraperDone = True
-    'Else
-    'Me.pnlCancel.Visible = False
-    'If DirectCast(e.Result, Enums.ScrapeType) = Enums.ScrapeType.CleanFolders Then
-    'only rescan media if expert cleaner and videos are not whitelisted 
-    'since the db is updated during cleaner now.
-    'If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
-    'Me.LoadMedia(New Structures.Scans With {.Movies = True})
-    'Else
-    'Me.FillList(0)
-    'End If
-    'Else
-    'If Me.dgvMediaList.SelectedRows.Count > 0 Then
-    'Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
-    'Else
-    'Me.FillList(0)
-    'End If
-    'End If
-    'End If
-    'Me.tslLoading.Visible = False
-    'Me.tspbLoading.Visible = False
-    'Me.SetStatus(String.Empty)
-
-    'Me.SetControlsEnabled(True, True)
-    'Me.EnableFilters(True)
-
-    '        Catch ex As Exception
-    'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-    'End Try
-    'End Sub
 
     Private Sub bwRefreshMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovies.DoWork
         Dim iCount As Integer = 0
@@ -6752,7 +6765,7 @@ doCancel:
         Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
 
-        Dim myDelegate As New MydtMediaUpdate(AddressOf dtMediaUpdate)
+        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
 
@@ -6897,7 +6910,7 @@ doCancel:
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpShow As New MediaContainers.TVShow
 
-        Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
+        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
@@ -6971,12 +6984,54 @@ doCancel:
         Return False
     End Function
 
+    Private Function RefreshSeason(ByVal ShowID As Integer, ByVal Season As Integer, ByVal BatchMode As Boolean) As Boolean
+        Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item(2)) = Season Select drvRow
+        Dim tmpSeasonDb As New Structures.DBTV
+        Dim tmpShow As New MediaContainers.TVShow
+
+        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = Master.DB.BeginTransaction
+
+            tmpSeasonDb = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+            Dim tPath As String = Functions.GetSeasonDirectoryFromShowPath(tmpSeasonDb.ShowPath, Season)
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                'fake file just for getting images
+                tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
+                fScanner.GetSeasonImages(tmpSeasonDb, Season)
+                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
+                If Master.eSettings.SeasonFanartEnabled Then
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
+                End If
+            Else
+                Master.DB.DeleteTVSeasonFromDB(ShowID, Season, BatchMode)
+                Return True
+            End If
+
+            If Not BatchMode Then
+                SQLtransaction.Commit()
+                SQLtransaction = Nothing
+
+                Me.LoadSeasonInfo(ShowID, Season)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return False
+    End Function
+
     Private Function RefreshEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpEp As New MediaContainers.EpisodeDetails
 
-        Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
+        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
 

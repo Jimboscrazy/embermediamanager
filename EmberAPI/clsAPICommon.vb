@@ -863,21 +863,23 @@ Public Class Functions
 
     Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
 
-        Dim dInfo As New DirectoryInfo(ShowPath)
+        If Directory.Exists(ShowPath) Then
+            Dim dInfo As New DirectoryInfo(ShowPath)
 
-        For Each sDir As DirectoryInfo In dInfo.GetDirectories
-            For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
-                For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
-                    Try
-                        If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
-                            Return sDir.FullName
-                        End If
-                    Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                    End Try
+            For Each sDir As DirectoryInfo In dInfo.GetDirectories
+                For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
+                    For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                        Try
+                            If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
+                                Return sDir.FullName
+                            End If
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    Next
                 Next
             Next
-        Next
+        End If
         'no matches
         Return String.Empty
     End Function

@@ -1190,7 +1190,7 @@ Public Class Scanner
         End If
     End Sub
 
-    Private Sub GetSeasonImages(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
+    Public Sub GetSeasonImages(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
 
         Dim SeasonPath As String = String.Empty
         Dim bInside As Boolean = False
