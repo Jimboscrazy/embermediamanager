@@ -216,7 +216,7 @@ Public Class NFO
         Return tNonConf
     End Function
 
-    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo) As String
+    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
 
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
@@ -284,7 +284,11 @@ Public Class NFO
         If strOutput.ToString.Trim.Length > 0 Then
             Return strOutput.ToString
         Else
-            Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
+            If isTV Then
+                Return Master.eLang.GetString(504, "Meta Data is not available for this episode. Try rescanning.")
+            Else
+                Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
+            End If
         End If
     End Function
 
