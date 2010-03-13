@@ -935,7 +935,7 @@ Public Class frmMain
                 Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
             End If
         ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
-            Me.SetControlsEnabled(False)
+            Me.SetControlsEnabled(False, True)
 
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
 
@@ -1042,6 +1042,7 @@ Public Class frmMain
 
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
@@ -4602,11 +4603,11 @@ Public Class frmMain
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.TVShow)
                 Master.DB.SaveTVEpToDB(Args.TVShow, False, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
+                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.Movie)
                 Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
+                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
             End If
 
             If Me.bwMediaInfo.CancellationPending Then
@@ -4672,7 +4673,7 @@ Public Class frmMain
                 Me.cmnuTrayIconUpdateMedia.Enabled = True
                 If (Me.tabsMain.SelectedIndex = 0 AndAlso Me.dgvMediaList.RowCount > 0) OrElse _
                    (Me.tabsMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
-                    Me.SetControlsEnabled(True)
+                    Me.SetControlsEnabled(True, True)
                 End If
             End If
         End If
@@ -5846,7 +5847,7 @@ Public Class frmMain
             Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
+            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
@@ -6294,7 +6295,7 @@ Public Class frmMain
                 Me.pbStudio.Left = 0
             End If
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo)
+            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo, True)
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
@@ -7547,6 +7548,9 @@ doCancel:
                 Me.ClearInfo()
 
                 If FilterArray.Count > 0 Then
+                    'reset prevrow
+                    Me.prevRow = -1
+
                     Dim FilterString As String = String.Empty
 
                     If rbFilterAnd.Checked Then
@@ -8090,6 +8094,7 @@ doCancel:
         Me.txtSearch.Enabled = isEnabled
         Me.tabsMain.Enabled = isEnabled
         Me.btnMarkAll.Enabled = isEnabled
+        Me.btnMetaDataRefresh.Enabled = isEnabled
 
         If withLists Then
             Me.dgvMediaList.TabStop = isEnabled
