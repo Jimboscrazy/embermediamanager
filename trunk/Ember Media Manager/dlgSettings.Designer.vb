@@ -559,6 +559,7 @@ Partial Class dlgSettings
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.pnlMain = New System.Windows.Forms.Panel
+        Me.chkDisplayAllSeason = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -4180,6 +4181,7 @@ Partial Class dlgSettings
         '
         'gbTVMisc
         '
+        Me.gbTVMisc.Controls.Add(Me.chkDisplayAllSeason)
         Me.gbTVMisc.Controls.Add(Me.lblRatingRegion)
         Me.gbTVMisc.Controls.Add(Me.cbRatingRegion)
         Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -6652,6 +6654,17 @@ Partial Class dlgSettings
         Me.pnlMain.Size = New System.Drawing.Size(636, 402)
         Me.pnlMain.TabIndex = 75
         '
+        'chkDisplayAllSeason
+        '
+        Me.chkDisplayAllSeason.AutoSize = True
+        Me.chkDisplayAllSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDisplayAllSeason.Location = New System.Drawing.Point(8, 63)
+        Me.chkDisplayAllSeason.Name = "chkDisplayAllSeason"
+        Me.chkDisplayAllSeason.Size = New System.Drawing.Size(154, 17)
+        Me.chkDisplayAllSeason.TabIndex = 4
+        Me.chkDisplayAllSeason.Text = "Display All Season Poster"
+        Me.chkDisplayAllSeason.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6667,6 +6680,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -6676,9 +6692,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlImages)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7386,4 +7399,5 @@ Partial Class dlgSettings
     Friend WithEvents lblPreferredQuality As System.Windows.Forms.Label
     Friend WithEvents chkShowJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDisplayAllSeason As System.Windows.Forms.CheckBox
 End Class

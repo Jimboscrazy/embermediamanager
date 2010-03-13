@@ -1832,6 +1832,8 @@ Public Class Database
                     End Using
                 End If
 
+                CleanSeasons()
+
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
@@ -1853,7 +1855,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLReader.Read
-                        Master.DB.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True, True)
+                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True, False, True)
                     End While
                 End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID = ", ID, ";")
@@ -1863,6 +1865,9 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
+
+            CleanSeasons()
+
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1885,12 +1890,15 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLReader.Read
-                        Master.DB.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), False, True)
+                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), False, False, True)
                     End While
                 End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
+
+            CleanSeasons()
+
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1961,7 +1969,7 @@ Public Class Database
     ''' <param name="ID">ID of the episode to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim tID As Integer = -1
             Dim tSeason As Integer = -999
@@ -1993,16 +2001,7 @@ Public Class Database
                     SQLcommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
-                    Using SQLSeasonReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
-                        If Not SQLSeasonReader.HasRows Then
-                            'no more episodes for this season, delete the season
-                            Using SQLSeasonCommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                                SQLSeasonCommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", tID, " AND Season = ", tSeason, ";")
-                                SQLSeasonCommand.ExecuteNonQuery()
-                            End Using
-                        End If
-                    End Using
+                    If DoCleanSeasons Then Me.CleanSeasons(BatchMode)
                 ElseIf Not tMissing Then 'already marked as missing, no need for another query
                     SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
                     SQLcommand.ExecuteNonQuery()

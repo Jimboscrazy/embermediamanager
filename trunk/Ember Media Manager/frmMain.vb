@@ -57,6 +57,7 @@ Public Class frmMain
     Private aniFilterRaise As Boolean = False
     Private MainPoster As New Images
     Private MainFanart As New Images
+    Private MainAllSeason As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private tmpTitle As String = String.Empty
@@ -4149,11 +4150,11 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuRemoveTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVEp.Click
-        Me.ClearInfo()
+        Me.ClearInfo(False)
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
+                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True)
             Next
 
             Master.DB.CleanSeasons(True)
@@ -4173,7 +4174,7 @@ Public Class frmMain
             If MsgBox(Master.eLang.GetString(764, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Dim ePath As String = String.Empty
 
-                Me.ClearInfo()
+                Me.ClearInfo(False)
 
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -4188,7 +4189,7 @@ Public Class frmMain
                                     File.Delete(String.Concat(ePath, ".jpg"))
                                     File.Delete(String.Concat(ePath, "-fanart.jpg"))
                                     File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, True)
+                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True)
                                 End If
                             End Using
                         Next
@@ -4351,7 +4352,7 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuRemoveSeasonFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuRemoveSeasonFromDB.Click
-        Me.ClearInfo()
+        Me.ClearInfo(False)
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
@@ -4371,7 +4372,7 @@ Public Class frmMain
             If MsgBox(Master.eLang.GetString(765, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Dim ePath As String = String.Empty
 
-                Me.ClearInfo()
+                Me.ClearInfo(False)
 
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -4395,7 +4396,7 @@ Public Class frmMain
                                                     File.Delete(String.Concat(ePath, ".jpg"))
                                                     File.Delete(String.Concat(ePath, "-fanart.jpg"))
                                                     File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, True)
+                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, False, True)
                                                 End If
                                             End If
                                         End Using
@@ -4404,6 +4405,9 @@ Public Class frmMain
                             End Using
                         Next
                     End Using
+
+                    Master.DB.CleanSeasons()
+
                     SQLTrans.Commit()
                 End Using
 
@@ -4814,6 +4818,10 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
+
+            If Master.eSettings.DisplayAllSeason AndAlso Master.eSettings.AllSeasonPosterEnabled Then
+                Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
+            End If
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -5588,8 +5596,9 @@ Public Class frmMain
 
             If Not Me.currThemeType = Theming.ThemeType.Show Then
                 Me.ApplyTheme(Theming.ThemeType.Show)
-                Me.ClearInfo()
             End If
+
+            Me.ClearInfo(False)
 
             Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
@@ -5612,7 +5621,7 @@ Public Class frmMain
 
             If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
 
-            Me.ClearInfo()
+            Me.ClearInfo(False)
 
             Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
@@ -5625,7 +5634,7 @@ Public Class frmMain
 
     End Sub
 
-    Public Sub ClearInfo()
+    Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
 
         '//
         ' Reset all info fields
@@ -5656,8 +5665,16 @@ Public Class frmMain
                     .pbPoster.Image = Nothing
                 End If
                 .pnlPoster.Visible = False
-
                 .MainPoster.Clear()
+
+                If WithAllSeasons Then
+                    If Not IsNothing(.pbAllSeason.Image) Then
+                        .pbAllSeason.Image.Dispose()
+                        .pbAllSeason.Image = Nothing
+                    End If
+                    .MainAllSeason.Clear()
+                End If
+                .pnlAllSeason.Visible = False
 
                 'remove all the current genres
                 Try
@@ -6025,6 +6042,33 @@ Public Class frmMain
                 End If
             End If
 
+            If Not IsNothing(Me.MainAllSeason.Image) Then
+                Me.pbAllSeasonCache.Image = Me.MainAllSeason.Image
+                ImageUtils.ResizePB(Me.pbAllSeason, Me.pbAllSeasonCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageUtils.SetGlassOverlay(Me.pbAllSeason)
+                Me.pnlAllSeason.Size = New Size(Me.pbAllSeason.Width + 10, Me.pbAllSeason.Height + 10)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(Me.pbAllSeason.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainAllSeason.Image.Width, Me.MainAllSeason.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((Me.pbAllSeason.Image.Width - lenSize) / 2 - 15), Me.pbAllSeason.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((Me.pbAllSeason.Image.Width - lenSize) / 2), Me.pbAllSeason.Height - 20)
+                End If
+
+                Me.pbAllSeason.Location = New Point(4, 4)
+                Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
+                Me.pnlAllSeason.Visible = True
+            Else
+                If Not IsNothing(Me.pbAllSeason.Image) Then
+                    Me.pbAllSeason.Image.Dispose()
+                    Me.pbAllSeason.Image = Nothing
+                End If
+                Me.pnlAllSeason.Visible = False
+            End If
+
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
@@ -6163,6 +6207,8 @@ Public Class frmMain
                     Me.pbFanart.Image = Nothing
                 End If
             End If
+
+            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
 
             Me.InfoCleared = False
 
@@ -6306,6 +6352,8 @@ Public Class frmMain
                     Me.pbFanart.Image = Nothing
                 End If
             End If
+
+            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
 
             Me.InfoCleared = False
 
@@ -7188,7 +7236,7 @@ doCancel:
                 Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
 
             Else
-                Master.DB.DeleteTVEpFromDB(ID, False, BatchMode)
+                Master.DB.DeleteTVEpFromDB(ID, False, True, BatchMode)
                 Return True
             End If
 
@@ -7788,7 +7836,7 @@ doCancel:
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
 
         Try
-            Me.ClearInfo()
+            Me.ClearInfo(False)
             If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
                String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(3, iRow).Value) AndAlso _
                Not Convert.ToBoolean(Me.dgvTVSeasons.Item(4, iRow).Value) Then
@@ -7815,7 +7863,7 @@ doCancel:
 
         Try
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) Then
-                Me.ClearInfo()
+                Me.ClearInfo(False)
                 Me.ShowNoInfo(True, 2)
 
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)

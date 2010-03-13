@@ -227,8 +227,6 @@ Public Class Settings
     Private _missingfiltertrailer As Boolean
     Private _missingfiltersubs As Boolean
     Private _missingfilterextras As Boolean
-    'Private _autorenamemulti As Boolean
-    'Private _autorenamesingle As Boolean
     Private _movietheme As String
     Private _tvshowtheme As String
     Private _tveptheme As String
@@ -316,6 +314,7 @@ Public Class Settings
     Private _scraperepdirector As Boolean
     Private _scraperepcredits As Boolean
     Private _scraperepactors As Boolean
+    Private _displayallseason As Boolean
 
     Public Property Version() As String
         Get
@@ -2928,6 +2927,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property DisplayAllSeason() As Boolean
+        Get
+            Return Me._displayallseason
+        End Get
+        Set(ByVal value As Boolean)
+            Me._displayallseason = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -3225,6 +3233,7 @@ Public Class Settings
         Me._scraperepdirector = True
         Me._scraperepcredits = True
         Me._scraperepactors = True
+        Me._displayallseason = True
     End Sub
 
     Public Sub Save()
