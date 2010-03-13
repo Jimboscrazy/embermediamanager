@@ -51,7 +51,7 @@ Public Class AdvancedSettings
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberCORE"
+                Assembly = "*EmberAPP"
             End If
         End If
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
@@ -62,7 +62,7 @@ Public Class AdvancedSettings
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberCORE"
+                Assembly = "*EmberAPP"
             End If
         End If
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
@@ -73,11 +73,11 @@ Public Class AdvancedSettings
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberCORE"
+                Assembly = "*EmberAPP"
             End If
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v(0) Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberCORE", value, "")})
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
             Else
                 _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = value
             End If
@@ -90,11 +90,11 @@ Public Class AdvancedSettings
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberCORE"
+                Assembly = "*EmberAPP"
             End If
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v(0) Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberCORE", Convert.ToString(value), "")})
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
             Else
                 _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = Convert.ToString(value)
             End If

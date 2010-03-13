@@ -202,7 +202,6 @@ Public Class EmberNativeScraperModule
     Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
         _AssemblyName = sAssemblyName
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
     ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule.ModuleName
         Get

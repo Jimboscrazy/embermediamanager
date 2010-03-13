@@ -142,9 +142,7 @@ Public Class FileManagerExternalModule
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         MyPath = Path.Combine(Functions.AppPath, "Modules")
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         Load()
     End Sub
 
