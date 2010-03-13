@@ -487,6 +487,12 @@ Partial Class frmMain
         Me.Label7 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel
+        Me.cmnuShowOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSeasonOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEpOpenFolder = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1335,86 +1341,86 @@ Partial Class frmMain
         '
         'mnuShows
         '
-        Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow, Me.ToolStripSeparator11, Me.RemoveShowToolStripMenuItem})
+        Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.RemoveShowToolStripMenuItem})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(176, 204)
+        Me.mnuShows.Size = New System.Drawing.Size(202, 254)
         '
         'cmnuShowTitle
         '
         Me.cmnuShowTitle.Enabled = False
         Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
         Me.cmnuShowTitle.Name = "cmnuShowTitle"
-        Me.cmnuShowTitle.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(201, 22)
         Me.cmnuShowTitle.Text = "Title"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuReloadShow
         '
         Me.cmnuReloadShow.Image = CType(resources.GetObject("cmnuReloadShow.Image"), System.Drawing.Image)
         Me.cmnuReloadShow.Name = "cmnuReloadShow"
-        Me.cmnuReloadShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuReloadShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuReloadShow.Text = "Reload"
         '
         'cmnuMarkShow
         '
         Me.cmnuMarkShow.Image = CType(resources.GetObject("cmnuMarkShow.Image"), System.Drawing.Image)
         Me.cmnuMarkShow.Name = "cmnuMarkShow"
-        Me.cmnuMarkShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuMarkShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuMarkShow.Text = "Mark"
         '
         'cmnuLockShow
         '
         Me.cmnuLockShow.Image = CType(resources.GetObject("cmnuLockShow.Image"), System.Drawing.Image)
         Me.cmnuLockShow.Name = "cmnuLockShow"
-        Me.cmnuLockShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuLockShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuLockShow.Text = "Lock"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuEditShow
         '
         Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
         Me.cmnuEditShow.Name = "cmnuEditShow"
-        Me.cmnuEditShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuEditShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuEditShow.Text = "Edit Show"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuRescrapeShow
         '
         Me.cmnuRescrapeShow.Image = CType(resources.GetObject("cmnuRescrapeShow.Image"), System.Drawing.Image)
         Me.cmnuRescrapeShow.Name = "cmnuRescrapeShow"
-        Me.cmnuRescrapeShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuRescrapeShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuRescrapeShow.Text = "Re-scrape theTVDB"
         '
         'cmnuChangeShow
         '
         Me.cmnuChangeShow.Image = CType(resources.GetObject("cmnuChangeShow.Image"), System.Drawing.Image)
         Me.cmnuChangeShow.Name = "cmnuChangeShow"
-        Me.cmnuChangeShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuChangeShow.Size = New System.Drawing.Size(201, 22)
         Me.cmnuChangeShow.Text = "Change Show"
         '
         'ToolStripSeparator11
         '
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(198, 6)
         '
         'RemoveShowToolStripMenuItem
         '
         Me.RemoveShowToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVShow, Me.cmnuDeleteTVShow})
         Me.RemoveShowToolStripMenuItem.Image = CType(resources.GetObject("RemoveShowToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveShowToolStripMenuItem.Name = "RemoveShowToolStripMenuItem"
-        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
+        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
         Me.RemoveShowToolStripMenuItem.Text = "Remove"
         '
         'cmnuRemoveTVShow
@@ -1479,79 +1485,79 @@ Partial Class frmMain
         '
         'mnuSeasons
         '
-        Me.mnuSeasons.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuReloadSeason, Me.cmnuMarkSeason, Me.cmnuLockSeason, Me.ToolStripSeparator16, Me.cmnuSeasonChangeImages, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonRemove})
+        Me.mnuSeasons.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuReloadSeason, Me.cmnuMarkSeason, Me.cmnuLockSeason, Me.ToolStripSeparator16, Me.cmnuSeasonChangeImages, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
         Me.mnuSeasons.Name = "mnuSeasons"
-        Me.mnuSeasons.Size = New System.Drawing.Size(176, 182)
+        Me.mnuSeasons.Size = New System.Drawing.Size(202, 210)
         '
         'cmnuSeasonTitle
         '
         Me.cmnuSeasonTitle.Enabled = False
         Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"), System.Drawing.Image)
         Me.cmnuSeasonTitle.Name = "cmnuSeasonTitle"
-        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSeasonTitle.Text = "Title"
         '
         'ToolStripSeparator17
         '
         Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
-        Me.ToolStripSeparator17.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator17.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuReloadSeason
         '
         Me.cmnuReloadSeason.Image = CType(resources.GetObject("cmnuReloadSeason.Image"), System.Drawing.Image)
         Me.cmnuReloadSeason.Name = "cmnuReloadSeason"
-        Me.cmnuReloadSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuReloadSeason.Size = New System.Drawing.Size(201, 22)
         Me.cmnuReloadSeason.Text = "Reload"
         '
         'cmnuMarkSeason
         '
         Me.cmnuMarkSeason.Image = CType(resources.GetObject("cmnuMarkSeason.Image"), System.Drawing.Image)
         Me.cmnuMarkSeason.Name = "cmnuMarkSeason"
-        Me.cmnuMarkSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuMarkSeason.Size = New System.Drawing.Size(201, 22)
         Me.cmnuMarkSeason.Text = "Mark"
         '
         'cmnuLockSeason
         '
         Me.cmnuLockSeason.Image = CType(resources.GetObject("cmnuLockSeason.Image"), System.Drawing.Image)
         Me.cmnuLockSeason.Name = "cmnuLockSeason"
-        Me.cmnuLockSeason.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuLockSeason.Size = New System.Drawing.Size(201, 22)
         Me.cmnuLockSeason.Text = "Lock"
         '
         'ToolStripSeparator16
         '
         Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
-        Me.ToolStripSeparator16.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator16.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuSeasonChangeImages
         '
         Me.cmnuSeasonChangeImages.Image = CType(resources.GetObject("cmnuSeasonChangeImages.Image"), System.Drawing.Image)
         Me.cmnuSeasonChangeImages.Name = "cmnuSeasonChangeImages"
-        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSeasonChangeImages.Text = "Change Images"
         '
         'ToolStripSeparator14
         '
         Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
-        Me.ToolStripSeparator14.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator14.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuSeasonRescrape
         '
         Me.cmnuSeasonRescrape.Image = CType(resources.GetObject("cmnuSeasonRescrape.Image"), System.Drawing.Image)
         Me.cmnuSeasonRescrape.Name = "cmnuSeasonRescrape"
-        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSeasonRescrape.Text = "Re-scrape theTVDB"
         '
         'ToolStripSeparator15
         '
         Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
-        Me.ToolStripSeparator15.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator15.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuSeasonRemove
         '
         Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuDeleteSeason})
         Me.cmnuSeasonRemove.Image = CType(resources.GetObject("cmnuSeasonRemove.Image"), System.Drawing.Image)
         Me.cmnuSeasonRemove.Name = "cmnuSeasonRemove"
-        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSeasonRemove.Text = "Remove"
         '
         'cmnuRemoveSeasonFromDB
@@ -1596,86 +1602,86 @@ Partial Class frmMain
         '
         'mnuEpisodes
         '
-        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.cmnuChangeEp, Me.ToolStripSeparator12, Me.RemoveEpToolStripMenuItem})
+        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.cmnuChangeEp, Me.ToolStripSeparator12, Me.cmnuEpOpenFolder, Me.ToolStripSeparator28, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(176, 204)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(202, 232)
         '
         'cmnuEpTitle
         '
         Me.cmnuEpTitle.Enabled = False
         Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
         Me.cmnuEpTitle.Name = "cmnuEpTitle"
-        Me.cmnuEpTitle.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuEpTitle.Size = New System.Drawing.Size(201, 22)
         Me.cmnuEpTitle.Text = "Title"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuReloadEp
         '
         Me.cmnuReloadEp.Image = CType(resources.GetObject("cmnuReloadEp.Image"), System.Drawing.Image)
         Me.cmnuReloadEp.Name = "cmnuReloadEp"
-        Me.cmnuReloadEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuReloadEp.Size = New System.Drawing.Size(201, 22)
         Me.cmnuReloadEp.Text = "Reload"
         '
         'cmnuMarkEp
         '
         Me.cmnuMarkEp.Image = CType(resources.GetObject("cmnuMarkEp.Image"), System.Drawing.Image)
         Me.cmnuMarkEp.Name = "cmnuMarkEp"
-        Me.cmnuMarkEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuMarkEp.Size = New System.Drawing.Size(201, 22)
         Me.cmnuMarkEp.Text = "Mark"
         '
         'cmnuLockEp
         '
         Me.cmnuLockEp.Image = CType(resources.GetObject("cmnuLockEp.Image"), System.Drawing.Image)
         Me.cmnuLockEp.Name = "cmnuLockEp"
-        Me.cmnuLockEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuLockEp.Size = New System.Drawing.Size(201, 22)
         Me.cmnuLockEp.Text = "Lock"
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuEditEpisode
         '
         Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
         Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
-        Me.cmnuEditEpisode.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuEditEpisode.Size = New System.Drawing.Size(201, 22)
         Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuRescrapeEp
         '
         Me.cmnuRescrapeEp.Image = CType(resources.GetObject("cmnuRescrapeEp.Image"), System.Drawing.Image)
         Me.cmnuRescrapeEp.Name = "cmnuRescrapeEp"
-        Me.cmnuRescrapeEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuRescrapeEp.Size = New System.Drawing.Size(201, 22)
         Me.cmnuRescrapeEp.Text = "Re-scrape theTVDB"
         '
         'cmnuChangeEp
         '
         Me.cmnuChangeEp.Image = CType(resources.GetObject("cmnuChangeEp.Image"), System.Drawing.Image)
         Me.cmnuChangeEp.Name = "cmnuChangeEp"
-        Me.cmnuChangeEp.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuChangeEp.Size = New System.Drawing.Size(201, 22)
         Me.cmnuChangeEp.Text = "Change Episode"
         '
         'ToolStripSeparator12
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(172, 6)
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(198, 6)
         '
         'RemoveEpToolStripMenuItem
         '
         Me.RemoveEpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVEp, Me.cmnuDeleteTVEp})
         Me.RemoveEpToolStripMenuItem.Image = CType(resources.GetObject("RemoveEpToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveEpToolStripMenuItem.Name = "RemoveEpToolStripMenuItem"
-        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
+        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
         Me.RemoveEpToolStripMenuItem.Text = "Remove"
         '
         'cmnuRemoveTVEp
@@ -4310,6 +4316,42 @@ Partial Class frmMain
         Me.pnlLoadingSettings.TabIndex = 13
         Me.pnlLoadingSettings.Visible = False
         '
+        'cmnuShowOpenFolder
+        '
+        Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
+        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
+        '
+        'ToolStripSeparator20
+        '
+        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(198, 6)
+        '
+        'cmnuSeasonOpenFolder
+        '
+        Me.cmnuSeasonOpenFolder.Image = CType(resources.GetObject("cmnuSeasonOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuSeasonOpenFolder.Name = "cmnuSeasonOpenFolder"
+        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuSeasonOpenFolder.Text = "Open Contianing Folder"
+        '
+        'ToolStripSeparator27
+        '
+        Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
+        Me.ToolStripSeparator27.Size = New System.Drawing.Size(198, 6)
+        '
+        'cmnuEpOpenFolder
+        '
+        Me.cmnuEpOpenFolder.Image = CType(resources.GetObject("cmnuEpOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuEpOpenFolder.Name = "cmnuEpOpenFolder"
+        Me.cmnuEpOpenFolder.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuEpOpenFolder.Text = "Open Contianing Folder"
+        '
+        'ToolStripSeparator28
+        '
+        Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
+        Me.ToolStripSeparator28.Size = New System.Drawing.Size(198, 6)
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -4872,4 +4914,10 @@ Partial Class frmMain
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlLoadingSettings As System.Windows.Forms.Panel
+    Friend WithEvents cmnuShowOpenFolder As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator20 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuSeasonOpenFolder As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator27 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuEpOpenFolder As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator28 As System.Windows.Forms.ToolStripSeparator
 End Class

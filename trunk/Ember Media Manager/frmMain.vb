@@ -2734,25 +2734,27 @@ Public Class frmMain
     End Sub
 
     Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
-        Dim doOpen As Boolean = True
-        If Me.dgvMediaList.SelectedRows.Count > 10 Then
-            If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMediaList.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
-        End If
+        If Me.dgvMediaList.SelectedRows.Count > 0 Then
+            Dim doOpen As Boolean = True
+            If Me.dgvMediaList.SelectedRows.Count > 10 Then
+                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMediaList.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+            End If
 
-        If doOpen Then
-            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                Using Explorer As New Diagnostics.Process
+            If doOpen Then
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    Using Explorer As New Diagnostics.Process
 
-                    If Master.isWindows Then
-                        Explorer.StartInfo.FileName = "explorer.exe"
-                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
-                    Else
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = String.Format("""{0}""", Path.GetDirectoryName(sRow.Cells(1).Value.ToString))
-                    End If
-                    Explorer.Start()
-                End Using
-            Next
+                        If Master.isWindows Then
+                            Explorer.StartInfo.FileName = "explorer.exe"
+                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
+                        Else
+                            Explorer.StartInfo.FileName = "xdg-open"
+                            Explorer.StartInfo.Arguments = String.Format("""{0}""", Path.GetDirectoryName(sRow.Cells(1).Value.ToString))
+                        End If
+                        Explorer.Start()
+                    End Using
+                Next
+            End If
         End If
     End Sub
 
@@ -3417,7 +3419,8 @@ Public Class frmMain
                         Me.ToolStripSeparator7.Visible = False
                         Me.cmnuRescrapeShow.Visible = False
                         Me.cmnuChangeShow.Visible = False
-
+                        Me.cmnuShowOpenFolder.Visible = False
+                        Me.ToolStripSeparator20.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
@@ -3443,6 +3446,8 @@ Public Class frmMain
                         Me.ToolStripSeparator7.Visible = True
                         Me.cmnuRescrapeShow.Visible = True
                         Me.cmnuChangeShow.Visible = True
+                        Me.cmnuShowOpenFolder.Visible = True
+                        Me.ToolStripSeparator20.Visible = True
 
                         If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
                             Me.mnuShows.Enabled = False
@@ -3536,11 +3541,13 @@ Public Class frmMain
                         Dim setLock As Boolean = False
 
                         Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.cmnuEditEpisode.Visible = False
                         Me.ToolStripSeparator9.Visible = False
+                        Me.cmnuEditEpisode.Visible = False
+                        Me.ToolStripSeparator10.Visible = False
                         Me.cmnuRescrapeEp.Visible = False
                         Me.cmnuChangeEp.Visible = False
-                        Me.ToolStripSeparator10.Visible = False
+                        Me.ToolStripSeparator12.Visible = False
+                        Me.cmnuEpOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
@@ -3561,11 +3568,13 @@ Public Class frmMain
                         Me.cmnuLockEp.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     Else
 
-                        Me.cmnuEditEpisode.Visible = True
                         Me.ToolStripSeparator9.Visible = True
+                        Me.cmnuEditEpisode.Visible = True
+                        Me.ToolStripSeparator10.Visible = True
                         Me.cmnuRescrapeEp.Visible = True
                         Me.cmnuChangeEp.Visible = True
-                        Me.ToolStripSeparator10.Visible = True
+                        Me.ToolStripSeparator12.Visible = True
+                        Me.cmnuEpOpenFolder.Visible = True
 
                         If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
                             Me.mnuEpisodes.Enabled = False
@@ -4288,6 +4297,8 @@ Public Class frmMain
                         Me.cmnuSeasonChangeImages.Visible = False
                         Me.ToolStripSeparator14.Visible = False
                         Me.cmnuSeasonRescrape.Visible = False
+                        Me.ToolStripSeparator15.Visible = False
+                        Me.cmnuSeasonOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
@@ -4312,6 +4323,8 @@ Public Class frmMain
                         Me.cmnuSeasonChangeImages.Visible = True
                         Me.ToolStripSeparator14.Visible = True
                         Me.cmnuSeasonRescrape.Visible = True
+                        Me.ToolStripSeparator15.Visible = True
+                        Me.cmnuSeasonOpenFolder.Visible = True
 
                         If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
                             Me.mnuSeasons.Enabled = False
@@ -4429,7 +4442,11 @@ Public Class frmMain
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
         Using dEditSeason As New dlgEditSeason
-            dEditSeason.ShowDialog()
+            If dEditSeason.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If Me.RefreshSeason(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, False) Then
+                    Me.FillSeasons(Convert.ToInt32(Master.currShow.ShowID))
+                End If
+            End If
         End Using
     End Sub
 
@@ -4468,6 +4485,102 @@ Public Class frmMain
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub cmnShowOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowOpenFolder.Click
+        If Me.dgvTVShows.SelectedRows.Count > 0 Then
+            Dim doOpen As Boolean = True
+            If Me.dgvTVShows.SelectedRows.Count > 10 Then
+                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVShows.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+            End If
+
+            If doOpen Then
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    Using Explorer As New Diagnostics.Process
+
+                        If Master.isWindows Then
+                            Explorer.StartInfo.FileName = "explorer.exe"
+                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(7).Value.ToString)
+                        Else
+                            Explorer.StartInfo.FileName = "xdg-open"
+                            Explorer.StartInfo.Arguments = String.Format("""{0}""", sRow.Cells(7).Value.ToString)
+                        End If
+                        Explorer.Start()
+                    End Using
+                Next
+            End If
+        End If
+    End Sub
+
+    Private Sub cmnuSeasonOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonOpenFolder.Click
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            Dim doOpen As Boolean = True
+            Dim SeasonPath As String = String.Empty
+
+            If Me.dgvTVSeasons.SelectedRows.Count > 10 Then
+                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVSeasons.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+            End If
+
+            If doOpen Then
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Convert.ToInt32(sRow.Cells(2).Value))
+
+                    Using Explorer As New Diagnostics.Process
+                        If Master.isWindows Then
+                            Explorer.StartInfo.FileName = "explorer.exe"
+                            If String.IsNullOrEmpty(SeasonPath) Then
+                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", Master.currShow.ShowPath)
+                            Else
+                                Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", SeasonPath)
+                            End If
+
+                        Else
+                            Explorer.StartInfo.FileName = "xdg-open"
+                            If String.IsNullOrEmpty(SeasonPath) Then
+                                Explorer.StartInfo.Arguments = String.Format("""{0}""", Master.currShow.ShowPath)
+                            Else
+                                Explorer.StartInfo.Arguments = String.Format("""{0}""", SeasonPath)
+                            End If
+                        End If
+                        Explorer.Start()
+                    End Using
+                Next
+            End If
+        End If
+    End Sub
+
+    Private Sub cmnuEpOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpOpenFolder.Click
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+            Dim doOpen As Boolean = True
+            Dim ePath As String = String.Empty
+
+            If Me.dgvTVEpisodes.SelectedRows.Count > 10 Then
+                If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvTVEpisodes.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+            End If
+
+            If doOpen Then
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(9).Value.ToString, ";")
+                        ePath = SQLCommand.ExecuteScalar.ToString
+
+                        If Not String.IsNullOrEmpty(ePath) Then
+                            Using Explorer As New Diagnostics.Process
+
+                                If Master.isWindows Then
+                                    Explorer.StartInfo.FileName = "explorer.exe"
+                                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
+                                Else
+                                    Explorer.StartInfo.FileName = "xdg-open"
+                                    Explorer.StartInfo.Arguments = String.Format("""{0}""", ePath)
+                                End If
+                                Explorer.Start()
+                            End Using
+                        End If
+                    Next
+                End Using
+            End If
+        End If
     End Sub
 
 #End Region '*** Form/Controls
@@ -5054,6 +5167,9 @@ Public Class frmMain
                 .ScrapingToolStripMenuItem.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .cmnuSearchNew.Text = Master.eLang.GetString(32, "Change Movie")
                 .OpenContainingFolderToolStripMenuItem.Text = Master.eLang.GetString(33, "Open Containing Folder")
+                .cmnuShowOpenFolder.Text = .OpenContainingFolderToolStripMenuItem.Text
+                .cmnuSeasonOpenFolder.Text = .OpenContainingFolderToolStripMenuItem.Text
+                .cmnuEpOpenFolder.Text = .OpenContainingFolderToolStripMenuItem.Text
                 .RemoveToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
                 .DeleteMovieToolStripMenuItem.Text = Master.eLang.GetString(34, "Delete Movie")
                 .RemoveFromDatabaseToolStripMenuItem.Text = Master.eLang.GetString(646, "Remove From Database")
@@ -8164,6 +8280,4 @@ doCancel:
         End Try
     End Sub
 #End Region '*** Routines/Functions
-
 End Class
-
