@@ -5466,6 +5466,8 @@ Public Class frmMain
             Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
             Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
 
+            Me.FillEpisodes(ShowID, Season)
+
         Catch ex As Exception
             Me.SetControlsEnabled(True, True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
