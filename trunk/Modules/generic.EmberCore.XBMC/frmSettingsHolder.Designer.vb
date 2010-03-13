@@ -108,7 +108,7 @@ Partial Class frmSettingsHolder
         Me.btnEditCom.Location = New System.Drawing.Point(305, 107)
         Me.btnEditCom.Name = "btnEditCom"
         Me.btnEditCom.Size = New System.Drawing.Size(91, 23)
-        Me.btnEditCom.TabIndex = 5
+        Me.btnEditCom.TabIndex = 7
         Me.btnEditCom.Text = "Commit Edit"
         Me.btnEditCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnEditCom.UseVisualStyleBackColor = True
@@ -132,7 +132,7 @@ Partial Class frmSettingsHolder
         Me.txtName.Location = New System.Drawing.Point(346, 14)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(238, 22)
-        Me.txtName.TabIndex = 0
+        Me.txtName.TabIndex = 2
         '
         'lbXBMCCom
         '
@@ -160,7 +160,7 @@ Partial Class frmSettingsHolder
         Me.txtPassword.Location = New System.Drawing.Point(514, 74)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(70, 22)
-        Me.txtPassword.TabIndex = 4
+        Me.txtPassword.TabIndex = 6
         Me.txtPassword.UseSystemPasswordChar = True
         '
         'btnAddCom
@@ -171,7 +171,7 @@ Partial Class frmSettingsHolder
         Me.btnAddCom.Location = New System.Drawing.Point(507, 107)
         Me.btnAddCom.Name = "btnAddCom"
         Me.btnAddCom.Size = New System.Drawing.Size(77, 23)
-        Me.btnAddCom.TabIndex = 6
+        Me.btnAddCom.TabIndex = 8
         Me.btnAddCom.Text = "Add New"
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
@@ -182,7 +182,7 @@ Partial Class frmSettingsHolder
         Me.txtUsername.Location = New System.Drawing.Point(374, 74)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(70, 22)
-        Me.txtUsername.TabIndex = 3
+        Me.txtUsername.TabIndex = 5
         '
         'Label13
         '
@@ -230,7 +230,7 @@ Partial Class frmSettingsHolder
         Me.txtPort.Location = New System.Drawing.Point(533, 44)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(51, 22)
-        Me.txtPort.TabIndex = 2
+        Me.txtPort.TabIndex = 4
         '
         'txtIP
         '
@@ -238,7 +238,7 @@ Partial Class frmSettingsHolder
         Me.txtIP.Location = New System.Drawing.Point(357, 44)
         Me.txtIP.Name = "txtIP"
         Me.txtIP.Size = New System.Drawing.Size(103, 22)
-        Me.txtIP.TabIndex = 1
+        Me.txtIP.TabIndex = 3
         '
         'frmSettingsHolder
         '
