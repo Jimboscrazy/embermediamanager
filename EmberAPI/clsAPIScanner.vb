@@ -970,7 +970,7 @@ Public Class Scanner
 
             Try
                 'first check if user added a show folder as a source
-                If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
+                If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
                     'only files in the folder or all folders match the season regex... assume it's a single show folder
                     currShowContainer = New TVShowContainer
                     currShowContainer.ShowPath = dInfo.FullName
