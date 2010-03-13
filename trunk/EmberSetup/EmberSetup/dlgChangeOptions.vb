@@ -51,9 +51,11 @@ Public Class dlgChangeOptions
             Next
         End If
         If frmMainSetup.emberPath = String.Empty Then
-            frmMainSetup.emberPath = System.Environment.GetEnvironmentVariable("ProgramFiles")
-            If frmMainSetup.emberPath = String.Empty Then
-                frmMainSetup.emberPath = "C:\Ember Media Manager"
+            If frmMainSetup.CheckIfWindows Then
+                frmMainSetup.emberPath = System.Environment.GetEnvironmentVariable("ProgramFiles")
+                If frmMainSetup.emberPath = String.Empty Then
+                    frmMainSetup.emberPath = "C:\Ember Media Manager"
+                End If
             End If
         End If
         If File.Exists(Path.Combine(frmMainSetup.AppPath, "Ember Media Manager.exe")) Then
@@ -76,7 +78,7 @@ Public Class dlgChangeOptions
     Private Sub dlgChangeOptions_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If String.IsNullOrEmpty(frmMainSetup.emberPath) Then
             localPath = frmMainSetup.AppPath()
-            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & "\").Replace("\\", "\")
+            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
         Else
             localPath = frmMainSetup.emberPath
             txtEMMPath.Text = frmMainSetup.emberPath
@@ -90,15 +92,15 @@ Public Class dlgChangeOptions
             d.Description = "Select the folder in which you would like to install Ember Media Manager."
             If d.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 localPath = d.SelectedPath
-                txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & "\").Replace("\\", "\")
-                txtEMMPath.Text.Replace("\\", "\")
+                txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+                txtEMMPath.Text.Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
             End If
         End Using
     End Sub
 
     Private Sub cbCreateFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCreateFolder.CheckedChanged
         If Not localPath = String.Empty Then
-            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & "\").Replace("\\", "\")
+            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
         End If
     End Sub
 

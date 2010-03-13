@@ -132,7 +132,7 @@ Partial Class frmMainSetup
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(505, 293)
+        Me.ClientSize = New System.Drawing.Size(505, 325)
         Me.ControlBox = False
         Me.Controls.Add(Me.llAbout)
         Me.Controls.Add(Me.pnlProgress)
