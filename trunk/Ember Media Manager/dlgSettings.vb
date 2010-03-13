@@ -35,6 +35,7 @@ Public Class dlgSettings
     Private currPanel As New Panel
     Private currText As String = String.Empty
     Private tLangList As New List(Of Containers.TVLanguage)
+    Private dHelp As New Dictionary(Of Object, String)
 
 #Region "Form/Controls"
 
@@ -3289,7 +3290,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-        Me.Height = 630
+        Me.Height = 675
+        Me.AddHelpHandlers(Me, "Core_")
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
 
@@ -3318,8 +3320,7 @@ Public Class dlgSettings
         Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
-        Me.Label8.Text = Master.eLang.GetString(458, "* New movies will still display in green if not checked.")
-        Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies*")
+        Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.GroupBox2.Text = Master.eLang.GetString(460, "Media List Options")
         Me.Label30.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.chkCheckTitles.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
@@ -3362,7 +3363,7 @@ Public Class dlgSettings
         Me.chkResizeFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
         Me.lblFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
         Me.chkOverwriteFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
-        Me.GroupBox10.Text = Master.eLang.GetString(488, "Global Locks*")
+        Me.GroupBox10.Text = Master.eLang.GetString(488, "Global Locks")
         Me.chkLockTrailer.Text = Master.eLang.GetString(489, "Lock Trailer")
         Me.chkLockGenre.Text = Master.eLang.GetString(490, "Lock Genre")
         Me.chkLockRealStudio.Text = Master.eLang.GetString(491, "Lock Studio")
@@ -3376,8 +3377,7 @@ Public Class dlgSettings
         Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Scrape Images on Single Scrape")
 
         Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use Extrathumb if no Fanart Found")
-        Me.Label17.Text = Master.eLang.GetString(504, "** If checked, Ember will use only the first half of the movie to extract thumbs")
-        Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers**")
+        Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers")
         Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
         Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Automatically Extract Extrathumbs During Scrapers")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
@@ -3429,15 +3429,14 @@ Public Class dlgSettings
         Me.rbETNative.Text = Master.eLang.GetString(546, "Use Native Resolution")
         Me.GroupBox17.Text = Master.eLang.GetString(547, "Caching")
         Me.chkUseImgCacheUpdaters.Text = Master.eLang.GetString(548, "Use Image Cache for Scrapers")
-        Me.Label19.Text = Master.eLang.GetString(549, "* When enabled, the cache will be available between sessions")
         Me.chkPersistImgCache.Text = Master.eLang.GetString(550, "Persistent Image Cache")
         Me.chkUseImgCache.Text = Master.eLang.GetString(551, "Use Image Cache")
         Me.fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops.")
         Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.GroupBox32.Text = Master.eLang.GetString(577, "Scraper Fields")
-        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew**")
-        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By**")
-        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers**")
+        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
@@ -3490,13 +3489,12 @@ Public Class dlgSettings
         Me.Label1.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.Label3.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
-        Me.Label36.Text = Master.eLang.GetString(621, "* You must restart Ember before changes will take effect.")
         Me.GroupBox28.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
         Me.gbTVMIDefaults.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
         Me.Label34.Text = Master.eLang.GetString(626, "File Type")
         Me.Label49.Text = Master.eLang.GetString(626, "File Type")
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
-        Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes*")
+        Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
         Me.chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         Me.chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
@@ -3533,7 +3531,6 @@ Public Class dlgSettings
         Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
         Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
         Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
-        Me.lblInsideSeason.Text = Master.eLang.GetString(689, "* Inside Season directory")
         Me.btnEditShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
         Me.btnRemoveShowRegex.Text = Master.eLang.GetString(30, "Remove")
         Me.gbShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
@@ -3583,7 +3580,6 @@ Public Class dlgSettings
         Me.lblSeaFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
         Me.lblSeaFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblSeaFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
-        Me.Label52.Text = Master.eLang.GetString(731, "* Enabling locks will disable updating the item during scraping unless the item is empty.")
         Me.Label51.Text = Master.eLang.GetString(732, "<h> = Hours, <m> = Minutes")
         Me.chkDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
@@ -3593,14 +3589,12 @@ Public Class dlgSettings
         Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
         Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
-        Me.lblAPIKey.Text = Master.eLang.GetString(738, "API Key*:")
-        Me.Label48.Text = Master.eLang.GetString(739, "* This is not necessary for Ember to function. It is only used when saving the Episode Guide URL to the nfo. You should enter the API Key of the media center/player you use.")
+        Me.lblAPIKey.Text = Master.eLang.GetString(738, "API Key:")
         Me.lblTVUpdate.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
-        Me.GroupBox33.Text = Master.eLang.GetString(488, "Global Locks*")
-        Me.Label53.Text = Master.eLang.GetString(731, "* Enabling locks will disable updating the item during scraping unless the item is empty.")
+        Me.GroupBox33.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbShowLocks.Text = Master.eLang.GetString(743, "Show")
         Me.chkShowLockTitle.Text = Master.eLang.GetString(494, "Lock Title")
         Me.chkShowLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
@@ -3616,12 +3610,12 @@ Public Class dlgSettings
         Me.gbInterface.Text = Master.eLang.GetString(795, "Interface")
         Me.chkScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         Me.chkTVScanOrderModify.Text = Me.chkScanOrderModify.Text
-        Me.Label42.Text = Master.eLang.GetString(797, "* Scrape Full Crew must be enabled")
 
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
         Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
+        Me.gbHelp.Text = Master.eLang.GetString(458, "     Help")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -4071,6 +4065,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            Me.AddHelpHandlers(tPanel.Panel, "")
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4080,6 +4075,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.PostScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            Me.AddHelpHandlers(tPanel.Panel, "")
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -4088,6 +4084,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            Me.AddHelpHandlers(tPanel.Panel, "")
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
@@ -4096,6 +4093,7 @@ Public Class dlgSettings
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            Me.AddHelpHandlers(tPanel.Panel, "")
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
@@ -4105,6 +4103,7 @@ Public Class dlgSettings
             ModuleCounter += 1
             AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            Me.AddHelpHandlers(tPanel.Panel, "")
         Next
     End Sub
 
@@ -4144,6 +4143,29 @@ Public Class dlgSettings
         If Me.pnlMain.Controls.Count > 0 Then
             Me.pnlMain.Controls.Remove(Me.currPanel)
         End If
+    End Sub
+
+    Private Sub AddHelpHandlers(ByVal Parent As Control, ByVal Prefix As String)
+        For Each ctrl As Control In Parent.Controls
+            If Not TypeOf ctrl Is GroupBox AndAlso Not TypeOf ctrl Is Panel AndAlso Not TypeOf ctrl Is Label AndAlso _
+            Not TypeOf ctrl Is TreeView AndAlso Not TypeOf ctrl Is ToolStrip AndAlso Not TypeOf ctrl Is PictureBox AndAlso _
+            Not TypeOf ctrl Is TabControl Then
+                AddHandler ctrl.MouseEnter, AddressOf HelpMouseEnter
+                AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
+                dHelp.Add(ctrl, Master.eLang.GetHelpString(String.Concat(Prefix, ctrl.Name)))
+            End If
+            If ctrl.HasChildren Then
+                AddHelpHandlers(ctrl, Prefix)
+            End If
+        Next
+    End Sub
+
+    Private Sub HelpMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.lblHelp.Text = dHelp.Item(sender)
+    End Sub
+
+    Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.lblHelp.Text = String.Empty
     End Sub
 #End Region '*** Routines/Functions
 

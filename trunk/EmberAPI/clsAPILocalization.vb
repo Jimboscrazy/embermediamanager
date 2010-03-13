@@ -66,6 +66,7 @@ Public Class Localization
     End Structure
 
     Private Shared htStrings As New Hashtable
+    Private Shared htHelpStrings As New Hashtable
     Private Shared htArrayStrings As New List(Of Locs)
     Private _all As String
     Private _none As String
@@ -159,11 +160,45 @@ Public Class Localization
 
             ' Need to change Globaly Langs_all
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
+
+            Me.LoadHelpStrings(Language)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
+
+    Public Sub LoadHelpStrings(ByVal Language As String)
+        Try
+            If Not String.IsNullOrEmpty(Language) Then
+                Dim lPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
+                If File.Exists(lPath) Then
+                    htHelpStrings = New Hashtable
+                    htHelpStrings.Clear()
+
+                    Dim LangXML As XDocument = XDocument.Load(lPath)
+                    Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
+                    If xLanguage.Count > 0 Then
+                        For i As Integer = 0 To xLanguage.Count - 1
+                            htHelpStrings.Add(xLanguage(i).control, xLanguage(i).Value)
+                        Next
+                    End If
+                Else
+                    MsgBox(String.Concat(String.Format("Cannot find {0}-Help.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Function GetHelpString(ByVal ctrlName As String) As String
+        If htHelpStrings.ContainsKey(ctrlName) Then
+            Return htHelpStrings.Item(ctrlName).ToString
+        Else
+            Return String.Empty
+        End If
+    End Function
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String, Optional ByVal forceFromMain As Boolean = False) As String
         Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
