@@ -7547,6 +7547,9 @@ doCancel:
             Me.bsEpisodes.DataSource = Nothing
             Me.dgvTVEpisodes.DataSource = Nothing
 
+            Me.prevRow = -1
+            Me.prevShowRow = -1
+
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
