@@ -431,7 +431,7 @@ Public Class frmMain
             Directory.CreateDirectory(sPath)
         End If
         Master.eSettings.Load()
-        Master.eLang.LoadLanguage(Master.eSettings.Language)
+        '' #MARK Master.eLang.LoadLanguage(Master.eSettings.Language)
         Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
@@ -451,7 +451,7 @@ Public Class frmMain
         ModulesManager.Instance.LoadAllModules()
 
         'compile help strings after loading all modules
-        Master.eLang.LoadHelpStrings(Master.eSettings.Language)
+        ' #MARK Master.eLang.LoadHelpStrings(Master.eSettings.Language)
 
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)

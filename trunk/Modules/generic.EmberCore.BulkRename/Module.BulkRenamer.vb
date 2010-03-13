@@ -122,7 +122,6 @@ Public Class BulkRenamerModule
         _enabled = False
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub

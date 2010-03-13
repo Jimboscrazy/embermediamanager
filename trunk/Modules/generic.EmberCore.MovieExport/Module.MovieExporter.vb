@@ -103,7 +103,6 @@ Public Class MovieExporterModule
         tsi.DropDownItems.Remove(MyTrayMenu)
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
-        'Master.eLang.LoadLanguage(Master.eSettings.Language)
     End Sub
 
     ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName

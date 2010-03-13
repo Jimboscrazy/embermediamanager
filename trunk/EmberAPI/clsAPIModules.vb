@@ -170,6 +170,7 @@ Public Class ModulesManager
                     'Load the assembly
                     assembly = System.Reflection.Assembly.LoadFile(file)
                     'Loop through each of the assemeblies type
+                    Dim loaded As Boolean = False
                     For Each fileType As Type In assembly.GetTypes
                         Try
                             'Activate the located module
@@ -202,10 +203,13 @@ Public Class ModulesManager
                                 ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
                                 ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
+                                loaded = True
                             End If
                         Catch ex As Exception
                         End Try
                     Next
+                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
+                    loaded = False
                 Catch ex As Exception
                 End Try
             Next
@@ -272,7 +276,7 @@ Public Class ModulesManager
                             loaded = True
                         End If
                     Next
-                    If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
+                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
                     loaded = False
                 Catch ex As Exception
                 End Try
@@ -349,7 +353,7 @@ Public Class ModulesManager
                             loaded = True
                         End If
                     Next
-                    If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
+                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
                     loaded = False
                 Catch ex As Exception
                 End Try
@@ -381,6 +385,7 @@ Public Class ModulesManager
         loadScrapersModules()
         loadTVScrapersModules()
         BuildVersionList()
+        Master.eLang.LoadAllLanguage(Master.eSettings.Language)
     End Sub
     Public Function ScrapersCount() As Integer
         Return externalScrapersModules.Count
