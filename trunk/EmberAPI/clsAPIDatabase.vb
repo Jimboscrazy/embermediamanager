@@ -1877,18 +1877,18 @@ Public Class Database
     ''' <param name="ID">ID of the tvshow to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVSeasonFromDB(ByVal ID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, " AND Season = ", iSeason, ";")
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLReader.Read
                         Master.DB.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), False, True)
                     End While
                 End Using
-                SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ID, " AND Season = ", iSeason, ";")
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
