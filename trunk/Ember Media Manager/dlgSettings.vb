@@ -1492,12 +1492,12 @@ Public Class dlgSettings
     Private Sub btnAddShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddShowRegex.Click
         If String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.TVShowRegEx In Me.ShowRegex Select lRegex.ID).Max
-            Me.ShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtSeasonRegex.Text, .SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtEpRegex.Text, .EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, Settings.EpRetrieve)})
+            Me.ShowRegex.Add(New Settings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtSeasonRegex.Text, .SeasonFromDirectory = Not Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtEpRegex.Text, .EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, Settings.EpRetrieve)})
         Else
             Dim selRex = From lRegex As Settings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnAddShowRegex.Tag)
             If selRex.Count > 0 Then
                 selRex(0).SeasonRegex = Me.txtSeasonRegex.Text
-                selRex(0).SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex)
+                selRex(0).SeasonFromDirectory = Not Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex)
                 selRex(0).EpisodeRegex = Me.txtEpRegex.Text
                 selRex(0).EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, Settings.EpRetrieve)
             End If

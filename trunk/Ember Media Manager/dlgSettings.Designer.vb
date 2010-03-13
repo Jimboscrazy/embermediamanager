@@ -3900,7 +3900,7 @@ Partial Class dlgSettings
         Me.cboSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboSeasonRetrieve.FormattingEnabled = True
-        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name"})
+        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"Directory Name", "File Name"})
         Me.cboSeasonRetrieve.Location = New System.Drawing.Point(443, 40)
         Me.cboSeasonRetrieve.Name = "cboSeasonRetrieve"
         Me.cboSeasonRetrieve.Size = New System.Drawing.Size(135, 21)
@@ -3939,7 +3939,7 @@ Partial Class dlgSettings
         Me.cboEpRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEpRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboEpRetrieve.FormattingEnabled = True
-        Me.cboEpRetrieve.Items.AddRange(New Object() {"File Name", "Directory Name", "Season Result"})
+        Me.cboEpRetrieve.Items.AddRange(New Object() {"Directory Name", "File Name", "Season Result"})
         Me.cboEpRetrieve.Location = New System.Drawing.Point(443, 84)
         Me.cboEpRetrieve.Name = "cboEpRetrieve"
         Me.cboEpRetrieve.Size = New System.Drawing.Size(135, 21)
@@ -6667,8 +6667,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -6679,6 +6677,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlImages)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
