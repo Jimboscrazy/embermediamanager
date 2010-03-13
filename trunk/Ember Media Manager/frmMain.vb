@@ -677,6 +677,7 @@ Public Class frmMain
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                                 Me.Close()
                                 Application.Exit()
+                                Return
                             End If
                         End Using
                     End If
@@ -1160,7 +1161,6 @@ Public Class frmMain
                 Explorer.Start()
             End Using
         End If
-
     End Sub
 
     Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlay.Click
