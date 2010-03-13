@@ -37,21 +37,21 @@ Public Class XBMCxCom
             MyMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
             MyMenu.Text = Master.eLang.GetString(13, "XBMC")
             tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
-            tsi.DropDownItems.Add(MyMenu)
             'MyTrayMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
             'MyTrayMenu.Text = Master.eLang.GetString(13, "XBMC Controller")
             'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
             'tsi.DropDownItems.Add(MyTrayMenu)
             tSettingsHolder.Dispose()
             MyMenu.DropDownItems.Clear()
-            Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = "Update All", .Tag = Nothing}
+            Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
             AddHandler tMenu.Click, AddressOf xCom_Click
             MyMenu.DropDownItems.Add(tMenu)
             For Each xCom As XBMCCom In _MySettings.XComs
-                tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = xCom.Name, .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+                tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
                 AddHandler tMenu.Click, AddressOf xCom_Click
                 MyMenu.DropDownItems.Add(tMenu)
             Next
+            tsi.DropDownItems.Add(MyMenu)
         Catch ex As Exception
         End Try
     End Sub

@@ -103,35 +103,44 @@ Public Class AdvancedSettings
         Return True
     End Function
     Public Shared Sub Save()
-        If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
-            File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-        End If
-        Dim xdoc As New XmlDocument()
-        xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
-        Dim count As Integer = 0
-        For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
-            Dim elem As XmlElement = xdoc.CreateElement("Setting")
-            Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
-            attr.Value = i.Section
-            elem.Attributes.SetNamedItem(attr)
-            Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-            attr2.Value = i.Name
-            elem.Attributes.SetNamedItem(attr2)
-            elem.InnerText = i.Value
-            xdoc.DocumentElement.AppendChild(elem)
-            count += 1
-        Next
-        If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+        Try
+
+            If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
+                File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+            End If
+            Dim xdoc As New XmlDocument()
+            xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
+            Dim count As Integer = 0
+            For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
+                Dim elem As XmlElement = xdoc.CreateElement("Setting")
+                Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                attr.Value = i.Section
+                elem.Attributes.SetNamedItem(attr)
+                Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                attr2.Value = i.Name
+                elem.Attributes.SetNamedItem(attr2)
+                elem.InnerText = i.Value
+                xdoc.DocumentElement.AppendChild(elem)
+                count += 1
+            Next
+            If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     Public Shared Sub Load()
         _DoNotSave = True
-        If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
-            Dim xdoc As New XDocument
-            xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-            For Each i As XElement In xdoc...<Setting>
-                _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
-            Next
-        End If
+        Try
+            If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
+                Dim xdoc As New XDocument
+                xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+                For Each i As XElement In xdoc...<Setting>
+                    _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         _DoNotSave = False
     End Sub
 End Class
