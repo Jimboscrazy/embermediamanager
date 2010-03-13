@@ -627,7 +627,8 @@ Public Class frmMainSetup
                                 End If
                             End If
                             If bwDoInstall.CancellationPending Then Return False
-                            If f.Platform = CurrentEmberPlatform OrElse f.Platform = "Common" Then
+                            If f.Platform = CurrentEmberPlatform OrElse f.Platform = "Common" _
+                                OrElse (Not CheckIfWindows() AndAlso f.Platform = "Mono") Then
                                 If f.NeedInstall = True Then 'OrElse CurrentEmberVersion = String.Empty 
                                     f.NeedInstall = True
                                     'getFile = String.Format("Files/{0}.gz", f.Filename)
@@ -670,82 +671,91 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(8, _NewFiles.Files.Count)
                         counter = 0
                         Dim installedFiles As Integer = 0
-                        For Each f As FileOfList In _NewFiles.Files
-                            If f.NeedInstall = True Then
-                                'Me.bwDoInstall.ReportProgress(5, String.Format("Installing: {0}", f.Filename))
-                                'UncompressFile(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)), Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename)))
-                                'File.Delete(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)))
-                                'Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))
-                                Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates{0}{1}.emm", Path.DirectorySeparatorChar, f.Hash))
-                                Dim dpath As String = Path.Combine(Path.Combine(Path.GetDirectoryName(emberPath), f.Path.Substring(1)), f.Filename)
-                                Try
-                                    'Check File Hash to be sure was not tampered
-                                    hash = GetHash(spath)
-                                    If Not hash = f.Hash Then
-                                        LogWrite(String.Format("*** Main: WARNING File Hash Not Correct : {0}", dpath))
-                                        Me.bwDoInstall.ReportProgress(0, New Object() {3, "WARNING File Hash Not Correct", dpath})
-                                        Return True
-                                    End If
-                                    If File.Exists(dpath) Then
+                        For Stage As Integer = 1 To If(CheckIfWindows, 1, 2) ' Stage 2 = second pass for Mono
+                            If Stage = 2 Then
+                                Me.bwDoInstall.ReportProgress(0, New Object() {0, "Installing Mono Specific Files"})
+                                LogWrite(String.Format("--- Main: Installing Mono Specific Files ({0})", Now))
+                            End If
 
-                                        If f.NeedBackup = True Then
-                                            Try
-                                                If File.Exists(String.Format("{0}.backup", dpath)) Then
-                                                    File.Delete(String.Format("{0}.backup", dpath))
-                                                End If
-                                                LogWrite(String.Format("--- Main: Creating Backup of : {0}", dpath))
-                                                File.Move(dpath, String.Format("{0}.backup", dpath))
-                                            Catch ex As Exception
-                                                LogWrite(String.Format("+++ Main: Locked File on Make Backup: {0}", String.Format("{0}", dpath)))
-                                            End Try
-                                        Else
-                                            'Dont Need backup, but File could be Locked...
-                                            'Also, .exe files can be locked by the Load Assenbly (get Ember Version and Platform)
-                                            'In this cases Move will succedd,
-                                            'Let's try Move it so we can Install the New File
-                                            If File.Exists(String.Format("{0}.old", dpath)) Then
+                            For Each f As FileOfList In _NewFiles.Files
+                                If f.NeedInstall = True Then
+                                    If Stage = 1 AndAlso f.Platform = "Mono" Then Continue For
+                                    'Me.bwDoInstall.ReportProgress(5, String.Format("Installing: {0}", f.Filename))
+                                    'UncompressFile(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)), Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename)))
+                                    'File.Delete(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)))
+                                    'Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))
+                                    Dim spath As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates{0}{1}.emm", Path.DirectorySeparatorChar, f.Hash))
+                                    Dim dpath As String = Path.Combine(Path.Combine(Path.GetDirectoryName(emberPath), f.Path.Substring(1)), f.Filename)
+                                    Try
+                                        'Check File Hash to be sure was not tampered
+                                        hash = GetHash(spath)
+                                        If Not hash = f.Hash Then
+                                            LogWrite(String.Format("*** Main: WARNING File Hash Not Correct : {0}", dpath))
+                                            Me.bwDoInstall.ReportProgress(0, New Object() {3, "WARNING File Hash Not Correct", dpath})
+                                            Return True
+                                        End If
+                                        If File.Exists(dpath) Then
+
+                                            If f.NeedBackup = True Then
                                                 Try
-                                                    File.Delete(String.Format("{0}.old", dpath))
+                                                    If File.Exists(String.Format("{0}.backup", dpath)) Then
+                                                        File.Delete(String.Format("{0}.backup", dpath))
+                                                    End If
+                                                    LogWrite(String.Format("--- Main: Creating Backup of : {0}", dpath))
+                                                    File.Move(dpath, String.Format("{0}.backup", dpath))
                                                 Catch ex As Exception
-                                                    LogWrite(String.Format("--- Main: Locked File on Delete Old: {0}", String.Format("{0}.old", dpath)))
-                                                    'Ignore this
+                                                    LogWrite(String.Format("+++ Main: Locked File on Make Backup: {0}", String.Format("{0}", dpath)))
+                                                End Try
+                                            Else
+                                                'Dont Need backup, but File could be Locked...
+                                                'Also, .exe files can be locked by the Load Assenbly (get Ember Version and Platform)
+                                                'In this cases Move will succedd,
+                                                'Let's try Move it so we can Install the New File
+                                                If File.Exists(String.Format("{0}.old", dpath)) Then
+                                                    Try
+                                                        File.Delete(String.Format("{0}.old", dpath))
+                                                    Catch ex As Exception
+                                                        LogWrite(String.Format("--- Main: Locked File on Delete Old: {0}", String.Format("{0}.old", dpath)))
+                                                        'Ignore this
+                                                    End Try
+                                                End If
+                                                Try
+                                                    File.Move(dpath, String.Format("{0}.old", dpath))
+                                                Catch ex As Exception
+                                                    LogWrite(String.Format("--- Main: Locked File on Move: {0}", String.Format("{0}", dpath)))
+                                                    'Ignore this , Possible locked by Assembly Load
+                                                    'Install will possible fail, but dont abort now.. let it happen later
+                                                End Try
+                                                Try
+                                                    If File.Exists(String.Format("{0}.old", dpath)) Then
+                                                        File.Delete(String.Format("{0}.old", dpath))
+                                                    End If
+                                                Catch ex As Exception
+                                                    LogWrite(String.Format("--- Main: Locked File on Delete: {0}", String.Format("{0}.old", dpath)))
+                                                    'Ignore this , Possible locked by Assembly Load
+                                                    'File is locked, but installation will succedd
                                                 End Try
                                             End If
-                                            Try
-                                                File.Move(dpath, String.Format("{0}.old", dpath))
-                                            Catch ex As Exception
-                                                LogWrite(String.Format("--- Main: Locked File on Move: {0}", String.Format("{0}", dpath)))
-                                                'Ignore this , Possible locked by Assembly Load
-                                                'Install will possible fail, but dont abort now.. let it happen later
-                                            End Try
-                                            Try
-                                                If File.Exists(String.Format("{0}.old", dpath)) Then
-                                                    File.Delete(String.Format("{0}.old", dpath))
-                                                End If
-                                            Catch ex As Exception
-                                                LogWrite(String.Format("--- Main: Locked File on Delete: {0}", String.Format("{0}.old", dpath)))
-                                                'Ignore this , Possible locked by Assembly Load
-                                                'File is locked, but installation will succedd
-                                            End Try
                                         End If
-                                    End If
-                                    If Not Directory.Exists(Path.GetDirectoryName(dpath)) Then
-                                        LogWrite(String.Format("--- Main: Creating Directory: {0}", Path.GetDirectoryName(dpath)))
-                                        Directory.CreateDirectory(Path.GetDirectoryName(dpath))
-                                    End If
-                                    LogWrite(String.Format("--- Main: Installing File: {0}", dpath))
-                                    File.Copy(spath, dpath)
-                                    installedFiles += 1
-                                Catch ex As Exception
-                                    Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0} {1}", dpath, ex.Message))
-                                    LogWrite(String.Format("--- Error: {0}", ex.Message))
-                                    LogWrite(ex.StackTrace)
-                                    Return True
-                                End Try
-                                Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Installed: {0}", f.Filename)})
-                            End If
-                            counter += 1
-                            If bwDoInstall.CancellationPending Then Return False
+                                        If Not Directory.Exists(Path.GetDirectoryName(dpath)) Then
+                                            LogWrite(String.Format("--- Main: Creating Directory: {0}", Path.GetDirectoryName(dpath)))
+                                            Directory.CreateDirectory(Path.GetDirectoryName(dpath))
+                                        End If
+                                        LogWrite(String.Format("--- Main: Installing File: {0}", dpath))
+                                        File.Copy(spath, dpath)
+                                        installedFiles += 1
+                                    Catch ex As Exception
+                                        Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0} {1}", dpath, ex.Message))
+                                        LogWrite(String.Format("--- Error: {0}", ex.Message))
+                                        LogWrite(ex.StackTrace)
+                                        Return True
+                                    End Try
+                                    Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Installed: {0}", f.Filename)})
+                                End If
+                                counter += 1
+                                f.NeedInstall = False
+                                If bwDoInstall.CancellationPending Then Return False
+                            Next
                         Next
                         If installedFiles = 0 Then
                             LogWrite(String.Format("--- Main: No Files needed Installtion ({0})", Now))
