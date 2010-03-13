@@ -67,3 +67,84 @@ Public Class ErrorLogger
     End Sub
 
 End Class
+Public Class JobLogger
+    Public Shared Enabled As Boolean = True
+    Private Shared InternalCounter As Integer = 0
+    Public Shared JobsList As New List(Of Job)
+    Private lastId As Double
+    ' Job is a Group of items.. example: scrape all will be a job .. scrape each movie will be a item
+    Public Class Job
+        Public JobID As Double
+        Public JobType As Integer 'Some Enus Here
+        Public JobStatus As Integer 'Some Enus Here
+        Public JobName As String
+        Public Message As String
+        Public Items As New List(Of JobItem)
+    End Class
+    Public Class JobItem
+        Public ItemID As Double
+        Public ItemType As Integer 'Some Enus Here
+        Public JobID As Double
+        Public ItemStatus As Integer 'Some Enus Here
+        Public Message As String
+    End Class
+    'Example of type ,, can be enum or string (pseudo code)
+    Enum JobTypes
+        GenericLog = 0
+        ScrapeMovie = 1
+        ScrapeTV = 2
+        DoMovieScan = 3
+        ' Etc
+    End Enum
+    'Example of type ,, can be enum or string (pseudo code)
+    Enum ItemTypes
+        Generic = 0
+        ScrapeMovie = 1
+        ScrapeTVEpisode = 2
+        ScanMovie = 3
+    End Enum
+    Enum ItemStatus
+        Generic = 0
+        Skiped = 1
+    End Enum
+    Public Function AddJobItem(ByVal JobId As Double, ByVal ItemType As Integer, ByVal message As String, Optional ByVal Status As Integer = 0) As Double
+        If Not Enabled Then Return 0
+        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobID = JobId)
+        If Not currJob Is Nothing Then
+            currJob.Items.Add(New JobItem With {.JobID = currJob.JobID, .ItemID = currJob.Items.Count, .ItemType = ItemType, .Message = message, .ItemStatus = Status})
+            'Call module JobLogger now
+            Return currJob.Items.Count - 1
+        End If
+    End Function
+    Public Overloads Function AddJob(ByVal id As Double, ByVal JobType As Integer, ByVal message As String, Optional ByVal Status As Integer = 0, Optional ByVal name As String = "") As Double
+        If Not Enabled Then Return 0
+        'Dim localId As Double = 0
+        If id = 0 Then
+            id = Functions.ConvertToUnixTimestamp(Now) * 10
+            If id = lastId Then
+                lastId = id
+                InternalCounter += 1
+                id += InternalCounter
+            Else
+                lastId = id
+                InternalCounter = 0
+            End If
+            If name = "" Then name = id.ToString
+            JobsList.Add(New Job With {.JobID = id, .JobType = JobType, .JobName = name, .Message = message})
+        End If
+        'Call module JobLogger now
+        Return id
+    End Function
+    Public Overloads Function AddJob(ByVal name As String, ByVal JobType As Integer, ByVal message As String, Optional ByVal Status As Integer = 0) As Double
+        If Not Enabled Then Return 0
+        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name)
+        Dim id As Double = 0
+        If Not currJob Is Nothing Then id = currJob.JobID
+        Return AddJob(id, JobType, message, Status, name)
+    End Function
+    Public Sub CloseJob(ByVal name As String)
+        If Not Enabled Then Return
+        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name)
+        If Not currJob Is Nothing Then JobsList.Remove(currJob)
+    End Sub
+End Class
