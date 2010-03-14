@@ -1482,7 +1482,7 @@ Public Class Scanner
                             tmpTVDB.IsMarkEp = False
                             tmpTVDB.IsNewSeason = True
                             tmpTVDB.IsLockSeason = False
-                            tmpTVDB.IsMarkSeason = tmpTVDB.IsMarkEp
+                            tmpTVDB.IsMarkSeason = False
 
                             For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
                                 For Each i As Integer In sSeasons.Episodes

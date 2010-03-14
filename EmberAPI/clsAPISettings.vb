@@ -315,6 +315,8 @@ Public Class Settings
     Private _scraperepcredits As Boolean
     Private _scraperepactors As Boolean
     Private _displayallseason As Boolean
+    Private _marknewshows As Boolean
+    Private _marknewepisodes As Boolean
 
     Public Property Version() As String
         Get
@@ -2936,6 +2938,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MarkNewShows() As Boolean
+        Get
+            Return Me._marknewshows
+        End Get
+        Set(ByVal value As Boolean)
+            Me._marknewshows = value
+        End Set
+    End Property
+
+    Public Property MarkNewEpisodes() As Boolean
+        Get
+            Return Me._marknewepisodes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._marknewepisodes = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -3234,6 +3254,8 @@ Public Class Settings
         Me._scraperepcredits = True
         Me._scraperepactors = True
         Me._displayallseason = True
+        Me._marknewshows = False
+        Me._marknewepisodes = False
     End Sub
 
     Public Sub Save()
