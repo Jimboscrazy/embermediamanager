@@ -34,6 +34,7 @@ Public Class NunoScraperModule
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
+        Me._setup.chkEnabled.Checked = Me.ScraperEnabled
         Me._setup.preferedLanguage = AdvancedSettings.GetSetting("Language", "en")
         Me._setup.tOutline.Checked = AdvancedSettings.GetBooleanSetting("Do.Outline", True)
         Me._setup.tPlot.Checked = AdvancedSettings.GetBooleanSetting("Do.Plot", True)
@@ -48,19 +49,22 @@ Public Class NunoScraperModule
         Return SPanel
     End Function
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupScraper
+        ScraperEnabled = Me._setup.chkEnabled.Checked
         AdvancedSettings.SetSetting("Language", Me._setup.cLanguage.Text)
         AdvancedSettings.SetBooleanSetting("Do.Outline", Me._setup.tOutline.Checked)
         AdvancedSettings.SetBooleanSetting("Do.Plot", Me._setup.tPlot.Checked)
+        AdvancedSettings.SetBooleanSetting("Do.Subs", Me._setup.cAddSubMetadata.Checked)
     End Sub
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
-        SPanel.Name = Me._Name
+        SPanel.Name = String.Concat(Me._Name, "PostScraper")
         SPanel.Text = Me._Name
-        SPanel.Type = Master.eLang.GetString(698, "TV Shows")
+        SPanel.Type = Master.eLang.GetString(698, "Movies")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
+        SPanel.Prefix = "Nuno_"
         SPanel.Panel = New System.Windows.Forms.Panel
-        SPanel.Parent = "pnlTVScraper"
+        SPanel.Parent = "pnlMovieMedia"
         Return SPanel
     End Function
     Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
@@ -71,6 +75,8 @@ Public Class NunoScraperModule
     Private codLang As String
     Private DoOutline As Boolean
     Private DoPlot As Boolean
+    Private DoSubs As Boolean
+    Private DoSubsTrans As Boolean
     Private Language As String
     Public Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
 
@@ -110,6 +116,14 @@ Public Class NunoScraperModule
         codLang = Localization.ISOLangGetCode2ByLang(Language)
         If DoOutline Then DBMovie.Movie.Outline = Translate(codLang, DBMovie.Movie.Outline)
         If DoPlot Then DBMovie.Movie.Plot = Translate(codLang, DBMovie.Movie.Plot)
+        If DoSubs Then
+            If Not String.IsNullOrEmpty(DBMovie.SubPath) Then
+                'Dim mi As MediaInfo.Fileinfo = DBMovie.Movie.FileInfo
+                If DBMovie.Movie.FileInfo.StreamDetails.Subtitle.FirstOrDefault(Function(y) y.SubsType = "External") Is Nothing Then
+                    Dim subs As New MediaInfo.Subtitle With {.SubsPath = DBMovie.SubPath, .SubsType = "External"}
+                End If
+            End If
+        End If
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

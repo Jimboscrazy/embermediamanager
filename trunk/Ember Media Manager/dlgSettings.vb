@@ -4172,9 +4172,15 @@ Public Class dlgSettings
             Not TypeOf ctrl Is TabControl Then
                 pfName = String.Concat(Prefix, ctrl.Name)
                 ctrl.AccessibleDescription = pfName
-                AddHandler ctrl.MouseEnter, AddressOf HelpMouseEnter
-                AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
-                dHelp.Add(pfName, Master.eLang.GetHelpString(pfName))
+                ' Thank You Jean Philippe jp
+                If dHelp.ContainsKey(pfName) Then
+                    dHelp.Item(pfName) = Master.eLang.GetHelpString(pfName)
+                Else
+                    AddHandler ctrl.MouseEnter, AddressOf HelpMouseEnter
+                    AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
+                    dHelp.Add(pfName, Master.eLang.GetHelpString(pfName))
+                End If
+
             End If
             If ctrl.HasChildren Then
                 AddHelpHandlers(ctrl, Prefix)
