@@ -36,6 +36,7 @@ Public Class dlgSettings
     Private currText As String = String.Empty
     Private tLangList As New List(Of Containers.TVLanguage)
     Private dHelp As New Dictionary(Of String, String)
+    Private NoUpdate As Boolean = True
 
 #Region "Form/Controls"
 
@@ -51,7 +52,7 @@ Public Class dlgSettings
     End Function
 
     Private Sub SetApplyButton(ByVal v As Boolean)
-        Me.btnApply.Enabled = v
+        If Not NoUpdate Then Me.btnApply.Enabled = v
     End Sub
 
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
@@ -97,6 +98,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        NoUpdate = True
         Me.SaveSettings(False)
         Me.Close()
     End Sub
@@ -130,13 +132,13 @@ Public Class dlgSettings
             Me.LoadRatingRegions()
             Me.FillSettings()
 
-            Me.SetApplyButton(False)
             Me.LangChanged = False
 
             Me.sResult.NeedsUpdate = False
             Me.sResult.NeedsRefresh = False
             Me.sResult.DidCancel = False
             Me.didApply = False
+            Me.NoUpdate = False
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2335,6 +2337,15 @@ Public Class dlgSettings
     Private Sub chkDisplayAllSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayAllSeason.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkMarkNewShows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMarkNewShows.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMarkNewEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMarkNewEpisodes.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2756,6 +2767,8 @@ Public Class dlgSettings
             Master.eSettings.ScraperEpCredits = Me.chkScraperEpCredits.Checked
             Master.eSettings.ScraperEpActors = Me.chkScraperEpActors.Checked
             Master.eSettings.DisplayAllSeason = Me.chkDisplayAllSeason.Checked
+            Master.eSettings.MarkNewShows = Me.chkMarkNewShows.Checked
+            Master.eSettings.MarkNewEpisodes = Me.chkMarkNewEpisodes.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3127,6 +3140,8 @@ Public Class dlgSettings
             Me.chkScraperEpCredits.Checked = Master.eSettings.ScraperEpCredits
             Me.chkScraperEpActors.Checked = Master.eSettings.ScraperEpActors
             Me.chkDisplayAllSeason.Checked = Master.eSettings.DisplayAllSeason
+            Me.chkMarkNewShows.Checked = Master.eSettings.MarkNewShows
+            Me.chkMarkNewEpisodes.Checked = Master.eSettings.MarkNewEpisodes
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3615,12 +3630,13 @@ Public Class dlgSettings
         Me.gbInterface.Text = Master.eLang.GetString(795, "Interface")
         Me.chkScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         Me.chkTVScanOrderModify.Text = Me.chkScanOrderModify.Text
-
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
         Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
         Me.gbHelp.Text = Master.eLang.GetString(458, "     Help")
+        Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
+        Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")

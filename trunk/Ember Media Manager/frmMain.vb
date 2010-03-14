@@ -284,6 +284,7 @@ Public Class frmMain
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
                 Me.pnlLoadingSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadingSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadingSettings.Height) / 2))
+                Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3653,13 +3654,19 @@ Public Class frmMain
             Dim doFill As Boolean = False
             Dim tFill As Boolean = False
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                    tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
-                    If tFill Then doFill = True
-                Next
-                SQLtransaction.Commit()
-            End Using
+            If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        tFill = Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, True, False, True)
+                        If tFill Then doFill = True
+                    Next
+                    SQLtransaction.Commit()
+                End Using
+            ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+                'seperate single refresh so we can have a progress bar
+                tFill = Me.RefreshShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells(0).Value), False, True, False, True)
+                If tFill Then doFill = True
+            End If
 
             Me.dgvTVShows.Cursor = Cursors.Default
             Me.dgvTVSeasons.Cursor = Cursors.Default
@@ -4942,6 +4949,8 @@ Public Class frmMain
                 Else
                     Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
                 End If
+
+                If Not IsNothing(Me.MainFanart.Image) AndAlso String.IsNullOrEmpty(Master.currShow.Filename) Then Me.MainFanart.Image = ImageUtils.AddMissingStamp(Me.MainFanart.Image)
             End If
 
             'wait for mediainfo to update the nfo
@@ -6233,7 +6242,7 @@ Public Class frmMain
         Try
             Me.SuspendLayout()
             Me.pnlTop.Visible = True
-            Me.lblTitle.Text = Master.currShow.TVEp.Title
+            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, Master.eLang.GetString(689, " [MISSING]")), Master.currShow.TVEp.Title)
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
             Me.txtFilePath.Text = Master.currShow.Filename
@@ -6328,6 +6337,7 @@ Public Class frmMain
 
                 ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
                     g = Graphics.FromImage(pbFanart.Image)
@@ -7066,6 +7076,22 @@ doCancel:
     End Function
 
     Private Function RefreshShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithEpisodes As Boolean) As Boolean
+
+        If Not BatchMode Then
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.tspbLoading.Value = 0
+
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLCommand.CommandText = String.Concat("SELECT COUNT(ID) AS COUNT FROM TVEps WHERE TVShowID = ", ID, " AND Missing = 0;")
+                Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar) + 1
+            End Using
+
+            Me.tslLoading.Text = Master.eLang.GetString(731, "Refreshing Show:")
+            Me.tslLoading.Visible = True
+            Me.tspbLoading.Visible = True
+            Application.DoEvents()
+        End If
+
         Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpShow As New MediaContainers.TVShow
@@ -7112,12 +7138,21 @@ doCancel:
 
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
 
+                If Not BatchMode Then
+                    Me.tspbLoading.Value += 1
+                    Application.DoEvents()
+                End If
+
                 If WithEpisodes Then
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, " AND Missing = 0;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 Me.RefreshEpisode(Convert.ToInt64(SQLReader("ID")), True)
+                                If Not BatchMode Then
+                                    Me.tspbLoading.Value += 1
+                                    Application.DoEvents()
+                                End If
                             End While
                         End Using
                     End Using
@@ -7135,6 +7170,9 @@ doCancel:
                 SQLtransaction = Nothing
 
                 Me.LoadShowInfo(Convert.ToInt32(ID))
+
+                Me.tslLoading.Visible = False
+                Me.tspbLoading.Visible = False
             End If
 
         Catch ex As Exception
@@ -7226,7 +7264,7 @@ doCancel:
                 tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
                 If dRow.Count > 0 Then Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
 
-                If dRow.Count > 0 Then tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(7))
+                If dRow.Count > 0 Then tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
                 If dRow.Count > 0 Then tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
 
                 Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
@@ -7861,7 +7899,7 @@ doCancel:
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
 
         Try
-            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) Then
+            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
                 Me.ClearInfo(False)
                 Me.ShowNoInfo(True, 2)
 

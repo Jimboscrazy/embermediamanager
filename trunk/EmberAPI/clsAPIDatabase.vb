@@ -1403,10 +1403,9 @@ Public Class Database
                 parHasPoster.Value = Not String.IsNullOrEmpty(_TVEpDB.EpPosterPath)
                 parHasFanart.Value = Not String.IsNullOrEmpty(_TVEpDB.EpFanartPath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_TVEpDB.EpNfoPath)
-                parTVEpPathID.Value = PathID
-
                 parNew.Value = _TVEpDB.IsNewEp
                 parMark.Value = _TVEpDB.IsMarkEp
+                parTVEpPathID.Value = PathID
                 parLock.Value = _TVEpDB.IsLockEp
                 parSource.Value = _TVEpDB.Source
                 parNeedsSave.Value = _TVEpDB.EpNeedsSave
@@ -1424,7 +1423,7 @@ Public Class Database
                 End With
 
                 If IsNew Then
-                    If Master.eSettings.MarkNew Then
+                    If Master.eSettings.MarkNewEpisodes Then
                         parMark.Value = True
                     Else
                         parMark.Value = False
@@ -1652,7 +1651,7 @@ Public Class Database
                 parMark.Value = _TVShowDB.IsMarkShow
                 parLock.Value = _TVShowDB.IsLockShow
                 parSource.Value = _TVShowDB.Source
-                parNeedsSave.Value = _TVShowDB.EpNeedsSave
+                parNeedsSave.Value = _TVShowDB.ShowNeedsSave
                 parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), "en", _TVShowDB.ShowLanguage)
 
                 With _TVShowDB.TVShow
@@ -1668,7 +1667,7 @@ Public Class Database
                 End With
 
                 If IsNew Then
-                    If Master.eSettings.MarkNew Then
+                    If Master.eSettings.MarkNewShows Then
                         parMark.Value = True
                     Else
                         parMark.Value = False

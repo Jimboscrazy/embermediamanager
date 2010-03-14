@@ -344,4 +344,6 @@
 	<string control="Core_chkFullCrew">If enabled, all crew members will be scarped (if individually enabled).</string>
 	<string control="Core_cbCert">Select the region to filter certification ratings.</string>
 	<string control="Core_chkCert">Only scarpe the certificaton rating for the selected region.</string>
+	<string control="Core_chkMarkNewShows">If enabled, new shows will be "marked". If disabled, new shows will still be colored green until updated or the next Ember session.</string>
+	<string control="Core_chkMarkNewEpisodes">If enabled, new episodes will be "marked". If disabled, new episodes will still be colored green until updated or the next Ember session.</string>
 </strings>

@@ -548,7 +548,7 @@
   <string id="546">Use Native Resolution</string>
   <string id="547">Caching</string>
   <string id="548">Use Cache for Scrapers</string>
-  <string id="549"></string>
+  <string id="549">Mark New Shows</string>
   <string id="550">Persistent Image Cache</string>
   <string id="551">Use Image Cache</string>
   <string id="552">Select the folder where you wish to store your backdrops.</string>
@@ -620,7 +620,7 @@
   <string id="618">Audio Stream</string>
   <string id="619">Subtitle Stream</string>
   <string id="620">Movie Theme</string>
-  <string id="621"></string>
+  <string id="621">Mark New Episodes</string>
   <string id="622">Scraping Media (Current Filter - Ask):</string>
   <string id="623">Scraping Media (Current Filter - Auto):</string>
   <string id="624">Current Filter</string>
@@ -688,7 +688,7 @@
   <string id="686">Season Fanart</string>
   <string id="687">Episode Posters</string>
   <string id="688">Episode Fanart</string>
-  <string id="689"></string>
+  <string id="689"> [MISSING]</string>
   <string id="690">Edit Regex</string>
   <string id="691">Show Match Regex</string>
   <string id="692">Season Match Regex:</string>
@@ -730,7 +730,7 @@
   <string id="728">Aired</string>
   <string id="729">Credits</string>
   <string id="730">Preferred Poster Type</string>
-  <string id="731"></string>
+  <string id="731">Refreshing Show:</string>
   <string id="732">&lt;h&gt; = Hours, &lt;m&gt; = Minutes</string>
   <string id="733">Display Missing Episodes</string>
   <string id="734">Build Episode Title Instead of Filtering</string>

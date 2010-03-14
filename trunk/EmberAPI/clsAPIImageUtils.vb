@@ -172,6 +172,7 @@ Public Class ImageUtils
 
         Return imgUnderlay
     End Function
+
     Public Shared Sub SetGlassOverlay(ByRef pbUnderlay As PictureBox)
 
         '//
@@ -220,4 +221,30 @@ Public Class ImageUtils
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function AddMissingStamp(ByVal oImage As Image) As Image
+        Dim nImage As New Bitmap(oImage)
+        Dim X As Integer
+        Dim Y As Integer
+        Dim clr As Integer
+
+        'first let's convert the background to grayscale
+        For X = 0 To nImage.Width - 1
+            For Y = 0 To nImage.Height - 1
+                clr = (CInt(nImage.GetPixel(X, Y).R) + _
+                       nImage.GetPixel(X, Y).G + _
+                       nImage.GetPixel(X, Y).B) \ 3
+                nImage.SetPixel(X, Y, Color.FromArgb(clr, clr, clr))
+            Next Y
+        Next X
+
+        'now overlay "missing" image
+        Dim grOverlay As Graphics = Graphics.FromImage(nImage)
+        Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
+        Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
+        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
+
+        Return nImage
+    End Function
 End Class

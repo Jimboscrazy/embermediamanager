@@ -459,16 +459,16 @@ Public Class dlgTVImageSelect
                         Me.pbCurrent.Image = Nothing
                     End If
 
-                    For i = 0 To GenericPosterList.Count - 1
+                    iCount = GenericPosterList.Count
+                    For i = 0 To iCount - 1
                         If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) Then
-                            Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
+                            Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
 
-                    iCount = ShowPosterList.Count
-                    For i = 0 To iCount - 1
+                    For i = 0 To ShowPosterList.Count - 1
                         If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) Then
-                            Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
+                            Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
                 Else

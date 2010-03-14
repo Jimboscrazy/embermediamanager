@@ -67,6 +67,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property missing() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("missing", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property ModulesMenu() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ModulesMenu", resourceCulture)
