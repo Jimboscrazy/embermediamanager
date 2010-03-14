@@ -319,7 +319,8 @@ Public Class Database
                                             "FanartPath TEXT, " & _
                                             "NfoPath TEXT, " & _
                                             "NeedsSave BOOL NOT NULL DEFAULT False, " & _
-                                            "Language TEXT" & _
+                                            "Language TEXT, " & _
+                                            "UseDVDOrder BOOL NOT NULL DEFAULT False" & _
                                             ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVShowPath ON TVShows (TVShowPath);"
@@ -1226,6 +1227,7 @@ Public Class Database
         _TVDB.ShowPath = _tmpTVDB.ShowPath
         _TVDB.Source = _tmpTVDB.Source
         _TVDB.ShowLanguage = _tmpTVDB.ShowLanguage
+        _TVDB.UseDVDOrder = _tmpTVDB.UseDVDOrder
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
@@ -1270,6 +1272,7 @@ Public Class Database
                         _TVDB.IsMarkShow = Convert.ToBoolean(SQLreader("Mark"))
                         _TVDB.IsLockShow = Convert.ToBoolean(SQLreader("Lock"))
                         _TVDB.ShowNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
+                        _TVDB.UseDVDOrder = Convert.ToBoolean(SQLreader("UseDVDOrder"))
                         _TVDB.TVShow = New MediaContainers.TVShow
                         With _TVDB.TVShow
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
@@ -1602,13 +1605,13 @@ Public Class Database
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                         "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
-                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, UseDVDOrder", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                         "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
-                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, UseDVDOrder", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
@@ -1635,6 +1638,7 @@ Public Class Database
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
                 Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
+                Dim parUseDVDOrder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parUseDVDOrder", DbType.Boolean, 0, "UseDVDOrder")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
@@ -1653,6 +1657,7 @@ Public Class Database
                 parSource.Value = _TVShowDB.Source
                 parNeedsSave.Value = _TVShowDB.ShowNeedsSave
                 parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), "en", _TVShowDB.ShowLanguage)
+                parUseDVDOrder.Value = _TVShowDB.UseDVDOrder
 
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID

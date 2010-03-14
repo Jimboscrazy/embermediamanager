@@ -93,18 +93,18 @@ Public Class EmberNativeTVScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
-    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
-        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Options, WithCurrent)
+    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal UseDVDOrder As Boolean, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
+        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, UseDVDOrder, Options, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
-    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
-        TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Options)
+    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal UseDVDOrder As Boolean, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
+        TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, UseDVDOrder, Options)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
-    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
-        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Options)
+    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal UseDVDOrder As Boolean, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
+        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, UseDVDOrder, Options)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
@@ -112,8 +112,8 @@ Public Class EmberNativeTVScraperModule
         RaiseEvent TVScraperEvent(eType, iProgress, Parameter)
     End Sub
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleEpisode
-        epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Options)
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal UseDVDOrder As Boolean, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleEpisode
+        epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, UseDVDOrder, Options)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 

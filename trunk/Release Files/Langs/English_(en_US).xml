@@ -738,7 +738,7 @@
   <string id="736">Only Get Images for the Selected Language</string>
   <string id="737">Also Get English Images</string>
   <string id="738">API Key:</string>
-  <string id="739"></string>
+  <string id="739">Attempt to use DVD ordering when scraping episodes for this show.</string>
   <string id="740">Re-download Show Information Every:</string>
   <string id="741">Preferred Language:</string>
   <string id="742">Fetch Available Languages</string>
@@ -796,7 +796,7 @@
   <string id="794">&amp;Module Settings...</string>
   <string id="795">Interface</string>
   <string id="796">Scan in order of last write time</string>
-  <string id="797"></string>
+  <string id="797">Default to using DVD Ordering</string>
   <string id="798">Get Images From:</string>
   <string id="799">Scraper - Trailers</string>
   <string id="800">Preferred Quality:</string>

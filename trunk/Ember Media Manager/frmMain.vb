@@ -64,6 +64,7 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private tmpTVDB As String = String.Empty
     Private tmpLang As String = String.Empty
+    Private tmpUseDVD As Boolean = False
     Private ReportDownloadPercent As Boolean = False
     Private fScanner As New Scanner
     Private dtMedia As New DataTable
@@ -984,6 +985,7 @@ Public Class frmMain
                 Me.tmpTitle = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
                 Me.tmpTVDB = Me.dgvTVShows.SelectedRows(0).Cells(9).Value.ToString
                 Me.tmpLang = Me.dgvTVShows.SelectedRows(0).Cells(22).Value.ToString
+                Me.tmpUseDVD = Convert.ToBoolean(Me.dgvTVShows.SelectedRows(0).Cells(23).Value)
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                 ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
@@ -1960,6 +1962,7 @@ Public Class frmMain
 
                     Select Case dEditShow.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
+                            Me.SetShowListItemAfterEdit(ID, indX)
                             If Me.RefreshShow(ID, False, True, False, False) Then
                                 Me.FillList(0)
                             End If
@@ -3405,6 +3408,7 @@ Public Class frmMain
 
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        Me.SetShowListItemAfterEdit(ID, indX)
                         If Me.RefreshShow(ID, False, True, False, False) Then
                             Me.FillList(0)
                         End If
@@ -3425,6 +3429,7 @@ Public Class frmMain
                     Me.tmpTitle = Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value.ToString
                     Me.tmpTVDB = Me.dgvTVShows.Item(9, dgvHTI.RowIndex).Value.ToString
                     Me.tmpLang = Me.dgvTVShows.Item(22, dgvHTI.RowIndex).Value.ToString
+                    Me.tmpUseDVD = Convert.ToBoolean(Me.dgvTVShows.Item(23, dgvHTI.RowIndex).Value)
 
                     If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -3501,6 +3506,7 @@ Public Class frmMain
 
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        Me.SetShowListItemAfterEdit(ID, indX)
                         If Me.RefreshShow(ID, False, True, False, False) Then
                             Me.FillList(0)
                         End If
@@ -3643,7 +3649,7 @@ Public Class frmMain
 
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions, True)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Convert.ToBoolean(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Master.DefaultTVOptions, True)
 
     End Sub
 
@@ -4134,7 +4140,7 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
-        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpUseDVD, Master.DefaultTVOptions)
     End Sub
 
     Private Sub cmnuRemoveTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRemoveTVShow.Click
@@ -4463,7 +4469,7 @@ Public Class frmMain
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Master.DefaultTVOptions, False)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), Convert.ToBoolean(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Master.DefaultTVOptions, False)
     End Sub
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
@@ -4483,7 +4489,7 @@ Public Class frmMain
 
     Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
         Me.SetControlsEnabled(False, True)
-        ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Master.DefaultTVOptions)
+        ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpUseDVD, Master.DefaultTVOptions)
     End Sub
 
     Private Sub dgvTVSeasons_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellDoubleClick
@@ -5066,6 +5072,8 @@ Public Class frmMain
         Me.currThemeType = tType
 
         tTheme.ApplyTheme(tType)
+
+        Me.tmrAni.Stop()
 
         Select Case If(Me.tabsMain.SelectedIndex = 0, aniType, aniShowType)
             Case 1
@@ -7840,6 +7848,23 @@ doCancel:
 
     End Sub
 
+    Public Sub SetShowListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
+
+        Try
+            Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT UseDVDOrder FROM TVShows WHERE id = ", iID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    DirectCast(dRow(0), DataRow).Item(23) = Convert.ToBoolean(SQLreader("UseDVDOrder"))
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Private Sub SelectRow(ByVal iRow As Integer)
 
         Try
@@ -7867,6 +7892,8 @@ doCancel:
             Me.tmpTitle = Me.dgvTVShows.Item(1, iRow).Value.ToString
             Me.tmpTVDB = Me.dgvTVShows.Item(9, iRow).Value.ToString
             Me.tmpLang = Me.dgvTVShows.Item(22, iRow).Value.ToString
+            Me.tmpUseDVD = Convert.ToBoolean(Me.dgvTVShows.Item(23, iRow).Value)
+
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
@@ -8228,6 +8255,7 @@ doCancel:
                         Me.tslLoading.Visible = True
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                                Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                                 ModulesManager.Instance.TVSaveImages()
                             Else
                                 Me.tspbLoading.Visible = False

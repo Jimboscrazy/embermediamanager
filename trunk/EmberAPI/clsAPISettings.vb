@@ -317,6 +317,7 @@ Public Class Settings
     Private _displayallseason As Boolean
     Private _marknewshows As Boolean
     Private _marknewepisodes As Boolean
+    Private _dvdorderdefault As Boolean
 
     Public Property Version() As String
         Get
@@ -2956,6 +2957,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property DVDOrderDefault() As Boolean
+        Get
+            Return Me._dvdorderdefault
+        End Get
+        Set(ByVal value As Boolean)
+            Me._dvdorderdefault = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -3256,6 +3266,7 @@ Public Class Settings
         Me._displayallseason = True
         Me._marknewshows = False
         Me._marknewepisodes = False
+        Me._dvdorderdefault = False
     End Sub
 
     Public Sub Save()

@@ -82,6 +82,7 @@ Partial Class dlgEditShow
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
+        Me.chkDVDOrder = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -738,11 +739,22 @@ Partial Class dlgEditShow
         Me.OK_Button.TabIndex = 58
         Me.OK_Button.Text = "OK"
         '
+        'chkDVDOrder
+        '
+        Me.chkDVDOrder.AutoSize = True
+        Me.chkDVDOrder.Location = New System.Drawing.Point(4, 557)
+        Me.chkDVDOrder.Name = "chkDVDOrder"
+        Me.chkDVDOrder.Size = New System.Drawing.Size(378, 17)
+        Me.chkDVDOrder.TabIndex = 61
+        Me.chkDVDOrder.Text = "Attempt to use DVD ordering when scraping episodes for this show."
+        Me.chkDVDOrder.UseVisualStyleBackColor = True
+        '
         'dlgEditShow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.chkDVDOrder)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -774,6 +786,7 @@ Partial Class dlgEditShow
         Me.TabPage4.ResumeLayout(False)
         CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -835,5 +848,6 @@ Partial Class dlgEditShow
     Friend WithEvents btnASChangePosterScrape As System.Windows.Forms.Button
     Friend WithEvents btnASChangePoster As System.Windows.Forms.Button
     Friend WithEvents pbASPoster As System.Windows.Forms.PictureBox
+    Friend WithEvents chkDVDOrder As System.Windows.Forms.CheckBox
 
 End Class

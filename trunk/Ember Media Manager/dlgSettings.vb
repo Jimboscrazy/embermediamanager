@@ -2346,6 +2346,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkDVDOrderDefault_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDVDOrderDefault.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2766,6 +2770,7 @@ Public Class dlgSettings
             Master.eSettings.DisplayAllSeason = Me.chkDisplayAllSeason.Checked
             Master.eSettings.MarkNewShows = Me.chkMarkNewShows.Checked
             Master.eSettings.MarkNewEpisodes = Me.chkMarkNewEpisodes.Checked
+            Master.eSettings.DVDOrderDefault = Me.chkDVDOrderDefault.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3139,6 +3144,7 @@ Public Class dlgSettings
             Me.chkDisplayAllSeason.Checked = Master.eSettings.DisplayAllSeason
             Me.chkMarkNewShows.Checked = Master.eSettings.MarkNewShows
             Me.chkMarkNewEpisodes.Checked = Master.eSettings.MarkNewEpisodes
+            Me.chkDVDOrderDefault.Checked = Master.eSettings.DVDOrderDefault
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3641,6 +3647,7 @@ Public Class dlgSettings
         Me.gbHelp.Text = Master.eLang.GetString(458, "     Help")
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
+        Me.chkDVDOrderDefault.Text = Master.eLang.GetString(797, "Default to using DVD Ordering")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
