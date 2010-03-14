@@ -685,6 +685,7 @@ Public Class frmMain
                                 Application.Exit()
                                 Return
                             End If
+                            dLoading.Show()
                         End Using
                     End If
                 End If
@@ -760,6 +761,7 @@ Public Class frmMain
                         Me.Visible = True
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     Else
+                        dLoading.Show()
                         Me.FillList(0)
                         Me.Visible = True
                     End If
