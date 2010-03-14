@@ -333,6 +333,8 @@ Partial Class dlgSettings
         Me.chkShowFanartCol = New System.Windows.Forms.CheckBox
         Me.chkShowPosterCol = New System.Windows.Forms.CheckBox
         Me.gbTVMisc = New System.Windows.Forms.GroupBox
+        Me.chkMarkNewShows = New System.Windows.Forms.CheckBox
+        Me.chkMarkNewEpisodes = New System.Windows.Forms.CheckBox
         Me.chkDisplayAllSeason = New System.Windows.Forms.CheckBox
         Me.lblRatingRegion = New System.Windows.Forms.Label
         Me.cbRatingRegion = New System.Windows.Forms.ComboBox
@@ -554,8 +556,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.chkMarkNewEpisodes = New System.Windows.Forms.CheckBox
-        Me.chkMarkNewShows = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2145,6 +2145,7 @@ Partial Class dlgSettings
         '
         'btnOK
         '
+        Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnOK.Location = New System.Drawing.Point(802, 619)
         Me.btnOK.Name = "btnOK"
@@ -2155,6 +2156,7 @@ Partial Class dlgSettings
         '
         'btnApply
         '
+        Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnApply.Location = New System.Drawing.Point(639, 619)
@@ -2166,6 +2168,7 @@ Partial Class dlgSettings
         '
         'btnCancel
         '
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnCancel.Location = New System.Drawing.Point(721, 619)
@@ -4139,6 +4142,28 @@ Partial Class dlgSettings
         Me.gbTVMisc.TabIndex = 2
         Me.gbTVMisc.TabStop = False
         Me.gbTVMisc.Text = "Miscellaneous"
+        '
+        'chkMarkNewShows
+        '
+        Me.chkMarkNewShows.AutoSize = True
+        Me.chkMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMarkNewShows.Location = New System.Drawing.Point(8, 90)
+        Me.chkMarkNewShows.Name = "chkMarkNewShows"
+        Me.chkMarkNewShows.Size = New System.Drawing.Size(115, 17)
+        Me.chkMarkNewShows.TabIndex = 6
+        Me.chkMarkNewShows.Text = "Mark New Shows"
+        Me.chkMarkNewShows.UseVisualStyleBackColor = True
+        '
+        'chkMarkNewEpisodes
+        '
+        Me.chkMarkNewEpisodes.AutoSize = True
+        Me.chkMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
+        Me.chkMarkNewEpisodes.Name = "chkMarkNewEpisodes"
+        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(127, 17)
+        Me.chkMarkNewEpisodes.TabIndex = 5
+        Me.chkMarkNewEpisodes.Text = "Mark New Episodes"
+        Me.chkMarkNewEpisodes.UseVisualStyleBackColor = True
         '
         'chkDisplayAllSeason
         '
@@ -6558,6 +6583,8 @@ Partial Class dlgSettings
         '
         'pnlMain
         '
+        Me.pnlMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlMain.AutoScroll = True
         Me.pnlMain.BackColor = System.Drawing.Color.White
         Me.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -6605,28 +6632,6 @@ Partial Class dlgSettings
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(620, 69)
         Me.Panel2.TabIndex = 77
-        '
-        'chkMarkNewEpisodes
-        '
-        Me.chkMarkNewEpisodes.AutoSize = True
-        Me.chkMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
-        Me.chkMarkNewEpisodes.Name = "chkMarkNewEpisodes"
-        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(127, 17)
-        Me.chkMarkNewEpisodes.TabIndex = 5
-        Me.chkMarkNewEpisodes.Text = "Mark New Episodes"
-        Me.chkMarkNewEpisodes.UseVisualStyleBackColor = True
-        '
-        'chkMarkNewShows
-        '
-        Me.chkMarkNewShows.AutoSize = True
-        Me.chkMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMarkNewShows.Location = New System.Drawing.Point(8, 90)
-        Me.chkMarkNewShows.Name = "chkMarkNewShows"
-        Me.chkMarkNewShows.Size = New System.Drawing.Size(115, 17)
-        Me.chkMarkNewShows.TabIndex = 6
-        Me.chkMarkNewShows.Text = "Mark New Shows"
-        Me.chkMarkNewShows.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
