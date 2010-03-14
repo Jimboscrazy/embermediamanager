@@ -54,6 +54,8 @@ Public Class dlgRenameManual
             txtFolder.Visible = False
         End If
         txtFile.Text = FileName
+        'If JobLogger.Enabled Then Master.JobLogList.AddJobItem("ManualRename", JobLogger.ItemTypes.Generic, "Dialog", JobLogger.ItemStatus.OK, _
+        '    String.Concat("stackMark=", stackMark, vbCrLf, "Filename=", FileName, vbCrLf, "Folder=", txtFolder.Text, vbCrLf))
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
@@ -90,6 +92,8 @@ Public Class dlgRenameManual
     End Sub
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
+        'If JobLogger.Enabled Then Master.JobLogList.AddJobItem("ManualRename", JobLogger.ItemTypes.Generic, "DoRename", JobLogger.ItemStatus.OK, _
+        '    String.Concat("Movie=", Master.currMovie.ToString, vbCrLf, "Folder=", txtFolder.Text, vbCrLf, "File=", txtFile.Text, vbCrLf))
         FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
     End Sub
 End Class

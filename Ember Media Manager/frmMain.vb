@@ -82,7 +82,7 @@ Public Class frmMain
     Private ScrapeList As New List(Of DataRow)
 
     'Loading Delays
-    Private currRow As Integer = -1
+    Private currRow As Integer = -2
     Private prevRow As Integer = -1
     Private currShowRow As Integer = -1
     Private prevShowRow As Integer = -1
@@ -3241,6 +3241,7 @@ Public Class frmMain
         Cursor.Current = Cursors.Default
     End Sub
     Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
+        'Dim jobid As Double = Master.JobLogList.AddJob("ManualRename", JobLogger.JobTypes.Rename, "Manual Renaming Movie", JobLogger.JobStatus.Open)
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
         Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
@@ -3252,6 +3253,7 @@ Public Class frmMain
                 End If
                 Me.SetStatus(Master.currMovie.Filename)
         End Select
+        'Master.JobLogList.CloseJob(jobid)
     End Sub
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
