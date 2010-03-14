@@ -101,19 +101,17 @@ Public Class BulkRenamerModule
         End Set
     End Property
     Sub Enable()
-        Dim tmpBulkRenamer As New dlgBulkRenamer
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
+        MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         '.RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
-        MyTrayMenu.Image = New Bitmap(tmpBulkRenamer.Icon.ToBitmap)
+        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
         '_enabled = True
-        tmpBulkRenamer.Dispose()
     End Sub
     Sub Disable()
         Dim tsi As New ToolStripMenuItem

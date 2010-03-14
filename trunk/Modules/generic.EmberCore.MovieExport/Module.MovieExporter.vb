@@ -83,17 +83,15 @@ Public Class MovieExporterModule
     End Property
 
     Sub Enable()
-        Dim tmpExportMovies As New dlgExportMovies
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
+        MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = "Export Movie List"
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
-        MyTrayMenu.Image = New Bitmap(tmpExportMovies.Icon.ToBitmap)
+        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = "Export Movie List"
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
-        tmpExportMovies.Dispose()
 
     End Sub
     Sub Disable()
