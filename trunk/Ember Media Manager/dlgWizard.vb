@@ -303,9 +303,7 @@ Public Class dlgWizard
 
     Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
         If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) Then
-            ' #MARK
-            'Master.eLang.LoadLanguage(Me.cbIntLang.SelectedItem.ToString)
-            'Master.eLang.LoadHelpStrings(Me.cbIntLang.SelectedItem.ToString)
+            Master.eLang.LoadAllLanguage(Me.cbIntLang.SelectedItem.ToString)
             Me.SetUp()
         End If
     End Sub

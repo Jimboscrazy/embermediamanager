@@ -170,7 +170,6 @@ Public Class ModulesManager
                     'Load the assembly
                     assembly = System.Reflection.Assembly.LoadFile(file)
                     'Loop through each of the assemeblies type
-                    Dim loaded As Boolean = False
                     For Each fileType As Type In assembly.GetTypes
                         Try
                             'Activate the located module
@@ -203,13 +202,10 @@ Public Class ModulesManager
                                 ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
                                 ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
-                                loaded = True
                             End If
                         Catch ex As Exception
                         End Try
                     Next
-                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
-                    loaded = False
                 Catch ex As Exception
                 End Try
             Next
@@ -235,7 +231,6 @@ Public Class ModulesManager
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
-            Dim loaded As Boolean = False
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
@@ -273,11 +268,8 @@ Public Class ModulesManager
                             End If
                             externalScrapersModules.Add(_externalScraperModule)
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                            loaded = True
                         End If
                     Next
-                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
-                    loaded = False
                 Catch ex As Exception
                 End Try
             Next
@@ -310,7 +302,6 @@ Public Class ModulesManager
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
-            Dim loaded As Boolean = False
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
                 assembly = System.Reflection.Assembly.LoadFile(file)
                 'Loop through each of the assemeblies type
@@ -350,11 +341,8 @@ Public Class ModulesManager
                             externalTVScrapersModules.Add(_externaltvScraperModule)
                             _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
-                            loaded = True
                         End If
                     Next
-                    ' #MARK If loaded Then Master.eLang.LoadLanguage(Master.eSettings.Language, Path.GetFileNameWithoutExtension(file))
-                    loaded = False
                 Catch ex As Exception
                 End Try
             Next

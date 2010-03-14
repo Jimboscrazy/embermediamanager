@@ -76,7 +76,7 @@ Public Class BulkRenamerModule
         RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
     End Sub
     Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me._enabled = _setup.chkEnabled.Checked
+        Me.Enabled = _setup.chkEnabled.Checked
         MySettings.FoldersPattern = _setup.txtFolderPattern.Text
         MySettings.FilesPattern = _setup.txtFilePattern.Text
         MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked
@@ -90,12 +90,14 @@ Public Class BulkRenamerModule
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            If Not _enabled Then
+            If _enabled = value Then Return
+            _enabled = value
+            If _enabled Then
                 Enable()
             Else
                 Disable()
             End If
-            _enabled = value
+
         End Set
     End Property
     Sub Enable()
@@ -110,7 +112,7 @@ Public Class BulkRenamerModule
         MyTrayMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
-        _enabled = True
+        '_enabled = True
         tmpBulkRenamer.Dispose()
     End Sub
     Sub Disable()
@@ -119,7 +121,7 @@ Public Class BulkRenamerModule
         tsi.DropDownItems.Remove(MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyTrayMenu)
-        _enabled = False
+        '_enabled = False
     End Sub
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         _AssemblyName = sAssemblyName

@@ -432,7 +432,6 @@ Public Class frmMain
             Directory.CreateDirectory(sPath)
         End If
         Master.eSettings.Load()
-        '' #MARK Master.eLang.LoadLanguage(Master.eSettings.Language)
         Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
@@ -450,9 +449,6 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
         ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
         ModulesManager.Instance.LoadAllModules()
-
-        'compile help strings after loading all modules
-        ' #MARK Master.eLang.LoadHelpStrings(Master.eSettings.Language)
 
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)

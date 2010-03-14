@@ -67,6 +67,8 @@ Public Class ErrorLogger
     End Sub
 
 End Class
+
+'#################################################################################################################################
 Public Class JobLogger
     Public Shared Enabled As Boolean = True
     Private Shared InternalCounter As Integer = 0
@@ -104,8 +106,12 @@ Public Class JobLogger
         ScanMovie = 3
     End Enum
     Enum ItemStatus
-        Generic = 0
-        Skiped = 1
+        OK = 0
+        Fail = 1
+        Abort = 2
+        Cancel = 3
+        Pending = 3
+        Skiped = 5
     End Enum
     Public Function AddJobItem(ByVal JobId As Double, ByVal ItemType As Integer, ByVal message As String, Optional ByVal Status As Integer = 0) As Double
         If Not Enabled Then Return 0

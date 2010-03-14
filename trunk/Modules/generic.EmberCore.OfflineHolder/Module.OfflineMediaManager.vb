@@ -44,6 +44,7 @@ Public Class OfflineHolderModule
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
+            If _enabled = value Then Return
             _enabled = value
             If _enabled Then
                 Enable()
@@ -78,11 +79,10 @@ Public Class OfflineHolderModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me._enabled = Me._setup.cbEnabled.Checked
+        Me.Enabled = Me._setup.cbEnabled.Checked
     End Sub
 
     Sub Enable()
-
         Dim tsi As New ToolStripMenuItem
         Dim tmpOfflineHolder As New dlgOfflineHolder
         MyMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)

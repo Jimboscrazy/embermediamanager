@@ -60,6 +60,7 @@ Public Class FileManagerExternalModule
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
+            If _enabled = value Then Return
             _enabled = value
             If _enabled Then
                 Enable()
@@ -102,7 +103,7 @@ Public Class FileManagerExternalModule
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me._enabled = Me._setup.cbEnabled.Checked
+        Me.Enabled = Me._setup.cbEnabled.Checked
         eSettings.ModuleSettings.Clear()
         For Each i As ListViewItem In _setup.ListView1.Items
             eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})

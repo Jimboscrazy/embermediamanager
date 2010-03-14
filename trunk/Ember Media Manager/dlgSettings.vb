@@ -2598,10 +2598,7 @@ Public Class dlgSettings
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
             If Not cbIntLang.Text = Master.eSettings.Language Then
-                ' #MARK
                 Master.eLang.LoadAllLanguage(cbIntLang.Text)
-                'Master.eLang.LoadLanguage(cbIntLang.Text)
-                'Me.RefreshHelpStrings(cbIntLang.Text)
             End If
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
@@ -4194,8 +4191,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RefreshHelpStrings(ByVal Language As String)
-        ' #MARK Master.eLang.LoadHelpStrings(cbIntLang.Text)
-
         For Each sKey As String In dHelp.Keys
             dHelp.Item(sKey) = Master.eLang.GetHelpString(sKey)
         Next

@@ -21,5 +21,6 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared tmpMovie As New MediaContainers.Movie
 
+    Public Shared JobLogList As New JobLogger
 
 End Class
