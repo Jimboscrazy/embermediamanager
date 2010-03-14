@@ -27,6 +27,7 @@ Imports System.Drawing.Bitmap
 Imports System.Text.RegularExpressions
 Imports System.Reflection
 Imports System.Linq
+Imports System.Xml.Serialization
 
 Public Class frmMain
 
@@ -736,7 +737,7 @@ Public Class frmMain
                 Else
                     Master.DB.Connect(True, False)
                     If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
-                        ' Place to put DB Patching
+                        Master.DB.PatchDatabase()
                         File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
                     End If
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
