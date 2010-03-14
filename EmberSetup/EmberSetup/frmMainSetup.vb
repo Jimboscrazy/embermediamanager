@@ -118,7 +118,7 @@ Public Class frmMainSetup
         End Property
     End Class
 
-    Public Sub LogWrite(ByVal s As String)
+    Public Shared Sub LogWrite(ByVal s As String)
         Dim log As New StreamWriter(Path.Combine(AppPath, "install.log"), True)
         log.WriteLine(s)
         log.Close()
@@ -140,6 +140,8 @@ Public Class frmMainSetup
             _Assembly = Nothing
             Return "x86"
         Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
             Return String.Empty
         End Try
     End Function
@@ -162,7 +164,9 @@ Public Class frmMainSetup
                 Dim Dirs As New ArrayList
                 Try
                     Dirs.AddRange(Directory.GetDirectories(sPath))
-                Catch
+                Catch ex As Exception
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                 End Try
                 For Each inDir As String In Dirs
                     DeleteDirectory(inDir)
@@ -170,17 +174,23 @@ Public Class frmMainSetup
                 Dim fFiles As New ArrayList
                 Try
                     fFiles.AddRange(Directory.GetFiles(sPath))
-                Catch
+                Catch ex As Exception
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                 End Try
                 For Each fFile As String In fFiles
                     Try
                         File.Delete(fFile)
-                    Catch
+                    Catch ex As Exception
+                        LogWrite(String.Format("--- Error: {0}", ex.Message))
+                        LogWrite(ex.StackTrace)
                     End Try
                 Next
                 Directory.Delete(sPath, True)
             End If
         Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
         End Try
     End Sub
 
@@ -194,15 +204,8 @@ Public Class frmMainSetup
             If Not DEBUG Then
                 Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
             Else
-                ' So I can Debug without a Web Server
-                'Try
-                'File.Copy(Path.Combine(AppPath, String.Concat("site", Path.DirectorySeparatorChar, url.Replace("/", "\"))), localfile)
-                'Catch ex As Exception
-                'End Try
-
                 Return True
-                'Now I have a local Web Server
-                Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
+                'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
             End If
         Catch ex As Exception
             LogWrite(String.Format("+++ GetURL Error: {0}", ex.Message))
@@ -302,6 +305,8 @@ Public Class frmMainSetup
                     End If
                 Next
             Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
 
             Dim SubDir As DirectoryInfo
@@ -313,6 +318,8 @@ Public Class frmMainSetup
                     End If
                 Next
             Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
         End If
     End Sub
@@ -329,7 +336,7 @@ Public Class frmMainSetup
     End Sub
 
     Public Sub RemoveSetupFolders(ByVal setupPath As String)
-        LogWrite(String.Format("--- RemoveSetupFolders: {0}\updates", setupPath))
+        LogWrite(String.Format("--- RemoveSetupFolders: {0}{1}updates", Path.DirectorySeparatorChar, setupPath))
         DeleteDirectory(Path.Combine(setupPath, "updates"))
     End Sub
 
@@ -794,11 +801,15 @@ Public Class frmMainSetup
                                 File.Delete(Path.Combine(emberPath, "install.log"))
                             End If
                         Catch ex As Exception
+                            LogWrite(String.Format("--- Error: {0}", ex.Message))
+                            LogWrite(ex.StackTrace)
                         End Try
                         Try
                             File.Copy(Path.Combine(AppPath, "EmberSetup.exe"), Path.Combine(emberPath, "EmberSetup.exe"))
                             File.Copy(Path.Combine(AppPath, "install.log"), Path.Combine(emberPath, "install.log"))
                         Catch ex As Exception
+                            LogWrite(String.Format("--- Error: {0}", ex.Message))
+                            LogWrite(ex.StackTrace)
                         End Try
                     Else
                         LogWrite(String.Format("*** Main: EmberSetup in Ember Folder"))
@@ -852,15 +863,20 @@ Public Class frmMainSetup
                 LogWrite(String.Format("*** Main: Commands END"))
 
             Catch ex As Exception
-                LogWrite(String.Format("*** Main: Error {0}", ex.Message))
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
 
         '###################################################################################
-        Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
-        RemoveSetupFolders(Path.GetDirectoryName(emberPath))
-        System.Threading.Thread.Sleep(2000)
-        LogWrite(String.Format("*** Main: Installation Finished with Success"))
-        Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
+            Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
+            If Not CheckIfWindows() Then
+                'Mono Can't run Movie Exporter.. Until Commands are working this will solve the issue
+                File.Delete(Path.Combine(Path.Combine(emberPath, "Modules"), "generic.EmberCore.MovieExporter.dll"))
+            End If
+            RemoveSetupFolders(Path.GetDirectoryName(emberPath))
+            System.Threading.Thread.Sleep(2000)
+            LogWrite(String.Format("*** Main: Installation Finished with Success"))
+            Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
 
         '###################################################################################
         Else
@@ -911,6 +927,8 @@ Public Class frmMainSetup
                 Loop While n > 0
             End Using
         Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
         End Try
         ' Close the files.
         sourceFile.Close()
@@ -935,6 +953,8 @@ Public Class frmMainSetup
                 End If
             Next
         Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
         End Try
         Return Nothing
     End Function
@@ -969,10 +989,14 @@ Public Class frmMainSetup
                     File.Delete(Path.Combine(emberPath, "install.log"))
                 End If
             Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
             Try
                 File.Move(Path.Combine(AppPath, "install.log"), Path.Combine(emberPath, "install.log"))
             Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
         End If
         End
@@ -1035,9 +1059,13 @@ Public Class frmMainSetup
                             Application.DoEvents()
                             p = Process.GetProcessesByName("EmberSetup")
                         Catch ex As Exception
+                            LogWrite(String.Format("--- Error: {0}", ex.Message))
+                            LogWrite(ex.StackTrace)
                         End Try
                     End While
                 Catch ex As Exception
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                 End Try
                 'All of this is just for smooth Visual transitions
 
@@ -1071,10 +1099,14 @@ Public Class frmMainSetup
                         Me.Close()
                     End If
                 Catch ex As Exception
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                 End Try
                 Try
                     File.Delete(Path.Combine(AppPath, "install.log"))
                 Catch ex As Exception
+                    LogWrite(String.Format("--- Error: {0}", ex.Message))
+                    LogWrite(ex.StackTrace)
                 End Try
                 LogWrite(String.Format("*** Main: START {0}", Now))
                 If File.Exists(Path.Combine(AppPath, "Ember Media Manager.exe")) Then
@@ -1192,7 +1224,7 @@ Public Class frmMainSetup
             End Using
         Else
             Using Explorer As New Process
-                Explorer.StartInfo.FileName = "~mono"
+                Explorer.StartInfo.FileName = "mono"
                 Explorer.StartInfo.Arguments = String.Concat("""", Path.Combine(emberPath, "Ember Media Manager.exe"), """")
                 Explorer.Start()
             End Using
@@ -1256,6 +1288,8 @@ Public Class frmMainSetup
                 'If pbFiles.Visible Then pbFiles.Refresh()
                 Me.MyBackGround.Invalidate()
             Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
             End Try
         End SyncLock
     End Sub
@@ -1281,7 +1315,9 @@ Public Class frmMainSetup
             startInfo.Arguments = String.Format("-final {0} {1} {2}", If(CurrentEmberVersion = String.Empty, "0", CurrentEmberVersion), Me.Top, Me.Left)
             Process.Start(startInfo)
             System.Threading.Thread.Sleep(1000)
-        Catch e As Win32Exception
+        Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
 
         End Try
     End Sub

@@ -190,6 +190,7 @@ Public Class frmMain
         Me.BringToFront()
         Me.Activate()
         Me.cmnuTrayIcon.Enabled = True
+        If Not Functions.CheckIfWindows Then Mono_Shown()
     End Sub
 
     Private Sub GenreListToolStripComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.DropDown
@@ -293,6 +294,7 @@ Public Class frmMain
 
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
         Try
+            Mono_MovieDeSelectAll()
             Me.SettingsToolStripMenuItem.Enabled = False
             Me.pnlLoadingSettings.Visible = True
             Me.cmnuTrayIconSettings.Enabled = False
@@ -8372,6 +8374,17 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+    ' *** MONO issues
+    Sub Mono_MovieDeSelectAll()
+        If Me.dgvMediaList.SelectedRows.Count > 0 Then
+            For Each r As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                r.Selected = False
+            Next
+        End If
+    End Sub
+    Sub Mono_Shown()
+        Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
     End Sub
 #End Region '*** Routines/Functions
 End Class

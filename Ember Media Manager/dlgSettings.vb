@@ -3307,7 +3307,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-        Me.Height = 675
+        If Functions.CheckIfWindows Then
+            Me.Height = 675
+        Else
+            ' *** MONO issues
+            Me.Height = 930
+            Me.Width = 980
+        End If
+
         Me.AddHelpHandlers(Me, "Core_")
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
@@ -4172,7 +4179,6 @@ Public Class dlgSettings
             Not TypeOf ctrl Is TabControl Then
                 pfName = String.Concat(Prefix, ctrl.Name)
                 ctrl.AccessibleDescription = pfName
-                ' Thank You Jean Philippe jp
                 If dHelp.ContainsKey(pfName) Then
                     dHelp.Item(pfName) = Master.eLang.GetHelpString(pfName)
                 Else
@@ -4180,7 +4186,6 @@ Public Class dlgSettings
                     AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
                     dHelp.Add(pfName, Master.eLang.GetHelpString(pfName))
                 End If
-
             End If
             If ctrl.HasChildren Then
                 AddHelpHandlers(ctrl, Prefix)
