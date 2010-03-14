@@ -556,6 +556,7 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
+        Me.chkDVDOrderDefault = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -5734,6 +5735,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperOptions
         '
+        Me.gbTVScraperOptions.Controls.Add(Me.chkDVDOrderDefault)
         Me.gbTVScraperOptions.Controls.Add(Me.lblTVUpdate)
         Me.gbTVScraperOptions.Controls.Add(Me.cboTVUpdate)
         Me.gbTVScraperOptions.Controls.Add(Me.lblAPIKey)
@@ -6633,6 +6635,16 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(620, 69)
         Me.Panel2.TabIndex = 77
         '
+        'chkDVDOrderDefault
+        '
+        Me.chkDVDOrderDefault.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDVDOrderDefault.Location = New System.Drawing.Point(6, 279)
+        Me.chkDVDOrderDefault.Name = "chkDVDOrderDefault"
+        Me.chkDVDOrderDefault.Size = New System.Drawing.Size(190, 17)
+        Me.chkDVDOrderDefault.TabIndex = 6
+        Me.chkDVDOrderDefault.Text = "Default to using DVD Ordering"
+        Me.chkDVDOrderDefault.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6640,6 +6652,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(883, 647)
+        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
@@ -6658,7 +6671,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlSources)
         Me.DoubleBuffered = True
@@ -7368,4 +7380,5 @@ Partial Class dlgSettings
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents chkMarkNewShows As System.Windows.Forms.CheckBox
     Friend WithEvents chkMarkNewEpisodes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDVDOrderDefault As System.Windows.Forms.CheckBox
 End Class

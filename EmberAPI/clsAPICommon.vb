@@ -375,6 +375,7 @@ Public Class Structures
         Dim IsMarkSeason As Boolean
         Dim IsLockSeason As Boolean
         Dim ShowLanguage As String
+        Dim UseDVDOrder As Boolean
     End Structure
 
     Public Structure Scans
@@ -464,6 +465,7 @@ Public Class Structures
         Dim ImageType As Enums.TVImageType
         Dim CurrentImage As Image
         Dim WithCurrent As Boolean
+        Dim DVDOrder As Boolean
     End Structure
 
 End Class

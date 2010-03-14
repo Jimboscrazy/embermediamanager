@@ -73,6 +73,8 @@ Public Class dlgEditShow
 
     Private Sub FillInfo()
         With Me
+            .chkDVDOrder.Checked = Master.currShow.UseDVDOrder
+
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then .txtTitle.Text = Master.currShow.TVShow.Title
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Plot) Then .txtPlot.Text = Master.currShow.TVShow.Plot
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Premiered) Then .txtPremiered.Text = Master.currShow.TVShow.Premiered
@@ -284,6 +286,7 @@ Public Class dlgEditShow
     Private Sub SetInfo()
         Try
             With Me
+                Master.currShow.UseDVDOrder = .chkDVDOrder.Checked
 
                 Master.currShow.TVShow.Title = .txtTitle.Text.Trim
                 Master.currShow.TVShow.Plot = .txtPlot.Text.Trim
@@ -662,6 +665,7 @@ Public Class dlgEditShow
         Me.btnASChangePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnASChangePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
         Me.btnASPosterChangeDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.chkDVDOrder.Text = Master.eLang.GetString(739, "Attempt to use DVD ordering when scraping episodes for this show.")
     End Sub
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
