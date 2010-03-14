@@ -1970,43 +1970,37 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
-            Dim tID As Integer = -1
-            Dim tSeason As Integer = -999
-            Dim tMissing As Boolean = False
-
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT TVShowID, Season, Missing FROM TVEps WHERE ID = ", ID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT TVEpPathID, Missing FROM TVEps WHERE ID = ", ID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
                     While SQLReader.Read
-                        tID = Convert.ToInt32(SQLReader("TVShowID"))
-                        tSeason = Convert.ToInt32(SQLReader("Season"))
-                        tMissing = Convert.ToBoolean(SQLReader("Missing"))
+                        Using SQLECommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            If Not Master.eSettings.DisplayMissingEpisodes OrElse Force Then
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = ", Convert.ToInt32(SQLReader("TVEpPathID")), ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+
+                                If DoCleanSeasons Then Me.CleanSeasons(BatchMode)
+                            ElseIf Not Convert.ToBoolean(SQLReader("Missing")) Then 'already marked as missing, no need for another query
+                                SQLECommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = ", Convert.ToInt32(SQLReader("TVEpPathID")), ";")
+                                SQLECommand.ExecuteNonQuery()
+                                SQLECommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE ID = ", ID, ";")
+                                SQLECommand.ExecuteNonQuery()
+                            End If
+                        End Using
                     End While
                 End Using
-
-                If Not Master.eSettings.DisplayMissingEpisodes OrElse Force Then
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-
-                    If DoCleanSeasons Then Me.CleanSeasons(BatchMode)
-                ElseIf Not tMissing Then 'already marked as missing, no need for another query
-                    SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("UPDATE TVEps SET Missing = 1 WHERE ID = ", ID, ";")
-                    SQLcommand.ExecuteNonQuery()
-                End If
             End Using
             If Not BatchMode Then
                 SQLtransaction.Commit()

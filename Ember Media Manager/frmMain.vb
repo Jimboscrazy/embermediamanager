@@ -7782,9 +7782,6 @@ doCancel:
 
                             Me.SetControlsEnabled(True)
                         End If
-
-                        Me.SetTVCount()
-
                     End With
                 End If
                 Me.dgvTVShows.Enabled = True
@@ -7809,6 +7806,7 @@ doCancel:
             Me.tabsMain.Enabled = True
             Me.DoTitleCheck()
             Me.EnableFilters(True)
+            Me.SetTVCount()
         End If
     End Sub
 
