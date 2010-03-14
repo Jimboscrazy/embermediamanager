@@ -381,16 +381,6 @@ Public Class Scanner
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
 
-            Try
-                If Master.eSettings.SortBeforeScan Then
-                    Dim fSorter As New FileUtils.FileSorter
-                    fSorter.SortFiles(sPath)
-                    fSorter = Nothing
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
             Dim dInfo As New DirectoryInfo(sPath)
             Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
 
@@ -1084,6 +1074,15 @@ Public Class Scanner
                                         parLastScan.Value = Now
                                         parID.Value = SQLreader("ID")
                                         SQLUpdatecommand.ExecuteNonQuery()
+                                        Try
+                                            If Master.eSettings.SortBeforeScan Then
+                                                Dim fSorter As New FileUtils.FileSorter
+                                                fSorter.SortFiles(SQLreader("Path").ToString)
+                                                fSorter = Nothing
+                                            End If
+                                        Catch ex As Exception
+                                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                        End Try
                                         ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
                                     End If
                                     If Me.bwPrelim.CancellationPending Then
