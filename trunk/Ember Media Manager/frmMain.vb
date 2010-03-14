@@ -411,9 +411,12 @@ Public Class frmMain
         Return asm
     End Function
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
         Me.TrayIcon.Icon = Me.Icon
-
+        Threading.Thread.Sleep(1000)
+        frmSplash.CloseForm()
+        Dim dLoading As New dlgLoading
+        dLoading.Show()
+        Application.DoEvents()
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
                 .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
@@ -434,12 +437,13 @@ Public Class frmMain
         If Not Directory.Exists(sPath) Then
             Directory.CreateDirectory(sPath)
         End If
+        dLoading.SetStage("Settings...")
         Master.eSettings.Load()
         Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
-
+        dLoading.SetStage("Modules...")
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
         'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
@@ -670,14 +674,11 @@ Public Class frmMain
 
         Else
             Try
-                APIXML.CacheXMLs()
-
-                Me.SetUp(True)
-                Me.cbSearch.SelectedIndex = 0
                 'Testing NEW Checks for new Ember And Modules Version
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
+                            dLoading.Hide()
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                                 Me.Close()
                                 Application.Exit()
@@ -686,6 +687,12 @@ Public Class frmMain
                         End Using
                     End If
                 End If
+                dLoading.SetStage("GUI...")
+                APIXML.CacheXMLs()
+
+                Me.SetUp(True)
+                Me.cbSearch.SelectedIndex = 0
+
 
                 Me.Location = Master.eSettings.WindowLoc
                 Me.Size = Master.eSettings.WindowSize
@@ -729,9 +736,13 @@ Public Class frmMain
                 Me.ClearInfo()
 
                 Application.DoEvents()
-
+                dLoading.SetStage("Database...")
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
+                    If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+                        Master.DB.PatchDatabase()
+                        File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+                    End If
                     Me.FillList(0)
                     Me.Visible = True
                 Else
@@ -740,7 +751,10 @@ Public Class frmMain
                         Master.DB.PatchDatabase()
                         File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
                     End If
+                    dLoading.Hide()
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        dLoading.Show()
+                        Application.DoEvents()
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
@@ -761,7 +775,7 @@ Public Class frmMain
             End Try
 
         End If
-
+        dLoading.Close()
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
