@@ -22,6 +22,7 @@ Public Class XBMCxCom
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
+            If _enabled = value Then Return
             _enabled = value
             If _enabled Then
                 Enable()

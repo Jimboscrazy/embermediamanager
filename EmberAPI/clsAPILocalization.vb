@@ -182,13 +182,7 @@ Public Class Localization
     End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
-        'htHelpStrings = New Hashtable
-        'htHelpStrings.Clear()
-
-        'Dim hPath As String = String.Empty
         Try
-            'For Each tLoc As Locs In htArrayStrings
-            'hPath = tLoc.FileName.Replace(".xml", "-Help.xml")
             If File.Exists(hPath) Then
                 Dim LangXML As XDocument = XDocument.Load(hPath)
                 Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
@@ -198,7 +192,6 @@ Public Class Localization
                     Next
                 End If
             End If
-            'Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
