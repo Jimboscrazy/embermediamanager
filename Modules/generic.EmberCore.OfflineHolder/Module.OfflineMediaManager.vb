@@ -84,16 +84,14 @@ Public Class OfflineHolderModule
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
-        Dim tmpOfflineHolder As New dlgOfflineHolder
-        MyMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
+        MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = "Offline Media Manager"
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
-        MyTrayMenu.Image = New Bitmap(tmpOfflineHolder.Icon.ToBitmap)
+        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = "Offline Media Manager"
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
-        tmpOfflineHolder.Dispose()
 
     End Sub
 
