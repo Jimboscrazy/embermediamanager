@@ -2138,12 +2138,28 @@ Public Class Database
         End Sub
     End Class
 
+    Public Sub PatchDatabase()
+        Dim xmlSer As XmlSerializer
+        Dim _cmds As New InstallCommands
+        xmlSer = New XmlSerializer(GetType(InstallCommands))
+        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
+            For Each _cmd As InstallCommand In _cmds.Command
+                If _cmd.CommandType = "DB" Then
+                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommand.CommandText = _cmd.CommandExecute
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                End If
+            Next
+        End Using
+    End Sub
+
     <XmlRoot("CommandFile")> _
     Public Class InstallCommands
         <XmlArray("Commands")> _
         <XmlArrayItem("Command")> _
         Public Command As List(Of InstallCommand)
-
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
             Using xmlSW As New StreamWriter(fpath)
