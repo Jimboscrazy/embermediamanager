@@ -104,13 +104,15 @@ Public Class Localization
         _none = "[none]"
         _disabled = "[Disabled]"
     End Sub
+
     Public Sub LoadAllLanguage(ByVal language As String)
         htHelpStrings = New Hashtable
         htHelpStrings.Clear()
-        For Each s As ModulesManager.VersionItem In ModulesManager.VersionList
-            LoadLanguage(language, s.AssemblyFileName.Replace(".dll", String.Empty))
+        For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
+            LoadLanguage(language, s.Replace(".dll", String.Empty))
         Next
     End Sub
+
     Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
         Dim _old_all As String = _all
         Dim Assembly As String
