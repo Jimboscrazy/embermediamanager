@@ -1039,16 +1039,17 @@ Public Class frmMain
 
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
                         Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Functions.SetScraperMod(Enums.ModType.All, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
                         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Functions.SetScraperMod(Enums.ModType.All, True, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
@@ -1894,12 +1895,13 @@ Public Class frmMain
 
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
                             Me.SetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
                             End If
                         Case Windows.Forms.DialogResult.Retry
-                            Functions.SetScraperMod(Enums.ModType.All, False)
+                            Functions.SetScraperMod(Enums.ModType.All, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
                             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
@@ -2231,16 +2233,18 @@ Public Class frmMain
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
                         Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
                     Case Windows.Forms.DialogResult.Retry
-                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Functions.SetScraperMod(Enums.ModType.All, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
+                        Master.currMovie.ClearExtras = False
                         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                        Functions.SetScraperMod(Enums.ModType.All, False)
+                        Functions.SetScraperMod(Enums.ModType.All, True, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
@@ -4454,8 +4458,8 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
-        Functions.SetScraperMod(Enums.ModType.DoSearch, False)
-        Functions.SetScraperMod(Enums.ModType.All, True, False)
+        'Functions.SetScraperMod(Enums.ModType.DoSearch, False)
+        Functions.SetScraperMod(Enums.ModType.All, True, True)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
     End Sub
 
@@ -6898,9 +6902,12 @@ doCancel:
                             End If
                         Case Windows.Forms.DialogResult.Retry
                             Master.currMovie.ClearExtras = False
+                            Functions.SetScraperMod(Enums.ModType.All, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
                         Case Windows.Forms.DialogResult.Abort
                             Master.currMovie.ClearExtras = False
+                            Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                            Functions.SetScraperMod(Enums.ModType.All, True, False)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
