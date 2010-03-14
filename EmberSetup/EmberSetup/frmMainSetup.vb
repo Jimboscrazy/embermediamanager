@@ -336,7 +336,7 @@ Public Class frmMainSetup
     End Sub
 
     Public Sub RemoveSetupFolders(ByVal setupPath As String)
-        LogWrite(String.Format("--- RemoveSetupFolders: {0}{1}updates", Path.DirectorySeparatorChar, setupPath))
+        LogWrite(String.Format("--- RemoveSetupFolders: {1}{0}updates", Path.DirectorySeparatorChar, setupPath))
         DeleteDirectory(Path.Combine(setupPath, "updates"))
     End Sub
 
@@ -352,7 +352,7 @@ Public Class frmMainSetup
             lblStatus.ForeColor = Color.Blue
             lblStatus.Font = New Font("Arial", 12, FontStyle.Bold)
             lblStatus.Text = txt
-            pbFiles.Value = progress
+            If progress >= pbFiles.Minimum AndAlso progress <= pbFiles.Maximum Then pbFiles.Value = progress
         End If
         If e.ProgressPercentage = 1 Then
             lblStatus.Text = e.UserState
@@ -407,6 +407,7 @@ Public Class frmMainSetup
         End If
         If e.ProgressPercentage = 8 Then
             pbFiles.Style = ProgressBarStyle.Continuous
+            pbFiles.Value = pbFiles.Minimum
             pbFiles.Maximum = Convert.ToInt32(e.UserState)
         End If
         If e.ProgressPercentage = 9 Then
@@ -419,7 +420,7 @@ Public Class frmMainSetup
             lblInfo.ForeColor = Color.Black
             lblInfo.Font = New Font("Arial", 12, FontStyle.Bold)
             lblInfo.Text = txt
-            pbFiles.Value = progress
+            If progress >= pbFiles.Minimum AndAlso progress <= pbFiles.Maximum Then pbFiles.Value = progress
         End If
         If e.ProgressPercentage = 11 Then
             Dim progress As Integer = e.UserState(0) 'This is true progress %
@@ -443,7 +444,7 @@ Public Class frmMainSetup
         NeedDoEvents = False
         btnExit.Text = "Exit"
         If ExitMe Then
-            Me.Close()
+            'Me.Close()
         End If
         pbFiles.Visible = False
         'Me.Activate()
@@ -816,7 +817,6 @@ Public Class frmMainSetup
                         ' PLACE #1
                     End If
                     ' PLACE #2
-
                 End If
                 InstallVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
 
