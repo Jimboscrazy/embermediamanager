@@ -290,10 +290,12 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.ShowFanart.URL = tSF.URL
                     ElseIf Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSF.URL) Then
                         Scraper.TVDBImages.ShowFanart.Image.FromWeb(tSF.URL)
-                        Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                        Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
-                        Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
-                        Scraper.TVDBImages.ShowFanart.URL = tSF.URL
+                        If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                            Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
+                            Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
+                            Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
+                            Scraper.TVDBImages.ShowFanart.URL = tSF.URL
+                        End If
                     End If
                 End If
             End If
@@ -902,8 +904,10 @@ Public Class dlgTVImageSelect
                 Application.DoEvents()
 
                 tImage.FromWeb(iTag.URL)
-                Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
-                tImage.Save(iTag.Path)
+                If Not IsNothing(tImage.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
+                    tImage.Save(iTag.Path)
+                End If
 
                 sHTTP = Nothing
 
@@ -925,6 +929,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
                 Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
             ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.Clear()
                 Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
@@ -943,6 +948,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.FromFile(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile)
                 Me.pbCurrent.Image = Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image
             ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.SeasonImageList(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile) Then
+                Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Clear()
                 Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.FromWeb(Scraper.TVDBImages.SeasonImageList(0).Fanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.SeasonImageList(0).Fanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.SeasonImageList(0).Fanart.LocalFile).FullName)
@@ -958,6 +964,7 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
                 Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
             ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                Scraper.TVDBImages.ShowFanart.Image.Clear()
                 Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
                 If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                     Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)

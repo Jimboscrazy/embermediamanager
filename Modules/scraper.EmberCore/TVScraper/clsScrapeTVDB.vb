@@ -1453,6 +1453,7 @@ Public Class Scraper
                                         cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
                                         Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
                                     ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
+                                        cSea(0).Fanart.Image.Clear()
                                         cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
                                         If Not IsNothing(cSea(0).Fanart.Image.Image) Then
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
