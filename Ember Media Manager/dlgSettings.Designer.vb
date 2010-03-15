@@ -478,6 +478,7 @@ Partial Class dlgSettings
         Me.Label50 = New System.Windows.Forms.Label
         Me.chkTVScanMetaData = New System.Windows.Forms.CheckBox
         Me.gbTVScraperOptions = New System.Windows.Forms.GroupBox
+        Me.chkDVDOrderDefault = New System.Windows.Forms.CheckBox
         Me.lblTVUpdate = New System.Windows.Forms.Label
         Me.cboTVUpdate = New System.Windows.Forms.ComboBox
         Me.lblAPIKey = New System.Windows.Forms.Label
@@ -556,7 +557,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.chkDVDOrderDefault = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2240,8 +2240,8 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(6, "image.png")
         Me.ilSettings.Images.SetKeyName(7, "television.ico")
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
-        Me.ilSettings.Images.SetKeyName(9, "valid.png")
-        Me.ilSettings.Images.SetKeyName(10, "invalid.png")
+        Me.ilSettings.Images.SetKeyName(9, "accept.png")
+        Me.ilSettings.Images.SetKeyName(10, "delete.png")
         '
         'tvSettings
         '
@@ -5751,6 +5751,16 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.TabStop = False
         Me.gbTVScraperOptions.Text = "Options"
         '
+        'chkDVDOrderDefault
+        '
+        Me.chkDVDOrderDefault.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDVDOrderDefault.Location = New System.Drawing.Point(6, 279)
+        Me.chkDVDOrderDefault.Name = "chkDVDOrderDefault"
+        Me.chkDVDOrderDefault.Size = New System.Drawing.Size(190, 17)
+        Me.chkDVDOrderDefault.TabIndex = 6
+        Me.chkDVDOrderDefault.Text = "Default to using DVD Ordering"
+        Me.chkDVDOrderDefault.UseVisualStyleBackColor = True
+        '
         'lblTVUpdate
         '
         Me.lblTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -6634,16 +6644,6 @@ Partial Class dlgSettings
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(620, 69)
         Me.Panel2.TabIndex = 77
-        '
-        'chkDVDOrderDefault
-        '
-        Me.chkDVDOrderDefault.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDVDOrderDefault.Location = New System.Drawing.Point(6, 279)
-        Me.chkDVDOrderDefault.Name = "chkDVDOrderDefault"
-        Me.chkDVDOrderDefault.Size = New System.Drawing.Size(190, 17)
-        Me.chkDVDOrderDefault.TabIndex = 6
-        Me.chkDVDOrderDefault.Text = "Default to using DVD Ordering"
-        Me.chkDVDOrderDefault.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
