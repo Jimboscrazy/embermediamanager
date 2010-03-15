@@ -1415,6 +1415,7 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = "Wayne ""nitr8"" Humphrey"})
         CredList.Add(New CredLine With {.Text = "Brenton McSweyn"})
         CredList.Add(New CredLine With {.Text = "Clay Mitchell"})
+        CredList.Add(New CredLine With {.Text = "Adyn Rex"})
         CredList.Add(New CredLine With {.Text = "Chris ""NasaGeek"" Roberts"})
         CredList.Add(New CredLine With {.Text = "Tom ""themugger"" Shine"})
         CredList.Add(New CredLine With {.Text = "Alex ""spylex"" Spyrou"})
