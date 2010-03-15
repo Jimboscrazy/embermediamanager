@@ -61,23 +61,28 @@ Public Class HTTP
 
     Public Function DownloadZip(ByVal URL As String) As Byte()
         Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-        wrRequest.Timeout = 20000
 
-        If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-            Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-            wProxy.BypassProxyOnLocal = True
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-                wProxy.Credentials = Master.eSettings.ProxyCreds
-            Else
-                wProxy.Credentials = CredentialCache.DefaultCredentials
+        Try
+            wrRequest.Timeout = 20000
+
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    wProxy.Credentials = Master.eSettings.ProxyCreds
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                wrRequest.Proxy = wProxy
             End If
-            wrRequest.Proxy = wProxy
-        End If
 
-        Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-            Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
-        End Using
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+                Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
+            End Using
+        Catch
+        End Try
 
+        Return Nothing
     End Function
 
     Public Function DownloadData(ByVal URL As String) As String

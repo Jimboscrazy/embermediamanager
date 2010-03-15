@@ -24,6 +24,7 @@ Public Class dlgTVDBSearchResults
     Private sHTTP As New HTTP
     Private sInfo As Structures.ScrapeInfo
     Private _skipdownload As Boolean = False
+    Private _manualresult As Scraper.TVSearchResults = Nothing
     Private lvResultsSorter As New ListViewColumnSorter
 
     Private Structure Results
@@ -74,7 +75,18 @@ Public Class dlgTVDBSearchResults
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
+        ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
+            Me.sInfo.TVDBID = Me._manualresult.ID.ToString
+            Me.sInfo.SelectedLang = Me._manualresult.Language.ShortLang
 
+            If Not _skipdownload Then
+                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
+                Me.pnlLoading.Visible = True
+                Scraper.sObject.DownloadSeriesAsync(sInfo)
+            Else
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
         End If
 
     End Sub
@@ -175,9 +187,12 @@ Public Class dlgTVDBSearchResults
                     End If
                     Me.lvSearchResults.Select()
                 End If
+
+                Me.chkManual.Enabled = True
+
             Case Enums.TVScraperEventType.ShowDownloaded
-                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                    Me.Close()
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
         End Select
     End Sub
 
@@ -217,7 +232,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
         Me.ClearInfo()
-        If Me.lvSearchResults.SelectedItems.Count > 0 Then
+        If Me.lvSearchResults.SelectedItems.Count > 0 AndAlso Not Me.chkManual.Checked Then
             Dim SelectedShow As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
                 If Me.bwDownloadPic.IsBusy Then
@@ -234,8 +249,8 @@ Public Class dlgTVDBSearchResults
             Me.txtOutline.Text = SelectedShow.Overview
             Me.lblAired.Text = SelectedShow.Aired
             Me.OK_Button.Enabled = True
+            Me.ControlsVisible(True)
         End If
-        Me.ControlsVisible(True)
     End Sub
 
     Private Sub SetUp()
@@ -254,9 +269,15 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-        Me.sInfo.ShowTitle = Me.txtSearch.Text
-        Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
-        Me.pnlLoading.Visible = True
+        If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+            Me.chkManual.Enabled = False
+            Me.chkManual.Checked = False
+            Me.txtSearch.Text = String.Empty
+            Me.btnVerify.Enabled = False
+            Me.sInfo.ShowTitle = Me.txtSearch.Text
+            Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
+            Me.pnlLoading.Visible = True
+        End If
     End Sub
 
     Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
@@ -285,5 +306,110 @@ Public Class dlgTVDBSearchResults
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub txtTVDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVDBID.GotFocus
+        Me.AcceptButton = Me.btnVerify
+    End Sub
+
+    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
+        Me.ClearInfo()
+        Me.OK_Button.Enabled = False
+        Me.txtTVDBID.Enabled = Me.chkManual.Checked
+        Me.btnVerify.Enabled = Me.chkManual.Checked
+        Me.lvSearchResults.Enabled = Not Me.chkManual.Checked
+
+        If Not Me.chkManual.Checked Then
+            txtTVDBID.Text = String.Empty
+        Else
+            Me.lvSearchResults.SelectedItems(0).Selected = False
+        End If
+    End Sub
+
+    Private Sub txtTVDBID_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVDBID.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
+    End Sub
+
+    Private Sub txtTVDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBID.TextChanged
+        If String.IsNullOrEmpty(Me.txtTVDBID.Text) Then
+            Me.btnVerify.Enabled = False
+            Me.OK_Button.Enabled = False
+        Else
+            If Me.chkManual.Checked Then
+                Me.btnVerify.Enabled = True
+                Me.OK_Button.Enabled = False
+            End If
+        End If
+    End Sub
+
+    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+        If Me.txtTVDBID.Text.Length = 5 Then
+            Dim tmpXML As XDocument = Nothing
+            Dim sLang As String = String.Empty
+
+            Me.ClearInfo()
+            Me.pnlLoading.Visible = True
+            Application.DoEvents()
+
+            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, Scraper.APIKey, Me.txtTVDBID.Text, Master.eSettings.TVDBLanguage))
+
+            If Not String.IsNullOrEmpty(forceXML) Then
+                Try
+                    tmpXML = XDocument.Parse(forceXML)
+                Catch
+                End Try
+
+                If Not IsNothing(tmpXML) Then
+                    Dim tSer As XElement = tmpXML.Descendants("Series").FirstOrDefault(Function(s) s.HasElements)
+
+                    If Not IsNothing(tSer) Then
+                        Me._manualresult = New Scraper.TVSearchResults
+                        Me._manualresult.ID = Convert.ToInt32(tSer.Element("id").Value)
+                        Me._manualresult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
+                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
+                            sLang = tSer.Element("Language").Value
+                            Me._manualresult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                        ElseIf Not IsNothing(tSer.Element("Language")) Then
+                            sLang = tSer.Element("Language").Value
+                            Me._manualresult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
+                        End If
+                        Me._manualresult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
+                        Me._manualresult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value, String.Empty)
+                        Me._manualresult.Banner = If(Not IsNothing(tSer.Element("banner")), tSer.Element("banner").Value, String.Empty)
+                        If Not String.IsNullOrEmpty(Me._manualresult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
+                            If Not String.IsNullOrEmpty(Me._manualresult.Banner) Then
+                                If Me.bwDownloadPic.IsBusy Then
+                                    Me.bwDownloadPic.CancelAsync()
+                                End If
+
+                                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                                Me.bwDownloadPic.WorkerSupportsCancellation = True
+                                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me._manualresult.Banner})
+                            End If
+
+                            Me.OK_Button.Tag = Me._manualresult.ID
+                            Me.lblTitle.Text = Me._manualresult.Name
+                            Me.txtOutline.Text = Me._manualresult.Overview
+                            Me.lblAired.Text = Me._manualresult.Aired
+                            Me.OK_Button.Enabled = True
+                            Me.pnlLoading.Visible = False
+                            Me.ControlsVisible(True)
+                        Else
+                            Me.pnlLoading.Visible = False
+                        End If
+                    Else
+                        Me.pnlLoading.Visible = False
+                    End If
+                Else
+                    Me.pnlLoading.Visible = False
+                End If
+            Else
+                Me.pnlLoading.Visible = False
+            End If
+
+
+        Else
+            MsgBox(Master.eLang.GetString(999, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+        End If
     End Sub
 End Class

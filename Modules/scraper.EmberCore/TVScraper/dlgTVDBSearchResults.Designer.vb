@@ -36,6 +36,7 @@
         Me.colLang = New System.Windows.Forms.ColumnHeader
         Me.colLev = New System.Windows.Forms.ColumnHeader
         Me.colID = New System.Windows.Forms.ColumnHeader
+        Me.colSLang = New System.Windows.Forms.ColumnHeader
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
@@ -45,7 +46,9 @@
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.btnSearch = New System.Windows.Forms.Button
         Me.txtSearch = New System.Windows.Forms.TextBox
-        Me.colSLang = New System.Windows.Forms.ColumnHeader
+        Me.btnVerify = New System.Windows.Forms.Button
+        Me.chkManual = New System.Windows.Forms.CheckBox
+        Me.txtTVDBID = New System.Windows.Forms.TextBox
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.pnlTop.SuspendLayout()
@@ -55,7 +58,7 @@
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(486, 319)
+        Me.OK_Button.Location = New System.Drawing.Point(485, 335)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -64,7 +67,7 @@
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(559, 319)
+        Me.Cancel_Button.Location = New System.Drawing.Point(558, 335)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -126,7 +129,7 @@
         Me.txtOutline.Location = New System.Drawing.Point(325, 205)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
-        Me.txtOutline.Size = New System.Drawing.Size(300, 100)
+        Me.txtOutline.Size = New System.Drawing.Size(300, 127)
         Me.txtOutline.TabIndex = 66
         Me.txtOutline.TabStop = False
         Me.txtOutline.Visible = False
@@ -161,6 +164,10 @@
         'colID
         '
         Me.colID.Width = 0
+        '
+        'colSLang
+        '
+        Me.colSLang.Width = 0
         '
         'pnlLoading
         '
@@ -256,9 +263,37 @@
         Me.txtSearch.Size = New System.Drawing.Size(287, 22)
         Me.txtSearch.TabIndex = 71
         '
-        'colSLang
+        'btnVerify
         '
-        Me.colSLang.Width = 0
+        Me.btnVerify.Enabled = False
+        Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnVerify.Location = New System.Drawing.Point(244, 337)
+        Me.btnVerify.Name = "btnVerify"
+        Me.btnVerify.Size = New System.Drawing.Size(75, 22)
+        Me.btnVerify.TabIndex = 75
+        Me.btnVerify.Text = "Verify"
+        Me.btnVerify.UseVisualStyleBackColor = True
+        '
+        'chkManual
+        '
+        Me.chkManual.AutoSize = True
+        Me.chkManual.Enabled = False
+        Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkManual.Location = New System.Drawing.Point(3, 341)
+        Me.chkManual.Name = "chkManual"
+        Me.chkManual.Size = New System.Drawing.Size(127, 17)
+        Me.chkManual.TabIndex = 73
+        Me.chkManual.Text = "Manual TVDB Entry:"
+        Me.chkManual.UseVisualStyleBackColor = True
+        '
+        'txtTVDBID
+        '
+        Me.txtTVDBID.Enabled = False
+        Me.txtTVDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVDBID.Location = New System.Drawing.Point(138, 337)
+        Me.txtTVDBID.Name = "txtTVDBID"
+        Me.txtTVDBID.Size = New System.Drawing.Size(100, 22)
+        Me.txtTVDBID.TabIndex = 74
         '
         'dlgTVDBSearchResults
         '
@@ -266,7 +301,10 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(629, 345)
+        Me.ClientSize = New System.Drawing.Size(629, 363)
+        Me.Controls.Add(Me.btnVerify)
+        Me.Controls.Add(Me.chkManual)
+        Me.Controls.Add(Me.txtTVDBID)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txtSearch)
         Me.Controls.Add(Me.pnlTop)
@@ -321,5 +359,8 @@
     Friend WithEvents colLev As System.Windows.Forms.ColumnHeader
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSLang As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnVerify As System.Windows.Forms.Button
+    Friend WithEvents chkManual As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTVDBID As System.Windows.Forms.TextBox
 
 End Class

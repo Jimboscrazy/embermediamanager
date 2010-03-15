@@ -26,10 +26,16 @@ Public Class dlgIMDBSearchResults
     Dim UseOFDBOutline As Boolean
     Dim UseOFDBPlot As Boolean
     Dim UseOFDBGenre As Boolean
+
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
 
     Private IMDB As New IMDB.Scraper
     Private sHTTP As New HTTP
+
+    Private _prevnode As Integer = -2
+    Private _currnode As Integer = -1
 
     Private Structure Results
         Dim Result As Image
@@ -38,6 +44,26 @@ Public Class dlgIMDBSearchResults
     Private Structure Arguments
         Dim pURL As String
     End Structure
+
+    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        If Not Me._prevnode = Me._currnode Then
+            Me._prevnode = Me._currnode
+            Me.tmrLoad.Enabled = True
+        Else
+            Me.tmrLoad.Enabled = False
+        End If
+    End Sub
+
+    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        Me.tmrWait.Enabled = False
+        Me.tmrLoad.Enabled = False
+
+        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
+
+        IMDB.IMDBURL = IMDBURL
+        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
+
+    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -73,6 +99,11 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Interval = 250
+        Me.tmrLoad.Enabled = False
+        Me.tmrLoad.Interval = 250
+
         Me.SetUp()
         IMDB.IMDBURL = IMDBURL
         IMDB.UseOFDBTitle = UseOFDBTitle
@@ -157,14 +188,19 @@ Public Class dlgIMDBSearchResults
 
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
+            Me.tmrWait.Enabled = False
+            Me.tmrLoad.Enabled = False
+
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
-            If Not IsNothing(e.Node.Tag) AndAlso Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
-                Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
+
+            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
                 Me.pnlLoading.Visible = True
-                IMDB.IMDBURL = IMDBURL
-                IMDB.GetSearchMovieInfoAsync(e.Node.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
+                Me.tmrWait.Enabled = True
+            Else
+                Me.pnlLoading.Visible = False
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
