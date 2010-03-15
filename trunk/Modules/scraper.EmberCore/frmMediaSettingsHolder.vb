@@ -30,6 +30,9 @@ Public Class frmMediaSettingsHolder
 
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+        CheckTrailer()
+    End Sub
+    Sub CheckTrailer()
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
         Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
         If Not Me.chkDownloadTrailer.Checked Then
