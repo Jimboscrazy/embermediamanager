@@ -420,7 +420,7 @@
   <string id="418">Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.</string>
   <string id="419">Meta Data is not available for this movie. Try rescanning.</string>
   <string id="420">Settings</string>
-  <string id="421">Communication</string>
+  <string id="421">Connection</string>
   <string id="422">Commit Edit</string>
   <string id="423">Name:</string>
   <string id="424">Add New</string>
@@ -536,7 +536,7 @@
   <string id="534">Valid Video Extensions</string>
   <string id="535">Edit Source</string>
   <string id="536">Miscellaneous Options</string>
-  <string id="537">Automatically Detect VIDEO_TS Folders Even if They Are Not Named "VIDEO_TS"</string>
+  <string id="537">Recognize VIDEO_TS Folders</string>
   <string id="538">Skip Size Check of Stacked Files</string>
   <string id="539">Megabytes</string>
   <string id="540">Skip files less than:</string>
@@ -555,8 +555,8 @@
   <string id="553">File System</string>
   <string id="554">XBMC Communication</string>
   <string id="555">Files and Sources</string>
-  <string id="556">Scraper - Data</string>
-  <string id="557">Scraper - Media</string>
+  <string id="556">Scrapers - Data</string>
+  <string id="557">Scrapers - Images and Trailers</string>
   <string id="558">Wide</string>
   <string id="559">The name you are attempting to use for this XBMC installation is already in use. Please choose another.</string>
   <string id="560">Each name must be unique</string>
@@ -576,7 +576,7 @@
   <string id="574">Scraping Trailers:</string>
   <string id="575">Generating Extrathumbs:</string>
   <string id="576">Verifying Movie Details:</string>
-  <string id="577">Scraper Fields</string>
+  <string id="577">Scraper Fields - Global</string>
   <string id="578">Limit:</string>
   <string id="579">File Source:</string>
   <string id="580">Display only movies from the selected file source.</string>
@@ -668,7 +668,7 @@
   <string id="666">TV Show Theme</string>
   <string id="667">Episode Theme</string>
   <string id="668">Clean database after updating library</string>
-  <string id="669">Ignore last scan time when updating library</string>
+  <string id="669">Always scan all media when updating library</string>
   <string id="670">Show Folder/File Name Filters</string>
   <string id="671">Episode Folder/File Name Filters</string>
   <string id="672">Proxy</string>

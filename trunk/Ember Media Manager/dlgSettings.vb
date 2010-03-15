@@ -4021,14 +4021,14 @@ Public Class dlgSettings
                       .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlMovieData", _
-                      .Text = Master.eLang.GetString(556, "Scraper - Data"), _
+                      .Text = Master.eLang.GetString(556, "Scrapers - Data"), _
                       .ImageIndex = 3, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
                       .Panel = Me.pnlScraper, _
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlMovieMedia", _
-                      .Text = Master.eLang.GetString(557, "Scraper - Media"), _
+                      .Text = Master.eLang.GetString(557, "Scrapers - Images & Trailers"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
                       .Panel = Me.pnlImages, _
@@ -4077,7 +4077,7 @@ Public Class dlgSettings
                       .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlXBMCCom", _
-                      .Text = Master.eLang.GetString(421, "Communication"), _
+                      .Text = Master.eLang.GetString(421, "Connection"), _
                       .ImageIndex = 1, _
                       .Type = Master.eLang.GetString(390, "Options"), _
                       .Panel = Me.pnlXBMCCom, _

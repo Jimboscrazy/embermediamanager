@@ -23,8 +23,6 @@ Partial Class frmInfoSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmInfoSettingsHolder))
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
         Me.lblVersion = New System.Windows.Forms.Label
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.chkTop250 = New System.Windows.Forms.CheckBox
@@ -63,35 +61,12 @@ Partial Class frmInfoSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.pnlSettings = New System.Windows.Forms.Panel
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 334)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 1
-        Me.PictureBox1.TabStop = False
-        '
-        'Label1
-        '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 336)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 24
-        Me.Label1.Text = "This are Scraper specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember " & _
-            "Global Setting also."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblVersion
         '
@@ -131,7 +106,7 @@ Partial Class frmInfoSettingsHolder
         Me.gbOptions.Size = New System.Drawing.Size(387, 161)
         Me.gbOptions.TabIndex = 77
         Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "Scraper Fields"
+        Me.gbOptions.Text = "Scraper Fields - IMDB specific"
         '
         'chkTop250
         '
@@ -420,7 +395,7 @@ Partial Class frmInfoSettingsHolder
         Me.GroupBox15.Size = New System.Drawing.Size(213, 87)
         Me.GroupBox15.TabIndex = 78
         Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "OFDB"
+        Me.GroupBox15.Text = "OFDB (German)"
         '
         'chkOFDBGenre
         '
@@ -519,9 +494,7 @@ Partial Class frmInfoSettingsHolder
         'pnlSettings
         '
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.GroupBox30)
-        Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.GroupBox15)
         Me.pnlSettings.Controls.Add(Me.gbOptions)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
@@ -545,7 +518,6 @@ Partial Class frmInfoSettingsHolder
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.GroupBox30.ResumeLayout(False)
