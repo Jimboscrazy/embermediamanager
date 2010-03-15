@@ -24,6 +24,7 @@ Public Class dlgTVDBSearchResults
     Private sHTTP As New HTTP
     Private sInfo As Structures.ScrapeInfo
     Private _skipdownload As Boolean = False
+    Private lvResultsSorter As New ListViewColumnSorter
 
     Private Structure Results
         Dim Result As Image
@@ -101,6 +102,8 @@ Public Class dlgTVDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
 
+            Me.lvSearchResults.ListViewItemSorter = Me.lvResultsSorter
+
             Me.SetUp()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -117,9 +120,10 @@ Public Class dlgTVDBSearchResults
                 Me.ClearInfo()
 
                 If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
-                    For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) StringUtils.ComputeLevenshtein(Me.sInfo.ShowTitle, r.Name))
+                    For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) r.Lev)
                         lItem = New ListViewItem(sRes.Name)
                         lItem.SubItems.Add(sRes.Language.LongLang)
+                        lItem.SubItems.Add(sRes.Lev.ToString)
                         lItem.Tag = sRes
                         Me.lvSearchResults.Items.Add(lItem)
                     Next
@@ -128,12 +132,36 @@ Public Class dlgTVDBSearchResults
                 Me.pnlLoading.Visible = False
 
                 If Me.lvSearchResults.Items.Count > 0 Then
-                    Me.lvSearchResults.Items(0).Selected = True
-                    Me.lvSearchResults.Select()
+
+
+                    If sResults.Select(Function(s) s.ID).Distinct.Count = 1 Then
+                        'they're all for the same show... try to find one with the preferred language
+                        For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                            If fItem.SubItems(1).Text = Master.eSettings.TVDBLanguages.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang Then
+                                fItem.Selected = True
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        'we've got a bunch of different shows... try to find a "best match" title with the preferred language
+                        If sResults.Where(Function(s) s.Lev <= 5).Count > 0 Then
+                            For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                                If Convert.ToInt32(fItem.SubItems(2).Text) <= 5 AndAlso fItem.SubItems(1).Text = Master.eSettings.TVDBLanguages.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang Then
+                                    fItem.Selected = True
+                                    Exit For
+                                End If
+                            Next
+                        End If
+                    End If
+
+                    If Me.lvSearchResults.SelectedItems.Count = 0 Then
+                        Me.lvSearchResults.Items(0).Selected = True
+                    End If
+                        Me.lvSearchResults.Select()
                 End If
             Case Enums.TVScraperEventType.ShowDownloaded
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Close()
         End Select
     End Sub
 

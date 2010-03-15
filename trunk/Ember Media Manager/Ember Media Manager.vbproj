@@ -163,7 +163,6 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsTheming.vb" />
-    <Compile Include="clsSorter.vb" />
     <Compile Include="dlgEditSeason.Designer.vb">
       <DependentUpon>dlgEditSeason.vb</DependentUpon>
     </Compile>

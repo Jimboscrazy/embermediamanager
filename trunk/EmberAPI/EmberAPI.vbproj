@@ -154,6 +154,7 @@
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIThumbGenerator.vb" />
     <Compile Include="clsAPIModules.vb" />
+    <Compile Include="clsAPISorter.vb" />
     <Compile Include="dlgModuleSettings.designer.vb">
       <DependentUpon>dlgModuleSettings.vb</DependentUpon>
     </Compile>
