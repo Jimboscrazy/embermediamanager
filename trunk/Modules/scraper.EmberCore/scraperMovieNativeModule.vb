@@ -8,7 +8,7 @@ Public Class EmberNativeScraperModule
     Implements Interfaces.EmberMovieScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
-    Private _Name As String = "EMM In-built Scrapers"
+    Private _Name As String = "Ember Native Movie Scrapers"
     Private _setup As frmInfoSettingsHolder
     Private _setupPost As frmMediaSettingsHolder
     Public Shared _AssemblyName As String

@@ -61,11 +61,14 @@ Partial Class frmInfoSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -106,7 +109,7 @@ Partial Class frmInfoSettingsHolder
         Me.gbOptions.Size = New System.Drawing.Size(387, 161)
         Me.gbOptions.TabIndex = 77
         Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "Scraper Fields - IMDB specific"
+        Me.gbOptions.Text = "Scraper Fields"
         '
         'chkTop250
         '
@@ -493,6 +496,8 @@ Partial Class frmInfoSettingsHolder
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Controls.Add(Me.GroupBox30)
         Me.pnlSettings.Controls.Add(Me.GroupBox15)
@@ -501,6 +506,30 @@ Partial Class frmInfoSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 82
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Blue
+        Me.Label1.Location = New System.Drawing.Point(37, 337)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(225, 31)
+        Me.Label1.TabIndex = 97
+        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+            "for more options."
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 335)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 96
+        Me.PictureBox1.TabStop = False
         '
         'frmInfoSettingsHolder
         '
@@ -526,11 +555,10 @@ Partial Class frmInfoSettingsHolder
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblVersion As System.Windows.Forms.Label
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
@@ -569,5 +597,7 @@ Partial Class frmInfoSettingsHolder
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class

@@ -24,7 +24,7 @@ Public Class EmberXMLScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
     Private _setup As frmXMLSettingsHolder
-    Private _Name As String = "Ember XML Scraper"
+    Private _Name As String = "Ember XML Movie Scrapers"
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
