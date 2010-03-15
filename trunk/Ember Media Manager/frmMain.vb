@@ -777,7 +777,7 @@ Public Class frmMain
                 Functions.GetListOfSources()
                 cmnuTrayIconExit.Enabled = True
                 cmnuTrayIconSettings.Enabled = True
-                tsbMediaCenters.Enabled = True
+                If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try

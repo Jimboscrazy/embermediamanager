@@ -68,7 +68,7 @@ Partial Class frmSplash
         Me.txtStage.ForeColor = System.Drawing.Color.White
         Me.txtStage.Location = New System.Drawing.Point(8, 283)
         Me.txtStage.Name = "txtStage"
-        Me.txtStage.Size = New System.Drawing.Size(129, 11)
+        Me.txtStage.Size = New System.Drawing.Size(175, 11)
         Me.txtStage.TabIndex = 3
         Me.txtStage.Text = "Loading settings..."
         Me.txtStage.TextAlign = System.Drawing.ContentAlignment.BottomLeft
