@@ -38,29 +38,28 @@ Partial Class frmMediaSettingsHolder
         Me.txtTimeout = New System.Windows.Forms.TextBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
-        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.GroupBox3)
-        Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
+        Me.pnlSettings.Controls.Add(Me.GroupBox3)
+        Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.Panel2)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
         Me.pnlSettings.Name = "pnlSettings"
@@ -233,30 +232,6 @@ Partial Class frmMediaSettingsHolder
         Me.lbTrailerSites.Size = New System.Drawing.Size(149, 55)
         Me.lbTrailerSites.TabIndex = 9
         '
-        'Label1
-        '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 337)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 89
-        Me.Label1.Text = "This are Module specific Settings, and act as a filter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "You should check Ember G" & _
-            "lobal Setting also."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 335)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 88
-        Me.PictureBox1.TabStop = False
-        '
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -311,9 +286,29 @@ Partial Class frmMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'fbdBrowse
+        'Label1
         '
-        Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Blue
+        Me.Label1.Location = New System.Drawing.Point(37, 337)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(225, 31)
+        Me.Label1.TabIndex = 95
+        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+            "for more options."
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 335)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 94
+        Me.PictureBox1.TabStop = False
         '
         'frmMediaSettingsHolder
         '
@@ -336,15 +331,13 @@ Partial Class frmMediaSettingsHolder
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
@@ -364,6 +357,7 @@ Partial Class frmMediaSettingsHolder
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class

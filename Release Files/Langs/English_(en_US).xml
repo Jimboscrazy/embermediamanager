@@ -668,7 +668,7 @@
   <string id="666">TV Show Theme</string>
   <string id="667">Episode Theme</string>
   <string id="668">Clean database after updating library</string>
-  <string id="669">Always scan all media when updating library</string>
+  <string id="669">Ignore last scan time when updating library</string>
   <string id="670">Show Folder/File Name Filters</string>
   <string id="671">Episode Folder/File Name Filters</string>
   <string id="672">Proxy</string>
