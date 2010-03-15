@@ -34,6 +34,8 @@
         Me.lvSearchResults = New System.Windows.Forms.ListView
         Me.colName = New System.Windows.Forms.ColumnHeader
         Me.colLang = New System.Windows.Forms.ColumnHeader
+        Me.colLev = New System.Windows.Forms.ColumnHeader
+        Me.colID = New System.Windows.Forms.ColumnHeader
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
@@ -43,7 +45,7 @@
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.btnSearch = New System.Windows.Forms.Button
         Me.txtSearch = New System.Windows.Forms.TextBox
-        Me.colLev = New System.Windows.Forms.ColumnHeader
+        Me.colSLang = New System.Windows.Forms.ColumnHeader
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.pnlTop.SuspendLayout()
@@ -131,7 +133,7 @@
         '
         'lvSearchResults
         '
-        Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang, Me.colLev})
+        Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang, Me.colLev, Me.colID, Me.colSLang})
         Me.lvSearchResults.FullRowSelect = True
         Me.lvSearchResults.HideSelection = False
         Me.lvSearchResults.Location = New System.Drawing.Point(3, 96)
@@ -151,6 +153,14 @@
         '
         Me.colLang.Text = "Language"
         Me.colLang.Width = 63
+        '
+        'colLev
+        '
+        Me.colLev.Width = 0
+        '
+        'colID
+        '
+        Me.colID.Width = 0
         '
         'pnlLoading
         '
@@ -246,9 +256,9 @@
         Me.txtSearch.Size = New System.Drawing.Size(287, 22)
         Me.txtSearch.TabIndex = 71
         '
-        'colLev
+        'colSLang
         '
-        Me.colLev.Width = 0
+        Me.colSLang.Width = 0
         '
         'dlgTVDBSearchResults
         '
@@ -309,5 +319,7 @@
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents colLev As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colSLang As System.Windows.Forms.ColumnHeader
 
 End Class

@@ -760,4 +760,28 @@ Public Class dlgEditShow
         Me.pbASPoster.Image = Nothing
         Me.ASPoster.Image = Nothing
     End Sub
+
+    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
+        ' Determine if the clicked column is already the column that is 
+        ' being sorted.
+        Try
+            If (e.Column = Me.lvwActorSorter.SortColumn) Then
+                ' Reverse the current sort direction for this column.
+                If (Me.lvwActorSorter.Order = SortOrder.Ascending) Then
+                    Me.lvwActorSorter.Order = SortOrder.Descending
+                Else
+                    Me.lvwActorSorter.Order = SortOrder.Ascending
+                End If
+            Else
+                ' Set the column number that is to be sorted; default to ascending.
+                Me.lvwActorSorter.SortColumn = e.Column
+                Me.lvwActorSorter.Order = SortOrder.Ascending
+            End If
+
+            ' Perform the sort with these new sort options.
+            Me.lvActors.Sort()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class
