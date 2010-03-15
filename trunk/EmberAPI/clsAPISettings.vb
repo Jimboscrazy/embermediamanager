@@ -3108,7 +3108,7 @@ Public Class Settings
         Me._autobd = False
         Me._usemiduration = False
         Me._runtimemask = "<m> mins"
-        Me._genrefilter = "[All]"
+        Me._genrefilter = "English"
         Me._useetasfa = False
         Me._useimgcache = False
         Me._useimgcacheupdater = False
