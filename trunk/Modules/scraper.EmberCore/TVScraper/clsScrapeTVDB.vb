@@ -756,6 +756,7 @@ Public Class Scraper
                                 iSeas = Episode.TVEp.Season
                                 sTitle = Episode.TVEp.Title
                                 byTitle = False
+                                AllowDVD = False
 
                                 If Not IsNothing(tShow.TVShow) Then Episode.TVShow = tShow.TVShow
 
@@ -765,13 +766,13 @@ Public Class Scraper
                                     'where this will not work (season 1 episode 1 = dvd_season 2 dvd_episode 1) but it
                                     'should work in most cases and is the best solution I could come up with
 
-                                    If xdShow.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("Season").Value) = iSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value))).Count = 0 Then
+                                    If xdShow.Descendants("Episode").Where(Function(e) Not IsNothing(e.Element("SeasonNumber")) AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                         AllowDVD = True
                                     End If
                                 End If
 
                                 If AllowDVD Then
-                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("DVD_episodenumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("DVD_seasonnumber").Value) = iSeas)
+                                    xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Not IsNothing(e.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString) AndAlso Convert.ToInt32(CLng(e.Element("DVD_episodenumber").Value.ToString)) = iEp AndAlso Not IsNothing(e.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) AndAlso Convert.ToInt32(e.Element("DVD_season").Value) = iSeas)
                                 Else
                                     xE = xdShow.Descendants("Episode").FirstOrDefault(Function(e) Convert.ToInt32(e.Element("EpisodeNumber").Value) = iEp AndAlso Convert.ToInt32(e.Element("SeasonNumber").Value) = iSeas)
                                 End If
@@ -1187,15 +1188,20 @@ Public Class Scraper
                             For Each Episode As XElement In xdEps.Descendants("Episode")
                                 tEpisode = New MediaContainers.EpisodeDetails
 
+                                AllowDVD = False
+
                                 If sInfo.DVDOrder Then
-                                    If Not IsNothing(Episode.Element("Season")) Then
-                                        tSeas = Convert.ToInt32(Episode.Element("Season").Value)
-                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("Season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value))).Count = 0 Then
+                                    If Not IsNothing(Episode.Element("SeasonNumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value.ToString) AndAlso _
+                                    Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                    Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
+                                        tSeas = Convert.ToInt32(Episode.Element("SeasonNumber").Value)
+                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                             AllowDVD = True
                                         End If
-                                    ElseIf Not IsNothing(Episode.Element("DVD_season")) Then
+                                    ElseIf Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                    Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
                                         tSeas = Convert.ToInt32(Episode.Element("DVD_season").Value)
-                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value))).Count = 0 Then
+                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                             AllowDVD = True
                                         End If
                                     End If
@@ -1204,8 +1210,8 @@ Public Class Scraper
                                 With tEpisode
                                     .Title = Episode.Element("EpisodeName").Value
                                     If AllowDVD Then
-                                        .Season = Convert.ToInt32(Episode.Element("DVD_season").Value)
-                                        .Episode = Convert.ToInt32(Episode.Element("DVD_episodenumber").Value)
+                                        .Season = Convert.ToInt32(Episode.Element("DVD_season").Value.ToString)
+                                        .Episode = Convert.ToInt32(CLng(Episode.Element("DVD_episodenumber").Value.ToString))
                                     Else
                                         .Season = If(IsNothing(Episode.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
                                         .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
@@ -1220,7 +1226,7 @@ Public Class Scraper
                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))
                                 End With
 
-                                    tEpisodes.Add(tEpisode)
+            tEpisodes.Add(tEpisode)
                             Next
 
                         End If
