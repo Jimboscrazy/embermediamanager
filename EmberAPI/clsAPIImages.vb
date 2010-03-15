@@ -646,7 +646,7 @@ Public Class Images : Implements IDisposable
             End If
 
             If Master.eSettings.ShowDotFanart Then
-                tPath = Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), ".fanart.jpg"))
+                tPath = Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".fanart.jpg"))
                 If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
                     Save(tPath, Master.eSettings.ShowFanartQuality)
                     strReturn = tPath
@@ -654,7 +654,7 @@ Public Class Images : Implements IDisposable
             End If
 
             If Master.eSettings.ShowDashFanart Then
-                tPath = Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), "-fanart.jpg"))
+                tPath = Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), "-fanart.jpg"))
                 If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
                     Save(tPath, Master.eSettings.ShowFanartQuality)
                     strReturn = tPath
@@ -1129,8 +1129,8 @@ Public Class Images : Implements IDisposable
     Public Sub DeleteShowFanart(ByVal mShow As Structures.DBTV)
         Try
             Delete(Path.Combine(mShow.ShowPath, "fanart.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), "-fanart.jpg")))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), ".fanart.jpg")))
+            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), "-fanart.jpg")))
+            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".fanart.jpg")))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
