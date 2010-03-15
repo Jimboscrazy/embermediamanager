@@ -55,7 +55,7 @@ Partial Class frmSplash
         'pbLoading
         '
         Me.pbLoading.Location = New System.Drawing.Point(5, 295)
-        Me.pbLoading.Maximum = 10
+        Me.pbLoading.Maximum = 9
         Me.pbLoading.Name = "pbLoading"
         Me.pbLoading.Size = New System.Drawing.Size(300, 12)
         Me.pbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous
