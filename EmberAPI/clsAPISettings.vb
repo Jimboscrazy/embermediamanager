@@ -3330,10 +3330,11 @@ Public Class Settings
 
         If Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters Then
             Master.eSettings.ShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
+            'would there ever be season or episode info in the show folder name??
+            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
+            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
+            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
+            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dvd.*")
