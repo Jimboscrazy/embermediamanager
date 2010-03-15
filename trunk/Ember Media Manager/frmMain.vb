@@ -3357,6 +3357,7 @@ Public Class frmMain
     Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
 
         Me.ClearInfo()
+        Me.ShowNoInfo(False)
 
         Select Case tabsMain.SelectedIndex
             Case 0
@@ -3371,7 +3372,13 @@ Public Class frmMain
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMediaList.RowCount > 0 Then
-                    Me.SetControlsEnabled(True)
+                    Me.prevRow = -1
+
+                    Me.dgvMediaList.CurrentCell = Nothing
+                    Me.dgvMediaList.ClearSelection()
+                    Me.dgvMediaList.Rows(0).Selected = True
+                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
+
                     Me.dgvMediaList.Focus()
                 End If
             Case 1
@@ -3388,11 +3395,13 @@ Public Class frmMain
                 If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvTVShows.RowCount > 0 Then
-                    If Me.currShowRow = -1 Then
-                        Me.dgvTVShows.ClearSelection()
-                        Me.dgvTVShows.Rows(0).Selected = True
-                        Me.currShowRow = 0
-                    End If
+                    Me.prevShowRow = -1
+                    Me.currList = 0
+
+                    Me.dgvTVShows.CurrentCell = Nothing
+                    Me.dgvTVShows.ClearSelection()
+                    Me.dgvTVShows.Rows(0).Selected = True
+                    Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(0).Cells(1)
 
                     Me.dgvTVShows.Focus()
 
