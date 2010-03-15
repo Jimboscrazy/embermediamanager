@@ -178,7 +178,7 @@ Public Class dlgWizard
         Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
         Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
         Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
-        Me.lblInsideSeason.Text = Master.eLang.GetString(689, "* Inside Season directory")
+        Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
         Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
 
     End Sub

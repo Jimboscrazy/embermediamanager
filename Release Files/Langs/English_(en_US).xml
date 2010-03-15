@@ -833,4 +833,5 @@
   <string id="831">Current Image:</string>
   <string id="832">Display All Season Poster</string>
   <string id="833">These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.</string>
+  <string id="834">* Inside Season directory</string>
 </strings>
