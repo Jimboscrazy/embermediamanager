@@ -124,6 +124,8 @@ Public Class dlgTVDBSearchResults
                         lItem = New ListViewItem(sRes.Name)
                         lItem.SubItems.Add(sRes.Language.LongLang)
                         lItem.SubItems.Add(sRes.Lev.ToString)
+                        lItem.SubItems.Add(sRes.ID.ToString)
+                        lItem.SubItems.Add(sRes.Language.ShortLang)
                         lItem.Tag = sRes
                         Me.lvSearchResults.Items.Add(lItem)
                     Next
@@ -132,13 +134,12 @@ Public Class dlgTVDBSearchResults
                 Me.pnlLoading.Visible = False
 
                 If Me.lvSearchResults.Items.Count > 0 Then
-
-
                     If sResults.Select(Function(s) s.ID).Distinct.Count = 1 Then
                         'they're all for the same show... try to find one with the preferred language
                         For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                            If fItem.SubItems(1).Text = Master.eSettings.TVDBLanguages.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang Then
+                            If fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
                                 fItem.Selected = True
+                                fItem.EnsureVisible()
                                 Exit For
                             End If
                         Next
@@ -146,18 +147,33 @@ Public Class dlgTVDBSearchResults
                         'we've got a bunch of different shows... try to find a "best match" title with the preferred language
                         If sResults.Where(Function(s) s.Lev <= 5).Count > 0 Then
                             For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                                If Convert.ToInt32(fItem.SubItems(2).Text) <= 5 AndAlso fItem.SubItems(1).Text = Master.eSettings.TVDBLanguages.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang Then
+                                If Convert.ToInt32(fItem.SubItems(2).Text) <= 5 AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
                                     fItem.Selected = True
+                                    fItem.EnsureVisible()
                                     Exit For
                                 End If
                             Next
+
+                            If Me.lvSearchResults.SelectedItems.Count = 0 Then
+                                'get the id for the best english match and see if we have one for the preferred language with same id
+                                Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.ShortLang = "en").ID
+                                If tID > 0 Then
+                                    For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                                        If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
+                                            fItem.Selected = True
+                                            fItem.EnsureVisible()
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                            End If
                         End If
                     End If
 
                     If Me.lvSearchResults.SelectedItems.Count = 0 Then
                         Me.lvSearchResults.Items(0).Selected = True
                     End If
-                        Me.lvSearchResults.Select()
+                    Me.lvSearchResults.Select()
                 End If
             Case Enums.TVScraperEventType.ShowDownloaded
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -245,5 +261,29 @@ Public Class dlgTVDBSearchResults
 
     Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
         Me.AcceptButton = Me.btnSearch
+    End Sub
+
+    Private Sub lvSearchResults_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvSearchResults.ColumnClick
+        ' Determine if the clicked column is already the column that is 
+        ' being sorted.
+        Try
+            If (e.Column = Me.lvResultsSorter.SortColumn) Then
+                ' Reverse the current sort direction for this column.
+                If (Me.lvResultsSorter.Order = SortOrder.Ascending) Then
+                    Me.lvResultsSorter.Order = SortOrder.Descending
+                Else
+                    Me.lvResultsSorter.Order = SortOrder.Ascending
+                End If
+            Else
+                ' Set the column number that is to be sorted; default to ascending.
+                Me.lvResultsSorter.SortColumn = e.Column
+                Me.lvResultsSorter.Order = SortOrder.Ascending
+            End If
+
+            ' Perform the sort with these new sort options.
+            Me.lvSearchResults.Sort()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 End Class

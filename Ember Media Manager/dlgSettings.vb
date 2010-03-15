@@ -2701,7 +2701,7 @@ Public Class dlgSettings
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
             If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.SingleOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
                     Master.eSettings.TVDBLanguage = tLang
                 Else
@@ -3091,7 +3091,7 @@ Public Class dlgSettings
             Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
             Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
             If Me.cbTVLanguage.Items.Count > 0 Then
-                Me.cbTVLanguage.Text = Me.tLangList.SingleOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+                Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
             End If
             Me.txtTVDBMirror.Text = Master.eSettings.TVDBMirror
 
