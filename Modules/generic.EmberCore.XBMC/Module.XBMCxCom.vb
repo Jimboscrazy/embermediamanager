@@ -33,6 +33,7 @@ Public Class XBMCxCom
     End Property
     Sub Enable()
         Try
+            _MySettings = MySettings.Load
             Dim tSettingsHolder As New frmSettingsHolder
             Dim tsi As New ToolStripSplitButton
             MyMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
@@ -44,15 +45,18 @@ Public Class XBMCxCom
             'tsi.DropDownItems.Add(MyTrayMenu)
             tSettingsHolder.Dispose()
             MyMenu.DropDownItems.Clear()
-            Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
-            AddHandler tMenu.Click, AddressOf xCom_Click
-            MyMenu.DropDownItems.Add(tMenu)
-            For Each xCom As XBMCCom In _MySettings.XComs
-                tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+            If _MySettings.XComs.Count > 0 Then
+                Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
                 AddHandler tMenu.Click, AddressOf xCom_Click
                 MyMenu.DropDownItems.Add(tMenu)
-            Next
-            tsi.DropDownItems.Add(MyMenu)
+                For Each xCom As XBMCCom In _MySettings.XComs
+                    tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+                    AddHandler tMenu.Click, AddressOf xCom_Click
+                    MyMenu.DropDownItems.Add(tMenu)
+                Next
+                tsi.DropDownItems.Add(MyMenu)
+            End If
+            tsi.Visible = (tsi.DropDownItems.Count > 0)
         Catch ex As Exception
         End Try
     End Sub
@@ -79,6 +83,7 @@ Public Class XBMCxCom
             MyMenu.DropDownItems.Clear()
             'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
             'tsi.DropDownItems.Remove(MyTrayMenu)
+            tsi.Visible = (tsi.DropDownItems.Count > 0)
         Catch ex As Exception
         End Try
     End Sub
