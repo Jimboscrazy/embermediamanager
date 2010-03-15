@@ -43,6 +43,7 @@
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.btnSearch = New System.Windows.Forms.Button
         Me.txtSearch = New System.Windows.Forms.TextBox
+        Me.colLev = New System.Windows.Forms.ColumnHeader
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.pnlTop.SuspendLayout()
@@ -130,7 +131,7 @@
         '
         'lvSearchResults
         '
-        Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang})
+        Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang, Me.colLev})
         Me.lvSearchResults.FullRowSelect = True
         Me.lvSearchResults.HideSelection = False
         Me.lvSearchResults.Location = New System.Drawing.Point(3, 96)
@@ -245,6 +246,10 @@
         Me.txtSearch.Size = New System.Drawing.Size(287, 22)
         Me.txtSearch.TabIndex = 71
         '
+        'colLev
+        '
+        Me.colLev.Width = 0
+        '
         'dlgTVDBSearchResults
         '
         Me.AcceptButton = Me.OK_Button
@@ -303,5 +308,6 @@
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
+    Friend WithEvents colLev As System.Windows.Forms.ColumnHeader
 
 End Class

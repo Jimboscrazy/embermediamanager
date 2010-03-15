@@ -158,6 +158,7 @@ Public Class Scraper
         Private _language As Containers.TVLanguage
         Private _overview As String
         Private _banner As String
+        Private _lev As Integer
 
         Public Property ID() As Integer
             Get
@@ -213,6 +214,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Lev() As Integer
+            Get
+                Return Me._lev
+            End Get
+            Set(ByVal value As Integer)
+                Me._lev = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -224,6 +234,7 @@ Public Class Scraper
             Me._language = New Containers.TVLanguage
             Me._overview = String.Empty
             Me._banner = String.Empty
+            Me._lev = 0
         End Sub
     End Class
 
@@ -927,12 +938,13 @@ Public Class Scraper
             Dim tvdbResults As New List(Of TVSearchResults)
             Dim cResult As New TVSearchResults
             Dim xmlTVDB As XDocument
+            Dim tmpXML As XDocument
             Dim sHTTP As New HTTP
             Dim sLang As String = String.Empty
+            Dim tmpID As String = String.Empty
 
             Try
-                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", Master.eSettings.TVDBMirror, sInfo.ShowTitle, Master.eSettings.TVDBLanguage))
-                sHTTP = Nothing
+                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language=all", Master.eSettings.TVDBMirror, sInfo.ShowTitle))
 
                 If Not String.IsNullOrEmpty(apiXML) Then
                     Try
@@ -943,7 +955,49 @@ Public Class Scraper
 
                     Dim xSer = From xSeries In xmlTVDB.Descendants("Series") Where xSeries.HasElements
 
+                    'check each unique showid to see if we have an entry for the preferred languages. If not, try to force download it
+                    For Each tID As String In xSer.GroupBy(Function(s) s.Element("seriesid").Value.ToString).Select(Function(group) group.Key)
+                        tmpID = tID
+                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = Master.eSettings.TVDBLanguage).Count = 0 Then
+                            'no preferred language in this series, force it
+                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, APIKey, tmpID, Master.eSettings.TVDBLanguage))
+                            If Not String.IsNullOrEmpty(forceXML) Then
+                                Try
+                                    tmpXML = XDocument.Parse(forceXML)
+                                Catch
+                                    Continue For
+                                End Try
+
+                                For Each tSer As XElement In tmpXML.Descendants("Series").Where(Function(s) s.HasElements)
+                                    sLang = String.Empty
+                                    cResult = New TVSearchResults
+                                    cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
+                                    cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
+                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
+                                        sLang = tSer.Element("Language").Value
+                                        cResult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                                    ElseIf Not IsNothing(tSer.Element("Language")) Then
+                                        sLang = tSer.Element("Language").Value
+                                        cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
+                                    Else
+                                        'no language info available... don't bother adding it
+                                        Continue For
+                                    End If
+                                    cResult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
+                                    cResult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value, String.Empty)
+                                    cResult.Banner = If(Not IsNothing(tSer.Element("banner")), tSer.Element("banner").Value, String.Empty)
+                                    If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) AndAlso xSer.Where(Function(s) s.Element("seriesid").Value.ToString = cResult.ID.ToString AndAlso s.Element("language").Value.ToString = sLang).Count = 0 Then
+                                        cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
+                                        tvdbResults.Add(cResult)
+                                    End If
+                                Next
+                            End If
+                        End If
+                    Next
+                    sHTTP = Nothing
+
                     For Each xS As XElement In xSer
+                        sLang = String.Empty
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                         cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
@@ -960,7 +1014,10 @@ Public Class Scraper
                         cResult.Aired = If(Not IsNothing(xS.Element("FirstAired")), xS.Element("FirstAired").Value, String.Empty)
                         cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value, String.Empty)
                         cResult.Banner = If(Not IsNothing(xS.Element("banner")), xS.Element("banner").Value, String.Empty)
-                        tvdbResults.Add(cResult)
+                        If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
+                            cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
+                            tvdbResults.Add(cResult)
+                        End If
                     Next
                 End If
 

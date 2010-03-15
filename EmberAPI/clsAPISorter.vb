@@ -32,7 +32,7 @@ Public Class ListViewColumnSorter
     Public Sub New()
         ColumnToSort = 0
         OrderOfSort = SortOrder.None
-        ObjectCompare = New CaseInsensitiveComparer()
+        ObjectCompare = New CaseInsensitiveComparer
         ByText = False
         IsNumeric = False
     End Sub

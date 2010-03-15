@@ -239,16 +239,16 @@ Public Class StringUtils
         If String.IsNullOrEmpty(sName) Then Return False
         Dim bReturn As Boolean = False
         If VTS Then
-            bReturn = Regex.IsMatch(sName, "[ _\.\-\[\(]+(cd|dvd|part|dis[ck])[ _\.\-]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[\W_]+(cd|dvd|part|dis[ck])[\W_]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
         Else
-            bReturn = Regex.IsMatch(sName, "[ _\.\-\[\(]+(cd|dvd|part|dis[ck])[ _\.\-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[\W_]+(cd|dvd|part|dis[ck])[\W_]*([0-9a-d]+)", RegexOptions.IgnoreCase)
         End If
         Return bReturn
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
         If String.IsNullOrEmpty(sPath) Then Return String.Empty
-        Dim sReturn As String = Regex.Replace(sPath, "[ _\.\-\[\(]+(cd|dvd|part|dis[ck])[ _\.\-]*([0-9a-d]+)[ _\.\-\]\)]?", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
+        Dim sReturn As String = Regex.Replace(sPath, "[\W_]+(cd|dvd|part|dis[ck])[\W_]*([0-9a-d]+)[\W_]?", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
         Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
 
