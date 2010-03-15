@@ -117,8 +117,8 @@ Public Class EmberNativeTVScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
-    Public Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal CurrentImage As Image, ByRef Image As Image) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleImage
-        Image = TVScraper.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, CurrentImage)
+    Public Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal UseDVDOrder As Boolean, ByVal CurrentImage As Image, ByRef Image As Image) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleImage
+        Image = TVScraper.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, UseDVDOrder, CurrentImage)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
