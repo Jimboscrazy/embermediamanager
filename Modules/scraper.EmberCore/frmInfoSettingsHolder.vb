@@ -35,7 +35,7 @@ Public Class frmInfoSettingsHolder
         Me.chkOFDBOutline.Text = Master.eLang.GetString(476, "Use OFDB Outline")
         Me.chkOFDBTitle.Text = Master.eLang.GetString(477, "Use OFDB Title")
         Me.Label18.Text = Master.eLang.GetString(509, "IMDB Mirror:")
-        Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields")
+        Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
         Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
         Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
@@ -55,7 +55,6 @@ Public Class frmInfoSettingsHolder
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.Label1.Text = Master.eLang.GetString(833, "These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.").Replace("\n", vbCrLf)
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged

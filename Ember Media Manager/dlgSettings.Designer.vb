@@ -2842,7 +2842,7 @@ Partial Class dlgSettings
         Me.pnlSources.Controls.Add(Me.GroupBox16)
         Me.pnlSources.Location = New System.Drawing.Point(241, 165)
         Me.pnlSources.Name = "pnlSources"
-        Me.pnlSources.Size = New System.Drawing.Size(617, 434)
+        Me.pnlSources.Size = New System.Drawing.Size(617, 402)
         Me.pnlSources.TabIndex = 67
         Me.pnlSources.Visible = False
         '
@@ -2873,7 +2873,7 @@ Partial Class dlgSettings
         Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(233, 314)
+        Me.GroupBox19.Size = New System.Drawing.Size(233, 271)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -2882,9 +2882,9 @@ Partial Class dlgSettings
         '
         Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 228)
+        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 201)
         Me.chkScanOrderModify.Name = "chkScanOrderModify"
-        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 28)
+        Me.chkScanOrderModify.Size = New System.Drawing.Size(223, 35)
         Me.chkScanOrderModify.TabIndex = 74
         Me.chkScanOrderModify.Text = "Scan in order of last write time."
         Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2894,9 +2894,9 @@ Partial Class dlgSettings
         '
         Me.chkSortBeforeScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSortBeforeScan.Location = New System.Drawing.Point(5, 140)
+        Me.chkSortBeforeScan.Location = New System.Drawing.Point(5, 123)
         Me.chkSortBeforeScan.Name = "chkSortBeforeScan"
-        Me.chkSortBeforeScan.Size = New System.Drawing.Size(222, 45)
+        Me.chkSortBeforeScan.Size = New System.Drawing.Size(222, 36)
         Me.chkSortBeforeScan.TabIndex = 73
         Me.chkSortBeforeScan.Text = "Sort files into folders before each library update"
         Me.chkSortBeforeScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2906,11 +2906,11 @@ Partial Class dlgSettings
         '
         Me.chkIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(5, 190)
+        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(5, 165)
         Me.chkIgnoreLastScan.Name = "chkIgnoreLastScan"
-        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(222, 50)
+        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(222, 33)
         Me.chkIgnoreLastScan.TabIndex = 72
-        Me.chkIgnoreLastScan.Text = "Ignore last scan time when updating library"
+        Me.chkIgnoreLastScan.Text = "Always scan all media when updating library"
         Me.chkIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkIgnoreLastScan.UseVisualStyleBackColor = True
         '
@@ -2918,7 +2918,7 @@ Partial Class dlgSettings
         '
         Me.chkCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanDB.Location = New System.Drawing.Point(5, 265)
+        Me.chkCleanDB.Location = New System.Drawing.Point(5, 235)
         Me.chkCleanDB.Name = "chkCleanDB"
         Me.chkCleanDB.Size = New System.Drawing.Size(223, 33)
         Me.chkCleanDB.TabIndex = 71
@@ -2930,11 +2930,11 @@ Partial Class dlgSettings
         '
         Me.chkAutoDetectVTS.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoDetectVTS.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoDetectVTS.Location = New System.Drawing.Point(5, 82)
+        Me.chkAutoDetectVTS.Location = New System.Drawing.Point(5, 90)
         Me.chkAutoDetectVTS.Name = "chkAutoDetectVTS"
-        Me.chkAutoDetectVTS.Size = New System.Drawing.Size(222, 55)
+        Me.chkAutoDetectVTS.Size = New System.Drawing.Size(222, 34)
         Me.chkAutoDetectVTS.TabIndex = 70
-        Me.chkAutoDetectVTS.Text = "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS"""
+        Me.chkAutoDetectVTS.Text = "Recognize VIDEO_TS Folders"
         Me.chkAutoDetectVTS.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoDetectVTS.UseVisualStyleBackColor = True
         '
@@ -5892,7 +5892,7 @@ Partial Class dlgSettings
         Me.gbOptions.Size = New System.Drawing.Size(302, 179)
         Me.gbOptions.TabIndex = 67
         Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "Scraper Fields"
+        Me.gbOptions.Text = "Scraper Fields - Global"
         '
         'chkCertification
         '
@@ -6652,8 +6652,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(883, 647)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6663,16 +6662,17 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlSources)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

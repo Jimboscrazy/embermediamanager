@@ -26,7 +26,7 @@ Imports System.IO
 Public Class EmberNativeTVScraperModule
     Implements Interfaces.EmberTVScraperModule
 
-    Private _Name As String = "Ember Native TV Scraper"
+    Private _Name As String = "EMM In-built TVDB Scraper"
     Public Shared TVScraper As New Scraper
     Private _ScraperEnabled As Boolean = False
     Private _PostScraperEnabled As Boolean = False
