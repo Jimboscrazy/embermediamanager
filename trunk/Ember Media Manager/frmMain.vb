@@ -686,7 +686,6 @@ Public Class frmMain
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
-                            fLoading.Hide()
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                                 fLoading.Close()
                                 fLoading.Dispose()
@@ -694,7 +693,6 @@ Public Class frmMain
                                 Application.Exit()
                                 Return
                             End If
-                            fLoading.Show(Me)
                         End Using
                     End If
                 End If
@@ -762,15 +760,12 @@ Public Class frmMain
                         Master.DB.PatchDatabase()
                         File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
                     End If
-                    If Not isCL Then fLoading.Hide()
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        fLoading.Show(Me)
                         Application.DoEvents()
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     Else
-                        fLoading.Show(Me)
                         Me.FillList(0)
                         Me.Visible = True
                     End If
