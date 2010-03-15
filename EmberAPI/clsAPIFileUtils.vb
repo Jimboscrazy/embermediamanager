@@ -517,11 +517,12 @@ Namespace FileUtils
 
                     For Each sFile As FileInfo In lFi
                         RaiseEvent ProgressUpdated(iCount, String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
-                        tmpName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
+                        tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
                         tmpName = tmpName.Replace(".fanart", String.Empty)
                         tmpName = tmpName.Replace("-fanart", String.Empty)
                         tmpName = tmpName.Replace("-trailer", String.Empty)
                         tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
+                        tmpName = StringUtils.CleanStackingMarkers(tmpName)
                         tmpPath = Path.Combine(sPath, tmpName)
                         If Not Directory.Exists(tmpPath) Then
                             Directory.CreateDirectory(tmpPath)
