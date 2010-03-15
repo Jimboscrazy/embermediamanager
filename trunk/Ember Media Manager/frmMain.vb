@@ -412,12 +412,20 @@ Public Class frmMain
         Return asm
     End Function
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Visible = False
+        Dim fLoading As New frmSplash
+
         Me.TrayIcon.Icon = Me.Icon
-        Threading.Thread.Sleep(1000)
-        frmSplash.CloseForm()
-        Dim dLoading As New dlgLoading
-        dLoading.Show()
-        Application.DoEvents()
+        Dim Args() As String = Environment.GetCommandLineArgs
+
+        If Args.Count > 1 Then
+            isCL = True
+        Else
+            fLoading.Show(Me)
+            Application.DoEvents()
+        End If
+
+        If Not isCL Then fLoading.SetStage("Basic setup...")
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
                 .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
@@ -438,15 +446,14 @@ Public Class frmMain
         If Not Directory.Exists(sPath) Then
             Directory.CreateDirectory(sPath)
         End If
-        dLoading.SetStage("Settings...")
+        If Not isCL Then fLoading.SetStage("Loading settings...")
         Master.eSettings.Load()
+        If Not isCL Then fLoading.SetStage("Creating default options...")
         Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
-        dLoading.SetStage("Modules...")
-        Me.Visible = False
-        Dim Args() As String = Environment.GetCommandLineArgs
+        If Not isCL Then fLoading.SetStage("Loading modules...")
         'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
         'ExternalModulesManager = New ModulesManager
         ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.mnuMediaList
@@ -458,6 +465,7 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
         ModulesManager.Instance.LoadAllModules()
 
+        If Not isCL Then fLoading.SetStage("Creating GUI...")
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -480,12 +488,11 @@ Public Class frmMain
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
 
-        If Args.Count > 1 Then
+        If isCL Then
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
             Dim hasSpec As Boolean = False
             Dim clScrapeType As Enums.ScrapeType = Nothing
-            isCL = True
             Dim clExport As Boolean = False
             Dim clExportResizePoster As Integer = 0
             Dim clExportTemplate As String = "template"
@@ -679,23 +686,25 @@ Public Class frmMain
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
-                            dLoading.Hide()
+                            fLoading.Hide()
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
+                                fLoading.Close()
+                                fLoading.Dispose()
                                 Me.Close()
                                 Application.Exit()
                                 Return
                             End If
-                            dLoading.Show()
+                            fLoading.Show(Me)
                         End Using
                     End If
                 End If
-                dLoading.SetStage("GUI...")
+                If Not isCL Then fLoading.SetStage("Loading translations...")
                 APIXML.CacheXMLs()
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
-
+                If Not isCL Then fLoading.SetStage("Positioning controls...")
                 Me.Location = Master.eSettings.WindowLoc
                 Me.Size = Master.eSettings.WindowSize
                 Me.WindowState = Master.eSettings.WindowState
@@ -738,7 +747,7 @@ Public Class frmMain
                 Me.ClearInfo()
 
                 Application.DoEvents()
-                dLoading.SetStage("Database...")
+                If Not isCL Then fLoading.SetStage("Loading database...")
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
                     If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
@@ -753,21 +762,22 @@ Public Class frmMain
                         Master.DB.PatchDatabase()
                         File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
                     End If
-                    dLoading.Hide()
+                    If Not isCL Then fLoading.Hide()
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        dLoading.Show()
+                        fLoading.Show(Me)
                         Application.DoEvents()
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                     Else
-                        dLoading.Show()
+                        fLoading.Show(Me)
                         Me.FillList(0)
                         Me.Visible = True
                     End If
 
                 End If
 
+                If Not isCL Then fLoading.SetStage("Setting menus...")
                 Me.SetMenus(True)
                 Functions.GetListOfSources()
                 cmnuTrayIconExit.Enabled = True
@@ -778,7 +788,9 @@ Public Class frmMain
             End Try
 
         End If
-        dLoading.Close()
+
+        fLoading.Close()
+        fLoading.Dispose()
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
