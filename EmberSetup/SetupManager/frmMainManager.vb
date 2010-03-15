@@ -800,9 +800,8 @@ Public Class frmMainManager
             File.Delete(Path.Combine(AppPath, "errors.log"))
         End If
         LoadAll()
-        If File.Exists(Path.Combine(AppPath, "download.log")) Then
-            UpdateStats()
-        End If
+        UpdateStats()
+
     End Sub
     Sub LoadAll()
         LoadSettings()
@@ -1272,11 +1271,19 @@ Public Class frmMainManager
             ftp.setRemoteHost(TextBox3.Text)
             ftp.setRemoteUser(TextBox1.Text)
             ftp.setRemotePass(TextBox2.Text)
-            ftp.setRemotePath("/public_html/Updates")
+            ftp.setRemotePath("/public_html/Updates/logs")
             ftp.login()
+            Dim dirLogs = ftp.getFileList("")
+            If Not Directory.Exists(Path.Combine(AppPath, "logs")) Then
+                Directory.CreateDirectory(Path.Combine(AppPath, "logs"))
+            End If
             dlg.Label1.Text = "Downloading File"
             Application.DoEvents()
-            ftp.download("download.log", "download.log")
+            For Each s As String In dirLogs
+                If s = "." OrElse s = ".." OrElse s = "" Then Continue For
+                ftp.download(s, String.Concat("logs", Path.DirectorySeparatorChar, s))
+                'ftp.download("download.log", "download.log")
+            Next
             ftp.close()
             dlg.Close()
             UpdateStats()
@@ -1285,12 +1292,37 @@ Public Class frmMainManager
         End Try
     End Sub
     Sub UpdateStats()
-
-        lstStats.Items.Clear()
-        Dim t As String() = File.ReadAllLines(Path.Combine(AppPath, "download.log"))
-        For Each s As String In t
-            Dim i As String() = s.Split(Convert.ToChar(vbTab))
-            lstStats.Items.Add(i(0)).SubItems.Add(i(1))
+        cboStats.Items.Clear()
+        'lstStats.Items.Clear()
+        Dim found As Boolean = False
+        Dim f As FileInfo() = New DirectoryInfo(Path.Combine(AppPath, "logs")).GetFiles("*.log")
+        For Each fi As FileInfo In f
+            cboStats.Items.Add(Path.GetFileNameWithoutExtension(fi.Name).Replace("download-", ""))
+            found = True
         Next
+        If found Then
+            cboStats.Enabled = True
+            cboStats.SelectedIndex = 0
+        End If
+        'Dim t As String() = File.ReadAllLines(Path.Combine(AppPath, "download.log"))
+        'For Each s As String In t
+        'Dim i As String() = s.Split(Convert.ToChar(vbTab))
+        'lstStats.Items.Add(i(0)).SubItems.Add(i(1))
+        ' Next
+    End Sub
+    Sub UpdateList(ByVal filen As String)
+        lstStats.Items.Clear()
+        Dim filename As String = Path.Combine(AppPath, String.Concat("logs", Path.DirectorySeparatorChar, "download-", filen, ".log"))
+        If File.Exists(filename) Then
+            Dim t As String() = File.ReadAllLines(filename)
+            For Each s As String In t
+                Dim i As String() = s.Split(Convert.ToChar(vbTab))
+                lstStats.Items.Add(i(0)).SubItems.Add(i(1))
+            Next
+        End If
+    End Sub
+
+    Private Sub cboStats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboStats.SelectedIndexChanged
+        UpdateList(cboStats.SelectedItem.ToString)
     End Sub
 End Class

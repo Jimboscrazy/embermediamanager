@@ -67,7 +67,7 @@ Partial Class Uploading
         Me.Name = "Uploading"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Uploading"
+        Me.Text = "Transfering"
         Me.ResumeLayout(False)
 
     End Sub
