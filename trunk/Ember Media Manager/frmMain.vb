@@ -4835,13 +4835,13 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        '//
-        ' Do some stuff before closing
-        '\\
 
         Try
 
             Dim doSave As Boolean = True
+
+            Me.SetControlsEnabled(False, True)
+            Me.EnableFilters(False)
 
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
             If Not isCL Then
