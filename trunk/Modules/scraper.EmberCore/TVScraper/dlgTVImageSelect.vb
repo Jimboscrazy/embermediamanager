@@ -320,45 +320,69 @@ Public Class dlgTVImageSelect
                 End If
             End If
 
-                If Me.bwLoadImages.CancellationPending Then
-                    Return True
-                End If
-                Me.bwLoadImages.ReportProgress(1, "progress")
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
+            Me.bwLoadImages.ReportProgress(1, "progress")
 
-                If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                 Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.PreferredShowFanartSize)
 
-                    'no fanart of the preferred size, just get the first available
-                    If IsNothing(tSF) Then tSF = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
+                'no fanart of the preferred size, just get the first available
+                If IsNothing(tSF) Then tSF = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
 
-                    If Not IsNothing(tSF) Then
-                        If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
-                            Scraper.TVDBImages.ShowFanart.Image.FromFile(tSF.LocalFile)
+                If Not IsNothing(tSF) Then
+                    If Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso File.Exists(tSF.LocalFile) Then
+                        Scraper.TVDBImages.ShowFanart.Image.FromFile(tSF.LocalFile)
+                        Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
+                        Scraper.TVDBImages.ShowFanart.URL = tSF.URL
+                    ElseIf Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSF.URL) Then
+                        Scraper.TVDBImages.ShowFanart.Image.FromWeb(tSF.URL)
+                        If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                            Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
+                            Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
                             Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
                             Scraper.TVDBImages.ShowFanart.URL = tSF.URL
-                        ElseIf Not String.IsNullOrEmpty(tSF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSF.URL) Then
-                            Scraper.TVDBImages.ShowFanart.Image.FromWeb(tSF.URL)
-                            If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                                Directory.CreateDirectory(Directory.GetParent(tSF.LocalFile).FullName)
-                                Scraper.TVDBImages.ShowFanart.Image.Save(tSF.LocalFile)
-                                Scraper.TVDBImages.ShowFanart.LocalFile = tSF.LocalFile
-                                Scraper.TVDBImages.ShowFanart.URL = tSF.URL
-                            End If
                         End If
                     End If
                 End If
+            End If
 
-                If Me.bwLoadImages.CancellationPending Then
-                    Return True
-                End If
+            If Me.bwLoadImages.CancellationPending Then
+                Return True
+            End If
                 Me.bwLoadImages.ReportProgress(2, "progress")
 
-                If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
-                    Dim tP As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
-                    If Not IsNothing(tP) Then
-                        Scraper.TVDBImages.AllSeasonPoster.Image.Image = tP.Image.Image
-                        Scraper.TVDBImages.AllSeasonPoster.LocalFile = tP.LocalFile
-                        Scraper.TVDBImages.AllSeasonPoster.URL = tP.URL
+            If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
+                If Master.eSettings.IsAllSBanner Then
+                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredAllSBannerType)
+
+                    'no preferred size, just get any one of them
+                    If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                    If Not IsNothing(tSP) Then
+                        Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSP.Image.Image
+                        Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSP.LocalFile
+                        Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
+                    Else
+                        'still nothing? try to get from generic posters
+                        Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+                        If Not IsNothing(tSPg) Then
+                            Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSPg.Image.Image
+                            Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSPg.LocalFile
+                            Scraper.TVDBImages.AllSeasonPoster.URL = tSPg.URL
+                        End If
+                    End If
+                Else
+                    Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredAllSPosterSize)
+
+                    'no preferred size, just get any one of them
+                    If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
+
+                    If Not IsNothing(tSPg) Then
+                        Scraper.TVDBImages.AllSeasonPoster.Image.Image = tSPg.Image.Image
+                        Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSPg.LocalFile
+                        Scraper.TVDBImages.AllSeasonPoster.URL = tSPg.URL
                     Else
                         Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
                         If Not IsNothing(tSP) Then
@@ -367,8 +391,8 @@ Public Class dlgTVImageSelect
                             Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
                         End If
                     End If
-                    'no preferred size setting for all seasons poster so just grab anything
                 End If
+            End If
 
                 If Me.bwLoadImages.CancellationPending Then
                     Return True

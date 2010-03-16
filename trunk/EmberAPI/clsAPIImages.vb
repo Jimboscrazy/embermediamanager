@@ -341,22 +341,22 @@ Public Class Images : Implements IDisposable
         Try
             Dim pPath As String = String.Empty
 
-            If Master.eSettings.ResizeSeasonPoster AndAlso (_image.Width > Master.eSettings.SeasonPosterWidth OrElse _image.Height > Master.eSettings.SeasonPosterHeight) Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.SeasonPosterWidth, Master.eSettings.SeasonPosterHeight)
+            If Master.eSettings.ResizeAllSPoster AndAlso (_image.Width > Master.eSettings.AllSPosterWidth OrElse _image.Height > Master.eSettings.AllSPosterHeight) Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.AllSPosterWidth, Master.eSettings.AllSPosterHeight)
             End If
 
             If Master.eSettings.SeasonAllJPG Then
                 pPath = Path.Combine(mShow.ShowPath, "season-all.jpg")
-                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
-                    Save(pPath, Master.eSettings.SeasonPosterQuality)
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteAllSPoster) Then
+                    Save(pPath, Master.eSettings.AllSPosterQuality)
                     strReturn = pPath
                 End If
             End If
 
             If Master.eSettings.SeasonAllTBN Then
                 pPath = Path.Combine(mShow.ShowPath, "season-all.tbn")
-                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
-                    Save(pPath, Master.eSettings.SeasonPosterQuality)
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteAllSPoster) Then
+                    Save(pPath, Master.eSettings.AllSPosterQuality)
                     strReturn = pPath
                 End If
             End If
