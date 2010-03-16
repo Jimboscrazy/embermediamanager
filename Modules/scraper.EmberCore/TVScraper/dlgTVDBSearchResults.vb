@@ -175,7 +175,7 @@ Public Class dlgTVDBSearchResults
         If Not Me.chkManual.Checked Then
             txtTVDBID.Text = String.Empty
         Else
-            Me.lvSearchResults.SelectedItems(0).Selected = False
+            If Me.lvSearchResults.SelectedItems.Count > 0 Then Me.lvSearchResults.SelectedItems(0).Selected = False
         End If
     End Sub
 

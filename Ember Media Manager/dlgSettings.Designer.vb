@@ -4421,7 +4421,7 @@ Partial Class dlgSettings
         Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(601, 368)
+        Me.TabPage8.Size = New System.Drawing.Size(601, 371)
         Me.TabPage8.TabIndex = 3
         Me.TabPage8.Text = "General"
         Me.TabPage8.UseVisualStyleBackColor = True
@@ -4922,7 +4922,7 @@ Partial Class dlgSettings
         Me.TabPage6.Controls.Add(Me.gbSeaFanartOpts)
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Size = New System.Drawing.Size(601, 368)
+        Me.TabPage6.Size = New System.Drawing.Size(601, 371)
         Me.TabPage6.TabIndex = 2
         Me.TabPage6.Text = "TV Season"
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -5202,7 +5202,7 @@ Partial Class dlgSettings
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage7.Size = New System.Drawing.Size(601, 368)
+        Me.TabPage7.Size = New System.Drawing.Size(601, 371)
         Me.TabPage7.TabIndex = 1
         Me.TabPage7.Text = "TV Episode"
         Me.TabPage7.UseVisualStyleBackColor = True
@@ -6871,7 +6871,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6881,6 +6880,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
@@ -6891,7 +6892,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
