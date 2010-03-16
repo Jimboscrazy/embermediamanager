@@ -24,6 +24,8 @@ Partial Class frmMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.chkUseMPDB = New System.Windows.Forms.CheckBox
@@ -31,7 +33,6 @@ Partial Class frmMediaSettingsHolder
         Me.chkUseIMPA = New System.Windows.Forms.CheckBox
         Me.chkScrapePoster = New System.Windows.Forms.CheckBox
         Me.chkScrapeFanart = New System.Windows.Forms.CheckBox
-        Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.Label23 = New System.Windows.Forms.Label
@@ -43,15 +44,13 @@ Partial Class frmMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.pnlSettings.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel2.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -66,12 +65,35 @@ Partial Class frmMediaSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 83
         '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Blue
+        Me.Label1.Location = New System.Drawing.Point(37, 337)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(225, 31)
+        Me.Label1.TabIndex = 95
+        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+            "for more options."
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 335)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 94
+        Me.PictureBox1.TabStop = False
+        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.GroupBox9)
         Me.GroupBox3.Controls.Add(Me.chkScrapePoster)
         Me.GroupBox3.Controls.Add(Me.chkScrapeFanart)
-        Me.GroupBox3.Controls.Add(Me.chkAutoThumbs)
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(15, 31)
         Me.GroupBox3.Name = "GroupBox3"
@@ -152,18 +174,6 @@ Partial Class frmMediaSettingsHolder
         Me.chkScrapeFanart.Text = "Get Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.UseVisualStyleBackColor = True
-        '
-        'chkAutoThumbs
-        '
-        Me.chkAutoThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(350, 18)
-        Me.chkAutoThumbs.Name = "chkAutoThumbs"
-        Me.chkAutoThumbs.Size = New System.Drawing.Size(205, 16)
-        Me.chkAutoThumbs.TabIndex = 86
-        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs"
-        Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -286,30 +296,6 @@ Partial Class frmMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'Label1
-        '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 337)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 95
-        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
-            "for more options."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(3, 335)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 94
-        Me.PictureBox1.TabStop = False
-        '
         'frmMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -326,6 +312,7 @@ Partial Class frmMediaSettingsHolder
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
         Me.pnlSettings.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
@@ -333,13 +320,11 @@ Partial Class frmMediaSettingsHolder
         Me.GroupBox2.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
     Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox

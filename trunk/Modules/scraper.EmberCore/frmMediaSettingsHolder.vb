@@ -67,10 +67,6 @@ Public Class frmMediaSettingsHolder
         End If
     End Sub
 
-    Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
         CheckTrailer()

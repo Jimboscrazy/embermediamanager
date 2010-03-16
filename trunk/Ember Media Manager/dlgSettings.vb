@@ -33,7 +33,7 @@ Public Class dlgSettings
     Private Meta As New List(Of Settings.MetadataPerType)
     Private NoUpdate As Boolean = True
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
-    Private ShowRegex As List(Of Settings.TVShowRegEx)
+    Private ShowRegex As New List(Of Settings.TVShowRegEx)
     Private sResult As New Structures.SettingsResult
     Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)

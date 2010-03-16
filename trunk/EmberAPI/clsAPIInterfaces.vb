@@ -198,6 +198,7 @@ Public Class Interfaces
 
         Public breakChain As Boolean
         Public Cancelled As Boolean
+        Public BoolProperty As Boolean
 
 #End Region 'Fields
 
