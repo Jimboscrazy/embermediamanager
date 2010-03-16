@@ -58,6 +58,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+            Me.lvSearchResults.Enabled = False
             Me.sInfo.ShowTitle = Me.txtSearch.Text
             Me.ClearInfo()
             Me.chkManual.Enabled = False
@@ -373,6 +374,7 @@ Public Class dlgTVDBSearchResults
                 End If
 
                 Me.chkManual.Enabled = True
+                If Not Me.chkManual.Checked Then Me.lvSearchResults.Enabled = True
 
             Case Enums.TVScraperEventType.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
