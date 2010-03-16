@@ -55,6 +55,7 @@ Public Class frmInfoSettingsHolder
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
@@ -203,5 +204,9 @@ Public Class frmInfoSettingsHolder
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder
         btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1)
         btnUp.Enabled = (order > 0)
+    End Sub
+
+    Private Sub chkCertification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class

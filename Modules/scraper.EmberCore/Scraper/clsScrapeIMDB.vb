@@ -476,7 +476,7 @@ mResult:
                                 If Cert.Count > 0 Then
                                     IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
                                     If Options.bMPAA AndAlso Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
-                                        IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(IMDBMovie.Certification), IMDBMovie.Certification)
+                                        IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(IMDBMovie.Certification), If(Master.eSettings.OnlyValueForCert, IMDBMovie.Certification.Split(Convert.ToChar(":"))(1), IMDBMovie.Certification))
                                     End If
                                 End If
                             Else

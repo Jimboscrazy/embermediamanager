@@ -557,6 +557,7 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
+        Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -6446,6 +6447,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkOnlyValueForCert)
         Me.GroupBox1.Controls.Add(Me.cbForce)
         Me.GroupBox1.Controls.Add(Me.chkForceTitle)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
@@ -6458,7 +6460,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(313, 187)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(289, 179)
+        Me.GroupBox1.Size = New System.Drawing.Size(289, 198)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
@@ -6470,7 +6472,7 @@ Partial Class dlgSettings
         Me.cbForce.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForce.FormattingEnabled = True
         Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbForce.Location = New System.Drawing.Point(139, 144)
+        Me.cbForce.Location = New System.Drawing.Point(139, 167)
         Me.cbForce.Name = "cbForce"
         Me.cbForce.Size = New System.Drawing.Size(144, 21)
         Me.cbForce.Sorted = True
@@ -6480,7 +6482,7 @@ Partial Class dlgSettings
         '
         Me.chkForceTitle.AutoSize = True
         Me.chkForceTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkForceTitle.Location = New System.Drawing.Point(6, 145)
+        Me.chkForceTitle.Location = New System.Drawing.Point(6, 168)
         Me.chkForceTitle.Name = "chkForceTitle"
         Me.chkForceTitle.Size = New System.Drawing.Size(135, 17)
         Me.chkForceTitle.TabIndex = 64
@@ -6640,6 +6642,18 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
+        'chkOnlyValueForCert
+        '
+        Me.chkOnlyValueForCert.AutoSize = True
+        Me.chkOnlyValueForCert.Enabled = False
+        Me.chkOnlyValueForCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOnlyValueForCert.Location = New System.Drawing.Point(21, 145)
+        Me.chkOnlyValueForCert.Name = "chkOnlyValueForCert"
+        Me.chkOnlyValueForCert.Size = New System.Drawing.Size(168, 17)
+        Me.chkOnlyValueForCert.TabIndex = 66
+        Me.chkOnlyValueForCert.Text = "Only Save the Value to NFO"
+        Me.chkOnlyValueForCert.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6647,7 +6661,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6657,6 +6670,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlMain)
@@ -6665,9 +6682,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlImages)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7376,4 +7390,5 @@ Partial Class dlgSettings
     Friend WithEvents chkMarkNewShows As System.Windows.Forms.CheckBox
     Friend WithEvents chkMarkNewEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents chkDVDOrderDefault As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOnlyValueForCert As System.Windows.Forms.CheckBox
 End Class

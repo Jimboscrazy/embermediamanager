@@ -270,11 +270,10 @@ Public Class APIXML
         If RatingXML.Nodes.Count > 0 Then
             Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
 
-
             Try
 
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<tv>.Descendants.Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>.Descendants.Count > 0 Then
+                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If

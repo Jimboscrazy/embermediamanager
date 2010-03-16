@@ -834,4 +834,6 @@
   <string id="832">Display All Season Poster</string>
   <string id="833">These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.</string>
   <string id="834">* Inside Season directory</string>
+  <string id="835">Only Save the Value to NFO</string>
+  <string id="836">The ID you entered is not a valid TVDB ID.</string>
 </strings>

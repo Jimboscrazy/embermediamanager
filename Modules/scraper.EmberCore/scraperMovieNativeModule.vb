@@ -61,10 +61,12 @@ Public Class EmberNativeScraperModule
         _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
         _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
         _setup.chkTop250.Checked = ConfigOptions.bTop250
+        _setup.chkCertification.Checked = ConfigOptions.bCert
         _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
         _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
         _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
         _setup.chkOFDBGenre.Checked = MySettings.UseOFDBGenre
+
         If String.IsNullOrEmpty(MySettings.IMDBURL) Then
             MySettings.IMDBURL = "akas.imdb.com"
         End If
@@ -121,6 +123,8 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
         ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
+        ConfigOptions.bCert = _setup.chkCertification.Checked
+
         SaveSettings()
         ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -282,6 +286,7 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL", "akas.imdb.com")
         MySettings.UseOFDBTitle = AdvancedSettings.GetBooleanSetting("UseOFDBTitle", False)
         MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)
@@ -318,6 +323,7 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
         AdvancedSettings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
         AdvancedSettings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
+        AdvancedSettings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
         AdvancedSettings.SetSetting("IMDBURL", MySettings.IMDBURL)
         AdvancedSettings.SetBooleanSetting("UseOFDBTitle", MySettings.UseOFDBTitle)
         AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)

@@ -347,4 +347,5 @@
 	<string control="Core_chkMarkNewShows">If enabled, new shows will be "marked". If disabled, new shows will still be colored green until updated or the next Ember session.</string>
 	<string control="Core_chkMarkNewEpisodes">If enabled, new episodes will be "marked". If disabled, new episodes will still be colored green until updated or the next Ember session.</string>
 	<string control="Core_chkDVDOrderDefault">If enabled, using DVD ordering will be enabled by default for new shows.</string>
+	<string control="Core_chkOnlyValueForCert">If enabled, Ember will only save the value of the certification to the MPAA field. (Example: "Germany:18" will save as "18")</string>
 </strings>

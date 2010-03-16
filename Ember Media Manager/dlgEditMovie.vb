@@ -655,13 +655,13 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
+                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.UseCertForMPAA AndAlso Master.eSettings.OnlyValueForCert AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
                 Else
                     If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso .lbMPAA.SelectedIndex = 0)) Then
                         Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.OnlyValueForCert, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If
@@ -1223,13 +1223,26 @@ Public Class dlgEditMovie
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
                 If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
-                    Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
-                    Me.lbMPAA.SelectedIndex = l
-                    If Me.lbMPAA.SelectedItems.Count = 0 Then
-                        Me.lbMPAA.SelectedIndex = 0
+                    If Master.eSettings.OnlyValueForCert Then
+                        Dim sItem As String = String.Empty
+                        For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
+                            sItem = Me.lbMPAA.Items(i).ToString
+                            If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Master.currMovie.Movie.MPAA Then
+                                Me.lbMPAA.SelectedIndex = i
+                                Me.lbMPAA.TopIndex = i
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
+                        Me.lbMPAA.SelectedIndex = l
+                        Me.lbMPAA.TopIndex = l
                     End If
 
-                    Me.lbMPAA.TopIndex = 0
+                    If Me.lbMPAA.SelectedItems.Count = 0 Then
+                        Me.lbMPAA.SelectedIndex = 0
+                        Me.lbMPAA.TopIndex = 0
+                    End If
 
                     txtMPAADesc.Enabled = False
                 ElseIf Me.lbMPAA.Items.Count >= 6 Then
