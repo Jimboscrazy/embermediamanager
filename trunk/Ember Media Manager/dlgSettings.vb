@@ -1954,6 +1954,10 @@ Public Class dlgSettings
         Me.tLangList.Clear()
         Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
         Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+        End If
     End Sub
 
     Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
@@ -2453,7 +2457,13 @@ Public Class dlgSettings
 
             Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Enums.PosterSize)
             Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Enums.FanartSize)
-            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.ShowPosterType)
+            If Me.rbBanner.Checked Then
+                Master.eSettings.IsShowBanner = True
+                Master.eSettings.PreferredShowBannerType = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.ShowBannerType)
+            Else
+                Master.eSettings.IsShowBanner = False
+                Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.PosterSize)
+            End If
             Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredSeasonPosterSize = DirectCast(Me.cbSeaPosterSize.SelectedIndex, Enums.SeasonPosterType)
@@ -2863,7 +2873,13 @@ Public Class dlgSettings
 
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
-            Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
+            If Master.eSettings.IsShowBanner Then
+                Me.rbBanner.Checked = True
+                Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowBannerType
+            Else
+                Me.rbPoster.Checked = True
+                Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
+            End If
             Me.cbShowFanartSize.SelectedIndex = Master.eSettings.PreferredShowFanartSize
             Me.cbEpFanartSize.SelectedIndex = Master.eSettings.PreferredEpFanartSize
             Me.cbSeaPosterSize.SelectedIndex = Master.eSettings.PreferredSeasonPosterSize
@@ -3661,6 +3677,8 @@ Public Class dlgSettings
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkDVDOrderDefault.Text = Master.eLang.GetString(797, "Default to using DVD Ordering")
         Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
+        Me.rbBanner.Text = Master.eLang.GetString(838, "Banner")
+        Me.rbPoster.Text = Master.eLang.GetString(148, "Poster")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -3684,7 +3702,6 @@ Public Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbAutoETSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(746, "Blank"), Master.eLang.GetString(747, "Graphical"), Master.eLang.GetString(748, "Text")})
         Me.cbShowFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(148, "Poster"), Master.eLang.GetString(558, "Wide")})
@@ -4062,14 +4079,14 @@ Public Class dlgSettings
                       .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlTVData", _
-                      .Text = Master.eLang.GetString(556, "Scraper - Data"), _
+                      .Text = Master.eLang.GetString(556, "Scrapers - Data"), _
                       .ImageIndex = 3, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
                       .Panel = Me.pnlTVScraper, _
                       .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlTVMedia", _
-                      .Text = Master.eLang.GetString(557, "Scraper - Media"), _
+                      .Text = Master.eLang.GetString(837, "Scrapers - Images"), _
                       .ImageIndex = 6, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
                       .Panel = Me.pnlTVImages, _
@@ -4228,4 +4245,16 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub rbBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbBanner.CheckedChanged, rbPoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.cbShowPosterSize.Items.Clear()
+
+        If Me.rbBanner.Checked Then
+            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(746, "Blank"), Master.eLang.GetString(747, "Graphical"), Master.eLang.GetString(748, "Text")})
+        Else
+            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        End If
+        Me.cbShowPosterSize.SelectedIndex = 0
+    End Sub
 End Class

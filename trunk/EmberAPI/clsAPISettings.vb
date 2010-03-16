@@ -64,7 +64,9 @@ Public Class Settings
     Private _useMPDB As Boolean
     Private _postersize As Enums.PosterSize
     Private _fanartsize As Enums.FanartSize
-    Private _showpostersize As Enums.ShowPosterType
+    Private _showbanner As Boolean
+    Private _showbannertype As Enums.ShowBannerType
+    Private _showpostersize As Enums.PosterSize
     Private _showfanartsize As Enums.FanartSize
     Private _epfanartsize As Enums.FanartSize
     Private _seasonpostersize As Enums.SeasonPosterType
@@ -679,11 +681,29 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property PreferredShowPosterSize() As Enums.ShowPosterType
+    Public Property IsShowBanner() As Boolean
+        Get
+            Return Me._showbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showbanner = value
+        End Set
+    End Property
+
+    Public Property PreferredShowBannerType() As Enums.ShowBannerType
+        Get
+            Return Me._showbannertype
+        End Get
+        Set(ByVal value As Enums.ShowBannerType)
+            Me._showbannertype = value
+        End Set
+    End Property
+
+    Public Property PreferredShowPosterSize() As Enums.PosterSize
         Get
             Return Me._showpostersize
         End Get
-        Set(ByVal value As Enums.ShowPosterType)
+        Set(ByVal value As Enums.PosterSize)
             Me._showpostersize = value
         End Set
     End Property
@@ -3021,7 +3041,9 @@ Public Class Settings
         Me._useMPDB = False
         Me._postersize = Enums.PosterSize.Xlrg
         Me._fanartsize = Enums.FanartSize.Lrg
-        Me._showpostersize = Enums.ShowPosterType.None
+        Me._showbanner = True
+        Me._showbannertype = Enums.ShowBannerType.None
+        Me._showpostersize = Enums.PosterSize.Xlrg
         Me._showfanartsize = Enums.FanartSize.Lrg
         Me._epfanartsize = Enums.FanartSize.Lrg
         Me._seasonpostersize = Enums.SeasonPosterType.None
