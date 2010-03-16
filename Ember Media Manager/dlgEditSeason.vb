@@ -21,28 +21,134 @@
 Imports System.IO
 
 Public Class dlgEditSeason
-    Private Poster As New Images With {.IsEdit = True}
+
+    #Region "Fields"
+
     Private Fanart As New Images With {.IsEdit = True}
+    Private Poster As New Images With {.IsEdit = True}
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.Fanart.Image = Nothing
+    End Sub
+
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.Poster.Image = Nothing
+    End Sub
+
+    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
-            Me.SetInfo()
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                    Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
+                    pbFanart.Image = Fanart.Image
 
-            Master.DB.SaveTVSeasonToDB(Master.currShow, False)
-
-            Me.CleanUp()
-
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbFanart.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Fanart.Image = New Bitmap(tImage)
+            Me.pbFanart.Image = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = "JPEGs|*.jpg"
+                .FilterIndex = 4
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Fanart.FromFile(ofdImage.FileName)
+                pbFanart.Image = Fanart.Image
+
+                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                Me.lblFanartSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                    Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
+                    pbPoster.Image = Poster.Image
+
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbPoster.Image)
+
+        If Not IsNothing(tImage) Then
+            Me.Poster.Image = New Bitmap(tImage)
+            Me.pbPoster.Image = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Poster.FromFile(ofdImage.FileName)
+                pbPoster.Image = Poster.Image
+
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub CleanUp()
+        Try
+            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
+            End If
+
+            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -82,19 +188,20 @@ Public Class dlgEditSeason
         End With
     End Sub
 
-    Private Sub CleanUp()
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
-            End If
+            Me.SetInfo()
 
-            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
-            End If
+            Master.DB.SaveTVSeasonToDB(Master.currShow, False)
+
+            Me.CleanUp()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub SetInfo()
@@ -124,88 +231,6 @@ Public Class dlgEditSeason
         End Try
     End Sub
 
-    Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
-                .FilterIndex = 0
-            End With
-
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                Poster.FromFile(ofdImage.FileName)
-                pbPoster.Image = Poster.Image
-
-                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Master.currShow.ShowPath
-                .Filter = "JPEGs|*.jpg"
-                .FilterIndex = 4
-            End With
-
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                Fanart.FromFile(ofdImage.FileName)
-                pbFanart.Image = Fanart.Image
-
-                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                Me.lblFanartSize.Visible = True
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
-                    Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
-                    pbPoster.Image = Poster.Image
-
-                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                    Me.lblPosterSize.Visible = True
-                End If
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
-                    Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
-                    pbFanart.Image = Fanart.Image
-
-                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                    Me.lblFanartSize.Visible = True
-                End If
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-        Me.pbPoster.Image = Nothing
-        Me.Poster.Image = Nothing
-    End Sub
-
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-        Me.pbFanart.Image = Nothing
-        Me.Fanart.Image = Nothing
-    End Sub
-
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(769, "Edit Season")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
@@ -224,21 +249,6 @@ Public Class dlgEditSeason
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbPoster.Image)
+    #End Region 'Methods
 
-        If Not IsNothing(tImage) Then
-            Me.Poster.Image = New Bitmap(tImage)
-            Me.pbPoster.Image = tImage
-        End If
-    End Sub
-
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbFanart.Image)
-
-        If Not IsNothing(tImage) Then
-            Me.Fanart.Image = New Bitmap(tImage)
-            Me.pbFanart.Image = tImage
-        End If
-    End Sub
 End Class

@@ -18,23 +18,19 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
 Imports System.IO
+
 Public Class frmMediaSettingsHolder
-    Public Event SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+
+    #Region "Events"
+
     Public Event ModuleSettingsChanged()
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
-    End Sub
+    Public Event SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
-    Sub SetUp()
-        Me.chkTrailerDump.Text = Master.eLang.GetString(829, "Watch for ""Dump"" Folder")
-    End Sub
+    #End Region 'Events
 
-    Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
-    End Sub
+    #Region "Methods"
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
         With Me.fbdBrowse
@@ -46,13 +42,27 @@ Public Class frmMediaSettingsHolder
         End With
     End Sub
 
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
+    End Sub
+
     Private Sub chkTrailerDump_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailerDump.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
         txtDumpPath.Enabled = chkTrailerDump.Checked
         btnBrowse.Enabled = chkTrailerDump.Checked
     End Sub
 
-    Private Sub txtDumpPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDumpPath.TextChanged
-
+    Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SetUp()
     End Sub
+
+    Sub SetUp()
+        Me.chkTrailerDump.Text = Master.eLang.GetString(829, "Watch for ""Dump"" Folder")
+    End Sub
+
+    Private Sub txtDumpPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDumpPath.TextChanged
+    End Sub
+
+    #End Region 'Methods
+
 End Class

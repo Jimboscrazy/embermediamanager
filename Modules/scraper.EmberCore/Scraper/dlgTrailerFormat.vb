@@ -19,23 +19,18 @@
 ' ################################################################################
 
 Public Class dlgTrailerFormat
-    Private _yturl As String
+
+    #Region "Fields"
+
+    Private  WithEvents YouTube As YouTube.Scraper
     Private _selectedformaturl As String
+    Private _yturl As String
 
-    Private WithEvents YouTube As YouTube.Scraper
+    #End Region 'Fields
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
+    #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal YTURL As String) As String
-
         Me._yturl = YTURL
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -44,6 +39,11 @@ Public Class dlgTrailerFormat
             Return String.Empty
         End If
     End Function
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
 
     Private Sub dlgTrailerFormat_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
@@ -72,6 +72,19 @@ Public Class dlgTrailerFormat
         End Try
     End Sub
 
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(702, "Select Format")
+        Me.lblStatus.Text = Master.eLang.GetString(703, "Getting available formats...")
+        Me.GroupBox1.Text = Master.eLang.GetString(704, "Available Formats")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+    End Sub
+
     Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved
         Try
 
@@ -92,14 +105,8 @@ Public Class dlgTrailerFormat
             Me.pnlStatus.Visible = False
             Me.lstFormats.Enabled = True
         End Try
-
     End Sub
 
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(702, "Select Format")
-        Me.lblStatus.Text = Master.eLang.GetString(703, "Getting available formats...")
-        Me.GroupBox1.Text = Master.eLang.GetString(704, "Available Formats")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-    End Sub
+    #End Region 'Methods
+
 End Class

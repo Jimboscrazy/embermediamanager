@@ -1,21 +1,54 @@
-﻿Imports EmberAPI
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
 Imports System
 Imports System.IO
 Imports System.Xml.Serialization
+
+Imports EmberAPI
+
 Public Class XBMCxCom
     Implements Interfaces.EmberExternalModule
 
-    Private _name As String = "XBMC Controller"
+    #Region "Fields"
+
+    Private  WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private  WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
+    Private _MySettings As New MySettings
+    Private _name As String = "XBMC Controller"
     Private _setup As frmSettingsHolder
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+
+    #End Region 'Fields
+
+    #Region "Events"
+
     Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.EmberExternalModule.GenericEvent
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
 
-    Private _MySettings As New MySettings
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
 
+    #End Region 'Events
+
+    #Region "Properties"
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
@@ -31,6 +64,98 @@ Public Class XBMCxCom
             End If
         End Set
     End Property
+
+    Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName
+        Get
+            Return _name
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType)
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleVersion
+        Get
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+        End Get
+    End Property
+
+    #End Region 'Properties
+
+    #Region "Methods"
+
+    Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberExternalModule.Init
+        '_MySettings.XComs.AddRange(Master.eSettings.XBMCComs)
+        _MySettings = MySettings.Load
+    End Sub
+
+    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        Dim SPanel As New Containers.SettingsPanel
+        Me._setup = New frmSettingsHolder
+        Me._setup.cbEnabled.Checked = Me._enabled
+        _setup.XComs = _MySettings.XComs
+        _setup.LoadXComs()
+        SPanel.Name = Me._name
+        SPanel.Text = Me._name
+        SPanel.Prefix = "XBMCCom_"
+        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = Me._setup.pnlSettings()
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Return SPanel
+    End Function
+
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+    End Function
+
+    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+        'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
+        Me.Enabled = _setup.cbEnabled.Checked
+        _MySettings.XComs = _setup.XComs
+        MySettings.Save(_MySettings)
+    End Sub
+
+    Sub Disable()
+        Try
+            Dim tsi As New ToolStripSplitButton
+            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
+            tsi.DropDownItems.Remove(MyMenu)
+            MyMenu.DropDownItems.Clear()
+            'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+            'tsi.DropDownItems.Remove(MyTrayMenu)
+            tsi.Visible = (tsi.DropDownItems.Count > 0)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub DoXCom(ByVal xCom As XBMCCom)
+        Try
+            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
+            Wr.Timeout = 2500
+
+            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+            End If
+
+            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
+                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+                If Not Sr.Contains("OK") Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
+                    'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
+                End If
+            End Using
+            Wr = Nothing
+        Catch
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
+            'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
+        End Try
+    End Sub
+
     Sub Enable()
         Try
             _MySettings = MySettings.Load
@@ -60,6 +185,15 @@ Public Class XBMCxCom
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
+    End Sub
+
     Private Sub xCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim tMenu As New System.Windows.Forms.ToolStripMenuItem
         tMenu = DirectCast(sender, System.Windows.Forms.ToolStripMenuItem)
@@ -75,136 +209,41 @@ Public Class XBMCxCom
             DoXCom(xCom)
         End If
     End Sub
-    Sub Disable()
-        Try
-            Dim tsi As New ToolStripSplitButton
-            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
-            tsi.DropDownItems.Remove(MyMenu)
-            MyMenu.DropDownItems.Clear()
-            'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-            'tsi.DropDownItems.Remove(MyTrayMenu)
-            tsi.Visible = (tsi.DropDownItems.Count > 0)
-        Catch ex As Exception
-        End Try
-    End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        '_MySettings.XComs.AddRange(Master.eSettings.XBMCComs)
-        _MySettings = MySettings.Load
-    End Sub
+    #End Region 'Methods
 
-    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
-        Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.cbEnabled.Checked = Me._enabled
-        _setup.XComs = _MySettings.XComs
-        _setup.LoadXComs()
-        SPanel.Name = Me._name
-        SPanel.Text = Me._name
-        SPanel.Prefix = "XBMCCom_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
-        SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings()
-        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        Return SPanel
-    End Function
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
-    End Sub
-
-    Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName
-        Get
-            Return _name
-        End Get
-    End Property
-
-    Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
-        Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType)
-        End Get
-    End Property
-
-    Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleVersion
-        Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
-        End Get
-    End Property
-
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-
-    End Function
-
-    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-        'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
-        Me.Enabled = _setup.cbEnabled.Checked
-        _MySettings.XComs = _setup.XComs
-        MySettings.Save(_MySettings)
-    End Sub
-    Private Sub DoXCom(ByVal xCom As XBMCCom)
-        Try
-            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
-            Wr.Timeout = 2500
-
-            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-            End If
-
-            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-                If Not Sr.Contains("OK") Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-                    'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
-                End If
-            End Using
-            Wr = Nothing
-        Catch
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-            'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
-        End Try
-    End Sub
-    Class MySettings
-        Public XComs As New List(Of XBMCxCom.XBMCCom)
-        Public Shared Function Load() As MySettings
-            Dim tmp As New MySettings
-            Try
-                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
-                    Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                    tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
-                    strmReader.Close()
-                Else
-                    tmp = New MySettings
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                tmp = New MySettings
-            End Try
-            Return tmp
-        End Function
-        Public Shared Sub Save(ByVal tmp As MySettings)
-            Try
-                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-
-                xmlSerial.Serialize(xmlWriter, tmp)
-                xmlWriter.Close()
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End Sub
-    End Class
+    #Region "Nested Types"
 
     Public Class XBMCCom
-        Private _xbmcname As String
-        Private _xbmcport As String
+
+        #Region "Fields"
+
         Private _xbmcip As String
-        Private _xbmcusername As String
+        Private _xbmcname As String
         Private _xbmcpassword As String
+        Private _xbmcport As String
+        Private _xbmcusername As String
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
+
+        Public Property IP() As String
+            Get
+                Return Me._xbmcip
+            End Get
+            Set(ByVal value As String)
+                Me._xbmcip = value
+            End Set
+        End Property
 
         Public Property Name() As String
             Get
@@ -215,12 +254,20 @@ Public Class XBMCxCom
             End Set
         End Property
 
-        Public Property IP() As String
+        Public Property Password() As String
             Get
-                Return Me._xbmcip
+                If String.IsNullOrEmpty(Me._xbmcpassword) Then
+                    Return String.Empty
+                Else
+                    Return StringUtils.Decode(Me._xbmcpassword)
+                End If
             End Get
             Set(ByVal value As String)
-                Me._xbmcip = value
+                If String.IsNullOrEmpty(value) Then
+                    Me._xbmcpassword = value
+                Else
+                    Me._xbmcpassword = StringUtils.Encode(value)
+                End If
             End Set
         End Property
 
@@ -242,26 +289,9 @@ Public Class XBMCxCom
             End Set
         End Property
 
-        Public Property Password() As String
-            Get
-                If String.IsNullOrEmpty(Me._xbmcpassword) Then
-                    Return String.Empty
-                Else
-                    Return StringUtils.Decode(Me._xbmcpassword)
-                End If
-            End Get
-            Set(ByVal value As String)
-                If String.IsNullOrEmpty(value) Then
-                    Me._xbmcpassword = value
-                Else
-                    Me._xbmcpassword = StringUtils.Encode(value)
-                End If
-            End Set
-        End Property
+        #End Region 'Properties
 
-        Public Sub New()
-            Clear()
-        End Sub
+        #Region "Methods"
 
         Public Sub Clear()
             Me._xbmcname = String.Empty
@@ -270,6 +300,55 @@ Public Class XBMCxCom
             Me._xbmcusername = String.Empty
             Me._xbmcpassword = String.Empty
         End Sub
+
+        #End Region 'Methods
+
     End Class
+
+    Class MySettings
+
+        #Region "Fields"
+
+        Public XComs As New List(Of XBMCxCom.XBMCCom)
+
+        #End Region 'Fields
+
+        #Region "Methods"
+
+        Public Shared Function Load() As MySettings
+            Dim tmp As New MySettings
+            Try
+                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+                If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
+                    Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
+                    tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
+                    strmReader.Close()
+                Else
+                    tmp = New MySettings
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                tmp = New MySettings
+            End Try
+            Return tmp
+        End Function
+
+        Public Shared Sub Save(ByVal tmp As MySettings)
+            Try
+                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+                Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
+
+                xmlSerial.Serialize(xmlWriter, tmp)
+                xmlWriter.Close()
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+
+        #End Region 'Methods
+
+    End Class
+
+    #End Region 'Nested Types
 
 End Class

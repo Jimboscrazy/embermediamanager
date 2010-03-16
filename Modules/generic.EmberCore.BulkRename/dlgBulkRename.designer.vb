@@ -1,9 +1,47 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
 Partial Class dlgBulkRenamer
     Inherits System.Windows.Forms.Form
 
+    #Region "Fields"
+
+    Friend  WithEvents btnCancel As System.Windows.Forms.Button
+    Friend  WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
+    Friend  WithEvents Close_Button As System.Windows.Forms.Button
+    Friend  WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
+    Friend  WithEvents dgvMoviesList As System.Windows.Forms.DataGridView
+    Friend  WithEvents Label1 As System.Windows.Forms.Label
+    Friend  WithEvents Label2 As System.Windows.Forms.Label
+    Friend  WithEvents Label4 As System.Windows.Forms.Label
+    Friend  WithEvents lblCanceling As System.Windows.Forms.Label
+    Friend  WithEvents lblCompiling As System.Windows.Forms.Label
+    Friend  WithEvents lblFile As System.Windows.Forms.Label
+    Friend  WithEvents lblFilePattern As System.Windows.Forms.Label
+    Friend  WithEvents lblFolderPattern As System.Windows.Forms.Label
+    Friend  WithEvents lblLabel As System.Windows.Forms.Label
+    Friend  WithEvents pbCompile As System.Windows.Forms.ProgressBar
+    Friend  WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend  WithEvents pnlCancel As System.Windows.Forms.Panel
+    Friend  WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend  WithEvents Rename_Button As System.Windows.Forms.Button
+    Friend  WithEvents tmrSimul As System.Windows.Forms.Timer
+    Friend  WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend  WithEvents tsmLockAll As System.Windows.Forms.ToolStripMenuItem
+    Friend  WithEvents tsmLockMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend  WithEvents tsmUnlockAll As System.Windows.Forms.ToolStripMenuItem
+    Friend  WithEvents tsmUnlockMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend  WithEvents txtFile As System.Windows.Forms.TextBox
+    Friend  WithEvents txtFolder As System.Windows.Forms.TextBox
+    Friend  WithEvents txtFolderNotSingle As System.Windows.Forms.TextBox
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,13 +52,10 @@ Partial Class dlgBulkRenamer
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkRenamer))
@@ -369,35 +404,8 @@ Partial Class dlgBulkRenamer
         Me.cmsMovieList.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
-
     End Sub
-    Friend WithEvents Close_Button As System.Windows.Forms.Button
-    Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Rename_Button As System.Windows.Forms.Button
-    Friend WithEvents tmrSimul As System.Windows.Forms.Timer
-    Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
-    Friend WithEvents lblCompiling As System.Windows.Forms.Label
-    Friend WithEvents lblFile As System.Windows.Forms.Label
-    Friend WithEvents lblCanceling As System.Windows.Forms.Label
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents dgvMoviesList As System.Windows.Forms.DataGridView
-    Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
-    Friend WithEvents lblFilePattern As System.Windows.Forms.Label
-    Friend WithEvents txtFile As System.Windows.Forms.TextBox
-    Friend WithEvents txtFolder As System.Windows.Forms.TextBox
-    Friend WithEvents lblLabel As System.Windows.Forms.Label
-    Friend WithEvents txtFolderNotSingle As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents tsmLockMovie As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents tsmLockAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tsmUnlockMovie As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tsmUnlockAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
+
+    #End Region 'Methods
 
 End Class

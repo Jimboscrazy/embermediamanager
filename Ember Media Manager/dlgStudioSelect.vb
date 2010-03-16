@@ -20,13 +20,28 @@
 
 Public Class dlgStudioSelect
 
+    #Region "Fields"
+
     Private _imdbid As String = String.Empty
     Private _studio As String = String.Empty
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Overloads Function ShowDialog(ByVal IMDBID As String) As String
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me._imdbid = IMDBID
+
+        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Return Me._studio
+        Else
+            Return String.Empty
+        End If
+    End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
@@ -44,7 +59,21 @@ Public Class dlgStudioSelect
             ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
             Dim lvItem As ListViewItem = lvStudios.Items.Add(alStudio(i).ToString, i)
         Next
+    End Sub
 
+    Private Sub dlgStudioSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
+
+    Private Sub lvStudios_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStudios.SelectedIndexChanged
+        If lvStudios.SelectedItems.Count > 0 Then
+            Me._studio = lvStudios.SelectedItems(0).Text
+        End If
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub SetUp()
@@ -53,28 +82,6 @@ Public Class dlgStudioSelect
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal IMDBID As String) As String
+    #End Region 'Methods
 
-        '//
-        ' Overload to pass data
-        '\\
-
-        Me._imdbid = IMDBID
-
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me._studio
-        Else
-            Return String.Empty
-        End If
-    End Function
-
-    Private Sub lvStudios_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStudios.SelectedIndexChanged
-        If lvStudios.SelectedItems.Count > 0 Then
-            Me._studio = lvStudios.SelectedItems(0).Text
-        End If
-    End Sub
-
-    Private Sub dlgStudioSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-    End Sub
 End Class

@@ -23,7 +23,13 @@ Imports System.Text
 
 Public Class ErrorLogger
 
+    #Region "Events"
+
     Public Event ErrorOccurred()
+
+    #End Region 'Events
+
+    #Region "Methods"
 
     ''' <summary>
     ''' Write the error to our log file, if enabled in settings.
@@ -32,7 +38,6 @@ Public Class ErrorLogger
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
     Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-
         Try
             If Master.eSettings.LogErrors Then
                 Dim sPath As String = Path.Combine(Functions.AppPath, "Log")
@@ -66,31 +71,48 @@ Public Class ErrorLogger
         End Try
     End Sub
 
+    #End Region 'Methods
+
 End Class
 
 '#################################################################################################################################
 Public Class JobLogger
+
+    #Region "Fields"
+
     Public Shared Enabled As Boolean = True
-    Private Shared InternalCounter As Integer = 0
     Public Shared JobsList As New List(Of Job)
+
+    Private Shared InternalCounter As Integer = 0
+
     Private lastId As Double
-    ' Job is a Group of items.. example: scrape all will be a job .. scrape each movie will be a item
-    Public Class Job
-        Public JobID As Long
-        Public JobType As JobTypes 'Some Enus Here
-        Public JobStatus As JobStatus 'Some Enus Here
-        Public JobName As String
-        Public Message As String
-        Public Items As New List(Of JobItem)
-    End Class
-    Public Class JobItem
-        Public ItemID As Integer
-        Public ItemType As ItemTypes 'Some Enus Here
-        Public JobID As Double
-        Public ItemStatus As ItemStatus 'Some Enus Here
-        Public Message As String
-        Public Detail As String
-    End Class
+
+    #End Region 'Fields
+
+    #Region "Enumerations"
+
+    Enum ItemStatus
+        OK = 0
+        Fail = 1
+        Abort = 2
+        Cancel = 3
+        Pending = 3
+        Skiped = 5
+    End Enum
+
+    'Example of type ,, can be enum or string (pseudo code)
+    Enum ItemTypes
+        Generic = 0
+        ScrapeMovie = 1
+        ScrapeTVEpisode = 2
+        ScanMovie = 3
+    End Enum
+
+    Enum JobStatus
+        Open = 0
+        Closed = 1
+    End Enum
+
     'Example of type ,, can be enum or string (pseudo code)
     Enum JobTypes
         GenericLog = 0
@@ -100,43 +122,11 @@ Public Class JobLogger
         Rename = 4
         ' Etc
     End Enum
-    'Example of type ,, can be enum or string (pseudo code)
-    Enum ItemTypes
-        Generic = 0
-        ScrapeMovie = 1
-        ScrapeTVEpisode = 2
-        ScanMovie = 3
-    End Enum
-    Enum JobStatus
-        Open = 0
-        Closed = 1
-    End Enum
-    Enum ItemStatus
-        OK = 0
-        Fail = 1
-        Abort = 2
-        Cancel = 3
-        Pending = 3
-        Skiped = 5
-    End Enum
-    Public Function AddJobItem(ByVal JobId As Double, ByVal ItemType As ItemTypes, ByVal message As String, ByVal Status As ItemStatus, Optional ByVal detail As String = "") As Double
-        If Not Enabled Then Return 0
-        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobID = JobId)
-        If Not currJob Is Nothing Then
-            currJob.Items.Add(New JobItem With {.JobID = currJob.JobID, .ItemID = currJob.Items.Count, .ItemType = ItemType, .Message = message, .Detail = detail, .ItemStatus = Status})
-            'Call module JobLogger now
-            Return currJob.Items.Count - 1
-        End If
-    End Function
-    Public Function AddJobItem(ByVal name As String, ByVal ItemType As ItemTypes, ByVal message As String, ByVal Status As ItemStatus, Optional ByVal detail As String = "") As Double
-        If Not Enabled Then Return -1
-        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name And y.JobStatus <> JobStatus.Closed)
-        If Not currJob Is Nothing Then
-            Return AddJobItem(currJob.JobID, ItemType, message, Status, detail)
-        Else
-            Return -1
-        End If
-    End Function
+
+    #End Region 'Enumerations
+
+    #Region "Methods"
+
     Public Overloads Function AddJob(ByVal id As Long, ByVal JobType As JobTypes, ByVal message As String, Optional ByVal Status As JobStatus = JobStatus.Open, Optional ByVal name As String = "") As Double
         If Not Enabled Then Return 0
         'Dim localId As Double = 0
@@ -156,6 +146,7 @@ Public Class JobLogger
         'Call module JobLogger now
         Return id
     End Function
+
     Public Overloads Function AddJob(ByVal name As String, ByVal JobType As JobTypes, ByVal message As String, Optional ByVal Status As JobStatus = JobStatus.Open) As Double
         If Not Enabled Then Return 0
         Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name)
@@ -163,20 +154,80 @@ Public Class JobLogger
         If Not currJob Is Nothing Then id = currJob.JobID
         Return AddJob(id, JobType, message, Status, name)
     End Function
+
+    Public Function AddJobItem(ByVal JobId As Double, ByVal ItemType As ItemTypes, ByVal message As String, ByVal Status As ItemStatus, Optional ByVal detail As String = "") As Double
+        If Not Enabled Then Return 0
+        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobID = JobId)
+        If Not currJob Is Nothing Then
+            currJob.Items.Add(New JobItem With {.JobID = currJob.JobID, .ItemID = currJob.Items.Count, .ItemType = ItemType, .Message = message, .Detail = detail, .ItemStatus = Status})
+            'Call module JobLogger now
+            Return currJob.Items.Count - 1
+        End If
+    End Function
+
+    Public Function AddJobItem(ByVal name As String, ByVal ItemType As ItemTypes, ByVal message As String, ByVal Status As ItemStatus, Optional ByVal detail As String = "") As Double
+        If Not Enabled Then Return -1
+        Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name And y.JobStatus <> JobStatus.Closed)
+        If Not currJob Is Nothing Then
+            Return AddJobItem(currJob.JobID, ItemType, message, Status, detail)
+        Else
+            Return -1
+        End If
+    End Function
+
     Public Overloads Sub CloseJob(ByVal JobId As Double)
         If Not Enabled Then Return
         Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobID = JobId And y.JobStatus <> JobStatus.Closed)
         If Not currJob Is Nothing Then currJob.JobStatus = JobStatus.Closed
     End Sub
+
     Public Overloads Sub CloseJob(ByVal name As String)
         If Not Enabled Then Return
         Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name And y.JobStatus <> JobStatus.Closed)
         If Not currJob Is Nothing Then currJob.JobStatus = JobStatus.Closed
     End Sub
+
     Public Sub RemoveJob(ByVal name As String)
         If Not Enabled Then Return
         Dim currJob As Job = JobsList.FirstOrDefault(Function(y) y.JobName = name)
         If Not currJob Is Nothing Then JobsList.Remove(currJob)
     End Sub
+
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
+    ' Job is a Group of items.. example: scrape all will be a job .. scrape each movie will be a item
+    Public Class Job
+
+        #Region "Fields"
+
+        Public Items As New List(Of JobItem)
+        Public JobID As Long
+        Public JobName As String
+        Public JobStatus As JobStatus 'Some Enus Here
+        Public JobType As JobTypes 'Some Enus Here
+        Public Message As String
+
+        #End Region 'Fields
+
+    End Class
+
+    Public Class JobItem
+
+        #Region "Fields"
+
+        Public Detail As String
+        Public ItemID As Integer
+        Public ItemStatus As ItemStatus 'Some Enus Here
+        Public ItemType As ItemTypes 'Some Enus Here
+        Public JobID As Double
+        Public Message As String
+
+        #End Region 'Fields
+
+    End Class
+
+    #End Region 'Nested Types
 
 End Class

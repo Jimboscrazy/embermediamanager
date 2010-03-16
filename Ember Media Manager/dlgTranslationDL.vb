@@ -20,63 +20,21 @@
 
 Public Class dlgTranslationDL
 
+    #Region "Fields"
+
     Dim Templates As New List(Of Template)
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DownloadSelected()
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
-    Private Sub DownloadSelected()
-        Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading selected addon files...")
-        Me.pnlStatus.Visible = True
-        Application.DoEvents()
-
-        Dim sHTTP As New HTTP
-        Dim tFind As New TemplateFind
-        Dim tFound As New Template
-        Try
-            For Each lItem As ListViewItem In lvDownload.Items
-                If lItem.Checked Then
-                    Select Case lItem.Tag.ToString
-                        Case "translation"
-                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "translation")
-                        Case "template"
-                            tFind.SetSearchString(lItem.Group.Header.ToString, lItem.Text.Replace(Master.eLang.GetString(449, "Export Template: "), String.Empty).Trim)
-                            tFound = Templates.Find(AddressOf tFind.Find)
-                            If Not IsNothing(tFound) Then
-                                For Each sFile As String In tFound.Files
-                                    sHTTP.DownloadFile(sFile, String.Empty, False, "template")
-                                Next
-                            End If
-                        Case "movietheme"
-                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "movietheme")
-                    End Select
-                End If
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        sHTTP = Nothing
-    End Sub
-
     Private Sub dlgTranslationDL_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(443, "Download Addons")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lvDownload.Columns(0).Text = Master.eLang.GetString(444, "File")
-        Me.lvDownload.Columns(1).Text = Master.eLang.GetString(445, "Last Update")
-        Me.lblStatus.Text = Master.eLang.GetString(446, "Downloading available addons list...")
     End Sub
 
     Private Sub dlgTranslationDL_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -154,10 +112,86 @@ Public Class dlgTranslationDL
         sHTTP = Nothing
     End Sub
 
+    Private Sub DownloadSelected()
+        Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading selected addon files...")
+        Me.pnlStatus.Visible = True
+        Application.DoEvents()
+
+        Dim sHTTP As New HTTP
+        Dim tFind As New TemplateFind
+        Dim tFound As New Template
+        Try
+            For Each lItem As ListViewItem In lvDownload.Items
+                If lItem.Checked Then
+                    Select Case lItem.Tag.ToString
+                        Case "translation"
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "translation")
+                        Case "template"
+                            tFind.SetSearchString(lItem.Group.Header.ToString, lItem.Text.Replace(Master.eLang.GetString(449, "Export Template: "), String.Empty).Trim)
+                            tFound = Templates.Find(AddressOf tFind.Find)
+                            If Not IsNothing(tFound) Then
+                                For Each sFile As String In tFound.Files
+                                    sHTTP.DownloadFile(sFile, String.Empty, False, "template")
+                                Next
+                            End If
+                        Case "movietheme"
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "movietheme")
+                    End Select
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        sHTTP = Nothing
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DownloadSelected()
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(443, "Download Addons")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lvDownload.Columns(0).Text = Master.eLang.GetString(444, "File")
+        Me.lvDownload.Columns(1).Text = Master.eLang.GetString(445, "Last Update")
+        Me.lblStatus.Text = Master.eLang.GetString(446, "Downloading available addons list...")
+    End Sub
+
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
     Friend Class Template
+
+        #Region "Fields"
+
+        Private _files As New List(Of String)
         Private _language As String
         Private _name As String
-        Private _files As New List(Of String)
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
+
+        Public Property Files() As List(Of String)
+            Get
+                Return _files
+            End Get
+            Set(ByVal value As List(Of String))
+                _files = value
+            End Set
+        End Property
 
         Public Property Language() As String
             Get
@@ -177,35 +211,30 @@ Public Class dlgTranslationDL
             End Set
         End Property
 
-        Public Property Files() As List(Of String)
-            Get
-                Return _files
-            End Get
-            Set(ByVal value As List(Of String))
-                _files = value
-            End Set
-        End Property
+        #End Region 'Properties
 
-        Public Sub New()
-            Me.Clear()
-        End Sub
+        #Region "Methods"
 
         Public Sub Clear()
             _language = String.Empty
             _name = String.Empty
             _files.Clear()
         End Sub
+
+        #End Region 'Methods
+
     End Class
 
     Friend Class TemplateFind
 
+        #Region "Fields"
+
         Private _searchlang As String = String.Empty
         Private _searchname As String = String.Empty
 
-        Public Sub SetSearchString(ByVal sLang As String, ByVal sName As String)
-            _searchlang = sLang
-            _searchname = sName
-        End Sub
+        #End Region 'Fields
+
+        #Region "Methods"
 
         Public Function Find(ByVal xTemp As Template) As Boolean
             If Not IsNothing(xTemp) AndAlso xTemp.Language = _searchlang AndAlso xTemp.Name = _searchname Then
@@ -215,5 +244,15 @@ Public Class dlgTranslationDL
             End If
         End Function
 
+        Public Sub SetSearchString(ByVal sLang As String, ByVal sName As String)
+            _searchlang = sLang
+            _searchname = sName
+        End Sub
+
+        #End Region 'Methods
+
     End Class
+
+    #End Region 'Nested Types
+
 End Class

@@ -18,41 +18,30 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
-
 Public Class frmSettingsHolder
-    Public Event ModuleEnabledChanged(ByVal State As Boolean)
-    Public Event ModuleSettingsChanged()
+
+    #Region "Fields"
 
     Dim isSelected As Boolean = False
 
-    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
-        CheckButtons()
-    End Sub
+    #End Region 'Fields
 
-    Private Sub TextBox2_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox2.TextChanged
-        CheckButtons()
-    End Sub
-    Sub CheckButtons()
-        If Not String.IsNullOrEmpty(TextBox1.Text) AndAlso Not String.IsNullOrEmpty(TextBox2.Text) AndAlso Not isSelected Then
-            btnNewSet.Enabled = True
-        Else
-            btnNewSet.Enabled = False
-        End If
-    End Sub
+    #Region "Events"
 
-    Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
-        If ListView1.SelectedItems.Count > 0 Then
-            isSelected = True
-            btnRemoveSet.Enabled = True
-            btnEditSet.Enabled = True
-            TextBox1.Text = ListView1.SelectedItems(0).SubItems(0).Text
-            TextBox2.Text = ListView1.SelectedItems(0).SubItems(1).Text
-        Else
-            isSelected = False
-            btnRemoveSet.Enabled = False
-            btnEditSet.Enabled = False
-        End If
+    Public Event ModuleEnabledChanged(ByVal State As Boolean)
+
+    Public Event ModuleSettingsChanged()
+
+    #End Region 'Events
+
+    #Region "Methods"
+
+    Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
+        ListView1.SelectedItems(0).SubItems(0).Text = TextBox1.Text
+        ListView1.SelectedItems(0).SubItems(1).Text = TextBox2.Text
+        TextBox1.Text = ""
+        TextBox2.Text = ""
+        isSelected = False
         CheckButtons()
     End Sub
 
@@ -82,16 +71,41 @@ Public Class frmSettingsHolder
         TextBox2.Text = fl.SelectedPath
     End Sub
 
-    Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
-        ListView1.SelectedItems(0).SubItems(0).Text = TextBox1.Text
-        ListView1.SelectedItems(0).SubItems(1).Text = TextBox2.Text
-        TextBox1.Text = ""
-        TextBox2.Text = ""
-        isSelected = False
-        CheckButtons()
-    End Sub
-
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
     End Sub
+
+    Sub CheckButtons()
+        If Not String.IsNullOrEmpty(TextBox1.Text) AndAlso Not String.IsNullOrEmpty(TextBox2.Text) AndAlso Not isSelected Then
+            btnNewSet.Enabled = True
+        Else
+            btnNewSet.Enabled = False
+        End If
+    End Sub
+
+    Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
+        If ListView1.SelectedItems.Count > 0 Then
+            isSelected = True
+            btnRemoveSet.Enabled = True
+            btnEditSet.Enabled = True
+            TextBox1.Text = ListView1.SelectedItems(0).SubItems(0).Text
+            TextBox2.Text = ListView1.SelectedItems(0).SubItems(1).Text
+        Else
+            isSelected = False
+            btnRemoveSet.Enabled = False
+            btnEditSet.Enabled = False
+        End If
+        CheckButtons()
+    End Sub
+
+    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
+        CheckButtons()
+    End Sub
+
+    Private Sub TextBox2_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox2.TextChanged
+        CheckButtons()
+    End Sub
+
+    #End Region 'Methods
+
 End Class

@@ -18,13 +18,27 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Runtime.InteropServices
 Imports System.IO
-Imports System.Xml.Serialization
+Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports System.Xml.Serialization
 
 Public Class MediaInfo
+
+    #Region "Fields"
+
+    Private Handle As IntPtr
+    Private UseAnsi As Boolean
+
+    #End Region 'Fields
+
+    #Region "Enumerations"
+
+    Public Enum InfoKind As UInteger
+        Name
+        Text
+    End Enum
 
     Public Enum StreamKind As UInteger
         General
@@ -33,87 +47,101 @@ Public Class MediaInfo
         Text
     End Enum
 
-    Public Enum InfoKind As UInteger
-        Name
-        Text
-    End Enum
+    #End Region 'Enumerations
 
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_New() As IntPtr
+    #Region "Methods"
+
+    Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
+        Dim fi As New Fileinfo
+        For Each m As Settings.MetadataPerType In Master.eSettings.MetadataPerFileType
+            If m.FileType = ext Then
+                fi = m.MetaData
+                Return fi
+            End If
+        Next
+        Return Nothing
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Sub MediaInfo_Delete(ByVal Handle As IntPtr)
+    Public Shared Function ApplyTVDefaults(ByVal ext As String) As Fileinfo
+        Dim fi As New Fileinfo
+        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataperFileType
+            If m.FileType = ext Then
+                fi = m.MetaData
+                Return fi
+            End If
+        Next
+        Return Nothing
+    End Function
+
+    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
+        Try
+            'clear it out
+            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
+
+            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
+            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
+                Dim MI As New MediaInfo
+                MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
+                If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+
+                    If Not String.IsNullOrEmpty(tVid.Duration) Then
+                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
+                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+                        Dim sMask As String = Master.eSettings.RuntimeMask
+                        Dim sRuntime As String = String.Empty
+
+                        If sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
+                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString)
+                        ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
+                            Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
+                            sRuntime = sMask.Replace("<h>", String.Concat(sHour, tHDec))
+                        ElseIf Not sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
+                            sRuntime = sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
+                        Else
+                            sRuntime = sMask
+                        End If
+                        miMovie.Movie.Runtime = sRuntime
+                    End If
+
+                End If
+                MI = Nothing
+            End If
+            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                Dim _mi As MediaInfo.Fileinfo
+                _mi = MediaInfo.ApplyDefaults(pExt)
+                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal FileName As String) As UIntPtr
-    End Function
+    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Structures.DBTV)
+        Try
+            'clear it out
+            miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
 
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfoA_Open(ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
-    End Function
-
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Sub MediaInfo_Close(ByVal Handle As IntPtr)
+            Dim pExt As String = Path.GetExtension(miTV.Filename).ToLower
+            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
+                Dim MI As New MediaInfo
+                MI.GetMIFromPath(miTV.TVEp.FileInfo, miTV.Filename, True)
+                MI = Nothing
+            End If
+            If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                Dim _mi As MediaInfo.Fileinfo
+                _mi = MediaInfo.ApplyTVDefaults(pExt)
+                If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
-
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
-    End Function
-
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfo_Count_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
-    End Function
-
-    <DllImport("Bin\MediaInfo.DLL")> _
-    Private Shared Function MediaInfoA_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
-    End Function
-
-    Private Handle As IntPtr
-    Private UseAnsi As Boolean
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
-
-    Private Sub Open(ByVal FileName As String)
-        If UseAnsi Then
-            Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(FileName)
-            MediaInfoA_Open(Handle, FileName_Ptr)
-            Marshal.FreeHGlobal(FileName_Ptr)
-        Else
-            MediaInfo_Open(Handle, FileName)
-        End If
-    End Sub
-
-    Private Sub Close()
-        MediaInfo_Close(Handle)
-        MediaInfo_Delete(Handle)
-        Handle = Nothing
-    End Sub
-
-    Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
-        If UseAnsi Then
-            Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(Parameter)
-            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter_Ptr, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
-            Marshal.FreeHGlobal(Parameter_Ptr)
-            Return ToReturn
-        Else
-            Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
-        End If
-    End Function
-
-    Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
-        If StreamNumber = UInteger.MaxValue Then
-            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
-        Else
-            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, IntPtr))
-        End If
-    End Function
 
     Public Sub GetMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String, ByVal ForTV As Boolean)
-
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             Dim sExt As String = Path.GetExtension(sPath).ToLower
             Dim fiOut As New Fileinfo
@@ -264,7 +292,139 @@ Public Class MediaInfo
                 fiInfo = ScanMI(sPath)
             End If
         End If
+    End Sub
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfoA_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfoA_Open(ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Sub MediaInfo_Close(ByVal Handle As IntPtr)
+    End Sub
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Count_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Sub MediaInfo_Delete(ByVal Handle As IntPtr)
+    End Sub
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_New() As IntPtr
+    End Function
+
+    <DllImport("Bin\MediaInfo.DLL")> _
+    Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal FileName As String) As UIntPtr
+    End Function
+
+    Private Sub Close()
+        MediaInfo_Close(Handle)
+        MediaInfo_Delete(Handle)
+        Handle = Nothing
+    End Sub
+
+    Private Function ConvertAFormat(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Select Case sFormat.ToLower
+                Case "ac-3", "a_ac3"
+                    Return "ac3"
+                Case "wma2"
+                    Return "wmav2"
+                Case "dts", "a_dts"
+                    Return "dca"
+                Case Else
+                    Return sFormat.ToLower
+            End Select
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Dim tFormat As String = sFormat.ToLower
+            Select Case True
+                Case tFormat = "divx 5"
+                    Return "dx50"
+                Case tFormat.Contains("divx 3")
+                    Return "div3"
+                Case tFormat.Contains("lmp4"), tFormat.Contains("svq3"), tFormat.Contains("x264"), tFormat.Contains("avc"), tFormat.Contains("h264")
+                    Return "h264"
+                Case tFormat.Contains("flv"), tFormat.Contains("swf")
+                    Return "flv"
+                Case tFormat.Contains("3iv")
+                    Return "3ivx"
+                Case tFormat = "mpeg video"
+                    If sModifier.ToLower = "version 2" Then
+                        Return "mpeg2"
+                    Else
+                        Return "mpeg"
+                    End If
+                Case tFormat = "mpeg-4 video"
+                    Return "mpeg4"
+                Case Else
+                    Return tFormat
+            End Select
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
+        If StreamNumber = UInteger.MaxValue Then
+            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
+        Else
+            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, IntPtr))
+        End If
+    End Function
+
+    Private Function DurationToMins(ByVal Duration As String, ByVal Reverse As Boolean) As String
+        If Not String.IsNullOrEmpty(Duration) Then
+            If Reverse Then
+                Dim ts As New TimeSpan(0, Convert.ToInt32(Duration), 0)
+                Return String.Format("{0}h {1}mn", ts.Hours, ts.Minutes)
+            Else
+                Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
+                Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+                Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+                Return ((sHour * 60) + sMin).ToString
+            End If
+        End If
+        Return "0"
+    End Function
+
+    Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
+        If UseAnsi Then
+            Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(Parameter)
+            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter_Ptr, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
+            Marshal.FreeHGlobal(Parameter_Ptr)
+            Return ToReturn
+        Else
+            Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
+        End If
+    End Function
+
+    Private Sub Open(ByVal FileName As String)
+        If UseAnsi Then
+            Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(FileName)
+            MediaInfoA_Open(Handle, FileName_Ptr)
+            Marshal.FreeHGlobal(FileName_Ptr)
+        Else
+            MediaInfo_Open(Handle, FileName)
+        End If
     End Sub
 
     Private Function ScanMI(ByVal sPath As String) As Fileinfo
@@ -367,72 +527,125 @@ Public Class MediaInfo
         Return fiOut
     End Function
 
-    Private Function DurationToMins(ByVal Duration As String, ByVal Reverse As Boolean) As String
-        If Not String.IsNullOrEmpty(Duration) Then
-            If Reverse Then
-                Dim ts As New TimeSpan(0, Convert.ToInt32(Duration), 0)
-                Return String.Format("{0}h {1}mn", ts.Hours, ts.Minutes)
-            Else
-                Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
-                Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-                Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                Return ((sHour * 60) + sMin).ToString
-            End If
-        End If
-        Return "0"
-    End Function
+    #End Region 'Methods
 
-    Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String
-        If Not String.IsNullOrEmpty(sFormat) Then
-            Dim tFormat As String = sFormat.ToLower
-            Select Case True
-                Case tFormat = "divx 5"
-                    Return "dx50"
-                Case tFormat.Contains("divx 3")
-                    Return "div3"
-                Case tFormat.Contains("lmp4"), tFormat.Contains("svq3"), tFormat.Contains("x264"), tFormat.Contains("avc"), tFormat.Contains("h264")
-                    Return "h264"
-                Case tFormat.Contains("flv"), tFormat.Contains("swf")
-                    Return "flv"
-                Case tFormat.Contains("3iv")
-                    Return "3ivx"
-                Case tFormat = "mpeg video"
-                    If sModifier.ToLower = "version 2" Then
-                        Return "mpeg2"
-                    Else
-                        Return "mpeg"
-                    End If
-                Case tFormat = "mpeg-4 video"
-                    Return "mpeg4"
-                Case Else
-                    Return tFormat
-            End Select
-        Else
-            Return String.Empty
-        End If
-    End Function
+    #Region "Nested Types"
 
-    Private Function ConvertAFormat(ByVal sFormat As String) As String
-        If Not String.IsNullOrEmpty(sFormat) Then
-            Select Case sFormat.ToLower
-                Case "ac-3", "a_ac3"
-                    Return "ac3"
-                Case "wma2"
-                    Return "wmav2"
-                Case "dts", "a_dts"
-                    Return "dca"
-                Case Else
-                    Return sFormat.ToLower
-            End Select
-        Else
-            Return String.Empty
-        End If
-    End Function
+    Public Class Audio
+
+        #Region "Fields"
+
+        Private _channels As String = String.Empty
+        Private _codec As String = String.Empty
+        Private _haspreferred As Boolean = False
+        Private _language As String = String.Empty
+        Private _longlanguage As String = String.Empty
+
+        #End Region 'Fields
+
+        #Region "Properties"
+
+        <XmlElement("channels")> _
+        Public Property Channels() As String
+            Get
+                Return Me._channels
+            End Get
+            Set(ByVal Value As String)
+                Me._channels = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property ChannelsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._channels)
+            End Get
+        End Property
+
+        <XmlElement("codec")> _
+        Public Property Codec() As String
+            Get
+                Return Me._codec
+            End Get
+            Set(ByVal Value As String)
+                Me._codec = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property CodecSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._codec)
+            End Get
+        End Property
+
+        <XmlIgnore> _
+        Public Property HasPreferred() As Boolean
+            Get
+                Return Me._haspreferred
+            End Get
+            Set(ByVal value As Boolean)
+                Me._haspreferred = value
+            End Set
+        End Property
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal Value As String)
+                Me._language = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
+        End Property
+
+        #End Region 'Properties
+
+    End Class
 
     <XmlRoot("fileinfo")> _
     Public Class Fileinfo
 
+        #Region "Fields"
+
         Private _streamdetails As New StreamData
+
+        #End Region 'Fields
+
+        #Region "Properties"
+
+        <XmlIgnore> _
+        Public ReadOnly Property StreamDetailsSpecified() As Boolean
+            Get
+                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
+            End Get
+        End Property
 
         <XmlElement("streamdetails")> _
         Property StreamDetails() As StreamData
@@ -444,43 +657,25 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property StreamDetailsSpecified() As Boolean
-            Get
-                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
-            End Get
-        End Property
+        #End Region 'Properties
 
     End Class
 
     <XmlRoot("streamdata")> _
     Public Class StreamData
 
-        Private _video As New List(Of Video)
+        #Region "Fields"
+
         Private _audio As New List(Of Audio)
         Private _subtitle As New List(Of Subtitle)
+        Private _video As New List(Of Video)
 
-        <XmlElement("video")> _
-        Public Property Video() As List(Of Video)
-            Get
-                Return Me._video
-            End Get
-            Set(ByVal Value As List(Of Video))
-                Me._video = Value
-            End Set
-        End Property
+        #End Region 'Fields
 
-        <XmlIgnore()> _
-        Public ReadOnly Property VideoSpecified() As Boolean
-            Get
-                Return Me._video.Count > 0
-            End Get
-        End Property
+        #Region "Properties"
 
         <XmlElement("audio")> _
-         Public Property Audio() As List(Of Audio)
+        Public Property Audio() As List(Of Audio)
             Get
                 Return Me._audio
             End Get
@@ -489,7 +684,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore> _
         Public ReadOnly Property AudioSpecified() As Boolean
             Get
                 Return Me._audio.Count > 0
@@ -506,57 +701,136 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore> _
         Public ReadOnly Property SubtitleSpecified() As Boolean
             Get
                 Return Me._subtitle.Count > 0
             End Get
         End Property
 
+        <XmlElement("video")> _
+        Public Property Video() As List(Of Video)
+            Get
+                Return Me._video
+            End Get
+            Set(ByVal Value As List(Of Video))
+                Me._video = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property VideoSpecified() As Boolean
+            Get
+                Return Me._video.Count > 0
+            End Get
+        End Property
+
+        #End Region 'Properties
+
+    End Class
+
+    Public Class Subtitle
+
+        #Region "Fields"
+
+        Private _language As String = String.Empty
+        Private _longlanguage As String = String.Empty
+        Private _subs_path As String = String.Empty
+        Private _subs_type As String = String.Empty
+
+        #End Region 'Fields
+
+        #Region "Properties"
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal Value As String)
+                Me._language = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
+        End Property
+
+        <XmlIgnore> _
+        Public Property SubsPath() As String
+            Get
+                Return _subs_path
+            End Get
+            Set(ByVal value As String)
+                _subs_path = value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public Property SubsType() As String
+            Get
+                Return _subs_type
+            End Get
+            Set(ByVal value As String)
+                _subs_type = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
     End Class
 
     Public Class Video
 
-        Private _width As String = String.Empty
-        Private _height As String = String.Empty
+        #Region "Fields"
+
+        Private _aspect As String = String.Empty
         Private _codec As String = String.Empty
         Private _duration As String = String.Empty
-        Private _aspect As String = String.Empty
+        Private _height As String = String.Empty
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
         Private _scantype As String = String.Empty
+        Private _width As String = String.Empty
 
-        <XmlElement("width")> _
-        Public Property Width() As String
+        #End Region 'Fields
+
+        #Region "Properties"
+
+        <XmlElement("aspect")> _
+        Public Property Aspect() As String
             Get
-                Return Me._width
+                Return Me._aspect
             End Get
             Set(ByVal Value As String)
-                Me._width = Value
+                Me._aspect = Value
             End Set
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property WidthSpecified() As Boolean
+        <XmlIgnore> _
+        Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._width)
-            End Get
-        End Property
-
-        <XmlElement("height")> _
-        Public Property Height() As String
-            Get
-                Return Me._height
-            End Get
-            Set(ByVal Value As String)
-                Me._height = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property HeightSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._height)
+                Return Not String.IsNullOrEmpty(Me._aspect)
             End Get
         End Property
 
@@ -570,7 +844,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._codec)
@@ -587,27 +861,61 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore> _
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._duration)
             End Get
         End Property
 
-        <XmlElement("aspect")> _
-        Public Property Aspect() As String
+        <XmlElement("height")> _
+        Public Property Height() As String
             Get
-                Return Me._aspect
+                Return Me._height
             End Get
             Set(ByVal Value As String)
-                Me._aspect = Value
+                Me._height = Value
             End Set
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property AspectSpecified() As Boolean
+        <XmlIgnore> _
+        Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._aspect)
+                Return Not String.IsNullOrEmpty(Me._height)
+            End Get
+        End Property
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal Value As String)
+                Me._language = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 
@@ -621,286 +929,34 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore> _
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._scantype)
             End Get
         End Property
 
-        <XmlElement("language")> _
-        Public Property Language() As String
+        <XmlElement("width")> _
+        Public Property Width() As String
             Get
-                Return Me._language
+                Return Me._width
             End Get
             Set(ByVal Value As String)
-                Me._language = Value
+                Me._width = Value
             End Set
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property LanguageSpecified() As Boolean
+        <XmlIgnore> _
+        Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(Me._width)
             End Get
         End Property
 
-        <XmlElement("longlanguage")> _
-        Public Property LongLanguage() As String
-            Get
-                Return Me._longlanguage
-            End Get
-            Set(ByVal value As String)
-                Me._longlanguage = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property LongLanguageSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
-            End Get
-        End Property
+        #End Region 'Properties
 
     End Class
 
-    Public Class Audio
+    #End Region 'Nested Types
 
-        Private _codec As String = String.Empty
-        Private _channels As String = String.Empty
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-        Private _haspreferred As Boolean = False
-
-        <XmlElement("language")> _
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal Value As String)
-                Me._language = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property LanguageSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._language)
-            End Get
-        End Property
-
-        <XmlElement("longlanguage")> _
-        Public Property LongLanguage() As String
-            Get
-                Return Me._longlanguage
-            End Get
-            Set(ByVal value As String)
-                Me._longlanguage = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property LongLanguageSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
-            End Get
-        End Property
-
-        <XmlElement("codec")> _
-        Public Property Codec() As String
-            Get
-                Return Me._codec
-            End Get
-            Set(ByVal Value As String)
-                Me._codec = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property CodecSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._codec)
-            End Get
-        End Property
-
-        <XmlElement("channels")> _
-        Public Property Channels() As String
-            Get
-                Return Me._channels
-            End Get
-            Set(ByVal Value As String)
-                Me._channels = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property ChannelsSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._channels)
-            End Get
-        End Property
-
-        <XmlIgnore()> _
-        Public Property HasPreferred() As Boolean
-            Get
-                Return Me._haspreferred
-            End Get
-            Set(ByVal value As Boolean)
-                Me._haspreferred = value
-            End Set
-        End Property
-
-    End Class
-
-    Public Class Subtitle
-
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-        Private _subs_type As String = String.Empty
-        Private _subs_path As String = String.Empty
-
-        <XmlElement("language")> _
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal Value As String)
-                Me._language = Value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property LanguageSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._language)
-            End Get
-        End Property
-
-        <XmlElement("longlanguage")> _
-        Public Property LongLanguage() As String
-            Get
-                Return Me._longlanguage
-            End Get
-            Set(ByVal value As String)
-                Me._longlanguage = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property LongLanguageSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
-            End Get
-        End Property
-        <XmlIgnore()> _
-        Public Property SubsType() As String
-            Get
-                Return _subs_type
-            End Get
-            Set(ByVal value As String)
-                _subs_type = value
-            End Set
-        End Property
-        <XmlIgnore()> _
-        Public Property SubsPath() As String
-            Get
-                Return _subs_path
-            End Get
-            Set(ByVal value As String)
-                _subs_path = value
-            End Set
-        End Property
-    End Class
-
-    Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
-        Dim fi As New Fileinfo
-        For Each m As Settings.MetadataPerType In Master.eSettings.MetadataPerFileType
-            If m.FileType = ext Then
-                fi = m.MetaData
-                Return fi
-            End If
-        Next
-        Return Nothing
-    End Function
-
-    Public Shared Function ApplyTVDefaults(ByVal ext As String) As Fileinfo
-        Dim fi As New Fileinfo
-        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataperFileType
-            If m.FileType = ext Then
-                fi = m.MetaData
-                Return fi
-            End If
-        Next
-        Return Nothing
-    End Function
-
-    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
-        Try
-            'clear it out
-            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
-
-            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
-               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
-                Dim MI As New MediaInfo
-                MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
-                If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
-
-                    If Not String.IsNullOrEmpty(tVid.Duration) Then
-                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
-                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                        Dim sMask As String = Master.eSettings.RuntimeMask
-                        Dim sRuntime As String = String.Empty
-
-                        If sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
-                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString)
-                        ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
-                            Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
-                            sRuntime = sMask.Replace("<h>", String.Concat(sHour, tHDec))
-                        ElseIf Not sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
-                            sRuntime = sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
-                        Else
-                            sRuntime = sMask
-                        End If
-                        miMovie.Movie.Runtime = sRuntime
-                    End If
-
-                End If
-                MI = Nothing
-            End If
-            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                Dim _mi As MediaInfo.Fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
-                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Structures.DBTV)
-        Try
-            'clear it out
-            miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
-
-            Dim pExt As String = Path.GetExtension(miTV.Filename).ToLower
-            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
-               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
-                Dim MI As New MediaInfo
-                MI.GetMIFromPath(miTV.TVEp.FileInfo, miTV.Filename, True)
-                MI = Nothing
-            End If
-            If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                Dim _mi As MediaInfo.Fileinfo
-                _mi = MediaInfo.ApplyTVDefaults(pExt)
-                If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
 End Class

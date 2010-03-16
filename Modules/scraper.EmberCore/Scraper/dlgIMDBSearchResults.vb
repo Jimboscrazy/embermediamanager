@@ -21,70 +21,97 @@
 Imports System.Text.RegularExpressions
 
 Public Class dlgIMDBSearchResults
-    Public IMDBURL As String
-    Dim UseOFDBTitle As Boolean
-    Dim UseOFDBOutline As Boolean
-    Dim UseOFDBPlot As Boolean
-    Dim UseOFDBGenre As Boolean
 
-    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
-    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
+    #Region "Fields"
+
+    Public IMDBURL As String
+
+    Friend  WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+    Friend  WithEvents tmrLoad As New System.Windows.Forms.Timer
+    Friend  WithEvents tmrWait As New System.Windows.Forms.Timer
 
     Private IMDB As New IMDB.Scraper
     Private sHTTP As New HTTP
-
-    Private _prevnode As Integer = -2
+    Dim UseOFDBGenre As Boolean
+    Dim UseOFDBOutline As Boolean
+    Dim UseOFDBPlot As Boolean
+    Dim UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
+    Private _prevnode As Integer = -2
 
-    Private Structure Results
-        Dim Result As Image
-    End Structure
+    #End Region 'Fields
 
-    Private Structure Arguments
-        Dim pURL As String
-    End Structure
+    #Region "Methods"
 
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Not Me._prevnode = Me._currnode Then
-            Me._prevnode = Me._currnode
-            Me.tmrLoad.Enabled = True
-        Else
-            Me.tmrLoad.Enabled = False
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
+        chkManual.Enabled = False
+        IMDB.IMDBURL = IMDBURL
+        IMDB.SearchMovieAsync(sMovieTitle)
+
+        Return MyBase.ShowDialog()
+    End Function
+
+    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
+        SearchResultsDownloaded(Res)
+
+        Return MyBase.ShowDialog()
+    End Function
+
+    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+            Me.OK_Button.Enabled = False
+            Me.ClearInfo()
+            Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+            Me.pnlLoading.Visible = True
+            chkManual.Enabled = False
+            IMDB.IMDBURL = IMDBURL
+            IMDB.SearchMovieAsync(Me.txtSearch.Text)
         End If
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        Me.tmrWait.Enabled = False
-        Me.tmrLoad.Enabled = False
-
-        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
-
-        IMDB.IMDBURL = IMDBURL
-        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
-
+    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+        If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+            IMDB.IMDBURL = IMDBURL
+            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
+        Else
+            MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+        End If
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+
+        sHTTP.StartDownloadImage(Args.pURL)
+
+        While sHTTP.IsDownloading
+            Application.DoEvents()
+        End While
+
+        e.Result = New Results With {.Result = sHTTP.Image}
+    End Sub
+
+    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
+        '//
+        ' Thread finished: display pic if it was able to get one
+        '\\
+
+        Dim Res As Results = DirectCast(e.Result, Results)
+
         Try
-            If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
-                If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-                    MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
-                    Exit Sub
-                Else
-                    If MsgBox(String.Concat(Master.eLang.GetString(293, "You have manually entered an IMDB ID but have not verified it is correct."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.YesNo, Master.eLang.GetString(294, "Continue without verification?")) = MsgBoxResult.No Then
-                        Exit Sub
-                    Else
-                        Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
-                    End If
-                End If
-            End If
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.pbPoster.Image = Res.Result
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
-        Me.Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -92,6 +119,50 @@ Public Class dlgIMDBSearchResults
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
+        Me.ClearInfo()
+        Me.OK_Button.Enabled = False
+        Me.txtIMDBID.Enabled = Me.chkManual.Checked
+        Me.btnVerify.Enabled = Me.chkManual.Checked
+        Me.tvResults.Enabled = Not Me.chkManual.Checked
+
+        If Not Me.chkManual.Checked Then
+            txtIMDBID.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub ClearInfo()
+        Me.ControlsVisible(False)
+        Me.lblTitle.Text = String.Empty
+        Me.lblTagline.Text = String.Empty
+        Me.lblYear.Text = String.Empty
+        Me.lblDirector.Text = String.Empty
+        Me.lblGenre.Text = String.Empty
+        Me.txtOutline.Text = String.Empty
+        Me.lblIMDB.Text = String.Empty
+        Me.pbPoster.Image = Nothing
+
+        Master.tmpMovie.Clear()
+
+        IMDB.CancelAsync()
+    End Sub
+
+    Private Sub ControlsVisible(ByVal areVisible As Boolean)
+        Me.lblYearHeader.Visible = areVisible
+        Me.lblDirectorHeader.Visible = areVisible
+        Me.lblGenreHeader.Visible = areVisible
+        Me.lblPlotHeader.Visible = areVisible
+        Me.lblIMDBHeader.Visible = areVisible
+        Me.txtOutline.Visible = areVisible
+        Me.lblYear.Visible = areVisible
+        Me.lblTagline.Visible = areVisible
+        Me.lblTitle.Visible = areVisible
+        Me.lblDirector.Visible = areVisible
+        Me.lblGenre.Visible = areVisible
+        Me.lblIMDB.Visible = areVisible
+        Me.pbPoster.Visible = areVisible
     End Sub
 
     Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
@@ -124,23 +195,34 @@ Public Class dlgIMDBSearchResults
         End Try
     End Sub
 
-    Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(285, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(286, "Movie Search Results")
-        Me.chkManual.Text = Master.eLang.GetString(287, "Manual IMDB Entry:")
-        Me.btnVerify.Text = Master.eLang.GetString(288, "Verify")
-        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+    Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+        Me.tvResults.Focus()
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Try
+            If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
+                If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+                    MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+                    Exit Sub
+                Else
+                    If MsgBox(String.Concat(Master.eLang.GetString(293, "You have manually entered an IMDB ID but have not verified it is correct."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.YesNo, Master.eLang.GetString(294, "Continue without verification?")) = MsgBoxResult.No Then
+                        Exit Sub
+                    Else
+                        Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
+                    End If
+                End If
+            End If
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Me.Close()
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-
         '//
         ' Info downloaded... fill form with data
         '\\
@@ -181,140 +263,7 @@ Public Class dlgIMDBSearchResults
         End Try
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.tvResults.Focus()
-    End Sub
-
-    Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
-        Try
-            Me.tmrWait.Enabled = False
-            Me.tmrLoad.Enabled = False
-
-            Me.ClearInfo()
-            Me.OK_Button.Enabled = False
-
-            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-                Me.pnlLoading.Visible = True
-                Me.tmrWait.Enabled = True
-            Else
-                Me.pnlLoading.Visible = False
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
-        sHTTP.StartDownloadImage(Args.pURL)
-
-        While sHTTP.IsDownloading
-            Application.DoEvents()
-        End While
-
-        e.Result = New Results With {.Result = sHTTP.Image}
-
-    End Sub
-
-    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-
-        '//
-        ' Thread finished: display pic if it was able to get one
-        '\\
-
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        Try
-            Me.pbPoster.Image = Res.Result
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Private Sub ClearInfo()
-        Me.ControlsVisible(False)
-        Me.lblTitle.Text = String.Empty
-        Me.lblTagline.Text = String.Empty
-        Me.lblYear.Text = String.Empty
-        Me.lblDirector.Text = String.Empty
-        Me.lblGenre.Text = String.Empty
-        Me.txtOutline.Text = String.Empty
-        Me.lblIMDB.Text = String.Empty
-        Me.pbPoster.Image = Nothing
-
-        Master.tmpMovie.Clear()
-
-        IMDB.CancelAsync()
-    End Sub
-
-    Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        Me.lblYearHeader.Visible = areVisible
-        Me.lblDirectorHeader.Visible = areVisible
-        Me.lblGenreHeader.Visible = areVisible
-        Me.lblPlotHeader.Visible = areVisible
-        Me.lblIMDBHeader.Visible = areVisible
-        Me.txtOutline.Visible = areVisible
-        Me.lblYear.Visible = areVisible
-        Me.lblTagline.Visible = areVisible
-        Me.lblTitle.Visible = areVisible
-        Me.lblDirector.Visible = areVisible
-        Me.lblGenre.Visible = areVisible
-        Me.lblIMDB.Visible = areVisible
-        Me.pbPoster.Visible = areVisible
-    End Sub
-
-    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
-
-        Me.ClearInfo()
-        Me.OK_Button.Enabled = False
-        Me.txtIMDBID.Enabled = Me.chkManual.Checked
-        Me.btnVerify.Enabled = Me.chkManual.Checked
-        Me.tvResults.Enabled = Not Me.chkManual.Checked
-
-        If Not Me.chkManual.Checked Then
-            txtIMDBID.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            IMDB.IMDBURL = IMDBURL
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
-        Else
-            MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
-        End If
-    End Sub
-
-    Private Sub txtIMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtIMDBID.GotFocus
-        Me.AcceptButton = Me.btnVerify
-    End Sub
-
-    Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBID.TextChanged
-        If Me.chkManual.Checked Then
-            Me.btnVerify.Enabled = True
-            Me.OK_Button.Enabled = False
-        End If
-    End Sub
-
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-        If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
-            Me.OK_Button.Enabled = False
-            Me.ClearInfo()
-            Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
-            Me.pnlLoading.Visible = True
-            chkManual.Enabled = False
-            IMDB.IMDBURL = IMDBURL
-            IMDB.SearchMovieAsync(Me.txtSearch.Text)
-        End If
-    End Sub
-
     Private Sub SearchResultsDownloaded(ByVal M As IMDB.MovieSearchResults)
-
         '//
         ' Process the results that IMDB gave us
         '\\
@@ -377,40 +326,105 @@ Public Class dlgIMDBSearchResults
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
     End Sub
 
-    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
-        Me.AcceptButton = Me.btnSearch
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(285, "View details of each result to find the proper movie.")
+        Me.Label1.Text = Master.eLang.GetString(286, "Movie Search Results")
+        Me.chkManual.Text = Master.eLang.GetString(287, "Manual IMDB Entry:")
+        Me.btnVerify.Text = Master.eLang.GetString(288, "Verify")
+        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+    End Sub
+
+    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        Me.tmrWait.Enabled = False
+        Me.tmrLoad.Enabled = False
+
+        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
+
+        IMDB.IMDBURL = IMDBURL
+        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
+    End Sub
+
+    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        If Not Me._prevnode = Me._currnode Then
+            Me._prevnode = Me._currnode
+            Me.tmrLoad.Enabled = True
+        Else
+            Me.tmrLoad.Enabled = False
+        End If
+    End Sub
+
+    Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
+        Try
+            Me.tmrWait.Enabled = False
+            Me.tmrLoad.Enabled = False
+
+            Me.ClearInfo()
+            Me.OK_Button.Enabled = False
+
+            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+                Me.pnlLoading.Visible = True
+                Me.tmrWait.Enabled = True
+            Else
+                Me.pnlLoading.Visible = False
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles tvResults.GotFocus
         Me.AcceptButton = Me.OK_Button
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+    Private Sub txtIMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtIMDBID.GotFocus
+        Me.AcceptButton = Me.btnVerify
+    End Sub
 
-        '//
-        ' Overload to pass data
-        '\\
+    Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBID.TextChanged
+        If Me.chkManual.Checked Then
+            Me.btnVerify.Enabled = True
+            Me.OK_Button.Enabled = False
+        End If
+    End Sub
 
-        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
-        chkManual.Enabled = False
-        IMDB.IMDBURL = IMDBURL
-        IMDB.SearchMovieAsync(sMovieTitle)
+    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
+        Me.AcceptButton = Me.btnSearch
+    End Sub
 
-        Return MyBase.ShowDialog()
-    End Function
+    #End Region 'Methods
 
-    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+    #Region "Nested Types"
 
-        '//
-        ' Overload to pass data
-        '\\
+    Private Structure Arguments
 
-        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
-        SearchResultsDownloaded(Res)
+        #Region "Fields"
 
-        Return MyBase.ShowDialog()
-    End Function
+        Dim pURL As String
+
+        #End Region 'Fields
+
+    End Structure
+
+    Private Structure Results
+
+        #Region "Fields"
+
+        Dim Result As Image
+
+        #End Region 'Fields
+
+    End Structure
+
+    #End Region 'Nested Types
+
 End Class

@@ -18,18 +18,71 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
-Imports System.Text.RegularExpressions
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class dlgImgManual
 
-    Dim tImage As New Images
+    #Region "Fields"
+
     Dim DLType As New Enums.ImageType
+    Dim tImage As New Images
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As Windows.Forms.DialogResult
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me.DLType = _DLType
+
+        Return MyBase.ShowDialog()
+    End Function
+
+    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
+        Try
+            tImage.FromWeb(Me.txtURL.Text)
+
+            If Not IsNothing(tImage.Image) Then
+
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(tImage.Image)
+                End Using
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub dlgImgManual_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        tImage.Dispose()
+        tImage = Nothing
+    End Sub
+
+    Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+
+        If Me.DLType = Enums.ImageType.Fanart Then
+            Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
+        Else
+            Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
+        End If
+    End Sub
+
+    Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
         Dim tmpPathPlus As String = String.Empty
 
         Try
@@ -56,9 +109,11 @@ Public Class dlgImgManual
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
+        Me.Label1.Text = Master.eLang.GetString(181, "Enter URL to Image:")
     End Sub
 
     Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
@@ -71,56 +126,6 @@ Public Class dlgImgManual
         End If
     End Sub
 
-    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
-        Try
-            tImage.FromWeb(Me.txtURL.Text)
+    #End Region 'Methods
 
-            If Not IsNothing(tImage.Image) Then
-
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(tImage.Image)
-                End Using
-
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub dlgImgManual_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        tImage.Dispose()
-        tImage = Nothing
-    End Sub
-
-    Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As Windows.Forms.DialogResult
-
-        '//
-        ' Overload to pass data
-        '\\
-
-        Me.DLType = _DLType
-
-        Return MyBase.ShowDialog()
-    End Function
-
-    Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-
-        If Me.DLType = Enums.ImageType.Fanart Then
-            Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
-        Else
-            Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
-        End If
-    End Sub
-
-    Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-    End Sub
-
-    Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
-        Me.Label1.Text = Master.eLang.GetString(181, "Enter URL to Image:")
-    End Sub
 End Class

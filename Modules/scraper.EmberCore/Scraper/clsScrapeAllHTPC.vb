@@ -21,7 +21,11 @@
 Imports System.Text.RegularExpressions
 
 Namespace AllHTPC
+
     Public Class Scraper
+
+        #Region "Methods"
+
         Public Function GetTrailer(ByVal imdbID As String) As String
             Dim sHTTP As New HTTP
 
@@ -38,7 +42,11 @@ Namespace AllHTPC
             End Try
 
             Return String.Empty
-
         End Function
+
+        #End Region 'Methods
+
     End Class
+
 End Namespace
+

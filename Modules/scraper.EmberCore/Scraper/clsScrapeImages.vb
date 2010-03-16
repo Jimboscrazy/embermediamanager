@@ -1,9 +1,32 @@
-﻿Imports System.IO
-Imports System.Text.RegularExpressions
-Imports System.Drawing.Imaging
-Public Class ScrapeImages
-    Public Shared Function GetPreferredImage(ByRef Image As Images, ByVal IMDBID As String, ByVal iType As Enums.ImageType, ByRef imgResult As Containers.ImgResult, ByVal sPath As String, ByVal doETs As Boolean, Optional ByVal doAsk As Boolean = False) As Boolean
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
+Imports System.Drawing.Imaging
+Imports System.IO
+Imports System.Text.RegularExpressions
+
+Public Class ScrapeImages
+
+    #Region "Methods"
+
+    Public Shared Function GetPreferredImage(ByRef Image As Images, ByVal IMDBID As String, ByVal iType As Enums.ImageType, ByRef imgResult As Containers.ImgResult, ByVal sPath As String, ByVal doETs As Boolean, Optional ByVal doAsk As Boolean = False) As Boolean
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
         '\\
@@ -501,7 +524,6 @@ Public Class ScrapeImages
                                 Next
                             End If
 
-
                             If Master.eSettings.AutoET AndAlso doETs Then
 
                                 If Not Directory.Exists(CachePath) Then
@@ -622,7 +644,7 @@ Public Class ScrapeImages
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-foundIT:
+        foundIT:
         TMDB = Nothing
         IMPA = Nothing
         MPDB = Nothing
@@ -631,4 +653,7 @@ foundIT:
         tmpListMPDB = Nothing
         Return hasImages
     End Function
+
+    #End Region 'Methods
+
 End Class

@@ -18,11 +18,104 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Public Class ImageUtils
-    Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
 
+    #Region "Methods"
+
+    Public Shared Function AddMissingStamp(ByVal oImage As Image) As Image
+        Dim nImage As New Bitmap(oImage)
+        Dim X As Integer
+        Dim Y As Integer
+        Dim clr As Integer
+
+        'first let's convert the background to grayscale
+        For X = 0 To nImage.Width - 1
+            For Y = 0 To nImage.Height - 1
+                clr = (CInt(nImage.GetPixel(X, Y).R) + _
+                       nImage.GetPixel(X, Y).G + _
+                       nImage.GetPixel(X, Y).B) \ 3
+                nImage.SetPixel(X, Y, Color.FromArgb(clr, clr, clr))
+            Next Y
+        Next X
+
+        'now overlay "missing" image
+        Dim grOverlay As Graphics = Graphics.FromImage(nImage)
+        Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
+        Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
+        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
+
+        Return nImage
+    End Function
+
+    Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
+        Try
+            Dim rPoints() As Point = { _
+            New Point(bounds.X, bounds.Y), _
+            New Point(bounds.X + bounds.Width, bounds.Y), _
+            New Point(bounds.X + bounds.Width, bounds.Y + bounds.Height), _
+            New Point(bounds.X, bounds.Y + bounds.Height) _
+        }
+            Dim pgBrush As New Drawing2D.PathGradientBrush(rPoints)
+            Dim gPath As New Drawing2D.GraphicsPath
+            gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
+            pgBrush = New Drawing2D.PathGradientBrush(gPath)
+            pgBrush.CenterColor = color1
+            pgBrush.SurroundColors = New Color() {color2}
+            graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Shared Sub ResizeImage(ByRef _image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal PaddingARGB As Integer = -16777216)
+        Try
+            If Not IsNothing(_image) Then
+                Dim sPropPerc As Single = 1.0 'no default scaling
+
+                If _image.Width > _image.Height Then
+                    sPropPerc = CSng(maxWidth / _image.Width)
+                Else
+                    sPropPerc = CSng(maxHeight / _image.Height)
+                End If
+
+                ' Get the source bitmap.
+                Using bmSource As New Bitmap(_image)
+                    ' Make a bitmap for the result.
+                    Dim bmDest As New Bitmap( _
+                    Convert.ToInt32(bmSource.Width * sPropPerc), _
+                    Convert.ToInt32(bmSource.Height * sPropPerc))
+                    ' Make a Graphics object for the result Bitmap.
+                    Using grDest As Graphics = Graphics.FromImage(bmDest)
+                        grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        ' Copy the source image into the destination bitmap.
+                        grDest.DrawImage(bmSource, New Rectangle(0, 0, _
+                        bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                        bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
+                    End Using
+
+                    If usePadding Then
+                        Dim bgBMP As Bitmap = New Bitmap(maxWidth, maxHeight)
+                        Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
+                        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(PaddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
+                        Dim iLeft As Integer = Convert.ToInt32(If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2))
+                        Dim iTop As Integer = Convert.ToInt32(If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2))
+                        grOverlay.DrawImage(bmDest, iLeft, iTop, bmDest.Width, bmDest.Height)
+                        bmDest = bgBMP
+                    End If
+
+                    _image = bmDest
+
+                End Using
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
         '//
         ' Resize the picture box based on the dimensions of the image and the dimensions
         ' of the available space... try to use the most screen real estate
@@ -82,53 +175,32 @@ Public Class ImageUtils
         End Try
     End Sub
 
-    Public Shared Sub ResizeImage(ByRef _image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal PaddingARGB As Integer = -16777216)
+    Public Shared Sub SetGlassOverlay(ByRef pbUnderlay As PictureBox)
+        '//
+        ' Put our crappy glossy overlay over the poster
+        '\\
 
         Try
-            If Not IsNothing(_image) Then
-                Dim sPropPerc As Single = 1.0 'no default scaling
+            Dim bmOverlay As New Bitmap(pbUnderlay.Image)
+            Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
+            Dim bmHeight As Integer = Convert.ToInt32(pbUnderlay.Image.Height * 0.65)
 
-                If _image.Width > _image.Height Then
-                    sPropPerc = CSng(maxWidth / _image.Width)
-                Else
-                    sPropPerc = CSng(maxHeight / _image.Height)
-                End If
+            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
 
-                ' Get the source bitmap.
-                Using bmSource As New Bitmap(_image)
-                    ' Make a bitmap for the result.
-                    Dim bmDest As New Bitmap( _
-                    Convert.ToInt32(bmSource.Width * sPropPerc), _
-                    Convert.ToInt32(bmSource.Height * sPropPerc))
-                    ' Make a Graphics object for the result Bitmap.
-                    Using grDest As Graphics = Graphics.FromImage(bmDest)
-                        grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        ' Copy the source image into the destination bitmap.
-                        grDest.DrawImage(bmSource, New Rectangle(0, 0, _
-                        bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
-                        bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
-                    End Using
+            grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbUnderlay.Image.Width, bmHeight)
+            pbUnderlay.Image = bmOverlay
 
-                    If usePadding Then
-                        Dim bgBMP As Bitmap = New Bitmap(maxWidth, maxHeight)
-                        Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
-                        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(PaddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
-                        Dim iLeft As Integer = Convert.ToInt32(If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2))
-                        Dim iTop As Integer = Convert.ToInt32(If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2))
-                        grOverlay.DrawImage(bmDest, iLeft, iTop, bmDest.Width, bmDest.Height)
-                        bmDest = bgBMP
-                    End If
+            bmOverlay = New Bitmap(pbUnderlay.Image)
+            grOverlay = Graphics.FromImage(bmOverlay)
 
-                    _image = bmDest
+            grOverlay.DrawImage(My.Resources.overlay2, 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
+            pbUnderlay.Image = bmOverlay
 
-                End Using
-
-            End If
+            grOverlay.Dispose()
+            bmOverlay = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
     End Sub
 
     Public Shared Function SetOverlay(ByRef imgUnderlay As Image, ByVal iWidth As Integer, ByVal iHeight As Integer, ByVal imgOverlay As Image, ByVal Location As Integer) As Image
@@ -173,78 +245,6 @@ Public Class ImageUtils
         Return imgUnderlay
     End Function
 
-    Public Shared Sub SetGlassOverlay(ByRef pbUnderlay As PictureBox)
+    #End Region 'Methods
 
-        '//
-        ' Put our crappy glossy overlay over the poster
-        '\\
-
-        Try
-            Dim bmOverlay As New Bitmap(pbUnderlay.Image)
-            Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
-            Dim bmHeight As Integer = Convert.ToInt32(pbUnderlay.Image.Height * 0.65)
-
-            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-
-            grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbUnderlay.Image.Width, bmHeight)
-            pbUnderlay.Image = bmOverlay
-
-            bmOverlay = New Bitmap(pbUnderlay.Image)
-            grOverlay = Graphics.FromImage(bmOverlay)
-
-            grOverlay.DrawImage(My.Resources.overlay2, 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
-            pbUnderlay.Image = bmOverlay
-
-            grOverlay.Dispose()
-            bmOverlay = Nothing
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
-        Try
-            Dim rPoints() As Point = { _
-            New Point(bounds.X, bounds.Y), _
-            New Point(bounds.X + bounds.Width, bounds.Y), _
-            New Point(bounds.X + bounds.Width, bounds.Y + bounds.Height), _
-            New Point(bounds.X, bounds.Y + bounds.Height) _
-        }
-            Dim pgBrush As New Drawing2D.PathGradientBrush(rPoints)
-            Dim gPath As New Drawing2D.GraphicsPath
-            gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
-            pgBrush = New Drawing2D.PathGradientBrush(gPath)
-            pgBrush.CenterColor = color1
-            pgBrush.SurroundColors = New Color() {color2}
-            graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Public Shared Function AddMissingStamp(ByVal oImage As Image) As Image
-        Dim nImage As New Bitmap(oImage)
-        Dim X As Integer
-        Dim Y As Integer
-        Dim clr As Integer
-
-        'first let's convert the background to grayscale
-        For X = 0 To nImage.Width - 1
-            For Y = 0 To nImage.Height - 1
-                clr = (CInt(nImage.GetPixel(X, Y).R) + _
-                       nImage.GetPixel(X, Y).G + _
-                       nImage.GetPixel(X, Y).B) \ 3
-                nImage.SetPixel(X, Y, Color.FromArgb(clr, clr, clr))
-            Next Y
-        Next X
-
-        'now overlay "missing" image
-        Dim grOverlay As Graphics = Graphics.FromImage(nImage)
-        Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
-        Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
-        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
-
-        Return nImage
-    End Function
 End Class

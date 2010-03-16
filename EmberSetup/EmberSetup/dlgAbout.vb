@@ -17,17 +17,23 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
-
-
-
 Public NotInheritable Class dlgAbout
+
+    #Region "Fields"
 
     Dim CredList As New List(Of CredLine)
     Dim PicY As Single
 
-    Private Sub frmAbout_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    #End Region 'Fields
 
+    #Region "Methods"
+
+    Private Sub dlgAbout_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+        Me.Refresh()
+    End Sub
+
+    Private Sub frmAbout_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim iBackground As New Bitmap(Me.picDisplay.Width, Me.picDisplay.Height)
         Dim iLogo As New Bitmap(My.Resources.Logo)
         For xPix As Integer = 0 To iLogo.Width - 1
@@ -107,35 +113,34 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = "See the GNU General Public License for more details."})
 
         PicY = Me.picDisplay.ClientSize.Height
-
     End Sub
 
     Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
         Me.Close()
     End Sub
 
-    Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
-        Process.Start("http://www.themoviedb.org/")
-    End Sub
-
-    Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
-        Process.Start("http://www.impawards.com/")
+    Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
+        Process.Start("http://www.ffmpeg.org/")
     End Sub
 
     Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
         Process.Start("http://www.imdb.com/")
     End Sub
 
+    Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
+        Process.Start("http://www.impawards.com/")
+    End Sub
+
     Private Sub pbMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMI.Click
         Process.Start("http://mediainfo.sourceforge.net")
     End Sub
 
-    Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        Process.Start("http://www.ffmpeg.org/")
-    End Sub
-
     Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
         Process.Start("http://www.moviepostersdb.com/")
+    End Sub
+
+    Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
+        Process.Start("http://www.themoviedb.org/")
     End Sub
 
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
@@ -144,6 +149,10 @@ Public NotInheritable Class dlgAbout
 
     Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
         Process.Start("http://www.youtube.com/")
+    End Sub
+
+    Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
+        Process.Start("http://code.google.com/p/embermediamanager/")
     End Sub
 
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
@@ -167,21 +176,30 @@ Public NotInheritable Class dlgAbout
         System.Threading.Thread.Sleep(30)
 
         Me.picDisplay.Invalidate()
-
     End Sub
 
-    Friend Class CredLine
-        Private _text As String
-        Private _font As Font
+    #End Region 'Methods
 
-        Public Property Text() As String
-            Get
-                Return _text
-            End Get
-            Set(ByVal value As String)
-                _text = value
-            End Set
-        End Property
+    #Region "Nested Types"
+
+    Friend Class CredLine
+
+        #Region "Fields"
+
+        Private _font As Font
+        Private _text As String
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
 
         Public Property Font() As Font
             Get
@@ -192,22 +210,28 @@ Public NotInheritable Class dlgAbout
             End Set
         End Property
 
-        Public Sub New()
-            clear()
-        End Sub
+        Public Property Text() As String
+            Get
+                Return _text
+            End Get
+            Set(ByVal value As String)
+                _text = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
 
         Public Sub Clear()
             _text = String.Empty
             _font = New Font("Microsoft Sans Serif", 11, FontStyle.Bold)
         End Sub
+
+        #End Region 'Methods
+
     End Class
 
-    Private Sub dlgAbout_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.Refresh()
-    End Sub
+    #End Region 'Nested Types
 
-    Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
-        Process.Start("http://code.google.com/p/embermediamanager/")
-    End Sub
 End Class

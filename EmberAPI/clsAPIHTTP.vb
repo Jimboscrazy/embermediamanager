@@ -18,21 +18,43 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
 Imports System.IO.Compression
 
 Public Class HTTP
 
-    Private _responseuri As String
-    Private _image As Image
-    Private _cancel As Boolean
-    Private _URL As String = String.Empty
+    #Region "Fields"
+
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
+    Private _cancel As Boolean
+    Private _image As Image
+    Private _responseuri As String
+    Private _URL As String = String.Empty
+
+    #End Region 'Fields
+
+    #Region "Constructors"
+
+    Public Sub New()
+        Me.Clear()
+    End Sub
+
+    #End Region 'Constructors
+
+    #Region "Events"
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)
+
+    #End Region 'Events
+
+    #Region "Properties"
+
+    Public ReadOnly Property Image() As Image
+        Get
+            Return Me._image
+        End Get
+    End Property
 
     Public Property ResponseUri() As String
         Get
@@ -43,14 +65,13 @@ Public Class HTTP
         End Set
     End Property
 
-    Public ReadOnly Property Image() As Image
-        Get
-            Return Me._image
-        End Get
-    End Property
+    #End Region 'Properties
 
-    Public Sub New()
-        Me.Clear()
+    #Region "Methods"
+
+    Public Sub Cancel()
+        Me._cancel = True
+        Me.wrRequest.Abort()
     End Sub
 
     Public Sub Clear()
@@ -58,32 +79,6 @@ Public Class HTTP
         Me._image = Nothing
         Me._cancel = False
     End Sub
-
-    Public Function DownloadZip(ByVal URL As String) As Byte()
-        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-
-        Try
-            wrRequest.Timeout = 20000
-
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-                wProxy.BypassProxyOnLocal = True
-                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-                    wProxy.Credentials = Master.eSettings.ProxyCreds
-                Else
-                    wProxy.Credentials = CredentialCache.DefaultCredentials
-                End If
-                wrRequest.Proxy = wProxy
-            End If
-
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-                Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
-            End Using
-        Catch
-        End Try
-
-        Return Nothing
-    End Function
 
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
@@ -132,36 +127,6 @@ Public Class HTTP
         End Try
 
         Return sResponse
-    End Function
-
-    Public Function IsValidURL(ByVal URL As String) As Boolean
-        Dim wrRequest As WebRequest
-        Dim wrResponse As WebResponse
-        Try
-            wrRequest = HttpWebRequest.Create(URL)
-
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-                wProxy.BypassProxyOnLocal = True
-                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-                    wProxy.Credentials = Master.eSettings.ProxyCreds
-                Else
-                    wProxy.Credentials = CredentialCache.DefaultCredentials
-                End If
-                wrRequest.Proxy = wProxy
-            End If
-
-            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
-            wrRequest.CachePolicy = noCachePolicy
-            wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
-            wrResponse = wrRequest.GetResponse()
-        Catch ex As Exception
-            Return False
-        End Try
-        wrResponse.Close()
-        wrResponse = Nothing
-        wrRequest = Nothing
-        Return True
     End Function
 
     Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
@@ -241,23 +206,6 @@ Public Class HTTP
         Return outFile
     End Function
 
-    Public Sub StartDownloadImage(ByVal sURL As String)
-        Me.Clear()
-        Me._URL = sURL
-        Me.dThread = New Threading.Thread(AddressOf DownloadImage)
-        Me.dThread.IsBackground = True
-        Me.dThread.Start()
-    End Sub
-
-    Public Function IsDownloading() As Boolean
-        Return Me.dThread.IsAlive
-    End Function
-
-    Public Sub Cancel()
-        Me._cancel = True
-        Me.wrRequest.Abort()
-    End Sub
-
     Public Sub DownloadImage()
         Try
             If StringUtils.isValidURL(Me._URL) Then
@@ -295,6 +243,66 @@ Public Class HTTP
         End Try
     End Sub
 
+    Public Function DownloadZip(ByVal URL As String) As Byte()
+        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+
+        Try
+            wrRequest.Timeout = 20000
+
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    wProxy.Credentials = Master.eSettings.ProxyCreds
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                wrRequest.Proxy = wProxy
+            End If
+
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+                Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
+            End Using
+        Catch
+        End Try
+
+        Return Nothing
+    End Function
+
+    Public Function IsDownloading() As Boolean
+        Return Me.dThread.IsAlive
+    End Function
+
+    Public Function IsValidURL(ByVal URL As String) As Boolean
+        Dim wrRequest As WebRequest
+        Dim wrResponse As WebResponse
+        Try
+            wrRequest = HttpWebRequest.Create(URL)
+
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    wProxy.Credentials = Master.eSettings.ProxyCreds
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                wrRequest.Proxy = wProxy
+            End If
+
+            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
+            wrRequest.CachePolicy = noCachePolicy
+            wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
+            wrResponse = wrRequest.GetResponse()
+        Catch ex As Exception
+            Return False
+        End Try
+        wrResponse.Close()
+        wrResponse = Nothing
+        wrRequest = Nothing
+        Return True
+    End Function
+
     Public Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
         Try
             Dim StreamBuffer(4096) As Byte
@@ -315,4 +323,15 @@ Public Class HTTP
 
         Return Nothing
     End Function
+
+    Public Sub StartDownloadImage(ByVal sURL As String)
+        Me.Clear()
+        Me._URL = sURL
+        Me.dThread = New Threading.Thread(AddressOf DownloadImage)
+        Me.dThread.IsBackground = True
+        Me.dThread.Start()
+    End Sub
+
+    #End Region 'Methods
+
 End Class

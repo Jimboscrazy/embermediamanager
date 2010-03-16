@@ -23,6 +23,8 @@ Imports System.Text.RegularExpressions
 
 Public Class ThumbGenerator
 
+    #Region "Methods"
+
     ''' <summary>
     ''' Begin the process to extract extrathumbs
     ''' </summary>
@@ -42,30 +44,35 @@ Public Class ThumbGenerator
         Return tThumb.SetFA
     End Function
 
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
     Private Class GeneratorThread
-        Public _movie As Structures.DBMovie
-        Public _thumbcount As Integer
+
+        #Region "Fields"
+
         Public _isedit As Boolean
+        Public _movie As Structures.DBMovie
         Public _setfa As String
+        Public _thumbcount As Integer
 
         Private ffmpeg As New Process
         Private isAborting As Boolean = False
 
-        Public WriteOnly Property Movie() As Structures.DBMovie
-            Set(ByVal value As Structures.DBMovie)
-                _movie = value
-            End Set
-        End Property
+        #End Region 'Fields
 
-        Public WriteOnly Property ThumbCount() As Integer
-            Set(ByVal value As Integer)
-                _thumbcount = value
-            End Set
-        End Property
+        #Region "Properties"
 
         Public WriteOnly Property isEdit() As Boolean
             Set(ByVal value As Boolean)
                 _isedit = value
+            End Set
+        End Property
+
+        Public WriteOnly Property Movie() As Structures.DBMovie
+            Set(ByVal value As Structures.DBMovie)
+                _movie = value
             End Set
         End Property
 
@@ -75,18 +82,15 @@ Public Class ThumbGenerator
             End Get
         End Property
 
-        ''' <summary>
-        ''' Start the thread which extracts the thumbs from the movie file.
-        ''' </summary>
-        Public Sub Start()
-            Dim tThread As Threading.Thread = New Threading.Thread(AddressOf InnerThread)
+        Public WriteOnly Property ThumbCount() As Integer
+            Set(ByVal value As Integer)
+                _thumbcount = value
+            End Set
+        End Property
 
-            tThread.Start()
+        #End Region 'Properties
 
-            While tThread.IsAlive
-                Application.DoEvents()
-            End While
-        End Sub
+        #Region "Methods"
 
         Public Sub InnerThread()
             Dim tThread As Threading.Thread = New Threading.Thread(AddressOf CreateRandom)
@@ -105,14 +109,25 @@ Public Class ThumbGenerator
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+        End Sub
 
+        ''' <summary>
+        ''' Start the thread which extracts the thumbs from the movie file.
+        ''' </summary>
+        Public Sub Start()
+            Dim tThread As Threading.Thread = New Threading.Thread(AddressOf InnerThread)
+
+            tThread.Start()
+
+            While tThread.IsAlive
+                Application.DoEvents()
+            End While
         End Sub
 
         ''' <summary>
         ''' Extract thumbs from a movie file.
         ''' </summary>
         Private Sub CreateRandom()
-
             Try
                 Dim pExt As String = Path.GetExtension(_movie.Filename).ToLower
                 Dim eMovieFile As String = String.Empty
@@ -237,7 +252,12 @@ Public Class ThumbGenerator
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             End Try
-
         End Sub
+
+        #End Region 'Methods
+
     End Class
+
+    #End Region 'Nested Types
+
 End Class

@@ -18,13 +18,22 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
-
 Public Class frmSettingsHolder
+
+    #Region "Events"
+
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
+
     Public Event ModuleSettingsChanged()
+
+    #End Region 'Events
+
+    #Region "Methods"
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
     End Sub
+
+    #End Region 'Methods
+
 End Class

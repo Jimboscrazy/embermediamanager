@@ -1,9 +1,43 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
 Partial Class dlgExportMovies
     Inherits System.Windows.Forms.Form
 
+    #Region "Fields"
+
+    Friend  WithEvents btnCancel As System.Windows.Forms.Button
+    Friend  WithEvents btnSource As System.Windows.Forms.Button
+    Friend  WithEvents cbSearch As System.Windows.Forms.ComboBox
+    Friend  WithEvents cbTemplate As System.Windows.Forms.ComboBox
+    Friend  WithEvents Close_Button As System.Windows.Forms.Button
+    Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
+    Friend  WithEvents Label1 As System.Windows.Forms.Label
+    Friend  WithEvents Label2 As System.Windows.Forms.Label
+    Friend  WithEvents lblCanceling As System.Windows.Forms.Label
+    Friend  WithEvents lblCompiling As System.Windows.Forms.Label
+    Friend  WithEvents lblFile As System.Windows.Forms.Label
+    Friend  WithEvents lblIn As System.Windows.Forms.Label
+    Friend  WithEvents lstSources As System.Windows.Forms.CheckedListBox
+    Friend  WithEvents pbCompile As System.Windows.Forms.ProgressBar
+    Friend  WithEvents pnlBG As System.Windows.Forms.Panel
+    Friend  WithEvents pnlBottomMain As System.Windows.Forms.Panel
+    Friend  WithEvents pnlCancel As System.Windows.Forms.Panel
+    Friend  WithEvents pnlSearch As System.Windows.Forms.Panel
+    Friend  WithEvents Reset_Button As System.Windows.Forms.Button
+    Friend  WithEvents Save_Button As System.Windows.Forms.Button
+    Friend  WithEvents Search_Button As System.Windows.Forms.Button
+    Friend  WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend  WithEvents txtSearch As System.Windows.Forms.TextBox
+    Friend  WithEvents wbMovieList As System.Windows.Forms.WebBrowser
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,13 +48,10 @@ Partial Class dlgExportMovies
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
@@ -338,31 +369,8 @@ Partial Class dlgExportMovies
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlBG.ResumeLayout(False)
         Me.ResumeLayout(False)
-
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents Save_Button As System.Windows.Forms.Button
-    Friend WithEvents Close_Button As System.Windows.Forms.Button
-    Friend WithEvents pnlBottomMain As System.Windows.Forms.Panel
-    Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents lblCanceling As System.Windows.Forms.Label
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents pnlBG As System.Windows.Forms.Panel
-    Friend WithEvents wbMovieList As System.Windows.Forms.WebBrowser
-    Friend WithEvents lblFile As System.Windows.Forms.Label
-    Friend WithEvents Search_Button As System.Windows.Forms.Button
-    Friend WithEvents cbSearch As System.Windows.Forms.ComboBox
-    Friend WithEvents lblIn As System.Windows.Forms.Label
-    Friend WithEvents txtSearch As System.Windows.Forms.TextBox
-    Friend WithEvents pnlSearch As System.Windows.Forms.Panel
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Reset_Button As System.Windows.Forms.Button
-    Friend WithEvents lblCompiling As System.Windows.Forms.Label
-    Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
-    Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents lstSources As System.Windows.Forms.CheckedListBox
-    Friend WithEvents btnSource As System.Windows.Forms.Button
-    Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
+
+    #End Region 'Methods
 
 End Class

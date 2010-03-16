@@ -22,95 +22,94 @@ Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 
+Public Class DefaultStrings
 
-Public Class Settings
-    Public FTPUser As String
-    Public FTPPassword As String
-    Public FTPHost As String
-    Public Sub Save(ByVal fpath As String)
-        Dim xmlSer As New XmlSerializer(GetType(Settings))
-        Using xmlSW As New StreamWriter(fpath)
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
-    End Sub
+    #Region "Fields"
+
+    Public Shared Tables As String() = {"CREATE TABLE IF NOT EXISTS Movies(" &                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                 "MoviePath TEXT NOT NULL, " &                                 "Type BOOL NOT NULL DEFAULT False , " &                                 "ListTitle TEXT NOT NULL, " &                                 "HasPoster BOOL NOT NULL DEFAULT False, " &                                 "HasFanart BOOL NOT NULL DEFAULT False, " &                                 "HasNfo BOOL NOT NULL DEFAULT False, " &                                 "HasTrailer BOOL NOT NULL DEFAULT False, " &                                 "HasSub BOOL NOT NULL DEFAULT False, " &                                 "HasExtra BOOL NOT NULL DEFAULT False, " &                                 "New BOOL DEFAULT False, " &                                 "Mark BOOL NOT NULL DEFAULT False, " &                                 "Source TEXT NOT NULL, " &                                 "Imdb TEXT, " &                                 "Lock BOOL NOT NULL DEFAULT False, " &                                 "Title TEXT, " &                                 "OriginalTitle TEXT, " &                                 "Year TEXT, " &                                 "Rating TEXT, " &                                 "Votes TEXT, " &                                 "MPAA TEXT, " &                                 "Top250 TEXT, " &                                 "Outline TEXT, " &                                 "Plot TEXT, " &                                 "Tagline TEXT, " &                                 "Certification TEXT, " &                                 "Genre TEXT, " &                                 "Studio TEXT, " &                                 "Runtime TEXT, " &                                 "ReleaseDate TEXT, " &                                 "Director TEXT, " &                                 "Credits TEXT, " &                                 "Playcount TEXT, " &                                 "Watched TEXT, " &                                 "File TEXT, " &                                 "Path TEXT, " &                                 "FileNameAndPath TEXT, " &                                 "Status TEXT, " &                                 "Trailer TEXT, " &                                 "PosterPath TEXT, " &                                 "FanartPath TEXT, " &                                 "ExtraPath TEXT, " &                                 "NfoPath TEXT, " &                                 "TrailerPath TEXT, " &                                 "SubPath TEXT, " &                                 "FanartURL TEXT, " &                                 "UseFolder BOOL NOT NULL DEFAULT False, " &                                 "OutOfTolerance BOOL NOT NULL DEFAULT False, " &                                 "FileSource TEXT, " &                                 "NeedsSave BOOL NOT NULL DEFAULT False," &                                 "SortTitle TEXT" &                                 ");",                                 "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (MoviePath);",                                 "CREATE TABLE IF NOT EXISTS Sets(" &                                 "SetName TEXT NOT NULL PRIMARY KEY" &                                  ");",                                 "CREATE TABLE IF NOT EXISTS MoviesSets(" &                                 "MovieID INTEGER NOT NULL, " &                                 "SetName TEXT NOT NULL, " &                                 "SetOrder TEXT NOT NULL, " &                                 "PRIMARY KEY (MovieID,SetName) " &                                  ");",                                 "CREATE TABLE IF NOT EXISTS MoviesVStreams(" &                                 "MovieID INTEGER NOT NULL, " &                                 "StreamID INTEGER NOT NULL, " &                                 "Video_Width TEXT, " &                                 "Video_Height TEXT," &                                 "Video_Codec TEXT, " &                                 "Video_Duration TEXT, " &                                 "Video_ScanType TEXT, " &                                 "Video_AspectDisplayRatio TEXT, " &                                 "Video_Language TEXT, " &                                 "Video_LongLanguage TEXT, " &                                 "PRIMARY KEY (MovieID,StreamID) " &                                 ");",                                 "CREATE TABLE IF NOT EXISTS MoviesAStreams(" &                                 "MovieID INTEGER NOT NULL, " &                                 "StreamID INTEGER NOT NULL, " &                                 "Audio_Language TEXT, " &                                 "Audio_LongLanguage TEXT, " &                                 "Audio_Codec TEXT, " &                                 "Audio_Channel TEXT, " &                                 "PRIMARY KEY (MovieID,StreamID) " &                                 ");",                                 "CREATE TABLE IF NOT EXISTS MoviesSubs(" &                                 "MovieID INTEGER NOT NULL, " &                                 "StreamID INTEGER NOT NULL, " &                                 "Subs_Language TEXT, " &                                 "Subs_LongLanguage TEXT, " &                                 "PRIMARY KEY (MovieID,StreamID) " &                                  ");",                                 "CREATE TABLE IF NOT EXISTS MoviesPosters(" &                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                 "MovieID INTEGER NOT NULL, " &                                 "thumbs TEXT" &                                 ");",                                 "CREATE TABLE IF NOT EXISTS MoviesFanart(" &                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                 "MovieID INTEGER NOT NULL, " &                                 "preview TEXT, " &                                 "thumbs TEXT" &                                 ");",                                 "CREATE TABLE IF NOT EXISTS Actors(" &                                 "Name TEXT PRIMARY KEY, " &                                 "thumb TEXT" &                                 ");",                                 "CREATE TABLE IF NOT EXISTS MoviesActors(" &                                 "MovieID INTEGER NOT NULL, " &                                 "ActorName TEXT NOT NULL, " &                                 "Role TEXT, " &                                 "PRIMARY KEY (MovieID,ActorName) " &                                 ");",                                 "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False, LastScan TEXT NOT NULL DEFAULT '1900/01/01');",                                 "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);",                                 "CREATE TABLE IF NOT EXISTS TVShows(" &                                     "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                     "Title TEXT, " &                                     "HasPoster BOOL NOT NULL DEFAULT False, " &                                     "HasFanart BOOL NOT NULL DEFAULT False, " &                                     "HasNfo BOOL NOT NULL DEFAULT False, " &                                     "New BOOL DEFAULT False, " &                                     "Mark BOOL NOT NULL DEFAULT False, " &                                     "TVShowPath TEXT NOT NULL, " &                                     "Source TEXT NOT NULL, " &                                     "TVDB TEXT, " &                                     "Lock BOOL NOT NULL DEFAULT False, " &                                     "EpisodeGuide TEXT, " &                                     "Plot TEXT, " &                                     "Genre TEXT, " &                                     "Premiered TEXT, " &                                     "Studio TEXT, " &                                     "MPAA TEXT, " &                                     "Rating TEXT, " &                                     "PosterPath TEXT, " &                                     "FanartPath TEXT, " &                                     "NfoPath TEXT, " &                                     "NeedsSave BOOL NOT NULL DEFAULT False" &                                     ");",                                 "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVShowPath ON TVShows (TVShowPath);",                                 "CREATE TABLE IF NOT EXISTS TVEpPaths(" &                                         "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                         "TVEpPath TEXT NOT NULL" &                                         ");",                                 "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVEpPath ON TVEpPaths (TVEpPath);",                                 "CREATE TABLE IF NOT EXISTS TVEps(" &                                         "ID INTEGER PRIMARY KEY AUTOINCREMENT, " &                                         "TVShowID INTEGER NOT NULL, " &                                         "Title TEXT, " &                                         "HasPoster BOOL NOT NULL DEFAULT False, " &                                         "HasFanart BOOL NOT NULL DEFAULT False, " &                                         "HasNfo BOOL NOT NULL DEFAULT False, " &                                         "New BOOL DEFAULT False, " &                                         "Mark BOOL NOT NULL DEFAULT False, " &                                         "TVEpPathID INTEGER NOT NULL, " &                                         "Source TEXT NOT NULL, " &                                         "Lock BOOL NOT NULL DEFAULT False, " &                                         "Season INTEGER, " &                                         "Episode INTEGER, " &                                         "Rating TEXT, " &                                         "Plot TEXT, " &                                         "Aired TEXT, " &                                         "Director TEXT, " &                                         "Credits TEXT, " &                                         "PosterPath TEXT, " &                                         "FanartPath TEXT, " &                                         "NfoPath TEXT, " &                                         "NeedsSave BOOL NOT NULL DEFAULT False" &                                         ");",                                 "CREATE TABLE IF NOT EXISTS TVShowActors(" &                                     "TVShowID INTEGER NOT NULL, " &                                     "ActorName TEXT NOT NULL, " &                                     "Role TEXT, " &                                     "PRIMARY KEY (TVShowID,ActorName) " &                                     ");",                                 "CREATE TABLE IF NOT EXISTS TVEpActors(" &                                     "TVEpID INTEGER NOT NULL, " &                                     "ActorName TEXT NOT NULL, " &                                     "Role TEXT, " &                                     "PRIMARY KEY (TVEpID,ActorName) " &                                     ");",                                     "CREATE TABLE IF NOT EXISTS TVSeason(" &                                     "TVShowID INTEGER NOT NULL, " &                                     "TVEpID INTEGER NOT NULL, " &                                     "SeasonText TEXT, " &                                     "Season INTEGER NOT NULL, " &                                     "HasPoster BOOL NOT NULL DEFAULT False, " &                                     "HasFanart BOOL NOT NULL DEFAULT False, " &                                     "PosterPath TEXT, " &                                     "FanartPath TEXT, " &                                     "PRIMARY KEY (TVShowID,TVEpID)" &                                     ");",                                 "CREATE TABLE IF NOT EXISTS TVVStreams(" &                                     "TVEpID INTEGER NOT NULL, " &                                     "StreamID INTEGER NOT NULL, " &                                     "Video_Width TEXT, " &                                     "Video_Height TEXT," &                                     "Video_Codec TEXT, " &                                     "Video_Duration TEXT, " &                                     "Video_ScanType TEXT, " &                                     "Video_AspectDisplayRatio TEXT, " &                                     "Video_Language TEXT, " &                                     "Video_LongLanguage TEXT, " &                                     "PRIMARY KEY (TVEpID,StreamID) " &                                     ");",                                 "CREATE TABLE IF NOT EXISTS TVAStreams(" &                                     "TVEpID INTEGER NOT NULL, " &                                     "StreamID INTEGER NOT NULL, " &                                     "Audio_Language TEXT, " &                                     "Audio_LongLanguage TEXT, " &                                     "Audio_Codec TEXT, " &                                     "Audio_Channel TEXT, " &                                     "PRIMARY KEY (TVEpID,StreamID) " &                                     ");",                                 "CREATE TABLE IF NOT EXISTS TVSubs(" &                                     "TVEpID INTEGER NOT NULL, " &                                     "StreamID INTEGER NOT NULL, " &                                     "Subs_Language TEXT, " &                                     "Subs_LongLanguage TEXT, " &                                     "PRIMARY KEY (TVEpID,StreamID) " &                                      ");",                                  "CREATE TABLE IF NOT EXISTS TVSources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, LastScan TEXT NOT NULL DEFAULT '1900/01/01');",                                  "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVSource ON TVSources (Path);"                                     }
+
+    #End Region 'Fields
+
 End Class
 
-<XmlRoot("Config")> _
-Public Class _LastVersion
-    <XmlArrayItem("File")> _
-    Public Modules As New List(Of _Module)
-    Public Sub Save(ByVal fpath As String)
-        Dim xmlSer As New XmlSerializer(GetType(_LastVersion))
-        Using xmlSW As New StreamWriter(fpath)
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
-    End Sub
-End Class
-Public Class _Module : Implements IComparable(Of Versions)
-    Public Name As String
-    Public Version As String
-    Public Platform As String
-    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
-        Return (Me.Version).CompareTo(other.Version)
-    End Function
-End Class
+Public Class FileOfList
 
+    #Region "Fields"
 
-<XmlRoot("VersionsFile")> _
-Public Class UpgradeList
-    <XmlArray("Versions")> _
-    <XmlArrayItem("Version")> _
-    Public VersionList As New List(Of Versions)
-
-    Public Sub Save(ByVal fpath As String)
-        Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
-        Using xmlSW As New StreamWriter(fpath)
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
-    End Sub
-End Class
-
-Public Class Versions : Implements IComparable(Of Versions)
-    <XmlAttribute("Number")> _
-    Public Version As String
-    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
-        Return (Me.Version).CompareTo(other.Version)
-    End Function
-End Class
-
-Public Class FileToInstall
     Public Filename As String
-    Public OriginalPath As String
-    Public EmberPath As String
     Public Hash As String
+    Public Path As String
     Public Platform As String
+
+    #End Region 'Fields
+
 End Class
 
 <XmlRoot("UpgradeFile")> _
 Public Class FilesList
+
+    #Region "Fields"
+
     <XmlArray("Files")> _
     <XmlArrayItem("File")> _
     Public Files As List(Of FileOfList)
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     Public Sub Save(ByVal fpath As String)
         Dim xmlSer As New XmlSerializer(GetType(FilesList))
         Using xmlSW As New StreamWriter(fpath)
             xmlSer.Serialize(xmlSW, Me)
         End Using
     End Sub
+
+    #End Region 'Methods
+
 End Class
 
-Public Class FileOfList
-    Public Path As String
+Public Class FileToInstall
+
+    #Region "Fields"
+
+    Public EmberPath As String
     Public Filename As String
-    Public Platform As String
     Public Hash As String
+    Public OriginalPath As String
+    Public Platform As String
+
+    #End Region 'Fields
+
+End Class
+
+Public Class InstallCommand
+
+    #Region "Fields"
+
+    <XmlElement("Description")> _
+    Public CommandDescription As String
+    <XmlElement("Execute")> _
+    Public CommandExecute As String
+    <XmlAttribute("Type")> _
+    Public CommandType As String
+
+    #End Region 'Fields
+
 End Class
 
 <XmlRoot("CommandFile")> _
 Public Class InstallCommands
+
+    #Region "Fields"
+
     <XmlArray("Commands")> _
     <XmlArrayItem("Command")> _
     Public Command As List(Of InstallCommand)
+
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Public Sub Save(ByVal fpath As String)
         Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
@@ -118,241 +117,118 @@ Public Class InstallCommands
             xmlSer.Serialize(xmlSW, Me)
         End Using
     End Sub
+
+    #End Region 'Methods
+
 End Class
 
-Public Class InstallCommand
-    <XmlElement("Description")> _
-    Public CommandDescription As String
-    <XmlAttribute("Type")> _
-    Public CommandType As String
-    <XmlElement("Execute")> _
-    Public CommandExecute As String
+Public Class Settings
+
+    #Region "Fields"
+
+    Public FTPHost As String
+    Public FTPPassword As String
+    Public FTPUser As String
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(Settings))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+
+    #End Region 'Methods
+
 End Class
 
-Public Class DefaultStrings
-    Public Shared Tables As String() = {"CREATE TABLE IF NOT EXISTS Movies(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                "MoviePath TEXT NOT NULL, " & _
-                                "Type BOOL NOT NULL DEFAULT False , " & _
-                                "ListTitle TEXT NOT NULL, " & _
-                                "HasPoster BOOL NOT NULL DEFAULT False, " & _
-                                "HasFanart BOOL NOT NULL DEFAULT False, " & _
-                                "HasNfo BOOL NOT NULL DEFAULT False, " & _
-                                "HasTrailer BOOL NOT NULL DEFAULT False, " & _
-                                "HasSub BOOL NOT NULL DEFAULT False, " & _
-                                "HasExtra BOOL NOT NULL DEFAULT False, " & _
-                                "New BOOL DEFAULT False, " & _
-                                "Mark BOOL NOT NULL DEFAULT False, " & _
-                                "Source TEXT NOT NULL, " & _
-                                "Imdb TEXT, " & _
-                                "Lock BOOL NOT NULL DEFAULT False, " & _
-                                "Title TEXT, " & _
-                                "OriginalTitle TEXT, " & _
-                                "Year TEXT, " & _
-                                "Rating TEXT, " & _
-                                "Votes TEXT, " & _
-                                "MPAA TEXT, " & _
-                                "Top250 TEXT, " & _
-                                "Outline TEXT, " & _
-                                "Plot TEXT, " & _
-                                "Tagline TEXT, " & _
-                                "Certification TEXT, " & _
-                                "Genre TEXT, " & _
-                                "Studio TEXT, " & _
-                                "Runtime TEXT, " & _
-                                "ReleaseDate TEXT, " & _
-                                "Director TEXT, " & _
-                                "Credits TEXT, " & _
-                                "Playcount TEXT, " & _
-                                "Watched TEXT, " & _
-                                "File TEXT, " & _
-                                "Path TEXT, " & _
-                                "FileNameAndPath TEXT, " & _
-                                "Status TEXT, " & _
-                                "Trailer TEXT, " & _
-                                "PosterPath TEXT, " & _
-                                "FanartPath TEXT, " & _
-                                "ExtraPath TEXT, " & _
-                                "NfoPath TEXT, " & _
-                                "TrailerPath TEXT, " & _
-                                "SubPath TEXT, " & _
-                                "FanartURL TEXT, " & _
-                                "UseFolder BOOL NOT NULL DEFAULT False, " & _
-                                "OutOfTolerance BOOL NOT NULL DEFAULT False, " & _
-                                "FileSource TEXT, " & _
-                                "NeedsSave BOOL NOT NULL DEFAULT False," & _
-                                "SortTitle TEXT" & _
-                                ");", _
-                                "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (MoviePath);", _
-                                "CREATE TABLE IF NOT EXISTS Sets(" & _
-                                "SetName TEXT NOT NULL PRIMARY KEY" & _
-                                 ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesSets(" & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "SetName TEXT NOT NULL, " & _
-                                "SetOrder TEXT NOT NULL, " & _
-                                "PRIMARY KEY (MovieID,SetName) " & _
-                                 ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "StreamID INTEGER NOT NULL, " & _
-                                "Video_Width TEXT, " & _
-                                "Video_Height TEXT," & _
-                                "Video_Codec TEXT, " & _
-                                "Video_Duration TEXT, " & _
-                                "Video_ScanType TEXT, " & _
-                                "Video_AspectDisplayRatio TEXT, " & _
-                                "Video_Language TEXT, " & _
-                                "Video_LongLanguage TEXT, " & _
-                                "PRIMARY KEY (MovieID,StreamID) " & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesAStreams(" & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "StreamID INTEGER NOT NULL, " & _
-                                "Audio_Language TEXT, " & _
-                                "Audio_LongLanguage TEXT, " & _
-                                "Audio_Codec TEXT, " & _
-                                "Audio_Channel TEXT, " & _
-                                "PRIMARY KEY (MovieID,StreamID) " & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "StreamID INTEGER NOT NULL, " & _
-                                "Subs_Language TEXT, " & _
-                                "Subs_LongLanguage TEXT, " & _
-                                "PRIMARY KEY (MovieID,StreamID) " & _
-                                 ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesPosters(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "thumbs TEXT" & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesFanart(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "preview TEXT, " & _
-                                "thumbs TEXT" & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS Actors(" & _
-                                "Name TEXT PRIMARY KEY, " & _
-                                "thumb TEXT" & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS MoviesActors(" & _
-                                "MovieID INTEGER NOT NULL, " & _
-                                "ActorName TEXT NOT NULL, " & _
-                                "Role TEXT, " & _
-                                "PRIMARY KEY (MovieID,ActorName) " & _
-                                ");", _
-                                "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False, LastScan TEXT NOT NULL DEFAULT '1900/01/01');", _
-                                "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);", _
-                                "CREATE TABLE IF NOT EXISTS TVShows(" & _
-                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                    "Title TEXT, " & _
-                                    "HasPoster BOOL NOT NULL DEFAULT False, " & _
-                                    "HasFanart BOOL NOT NULL DEFAULT False, " & _
-                                    "HasNfo BOOL NOT NULL DEFAULT False, " & _
-                                    "New BOOL DEFAULT False, " & _
-                                    "Mark BOOL NOT NULL DEFAULT False, " & _
-                                    "TVShowPath TEXT NOT NULL, " & _
-                                    "Source TEXT NOT NULL, " & _
-                                    "TVDB TEXT, " & _
-                                    "Lock BOOL NOT NULL DEFAULT False, " & _
-                                    "EpisodeGuide TEXT, " & _
-                                    "Plot TEXT, " & _
-                                    "Genre TEXT, " & _
-                                    "Premiered TEXT, " & _
-                                    "Studio TEXT, " & _
-                                    "MPAA TEXT, " & _
-                                    "Rating TEXT, " & _
-                                    "PosterPath TEXT, " & _
-                                    "FanartPath TEXT, " & _
-                                    "NfoPath TEXT, " & _
-                                    "NeedsSave BOOL NOT NULL DEFAULT False" & _
-                                    ");", _
-                                "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVShowPath ON TVShows (TVShowPath);", _
-                                "CREATE TABLE IF NOT EXISTS TVEpPaths(" & _
-                                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                        "TVEpPath TEXT NOT NULL" & _
-                                        ");", _
-                                "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVEpPath ON TVEpPaths (TVEpPath);", _
-                                "CREATE TABLE IF NOT EXISTS TVEps(" & _
-                                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                        "TVShowID INTEGER NOT NULL, " & _
-                                        "Title TEXT, " & _
-                                        "HasPoster BOOL NOT NULL DEFAULT False, " & _
-                                        "HasFanart BOOL NOT NULL DEFAULT False, " & _
-                                        "HasNfo BOOL NOT NULL DEFAULT False, " & _
-                                        "New BOOL DEFAULT False, " & _
-                                        "Mark BOOL NOT NULL DEFAULT False, " & _
-                                        "TVEpPathID INTEGER NOT NULL, " & _
-                                        "Source TEXT NOT NULL, " & _
-                                        "Lock BOOL NOT NULL DEFAULT False, " & _
-                                        "Season INTEGER, " & _
-                                        "Episode INTEGER, " & _
-                                        "Rating TEXT, " & _
-                                        "Plot TEXT, " & _
-                                        "Aired TEXT, " & _
-                                        "Director TEXT, " & _
-                                        "Credits TEXT, " & _
-                                        "PosterPath TEXT, " & _
-                                        "FanartPath TEXT, " & _
-                                        "NfoPath TEXT, " & _
-                                        "NeedsSave BOOL NOT NULL DEFAULT False" & _
-                                        ");", _
-                                "CREATE TABLE IF NOT EXISTS TVShowActors(" & _
-                                    "TVShowID INTEGER NOT NULL, " & _
-                                    "ActorName TEXT NOT NULL, " & _
-                                    "Role TEXT, " & _
-                                    "PRIMARY KEY (TVShowID,ActorName) " & _
-                                    ");", _
-                                "CREATE TABLE IF NOT EXISTS TVEpActors(" & _
-                                    "TVEpID INTEGER NOT NULL, " & _
-                                    "ActorName TEXT NOT NULL, " & _
-                                    "Role TEXT, " & _
-                                    "PRIMARY KEY (TVEpID,ActorName) " & _
-                                    ");", _
-                                    "CREATE TABLE IF NOT EXISTS TVSeason(" & _
-                                    "TVShowID INTEGER NOT NULL, " & _
-                                    "TVEpID INTEGER NOT NULL, " & _
-                                    "SeasonText TEXT, " & _
-                                    "Season INTEGER NOT NULL, " & _
-                                    "HasPoster BOOL NOT NULL DEFAULT False, " & _
-                                    "HasFanart BOOL NOT NULL DEFAULT False, " & _
-                                    "PosterPath TEXT, " & _
-                                    "FanartPath TEXT, " & _
-                                    "PRIMARY KEY (TVShowID,TVEpID)" & _
-                                    ");", _
-                                "CREATE TABLE IF NOT EXISTS TVVStreams(" & _
-                                    "TVEpID INTEGER NOT NULL, " & _
-                                    "StreamID INTEGER NOT NULL, " & _
-                                    "Video_Width TEXT, " & _
-                                    "Video_Height TEXT," & _
-                                    "Video_Codec TEXT, " & _
-                                    "Video_Duration TEXT, " & _
-                                    "Video_ScanType TEXT, " & _
-                                    "Video_AspectDisplayRatio TEXT, " & _
-                                    "Video_Language TEXT, " & _
-                                    "Video_LongLanguage TEXT, " & _
-                                    "PRIMARY KEY (TVEpID,StreamID) " & _
-                                    ");", _
-                                "CREATE TABLE IF NOT EXISTS TVAStreams(" & _
-                                    "TVEpID INTEGER NOT NULL, " & _
-                                    "StreamID INTEGER NOT NULL, " & _
-                                    "Audio_Language TEXT, " & _
-                                    "Audio_LongLanguage TEXT, " & _
-                                    "Audio_Codec TEXT, " & _
-                                    "Audio_Channel TEXT, " & _
-                                    "PRIMARY KEY (TVEpID,StreamID) " & _
-                                    ");", _
-                                "CREATE TABLE IF NOT EXISTS TVSubs(" & _
-                                    "TVEpID INTEGER NOT NULL, " & _
-                                    "StreamID INTEGER NOT NULL, " & _
-                                    "Subs_Language TEXT, " & _
-                                    "Subs_LongLanguage TEXT, " & _
-                                    "PRIMARY KEY (TVEpID,StreamID) " & _
-                                     ");", _
-                                 "CREATE TABLE IF NOT EXISTS TVSources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, LastScan TEXT NOT NULL DEFAULT '1900/01/01');", _
-                                 "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVSource ON TVSources (Path);" _
-                                    }
+<XmlRoot("VersionsFile")> _
+Public Class UpgradeList
+
+    #Region "Fields"
+
+    <XmlArray("Versions")> _
+    <XmlArrayItem("Version")> _
+    Public VersionList As New List(Of Versions)
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+
+    #End Region 'Methods
+
+End Class
+
+Public Class Versions
+    Implements IComparable(Of Versions)
+
+    #Region "Fields"
+
+    <XmlAttribute("Number")> _
+    Public Version As String
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
+        Return (Me.Version).CompareTo(other.Version)
+    End Function
+
+    #End Region 'Methods
+
+End Class
+
+<XmlRoot("Config")> _
+Public Class _LastVersion
+
+    #Region "Fields"
+
+    <XmlArrayItem("File")> _
+    Public Modules As New List(Of _Module)
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(_LastVersion))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+
+    #End Region 'Methods
+
+End Class
+
+Public Class _Module
+    Implements IComparable(Of Versions)
+
+    #Region "Fields"
+
+    Public Name As String
+    Public Platform As String
+    Public Version As String
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
+        Return (Me.Version).CompareTo(other.Version)
+    End Function
+
+    #End Region 'Methods
 
 End Class

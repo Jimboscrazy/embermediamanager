@@ -1,4 +1,6 @@
-﻿' ################################################################################
+﻿#Region "Header"
+
+' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -18,15 +20,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+#End Region 'Header
 
 Imports System.Windows.Forms
 
 Public Class dlgNotMatchVersion
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
+    #Region "Methods"
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -34,10 +34,17 @@ Public Class dlgNotMatchVersion
     End Sub
 
     Private Sub dlgNotMatchVersion_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
     End Sub
 
     Private Sub dlgNotMatchVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         RichTextBox1.Rtf = My.Resources.NotMatchVersion
     End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
+    #End Region 'Methods
+
 End Class

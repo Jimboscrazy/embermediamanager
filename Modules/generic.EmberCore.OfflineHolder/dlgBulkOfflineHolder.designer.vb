@@ -1,9 +1,30 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
 Partial Class dlgBulkOfflineHolder
     Inherits System.Windows.Forms.Form
 
+    #Region "Fields"
+
+    Friend  WithEvents cdColor As System.Windows.Forms.ColorDialog
+    Friend  WithEvents cdFont As System.Windows.Forms.FontDialog
+    Friend  WithEvents CLOSE_Button As System.Windows.Forms.Button
+    Friend  WithEvents Create_Button As System.Windows.Forms.Button
+    Friend  WithEvents dgvCSV As System.Windows.Forms.DataGridView
+    Friend  WithEvents Label2 As System.Windows.Forms.Label
+    Friend  WithEvents Label4 As System.Windows.Forms.Label
+    Friend  WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend  WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend  WithEvents tmrName As System.Windows.Forms.Timer
+    Friend  WithEvents tmrNameWait As System.Windows.Forms.Timer
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,13 +35,10 @@ Partial Class dlgBulkOfflineHolder
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkOfflineHolder))
@@ -151,18 +169,8 @@ Partial Class dlgBulkOfflineHolder
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvCSV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-
     End Sub
-    Friend WithEvents CLOSE_Button As System.Windows.Forms.Button
-    Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Create_Button As System.Windows.Forms.Button
-    Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
-    Friend WithEvents tmrName As System.Windows.Forms.Timer
-    Friend WithEvents cdFont As System.Windows.Forms.FontDialog
-    Friend WithEvents tmrNameWait As System.Windows.Forms.Timer
-    Friend WithEvents dgvCSV As System.Windows.Forms.DataGridView
+
+    #End Region 'Methods
 
 End Class

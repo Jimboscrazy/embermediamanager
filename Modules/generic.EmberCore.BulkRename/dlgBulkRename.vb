@@ -18,74 +18,58 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports System.IO
 
 Public Class dlgBulkRenamer
-    Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
+
+    #Region "Fields"
+
+    Friend  WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
+    Friend  WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
+
     Private bsMovies As New BindingSource
-    Private isLoaded As Boolean = False
-    Private FFRenamer As FileFolderRenamer
-    Private DoneRename As Boolean = False
     Private CancelRename As Boolean = False
+    Private DoneRename As Boolean = False
+    Private FFRenamer As FileFolderRenamer
+    Private isLoaded As Boolean = False
     Private run_once As Boolean = True
     Private _columnsize(9) As Integer
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
-        If DoneRename Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        End If
+    #End Region 'Fields
 
+    #Region "Delegates"
+
+    Delegate Sub MyFinish()
+
+    Delegate Sub MyStart()
+
+    #End Region 'Delegates
+
+    #Region "Methods"
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        If DoneRename Then
+            CancelRename = True
+        Else
+            DoCancel()
+        End If
+    End Sub
+
+    Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
+        pnlCancel.Visible = False
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub Simulate()
-        Try
-            With Me.dgvMoviesList
-                If Not run_once Then
-                    For Each c As DataGridViewColumn In .Columns
-                        _columnsize(c.Index) = c.Width
-                    Next
-                End If
-                .DataSource = Nothing
-                .Rows.Clear()
-                .AutoGenerateColumns = True
-                If run_once Then
-                    .Tag = False
-                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                End If
-                bsMovies.DataSource = FFRenamer.GetMovies
-                .DataSource = bsMovies
-                .Columns(5).Visible = False
-                .Columns(6).Visible = False
-                .Columns(7).Visible = False
-                .Columns(8).Visible = False
-                .Columns(9).Visible = False
-                If run_once Then
-                    For Each c As DataGridViewColumn In .Columns
-                        c.MinimumWidth = Convert.ToInt32(.Width / 5)
-                    Next
-                    .AutoResizeColumns()
-                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
-                    For Each c As DataGridViewColumn In .Columns
-                        c.MinimumWidth = 20
-                    Next
-                    run_once = False
-                Else
-                    .Tag = True
-                    For Each c As DataGridViewColumn In .Columns
-                        c.Width = _columnsize(c.Index)
-                    Next
-                    .Tag = False
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+    Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
+        FFRenamer.DoRename(AddressOf ShowProgressRename)
+    End Sub
+
+    Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
+        pbCompile.Value = e.ProgressPercentage
+        lblFile.Text = e.UserState.ToString
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -226,7 +210,6 @@ Public Class dlgBulkRenamer
         Else
             Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
         End If
-
     End Sub
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
@@ -246,227 +229,22 @@ Public Class dlgBulkRenamer
         End Try
     End Sub
 
-    Private Sub DoCancel()
-        Try
-            Me.bwLoadInfo.CancelAsync()
-            btnCancel.Visible = False
-            lblCompiling.Visible = False
-            pbCompile.Style = ProgressBarStyle.Marquee
-            pbCompile.MarqueeAnimationSpeed = 25
-            lblCanceling.Visible = True
-            lblFile.Visible = False
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub dlgBulkRename_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Me.bwLoadInfo.IsBusy Then
-            Me.DoCancel()
-            While Me.bwLoadInfo.IsBusy
-                Application.DoEvents()
-            End While
-        End If
-    End Sub
-
-    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-
-        Try
-            ' Show Cancel Panel
-            btnCancel.Visible = True
-            lblCompiling.Visible = True
-            pbCompile.Visible = True
-            pbCompile.Style = ProgressBarStyle.Continuous
-            lblCanceling.Visible = False
-            pnlCancel.Visible = True
-            Application.DoEvents()
-
-            'Start worker
-            Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadInfo.WorkerSupportsCancellation = True
-            Me.bwLoadInfo.WorkerReportsProgress = True
-            Me.bwLoadInfo.RunWorkerAsync()
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
-        Try
-
-            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.ForeColor = Color.Red
-                ElseIf Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
-                        e.CellStyle.ForeColor = Color.Purple
-                    Else
-                        e.CellStyle.ForeColor = Color.Blue
-                    End If
-                End If
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
-        Try
-            If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
-            tmrSimul.Enabled = True
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub tmrSimul_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSimul.Tick
-        Try
-            'Need to make simulate thread safe
-            tmrSimul.Enabled = False
-            If isLoaded Then
-                Dim tThread As Threading.Thread = New Threading.Thread(AddressOf DoProcess)
-                tThread.Start()
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub DoProcess()
-        Dim Sta As MyStart = New MyStart(AddressOf Start)
-        Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
-        Me.Invoke(Sta)
-        FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
-        Me.Invoke(Fin)
-    End Sub
-
-    Delegate Sub MyStart()
-    Private Sub Start()
-        Me.btnCancel.Visible = False
-        Me.lblFile.Visible = False
-        Me.pbCompile.Style = ProgressBarStyle.Marquee
-        Me.pnlCancel.Visible = True
-    End Sub
-
-    Delegate Sub MyFinish()
-    Private Sub Finish()
-        Simulate()
-        Me.pnlCancel.Visible = False
-    End Sub
-
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        If DoneRename Then
-            CancelRename = True
+    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
+        If chkRenamedOnly.Checked Then
+            bsMovies.Filter = "IsRenamed = True AND IsLocked = False"
         Else
-            DoCancel()
+            bsMovies.RemoveFilter()
         End If
     End Sub
 
-    Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+        If DoneRename Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
 
-        Me.SetUp()
-
-        Dim frmToolTip As New ToolTip()
-        FFRenamer = New FileFolderRenamer
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
-
-        'testing proposes
-        Dim s As String = String.Format(Master.eLang.GetString(12, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
-        lblLabel.Text = s.Replace(vbCrLf, "    ")
-        frmToolTip.SetToolTip(txtFolder, s)
-        frmToolTip.SetToolTip(txtFile, s)
-
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(1, "Bulk Renamer")
-        Me.Close_Button.Text = Master.eLang.GetString(2, "Close")
-        Me.Label2.Text = Master.eLang.GetString(3, "Rename movies and files")
-        Me.Label4.Text = Me.Text
-        Me.lblCompiling.Text = Master.eLang.GetString(4, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(5, "Canceling Compilation...")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
-        Me.Rename_Button.Text = Master.eLang.GetString(6, "Rename")
-        Me.tsmLockMovie.Text = Master.eLang.GetString(24, "Lock", True)
-        Me.tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock", True)
-        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All", True)
-        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All", True)
-        Me.lblFolderPattern.Text = Master.eLang.GetString(7, "Folder Pattern (for Single movie in Folder)")
-        Me.lblFilePattern.Text = Master.eLang.GetString(8, "File Pattern")
-        Me.Label1.Text = Master.eLang.GetString(9, "Folder Pattern (for Multiple movies in Folder)")
-        Me.chkRenamedOnly.Text = Master.eLang.GetString(10, "Display Only Movies That Will Be Renamed")
-    End Sub
-
-    Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
-        DoneRename = True
-        pnlCancel.Visible = True
-        lblCompiling.Text = Master.eLang.GetString(11, "Renaming...")
-        lblFile.Visible = True
-        pbCompile.Style = ProgressBarStyle.Continuous
-        pbCompile.Maximum = FFRenamer.GetMoviesCount
-        pbCompile.Value = 0
-        Application.DoEvents()
-        'Start worker
-        Me.bwDoRename = New System.ComponentModel.BackgroundWorker
-        Me.bwDoRename.WorkerSupportsCancellation = True
-        Me.bwDoRename.WorkerReportsProgress = True
-        Me.bwDoRename.RunWorkerAsync()
-    End Sub
-
-    Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean
-        Me.bwDoRename.ReportProgress(iProg, mov.ToString)
-        If CancelRename Then Return False
-        Return True
-    End Function
-
-    Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
-        FFRenamer.DoRename(AddressOf ShowProgressRename)
-    End Sub
-
-    Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
-        pbCompile.Value = e.ProgressPercentage
-        lblFile.Text = e.UserState.ToString
-    End Sub
-
-    Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
-        pnlCancel.Visible = False
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
-    End Sub
-
-    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
-        Try
-            If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
-            tmrSimul.Enabled = True
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderNotSingle.TextChanged
-        Try
-            If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
-            tmrSimul.Enabled = True
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
-        setLockAll(False)
-    End Sub
-
-    Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
-        setLockAll(True)
     End Sub
 
     Private Sub cmsMovieList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
@@ -501,15 +279,147 @@ Public Class dlgBulkRenamer
                 tsmLockMovie.Visible = True
             End If
         Next
-
     End Sub
 
-    Private Sub tsmLockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockMovie.Click
-        setLock(True)
+    Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
+        Try
+
+            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.ForeColor = Color.Red
+                ElseIf Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
+                        e.CellStyle.ForeColor = Color.Purple
+                    Else
+                        e.CellStyle.ForeColor = Color.Blue
+                    End If
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
-    Private Sub tsmUnlockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockMovie.Click
-        setLock(False)
+    Private Sub dgvMoviesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvMoviesList.ColumnWidthChanged
+        If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse Convert.ToBoolean(dgvMoviesList.Tag) Then Return
+        Dim sum As Integer = 0
+        For Each c As DataGridViewColumn In dgvMoviesList.Columns
+            If c.Visible Then sum += c.Width
+        Next
+        If sum < dgvMoviesList.Width Then
+            e.Column.Width = dgvMoviesList.Width - (sum - e.Column.Width)
+        End If
+    End Sub
+
+    Private Sub dlgBulkRename_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If Me.bwLoadInfo.IsBusy Then
+            Me.DoCancel()
+            While Me.bwLoadInfo.IsBusy
+                Application.DoEvents()
+            End While
+        End If
+    End Sub
+
+    Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+
+        Dim frmToolTip As New ToolTip()
+        FFRenamer = New FileFolderRenamer
+        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            Me.pnlTop.BackgroundImage = iBackground
+        End Using
+
+        'testing proposes
+        Dim s As String = String.Format(Master.eLang.GetString(12, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
+        lblLabel.Text = s.Replace(vbCrLf, "    ")
+        frmToolTip.SetToolTip(txtFolder, s)
+        frmToolTip.SetToolTip(txtFile, s)
+    End Sub
+
+    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+
+        Try
+            ' Show Cancel Panel
+            btnCancel.Visible = True
+            lblCompiling.Visible = True
+            pbCompile.Visible = True
+            pbCompile.Style = ProgressBarStyle.Continuous
+            lblCanceling.Visible = False
+            pnlCancel.Visible = True
+            Application.DoEvents()
+
+            'Start worker
+            Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadInfo.WorkerSupportsCancellation = True
+            Me.bwLoadInfo.WorkerReportsProgress = True
+            Me.bwLoadInfo.RunWorkerAsync()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub DoCancel()
+        Try
+            Me.bwLoadInfo.CancelAsync()
+            btnCancel.Visible = False
+            lblCompiling.Visible = False
+            pbCompile.Style = ProgressBarStyle.Marquee
+            pbCompile.MarqueeAnimationSpeed = 25
+            lblCanceling.Visible = True
+            lblFile.Visible = False
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub DoProcess()
+        Dim Sta As MyStart = New MyStart(AddressOf Start)
+        Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
+        Me.Invoke(Sta)
+        FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
+        Me.Invoke(Fin)
+    End Sub
+
+    Private Sub Finish()
+        Simulate()
+        Me.pnlCancel.Visible = False
+    End Sub
+
+    Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
+        DoneRename = True
+        pnlCancel.Visible = True
+        lblCompiling.Text = Master.eLang.GetString(11, "Renaming...")
+        lblFile.Visible = True
+        pbCompile.Style = ProgressBarStyle.Continuous
+        pbCompile.Maximum = FFRenamer.GetMoviesCount
+        pbCompile.Value = 0
+        Application.DoEvents()
+        'Start worker
+        Me.bwDoRename = New System.ComponentModel.BackgroundWorker
+        Me.bwDoRename.WorkerSupportsCancellation = True
+        Me.bwDoRename.WorkerReportsProgress = True
+        Me.bwDoRename.RunWorkerAsync()
+    End Sub
+
+    Sub setLock(ByVal lock As Boolean)
+        For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
+            FFRenamer.SetIsLocked(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
+            row.Cells(5).Value = lock
+        Next
+
+        If Me.chkRenamedOnly.Checked AndAlso lock Then
+            Me.dgvMoviesList.ClearSelection()
+            Me.dgvMoviesList.CurrentCell = Nothing
+        End If
+
+        dgvMoviesList.Refresh()
     End Sub
 
     Sub setLockAll(ByVal lock As Boolean)
@@ -530,36 +440,139 @@ Public Class dlgBulkRenamer
         End Try
     End Sub
 
-    Sub setLock(ByVal lock As Boolean)
-        For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
-            FFRenamer.SetIsLocked(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
-            row.Cells(5).Value = lock
-        Next
-
-        If Me.chkRenamedOnly.Checked AndAlso lock Then
-            Me.dgvMoviesList.ClearSelection()
-            Me.dgvMoviesList.CurrentCell = Nothing
-        End If
-
-        dgvMoviesList.Refresh()
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(1, "Bulk Renamer")
+        Me.Close_Button.Text = Master.eLang.GetString(2, "Close")
+        Me.Label2.Text = Master.eLang.GetString(3, "Rename movies and files")
+        Me.Label4.Text = Me.Text
+        Me.lblCompiling.Text = Master.eLang.GetString(4, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(5, "Canceling Compilation...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.Rename_Button.Text = Master.eLang.GetString(6, "Rename")
+        Me.tsmLockMovie.Text = Master.eLang.GetString(24, "Lock", True)
+        Me.tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock", True)
+        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All", True)
+        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All", True)
+        Me.lblFolderPattern.Text = Master.eLang.GetString(7, "Folder Pattern (for Single movie in Folder)")
+        Me.lblFilePattern.Text = Master.eLang.GetString(8, "File Pattern")
+        Me.Label1.Text = Master.eLang.GetString(9, "Folder Pattern (for Multiple movies in Folder)")
+        Me.chkRenamedOnly.Text = Master.eLang.GetString(10, "Display Only Movies That Will Be Renamed")
     End Sub
 
-    Private Sub dgvMoviesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvMoviesList.ColumnWidthChanged
-        If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse Convert.ToBoolean(dgvMoviesList.Tag) Then Return
-        Dim sum As Integer = 0
-        For Each c As DataGridViewColumn In dgvMoviesList.Columns
-            If c.Visible Then sum += c.Width
-        Next
-        If sum < dgvMoviesList.Width Then
-            e.Column.Width = dgvMoviesList.Width - (sum - e.Column.Width)
-        End If
+    Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean
+        Me.bwDoRename.ReportProgress(iProg, mov.ToString)
+        If CancelRename Then Return False
+        Return True
+    End Function
+
+    Private Sub Simulate()
+        Try
+            With Me.dgvMoviesList
+                If Not run_once Then
+                    For Each c As DataGridViewColumn In .Columns
+                        _columnsize(c.Index) = c.Width
+                    Next
+                End If
+                .DataSource = Nothing
+                .Rows.Clear()
+                .AutoGenerateColumns = True
+                If run_once Then
+                    .Tag = False
+                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                End If
+                bsMovies.DataSource = FFRenamer.GetMovies
+                .DataSource = bsMovies
+                .Columns(5).Visible = False
+                .Columns(6).Visible = False
+                .Columns(7).Visible = False
+                .Columns(8).Visible = False
+                .Columns(9).Visible = False
+                If run_once Then
+                    For Each c As DataGridViewColumn In .Columns
+                        c.MinimumWidth = Convert.ToInt32(.Width / 5)
+                    Next
+                    .AutoResizeColumns()
+                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+                    For Each c As DataGridViewColumn In .Columns
+                        c.MinimumWidth = 20
+                    Next
+                    run_once = False
+                Else
+                    .Tag = True
+                    For Each c As DataGridViewColumn In .Columns
+                        c.Width = _columnsize(c.Index)
+                    Next
+                    .Tag = False
+                End If
+            End With
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
-    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
-        If chkRenamedOnly.Checked Then
-            bsMovies.Filter = "IsRenamed = True AND IsLocked = False"
-        Else
-            bsMovies.RemoveFilter()
-        End If
+    Private Sub Start()
+        Me.btnCancel.Visible = False
+        Me.lblFile.Visible = False
+        Me.pbCompile.Style = ProgressBarStyle.Marquee
+        Me.pnlCancel.Visible = True
     End Sub
+
+    Private Sub tmrSimul_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSimul.Tick
+        Try
+            'Need to make simulate thread safe
+            tmrSimul.Enabled = False
+            If isLoaded Then
+                Dim tThread As Threading.Thread = New Threading.Thread(AddressOf DoProcess)
+                tThread.Start()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
+        setLockAll(True)
+    End Sub
+
+    Private Sub tsmLockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockMovie.Click
+        setLock(True)
+    End Sub
+
+    Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
+        setLockAll(False)
+    End Sub
+
+    Private Sub tsmUnlockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockMovie.Click
+        setLock(False)
+    End Sub
+
+    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
+        Try
+            If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
+            tmrSimul.Enabled = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderNotSingle.TextChanged
+        Try
+            If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
+            tmrSimul.Enabled = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
+        Try
+            If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
+            tmrSimul.Enabled = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    #End Region 'Methods
+
 End Class

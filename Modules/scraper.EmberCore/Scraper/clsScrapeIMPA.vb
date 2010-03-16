@@ -18,30 +18,32 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
-Imports System.Text.RegularExpressions
-Imports System.Text
 Imports System.IO.Compression
+Imports System.Text
+Imports System.Text.RegularExpressions
 
 Namespace IMPA
+
     Public Class Scraper
+
+        #Region "Fields"
+
         Public IMDBURL As String
-        Friend WithEvents bwIMPA As New System.ComponentModel.BackgroundWorker
+
+        Friend  WithEvents bwIMPA As New System.ComponentModel.BackgroundWorker
+
+        #End Region 'Fields
+
+        #Region "Events"
 
         Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
+
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-        Private Structure Arguments
-            Dim sType As String
-            Dim Parameter As String
-        End Structure
+        #End Region 'Events
 
-        Private Structure Results
-            Dim ResultList As List(Of MediaContainers.Image)
-            Dim Result As Object
-        End Structure
+        #Region "Methods"
 
         Public Sub Cancel()
             If Me.bwIMPA.IsBusy Then Me.bwIMPA.CancelAsync()
@@ -49,29 +51,7 @@ Namespace IMPA
             While Me.bwIMPA.IsBusy
                 Application.DoEvents()
             End While
-
         End Sub
-
-        Private Function GetLink(ByVal IMDBID As String) As String
-
-            Try
-
-                Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", IMDBID, "/posters"))
-                sHTTP = Nothing
-
-                Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "http://([^""]*)impawards.com/([^""]*)")
-                If mcIMPA.Count > 0 Then
-                    'just use the first one if more are found
-                    Return mcIMPA(0).Value.ToString
-                Else
-                    Return String.Empty
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                Return String.Empty
-            End Try
-        End Function
 
         Public Sub GetImagesAsync(ByVal sURL As String)
             Try
@@ -143,5 +123,55 @@ Namespace IMPA
             End If
         End Sub
 
+        Private Function GetLink(ByVal IMDBID As String) As String
+            Try
+
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", IMDBID, "/posters"))
+                sHTTP = Nothing
+
+                Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "http://([^""]*)impawards.com/([^""]*)")
+                If mcIMPA.Count > 0 Then
+                    'just use the first one if more are found
+                    Return mcIMPA(0).Value.ToString
+                Else
+                    Return String.Empty
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Return String.Empty
+            End Try
+        End Function
+
+        #End Region 'Methods
+
+        #Region "Nested Types"
+
+        Private Structure Arguments
+
+            #Region "Fields"
+
+            Dim Parameter As String
+            Dim sType As String
+
+            #End Region 'Fields
+
+        End Structure
+
+        Private Structure Results
+
+            #Region "Fields"
+
+            Dim Result As Object
+            Dim ResultList As List(Of MediaContainers.Image)
+
+            #End Region 'Fields
+
+        End Structure
+
+        #End Region 'Nested Types
+
     End Class
+
 End Namespace
+

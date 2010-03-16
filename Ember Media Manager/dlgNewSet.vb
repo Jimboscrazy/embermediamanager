@@ -18,9 +18,37 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Public Class dlgNewSet
+
+    #Region "Methods"
+
+    Public Overloads Function ShowDialog(Optional ByVal SetName As String = "") As String
+        If Not String.IsNullOrEmpty(SetName) Then
+            txtSetName.Text = SetName
+            Me.Text = Master.eLang.GetString(207, "Edit Set")
+        Else
+            Me.Text = Master.eLang.GetString(208, "Add New Set")
+        End If
+
+        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Return txtSetName.Text
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub dlgNewSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub dlgNewSet_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Dim tAL As New List(Of String)
@@ -36,38 +64,12 @@ Public Class dlgNewSet
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
-
-    Public Overloads Function ShowDialog(Optional ByVal SetName As String = "") As String
-
-        If Not String.IsNullOrEmpty(SetName) Then
-            txtSetName.Text = SetName
-            Me.Text = Master.eLang.GetString(207, "Edit Set")
-        Else
-            Me.Text = Master.eLang.GetString(208, "Add New Set")
-        End If
-
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return txtSetName.Text
-        Else
-            Return String.Empty
-        End If
-    End Function
-
-    Private Sub dlgNewSet_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-    End Sub
-
-    Private Sub dlgNewSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
-    End Sub
-
     Private Sub SetUp()
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label1.Text = Master.eLang.GetString(206, "Set Name:")
     End Sub
+
+    #End Region 'Methods
+
 End Class

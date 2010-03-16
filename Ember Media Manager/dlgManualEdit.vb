@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml
@@ -27,34 +25,33 @@ Imports System.Xml.Schema
 
 Public Class dlgManualEdit
 
-#Region "Declarations"
+    #Region "Fields"
 
-
-    Private currFile As String
     Private Changed As Boolean = False
+    Private currFile As String
+    Private DtdDt As DataTable
+    Private ErrStr As String
+    Private IsValid As Boolean
+    Private lineInf As IXmlLineInfo
     Private ReturnOK As Boolean = False
     Private TagStack As New Stack()
-    Private DtdDt As DataTable
 
-    Private IsValid As Boolean
-    Private ErrStr As String
-    Private lineInf As IXmlLineInfo
+    #End Region 'Fields
 
-#End Region
+    #Region "Methods"
 
+    Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
+        Me.currFile = nfoPath
 
-#Region "Functions/Routines"
-
+        Return MyBase.ShowDialog()
+    End Function
 
     Private Function ConstructTag(ByVal ElementNameParam As String) As String
-
-
         Dim ElementName As String
         ElementName = ElementNameParam
         Dim myRow As DataRow
 
         Try
-
 
             Dim currRows() As DataRow = DtdDt.Select(Nothing, Nothing, DataViewRowState.CurrentRows)
 
@@ -75,18 +72,53 @@ Public Class dlgManualEdit
 
             ElementName += ">"
 
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-
-
         Return ElementName
     End Function
 
-    Private Sub IndentFormat()
+    Private Sub Editor_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Activated
+        RichTextBox1.Focus()
+    End Sub
 
+    Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+        If Changed = True Then
+            Dim DResult As MsgBoxResult
+            DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
+            If DResult = MsgBoxResult.Yes Then
+
+                RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
+                Me.DialogResult = Windows.Forms.DialogResult.OK
+
+            ElseIf DResult = MsgBoxResult.Cancel Then
+
+                e.Cancel = True
+
+            End If
+
+        Else
+
+            If ReturnOK Then Me.DialogResult = Windows.Forms.DialogResult.OK
+
+        End If
+    End Sub
+
+    Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+
+        If File.Exists(currFile) Then
+            RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+        End If
+        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
+
+        Changed = False
+
+        Me.Activate()
+    End Sub
+
+    Private Sub IndentFormat()
         Try
             Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
@@ -109,8 +141,6 @@ Public Class dlgManualEdit
             AllData = AllData.Replace(vbCr, String.Empty)
             AllData = AllData.Replace(vbTab, String.Empty).Trim
 
-
-
             'Looking for Processing Instruction and DTD declaration
 
             For i = 0 To 3 'We assume only first 4 lines have Processing Instruction and DTD declaration
@@ -130,14 +160,9 @@ Public Class dlgManualEdit
 
                 End If
 
-
-
             Next
 
             Dim LevelX, j As Integer, TabC As String
-
-
-
 
             Do
                 TagS = String.Empty
@@ -218,17 +243,11 @@ Public Class dlgManualEdit
 
                 End If
 
-
                 If AllData.Length < 2 Then
                     Exit Do
                 End If
 
             Loop While True
-
-
-
-
-
 
             StrR.Close()
             StrW.Close()
@@ -242,14 +261,54 @@ Public Class dlgManualEdit
         End Try
 
         Me.Cursor = System.Windows.Forms.Cursors.Default
-
     End Sub
 
+    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
+        Dim SelItem As String
+        Dim linN, colN As Integer
 
+        SelItem = ListBox1.SelectedItem.ToString
+
+        If Not String.IsNullOrEmpty(SelItem) Then
+
+            linN = CType(Regex.Replace(SelItem, "([0-9]+): ([0-9]+)(.*)", "$1"), Integer)
+            colN = CType(Regex.Replace(SelItem, "([0-9]+): ([0-9]+)(.*)", "$2"), Integer)
+
+            Dim mc As MatchCollection
+            Dim i As Integer = 0
+
+            mc = Regex.Matches(RichTextBox1.Text, "\n", RegexOptions.Singleline)
+
+            Try
+                RichTextBox1.Select(mc(linN - 2).Index + colN, 2)
+                RichTextBox1.SelectionColor = Color.Blue
+                RichTextBox1.Focus()
+
+            Catch ex As Exception
+                RichTextBox1.Focus()
+            End Try
+        End If
+    End Sub
+
+    Private Sub mnuExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub mnuFormat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFormat.Click
+        IndentFormat()
+    End Sub
+
+    Private Sub mnuParse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuParse.Click
+        ParseFile()
+    End Sub
+
+    Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
+        RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
+        ReturnOK = True
+        Changed = False
+    End Sub
 
     Private Sub ParseFile()
-
-
         If currFile Is Nothing Then
             Exit Sub
         End If
@@ -272,13 +331,11 @@ Public Class dlgManualEdit
 
         IsValid = True
 
-
         Do
             Try
                 If xmlV.Read() Then
                     lineInf = CType(xmlV, IXmlLineInfo)
                 End If
-
 
             Catch exx As Exception
 
@@ -303,7 +360,6 @@ Public Class dlgManualEdit
 
             End Try
 
-
         Loop While Not xmlP.EOF
 
         xmlV.Close()
@@ -311,47 +367,15 @@ Public Class dlgManualEdit
 
         Me.Cursor = System.Windows.Forms.Cursors.Default
 
-
         If IsValid = False Then
             MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(194, "Not Valid"))
         Else
             MsgBox(Master.eLang.GetString(193, "File is valid."), MsgBoxStyle.Information, Master.eLang.GetString(195, "Valid"))
         End If
-
-
-
     End Sub
 
-    Private Sub WriteErrorLog(ByVal sender As Object, ByVal args As ValidationEventArgs)
-
-        IsValid = False
-        ErrStr = lineInf.LineNumber.ToString + ": " + lineInf.LinePosition.ToString + " " + args.Message
-        ListBox1.Items.Add(ErrStr)
-
-    End Sub
-
-#End Region
-
-#Region " Event handlers..."
-
-    Private Sub mnuExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExit.Click
-
-        Me.Close()
-
-    End Sub
-
-
-    Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
-
-        If File.Exists(currFile) Then
-            RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
-        End If
-        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
-
-        Changed = False
-
-        Me.Activate()
+    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RichTextBox1.TextChanged
+        Changed = True
     End Sub
 
     Private Sub SetUp()
@@ -363,91 +387,12 @@ Public Class dlgManualEdit
         Me.mnuExit.Text = Master.eLang.GetString(2, "E&xit")
     End Sub
 
-    Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
-        RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
-        ReturnOK = True
-        Changed = False
+    Private Sub WriteErrorLog(ByVal sender As Object, ByVal args As ValidationEventArgs)
+        IsValid = False
+        ErrStr = lineInf.LineNumber.ToString + ": " + lineInf.LinePosition.ToString + " " + args.Message
+        ListBox1.Items.Add(ErrStr)
     End Sub
 
-    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RichTextBox1.TextChanged
-        Changed = True
-    End Sub
-
-    Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-        If Changed = True Then
-            Dim DResult As MsgBoxResult
-            DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
-            If DResult = MsgBoxResult.Yes Then
-
-                RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
-                Me.DialogResult = Windows.Forms.DialogResult.OK
-
-            ElseIf DResult = MsgBoxResult.Cancel Then
-
-                e.Cancel = True
-
-            End If
-
-        Else
-
-            If ReturnOK Then Me.DialogResult = Windows.Forms.DialogResult.OK
-
-
-        End If
-
-
-    End Sub
-
-    Private Sub mnuFormat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFormat.Click
-        IndentFormat()
-    End Sub
-
-    Private Sub mnuParse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuParse.Click
-        ParseFile()
-    End Sub
-
-
-    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
-
-        Dim SelItem As String
-        Dim linN, colN As Integer
-
-        SelItem = ListBox1.SelectedItem.ToString
-
-        If Not String.IsNullOrEmpty(SelItem) Then
-
-            linN = CType(Regex.Replace(SelItem, "([0-9]+): ([0-9]+)(.*)", "$1"), Integer)
-            colN = CType(Regex.Replace(SelItem, "([0-9]+): ([0-9]+)(.*)", "$2"), Integer)
-
-
-            Dim mc As MatchCollection
-            Dim i As Integer = 0
-
-            mc = Regex.Matches(RichTextBox1.Text, "\n", RegexOptions.Singleline)
-
-            Try
-                RichTextBox1.Select(mc(linN - 2).Index + colN, 2)
-                RichTextBox1.SelectionColor = Color.Blue
-                RichTextBox1.Focus()
-
-            Catch ex As Exception
-                RichTextBox1.Focus()
-            End Try
-        End If
-
-
-    End Sub
-
-    Private Sub Editor_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        RichTextBox1.Focus()
-    End Sub
-
-    Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
-
-        Me.currFile = nfoPath
-
-        Return MyBase.ShowDialog()
-    End Function
-#End Region
+    #End Region 'Methods
 
 End Class

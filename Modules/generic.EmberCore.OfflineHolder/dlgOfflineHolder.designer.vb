@@ -1,9 +1,57 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
 Partial Class dlgOfflineHolder
     Inherits System.Windows.Forms.Form
 
+    #Region "Fields"
+
+    Friend  WithEvents btnBackgroundColor As System.Windows.Forms.Button
+    Friend  WithEvents btnFont As System.Windows.Forms.Button
+    Friend  WithEvents btnTextColor As System.Windows.Forms.Button
+    Friend  WithEvents Bulk_Button As System.Windows.Forms.Button
+    Friend  WithEvents cbFormat As System.Windows.Forms.ComboBox
+    Friend  WithEvents cbSources As System.Windows.Forms.ComboBox
+    Friend  WithEvents cdColor As System.Windows.Forms.ColorDialog
+    Friend  WithEvents cdFont As System.Windows.Forms.FontDialog
+    Friend  WithEvents chkBackground As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkOverlay As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkUseFanart As System.Windows.Forms.CheckBox
+    Friend  WithEvents CLOSE_Button As System.Windows.Forms.Button
+    Friend  WithEvents colCondition As System.Windows.Forms.ColumnHeader
+    Friend  WithEvents colStatus As System.Windows.Forms.ColumnHeader
+    Friend  WithEvents Create_Button As System.Windows.Forms.Button
+    Friend  WithEvents GetIMDB_Button As System.Windows.Forms.Button
+    Friend  WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend  WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend  WithEvents Label1 As System.Windows.Forms.Label
+    Friend  WithEvents Label2 As System.Windows.Forms.Label
+    Friend  WithEvents Label3 As System.Windows.Forms.Label
+    Friend  WithEvents Label4 As System.Windows.Forms.Label
+    Friend  WithEvents Label5 As System.Windows.Forms.Label
+    Friend  WithEvents Label6 As System.Windows.Forms.Label
+    Friend  WithEvents lblMovie As System.Windows.Forms.Label
+    Friend  WithEvents lblSources As System.Windows.Forms.Label
+    Friend  WithEvents lblTagline As System.Windows.Forms.Label
+    Friend  WithEvents lvStatus As System.Windows.Forms.ListView
+    Friend  WithEvents pbPreview As System.Windows.Forms.PictureBox
+    Friend  WithEvents pbProgress As System.Windows.Forms.ProgressBar
+    Friend  WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend  WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend  WithEvents tbTagLine As System.Windows.Forms.TrackBar
+    Friend  WithEvents tmrName As System.Windows.Forms.Timer
+    Friend  WithEvents tmrNameWait As System.Windows.Forms.Timer
+    Friend  WithEvents txtMovieName As System.Windows.Forms.TextBox
+    Friend  WithEvents txtTagline As System.Windows.Forms.TextBox
+    Friend  WithEvents txtTop As System.Windows.Forms.TextBox
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,13 +62,10 @@ Partial Class dlgOfflineHolder
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOfflineHolder))
@@ -488,45 +533,8 @@ Partial Class dlgOfflineHolder
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
-
     End Sub
-    Friend WithEvents CLOSE_Button As System.Windows.Forms.Button
-    Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents cbSources As System.Windows.Forms.ComboBox
-    Friend WithEvents lblSources As System.Windows.Forms.Label
-    Friend WithEvents txtMovieName As System.Windows.Forms.TextBox
-    Friend WithEvents lblMovie As System.Windows.Forms.Label
-    Friend WithEvents GetIMDB_Button As System.Windows.Forms.Button
-    Friend WithEvents Bulk_Button As System.Windows.Forms.Button
-    Friend WithEvents pbProgress As System.Windows.Forms.ProgressBar
-    Friend WithEvents lvStatus As System.Windows.Forms.ListView
-    Friend WithEvents colCondition As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colStatus As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Create_Button As System.Windows.Forms.Button
-    Friend WithEvents chkUseFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents lblTagline As System.Windows.Forms.Label
-    Friend WithEvents txtTagline As System.Windows.Forms.TextBox
-    Friend WithEvents btnTextColor As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
-    Friend WithEvents pbPreview As System.Windows.Forms.PictureBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents tmrName As System.Windows.Forms.Timer
-    Friend WithEvents cdFont As System.Windows.Forms.FontDialog
-    Friend WithEvents btnFont As System.Windows.Forms.Button
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtTop As System.Windows.Forms.TextBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents tbTagLine As System.Windows.Forms.TrackBar
-    Friend WithEvents chkOverlay As System.Windows.Forms.CheckBox
-    Friend WithEvents btnBackgroundColor As System.Windows.Forms.Button
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents chkBackground As System.Windows.Forms.CheckBox
-    Friend WithEvents cbFormat As System.Windows.Forms.ComboBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents tmrNameWait As System.Windows.Forms.Timer
+
+    #End Region 'Methods
 
 End Class

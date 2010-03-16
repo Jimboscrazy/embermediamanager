@@ -18,12 +18,18 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text
 Imports System.IO
+Imports System.Text
 
 Public Class dlgErrorViewer
 
+    #Region "Fields"
+
     Private sBuilder As StringBuilder
+
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Public Overloads Sub Show(ByVal owner As System.Windows.Forms.Form)
         If Me.Visible Then
@@ -39,21 +45,28 @@ Public Class dlgErrorViewer
         Me.BuildErrorLog()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.Close()
-    End Sub
+    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
+        Select Case Me.btnCopy.Tag.ToString
+            Case "p"
+                Dim bReturn As String = String.Empty
+                Using wc As New WebClient
+                    System.Net.ServicePointManager.Expect100Continue = False
+                    Dim nvColl As New Specialized.NameValueCollection
+                    nvColl.Add("paste_code", sBuilder.ToString)
+                    nvColl.Add("paste_subdomain", "embermm")
+                    wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
+                    bReturn = System.Text.Encoding.ASCII.GetString(wc.UploadValues("http://pastebin.com/api_public.php", "POST", nvColl))
+                    nvColl = Nothing
+                End Using
 
-    Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-        Me.BuildErrorLog()
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(808, "Error Log Viewer")
-        Me.lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
-        Me.llblURL.Text = Master.eLang.GetString(810, "http://www.embermm.com/projects/embermm/issues")
-        Me.lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+                If Not String.IsNullOrEmpty(bReturn) OrElse Not bReturn.ToLower.Contains("error") Then
+                    Me.txtPastebinURL.Text = bReturn
+                Else
+                    Me.txtPastebinURL.Text = Master.eLang.GetString(807, "An error occurred when attempting to send data to Pastebin.com")
+                End If
+            Case Else
+                Clipboard.SetText(Me.sBuilder.ToString)
+        End Select
     End Sub
 
     Private Sub BuildErrorLog()
@@ -102,28 +115,9 @@ Public Class dlgErrorViewer
         Me.btnCopy.Enabled = True
     End Sub
 
-    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
-        Select Case Me.btnCopy.Tag.ToString
-            Case "p"
-                Dim bReturn As String = String.Empty
-                Using wc As New WebClient
-                    System.Net.ServicePointManager.Expect100Continue = False
-                    Dim nvColl As New Specialized.NameValueCollection
-                    nvColl.Add("paste_code", sBuilder.ToString)
-                    nvColl.Add("paste_subdomain", "embermm")
-                    wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-                    bReturn = System.Text.Encoding.ASCII.GetString(wc.UploadValues("http://pastebin.com/api_public.php", "POST", nvColl))
-                    nvColl = Nothing
-                End Using
-
-                If Not String.IsNullOrEmpty(bReturn) OrElse Not bReturn.ToLower.Contains("error") Then
-                    Me.txtPastebinURL.Text = bReturn
-                Else
-                    Me.txtPastebinURL.Text = Master.eLang.GetString(807, "An error occurred when attempting to send data to Pastebin.com")
-                End If
-            Case Else
-                Clipboard.SetText(Me.sBuilder.ToString)
-        End Select
+    Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+        Me.BuildErrorLog()
     End Sub
 
     Private Sub llblURL_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblURL.LinkClicked
@@ -137,4 +131,19 @@ Public Class dlgErrorViewer
             End Using
         End If
     End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.Close()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(808, "Error Log Viewer")
+        Me.lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
+        Me.llblURL.Text = Master.eLang.GetString(810, "http://www.embermm.com/projects/embermm/issues")
+        Me.lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+    End Sub
+
+    #End Region 'Methods
+
 End Class

@@ -22,42 +22,37 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 
 Public Class Containers
-    Public Class TVLanguage
-        Private _longlang As String
-        Private _shortlang As String
 
-        Public Property LongLang() As String
-            Get
-                Return Me._longlang
-            End Get
-            Set(ByVal value As String)
-                Me._longlang = value
-            End Set
-        End Property
+    #Region "Nested Types"
 
-        Public Property ShortLang() As String
-            Get
-                Return Me._shortlang
-            End Get
-            Set(ByVal value As String)
-                Me._shortlang = value
-            End Set
-        End Property
+    Public Class ImgResult
+
+        #Region "Fields"
+
+        Dim _fanart As New MediaContainers.Fanart
+        Dim _imagepath As String
+        Dim _posters As New List(Of String)
+
+        #End Region 'Fields
+
+        #Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        Public Sub Clear()
-            Me._longlang = String.Empty
-            Me._shortlang = String.Empty
-        End Sub
-    End Class
+        #End Region 'Constructors
 
-    Public Class ImgResult
-        Dim _imagepath As String
-        Dim _posters As New List(Of String)
-        Dim _fanart As New MediaContainers.Fanart
+        #Region "Properties"
+
+        Public Property Fanart() As MediaContainers.Fanart
+            Get
+                Return _fanart
+            End Get
+            Set(ByVal value As MediaContainers.Fanart)
+                _fanart = value
+            End Set
+        End Property
 
         Public Property ImagePath() As String
             Get
@@ -77,62 +72,44 @@ Public Class Containers
             End Set
         End Property
 
-        Public Property Fanart() As MediaContainers.Fanart
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As MediaContainers.Fanart)
-                _fanart = value
-            End Set
-        End Property
+        #End Region 'Properties
 
-        Public Sub New()
-            Me.Clear()
-        End Sub
+        #Region "Methods"
 
         Public Sub Clear()
             _imagepath = String.Empty
             _posters.Clear()
             _fanart.Clear()
         End Sub
+
+        #End Region 'Methods
+
     End Class
 
     Public Class SettingsPanel
-        Dim _name As String
-        Dim _text As String
-        Dim _prefix As String
+
+        #Region "Fields"
+
         Dim _imageindex As Integer
-        Dim _type As String
-        Dim _panel As Panel
+        Dim _name As String
         Dim _order As Integer
+        Dim _panel As Panel
         Dim _parent As String
+        Dim _prefix As String
+        Dim _text As String
+        Dim _type As String
 
-        Public Property Name() As String
-            Get
-                Return Me._name
-            End Get
-            Set(ByVal value As String)
-                Me._name = value
-            End Set
-        End Property
+        #End Region 'Fields
 
-        Public Property Text() As String
-            Get
-                Return Me._text
-            End Get
-            Set(ByVal value As String)
-                Me._text = value
-            End Set
-        End Property
+        #Region "Constructors"
 
-        Public Property Prefix() As String
-            Get
-                Return Me._prefix
-            End Get
-            Set(ByVal value As String)
-                Me._prefix = value
-            End Set
-        End Property
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
 
         Public Property ImageIndex() As Integer
             Get
@@ -143,22 +120,12 @@ Public Class Containers
             End Set
         End Property
 
-        Public Property Type() As String
+        Public Property Name() As String
             Get
-                Return Me._type
+                Return Me._name
             End Get
             Set(ByVal value As String)
-                Me._type = value
-            End Set
-        End Property
-
-        <System.Xml.Serialization.XmlIgnore()> _
-        Public Property Panel() As Panel
-            Get
-                Return Me._panel
-            End Get
-            Set(ByVal value As Panel)
-                Me._panel = value
+                Me._name = value
             End Set
         End Property
 
@@ -171,6 +138,16 @@ Public Class Containers
             End Set
         End Property
 
+        <System.Xml.Serialization.XmlIgnore> _
+        Public Property Panel() As Panel
+            Get
+                Return Me._panel
+            End Get
+            Set(ByVal value As Panel)
+                Me._panel = value
+            End Set
+        End Property
+
         Public Property Parent() As String
             Get
                 Return Me._parent
@@ -180,9 +157,36 @@ Public Class Containers
             End Set
         End Property
 
-        Public Sub New()
-            Me.Clear()
-        End Sub
+        Public Property Prefix() As String
+            Get
+                Return Me._prefix
+            End Get
+            Set(ByVal value As String)
+                Me._prefix = value
+            End Set
+        End Property
+
+        Public Property Text() As String
+            Get
+                Return Me._text
+            End Get
+            Set(ByVal value As String)
+                Me._text = value
+            End Set
+        End Property
+
+        Public Property Type() As String
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As String)
+                Me._type = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
 
         Public Sub Clear()
             Me._name = String.Empty
@@ -194,17 +198,68 @@ Public Class Containers
             Me._order = 0
             Me._parent = String.Empty
         End Sub
+
+        #End Region 'Methods
+
     End Class
+
+    Public Class TVLanguage
+
+        #Region "Fields"
+
+        Private _longlang As String
+        Private _shortlang As String
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
+
+        Public Property LongLang() As String
+            Get
+                Return Me._longlang
+            End Get
+            Set(ByVal value As String)
+                Me._longlang = value
+            End Set
+        End Property
+
+        Public Property ShortLang() As String
+            Get
+                Return Me._shortlang
+            End Get
+            Set(ByVal value As String)
+                Me._shortlang = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
+
+        Public Sub Clear()
+            Me._longlang = String.Empty
+            Me._shortlang = String.Empty
+        End Sub
+
+        #End Region 'Methods
+
+    End Class
+
+    #End Region 'Nested Types
+
 End Class
 
 Public Class Enums
-    Public Enum PosterSize As Integer
-        Xlrg = 0
-        Lrg = 1
-        Mid = 2
-        Small = 3
-        Wide = 4
-    End Enum
+
+    #Region "Enumerations"
 
     Public Enum FanartSize As Integer
         Lrg = 0
@@ -212,35 +267,47 @@ Public Class Enums
         Small = 2
     End Enum
 
-    Public Enum ShowBannerType As Integer
-        None = 0
-        Blank = 1
-        Graphical = 2
-        Text = 3
-    End Enum
-
-    Public Enum SeasonPosterType As Integer
-        None = 0
-        Poster = 1
-        Wide = 2
-    End Enum
-
-    Public Enum TrailerPages As Integer
-        AllHTPC = 0
-        TMDB = 1
-        IMDB = 2
-    End Enum
-
-    Public Enum TrailerQuality As Integer
-        HD1080p = 0
-        HD720p = 1
-        Standard = 99
-    End Enum
-
     Public Enum ImageType As Integer
         Posters = 0
         Fanart = 1
         ASPoster = 2
+    End Enum
+
+    Public Enum ModType As Integer
+        NFO = 0
+        Poster = 1
+        Fanart = 2
+        Extra = 3
+        Trailer = 4
+        Meta = 5
+        All = 6
+        DoSearch = 7
+    End Enum
+
+    Public Enum ModuleEventType As Integer
+        Generic = 0
+        Notification = 1
+        MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
+        RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
+        RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
+    End Enum
+
+    Public Enum MovieScraperEventType As Integer
+        NFOItem = 1
+        PosterItem = 2
+        FanartItem = 3
+        TrailerItem = 4
+        ThumbsItem = 5
+        SortTitle = 6
+        ListTitle = 7
+    End Enum
+
+    Public Enum PosterSize As Integer
+        Xlrg = 0
+        Lrg = 1
+        Mid = 2
+        Small = 3
+        Wide = 4
     End Enum
 
     Public Enum ScrapeType As Integer
@@ -259,23 +326,40 @@ Public Class Enums
         CopyBD = 13
     End Enum
 
-    Public Enum ModType As Integer
-        NFO = 0
+    Public Enum SeasonPosterType As Integer
+        None = 0
         Poster = 1
-        Fanart = 2
-        Extra = 3
-        Trailer = 4
-        Meta = 5
-        All = 6
-        DoSearch = 7
+        Wide = 2
     End Enum
 
-    Public Enum TVUpdateTime As Integer
-        Week = 0
-        BiWeekly = 1
-        Month = 2
-        Always = 3
-        Never = 4
+    Public Enum ShowBannerType As Integer
+        None = 0
+        Blank = 1
+        Graphical = 2
+        Text = 3
+    End Enum
+
+    Public Enum TrailerPages As Integer
+        AllHTPC = 0
+        TMDB = 1
+        IMDB = 2
+    End Enum
+
+    Public Enum TrailerQuality As Integer
+        HD1080p = 0
+        HD720p = 1
+        Standard = 99
+    End Enum
+
+    Public Enum TVImageType As Integer
+        All = 0
+        ShowPoster = 1
+        ShowFanart = 2
+        SeasonPoster = 3
+        SeasonFanart = 4
+        AllSeasonPoster = 5
+        EpisodePoster = 6
+        EpisodeFanart = 7
     End Enum
 
     Public Enum TVScraperEventType As Integer
@@ -292,187 +376,100 @@ Public Class Enums
         Cancelled = 10
     End Enum
 
-    Public Enum MovieScraperEventType As Integer
-        NFOItem = 1
-        PosterItem = 2
-        FanartItem = 3
-        TrailerItem = 4
-        ThumbsItem = 5
-        SortTitle = 6
-        ListTitle = 7
+    Public Enum TVUpdateTime As Integer
+        Week = 0
+        BiWeekly = 1
+        Month = 2
+        Always = 3
+        Never = 4
     End Enum
 
-    Public Enum ModuleEventType As Integer
-        Generic = 0
-        Notification = 1
-        MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
-        RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
-        RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
-    End Enum
-
-    Public Enum TVImageType As Integer
-        All = 0
-        ShowPoster = 1
-        ShowFanart = 2
-        SeasonPoster = 3
-        SeasonFanart = 4
-        AllSeasonPoster = 5
-        EpisodePoster = 6
-        EpisodeFanart = 7
-    End Enum
-End Class
-
-Public Class Structures
-    Public Structure DBMovie
-        Dim ID As Long
-        Dim DateAdd As Long
-        Dim ListTitle As String
-        Dim Movie As MediaContainers.Movie
-        Dim IsNew As Boolean
-        Dim IsMark As Boolean
-        Dim IsLock As Boolean
-        Dim NeedsSave As Boolean
-        Dim UseFolder As Boolean
-        Dim Filename As String
-        Dim isSingle As Boolean
-        Dim PosterPath As String
-        Dim FanartPath As String
-        Dim NfoPath As String
-        Dim TrailerPath As String
-        Dim SubPath As String
-        Dim ExtraPath As String
-        Dim Source As String
-        Dim OutOfTolerance As Boolean
-        Dim ClearExtras As Boolean
-        Dim FileSource As String
-    End Structure
-
-    Public Structure DBTV
-        Dim ShowID As Long
-        Dim EpID As Long
-        Dim TVShow As MediaContainers.TVShow
-        Dim TVEp As MediaContainers.EpisodeDetails
-        Dim IsNewShow As Boolean
-        Dim IsMarkShow As Boolean
-        Dim IsLockShow As Boolean
-        Dim IsNewEp As Boolean
-        Dim IsMarkEp As Boolean
-        Dim IsLockEp As Boolean
-        Dim ShowNeedsSave As Boolean
-        Dim EpNeedsSave As Boolean
-        Dim Filename As String
-        Dim ShowPosterPath As String
-        Dim ShowFanartPath As String
-        Dim ShowNfoPath As String
-        Dim EpPosterPath As String
-        Dim EpFanartPath As String
-        Dim EpNfoPath As String
-        Dim Source As String
-        Dim ShowPath As String
-        Dim SeasonPosterPath As String
-        Dim SeasonFanartPath As String
-        Dim IsNewSeason As Boolean
-        Dim IsMarkSeason As Boolean
-        Dim IsLockSeason As Boolean
-        Dim ShowLanguage As String
-        Dim UseDVDOrder As Boolean
-    End Structure
-
-    Public Structure Scans
-        Dim Movies As Boolean
-        Dim TV As Boolean
-    End Structure
-
-    Public Structure SettingsResult
-        Dim NeedsUpdate As Boolean
-        Dim NeedsRefresh As Boolean
-        Dim DidCancel As Boolean
-    End Structure
-
-    Public Structure ScrapeOptions
-        Dim bTitle As Boolean
-        Dim bYear As Boolean
-        Dim bMPAA As Boolean
-        Dim bCert As Boolean
-        Dim bRelease As Boolean
-        Dim bRating As Boolean
-        Dim bTrailer As Boolean
-        Dim bVotes As Boolean
-        Dim bCast As Boolean
-        Dim bTagline As Boolean
-        Dim bDirector As Boolean
-        Dim bGenre As Boolean
-        Dim bOutline As Boolean
-        Dim bPlot As Boolean
-        Dim bRuntime As Boolean
-        Dim bStudio As Boolean
-        Dim bWriters As Boolean
-        Dim bProducers As Boolean
-        Dim bMusicBy As Boolean
-        Dim bOtherCrew As Boolean
-        Dim bTop250 As Boolean
-        ' Why this 2 arent here?
-        Dim bFullCrew As Boolean
-        Dim bFullCast As Boolean
-    End Structure
-
-
-    Public Structure ScrapeModifier
-        Dim NFO As Boolean
-        Dim Poster As Boolean
-        Dim Fanart As Boolean
-        Dim Extra As Boolean
-        Dim Trailer As Boolean
-        Dim Meta As Boolean
-        Dim DoSearch As Boolean
-    End Structure
-
-    Public Structure CustomUpdaterStruct
-        Dim Canceled As Boolean
-        Dim ScrapeType As Enums.ScrapeType
-        Dim Options As ScrapeOptions
-    End Structure
-
-    Public Structure TVScrapeOptions
-        Dim bShowTitle As Boolean
-        Dim bShowEpisodeGuide As Boolean
-        Dim bShowGenre As Boolean
-        Dim bShowMPAA As Boolean
-        Dim bShowPlot As Boolean
-        Dim bShowPremiered As Boolean
-        Dim bShowRating As Boolean
-        Dim bShowStudio As Boolean
-        Dim bShowActors As Boolean
-        Dim bEpTitle As Boolean
-        Dim bEpSeason As Boolean
-        Dim bEpEpisode As Boolean
-        Dim bEpAired As Boolean
-        Dim bEpRating As Boolean
-        Dim bEpPlot As Boolean
-        Dim bEpDirector As Boolean
-        Dim bEpCredits As Boolean
-        Dim bEpActors As Boolean
-    End Structure
-
-    Public Structure ScrapeInfo
-        Dim ShowID As Integer
-        Dim ShowTitle As String
-        Dim TVDBID As String
-        Dim iEpisode As Integer
-        Dim iSeason As Integer
-        Dim Options As Structures.TVScrapeOptions
-        Dim SelectedLang As String
-        Dim ImageType As Enums.TVImageType
-        Dim CurrentImage As Image
-        Dim WithCurrent As Boolean
-        Dim DVDOrder As Boolean
-    End Structure
+    #End Region 'Enumerations
 
 End Class
 
 Public Class Functions
-    Public Shared Function EmberAPIVersion() As String
-        Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+
+    #Region "Methods"
+
+    ''' <summary>
+    ''' Force of habit
+    ''' </summary>
+    ''' <returns>Path of the directory containing the Ember executable</returns>
+    Public Shared Function AppPath() As String
+        Return System.AppDomain.CurrentDomain.BaseDirectory
+    End Function
+
+    Public Shared Function Check64Bit() As Boolean
+        Return (IntPtr.Size = 8)
+    End Function
+
+    Public Shared Function CheckIfWindows() As Boolean
+        Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
+    End Function
+
+    ''' <summary>
+    ''' Check for the lastest version of Ember
+    ''' </summary>
+    ''' <returns>Latest version as integer</returns>
+    Public Shared Function CheckNeedUpdate() As Boolean
+        Dim sHTTP As New HTTP
+        Dim needUpdate As Boolean = False
+        Dim platform As String = If(Master.is64Bit, "x64", "x86")
+        Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
+        sHTTP = Nothing
+        If updateXML.Length > 0 Then
+            For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
+                Dim vl As ModulesManager.VersionItem = v
+                Dim n As String = String.Empty
+                Dim xmlUpdate As XDocument
+                Try
+                    xmlUpdate = XDocument.Parse(updateXML)
+                Catch
+                    Return False
+                End Try
+                Dim xUdpate = From xUp In xmlUpdate...<Config>...<Modules>...<File> Where (xUp.<Version>.Value <> "" AndAlso xUp.<Name>.Value = vl.AssemblyFileName AndAlso xUp.<Platform>.Value = platform) Select xUp.<Version>.Value
+                Try
+                    If Convert.ToInt16(xUdpate(0)) > Convert.ToInt16(v.Version) Then
+                        v.NeedUpdate = True
+                        needUpdate = True
+                    End If
+
+                Catch ex As Exception
+                End Try
+            Next
+            Return needUpdate
+        End If
+    End Function
+
+    Public Shared Function CheckUpdate() As Integer
+        Try
+            Dim sHTTP As New HTTP
+            Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Update.xml")
+            sHTTP = Nothing
+
+            If updateXML.Length > 0 Then
+                Dim xmlUpdate As XDocument
+                Try
+                    xmlUpdate = XDocument.Parse(updateXML)
+                Catch
+                    Return 0
+                End Try
+
+                Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
+                If xUdpate.Count > 0 Then
+                    Return Convert.ToInt32(xUdpate(0))
+                Else
+                    Return 0
+                End If
+            Else
+                Return 0
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return 0
+        End Try
     End Function
 
     Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
@@ -485,111 +482,6 @@ Public Class Functions
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
-
-    ''' <summary>
-    ''' Force of habit
-    ''' </summary>
-    ''' <returns>Path of the directory containing the Ember executable</returns>
-    Public Shared Function AppPath() As String
-        Return System.AppDomain.CurrentDomain.BaseDirectory
-    End Function
-
-    Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
-        Dim filterOptions As New Structures.ScrapeOptions
-        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
-        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
-        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
-        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
-        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
-        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
-        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
-        filterOptions.bCast = Options.bCast AndAlso Options2.bCast
-        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
-        filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
-        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
-        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
-        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
-        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
-        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
-        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
-        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
-        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
-        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
-        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
-        filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
-        Return filterOptions
-    End Function
-
-    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
-        Dim filterModifier As New Structures.ScrapeModifier
-        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        filterModifier.Extra = Options.Extra AndAlso Options2.Extra
-        filterModifier.Fanart = Options.Fanart AndAlso Options2.Fanart
-        filterModifier.Meta = Options.Meta AndAlso Options2.Meta
-        filterModifier.NFO = Options.NFO AndAlso Options2.NFO
-        filterModifier.Poster = Options.Poster AndAlso Options2.Poster
-        filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
-        Return filterModifier
-    End Function
-
-    Public Shared Function ReadStreamToEnd(ByVal rStream As Stream) As Byte()
-        Dim StreamBuffer(4096) As Byte
-        Dim BlockSize As Integer = 0
-        Using mStream As MemoryStream = New MemoryStream()
-            Do
-                BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
-            Loop While BlockSize > 0
-            Return mStream.ToArray
-        End Using
-    End Function
-
-    ''' <summary>
-    ''' Get the number of the last sequential extrathumb to make sure we're not overwriting current ones.
-    ''' </summary>
-    ''' <param name="sPath">Full path to extrathumbs directory</param>
-    ''' <returns>Last detected number of the discovered extrathumbs.</returns>
-    Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
-
-        Dim iMod As Integer = 0
-        Dim lThumbs As New List(Of String)
-
-        Try
-            If Directory.Exists(sPath) Then
-
-                Try
-                    lThumbs.AddRange(Directory.GetFiles(sPath, "thumb*.jpg"))
-                Catch
-                End Try
-
-                If lThumbs.Count > 0 Then
-                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1).ToString, "(\d+).jpg").Groups(1).ToString)
-                End If
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        Return iMod
-    End Function
-
-    ''' <summary>
-    ''' Get a list of paths to all sources stored in the database
-    ''' </summary>
-    Public Shared Sub GetListOfSources()
-        Master.SourcesList.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Master.SourcesList.Add(SQLreader("Path").ToString)
-                End While
-            End Using
-        End Using
-    End Sub
 
     Public Shared Sub CreateDefaultOptions()
         With Master.DefaultOptions
@@ -641,6 +533,240 @@ Public Class Functions
         End With
     End Sub
 
+    Public Shared Sub DGVDoubleBuffer(ByRef cDGV As DataGridView)
+        Dim conType As Type = cDGV.GetType
+        Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
+        pi.SetValue(cDGV, True, Nothing)
+    End Sub
+
+    Public Shared Function EmberAPIVersion() As String
+        Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+    End Function
+
+    ''' <summary>
+    ''' Get the changelog for the latest version
+    ''' </summary>
+    ''' <returns>Changelog as string</returns>
+    Public Shared Function GetChangelog() As String
+        Try
+            Dim sHTTP As New HTTP
+            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/WhatsNew.txt")
+            sHTTP = Nothing
+
+            If strChangelog.Length > 0 Then
+                Return strChangelog
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return "Unavailable"
+    End Function
+
+    ''' <summary>
+    ''' Get the number of the last sequential extrathumb to make sure we're not overwriting current ones.
+    ''' </summary>
+    ''' <param name="sPath">Full path to extrathumbs directory</param>
+    ''' <returns>Last detected number of the discovered extrathumbs.</returns>
+    Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
+        Dim iMod As Integer = 0
+        Dim lThumbs As New List(Of String)
+
+        Try
+            If Directory.Exists(sPath) Then
+
+                Try
+                    lThumbs.AddRange(Directory.GetFiles(sPath, "thumb*.jpg"))
+                Catch
+                End Try
+
+                If lThumbs.Count > 0 Then
+                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1).ToString, "(\d+).jpg").Groups(1).ToString)
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return iMod
+    End Function
+
+    Public Shared Function GetFFMpeg() As String
+        If Master.isWindows Then
+            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+        Else
+            Return "ffmpeg"
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Get a list of paths to all sources stored in the database
+    ''' </summary>
+    Public Shared Sub GetListOfSources()
+        Master.SourcesList.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Master.SourcesList.Add(SQLreader("Path").ToString)
+                End While
+            End Using
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Check to make sure user has at least .NET Framework 3.5 installed
+    ''' </summary>
+    ''' <returns>True if installed version is >= 3.5, false if not.</returns>
+    Public Shared Function GetNETVersion() As Boolean
+        Try
+            Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
+            Dim masterKey As Microsoft.Win32.RegistryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(regLocation)
+            Dim tempKey As Microsoft.Win32.RegistryKey
+            Dim sVersion As String = String.Empty
+
+            If Not IsNothing(masterKey) Then
+                Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
+                For i As Integer = 0 To SubKeyNames.Count - 1
+                    tempKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
+                    If Not IsNothing(tempKey) Then
+                        Try
+                            sVersion = tempKey.GetValue("Version").ToString
+                        Catch ex As Exception
+                            ' GetValue can Raise Exceptions  when some key are Close or Marked for Deletion
+                            sVersion = String.Empty 'clear variable
+                        End Try
+                        If Not String.IsNullOrEmpty(sVersion) Then
+                            If NumUtils.ConvertToSingle(sVersion.Substring(0, 3)) >= 3.5 Then Return True
+                        End If
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+        End Try
+        Return False
+    End Function
+
+    Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
+        If Directory.Exists(ShowPath) Then
+            Dim dInfo As New DirectoryInfo(ShowPath)
+
+            For Each sDir As DirectoryInfo In dInfo.GetDirectories
+                For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
+                    For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                        Try
+                            If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
+                                Return sDir.FullName
+                            End If
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    Next
+                Next
+            Next
+        End If
+        'no matches
+        Return String.Empty
+    End Function
+
+    Public Shared Function HasModifier() As Boolean
+        With Master.GlobalScrapeMod
+            If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
+        End With
+
+        Return False
+    End Function
+
+    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
+        For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
+            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), rShow.SeasonRegex, RegexOptions.IgnoreCase) Then Return True
+        Next
+        'no matches
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Convert a list(of T) to a string of separated values
+    ''' </summary>
+    ''' <param name="source">List(of T)</param>
+    ''' <param name="separator">Character or string to use as a value separator</param>
+    ''' <returns>String of separated values</returns>
+    Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
+        If source Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
+        If String.IsNullOrEmpty(separator) Then Throw New ArgumentException("Separator parameter cannot be nothing or empty")
+
+        Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
+
+        Return String.Join(separator, values)
+    End Function
+
+    Public Shared Sub PNLDoubleBuffer(ByRef cPNL As Panel)
+        Dim conType As Type = cPNL.GetType
+        Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
+        pi.SetValue(cPNL, True, Nothing)
+    End Sub
+
+    ''' <summary>
+    ''' Constrain a number to the nearest multiple
+    ''' </summary>
+    ''' <param name="iNumber">Number to quantize</param>
+    ''' <param name="iMultiple">Multiple of constraint.</param>
+    Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
+        Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
+    End Function
+
+    Public Shared Function ReadStreamToEnd(ByVal rStream As Stream) As Byte()
+        Dim StreamBuffer(4096) As Byte
+        Dim BlockSize As Integer = 0
+        Using mStream As MemoryStream = New MemoryStream()
+            Do
+                BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
+            Loop While BlockSize > 0
+            Return mStream.ToArray
+        End Using
+    End Function
+
+    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
+        Dim filterModifier As New Structures.ScrapeModifier
+        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        filterModifier.Extra = Options.Extra AndAlso Options2.Extra
+        filterModifier.Fanart = Options.Fanart AndAlso Options2.Fanart
+        filterModifier.Meta = Options.Meta AndAlso Options2.Meta
+        filterModifier.NFO = Options.NFO AndAlso Options2.NFO
+        filterModifier.Poster = Options.Poster AndAlso Options2.Poster
+        filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
+        Return filterModifier
+    End Function
+
+    Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
+        Dim filterOptions As New Structures.ScrapeOptions
+        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
+        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
+        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
+        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
+        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
+        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
+        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
+        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
+        filterOptions.bCast = Options.bCast AndAlso Options2.bCast
+        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
+        filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
+        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
+        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
+        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
+        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
+        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
+        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
+        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
+        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
+        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
+        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
+        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
+        filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
+        Return filterOptions
+    End Function
+
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
@@ -680,14 +806,6 @@ Public Class Functions
         End With
     End Sub
 
-    Public Shared Function HasModifier() As Boolean
-        With Master.GlobalScrapeMod
-            If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
-        End With
-
-        Return False
-    End Function
-
     ''' <summary>
     ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
     ''' </summary>
@@ -706,202 +824,213 @@ Public Class Functions
         End Try
     End Sub
 
-    ''' <summary>
-    ''' Constrain a number to the nearest multiple
-    ''' </summary>
-    ''' <param name="iNumber">Number to quantize</param>
-    ''' <param name="iMultiple">Multiple of constraint.</param>
-    Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
-        Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
-    End Function
+    #End Region 'Methods
 
-    Public Shared Sub DGVDoubleBuffer(ByRef cDGV As DataGridView)
-        Dim conType As Type = cDGV.GetType
-        Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
-        pi.SetValue(cDGV, True, Nothing)
-    End Sub
+End Class
 
-    Public Shared Sub PNLDoubleBuffer(ByRef cPNL As Panel)
-        Dim conType As Type = cPNL.GetType
-        Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
-        pi.SetValue(cPNL, True, Nothing)
-    End Sub
+Public Class Structures
 
-    ''' <summary>
-    ''' Check to make sure user has at least .NET Framework 3.5 installed
-    ''' </summary>
-    ''' <returns>True if installed version is >= 3.5, false if not.</returns>
-    Public Shared Function GetNETVersion() As Boolean
-        Try
-            Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
-            Dim masterKey As Microsoft.Win32.RegistryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(regLocation)
-            Dim tempKey As Microsoft.Win32.RegistryKey
-            Dim sVersion As String = String.Empty
+    #Region "Nested Types"
 
-            If Not IsNothing(masterKey) Then
-                Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
-                For i As Integer = 0 To SubKeyNames.Count - 1
-                    tempKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
-                    If Not IsNothing(tempKey) Then
-                        Try
-                            sVersion = tempKey.GetValue("Version").ToString
-                        Catch ex As Exception
-                            ' GetValue can Raise Exceptions  when some key are Close or Marked for Deletion
-                            sVersion = String.Empty 'clear variable
-                        End Try
-                        If Not String.IsNullOrEmpty(sVersion) Then
-                            If NumUtils.ConvertToSingle(sVersion.Substring(0, 3)) >= 3.5 Then Return True
-                        End If
-                    End If
-                Next
-            End If
-        Catch ex As Exception
-        End Try
-        Return False
-    End Function
+    Public Structure CustomUpdaterStruct
 
-    ''' <summary>
-    ''' Convert a list(of T) to a string of separated values
-    ''' </summary>
-    ''' <param name="source">List(of T)</param>
-    ''' <param name="separator">Character or string to use as a value separator</param>
-    ''' <returns>String of separated values</returns>
-    Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
+        #Region "Fields"
 
-        If source Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
-        If String.IsNullOrEmpty(separator) Then Throw New ArgumentException("Separator parameter cannot be nothing or empty")
+        Dim Canceled As Boolean
+        Dim Options As ScrapeOptions
+        Dim ScrapeType As Enums.ScrapeType
 
-        Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
+        #End Region 'Fields
 
-        Return String.Join(separator, values)
-    End Function
+    End Structure
 
-    ''' <summary>
-    ''' Get the changelog for the latest version
-    ''' </summary>
-    ''' <returns>Changelog as string</returns>
-    Public Shared Function GetChangelog() As String
-        Try
-            Dim sHTTP As New HTTP
-            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/WhatsNew.txt")
-            sHTTP = Nothing
+    Public Structure DBMovie
 
-            If strChangelog.Length > 0 Then
-                Return strChangelog
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return "Unavailable"
-    End Function
+        #Region "Fields"
 
-    Public Shared Function Check64Bit() As Boolean
-        Return (IntPtr.Size = 8)
-    End Function
+        Dim ClearExtras As Boolean
+        Dim DateAdd As Long
+        Dim ExtraPath As String
+        Dim FanartPath As String
+        Dim Filename As String
+        Dim FileSource As String
+        Dim ID As Long
+        Dim IsLock As Boolean
+        Dim IsMark As Boolean
+        Dim IsNew As Boolean
+        Dim isSingle As Boolean
+        Dim ListTitle As String
+        Dim Movie As MediaContainers.Movie
+        Dim NeedsSave As Boolean
+        Dim NfoPath As String
+        Dim OutOfTolerance As Boolean
+        Dim PosterPath As String
+        Dim Source As String
+        Dim SubPath As String
+        Dim TrailerPath As String
+        Dim UseFolder As Boolean
 
-    ''' <summary>
-    ''' Check for the lastest version of Ember
-    ''' </summary>
-    ''' <returns>Latest version as integer</returns>
-    Public Shared Function CheckNeedUpdate() As Boolean
-        Dim sHTTP As New HTTP
-        Dim needUpdate As Boolean = False
-        Dim platform As String = If(Master.is64Bit, "x64", "x86")
-        Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
-        sHTTP = Nothing
-        If updateXML.Length > 0 Then
-            For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
-                Dim vl As ModulesManager.VersionItem = v
-                Dim n As String = String.Empty
-                Dim xmlUpdate As XDocument
-                Try
-                    xmlUpdate = XDocument.Parse(updateXML)
-                Catch
-                    Return False
-                End Try
-                Dim xUdpate = From xUp In xmlUpdate...<Config>...<Modules>...<File> Where (xUp.<Version>.Value <> "" AndAlso xUp.<Name>.Value = vl.AssemblyFileName AndAlso xUp.<Platform>.Value = platform) Select xUp.<Version>.Value
-                Try
-                    If Convert.ToInt16(xUdpate(0)) > Convert.ToInt16(v.Version) Then
-                        v.NeedUpdate = True
-                        needUpdate = True
-                    End If
+        #End Region 'Fields
 
-                Catch ex As Exception
-                End Try
-            Next
-            Return needUpdate
-        End If
-    End Function
-    Public Shared Function CheckUpdate() As Integer
-        Try
-            Dim sHTTP As New HTTP
-            Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Update.xml")
-            sHTTP = Nothing
+    End Structure
 
-            If updateXML.Length > 0 Then
-                Dim xmlUpdate As XDocument
-                Try
-                    xmlUpdate = XDocument.Parse(updateXML)
-                Catch
-                    Return 0
-                End Try
+    Public Structure DBTV
 
-                Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
-                If xUdpate.Count > 0 Then
-                    Return Convert.ToInt32(xUdpate(0))
-                Else
-                    Return 0
-                End If
-            Else
-                Return 0
-            End If
+        #Region "Fields"
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return 0
-        End Try
-    End Function
+        Dim EpFanartPath As String
+        Dim EpID As Long
+        Dim EpNeedsSave As Boolean
+        Dim EpNfoPath As String
+        Dim EpPosterPath As String
+        Dim Filename As String
+        Dim IsLockEp As Boolean
+        Dim IsLockSeason As Boolean
+        Dim IsLockShow As Boolean
+        Dim IsMarkEp As Boolean
+        Dim IsMarkSeason As Boolean
+        Dim IsMarkShow As Boolean
+        Dim IsNewEp As Boolean
+        Dim IsNewSeason As Boolean
+        Dim IsNewShow As Boolean
+        Dim SeasonFanartPath As String
+        Dim SeasonPosterPath As String
+        Dim ShowFanartPath As String
+        Dim ShowID As Long
+        Dim ShowLanguage As String
+        Dim ShowNeedsSave As Boolean
+        Dim ShowNfoPath As String
+        Dim ShowPath As String
+        Dim ShowPosterPath As String
+        Dim Source As String
+        Dim TVEp As MediaContainers.EpisodeDetails
+        Dim TVShow As MediaContainers.TVShow
+        Dim UseDVDOrder As Boolean
 
-    Public Shared Function CheckIfWindows() As Boolean
-        Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
-    End Function
+        #End Region 'Fields
 
-    Public Shared Function GetFFMpeg() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        Else
-            Return "ffmpeg"
-        End If
-    End Function
+    End Structure
 
-    Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
+    Public Structure Scans
 
-        If Directory.Exists(ShowPath) Then
-            Dim dInfo As New DirectoryInfo(ShowPath)
+        #Region "Fields"
 
-            For Each sDir As DirectoryInfo In dInfo.GetDirectories
-                For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
-                    For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
-                        Try
-                            If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
-                                Return sDir.FullName
-                            End If
-                        Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                        End Try
-                    Next
-                Next
-            Next
-        End If
-        'no matches
-        Return String.Empty
-    End Function
+        Dim Movies As Boolean
+        Dim TV As Boolean
 
-    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
-        For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
-            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), rShow.SeasonRegex, RegexOptions.IgnoreCase) Then Return True
-        Next
-        'no matches
-        Return False
-    End Function
+        #End Region 'Fields
+
+    End Structure
+
+    Public Structure ScrapeInfo
+
+        #Region "Fields"
+
+        Dim CurrentImage As Image
+        Dim DVDOrder As Boolean
+        Dim iEpisode As Integer
+        Dim ImageType As Enums.TVImageType
+        Dim iSeason As Integer
+        Dim Options As Structures.TVScrapeOptions
+        Dim SelectedLang As String
+        Dim ShowID As Integer
+        Dim ShowTitle As String
+        Dim TVDBID As String
+        Dim WithCurrent As Boolean
+
+        #End Region 'Fields
+
+    End Structure
+
+    Public Structure ScrapeModifier
+
+        #Region "Fields"
+
+        Dim DoSearch As Boolean
+        Dim Extra As Boolean
+        Dim Fanart As Boolean
+        Dim Meta As Boolean
+        Dim NFO As Boolean
+        Dim Poster As Boolean
+        Dim Trailer As Boolean
+
+        #End Region 'Fields
+
+    End Structure
+
+    Public Structure ScrapeOptions
+
+        #Region "Fields"
+
+        Dim bCast As Boolean
+        Dim bCert As Boolean
+        Dim bDirector As Boolean
+        Dim bFullCast As Boolean
+
+        ' Why this 2 arent here?
+        Dim bFullCrew As Boolean
+        Dim bGenre As Boolean
+        Dim bMPAA As Boolean
+        Dim bMusicBy As Boolean
+        Dim bOtherCrew As Boolean
+        Dim bOutline As Boolean
+        Dim bPlot As Boolean
+        Dim bProducers As Boolean
+        Dim bRating As Boolean
+        Dim bRelease As Boolean
+        Dim bRuntime As Boolean
+        Dim bStudio As Boolean
+        Dim bTagline As Boolean
+        Dim bTitle As Boolean
+        Dim bTop250 As Boolean
+        Dim bTrailer As Boolean
+        Dim bVotes As Boolean
+        Dim bWriters As Boolean
+        Dim bYear As Boolean
+
+        #End Region 'Fields
+
+    End Structure
+
+    Public Structure SettingsResult
+
+        #Region "Fields"
+
+        Dim DidCancel As Boolean
+        Dim NeedsRefresh As Boolean
+        Dim NeedsUpdate As Boolean
+
+        #End Region 'Fields
+
+    End Structure
+
+    Public Structure TVScrapeOptions
+
+        #Region "Fields"
+
+        Dim bEpActors As Boolean
+        Dim bEpAired As Boolean
+        Dim bEpCredits As Boolean
+        Dim bEpDirector As Boolean
+        Dim bEpEpisode As Boolean
+        Dim bEpPlot As Boolean
+        Dim bEpRating As Boolean
+        Dim bEpSeason As Boolean
+        Dim bEpTitle As Boolean
+        Dim bShowActors As Boolean
+        Dim bShowEpisodeGuide As Boolean
+        Dim bShowGenre As Boolean
+        Dim bShowMPAA As Boolean
+        Dim bShowPlot As Boolean
+        Dim bShowPremiered As Boolean
+        Dim bShowRating As Boolean
+        Dim bShowStudio As Boolean
+        Dim bShowTitle As Boolean
+
+        #End Region 'Fields
+
+    End Structure
+
+    #End Region 'Nested Types
+
 End Class

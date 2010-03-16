@@ -21,18 +21,15 @@
 Imports System.IO
 
 Public Class dlgTVChangeEp
-    Private _tepisodes As New List(Of MediaContainers.EpisodeDetails)
+
+    #Region "Fields"
+
     Private _episode As MediaContainers.EpisodeDetails = Nothing
+    Private _tepisodes As New List(Of MediaContainers.EpisodeDetails)
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
+    #End Region 'Fields
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
+    #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal tEpisodes As List(Of MediaContainers.EpisodeDetails)) As MediaContainers.EpisodeDetails
         Me._tepisodes = tEpisodes
@@ -43,6 +40,17 @@ Public Class dlgTVChangeEp
             Return Nothing
         End If
     End Function
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub ClearInfo()
+        Me.pbPreview.Image = Nothing
+        Me.lblTitle.Text = String.Empty
+        Me.txtPlot.Text = String.Empty
+    End Sub
 
     Private Sub dlgTVChangeEp_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
@@ -91,10 +99,9 @@ Public Class dlgTVChangeEp
         End If
     End Sub
 
-    Private Sub ClearInfo()
-        Me.pbPreview.Image = Nothing
-        Me.lblTitle.Text = String.Empty
-        Me.txtPlot.Text = String.Empty
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub SetUp()
@@ -106,4 +113,7 @@ Public Class dlgTVChangeEp
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
+
+    #End Region 'Methods
+
 End Class

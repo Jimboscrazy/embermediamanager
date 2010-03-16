@@ -18,16 +18,20 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Public Class ListViewColumnSorter
     Implements System.Collections.IComparer
 
-    Private ColumnToSort As Integer
-    Private OrderOfSort As SortOrder
+    #Region "Fields"
+
     Private ByText As Boolean
+    Private ColumnToSort As Integer
     Private IsNumeric As Boolean
     Private ObjectCompare As CaseInsensitiveComparer
+    Private OrderOfSort As SortOrder
+
+    #End Region 'Fields
+
+    #Region "Constructors"
 
     Public Sub New()
         ColumnToSort = 0
@@ -36,6 +40,50 @@ Public Class ListViewColumnSorter
         ByText = False
         IsNumeric = False
     End Sub
+
+    #End Region 'Constructors
+
+    #Region "Properties"
+
+    Public Property NumericSort() As Boolean
+        Get
+            Return IsNumeric
+        End Get
+        Set(ByVal value As Boolean)
+            IsNumeric = value
+        End Set
+    End Property
+
+    Public Property Order() As SortOrder
+        Get
+            Return OrderOfSort
+        End Get
+        Set(ByVal value As SortOrder)
+            OrderOfSort = value
+        End Set
+    End Property
+
+    Public Property SortByText() As Boolean
+        Get
+            Return ByText
+        End Get
+        Set(ByVal value As Boolean)
+            ByText = value
+        End Set
+    End Property
+
+    Public Property SortColumn() As Integer
+        Get
+            Return ColumnToSort
+        End Get
+        Set(ByVal value As Integer)
+            ColumnToSort = value
+        End Set
+    End Property
+
+    #End Region 'Properties
+
+    #Region "Methods"
 
     Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements IComparer.Compare
         Dim compareResult As Integer
@@ -62,14 +110,14 @@ Public Class ListViewColumnSorter
                 End If
             End If
 
-            ' Calculate the correct return value based on the object 
+            ' Calculate the correct return value based on the object
             ' comparison.
             If (OrderOfSort = SortOrder.Ascending) Then
-                ' Ascending sort is selected, return typical result of 
+                ' Ascending sort is selected, return typical result of
                 ' compare operation.
                 Return compareResult
             ElseIf (OrderOfSort = SortOrder.Descending) Then
-                ' Descending sort is selected, return negative result of 
+                ' Descending sort is selected, return negative result of
                 ' compare operation.
                 Return (-compareResult)
             Else
@@ -82,39 +130,6 @@ Public Class ListViewColumnSorter
         End Try
     End Function
 
-    Public Property SortColumn() As Integer
-        Get
-            Return ColumnToSort
-        End Get
-        Set(ByVal value As Integer)
-            ColumnToSort = value
-        End Set
-    End Property
+    #End Region 'Methods
 
-    Public Property Order() As SortOrder
-        Get
-            Return OrderOfSort
-        End Get
-        Set(ByVal value As SortOrder)
-            OrderOfSort = value
-        End Set
-    End Property
-
-    Public Property SortByText() As Boolean
-        Get
-            Return ByText
-        End Get
-        Set(ByVal value As Boolean)
-            ByText = value
-        End Set
-    End Property
-
-    Public Property NumericSort() As Boolean
-        Get
-            Return IsNumeric
-        End Get
-        Set(ByVal value As Boolean)
-            IsNumeric = value
-        End Set
-    End Property
 End Class

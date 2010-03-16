@@ -18,72 +18,49 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.Text.RegularExpressions
 
 Public Class dlgAddEditActor
+
+    #Region "Fields"
+
+    Public Shared selIndex As Integer = 0
+
     Private eActor As MediaContainers.Person
     Private isNew As Boolean = True
     Private sHTTP As New HTTP
-    Public Shared selIndex As Integer = 0
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    #End Region 'Fields
 
-        '//
-        ' Fill the MediaContainers.Person with the data
-        '\\
+    #Region "Methods"
 
-        Try
-            Me.eActor.Name = Me.txtName.Text
-            Me.eActor.Role = Me.txtRole.Text
-            Me.eActor.Thumb = Me.txtThumb.Text
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        Me.Close()
+    Public Sub SetUp()
+        Me.lblName.Text = Master.eLang.GetString(154, "Actor Name:")
+        Me.lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
+        Me.lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-
+    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As MediaContainers.Person = Nothing) As MediaContainers.Person
         '//
-        ' Get me out of here!
+        ' Overload to pass data
         '\\
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.isNew = bNew
 
-        Me.Close()
-    End Sub
+        If bNew Then
+            Me.eActor = New MediaContainers.Person
+        Else
+            Me.eActor = inActor
+        End If
 
-    Private Sub dlgAddEditActor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-        '//
-        ' Fill form with data if needed
-        '\\
-
-        Try
-            Me.SetUp()
-
-            If Me.isNew Then
-                Me.Text = Master.eLang.GetString(157, "New Actor")
-            Else
-                Me.Text = Master.eLang.GetString(158, "Edit Actor")
-                Me.txtName.Text = Me.eActor.Name
-                Me.txtRole.Text = Me.eActor.Role
-                Me.txtThumb.Text = Me.eActor.Thumb
-
-            End If
-
-            Me.Activate()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Return Me.eActor
+        Else
+            Return Nothing
+        End If
+    End Function
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-
         '//
         ' Download the pic to verify the url was entered correctly
         '\\
@@ -112,7 +89,6 @@ Public Class dlgAddEditActor
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-
         sHTTP.StartDownloadImage(Me.txtThumb.Text)
 
         While sHTTP.IsDownloading
@@ -120,11 +96,9 @@ Public Class dlgAddEditActor
         End While
 
         e.Result = sHTTP.Image
-
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-
         '//
         ' Thread finished: display pic if it was able to get one
         '\\
@@ -132,33 +106,59 @@ Public Class dlgAddEditActor
         Me.pbActLoad.Visible = False
 
         Me.pbActors.Image = DirectCast(e.Result, Image)
-
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As MediaContainers.Person = Nothing) As MediaContainers.Person
-
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         '//
-        ' Overload to pass data
+        ' Get me out of here!
         '\\
 
-        Me.isNew = bNew
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
 
-        If bNew Then
-            Me.eActor = New MediaContainers.Person
-        Else
-            Me.eActor = inActor
-        End If
-
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me.eActor
-        Else
-            Return Nothing
-        End If
-    End Function
-
-    Public Sub SetUp()
-        Me.lblName.Text = Master.eLang.GetString(154, "Actor Name:")
-        Me.lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
-        Me.lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
+        Me.Close()
     End Sub
+
+    Private Sub dlgAddEditActor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        '//
+        ' Fill form with data if needed
+        '\\
+
+        Try
+            Me.SetUp()
+
+            If Me.isNew Then
+                Me.Text = Master.eLang.GetString(157, "New Actor")
+            Else
+                Me.Text = Master.eLang.GetString(158, "Edit Actor")
+                Me.txtName.Text = Me.eActor.Name
+                Me.txtRole.Text = Me.eActor.Role
+                Me.txtThumb.Text = Me.eActor.Thumb
+
+            End If
+
+            Me.Activate()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        '//
+        ' Fill the MediaContainers.Person with the data
+        '\\
+
+        Try
+            Me.eActor.Name = Me.txtName.Text
+            Me.eActor.Role = Me.txtRole.Text
+            Me.eActor.Thumb = Me.txtThumb.Text
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Me.Close()
+    End Sub
+
+    #End Region 'Methods
+
 End Class

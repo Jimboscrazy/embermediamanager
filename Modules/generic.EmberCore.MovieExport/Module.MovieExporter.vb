@@ -17,27 +17,105 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
 
 Public Class MovieExporterModule
     Implements Interfaces.EmberExternalModule
 
+    #Region "Fields"
+
+    Private  WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private  WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
     Private _setup As frmSettingsHolder
 
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    #End Region 'Fields
+
+    #Region "Events"
+
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+
+    #End Region 'Events
+
+    #Region "Properties"
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
         End Get
     End Property
+
+    Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
+        Get
+            Return _enabled
+        End Get
+        Set(ByVal value As Boolean)
+            If _enabled = value Then Return
+            _enabled = value
+            If _enabled Then
+                Enable()
+            Else
+                Disable()
+            End If
+        End Set
+    End Property
+
+    ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
+        Get
+            Return _Name
+        End Get
+    End Property
+
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
+        Get
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
+        End Get
+    End Property
+
+    #End Region 'Properties
+
+    #Region "Methods"
+
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Sub Disable()
+        Dim tsi As New ToolStripMenuItem
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyMenu)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Remove(MyTrayMenu)
+    End Sub
+
+    Sub Enable()
+        Dim tsi As New ToolStripMenuItem
+        MyMenu.Image = New Bitmap(My.Resources.icon)
+        MyMenu.Text = "Export Movie List"
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyMenu)
+        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
+        MyTrayMenu.Text = "Export Movie List"
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi.DropDownItems.Add(MyTrayMenu)
+    End Sub
+
+    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
+        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+    End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
+    End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
         Me._setup = New frmSettingsHolder
@@ -55,66 +133,6 @@ Public Class MovieExporterModule
         Return SPanel
     End Function
 
-    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
-    End Sub
-
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me.Enabled = Me._setup.cbEnabled.Checked
-    End Sub
-
-    Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
-        Get
-            Return _enabled
-        End Get
-        Set(ByVal value As Boolean)
-            If _enabled = value Then Return
-            _enabled = value
-            If _enabled Then
-                Enable()
-            Else
-                Disable()
-            End If
-        End Set
-    End Property
-
-    Sub Enable()
-        Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = "Export Movie List"
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyMenu)
-        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = "Export Movie List"
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyTrayMenu)
-
-    End Sub
-    Sub Disable()
-        Dim tsi As New ToolStripMenuItem
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyTrayMenu)
-    End Sub
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
-    End Sub
-
-    ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
-        Get
-            Return _Name
-        End Get
-    End Property
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
-        Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
-        End Get
-    End Property
-
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
         Using dExportMovies As New dlgExportMovies
             dExportMovies.ShowDialog()
@@ -127,7 +145,10 @@ Public Class MovieExporterModule
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+        Me.Enabled = Me._setup.cbEnabled.Checked
+    End Sub
+
+    #End Region 'Methods
+
 End Class

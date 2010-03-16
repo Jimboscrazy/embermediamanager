@@ -18,33 +18,35 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
-Imports System.Text.RegularExpressions
-Imports System.Text
 Imports System.IO.Compression
+Imports System.Text
+Imports System.Text.RegularExpressions
 Imports System.Xml
 
 Namespace TMDB
+
     Public Class Scraper
+
+        #Region "Fields"
+
         Public IMDBURL As String
+
+        Friend  WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
+
         Private Const APIKey As String = "6f96ee0ee3e734bcf5924584d0948020"
 
-        Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
+        #End Region 'Fields
+
+        #Region "Events"
 
         Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
+
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-        Private Structure Arguments
-            Dim sType As String
-            Dim Parameter As String
-        End Structure
+        #End Region 'Events
 
-        Private Structure Results
-            Dim ResultList As List(Of MediaContainers.Image)
-            Dim Result As Object
-        End Structure
+        #Region "Methods"
 
         Public Sub Cancel()
             If Me.bwTMDB.IsBusy Then Me.bwTMDB.CancelAsync()
@@ -53,72 +55,6 @@ Namespace TMDB
                 Application.DoEvents()
             End While
         End Sub
-
-        Public Function GetTrailers(ByVal imdbID As String) As String
-            Dim xmlTMDB As XDocument
-            Dim sHTTP As New HTTP
-
-            If Me.bwTMDB.CancellationPending Then Return Nothing
-            Try
-                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.imdbLookup/en/xml/{0}/tt{1}", APIKey, imdbID))
-                sHTTP = Nothing
-
-                If Not String.IsNullOrEmpty(ApiXML) Then
-                    Try
-                        xmlTMDB = XDocument.Parse(ApiXML)
-                    Catch
-                        Return String.Empty
-                    End Try
-
-                    If bwTMDB.WorkerReportsProgress Then
-                        bwTMDB.ReportProgress(1)
-                    End If
-                    If Me.bwTMDB.CancellationPending Then Return Nothing
-
-                    Dim tmdbNode = From xNode In xmlTMDB.Elements
-
-                    If tmdbNode.Count > 0 Then
-                        If Not tmdbNode(0).Value = "Your query didn't return any results." Then
-                            Dim movieID As String = xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<id>.Value
-
-                            sHTTP = New HTTP
-                            ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/{0}/{1}", APIKey, movieID))
-                            sHTTP = Nothing
-
-                            If Not String.IsNullOrEmpty(ApiXML) Then
-
-                                Try
-                                    xmlTMDB = XDocument.Parse(ApiXML)
-                                Catch
-                                    Return String.Empty
-                                End Try
-
-                                If bwTMDB.WorkerReportsProgress Then
-                                    bwTMDB.ReportProgress(2)
-                                End If
-
-                                If Me.bwTMDB.CancellationPending Then Return Nothing
-
-                                Dim Trailers = From tNode In xmlTMDB...<OpenSearchDescription>...<movies>...<movie> Select tNode.<trailer>
-                                If Trailers.Count > 0 AndAlso Not String.IsNullOrEmpty(Trailers(0).Value) Then
-                                    If Trailers(0).Value.ToLower.IndexOf("youtube.com") > 0 Then
-                                        Return Trailers(0).Value
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-                If bwTMDB.WorkerReportsProgress Then
-                    bwTMDB.ReportProgress(3)
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-            Return String.Empty
-
-        End Function
 
         Public Sub GetImagesAsync(ByVal imdbID As String, ByVal sType As String)
             Try
@@ -199,6 +135,71 @@ Namespace TMDB
             Return alPosters
         End Function
 
+        Public Function GetTrailers(ByVal imdbID As String) As String
+            Dim xmlTMDB As XDocument
+            Dim sHTTP As New HTTP
+
+            If Me.bwTMDB.CancellationPending Then Return Nothing
+            Try
+                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.imdbLookup/en/xml/{0}/tt{1}", APIKey, imdbID))
+                sHTTP = Nothing
+
+                If Not String.IsNullOrEmpty(ApiXML) Then
+                    Try
+                        xmlTMDB = XDocument.Parse(ApiXML)
+                    Catch
+                        Return String.Empty
+                    End Try
+
+                    If bwTMDB.WorkerReportsProgress Then
+                        bwTMDB.ReportProgress(1)
+                    End If
+                    If Me.bwTMDB.CancellationPending Then Return Nothing
+
+                    Dim tmdbNode = From xNode In xmlTMDB.Elements
+
+                    If tmdbNode.Count > 0 Then
+                        If Not tmdbNode(0).Value = "Your query didn't return any results." Then
+                            Dim movieID As String = xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<id>.Value
+
+                            sHTTP = New HTTP
+                            ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/{0}/{1}", APIKey, movieID))
+                            sHTTP = Nothing
+
+                            If Not String.IsNullOrEmpty(ApiXML) Then
+
+                                Try
+                                    xmlTMDB = XDocument.Parse(ApiXML)
+                                Catch
+                                    Return String.Empty
+                                End Try
+
+                                If bwTMDB.WorkerReportsProgress Then
+                                    bwTMDB.ReportProgress(2)
+                                End If
+
+                                If Me.bwTMDB.CancellationPending Then Return Nothing
+
+                                Dim Trailers = From tNode In xmlTMDB...<OpenSearchDescription>...<movies>...<movie> Select tNode.<trailer>
+                                If Trailers.Count > 0 AndAlso Not String.IsNullOrEmpty(Trailers(0).Value) Then
+                                    If Trailers(0).Value.ToLower.IndexOf("youtube.com") > 0 Then
+                                        Return Trailers(0).Value
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+                If bwTMDB.WorkerReportsProgress Then
+                    bwTMDB.ReportProgress(3)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            Return String.Empty
+        End Function
+
         Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Try
@@ -220,5 +221,36 @@ Namespace TMDB
                 RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
             End If
         End Sub
+
+        #End Region 'Methods
+
+        #Region "Nested Types"
+
+        Private Structure Arguments
+
+            #Region "Fields"
+
+            Dim Parameter As String
+            Dim sType As String
+
+            #End Region 'Fields
+
+        End Structure
+
+        Private Structure Results
+
+            #Region "Fields"
+
+            Dim Result As Object
+            Dim ResultList As List(Of MediaContainers.Image)
+
+            #End Region 'Fields
+
+        End Structure
+
+        #End Region 'Nested Types
+
     End Class
+
 End Namespace
+

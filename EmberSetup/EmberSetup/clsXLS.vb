@@ -22,48 +22,35 @@ Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
 
-<XmlRoot("VersionsFile")> _
-Public Class UpgradeList
-    <XmlArray("Versions")> _
-    <XmlArrayItem("Version")> _
-    Public VersionList As New List(Of Versions)
+Public Class FileOfList
 
-    Public Sub Save(ByVal fpath As String)
-        Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
-        Using xmlSW As New StreamWriter(fpath)
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
-    End Sub
-End Class
+    #Region "Fields"
 
-Public Class Versions : Implements IComparable(Of Versions)
-    <XmlAttribute("Number")> _
-    Public Version As String
-
-    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
-        Return Convert.ToInt32(Me.Version).CompareTo(Convert.ToInt32(other.Version))
-    End Function
-End Class
-
-Public Class FileToInstall
     Public Filename As String
-    Public OriginalPath As String
-    Public EmberPath As String
     Public Hash As String
+    Public inCache As Boolean = False
+    Public NeedBackup As Boolean = False
+    Public NeedInstall As Boolean = True
+    Public Path As String
     Public Platform As String
+
+    #End Region 'Fields
+
 End Class
 
 <XmlRoot("UpgradeFile")> _
 Public Class FilesList
+
+    #Region "Fields"
+
     <XmlArray("Files")> _
     <XmlArrayItem("File")> _
     Public Files As List(Of FileOfList)
-    Public Sub Save(ByVal fpath As String)
-        Dim xmlSer As New XmlSerializer(GetType(FilesList))
-        Using xmlSW As New StreamWriter(fpath)
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
-    End Sub
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     Public Sub ConvertToPlatform()
         If Not Files Is Nothing Then
             For Each f As FileOfList In Files
@@ -71,23 +58,59 @@ Public Class FilesList
             Next
         End If
     End Sub
+
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(FilesList))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+
+    #End Region 'Methods
+
 End Class
 
-Public Class FileOfList
-    Public Path As String
+Public Class FileToInstall
+
+    #Region "Fields"
+
+    Public EmberPath As String
     Public Filename As String
-    Public Platform As String
     Public Hash As String
-    Public NeedBackup As Boolean = False
-    Public NeedInstall As Boolean = True
-    Public inCache As Boolean = False
+    Public OriginalPath As String
+    Public Platform As String
+
+    #End Region 'Fields
+
+End Class
+
+Public Class InstallCommand
+
+    #Region "Fields"
+
+    <XmlElement("Description")> _
+    Public CommandDescription As String
+    <XmlElement("Execute")> _
+    Public CommandExecute As String
+    <XmlAttribute("Type")> _
+    Public CommandType As String
+
+    #End Region 'Fields
+
 End Class
 
 <XmlRoot("CommandFile")> _
 Public Class InstallCommands
+
+    #Region "Fields"
+
     <XmlArray("Commands")> _
     <XmlArrayItem("Command")> _
     Public Command As List(Of InstallCommand)
+
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Public Sub Save(ByVal fpath As String)
         Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
@@ -95,13 +118,51 @@ Public Class InstallCommands
             xmlSer.Serialize(xmlSW, Me)
         End Using
     End Sub
+
+    #End Region 'Methods
+
 End Class
 
-Public Class InstallCommand
-    <XmlElement("Description")> _
-    Public CommandDescription As String
-    <XmlAttribute("Type")> _
-    Public CommandType As String
-    <XmlElement("Execute")> _
-    Public CommandExecute As String
+<XmlRoot("VersionsFile")> _
+Public Class UpgradeList
+
+    #Region "Fields"
+
+    <XmlArray("Versions")> _
+    <XmlArrayItem("Version")> _
+    Public VersionList As New List(Of Versions)
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Sub Save(ByVal fpath As String)
+        Dim xmlSer As New XmlSerializer(GetType(UpgradeList))
+        Using xmlSW As New StreamWriter(fpath)
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+
+    #End Region 'Methods
+
+End Class
+
+Public Class Versions
+    Implements IComparable(Of Versions)
+
+    #Region "Fields"
+
+    <XmlAttribute("Number")> _
+    Public Version As String
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Function CompareTo(ByVal other As Versions) As Integer Implements IComparable(Of Versions).CompareTo
+        Return Convert.ToInt32(Me.Version).CompareTo(Convert.ToInt32(other.Version))
+    End Function
+
+    #End Region 'Methods
+
 End Class
