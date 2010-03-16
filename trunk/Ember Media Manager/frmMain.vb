@@ -6469,17 +6469,16 @@ Public Class frmMain
 
             Dim tPath As String = Functions.GetSeasonDirectoryFromShowPath(tmpSeasonDb.ShowPath, Season)
 
-            If Not String.IsNullOrEmpty(tPath) Then
-                'fake file just for getting images
-                tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
-                fScanner.GetSeasonImages(tmpSeasonDb, Season)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
-                If Master.eSettings.SeasonFanartEnabled Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
-                End If
-            Else
-                Master.DB.DeleteTVSeasonFromDB(ShowID, Season, BatchMode)
-                Return True
+            If String.IsNullOrEmpty(tPath) Then
+                tPath = tmpSeasonDb.ShowPath
+            End If
+
+            'fake file just for getting images
+            tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
+            fScanner.GetSeasonImages(tmpSeasonDb, Season)
+            Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
+            If Master.eSettings.SeasonFanartEnabled Then
+                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
             End If
 
             If Not BatchMode Then
