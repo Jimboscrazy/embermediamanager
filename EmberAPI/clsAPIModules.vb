@@ -333,7 +333,7 @@ Public Class ModulesManager
         End If
     End Sub
 
-    Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Boolean
+    Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult
         Dim ret As Interfaces.ModuleResult
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
             AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
@@ -341,7 +341,7 @@ Public Class ModulesManager
             RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
             If ret.breakChain Then Exit For
         Next
-        Return ret.Cancelled
+        Return ret
     End Function
 
     Public Function MovieScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean

@@ -1161,11 +1161,30 @@ Public Class frmMain
                     MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
                     MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
 
-                    ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+                    Dim didEts As Interfaces.ModuleResult = ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
 
                     If bwMovieScraper.CancellationPending Then Exit For
                     ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+
+                    If Master.GlobalScrapeMod.Extra Then
+                        If Master.eSettings.AutoET AndAlso Not didEts.BoolProperty Then
+                            Using Fanart As New Images
+                                Fanart.GetPreferredFAasET(DBScrapeMovie.Movie.IMDBID, DBScrapeMovie.Filename)
+                            End Using
+                        End If
+                        If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
+                            Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
+                            If Not String.IsNullOrEmpty(ETasFA) Then
+                                MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
+                                DBScrapeMovie.ExtraPath = "TRUE"
+                                If Not ETasFA = "TRUE" Then
+                                    MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
+                                    DBScrapeMovie.FanartPath = ETasFA
+                                End If
+                            End If
+                        End If
+                    End If
 
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))

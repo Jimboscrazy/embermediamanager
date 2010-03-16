@@ -163,7 +163,6 @@ Public Class EmberNativeScraperModule
         End If
         _setupPost.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setupPost.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
-        _setupPost.chkAutoThumbs.Checked = ConfigScrapeModifier.Extra
         _setupPost.chkUseTMDB.Checked = Master.eSettings.UseTMDB
         _setupPost.chkUseIMPA.Checked = Master.eSettings.UseIMPA
         _setupPost.chkUseMPDB.Checked = Master.eSettings.UseMPDB
@@ -265,9 +264,9 @@ Public Class EmberNativeScraperModule
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
+        ConfigScrapeModifier.Extra = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Extra = AdvancedSettings.GetBooleanSetting("DoExtra", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
@@ -363,24 +362,8 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
-        If Master.GlobalScrapeMod.Extra Then
-            If Master.eSettings.AutoET AndAlso Not didEts Then
-                Fanart.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
-            End If
-            If Master.eSettings.AutoThumbs > 0 AndAlso DBMovie.isSingle Then
-                Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBMovie, Master.eSettings.AutoThumbs, False)
-                If Not String.IsNullOrEmpty(ETasFA) Then
-                    RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
-                    DBMovie.ExtraPath = "TRUE"
-                    If Not ETasFA = "TRUE" Then
-                        RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
-                        DBMovie.FanartPath = ETasFA
-                    End If
-                End If
-            End If
-        End If
         Master.GlobalScrapeMod = saveModifier
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = didEts}
     End Function
 
     Sub SaveSettings()
@@ -413,7 +396,6 @@ Public Class EmberNativeScraperModule
 
         AdvancedSettings.SetBooleanSetting("DownloadTraliers", MySettings.DownloadTrailers)
         AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-        AdvancedSettings.SetBooleanSetting("DoExtra", ConfigScrapeModifier.Extra)
         AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
         AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
     End Sub
@@ -430,7 +412,6 @@ Public Class EmberNativeScraperModule
         Master.eSettings.UseMPDB = _setupPost.chkUseMPDB.Checked
         ConfigScrapeModifier.Poster = _setupPost.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setupPost.chkScrapeFanart.Checked
-        ConfigScrapeModifier.Extra = _setupPost.chkAutoThumbs.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
