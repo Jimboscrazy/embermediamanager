@@ -318,7 +318,7 @@ Public Class Scraper
     <Serializable()> _
     Public Class TVDBShowPoster
         Private _url As String
-        Private _type As Enums.ShowPosterType
+        Private _type As Enums.ShowBannerType
         Private _localfile As String
         Private _image As Images
 
@@ -331,11 +331,11 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Type() As Enums.ShowPosterType
+        Public Property Type() As Enums.ShowBannerType
             Get
                 Return Me._type
             End Get
-            Set(ByVal value As Enums.ShowPosterType)
+            Set(ByVal value As Enums.ShowBannerType)
                 Me._type = value
             End Set
         End Property
@@ -364,7 +364,7 @@ Public Class Scraper
 
         Public Sub Clear()
             Me._url = String.Empty
-            Me._type = Enums.ShowPosterType.None
+            Me._type = Enums.ShowBannerType.None
             Me._localfile = String.Empty
             Me._image = New Images
         End Sub
@@ -856,7 +856,7 @@ Public Class Scraper
                                     Case "series"
                                         tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 End Select
                             End If
@@ -1613,16 +1613,16 @@ Public Class Scraper
             End Select
         End Function
 
-        Private Function StringToShowPosterType(ByVal sType As String) As Enums.ShowPosterType
+        Private Function StringToShowPosterType(ByVal sType As String) As Enums.ShowBannerType
             Select Case sType.ToLower
                 Case "blank"
-                    Return Enums.ShowPosterType.Blank
+                    Return Enums.ShowBannerType.Blank
                 Case "graphical"
-                    Return Enums.ShowPosterType.Graphical
+                    Return Enums.ShowBannerType.Graphical
                 Case "text"
-                    Return Enums.ShowPosterType.Text
+                    Return Enums.ShowBannerType.Text
                 Case Else
-                    Return Enums.ShowPosterType.None
+                    Return Enums.ShowBannerType.None
             End Select
         End Function
     End Class

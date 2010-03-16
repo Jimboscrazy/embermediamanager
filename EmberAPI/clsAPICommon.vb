@@ -212,7 +212,7 @@ Public Class Enums
         Small = 2
     End Enum
 
-    Public Enum ShowPosterType As Integer
+    Public Enum ShowBannerType As Integer
         None = 0
         Blank = 1
         Graphical = 2
