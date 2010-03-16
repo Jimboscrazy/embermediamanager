@@ -634,8 +634,6 @@ Public Class Scraper
         End Sub
 
         Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
-            Dim withCurrent As Boolean = Not String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.WithCurrent
-
             Try
                 If String.IsNullOrEmpty(sInfo.TVDBID) Then
                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Searching, 0, Nothing)
@@ -644,7 +642,7 @@ Public Class Scraper
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
+                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                     If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                         Me.SaveImages()
                                     Else
@@ -664,7 +662,7 @@ Public Class Scraper
                         Master.currShow = tmpTVDBShow.Show
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
+                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                 If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                     Me.SaveImages()
                                 Else
@@ -681,7 +679,7 @@ Public Class Scraper
                                 Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
-                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, withCurrent) = Windows.Forms.DialogResult.OK Then
+                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                         If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                             Me.SaveImages()
                                         Else
