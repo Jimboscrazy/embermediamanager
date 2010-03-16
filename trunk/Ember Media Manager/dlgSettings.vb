@@ -236,6 +236,8 @@ Public Class dlgSettings
         Me.chkUseCertForMPAA.Enabled = Me.chkCert.Checked
         If Not Me.chkCert.Checked Then
             Me.chkUseCertForMPAA.Checked = False
+            Me.chkOnlyValueForCert.Checked = False
+            Me.chkOnlyValueForCert.Enabled = False
         End If
         Me.SetApplyButton(True)
     End Sub
@@ -629,6 +631,10 @@ Public Class dlgSettings
 
     Private Sub chkUseCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
+
+        Me.chkOnlyValueForCert.Enabled = Me.chkUseCertForMPAA.Checked
+
+        If Not Me.chkUseCertForMPAA.Checked Then Me.chkOnlyValueForCert.Checked = False
     End Sub
 
     Private Sub txtAutoThumbs_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAutoThumbs.KeyPress
@@ -2350,6 +2356,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkOnlyValueForCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyValueForCert.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2771,6 +2781,7 @@ Public Class dlgSettings
             Master.eSettings.MarkNewShows = Me.chkMarkNewShows.Checked
             Master.eSettings.MarkNewEpisodes = Me.chkMarkNewEpisodes.Checked
             Master.eSettings.DVDOrderDefault = Me.chkDVDOrderDefault.Checked
+            Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3145,6 +3156,7 @@ Public Class dlgSettings
             Me.chkMarkNewShows.Checked = Master.eSettings.MarkNewShows
             Me.chkMarkNewEpisodes.Checked = Master.eSettings.MarkNewEpisodes
             Me.chkDVDOrderDefault.Checked = Master.eSettings.DVDOrderDefault
+            Me.chkOnlyValueForCert.Checked = Master.eSettings.OnlyValueForCert
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3648,6 +3660,7 @@ Public Class dlgSettings
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkDVDOrderDefault.Text = Master.eLang.GetString(797, "Default to using DVD Ordering")
+        Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")

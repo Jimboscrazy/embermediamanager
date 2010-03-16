@@ -318,6 +318,7 @@ Public Class Settings
     Private _marknewshows As Boolean
     Private _marknewepisodes As Boolean
     Private _dvdorderdefault As Boolean
+    Private _onlyvalueforcert As Boolean
 
     Public Property Version() As String
         Get
@@ -2966,6 +2967,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property OnlyValueForCert() As Boolean
+        Get
+            Return Me._onlyvalueforcert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._onlyvalueforcert = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -3267,6 +3277,7 @@ Public Class Settings
         Me._marknewshows = False
         Me._marknewepisodes = False
         Me._dvdorderdefault = False
+        Me._onlyvalueforcert = False
     End Sub
 
     Public Sub Save()

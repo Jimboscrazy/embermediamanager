@@ -409,7 +409,7 @@ Public Class dlgTVDBSearchResults
 
 
         Else
-            MsgBox(Master.eLang.GetString(999, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
+            MsgBox(Master.eLang.GetString(836, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
     End Sub
 End Class

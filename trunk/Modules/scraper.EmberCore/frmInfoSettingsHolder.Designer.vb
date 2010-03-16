@@ -63,6 +63,7 @@ Partial Class frmInfoSettingsHolder
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.chkCertification = New System.Windows.Forms.CheckBox
         Me.gbOptions.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
@@ -81,6 +82,7 @@ Partial Class frmInfoSettingsHolder
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkCertification)
         Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkMusicBy)
@@ -206,7 +208,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(6, 83)
+        Me.chkRuntime.Location = New System.Drawing.Point(6, 99)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 13
@@ -283,7 +285,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkVotes.AutoSize = True
         Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVotes.Location = New System.Drawing.Point(6, 115)
+        Me.chkVotes.Location = New System.Drawing.Point(6, 131)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(55, 17)
         Me.chkVotes.TabIndex = 6
@@ -305,7 +307,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkRating.AutoSize = True
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(6, 99)
+        Me.chkRating.Location = New System.Drawing.Point(6, 115)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 4
@@ -316,7 +318,7 @@ Partial Class frmInfoSettingsHolder
         '
         Me.chkRelease.AutoSize = True
         Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(6, 67)
+        Me.chkRelease.Location = New System.Drawing.Point(6, 83)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkRelease.TabIndex = 3
@@ -329,9 +331,9 @@ Partial Class frmInfoSettingsHolder
         Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMPAA.Location = New System.Drawing.Point(6, 51)
         Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(81, 17)
+        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
         Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA/Cert"
+        Me.chkMPAA.Text = "MPAA"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
         'chkYear
@@ -531,6 +533,17 @@ Partial Class frmInfoSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
+        'chkCertification
+        '
+        Me.chkCertification.AutoSize = True
+        Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCertification.Location = New System.Drawing.Point(6, 67)
+        Me.chkCertification.Name = "chkCertification"
+        Me.chkCertification.Size = New System.Drawing.Size(89, 17)
+        Me.chkCertification.TabIndex = 24
+        Me.chkCertification.Text = "Certification"
+        Me.chkCertification.UseVisualStyleBackColor = True
+        '
         'frmInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -599,5 +612,6 @@ Partial Class frmInfoSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
 
 End Class
