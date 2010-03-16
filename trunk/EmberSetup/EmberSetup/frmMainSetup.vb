@@ -637,8 +637,8 @@ Public Class frmMainSetup
                             If bwDoInstall.CancellationPending Then Return False
                             If f.Platform = CurrentEmberPlatform OrElse f.Platform = "Common" _
                                 OrElse (Not CheckIfWindows() AndAlso f.Platform = "Mono") Then
-                                If f.NeedInstall = True Then 'OrElse CurrentEmberVersion = String.Empty 
-                                    f.NeedInstall = True
+                                If f.NeedInstall = True OrElse (Not CheckIfWindows() AndAlso f.Platform = "Mono") Then
+                                    'f.NeedInstall = True
                                     'getFile = String.Format("Files/{0}.gz", f.Filename)
 
                                     If f.inCache Then
@@ -686,7 +686,7 @@ Public Class frmMainSetup
                             End If
 
                             For Each f As FileOfList In _NewFiles.Files
-                                If f.NeedInstall = True Then
+                                If f.NeedInstall = True OrElse (Not CheckIfWindows() AndAlso f.Platform = "Mono") Then
                                     If Stage = 1 AndAlso f.Platform = "Mono" Then Continue For
                                     'Me.bwDoInstall.ReportProgress(5, String.Format("Installing: {0}", f.Filename))
                                     'UncompressFile(Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename)), Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename)))
