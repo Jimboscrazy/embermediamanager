@@ -67,6 +67,9 @@ Public Class Settings
     Private _showbanner As Boolean
     Private _showbannertype As Enums.ShowBannerType
     Private _showpostersize As Enums.PosterSize
+    Private _allsbanner As Boolean
+    Private _allsbannertype As Enums.ShowBannerType
+    Private _allspostersize As Enums.PosterSize
     Private _showfanartsize As Enums.FanartSize
     Private _epfanartsize As Enums.FanartSize
     Private _seasonpostersize As Enums.SeasonPosterType
@@ -82,6 +85,8 @@ Public Class Settings
     Private _showfanartQuality As Integer
     Private _overwriteShowPoster As Boolean
     Private _overwriteShowFanart As Boolean
+    Private _allsposterQuality As Integer
+    Private _overwriteallsPoster As Boolean
     Private _epposterQuality As Integer
     Private _epfanartQuality As Integer
     Private _overwriteEpPoster As Boolean
@@ -134,6 +139,9 @@ Public Class Settings
     Private _resizeshowposter As Boolean
     Private _showposterheight As Integer
     Private _showposterwidth As Integer
+    Private _resizeallsposter As Boolean
+    Private _allsposterheight As Integer
+    Private _allsposterwidth As Integer
     Private _resizeepfanart As Boolean
     Private _epfanartheight As Integer
     Private _epfanartwidth As Integer
@@ -708,6 +716,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property IsAllSBanner() As Boolean
+        Get
+            Return Me._allsbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._allsbanner = value
+        End Set
+    End Property
+
+    Public Property PreferredAllSBannerType() As Enums.ShowBannerType
+        Get
+            Return Me._allsbannertype
+        End Get
+        Set(ByVal value As Enums.ShowBannerType)
+            Me._allsbannertype = value
+        End Set
+    End Property
+
+    Public Property PreferredAllSPosterSize() As Enums.PosterSize
+        Get
+            Return Me._allspostersize
+        End Get
+        Set(ByVal value As Enums.PosterSize)
+            Me._allspostersize = value
+        End Set
+    End Property
+
     Public Property PreferredShowFanartSize() As Enums.FanartSize
         Get
             Return Me._showfanartsize
@@ -840,6 +875,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._overwriteShowFanart = value
+        End Set
+    End Property
+
+    Public Property AllSPosterQuality() As Integer
+        Get
+            Return Me._allsposterQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsposterQuality = value
+        End Set
+    End Property
+
+    Public Property OverwriteAllSPoster() As Boolean
+        Get
+            Return Me._overwriteallsPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteallsPoster = value
         End Set
     End Property
 
@@ -1308,6 +1361,33 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._showposterheight = value
+        End Set
+    End Property
+
+    Public Property ResizeAllSPoster() As Boolean
+        Get
+            Return Me._resizeallsposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeallsposter = value
+        End Set
+    End Property
+
+    Public Property AllSPosterWidth() As Integer
+        Get
+            Return Me._allsposterwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsposterwidth = value
+        End Set
+    End Property
+
+    Public Property AllSPosterHeight() As Integer
+        Get
+            Return Me._allsposterheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsposterheight = value
         End Set
     End Property
 
@@ -3044,6 +3124,9 @@ Public Class Settings
         Me._showbanner = True
         Me._showbannertype = Enums.ShowBannerType.None
         Me._showpostersize = Enums.PosterSize.Xlrg
+        Me._allsbanner = True
+        Me._allsbannertype = Enums.ShowBannerType.None
+        Me._allspostersize = Enums.PosterSize.Xlrg
         Me._showfanartsize = Enums.FanartSize.Lrg
         Me._epfanartsize = Enums.FanartSize.Lrg
         Me._seasonpostersize = Enums.SeasonPosterType.None
@@ -3059,6 +3142,8 @@ Public Class Settings
         Me._showfanartQuality = 0
         Me._overwriteShowPoster = True
         Me._overwriteShowFanart = True
+        Me._allsposterQuality = 0
+        Me._overwriteallsPoster = True
         Me._epposterQuality = 0
         Me._epfanartQuality = 0
         Me._overwriteEpPoster = True
@@ -3113,6 +3198,9 @@ Public Class Settings
         Me._resizeshowposter = False
         Me._showposterheight = 0
         Me._showposterwidth = 0
+        Me._resizeallsposter = False
+        Me._allsposterheight = 0
+        Me._allsposterwidth = 0
         Me._resizeepfanart = False
         Me._epfanartheight = 0
         Me._epfanartwidth = 0

@@ -2364,6 +2364,90 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub rbBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbBanner.CheckedChanged, rbPoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.cbShowPosterSize.Items.Clear()
+
+        If Me.rbBanner.Checked Then
+            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(746, "Blank"), Master.eLang.GetString(747, "Graphical"), Master.eLang.GetString(748, "Text")})
+        Else
+            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        End If
+        Me.cbShowPosterSize.SelectedIndex = 0
+    End Sub
+
+    Private Sub rbAllSBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbAllSBanner.CheckedChanged, rbAllSPoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.cbAllSPosterSize.Items.Clear()
+
+        If Me.rbAllSBanner.Checked Then
+            Me.cbAllSPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(746, "Blank"), Master.eLang.GetString(747, "Graphical"), Master.eLang.GetString(748, "Text")})
+        Else
+            Me.cbAllSPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        End If
+        Me.cbAllSPosterSize.SelectedIndex = 0
+    End Sub
+
+    Private Sub chAllSPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAllSPosterSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkOverwriteAllSPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteAllSPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkResizeAllSPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkResizeAllSPoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtAllSPosterWidth.Enabled = chkResizeAllSPoster.Checked
+        txtAllSPosterHeight.Enabled = chkResizeAllSPoster.Checked
+
+        If Not chkResizeAllSPoster.Checked Then
+            txtAllSPosterWidth.Text = String.Empty
+            txtAllSPosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtAllSPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAllSPosterWidth.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtAllSPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAllSPosterWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtAllSPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAllSPosterHeight.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtAllSPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAllSPosterHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub tbAllSPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbAllSPosterQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblAllSPosterQual.Text = tbAllSPosterQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblAllSPosterQual
+            Select Case True
+                Case tbAllSPosterQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbAllSPosterQual.Value > 95 OrElse tbAllSPosterQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbAllSPosterQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbAllSPosterQual.Value, 300 - tbAllSPosterQual.Value, 0)
+                Case tbAllSPosterQual.Value >= 80 AndAlso tbAllSPosterQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbAllSPosterQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbAllSPosterQual.Value - 20)), 0)
+                Case tbAllSPosterQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbAllSPosterQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2464,6 +2548,13 @@ Public Class dlgSettings
                 Master.eSettings.IsShowBanner = False
                 Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Enums.PosterSize)
             End If
+            If Me.rbAllSBanner.Checked Then
+                Master.eSettings.IsAllSBanner = True
+                Master.eSettings.PreferredAllSBannerType = DirectCast(Me.cbAllSPosterSize.SelectedIndex, Enums.ShowBannerType)
+            Else
+                Master.eSettings.IsAllSBanner = False
+                Master.eSettings.PreferredAllSPosterSize = DirectCast(Me.cbAllSPosterSize.SelectedIndex, Enums.PosterSize)
+            End If
             Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredSeasonPosterSize = DirectCast(Me.cbSeaPosterSize.SelectedIndex, Enums.SeasonPosterType)
@@ -2479,6 +2570,8 @@ Public Class dlgSettings
             Master.eSettings.ShowFanartQuality = Me.tbShowFanartQual.Value
             Master.eSettings.OverwriteShowPoster = Me.chkOverwriteShowPoster.Checked
             Master.eSettings.OverwriteShowFanart = Me.chkOverwriteShowFanart.Checked
+            Master.eSettings.AllSPosterQuality = Me.tbAllSPosterQual.Value
+            Master.eSettings.OverwriteAllSPoster = Me.chkOverwriteAllSPoster.Checked
             Master.eSettings.EpPosterQuality = Me.tbEpPosterQual.Value
             Master.eSettings.EpFanartQuality = Me.tbEpFanartQual.Value
             Master.eSettings.OverwriteEpPoster = Me.chkOverwriteEpPoster.Checked
@@ -2524,6 +2617,9 @@ Public Class dlgSettings
             Master.eSettings.ResizeShowPoster = Me.chkResizeShowPoster.Checked
             Master.eSettings.ShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtShowPosterHeight.Text), Convert.ToInt32(Me.txtShowPosterHeight.Text), 0)
             Master.eSettings.ShowPosterWidth = If(Not String.IsNullOrEmpty(Me.txtShowPosterWidth.Text), Convert.ToInt32(Me.txtShowPosterWidth.Text), 0)
+            Master.eSettings.ResizeAllSPoster = Me.chkResizeAllSPoster.Checked
+            Master.eSettings.AllSPosterHeight = If(Not String.IsNullOrEmpty(Me.txtAllSPosterHeight.Text), Convert.ToInt32(Me.txtAllSPosterHeight.Text), 0)
+            Master.eSettings.AllSPosterWidth = If(Not String.IsNullOrEmpty(Me.txtAllSPosterWidth.Text), Convert.ToInt32(Me.txtAllSPosterWidth.Text), 0)
             Master.eSettings.ResizeEpFanart = Me.chkResizeEpFanart.Checked
             Master.eSettings.EpFanartHeight = If(Not String.IsNullOrEmpty(Me.txtEpFanartHeight.Text), Convert.ToInt32(Me.txtEpFanartHeight.Text), 0)
             Master.eSettings.EpFanartWidth = If(Not String.IsNullOrEmpty(Me.txtEpFanartWidth.Text), Convert.ToInt32(Me.txtEpFanartWidth.Text), 0)
@@ -2880,6 +2976,13 @@ Public Class dlgSettings
                 Me.rbPoster.Checked = True
                 Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
             End If
+            If Master.eSettings.IsAllSBanner Then
+                Me.rbAllSBanner.Checked = True
+                Me.cbAllSPosterSize.SelectedIndex = Master.eSettings.PreferredAllSBannerType
+            Else
+                Me.rbAllSPoster.Checked = True
+                Me.cbAllSPosterSize.SelectedIndex = Master.eSettings.PreferredAllSPosterSize
+            End If
             Me.cbShowFanartSize.SelectedIndex = Master.eSettings.PreferredShowFanartSize
             Me.cbEpFanartSize.SelectedIndex = Master.eSettings.PreferredEpFanartSize
             Me.cbSeaPosterSize.SelectedIndex = Master.eSettings.PreferredSeasonPosterSize
@@ -2891,6 +2994,7 @@ Public Class dlgSettings
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
             Me.tbShowPosterQual.Value = Master.eSettings.ShowPosterQuality
             Me.tbShowFanartQual.Value = Master.eSettings.ShowFanartQuality
+            Me.tbAllSPosterQual.Value = Master.eSettings.AllSPosterQuality
             Me.tbEpPosterQual.Value = Master.eSettings.EpPosterQuality
             Me.tbEpFanartQual.Value = Master.eSettings.EpFanartQuality
             Me.tbSeaPosterQual.Value = Master.eSettings.SeasonPosterQuality
@@ -2898,6 +3002,7 @@ Public Class dlgSettings
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
             Me.chkOverwriteShowPoster.Checked = Master.eSettings.OverwriteShowPoster
+            Me.chkOverwriteAllSPoster.Checked = Master.eSettings.OverwriteAllSPoster
             Me.chkOverwriteShowFanart.Checked = Master.eSettings.OverwriteShowFanart
             Me.chkOverwriteEpPoster.Checked = Master.eSettings.OverwriteEpPoster
             Me.chkOverwriteEpFanart.Checked = Master.eSettings.OverwriteEpFanart
@@ -2948,6 +3053,11 @@ Public Class dlgSettings
             If Master.eSettings.ResizeShowPoster Then
                 Me.txtShowPosterWidth.Text = Master.eSettings.ShowPosterWidth.ToString
                 Me.txtShowPosterHeight.Text = Master.eSettings.ShowPosterHeight.ToString
+            End If
+            Me.chkResizeAllSPoster.Checked = Master.eSettings.ResizeAllSPoster
+            If Master.eSettings.ResizeAllSPoster Then
+                Me.txtAllSPosterWidth.Text = Master.eSettings.AllSPosterWidth.ToString
+                Me.txtAllSPosterHeight.Text = Master.eSettings.AllSPosterHeight.ToString
             End If
             Me.chkResizeEpFanart.Checked = Master.eSettings.ResizeEpFanart
             If Master.eSettings.ResizeEpFanart Then
@@ -3361,7 +3471,7 @@ Public Class dlgSettings
         Me.Label5.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
         Me.chkLogErrors.Text = Master.eLang.GetString(435, "Log Errors to File")
         Me.Label31.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
-        Me.Label50.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
+        Me.Label50.Text = Me.Label31.Text
         Me.GroupBox3.Text = Master.eLang.GetString(437, "Clean Files")
         Me.tpStandard.Text = Master.eLang.GetString(438, "Standard")
         Me.tpExpert.Text = Master.eLang.GetString(439, "Expert")
@@ -3370,8 +3480,8 @@ Public Class dlgSettings
         Me.Label25.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         Me.gbFilters.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.chkProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
-        Me.chkShowProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
-        Me.chkEpProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        Me.chkShowProperCase.Text = Me.chkProperCase.Text
+        Me.chkEpProperCase.Text = Me.chkProperCase.Text
         Me.GroupBox12.Text = Me.GroupBox4.Text
         Me.chkShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         Me.gbGenreFilter.Text = Master.eLang.GetString(454, "Genre Language Filter:")
@@ -3391,7 +3501,7 @@ Public Class dlgSettings
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
         Me.GroupBox8.Text = Master.eLang.GetString(471, "File Naming")
-        Me.gbTVNaming.Text = Master.eLang.GetString(471, "File Naming")
+        Me.gbTVNaming.Text = Me.GroupBox8.Text
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.GroupBox21.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
@@ -3405,15 +3515,15 @@ Public Class dlgSettings
         Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
         Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
-        Me.btnAddTVSource.Text = Master.eLang.GetString(407, "Add Source")
-        Me.GroupBox14.Text = Master.eLang.GetString(148, "Poster")
+        Me.btnAddTVSource.Text = Me.btnMovieAddFolder.Text
+        Me.GroupBox14.Text = Me.GroupBox5.Text
         Me.Label24.Text = Master.eLang.GetString(478, "Poster Quality:")
         Me.Label11.Text = Master.eLang.GetString(479, "Max Width:")
         Me.Label12.Text = Master.eLang.GetString(480, "Max Height:")
         Me.chkResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
         Me.lblPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
         Me.chkOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
-        Me.GroupBox13.Text = Master.eLang.GetString(149, "Fanart")
+        Me.GroupBox13.Text = Me.GroupBox6.Text
         Me.chkFanartOnly.Text = Master.eLang.GetString(145, "Only")
         Me.Label26.Text = Master.eLang.GetString(484, "Fanart Quality:")
         Me.Label9.Text = Me.Label11.Text
@@ -3448,7 +3558,7 @@ Public Class dlgSettings
         Me.gbRTFormat.Text = Master.eLang.GetString(515, "Runtime Format")
         Me.chkUseMIDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkScanMediaInfo.Text = Master.eLang.GetString(517, "Scan Meta Data")
-        Me.chkTVScanMetaData.Text = Master.eLang.GetString(517, "Scan Meta Data")
+        Me.chkTVScanMetaData.Text = Me.chkScanMediaInfo.Text
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
@@ -3457,7 +3567,7 @@ Public Class dlgSettings
         Me.GroupBox16.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
-        Me.GroupBox31.Text = Master.eLang.GetString(59, "Meta Data")
+        Me.GroupBox31.Text = Me.GroupBox26.Text
 
         Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing Trailers")
         Me.chkOverwriteTrailer.Text = Master.eLang.GetString(523, "Overwrite Trailer")
@@ -3530,7 +3640,7 @@ Public Class dlgSettings
         Me.chkScraperEpDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkScraperEpCredits.Text = Master.eLang.GetString(729, "Credits")
         Me.chkScraperEpActors.Text = Master.eLang.GetString(725, "Actors")
-        Me.GroupBox1.Text = Master.eLang.GetString(429, "Miscellaneous")
+        Me.GroupBox1.Text = Me.GroupBox4.Text
         Me.lblLimit.Text = Master.eLang.GetString(578, "Limit:")
         Me.lblLimit2.Text = Me.lblLimit.Text
         Me.GroupBox27.Text = Master.eLang.GetString(581, "Missing Items Filter")
@@ -3550,14 +3660,14 @@ Public Class dlgSettings
         Me.GroupBox28.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
         Me.gbTVMIDefaults.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
         Me.Label34.Text = Master.eLang.GetString(626, "File Type")
-        Me.Label49.Text = Master.eLang.GetString(626, "File Type")
+        Me.Label49.Text = Me.Label34.Text
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
         Me.chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
-        Me.chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
+        Me.chkTVCleanDB.Text = Me.chkCleanDB.Text
         Me.chkIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
-        Me.chkTVIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
+        Me.chkTVIgnoreLastScan.Text = Me.chkIgnoreLastScan.Text
         Me.gbShowFilter.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         Me.gbEpFilter.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
         Me.gbProxy.Text = Master.eLang.GetString(672, "Proxy")
@@ -3569,20 +3679,20 @@ Public Class dlgSettings
         Me.lblProxyUN.Text = Master.eLang.GetString(425, "Username:")
         Me.lblProxyPW.Text = Master.eLang.GetString(426, "Password:")
         Me.lblProxyDomain.Text = Master.eLang.GetString(678, "Domain:")
-        Me.gbTVMisc.Text = Master.eLang.GetString(429, "Miscellaneous")
+        Me.gbTVMisc.Text = Me.GroupBox4.Text
         Me.lblRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
         Me.gbTVListOptions.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbShowListOptions.Text = Master.eLang.GetString(680, "Shows")
         Me.gbSeasonListOptions.Text = Master.eLang.GetString(681, "Seasons")
         Me.gbEpisodeListOptions.Text = Master.eLang.GetString(682, "Episodes")
-        Me.chkShowPosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
-        Me.chkSeasonPosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
-        Me.chkEpisodePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
-        Me.chkShowFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
-        Me.chkSeasonFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
-        Me.chkEpisodeFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
-        Me.chkShowNfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
-        Me.chkEpisodeNfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
+        Me.chkShowPosterCol.Text = Me.chkMoviePosterCol.Text
+        Me.chkSeasonPosterCol.Text = Me.chkMoviePosterCol.Text
+        Me.chkEpisodePosterCol.Text = Me.chkMoviePosterCol.Text
+        Me.chkShowFanartCol.Text = Me.chkMovieFanartCol.Text
+        Me.chkSeasonFanartCol.Text = Me.chkMovieFanartCol.Text
+        Me.chkEpisodeFanartCol.Text = Me.chkMovieFanartCol.Text
+        Me.chkShowNfoCol.Text = Me.chkMovieInfoCol.Text
+        Me.chkEpisodeNfoCol.Text = Me.chkMovieInfoCol.Text
         Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
         Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
         Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
@@ -3595,49 +3705,49 @@ Public Class dlgSettings
         Me.lblSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")
         Me.lblEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
         Me.lblSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
-        Me.lblEpisodeRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
+        Me.lblEpisodeRetrieve.Text = Me.lblSeasonRetrieve.Text
         Me.btnAddShowRegex.Text = Master.eLang.GetString(695, "Edit Regex")
-        Me.gbShowPosterOpts.Text = Master.eLang.GetString(148, "Poster")
+        Me.gbShowPosterOpts.Text = Me.GroupBox5.Text
         Me.lblShowPosterSize.Text = Master.eLang.GetString(730, "Preferred Poster Type")
-        Me.chkOverwriteShowPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
-        Me.chkResizeShowPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
-        Me.lblShowPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblShowPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblShowPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
-        Me.gbShowFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        Me.lblShowFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
-        Me.chkOverwriteShowFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
-        Me.chkResizeShowFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
-        Me.lblShowFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblShowFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblShowFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
-        Me.gbEpPosterOpts.Text = Master.eLang.GetString(148, "Poster")
-        Me.chkOverwriteEpPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
-        Me.chkResizeEpPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
-        Me.lblEpPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblEpPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblEpPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
-        Me.gbEpFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        Me.lblEpFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
-        Me.chkOverwriteEpFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
-        Me.chkResizeEpFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
-        Me.lblEpFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblEpFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
-        Me.gbSeaPosterOpts.Text = Master.eLang.GetString(148, "Poster")
-        Me.lblSeaPosterSize.Text = Master.eLang.GetString(730, "Preferred Poster Type")
-        Me.chkSeaOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
-        Me.chkSeaResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
-        Me.lblSeaPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblSeaPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblSeaPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
-        Me.gbSeaFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        Me.lblSeaFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
-        Me.chkSeaOverwriteFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
-        Me.chkSeaResizeFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
-        Me.lblSeaFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblSeaFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.lblSeaFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
+        Me.chkOverwriteShowPoster.Text = Me.chkOverwritePoster.Text
+        Me.chkResizeShowPoster.Text = Me.chkResizePoster.Text
+        Me.lblShowPosterWidth.Text = Me.Label11.Text
+        Me.lblShowPosterHeight.Text = Me.Label12.Text
+        Me.lblShowPosterQ.Text = Me.Label24.Text
+        Me.gbShowFanartOpts.Text = Me.GroupBox6.Text
+        Me.lblShowFanartSize.Text = Me.lblFanartSize.Text
+        Me.chkOverwriteShowFanart.Text = Me.chkOverwriteFanart.Text
+        Me.chkResizeShowFanart.Text = Me.chkResizeFanart.Text
+        Me.lblShowFanartWidth.Text = Me.Label11.Text
+        Me.lblShowFanartHeight.Text = Me.Label12.Text
+        Me.lblShowFanartQ.Text = Me.Label26.Text
+        Me.gbEpPosterOpts.Text = Me.GroupBox5.Text
+        Me.chkOverwriteEpPoster.Text = Me.chkOverwritePoster.Text
+        Me.chkResizeEpPoster.Text = Me.chkResizePoster.Text
+        Me.lblEpPosterWidth.Text = Me.Label11.Text
+        Me.lblEpPosterHeight.Text = Me.Label12.Text
+        Me.lblEpPosterQ.Text = Me.Label24.Text
+        Me.gbEpFanartOpts.Text = Me.GroupBox6.Text
+        Me.lblEpFanartSize.Text = Me.lblFanartSize.Text
+        Me.chkOverwriteEpFanart.Text = Me.chkOverwriteFanart.Text
+        Me.chkResizeEpFanart.Text = Me.chkResizeFanart.Text
+        Me.lblEpFanartWidth.Text = Me.Label11.Text
+        Me.lblEpFanartHeight.Text = Me.Label12.Text
+        Me.lblEpFanartQ.Text = Me.Label26.Text
+        Me.gbSeaPosterOpts.Text = Me.GroupBox5.Text
+        Me.lblSeaPosterSize.Text = Me.lblShowPosterSize.Text
+        Me.chkSeaOverwritePoster.Text = Me.chkOverwritePoster.Text
+        Me.chkSeaResizePoster.Text = Me.chkResizePoster.Text
+        Me.lblSeaPosterWidth.Text = Me.Label11.Text
+        Me.lblSeaPosterHeight.Text = Me.Label12.Text
+        Me.lblSeaPosterQ.Text = Me.Label24.Text
+        Me.gbSeaFanartOpts.Text = Me.GroupBox6.Text
+        Me.lblSeaFanartSize.Text = Me.lblFanartSize.Text
+        Me.chkSeaOverwriteFanart.Text = Me.chkOverwriteFanart.Text
+        Me.chkSeaResizeFanart.Text = Me.chkResizeFanart.Text
+        Me.lblSeaFanartWidth.Text = Me.Label11.Text
+        Me.lblSeaFanartHeight.Text = Me.Label12.Text
+        Me.lblSeaFanartQ.Text = Me.Label26.Text
         Me.Label51.Text = Master.eLang.GetString(732, "<h> = Hours, <m> = Minutes")
         Me.chkDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
@@ -3678,7 +3788,16 @@ Public Class dlgSettings
         Me.chkDVDOrderDefault.Text = Master.eLang.GetString(797, "Default to using DVD Ordering")
         Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
         Me.rbBanner.Text = Master.eLang.GetString(838, "Banner")
-        Me.rbPoster.Text = Master.eLang.GetString(148, "Poster")
+        Me.rbPoster.Text = Me.GroupBox5.Text
+        Me.rbAllSBanner.Text = Me.rbBanner.Text
+        Me.rbAllSPoster.Text = Me.GroupBox5.Text
+        Me.gbAllSPosterOpts.Text = Me.gbAllSeasonPoster.Text
+        Me.lblAllSPosterSize.Text = Me.lblShowPosterSize.Text
+        Me.chkOverwriteAllSPoster.Text = Me.chkOverwritePoster.Text
+        Me.chkResizeAllSPoster.Text = Me.chkResizePoster.Text
+        Me.lblAllSPosterWidth.Text = Me.Label11.Text
+        Me.lblAllSPosterHeight.Text = Me.Label12.Text
+        Me.lblAllSPosterQ.Text = Me.Label24.Text
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -3704,7 +3823,7 @@ Public Class dlgSettings
         Me.cbAutoETSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbShowFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(148, "Poster"), Master.eLang.GetString(558, "Wide")})
+        Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Me.GroupBox5.Text, Master.eLang.GetString(558, "Wide")})
         Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
@@ -4245,16 +4364,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub rbBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbBanner.CheckedChanged, rbPoster.CheckedChanged
-        Me.SetApplyButton(True)
-
-        Me.cbShowPosterSize.Items.Clear()
-
-        If Me.rbBanner.Checked Then
-            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Master.eLang.GetString(746, "Blank"), Master.eLang.GetString(747, "Graphical"), Master.eLang.GetString(748, "Text")})
-        Else
-            Me.cbShowPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
-        End If
-        Me.cbShowPosterSize.SelectedIndex = 0
-    End Sub
 End Class

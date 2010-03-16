@@ -361,6 +361,20 @@ Partial Class dlgSettings
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox
         Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.gbAllSPosterOpts = New System.Windows.Forms.GroupBox
+        Me.rbAllSPoster = New System.Windows.Forms.RadioButton
+        Me.rbAllSBanner = New System.Windows.Forms.RadioButton
+        Me.txtAllSPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtAllSPosterHeight = New System.Windows.Forms.TextBox
+        Me.lblAllSPosterQual = New System.Windows.Forms.Label
+        Me.tbAllSPosterQual = New System.Windows.Forms.TrackBar
+        Me.lblAllSPosterQ = New System.Windows.Forms.Label
+        Me.lblAllSPosterWidth = New System.Windows.Forms.Label
+        Me.lblAllSPosterHeight = New System.Windows.Forms.Label
+        Me.chkResizeAllSPoster = New System.Windows.Forms.CheckBox
+        Me.lblAllSPosterSize = New System.Windows.Forms.Label
+        Me.cbAllSPosterSize = New System.Windows.Forms.ComboBox
+        Me.chkOverwriteAllSPoster = New System.Windows.Forms.CheckBox
         Me.gbShowPosterOpts = New System.Windows.Forms.GroupBox
         Me.rbPoster = New System.Windows.Forms.RadioButton
         Me.rbBanner = New System.Windows.Forms.RadioButton
@@ -629,6 +643,8 @@ Partial Class dlgSettings
         Me.TabControl3.SuspendLayout()
         Me.TabPage8.SuspendLayout()
         Me.TabPage5.SuspendLayout()
+        Me.gbAllSPosterOpts.SuspendLayout()
+        CType(Me.tbAllSPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbShowPosterOpts.SuspendLayout()
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbShowFanartOpts.SuspendLayout()
@@ -4382,7 +4398,7 @@ Partial Class dlgSettings
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
         Me.pnlTVImages.Location = New System.Drawing.Point(251, 165)
         Me.pnlTVImages.Name = "pnlTVImages"
-        Me.pnlTVImages.Size = New System.Drawing.Size(617, 400)
+        Me.pnlTVImages.Size = New System.Drawing.Size(617, 402)
         Me.pnlTVImages.TabIndex = 71
         Me.pnlTVImages.Visible = False
         '
@@ -4393,10 +4409,10 @@ Partial Class dlgSettings
         Me.TabControl3.Controls.Add(Me.TabPage6)
         Me.TabControl3.Controls.Add(Me.TabPage7)
         Me.TabControl3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.TabControl3.Location = New System.Drawing.Point(3, 2)
+        Me.TabControl3.Location = New System.Drawing.Point(6, 2)
         Me.TabControl3.Name = "TabControl3"
         Me.TabControl3.SelectedIndex = 0
-        Me.TabControl3.Size = New System.Drawing.Size(609, 394)
+        Me.TabControl3.Size = New System.Drawing.Size(609, 397)
         Me.TabControl3.TabIndex = 4
         '
         'TabPage8
@@ -4435,15 +4451,176 @@ Partial Class dlgSettings
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.gbAllSPosterOpts)
         Me.TabPage5.Controls.Add(Me.gbShowPosterOpts)
         Me.TabPage5.Controls.Add(Me.gbShowFanartOpts)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(601, 368)
+        Me.TabPage5.Size = New System.Drawing.Size(601, 371)
         Me.TabPage5.TabIndex = 0
         Me.TabPage5.Text = "TV Show"
         Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'gbAllSPosterOpts
+        '
+        Me.gbAllSPosterOpts.Controls.Add(Me.rbAllSPoster)
+        Me.gbAllSPosterOpts.Controls.Add(Me.rbAllSBanner)
+        Me.gbAllSPosterOpts.Controls.Add(Me.txtAllSPosterWidth)
+        Me.gbAllSPosterOpts.Controls.Add(Me.txtAllSPosterHeight)
+        Me.gbAllSPosterOpts.Controls.Add(Me.lblAllSPosterQual)
+        Me.gbAllSPosterOpts.Controls.Add(Me.tbAllSPosterQual)
+        Me.gbAllSPosterOpts.Controls.Add(Me.lblAllSPosterQ)
+        Me.gbAllSPosterOpts.Controls.Add(Me.lblAllSPosterWidth)
+        Me.gbAllSPosterOpts.Controls.Add(Me.lblAllSPosterHeight)
+        Me.gbAllSPosterOpts.Controls.Add(Me.chkResizeAllSPoster)
+        Me.gbAllSPosterOpts.Controls.Add(Me.lblAllSPosterSize)
+        Me.gbAllSPosterOpts.Controls.Add(Me.cbAllSPosterSize)
+        Me.gbAllSPosterOpts.Controls.Add(Me.chkOverwriteAllSPoster)
+        Me.gbAllSPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbAllSPosterOpts.Location = New System.Drawing.Point(238, 5)
+        Me.gbAllSPosterOpts.Name = "gbAllSPosterOpts"
+        Me.gbAllSPosterOpts.Size = New System.Drawing.Size(228, 191)
+        Me.gbAllSPosterOpts.TabIndex = 4
+        Me.gbAllSPosterOpts.TabStop = False
+        Me.gbAllSPosterOpts.Text = "All Season Posters"
+        '
+        'rbAllSPoster
+        '
+        Me.rbAllSPoster.AutoSize = True
+        Me.rbAllSPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbAllSPoster.Location = New System.Drawing.Point(93, 30)
+        Me.rbAllSPoster.Name = "rbAllSPoster"
+        Me.rbAllSPoster.Size = New System.Drawing.Size(57, 17)
+        Me.rbAllSPoster.TabIndex = 48
+        Me.rbAllSPoster.TabStop = True
+        Me.rbAllSPoster.Text = "Poster"
+        Me.rbAllSPoster.UseVisualStyleBackColor = True
+        '
+        'rbAllSBanner
+        '
+        Me.rbAllSBanner.AutoSize = True
+        Me.rbAllSBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbAllSBanner.Location = New System.Drawing.Point(8, 30)
+        Me.rbAllSBanner.Name = "rbAllSBanner"
+        Me.rbAllSBanner.Size = New System.Drawing.Size(62, 17)
+        Me.rbAllSBanner.TabIndex = 47
+        Me.rbAllSBanner.TabStop = True
+        Me.rbAllSBanner.Text = "Banner"
+        Me.rbAllSBanner.UseVisualStyleBackColor = True
+        '
+        'txtAllSPosterWidth
+        '
+        Me.txtAllSPosterWidth.Enabled = False
+        Me.txtAllSPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAllSPosterWidth.Location = New System.Drawing.Point(71, 113)
+        Me.txtAllSPosterWidth.Name = "txtAllSPosterWidth"
+        Me.txtAllSPosterWidth.Size = New System.Drawing.Size(40, 22)
+        Me.txtAllSPosterWidth.TabIndex = 3
+        '
+        'txtAllSPosterHeight
+        '
+        Me.txtAllSPosterHeight.Enabled = False
+        Me.txtAllSPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAllSPosterHeight.Location = New System.Drawing.Point(182, 113)
+        Me.txtAllSPosterHeight.Name = "txtAllSPosterHeight"
+        Me.txtAllSPosterHeight.Size = New System.Drawing.Size(40, 22)
+        Me.txtAllSPosterHeight.TabIndex = 4
+        '
+        'lblAllSPosterQual
+        '
+        Me.lblAllSPosterQual.AutoSize = True
+        Me.lblAllSPosterQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblAllSPosterQual.Location = New System.Drawing.Point(183, 161)
+        Me.lblAllSPosterQual.Name = "lblAllSPosterQual"
+        Me.lblAllSPosterQual.Size = New System.Drawing.Size(29, 17)
+        Me.lblAllSPosterQual.TabIndex = 46
+        Me.lblAllSPosterQual.Text = "100"
+        '
+        'tbAllSPosterQual
+        '
+        Me.tbAllSPosterQual.AutoSize = False
+        Me.tbAllSPosterQual.BackColor = System.Drawing.Color.White
+        Me.tbAllSPosterQual.LargeChange = 10
+        Me.tbAllSPosterQual.Location = New System.Drawing.Point(7, 154)
+        Me.tbAllSPosterQual.Maximum = 100
+        Me.tbAllSPosterQual.Name = "tbAllSPosterQual"
+        Me.tbAllSPosterQual.Size = New System.Drawing.Size(179, 27)
+        Me.tbAllSPosterQual.TabIndex = 5
+        Me.tbAllSPosterQual.TickFrequency = 10
+        Me.tbAllSPosterQual.Value = 100
+        '
+        'lblAllSPosterQ
+        '
+        Me.lblAllSPosterQ.AutoSize = True
+        Me.lblAllSPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAllSPosterQ.Location = New System.Drawing.Point(3, 141)
+        Me.lblAllSPosterQ.Name = "lblAllSPosterQ"
+        Me.lblAllSPosterQ.Size = New System.Drawing.Size(82, 13)
+        Me.lblAllSPosterQ.TabIndex = 44
+        Me.lblAllSPosterQ.Text = "Poster Quality:"
+        '
+        'lblAllSPosterWidth
+        '
+        Me.lblAllSPosterWidth.AutoSize = True
+        Me.lblAllSPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAllSPosterWidth.Location = New System.Drawing.Point(3, 117)
+        Me.lblAllSPosterWidth.Name = "lblAllSPosterWidth"
+        Me.lblAllSPosterWidth.Size = New System.Drawing.Size(66, 13)
+        Me.lblAllSPosterWidth.TabIndex = 43
+        Me.lblAllSPosterWidth.Text = "Max Width:"
+        '
+        'lblAllSPosterHeight
+        '
+        Me.lblAllSPosterHeight.AutoSize = True
+        Me.lblAllSPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAllSPosterHeight.Location = New System.Drawing.Point(112, 117)
+        Me.lblAllSPosterHeight.Name = "lblAllSPosterHeight"
+        Me.lblAllSPosterHeight.Size = New System.Drawing.Size(69, 13)
+        Me.lblAllSPosterHeight.TabIndex = 42
+        Me.lblAllSPosterHeight.Text = "Max Height:"
+        '
+        'chkResizeAllSPoster
+        '
+        Me.chkResizeAllSPoster.AutoSize = True
+        Me.chkResizeAllSPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkResizeAllSPoster.Location = New System.Drawing.Point(6, 92)
+        Me.chkResizeAllSPoster.Name = "chkResizeAllSPoster"
+        Me.chkResizeAllSPoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkResizeAllSPoster.TabIndex = 2
+        Me.chkResizeAllSPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeAllSPoster.UseVisualStyleBackColor = True
+        '
+        'lblAllSPosterSize
+        '
+        Me.lblAllSPosterSize.AutoSize = True
+        Me.lblAllSPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAllSPosterSize.Location = New System.Drawing.Point(3, 14)
+        Me.lblAllSPosterSize.Name = "lblAllSPosterSize"
+        Me.lblAllSPosterSize.Size = New System.Drawing.Size(115, 13)
+        Me.lblAllSPosterSize.TabIndex = 14
+        Me.lblAllSPosterSize.Text = "Preferred Poster Type"
+        '
+        'cbAllSPosterSize
+        '
+        Me.cbAllSPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbAllSPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbAllSPosterSize.FormattingEnabled = True
+        Me.cbAllSPosterSize.Location = New System.Drawing.Point(6, 52)
+        Me.cbAllSPosterSize.Name = "cbAllSPosterSize"
+        Me.cbAllSPosterSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbAllSPosterSize.TabIndex = 0
+        '
+        'chkOverwriteAllSPoster
+        '
+        Me.chkOverwriteAllSPoster.AutoSize = True
+        Me.chkOverwriteAllSPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOverwriteAllSPoster.Location = New System.Drawing.Point(6, 76)
+        Me.chkOverwriteAllSPoster.Name = "chkOverwriteAllSPoster"
+        Me.chkOverwriteAllSPoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkOverwriteAllSPoster.TabIndex = 1
+        Me.chkOverwriteAllSPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteAllSPoster.UseVisualStyleBackColor = True
         '
         'gbShowPosterOpts
         '
@@ -4619,7 +4796,7 @@ Partial Class dlgSettings
         Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartSize)
         Me.gbShowFanartOpts.Controls.Add(Me.chkOverwriteShowFanart)
         Me.gbShowFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbShowFanartOpts.Location = New System.Drawing.Point(238, 5)
+        Me.gbShowFanartOpts.Location = New System.Drawing.Point(4, 199)
         Me.gbShowFanartOpts.Name = "gbShowFanartOpts"
         Me.gbShowFanartOpts.Size = New System.Drawing.Size(228, 167)
         Me.gbShowFanartOpts.TabIndex = 3
@@ -6694,6 +6871,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6703,7 +6881,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
@@ -6836,6 +7013,9 @@ Partial Class dlgSettings
         Me.TabPage8.ResumeLayout(False)
         Me.TabPage8.PerformLayout()
         Me.TabPage5.ResumeLayout(False)
+        Me.gbAllSPosterOpts.ResumeLayout(False)
+        Me.gbAllSPosterOpts.PerformLayout()
+        CType(Me.tbAllSPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbShowPosterOpts.ResumeLayout(False)
         Me.gbShowPosterOpts.PerformLayout()
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
@@ -7426,4 +7606,18 @@ Partial Class dlgSettings
     Friend WithEvents chkOnlyValueForCert As System.Windows.Forms.CheckBox
     Friend WithEvents rbPoster As System.Windows.Forms.RadioButton
     Friend WithEvents rbBanner As System.Windows.Forms.RadioButton
+    Friend WithEvents gbAllSPosterOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents rbAllSPoster As System.Windows.Forms.RadioButton
+    Friend WithEvents rbAllSBanner As System.Windows.Forms.RadioButton
+    Friend WithEvents txtAllSPosterWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtAllSPosterHeight As System.Windows.Forms.TextBox
+    Friend WithEvents lblAllSPosterQual As System.Windows.Forms.Label
+    Friend WithEvents tbAllSPosterQual As System.Windows.Forms.TrackBar
+    Friend WithEvents lblAllSPosterQ As System.Windows.Forms.Label
+    Friend WithEvents lblAllSPosterWidth As System.Windows.Forms.Label
+    Friend WithEvents lblAllSPosterHeight As System.Windows.Forms.Label
+    Friend WithEvents chkResizeAllSPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents lblAllSPosterSize As System.Windows.Forms.Label
+    Friend WithEvents cbAllSPosterSize As System.Windows.Forms.ComboBox
+    Friend WithEvents chkOverwriteAllSPoster As System.Windows.Forms.CheckBox
 End Class
