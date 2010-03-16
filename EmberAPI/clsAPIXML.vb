@@ -32,8 +32,7 @@ Public Class APIXML
     Public Shared alFlags As New List(Of String)
     Public Shared GenreXML As New XDocument
     Public Shared alGenres As New List(Of String)
-    Public Shared StudioXML As New XDocument
-    Public Shared alStudios As New List(Of String)
+    Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared RatingXML As New XDocument
     'Public Shared LanguageXML As New XDocument
 
@@ -179,40 +178,12 @@ Public Class APIXML
 
     Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
 
-        '//
-        ' Parse the Studio XML and set the proper image
-        '\\
-
-        Dim imgStudioStr As String = String.Empty
         Dim imgStudio As Image = Nothing
-        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios")
 
-        If alStudios.Contains(Path.Combine(mePath, String.Concat(strStudio, ".png")).ToLower) Then
-            Using fsImage As New FileStream(Path.Combine(mePath, String.Concat(strStudio, ".png")), FileMode.Open, FileAccess.Read)
+        If dStudios.ContainsKey(strStudio.ToLower) Then
+            Using fsImage As New FileStream(dStudios.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
                 imgStudio = Image.FromStream(fsImage)
             End Using
-        ElseIf StudioXML.Nodes.Count > 0 Then
-            Try
-
-                Dim xDefault = From xDef In StudioXML...<default> Select xDef.<icon>.Value
-                If xDefault.Count > 0 Then
-                    imgStudioStr = Path.Combine(mePath, xDefault(0).ToString)
-                End If
-
-                Dim xStudio = From xStu In StudioXML...<name> Where Regex.IsMatch(Strings.Trim(strStudio).ToLower, xStu.@searchstring) Select xStu.<icon>.Value
-                If xStudio.Count > 0 Then
-                    imgStudioStr = Path.Combine(mePath, xStudio(0).ToString)
-                End If
-
-                If Not String.IsNullOrEmpty(imgStudioStr) AndAlso alStudios.Contains(imgStudioStr.ToLower) Then
-                    Using fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
-                        imgStudio = Image.FromStream(fsImage)
-                    End Using
-                End If
-
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
         End If
 
         Return imgStudio
@@ -376,18 +347,23 @@ Public Class APIXML
             End If
 
             Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
-            If File.Exists(sPath) Then
-                StudioXML = XDocument.Load(sPath)
-            Else
-                MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, sPath), MsgBoxStyle.Critical, "File Not Found")
-            End If
 
             If Directory.Exists(Directory.GetParent(sPath).FullName) Then
                 Try
-                    alStudios.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+                    'get all images in the main folder
+                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
+                        dStudios.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
+                    Next
+
+                    'now get all images in sub folders
+                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
+                        For Each lFile As String In Directory.GetFiles(iDir, "*.png")
+                            'hard code "\" here, then resplace when retrieving images
+                            dStudios.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
+                        Next
+                    Next
                 Catch
                 End Try
-                alStudios = alStudios.ConvertAll(Function(s) s.ToLower)
             End If
 
             Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
