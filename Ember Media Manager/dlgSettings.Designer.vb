@@ -541,6 +541,7 @@ Partial Class dlgSettings
         Me.chkLockTagline = New System.Windows.Forms.CheckBox
         Me.chkLockTitle = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox
         Me.cbForce = New System.Windows.Forms.ComboBox
         Me.chkForceTitle = New System.Windows.Forms.CheckBox
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
@@ -557,7 +558,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2147,6 +2147,7 @@ Partial Class dlgSettings
         '
         'btnOK
         '
+        Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnOK.Location = New System.Drawing.Point(813, 619)
         Me.btnOK.Name = "btnOK"
@@ -2157,6 +2158,7 @@ Partial Class dlgSettings
         '
         'btnApply
         '
+        Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnApply.Location = New System.Drawing.Point(650, 619)
@@ -2168,6 +2170,7 @@ Partial Class dlgSettings
         '
         'btnCancel
         '
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnCancel.Location = New System.Drawing.Point(732, 619)
@@ -6465,6 +6468,18 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
+        'chkOnlyValueForCert
+        '
+        Me.chkOnlyValueForCert.AutoSize = True
+        Me.chkOnlyValueForCert.Enabled = False
+        Me.chkOnlyValueForCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOnlyValueForCert.Location = New System.Drawing.Point(21, 145)
+        Me.chkOnlyValueForCert.Name = "chkOnlyValueForCert"
+        Me.chkOnlyValueForCert.Size = New System.Drawing.Size(168, 17)
+        Me.chkOnlyValueForCert.TabIndex = 66
+        Me.chkOnlyValueForCert.Text = "Only Save the Value to NFO"
+        Me.chkOnlyValueForCert.UseVisualStyleBackColor = True
+        '
         'cbForce
         '
         Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -6594,6 +6609,8 @@ Partial Class dlgSettings
         '
         'pnlMain
         '
+        Me.pnlMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlMain.AutoScroll = True
         Me.pnlMain.BackColor = System.Drawing.Color.White
         Me.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -6641,18 +6658,6 @@ Partial Class dlgSettings
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
-        '
-        'chkOnlyValueForCert
-        '
-        Me.chkOnlyValueForCert.AutoSize = True
-        Me.chkOnlyValueForCert.Enabled = False
-        Me.chkOnlyValueForCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOnlyValueForCert.Location = New System.Drawing.Point(21, 145)
-        Me.chkOnlyValueForCert.Name = "chkOnlyValueForCert"
-        Me.chkOnlyValueForCert.Size = New System.Drawing.Size(168, 17)
-        Me.chkOnlyValueForCert.TabIndex = 66
-        Me.chkOnlyValueForCert.Text = "Only Save the Value to NFO"
-        Me.chkOnlyValueForCert.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
