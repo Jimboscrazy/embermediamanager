@@ -21,14 +21,26 @@
 Imports System.Text.RegularExpressions
 
 Namespace YouTube
+
     Public Class Scraper
 
-        Friend WithEvents bwYT As New System.ComponentModel.BackgroundWorker
+        #Region "Fields"
 
-        Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
-        Public Event Exception(ByVal ex As Exception)
+        Friend  WithEvents bwYT As New System.ComponentModel.BackgroundWorker
 
         Private _VideoLinks As VideoLinkItemCollection
+
+        #End Region 'Fields
+
+        #Region "Events"
+
+        Public Event Exception(ByVal ex As Exception)
+
+        Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
+
+        #End Region 'Events
+
+        #Region "Properties"
 
         Public ReadOnly Property VideoLinks() As VideoLinkItemCollection
             Get
@@ -38,6 +50,27 @@ Namespace YouTube
                 Return _VideoLinks
             End Get
         End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
+
+        Public Sub CancelAsync()
+            If bwYT.IsBusy Then bwYT.CancelAsync()
+
+            While bwYT.IsBusy
+                Application.DoEvents()
+            End While
+        End Sub
+
+        Public Sub GetVideoLinks(ByVal url As String)
+            Try
+                _VideoLinks = ParseYTFormats(url, False)
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
 
         Public Sub GetVideoLinksAsync(ByVal url As String)
             Try
@@ -51,14 +84,67 @@ Namespace YouTube
             End Try
         End Sub
 
-        Public Sub GetVideoLinks(ByVal url As String)
-            Try
-                _VideoLinks = ParseYTFormats(url, False)
+        Private Sub bwYT_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwYT.DoWork
+            Dim Url As String = DirectCast(e.Argument, String)
 
+            Try
+                e.Result = ParseYTFormats(Url, True)
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
+
+        Private Sub bwYT_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwYT.RunWorkerCompleted
+            Try
+                If e.Cancelled Then
+                    'user cancelled
+                    RaiseEvent VideoLinksRetrieved(False)
+                ElseIf e.Error IsNot Nothing Then
+                    'exception occurred
+                    RaiseEvent Exception(e.Error)
+                Else
+                    'all good
+                    If e.Result IsNot Nothing Then
+                        _VideoLinks = DirectCast(e.Result, VideoLinkItemCollection)
+                        RaiseEvent VideoLinksRetrieved(True)
+                    Else
+                        RaiseEvent VideoLinksRetrieved(False)
+                    End If
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+
+        Private Function GetSWFArgs(ByVal HTML As String) As Dictionary(Of String, String)
+            Dim result As New Dictionary(Of String, String)
+            Dim args As String()
+            Dim ArgsPattern As String = "'SWF_ARGS':\s*{([^}]*?)}"
+            Dim KeyValuesPattern As String = """(.*?)"": ""(.*?)"""
+
+            If Regex.IsMatch(HTML, ArgsPattern) Then
+                args = Regex.Match(HTML, ArgsPattern).Groups(1).Value.ToString.Split(Convert.ToChar(","))
+                For Each argString As String In args
+                    If Regex.IsMatch(argString, KeyValuesPattern) Then
+                        Dim itemMatch As Match = Regex.Match(argString, KeyValuesPattern)
+                        result.Add(itemMatch.Groups(1).Value, itemMatch.Groups(2).Value)
+                    End If
+                Next
+            End If
+
+            Return result
+        End Function
+
+        Private Function GetVideoTitle(ByVal HTML As String) As String
+            Dim result As String = ""
+            Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
+
+            If Regex.IsMatch(HTML, KeyPattern) Then
+                result = Regex.Match(HTML, KeyPattern).Groups(1).Value
+            End If
+
+            Return result
+        End Function
 
         Private Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
             Dim DownloadLinks As New VideoLinkItemCollection
@@ -75,7 +161,6 @@ Namespace YouTube
                 If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
                 If bwYT.CancellationPending Then Return DownloadLinks
 
-
                 Dim Args As Dictionary(Of String, String) = GetSWFArgs(Html)
                 If Args.Count > 0 Then
 
@@ -84,7 +169,6 @@ Namespace YouTube
 
                     If Args.ContainsKey("fmt_url_map") Then
                         Dim FormatMap As String = Args("fmt_url_map")
-
 
                         Dim Formats As String() = Web.HttpUtility.UrlDecode(FormatMap).Split(Convert.ToChar(","))
                         For Each fmt As String In Formats
@@ -134,85 +218,24 @@ Namespace YouTube
             Finally
                 sHTTP = Nothing
             End Try
-
         End Function
 
-        Private Function GetSWFArgs(ByVal HTML As String) As Dictionary(Of String, String)
-            Dim result As New Dictionary(Of String, String)
-            Dim args As String()
-            Dim ArgsPattern As String = "'SWF_ARGS':\s*{([^}]*?)}"
-            Dim KeyValuesPattern As String = """(.*?)"": ""(.*?)"""
+        #End Region 'Methods
 
-            If Regex.IsMatch(HTML, ArgsPattern) Then
-                args = Regex.Match(HTML, ArgsPattern).Groups(1).Value.ToString.Split(Convert.ToChar(","))
-                For Each argString As String In args
-                    If Regex.IsMatch(argString, KeyValuesPattern) Then
-                        Dim itemMatch As Match = Regex.Match(argString, KeyValuesPattern)
-                        result.Add(itemMatch.Groups(1).Value, itemMatch.Groups(2).Value)
-                    End If
-                Next
-            End If
-
-            Return result
-        End Function
-
-        Private Function GetVideoTitle(ByVal HTML As String) As String
-            Dim result As String = ""
-            Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
-
-            If Regex.IsMatch(HTML, KeyPattern) Then
-                result = Regex.Match(HTML, KeyPattern).Groups(1).Value
-            End If
-
-            Return result
-        End Function
-
-        Public Sub CancelAsync()
-            If bwYT.IsBusy Then bwYT.CancelAsync()
-
-            While bwYT.IsBusy
-                Application.DoEvents()
-            End While
-        End Sub
-
-        Private Sub bwYT_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwYT.DoWork
-            Dim Url As String = DirectCast(e.Argument, String)
-
-            Try
-                e.Result = ParseYTFormats(Url, True)
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End Sub
-
-        Private Sub bwYT_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwYT.RunWorkerCompleted
-
-            Try
-                If e.Cancelled Then
-                    'user cancelled
-                    RaiseEvent VideoLinksRetrieved(False)
-                ElseIf e.Error IsNot Nothing Then
-                    'exception occurred
-                    RaiseEvent Exception(e.Error)
-                Else
-                    'all good
-                    If e.Result IsNot Nothing Then
-                        _VideoLinks = DirectCast(e.Result, VideoLinkItemCollection)
-                        RaiseEvent VideoLinksRetrieved(True)
-                    Else
-                        RaiseEvent VideoLinksRetrieved(False)
-                    End If
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-        End Sub
     End Class
 
     Public Class VideoLinkItem
 
+        #Region "Fields"
+
         Private _Description As String
+        Private _FormatQuality As Enums.TrailerQuality
+        Private _URL As String
+
+        #End Region 'Fields
+
+        #Region "Properties"
+
         Public Property Description() As String
             Get
                 Return _Description
@@ -222,7 +245,6 @@ Namespace YouTube
             End Set
         End Property
 
-        Private _URL As String
         Public Property URL() As String
             Get
                 Return _URL
@@ -232,7 +254,6 @@ Namespace YouTube
             End Set
         End Property
 
-        Private _FormatQuality As Enums.TrailerQuality
         Friend Property FormatQuality() As Enums.TrailerQuality
             Get
                 Return _FormatQuality
@@ -242,15 +263,22 @@ Namespace YouTube
             End Set
         End Property
 
+        #End Region 'Properties
+
     End Class
 
     Public Class VideoLinkItemCollection
         Inherits Generic.SortedList(Of Enums.TrailerQuality, VideoLinkItem)
 
+        #Region "Methods"
+
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
             MyBase.Add(Link.FormatQuality, Link)
         End Sub
 
+        #End Region 'Methods
+
     End Class
 
 End Namespace
+

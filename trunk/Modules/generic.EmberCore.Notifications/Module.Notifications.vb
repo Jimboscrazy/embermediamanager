@@ -1,6 +1,4 @@
-﻿Imports System.Threading
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -22,20 +20,28 @@
 
 Public Class NotificationsModule
     Implements Interfaces.EmberExternalModule
+
+    #Region "Fields"
+
+    Private dNotify As frmNotify
+    Private eSettings As New NotifySettings
     Private _enabled As Boolean = False
     Private _name As String = "Notifications"
     Private _setup As frmSettingsHolder
-    Private eSettings As New NotifySettings
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
-    Private dNotify As frmNotify
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
-        Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification}) 'Enums.ModuleType.Notification
-        End Get
-    End Property
+    #End Region 'Fields
+
+    #Region "Events"
+
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
+
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+
+    #End Region 'Events
+
+    #Region "Properties"
 
     Public Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
         Get
@@ -52,28 +58,24 @@ Public Class NotificationsModule
         End Get
     End Property
 
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
+        Get
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification}) 'Enums.ModuleType.Notification
+        End Get
+    End Property
+
     ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString
         End Get
     End Property
 
+    #End Region 'Properties
+
+    #Region "Methods"
+
     Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberExternalModule.Init
         LoadSettings()
-    End Sub
-
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me._enabled = _setup.chkEnabled.Checked
-        eSettings.OnError = _setup.chkOnError.Checked
-        eSettings.OnNewMovie = _setup.chkonnewmovie.checked
-        eSettings.OnMovieScraped = _setup.chkOnMovieScraped.Checked
-        eSettings.OnNewEp = _setup.chkOnNewEp.Checked
-        SaveSettings()
-        If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
-        End If
     End Sub
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
@@ -95,23 +97,6 @@ Public Class NotificationsModule
         AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-
-    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._name, State, 0)
-    End Sub
-
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub Handle_NotifierClicked(ByVal _type As String)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {_type}))
-    End Sub
-
-    Private Sub Handle_NotifierClosed()
-        RemoveHandler Me.dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
-        RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
-    End Sub
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
@@ -143,11 +128,21 @@ Public Class NotificationsModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Private Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
-        AdvancedSettings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
-        AdvancedSettings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
-        AdvancedSettings.SetBooleanSetting("NotifyOnNewEp", eSettings.OnNewEp)
+    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
+        RaiseEvent ModuleEnabledChanged(Me._name, State, 0)
+    End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub Handle_NotifierClicked(ByVal _type As String)
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {_type}))
+    End Sub
+
+    Private Sub Handle_NotifierClosed()
+        RemoveHandler Me.dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
+        RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
     End Sub
 
     Private Sub LoadSettings()
@@ -157,11 +152,43 @@ Public Class NotificationsModule
         eSettings.OnNewEp = AdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
     End Sub
 
+    Private Sub SaveSettings()
+        AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
+        AdvancedSettings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
+        AdvancedSettings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
+        AdvancedSettings.SetBooleanSetting("NotifyOnNewEp", eSettings.OnNewEp)
+    End Sub
+
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+        Me._enabled = _setup.chkEnabled.Checked
+        eSettings.OnError = _setup.chkOnError.Checked
+        eSettings.OnNewMovie = _setup.chkonnewmovie.checked
+        eSettings.OnMovieScraped = _setup.chkOnMovieScraped.Checked
+        eSettings.OnNewEp = _setup.chkOnNewEp.Checked
+        SaveSettings()
+        If DoDispose Then
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
+    End Sub
+
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
     Class NotifySettings
+
+        #Region "Fields"
+
         Private _onerror As Boolean
-        Private _onnewmovie As Boolean
         Private _onmoviescraped As Boolean
         Private _onnewep As Boolean
+        Private _onnewmovie As Boolean
+
+        #End Region 'Fields
+
+        #Region "Properties"
 
         Public Property OnError() As Boolean
             Get
@@ -169,15 +196,6 @@ Public Class NotificationsModule
             End Get
             Set(ByVal value As Boolean)
                 Me._onerror = value
-            End Set
-        End Property
-
-        Public Property OnNewMovie() As Boolean
-            Get
-                Return Me._onnewmovie
-            End Get
-            Set(ByVal value As Boolean)
-                Me._onnewmovie = value
             End Set
         End Property
 
@@ -198,5 +216,20 @@ Public Class NotificationsModule
                 Me._onnewep = value
             End Set
         End Property
+
+        Public Property OnNewMovie() As Boolean
+            Get
+                Return Me._onnewmovie
+            End Get
+            Set(ByVal value As Boolean)
+                Me._onnewmovie = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
     End Class
+
+    #End Region 'Nested Types
+
 End Class

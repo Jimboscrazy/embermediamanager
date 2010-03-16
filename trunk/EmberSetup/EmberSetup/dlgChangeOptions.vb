@@ -18,21 +18,23 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
 Imports System.IO
 
 Public Class dlgChangeOptions
+
+    #Region "Fields"
+
     Dim localPath As String = String.Empty
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        frmMainSetup.emberPath = txtEMMPath.Text
-        Me.Close()
-    End Sub
+    #End Region 'Fields
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+    #Region "Methods"
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        If frmMainSetup.bwFF.IsBusy Then
+            frmMainSetup.bwFF.CancelAsync()
+            btnCancel.Enabled = False
+        End If
     End Sub
 
     Private Sub btnFindPaths_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFindPaths.Click
@@ -68,10 +70,25 @@ Public Class dlgChangeOptions
         frmMainSetup.LogWrite(String.Format("Main: Using Ember Path: {0}", frmMainSetup.emberPath))
     End Sub
 
-    Private Sub lstEMMPaths_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstEMMPaths.SelectedIndexChanged
-        If lstEMMPaths.SelectedItems.Count > 0 Then
-            txtEMMPath.Text = lstEMMPaths.SelectedItems(0).Text
-            localPath = lstEMMPaths.SelectedItems(0).Text
+    Private Sub btnGetEMMPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetEMMPath.Click
+        Using d As New FolderBrowserDialog
+            d.Description = "Select the folder in which you would like to install Ember Media Manager."
+            If d.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                localPath = d.SelectedPath
+                txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+                txtEMMPath.Text.Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+            End If
+        End Using
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub cbCreateFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCreateFolder.CheckedChanged
+        If Not localPath = String.Empty Then
+            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
         End If
     End Sub
 
@@ -87,21 +104,29 @@ Public Class dlgChangeOptions
         'localPath = frmMainSetup.emberPath
     End Sub
 
-    Private Sub btnGetEMMPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetEMMPath.Click
-        Using d As New FolderBrowserDialog
-            d.Description = "Select the folder in which you would like to install Ember Media Manager."
-            If d.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                localPath = d.SelectedPath
-                txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
-                txtEMMPath.Text.Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
-            End If
-        End Using
+    Private Sub dlgChangeOptions_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Refresh()
     End Sub
 
-    Private Sub cbCreateFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCreateFolder.CheckedChanged
-        If Not localPath = String.Empty Then
-            txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+    Private Sub lstEMMPaths_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstEMMPaths.SelectedIndexChanged
+        If lstEMMPaths.SelectedItems.Count > 0 Then
+            txtEMMPath.Text = lstEMMPaths.SelectedItems(0).Text
+            localPath = lstEMMPaths.SelectedItems(0).Text
         End If
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        frmMainSetup.emberPath = txtEMMPath.Text
+        Me.Close()
+    End Sub
+
+    Private Sub rbX64_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbX64.CheckedChanged
+        If rbX64.Checked Then frmMainSetup.CurrentEmberPlatform = "x64"
+    End Sub
+
+    Private Sub rbX86_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbX86.CheckedChanged
+        If rbX86.Checked Then frmMainSetup.CurrentEmberPlatform = "x86"
     End Sub
 
     Private Sub txtEMMPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEMMPath.TextChanged
@@ -125,25 +150,8 @@ Public Class dlgChangeOptions
             rbX86.Visible = False
             rbX64.Visible = False
         End If
-
     End Sub
 
-    Private Sub rbX86_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbX86.CheckedChanged
-        If rbX86.Checked Then frmMainSetup.CurrentEmberPlatform = "x86"
-    End Sub
+    #End Region 'Methods
 
-    Private Sub rbX64_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbX64.CheckedChanged
-        If rbX64.Checked Then frmMainSetup.CurrentEmberPlatform = "x64"
-    End Sub
-
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        If frmMainSetup.bwFF.IsBusy Then
-            frmMainSetup.bwFF.CancelAsync()
-            btnCancel.Enabled = False
-        End If
-    End Sub
-
-    Private Sub dlgChangeOptions_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Refresh()
-    End Sub
 End Class

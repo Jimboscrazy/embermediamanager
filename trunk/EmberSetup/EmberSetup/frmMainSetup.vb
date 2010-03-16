@@ -18,145 +18,69 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Net.Sockets
+Imports System.ComponentModel
+Imports System.Diagnostics
 Imports System.IO
-Imports System.Text
+Imports System.IO.Compression
 Imports System.Net
-Imports System.Resources
+Imports System.Net.Sockets
 Imports System.Reflection
+Imports System.Resources
+Imports System.Security.Cryptography
+Imports System.Text
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports System.Security.Cryptography
-Imports System.IO.Compression
-Imports System.Diagnostics
-Imports System.ComponentModel
-
 
 Public Class frmMainSetup
-    Public DEBUG As Boolean = False  ' So I can Debug without a Web Server
-    Public emberPath As String
+
+    #Region "Fields"
+
+    Public Shared EmberVersions As New UpgradeList
+
+    Public CurrentEmberPlatform As String
+    Public CurrentEmberVersion As String
+    Public DEBUG As Boolean = False 'So I can Debug without a Web Server
+    Public DoInstall As Boolean = True
     Public emberAllFounds As New List(Of String)
+    Public emberPath As String
+    Public ExitMe As Boolean = False
     Public Final As Boolean = False
     Public Force As Boolean = False
-    Public ExitMe As Boolean = False
-    Public DoInstall As Boolean = True
+    Public mePainting As New Object
     Public NoArgs As Boolean = True
-    Public CurrentEmberVersion As String
-    Public CurrentEmberPlatform As String
-    Public Shared EmberVersions As New UpgradeList
-    Friend WithEvents bwFF As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
-    Private iLogo As Bitmap = Nothing
-    Dim bCredits As Bitmap = Nothing
-    Private LogoAlpha As Integer = 50
+
+    Friend  WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
+    Friend  WithEvents bwFF As New System.ComponentModel.BackgroundWorker
+    Friend  WithEvents lblInfo As New MyLabel
+    Friend  WithEvents lblStatus As New MyLabel
+
     Private BackAlpha As Integer = 0
-    Private LogoStop As Boolean = True
-    Private ShowCredits As Boolean = False
-    Private DisablePaint As Boolean = False
-
-    Dim CredList As New List(Of CredLine)
-    Dim PicY As Single
-    Friend WithEvents lblStatus As New MyLabel
-    Friend WithEvents lblInfo As New MyLabel
-    Private LogoUp As Boolean = True
     Private BackUp As Boolean = True
-    Private w As New dlgCommands
+    Dim bCredits As Bitmap = Nothing
+    Dim CredList As New List(Of CredLine)
+    Private DisablePaint As Boolean = False
+    Private iLogo As Bitmap = Nothing
+    Dim intcounter As Integer = 0
+    Private LogoAlpha As Integer = 50
+    Private LogoStop As Boolean = True
+    Private LogoUp As Boolean = True
     Private NeedDoEvents As Boolean = False
+    Dim PicY As Single
+    Private ShowCredits As Boolean = False
+    Dim SlowDown As Integer = 0
+    Private w As New dlgCommands
 
-    Sub SetupMyControls()
-        Me.lblStatus.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblStatus.Location = New System.Drawing.Point(18, 10)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(470, 27)
-        Me.lblStatus.Text = "lblStatus"
-        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter
+    #End Region 'Fields
 
-        Me.lblInfo.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblInfo.Location = New System.Drawing.Point(18, 36)
-        Me.lblInfo.Name = "lblInfo"
-        Me.lblInfo.Size = New System.Drawing.Size(470, 170)
-        Me.lblInfo.Text = "lblInfo"
-        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '###############################################################3
-    End Sub
+    #Region "Methods"
 
-    Class MyLabel
-        Inherits Label
-        ' My Label Class, Inherits from Label so i do not need to implement all Properties
-        Private _visible As Boolean = True
-        Public Sub New()
-            MyBase.AutoSize = False
-            MyBase.Visible = False
-        End Sub
-        Public Overloads Sub SetStyle(ByVal style As ControlStyles, ByVal value As Boolean)
-            MyBase.SetStyle(style, value)
-        End Sub
-        Public Shadows Property Visible() As Boolean
-            Get
-                Return _visible
-            End Get
-            Set(ByVal value As Boolean)
-                _visible = value
-            End Set
-        End Property
-        Public Overrides Property BackColor() As Color
-            Get
-                Return MyBase.BackColor
-            End Get
-            Set(ByVal value As Color)
-                MyBase.BackColor = value
-            End Set
-        End Property
-        Public Overrides Property Text() As String
-            Get
-                Return MyBase.Text
-            End Get
-            Set(ByVal value As String)
-                MyBase.Text = value
-                frmMainSetup.MyBackGround.Invalidate()
-            End Set
-        End Property
-    End Class
-
-    Public Shared Sub LogWrite(ByVal s As String)
-        Dim log As New StreamWriter(Path.Combine(AppPath, "install.log"), True)
-        log.WriteLine(s)
-        log.Close()
-    End Sub
-    Public Shared Function Is64Bit() As Boolean
-        Return (IntPtr.Size = 8)
+    Public Shared Function AppPath() As String
+        Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
-    Public Function GetEmberPlatform(ByVal fpath As String) As String
-        Try
-            If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
-            Dim _Assembly As Assembly = Assembly.ReflectionOnlyLoadFrom(Path.Combine(fpath, "Ember Media Manager.exe"))
-            Dim kinds As PortableExecutableKinds
-            Dim imgFileMachine As ImageFileMachine
-            _Assembly.ManifestModule.GetPEKind(kinds, imgFileMachine)
-            If kinds And PortableExecutableKinds.PE32Plus Then
-                _Assembly = Nothing
-                Return "x64"
-            End If
-            _Assembly = Nothing
-            Return "x86"
-        Catch ex As Exception
-            LogWrite(String.Format("--- Error: {0}", ex.Message))
-            LogWrite(ex.StackTrace)
-            Return String.Empty
-        End Try
-    End Function
+
     Public Shared Function CheckIfWindows() As Boolean
         Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
     End Function
-    Public Function GetEmberVersion(ByVal fpath As String) As String
-        If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
-        Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
-        Return myBuildInfo.ProductPrivatePart
-    End Function
-
-    Sub CloseHandles()
-
-    End Sub
 
     Public Shared Sub DeleteDirectory(ByVal sPath As String)
         Try
@@ -194,23 +118,88 @@ Public Class frmMainSetup
         End Try
     End Sub
 
-    Public Shared Function AppPath() As String
-        Return System.AppDomain.CurrentDomain.BaseDirectory
+    Public Shared Function Is64Bit() As Boolean
+        Return (IntPtr.Size = 8)
     End Function
 
-    Public Function GetURLFile(ByVal url As String, ByVal localfile As String)
+    Public Shared Sub LogWrite(ByVal s As String)
+        Dim log As New StreamWriter(Path.Combine(AppPath, "install.log"), True)
+        log.WriteLine(s)
+        log.Close()
+    End Sub
+
+    Public Shared Sub UncompressFile(ByVal spath As String, ByVal dpath As String)
+        Dim sourceFile As FileStream = File.OpenRead(spath)
+        Dim destinationFile As FileStream = File.Create(dpath)
         Try
-            LogWrite(String.Format("--- GetURL: URL=updates/{0}  File={1}", url, localfile))
-            If Not DEBUG Then
-                Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
-            Else
-                Return True
-                'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
-            End If
+            ' Because the uncompressed size of the file is unknown,
+            ' we are imports an arbitrary buffer size.
+            Dim buffer(4096) As Byte
+            Dim n As Integer
+
+            Using input As New GZipStream(sourceFile, _
+                CompressionMode.Decompress, False)
+
+                Console.WriteLine("Decompressing {0} to {1}.", sourceFile.Name, _
+                    destinationFile.Name)
+                Do
+                    n = input.Read(buffer, 0, buffer.Length)
+                    destinationFile.Write(buffer, 0, n)
+                Loop While n > 0
+            End Using
         Catch ex As Exception
-            LogWrite(String.Format("+++ GetURL Error: {0}", ex.Message))
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
         End Try
-        Return False
+        ' Close the files.
+        sourceFile.Close()
+        destinationFile.Close()
+    End Sub
+
+    Public Sub CreateSetupFolders(ByVal setupPath As String)
+        'DeleteDirectory(Path.Combine(setupPath, "updates"))
+        If Not Directory.Exists(Path.Combine(setupPath, "updates")) Then
+            LogWrite(String.Format("--- CreateSetupFolders: {0}\updates", setupPath))
+            Directory.CreateDirectory(Path.Combine(setupPath, "updates"))
+        Else
+            LogWrite(String.Format("--- SetupFoldersExists: {0}\updates", setupPath))
+        End If
+    End Sub
+
+    Public Sub FindEmberPath()
+        emberAllFounds.Clear()
+        bwFF.WorkerSupportsCancellation = True
+        bwFF.WorkerReportsProgress = True
+        bwFF.RunWorkerAsync()
+        While bwFF.IsBusy
+            Application.DoEvents()
+        End While
+    End Sub
+
+    Public Function GetEmberPlatform(ByVal fpath As String) As String
+        Try
+            If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
+            Dim _Assembly As Assembly = Assembly.ReflectionOnlyLoadFrom(Path.Combine(fpath, "Ember Media Manager.exe"))
+            Dim kinds As PortableExecutableKinds
+            Dim imgFileMachine As ImageFileMachine
+            _Assembly.ManifestModule.GetPEKind(kinds, imgFileMachine)
+            If kinds And PortableExecutableKinds.PE32Plus Then
+                _Assembly = Nothing
+                Return "x64"
+            End If
+            _Assembly = Nothing
+            Return "x86"
+        Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
+            Return String.Empty
+        End Try
+    End Function
+
+    Public Function GetEmberVersion(ByVal fpath As String) As String
+        If Not File.Exists(Path.Combine(fpath, "Ember Media Manager.exe")) Then Return String.Empty
+        Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
+        Return myBuildInfo.ProductPrivatePart
     End Function
 
     Public Function GetURLDataBin(ByVal URL As String, ByVal FName As String, _
@@ -223,29 +212,29 @@ Public Class frmMainSetup
             If System.IO.File.Exists(FName) Then
                 System.IO.File.Delete(FName)
             End If
-            'Ignore bad https certificates - expired, untrusted, bad name, etc.  
+            'Ignore bad https certificates - expired, untrusted, bad name, etc.
             'ServicePointManager.CertificatePolicy = New MyAcceptCertificatePolicy
             'Dim value As RemoteCertificateValidationCallback
             'value = ServicePointManager.ServerCertificateValidationCallback
             'ServicePointManager.ServerCertificateValidationCallback = New ServicePointManager.ServerCertificateValidationCallback
-            'create a web request to the URL  
+            'create a web request to the URL
             Req = HttpWebRequest.Create(URL)
             '---
             Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
             Req.CachePolicy = noCachePolicy
-            'Grrrrr.... HttpWebRequest does not know rfc  
-            'you cannot use http://username:password@server:port/uri  
-            'Set username and password if required  
+            'Grrrrr.... HttpWebRequest does not know rfc
+            'you cannot use http://username:password@server:port/uri
+            'Set username and password if required
             If Len(UserName) > 0 Then
                 Req.Credentials = New NetworkCredential(UserName, Password)
             End If
-            'get a response from web site  
+            'get a response from web site
             Response = Req.GetResponse()
-            'Source stream with requested document  
+            'Source stream with requested document
             SourceStream = Response.GetResponseStream()
             Dim readStream As New BinaryReader(SourceStream)
-            'SourceStream has no ReadAll, so we must read data block-by-block  
-            'Temporary Buffer and block size  
+            'SourceStream has no ReadAll, so we must read data block-by-block
+            'Temporary Buffer and block size
             Dim bufferSize As Integer = 4096 '512 for debug slow down
             Dim Buffer(bufferSize) As Byte, BlockSize As Integer
             Dim TempStream As New IO.FileStream(FName, IO.FileMode.Create)
@@ -266,6 +255,21 @@ Public Class frmMainSetup
         End Try
     End Function
 
+    Public Function GetURLFile(ByVal url As String, ByVal localfile As String)
+        Try
+            LogWrite(String.Format("--- GetURL: URL=updates/{0}  File={1}", url, localfile))
+            If Not DEBUG Then
+                Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
+            Else
+                Return True
+                'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
+            End If
+        Catch ex As Exception
+            LogWrite(String.Format("+++ GetURL Error: {0}", ex.Message))
+        End Try
+        Return False
+    End Function
+
     Public Sub LoadVersions()
         EmberVersions.VersionList.Clear()
         If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
@@ -276,68 +280,108 @@ Public Class frmMainSetup
         End If
     End Sub
 
-    Public Sub FindEmberPath()
-        emberAllFounds.Clear()
-        bwFF.WorkerSupportsCancellation = True
-        bwFF.WorkerReportsProgress = True
-        bwFF.RunWorkerAsync()
-        While bwFF.IsBusy
-            Application.DoEvents()
-        End While
-    End Sub
-
-    Private Sub bwFindeEmber_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFF.DoWork
-        FindFile(Path.GetPathRoot(Application.StartupPath), "Ember Media Manager.exe")
-    End Sub
-
-    Private Sub FindFile(ByVal SourcePath As String, ByVal filename As String)
-        If bwFF.CancellationPending Then
-            Return
-        End If
-        Dim foundPath As String = String.Empty
-        Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
-        If SourceDir.Exists Then
-            Dim ChildFile As FileInfo
-            Try
-                For Each ChildFile In SourceDir.GetFiles()
-                    If Path.GetFileName(ChildFile.FullName).ToLower = filename Then
-                        emberAllFounds.Add(ChildFile.FullName)
-                    End If
-                Next
-            Catch ex As Exception
-                LogWrite(String.Format("--- Error: {0}", ex.Message))
-                LogWrite(ex.StackTrace)
-            End Try
-
-            Dim SubDir As DirectoryInfo
-            Try
-                For Each SubDir In SourceDir.GetDirectories()
-                    FindFile(SubDir.FullName, filename)
-                    If bwFF.CancellationPending Then
-                        Return
-                    End If
-                Next
-            Catch ex As Exception
-                LogWrite(String.Format("--- Error: {0}", ex.Message))
-                LogWrite(ex.StackTrace)
-            End Try
-        End If
-    End Sub
-
-    Public Sub CreateSetupFolders(ByVal setupPath As String)
-
-        'DeleteDirectory(Path.Combine(setupPath, "updates"))
-        If Not Directory.Exists(Path.Combine(setupPath, "updates")) Then
-            LogWrite(String.Format("--- CreateSetupFolders: {0}\updates", setupPath))
-            Directory.CreateDirectory(Path.Combine(setupPath, "updates"))
-        Else
-            LogWrite(String.Format("--- SetupFoldersExists: {0}\updates", setupPath))
-        End If
-    End Sub
-
     Public Sub RemoveSetupFolders(ByVal setupPath As String)
         LogWrite(String.Format("--- RemoveSetupFolders: {1}{0}updates", Path.DirectorySeparatorChar, setupPath))
         DeleteDirectory(Path.Combine(setupPath, "updates"))
+    End Sub
+
+    Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
+        If btnExit.Text = "Exit" Then
+            Me.Close()
+            Application.Exit()
+        Else
+            If bwDoInstall.IsBusy Then
+                bwDoInstall.CancelAsync()
+                lblStatus.ForeColor = Color.Red
+                lblStatus.Text = "Canceling..."
+            End If
+            While bwDoInstall.IsBusy
+                Application.DoEvents()
+            End While
+        End If
+    End Sub
+
+    Private Sub btnInstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInstall.Click
+        StartWorker()
+        LogoStop = False
+        llAbout.Visible = False
+    End Sub
+
+    Private Sub btnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOptions.Click
+        LogWrite(String.Format("--- Options: Enter"))
+        Me.DisablePaint = True
+        btnOptions.Enabled = False
+        Using chgOptons As New dlgChangeOptions
+            NeedDoEvents = True
+            If chgOptons.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                NeedDoEvents = False
+                emberPath = If(Not emberPath.EndsWith(Path.DirectorySeparatorChar), String.Concat(emberPath, Path.DirectorySeparatorChar), emberPath)
+                If Not emberPath = String.Empty Then
+                    LogWrite(String.Format("--- Options: Setting Install Path: {0}", emberPath))
+                    CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
+                    LogWrite(String.Format("--- Options: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
+                    'CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
+                End If
+                lblInfo.TextAlign = ContentAlignment.MiddleCenter
+                lblInfo.ForeColor = Color.Black
+                lblInfo.Font = New Font("Arial", 11, FontStyle.Regular)
+                lblInfo.Text = String.Format("Ember Media Manager Installation Path:{0}""{1}""", vbCrLf, emberPath)
+            Else
+                NeedDoEvents = False
+            End If
+
+            Me.DisablePaint = False
+            MyBackGround.Invalidate()
+
+        End Using
+        btnOptions.Enabled = True
+        If Not emberPath = String.Empty AndAlso Not CurrentEmberPlatform = String.Empty Then
+            btnInstall.Enabled = True
+        End If
+        LogWrite(String.Format("--- Options: Exit"))
+        Me.Activate()
+        Me.Refresh()
+        Application.DoEvents()
+    End Sub
+
+    Private Sub btnRunEmber_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunEmber.Click
+        If CheckIfWindows() Then
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = Path.Combine(emberPath, "Ember Media Manager.exe")
+
+                Explorer.Start()
+            End Using
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "mono"
+                Explorer.StartInfo.Arguments = String.Concat("""", Path.Combine(emberPath, "Ember Media Manager.exe"), """")
+                Explorer.Start()
+            End Using
+        End If
+
+        Close()
+    End Sub
+
+    Private Sub bwDoInstall_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoInstall.RunWorkerCompleted
+        NeedDoEvents = False
+        btnExit.Text = "Exit"
+        If ExitMe Then
+            'Me.Close()
+        End If
+        pbFiles.Visible = False
+        'Me.Activate()
+        If e.Cancelled Then
+            LogWrite(String.Format("--- Main: Cancelled by User ({0})", Now))
+            lblStatus.Text = "Installation Aborted"
+            pnlProgress.Visible = False
+            lblInfo.TextAlign = ContentAlignment.MiddleCenter
+            lblInfo.ForeColor = Color.Red
+            lblInfo.Font = New Font("Arial", 11, FontStyle.Bold)
+            lblInfo.Text = "Cancelled by User"
+            btnOptions.Enabled = True
+        End If
+        Me.Refresh()
+        LogoStop = True
     End Sub
 
     Private Sub bwDoInstall_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoInstall.DoWork
@@ -440,29 +484,33 @@ Public Class frmMainSetup
         End If
     End Sub
 
-    Private Sub bwDoInstall_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoInstall.RunWorkerCompleted
-        NeedDoEvents = False
-        btnExit.Text = "Exit"
-        If ExitMe Then
-            'Me.Close()
-        End If
-        pbFiles.Visible = False
-        'Me.Activate()
-        If e.Cancelled Then
-            LogWrite(String.Format("--- Main: Cancelled by User ({0})", Now))
-            lblStatus.Text = "Installation Aborted"
-            pnlProgress.Visible = False
-            lblInfo.TextAlign = ContentAlignment.MiddleCenter
-            lblInfo.ForeColor = Color.Red
-            lblInfo.Font = New Font("Arial", 11, FontStyle.Bold)
-            lblInfo.Text = "Cancelled by User"
-            btnOptions.Enabled = True
-        End If
-        Me.Refresh()
-        LogoStop = True
+    Private Sub bwFindeEmber_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFF.DoWork
+        FindFile(Path.GetPathRoot(Application.StartupPath), "Ember Media Manager.exe")
     End Sub
 
-    Function DOInstallEmber() As Boolean ' From BackGorundWorker Only 
+    Sub CloseHandles()
+    End Sub
+
+    Sub Credits(ByVal e As Graphics)
+        'bCredits = New Bitmap(Me.MyBackGround.Width, Me.MyBackGround.Height)
+        'Dim e As Graphics = Graphics.FromImage(bCredits)
+        Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
+        For i As Integer = 0 To CredList.Count - 1
+            CurrentY = PicY + FontMod
+            FontMod += CredList(i).Font.Size + 10
+            CurrentX = (Me.MyBackGround.Width - e.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
+            If i = CredList.Count - 1 And CurrentY < -25 Then PicY = Me.MyBackGround.Height
+            e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
+        Next
+        SlowDown += 1
+        If SlowDown > 8 Then
+            PicY -= 1
+            SlowDown = 0
+        End If
+    End Sub
+
+    Function DOInstallEmber() As Boolean
+        ' From BackGorundWorker Only
         Dim InstallVersion As String = String.Empty
         Dim counter As Integer = 0
         Me.bwDoInstall.ReportProgress(9, Nothing)
@@ -782,7 +830,7 @@ Public Class frmMainSetup
             'Time to Run Version Commands
             'Will Run on another Class so It Can Load SQLite DLL on Demand ...
             '... after Setup restart when it is in the Ember folder
-            'This is needed because Assembly Manager dont allow to load DLL's from random folder 
+            'This is needed because Assembly Manager dont allow to load DLL's from random folder
             Try
                 If bwDoInstall.CancellationPending Then Return False
 
@@ -886,91 +934,63 @@ Public Class frmMainSetup
         Return True
     End Function
 
-    Function GetHash(ByVal fname As String)
-        Dim md5Hasher As New SHA1CryptoServiceProvider() 'As MD5
-        'md5Hasher = MD5.Create()
-        ' Convert the input string to a byte array and compute the hash.
-        Dim fileReader As Byte()
-        fileReader = My.Computer.FileSystem.ReadAllBytes(fname)
-        Dim data As Byte() = md5Hasher.ComputeHash(fileReader)
-        ' Create a new Stringbuilder to collect the bytes
-        ' and create a string.
-        Dim sBuilder As New StringBuilder()
-        ' Loop through each byte of the hashed data 
-        ' and format each one as a hexadecimal string.
-        Dim i As Integer
-        For i = 0 To data.Length - 1
-            sBuilder.Append(data(i).ToString("x2"))
-        Next i
-        md5Hasher.Clear()
-        ' Return the hexadecimal string.
-        Return sBuilder.ToString()
-    End Function
+    Sub DrawString(ByVal g As Graphics, ByVal l As MyLabel)
+        Dim x As Integer = 0
+        Dim y As Integer = 0
+        Dim s() As String = l.Text.Split(vbCrLf)
+        Dim line As Integer = 0
+        Dim si As New SizeF
 
-    Public Shared Sub UncompressFile(ByVal spath As String, ByVal dpath As String)
-        Dim sourceFile As FileStream = File.OpenRead(spath)
-        Dim destinationFile As FileStream = File.Create(dpath)
-        Try
-            ' Because the uncompressed size of the file is unknown, 
-            ' we are imports an arbitrary buffer size.
-            Dim buffer(4096) As Byte
-            Dim n As Integer
-
-            Using input As New GZipStream(sourceFile, _
-                CompressionMode.Decompress, False)
-
-                Console.WriteLine("Decompressing {0} to {1}.", sourceFile.Name, _
-                    destinationFile.Name)
-                Do
-                    n = input.Read(buffer, 0, buffer.Length)
-                    destinationFile.Write(buffer, 0, n)
-                Loop While n > 0
-            End Using
-        Catch ex As Exception
-            LogWrite(String.Format("--- Error: {0}", ex.Message))
-            LogWrite(ex.StackTrace)
-        End Try
-        ' Close the files.
-        sourceFile.Close()
-        destinationFile.Close()
+        For Each t As String In s
+            si = g.MeasureString(t, l.Font, l.Width)
+            If l.TextAlign = ContentAlignment.BottomCenter OrElse l.TextAlign = ContentAlignment.MiddleCenter OrElse l.TextAlign = ContentAlignment.TopCenter Then
+                x = (l.Width - si.Width) / 2
+            Else
+                x = 0
+            End If
+            If l.TextAlign = ContentAlignment.MiddleLeft OrElse l.TextAlign = ContentAlignment.MiddleCenter OrElse l.TextAlign = ContentAlignment.MiddleRight Then
+                y = (l.Height - (l.Font.Height * (s.Count + 1))) / 2
+            Else
+                y = 0
+            End If
+            g.DrawString(t, l.Font, New SolidBrush(l.ForeColor), l.Left + x, l.Top + y + (line * l.Font.Height))
+            line += 1
+            'g.DrawRectangle(Pens.Black, l.Left, l.Top, l.Width, l.Height)
+        Next
     End Sub
 
-    Public Class Comparer
-        Implements IComparer(Of FileInfo)
+    Private Sub FindFile(ByVal SourcePath As String, ByVal filename As String)
+        If bwFF.CancellationPending Then
+            Return
+        End If
+        Dim foundPath As String = String.Empty
+        Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
+        If SourceDir.Exists Then
+            Dim ChildFile As FileInfo
+            Try
+                For Each ChildFile In SourceDir.GetFiles()
+                    If Path.GetFileName(ChildFile.FullName).ToLower = filename Then
+                        emberAllFounds.Add(ChildFile.FullName)
+                    End If
+                Next
+            Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
+            End Try
 
-        Public Function Compare(ByVal x As FileInfo, _
-            ByVal y As FileInfo) As Integer _
-            Implements IComparer(Of FileInfo).Compare
-            Return x.Name.CompareTo(y.Name)
-        End Function
-    End Class
-
-    Function GetFromList(ByVal l As FilesList, ByVal f As FileOfList) As FileOfList
-        Try
-            For Each fi As FileOfList In l.Files
-                If fi.Filename = f.Filename AndAlso fi.Path = f.Path AndAlso fi.Platform = f.Platform Then
-                    Return fi
-                End If
-            Next
-        Catch ex As Exception
-            LogWrite(String.Format("--- Error: {0}", ex.Message))
-            LogWrite(ex.StackTrace)
-        End Try
-        Return Nothing
-    End Function
-
-    Sub StartWorker()
-        btnExit.Text = "Cancel"
-        btnInstall.Enabled = False
-        btnOptions.Enabled = False
-        bwDoInstall.WorkerReportsProgress = True
-        bwDoInstall.WorkerSupportsCancellation = True
-        lblInfo.Text = ""
-        pnlProgress.Visible = True
-        pbFiles.Visible = True
-        pbFiles.Style = ProgressBarStyle.Marquee
-        bwDoInstall.RunWorkerAsync()
-        'Application.DoEvents()
+            Dim SubDir As DirectoryInfo
+            Try
+                For Each SubDir In SourceDir.GetDirectories()
+                    FindFile(SubDir.FullName, filename)
+                    If bwFF.CancellationPending Then
+                        Return
+                    End If
+                Next
+            Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
+            End Try
+        End If
     End Sub
 
     Private Sub frmMainSetup_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
@@ -1000,6 +1020,12 @@ Public Class frmMainSetup
             End Try
         End If
         End
+    End Sub
+
+    Private Sub frmMainSetup_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        'Dim shape As New System.Drawing.Drawing2D.GraphicsPath
+        'shape.AddRectangle(New Rectangle(0, 0, Me.Width, Me.Height))
+        'Me.Region = New System.Drawing.Region(shape)
     End Sub
 
     Private Sub frmMainSetup_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -1155,233 +1181,40 @@ Public Class frmMainSetup
         End Try
     End Sub
 
-    Private Sub btnInstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInstall.Click
-        StartWorker()
-        LogoStop = False
-        llAbout.Visible = False
-    End Sub
-
-    Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
-        If btnExit.Text = "Exit" Then
-            Me.Close()
-            Application.Exit()
-        Else
-            If bwDoInstall.IsBusy Then
-                bwDoInstall.CancelAsync()
-                lblStatus.ForeColor = Color.Red
-                lblStatus.Text = "Canceling..."
-            End If
-            While bwDoInstall.IsBusy
-                Application.DoEvents()
-            End While
-        End If
-
-    End Sub
-
-    Private Sub btnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOptions.Click
-        LogWrite(String.Format("--- Options: Enter"))
-        Me.DisablePaint = True
-        btnOptions.Enabled = False
-        Using chgOptons As New dlgChangeOptions
-            NeedDoEvents = True
-            If chgOptons.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                NeedDoEvents = False
-                emberPath = If(Not emberPath.EndsWith(Path.DirectorySeparatorChar), String.Concat(emberPath, Path.DirectorySeparatorChar), emberPath)
-                If Not emberPath = String.Empty Then
-                    LogWrite(String.Format("--- Options: Setting Install Path: {0}", emberPath))
-                    CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
-                    LogWrite(String.Format("--- Options: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
-                    'CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
-                End If
-                lblInfo.TextAlign = ContentAlignment.MiddleCenter
-                lblInfo.ForeColor = Color.Black
-                lblInfo.Font = New Font("Arial", 11, FontStyle.Regular)
-                lblInfo.Text = String.Format("Ember Media Manager Installation Path:{0}""{1}""", vbCrLf, emberPath)
-            Else
-                NeedDoEvents = False
-            End If
-
-            Me.DisablePaint = False
-            MyBackGround.Invalidate()
-
-        End Using
-        btnOptions.Enabled = True
-        If Not emberPath = String.Empty AndAlso Not CurrentEmberPlatform = String.Empty Then
-            btnInstall.Enabled = True
-        End If
-        LogWrite(String.Format("--- Options: Exit"))
-        Me.Activate()
-        Me.Refresh()
-        Application.DoEvents()
-    End Sub
-
-    Private Sub btnRunEmber_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunEmber.Click
-        If CheckIfWindows() Then
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = Path.Combine(emberPath, "Ember Media Manager.exe")
-
-                Explorer.Start()
-            End Using
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "mono"
-                Explorer.StartInfo.Arguments = String.Concat("""", Path.Combine(emberPath, "Ember Media Manager.exe"), """")
-                Explorer.Start()
-            End Using
-        End If
-
-        Close()
-    End Sub
-
-    Sub DrawString(ByVal g As Graphics, ByVal l As MyLabel)
-        Dim x As Integer = 0
-        Dim y As Integer = 0
-        Dim s() As String = l.Text.Split(vbCrLf)
-        Dim line As Integer = 0
-        Dim si As New SizeF
-
-        For Each t As String In s
-            si = g.MeasureString(t, l.Font, l.Width)
-            If l.TextAlign = ContentAlignment.BottomCenter OrElse l.TextAlign = ContentAlignment.MiddleCenter OrElse l.TextAlign = ContentAlignment.TopCenter Then
-                x = (l.Width - si.Width) / 2
-            Else
-                x = 0
-            End If
-            If l.TextAlign = ContentAlignment.MiddleLeft OrElse l.TextAlign = ContentAlignment.MiddleCenter OrElse l.TextAlign = ContentAlignment.MiddleRight Then
-                y = (l.Height - (l.Font.Height * (s.Count + 1))) / 2
-            Else
-                y = 0
-            End If
-            g.DrawString(t, l.Font, New SolidBrush(l.ForeColor), l.Left + x, l.Top + y + (line * l.Font.Height))
-            line += 1
-            'g.DrawRectangle(Pens.Black, l.Left, l.Top, l.Width, l.Height)
-        Next
-    End Sub
-    Public mePainting As New Object
-    Private Sub MyBackGround_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBackGround.Paint
-        SyncLock mePainting
-            Try
-                Dim g As Graphics = e.Graphics
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
-                'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
-                If iLogo Is Nothing Then
-                    SetupLogo()
-                End If
-                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * 0.735)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * 0.735), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * 0.265))
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-                Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
-                Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
-                g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
-                If DisablePaint Then Return
-                UpdateBackgorund()
-
-                If ShowCredits Then
-                    Credits(g)
-                    'If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
-                Else
-                    DrawString(g, lblStatus)
-                    DrawString(g, lblInfo)
-                End If
-                'If NeedDoEvents Then Application.DoEvents()
-                'If pbFiles.Visible Then pbFiles.Refresh()
-                Me.MyBackGround.Invalidate()
-            Catch ex As Exception
-                LogWrite(String.Format("--- Error: {0}", ex.Message))
-                LogWrite(ex.StackTrace)
-            End Try
-        End SyncLock
-    End Sub
-
-    Sub SetupLogo()
-        Dim tLogo = New Bitmap(My.Resources.Logo)
-        For xPix As Integer = 0 To tLogo.Width - 1
-            For yPix As Integer = 0 To tLogo.Height - 1
-                Dim clr As Color = tLogo.GetPixel(xPix, yPix)
-                If clr.A > LogoAlpha Then
-                    clr = Color.FromArgb(LogoAlpha, clr.R, clr.G, clr.B)
-                    tLogo.SetPixel(xPix, yPix, clr)
+    Function GetFromList(ByVal l As FilesList, ByVal f As FileOfList) As FileOfList
+        Try
+            For Each fi As FileOfList In l.Files
+                If fi.Filename = f.Filename AndAlso fi.Path = f.Path AndAlso fi.Platform = f.Platform Then
+                    Return fi
                 End If
             Next
-        Next
-        iLogo = New Bitmap(tLogo)
-    End Sub
-
-    Sub StartSetup()
-        Try
-            Dim startInfo As New ProcessStartInfo(Path.Combine(emberPath, "EmberSetup.exe"))
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden
-            startInfo.Arguments = String.Format("-final {0} {1} {2}", If(CurrentEmberVersion = String.Empty, "0", CurrentEmberVersion), Me.Top, Me.Left)
-            Process.Start(startInfo)
-            System.Threading.Thread.Sleep(1000)
         Catch ex As Exception
             LogWrite(String.Format("--- Error: {0}", ex.Message))
             LogWrite(ex.StackTrace)
-
         End Try
-    End Sub
-    Dim intcounter As Integer = 0
-    Sub UpdateBackgorund()
-        If Not LogoStop OrElse Not LogoAlpha = 50 Then
-            If LogoUp Then
-                'LogoAlpha += 5
-            Else
-                'LogoAlpha -= 5
-            End If
-        End If
-        If LogoAlpha > 90 OrElse LogoAlpha < 20 Then
-            LogoUp = Not LogoUp
-        End If
-        intcounter += 1
-        If intcounter > 15 Then
-            If BackUp Then
-                BackAlpha += 2
-            Else
-                BackAlpha -= 2
-            End If
-            If BackAlpha > 70 OrElse BackAlpha < 0 Then
-                BackUp = Not BackUp
-            End If
-            intcounter = 0
-        End If
-        'SetupLogo()
-        'Credits()
+        Return Nothing
+    End Function
 
-    End Sub
-
-
-    Friend Class CredLine
-        Private _text As String
-        Private _font As Font
-
-        Public Property Text() As String
-            Get
-                Return _text
-            End Get
-            Set(ByVal value As String)
-                _text = value
-            End Set
-        End Property
-
-        Public Property Font() As Font
-            Get
-                Return _font
-            End Get
-            Set(ByVal value As Font)
-                _font = value
-            End Set
-        End Property
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-        Public Sub Clear()
-            _text = String.Empty
-            _font = New Font("Microsoft Sans Serif", 11, FontStyle.Regular)
-        End Sub
-    End Class
+    Function GetHash(ByVal fname As String)
+        Dim md5Hasher As New SHA1CryptoServiceProvider() 'As MD5
+        'md5Hasher = MD5.Create()
+        ' Convert the input string to a byte array and compute the hash.
+        Dim fileReader As Byte()
+        fileReader = My.Computer.FileSystem.ReadAllBytes(fname)
+        Dim data As Byte() = md5Hasher.ComputeHash(fileReader)
+        ' Create a new Stringbuilder to collect the bytes
+        ' and create a string.
+        Dim sBuilder As New StringBuilder()
+        ' Loop through each byte of the hashed data
+        ' and format each one as a hexadecimal string.
+        Dim i As Integer
+        For i = 0 To data.Length - 1
+            sBuilder.Append(data(i).ToString("x2"))
+        Next i
+        md5Hasher.Clear()
+        ' Return the hexadecimal string.
+        Return sBuilder.ToString()
+    End Function
 
     Sub InitCredits()
         CredList.Add(New CredLine With {.Text = "Ember Media Manager v1.0", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
@@ -1458,24 +1291,6 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = "See the GNU General Public License for more details."})
         PicY = Me.MyBackGround.Height
     End Sub
-    Dim SlowDown As Integer = 0
-    Sub Credits(ByVal e As Graphics)
-        'bCredits = New Bitmap(Me.MyBackGround.Width, Me.MyBackGround.Height)
-        'Dim e As Graphics = Graphics.FromImage(bCredits)
-        Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
-        For i As Integer = 0 To CredList.Count - 1
-            CurrentY = PicY + FontMod
-            FontMod += CredList(i).Font.Size + 10
-            CurrentX = (Me.MyBackGround.Width - e.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
-            If i = CredList.Count - 1 And CurrentY < -25 Then PicY = Me.MyBackGround.Height
-            e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
-        Next
-        SlowDown += 1
-        If SlowDown > 8 Then
-            PicY -= 1
-            SlowDown = 0
-        End If
-    End Sub
 
     Private Sub llAbout_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llAbout.LinkClicked
         ShowCredits = Not ShowCredits
@@ -1498,19 +1313,265 @@ Public Class frmMainSetup
         End If
     End Sub
 
+    Private Sub MyBackGround_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBackGround.Paint
+        SyncLock mePainting
+            Try
+                Dim g As Graphics = e.Graphics
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
+                'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
+                If iLogo Is Nothing Then
+                    SetupLogo()
+                End If
+                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * 0.735)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * 0.735), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * 0.265))
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
+                Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
+                g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
+                If DisablePaint Then Return
+                UpdateBackgorund()
+
+                If ShowCredits Then
+                    Credits(g)
+                    'If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
+                Else
+                    DrawString(g, lblStatus)
+                    DrawString(g, lblInfo)
+                End If
+                'If NeedDoEvents Then Application.DoEvents()
+                'If pbFiles.Visible Then pbFiles.Refresh()
+                Me.MyBackGround.Invalidate()
+            Catch ex As Exception
+                LogWrite(String.Format("--- Error: {0}", ex.Message))
+                LogWrite(ex.StackTrace)
+            End Try
+        End SyncLock
+    End Sub
+
+    Private Sub OpenFileDialog1_FileOk(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+    End Sub
+
+    Sub SetupLogo()
+        Dim tLogo = New Bitmap(My.Resources.Logo)
+        For xPix As Integer = 0 To tLogo.Width - 1
+            For yPix As Integer = 0 To tLogo.Height - 1
+                Dim clr As Color = tLogo.GetPixel(xPix, yPix)
+                If clr.A > LogoAlpha Then
+                    clr = Color.FromArgb(LogoAlpha, clr.R, clr.G, clr.B)
+                    tLogo.SetPixel(xPix, yPix, clr)
+                End If
+            Next
+        Next
+        iLogo = New Bitmap(tLogo)
+    End Sub
+
+    Sub SetupMyControls()
+        Me.lblStatus.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStatus.Location = New System.Drawing.Point(18, 10)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(470, 27)
+        Me.lblStatus.Text = "lblStatus"
+        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter
+
+        Me.lblInfo.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInfo.Location = New System.Drawing.Point(18, 36)
+        Me.lblInfo.Name = "lblInfo"
+        Me.lblInfo.Size = New System.Drawing.Size(470, 170)
+        Me.lblInfo.Text = "lblInfo"
+        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '###############################################################3
+    End Sub
+
+    Sub StartSetup()
+        Try
+            Dim startInfo As New ProcessStartInfo(Path.Combine(emberPath, "EmberSetup.exe"))
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden
+            startInfo.Arguments = String.Format("-final {0} {1} {2}", If(CurrentEmberVersion = String.Empty, "0", CurrentEmberVersion), Me.Top, Me.Left)
+            Process.Start(startInfo)
+            System.Threading.Thread.Sleep(1000)
+        Catch ex As Exception
+            LogWrite(String.Format("--- Error: {0}", ex.Message))
+            LogWrite(ex.StackTrace)
+
+        End Try
+    End Sub
+
+    Sub StartWorker()
+        btnExit.Text = "Cancel"
+        btnInstall.Enabled = False
+        btnOptions.Enabled = False
+        bwDoInstall.WorkerReportsProgress = True
+        bwDoInstall.WorkerSupportsCancellation = True
+        lblInfo.Text = ""
+        pnlProgress.Visible = True
+        pbFiles.Visible = True
+        pbFiles.Style = ProgressBarStyle.Marquee
+        bwDoInstall.RunWorkerAsync()
+        'Application.DoEvents()
+    End Sub
+
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         'Me.Refresh()
         Application.DoEvents()
     End Sub
 
-    Private Sub frmMainSetup_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
-        'Dim shape As New System.Drawing.Drawing2D.GraphicsPath
-        'shape.AddRectangle(New Rectangle(0, 0, Me.Width, Me.Height))
-        'Me.Region = New System.Drawing.Region(shape)
+    Sub UpdateBackgorund()
+        If Not LogoStop OrElse Not LogoAlpha = 50 Then
+            If LogoUp Then
+                'LogoAlpha += 5
+            Else
+                'LogoAlpha -= 5
+            End If
+        End If
+        If LogoAlpha > 90 OrElse LogoAlpha < 20 Then
+            LogoUp = Not LogoUp
+        End If
+        intcounter += 1
+        If intcounter > 15 Then
+            If BackUp Then
+                BackAlpha += 2
+            Else
+                BackAlpha -= 2
+            End If
+            If BackAlpha > 70 OrElse BackAlpha < 0 Then
+                BackUp = Not BackUp
+            End If
+            intcounter = 0
+        End If
+        'SetupLogo()
+        'Credits()
     End Sub
 
-    Private Sub OpenFileDialog1_FileOk(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+    #End Region 'Methods
 
-    End Sub
+    #Region "Nested Types"
+
+    Public Class Comparer
+        Implements IComparer(Of FileInfo)
+
+        #Region "Methods"
+
+        Public Function Compare(ByVal x As FileInfo, _
+            ByVal y As FileInfo) As Integer Implements IComparer(Of FileInfo).Compare
+            Return x.Name.CompareTo(y.Name)
+        End Function
+
+        #End Region 'Methods
+
+    End Class
+
+    Friend Class CredLine
+
+        #Region "Fields"
+
+        Private _font As Font
+        Private _text As String
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
+
+        Public Property Font() As Font
+            Get
+                Return _font
+            End Get
+            Set(ByVal value As Font)
+                _font = value
+            End Set
+        End Property
+
+        Public Property Text() As String
+            Get
+                Return _text
+            End Get
+            Set(ByVal value As String)
+                _text = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
+
+        Public Sub Clear()
+            _text = String.Empty
+            _font = New Font("Microsoft Sans Serif", 11, FontStyle.Regular)
+        End Sub
+
+        #End Region 'Methods
+
+    End Class
+
+    Class MyLabel
+        Inherits Label
+
+        #Region "Fields"
+
+        ' My Label Class, Inherits from Label so i do not need to implement all Properties
+        Private _visible As Boolean = True
+
+        #End Region 'Fields
+
+        #Region "Constructors"
+
+        Public Sub New()
+            MyBase.AutoSize = False
+            MyBase.Visible = False
+        End Sub
+
+        #End Region 'Constructors
+
+        #Region "Properties"
+
+        Public Overrides Property BackColor() As Color
+            Get
+                Return MyBase.BackColor
+            End Get
+            Set(ByVal value As Color)
+                MyBase.BackColor = value
+            End Set
+        End Property
+
+        Public Overrides Property Text() As String
+            Get
+                Return MyBase.Text
+            End Get
+            Set(ByVal value As String)
+                MyBase.Text = value
+                frmMainSetup.MyBackGround.Invalidate()
+            End Set
+        End Property
+
+        Public Shadows Property Visible() As Boolean
+            Get
+                Return _visible
+            End Get
+            Set(ByVal value As Boolean)
+                _visible = value
+            End Set
+        End Property
+
+        #End Region 'Properties
+
+        #Region "Methods"
+
+        Public Overloads Sub SetStyle(ByVal style As ControlStyles, ByVal value As Boolean)
+            MyBase.SetStyle(style, value)
+        End Sub
+
+        #End Region 'Methods
+
+    End Class
+
+    #End Region 'Nested Types
+
 End Class
-

@@ -19,35 +19,64 @@
 ' ################################################################################
 
 Public Class dlgDeleteConfirm
-    Private PropogatingUp As Boolean = False
-    Private PropogatingDown As Boolean = False
 
-    Private Sub dlgDeleteConfirm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-    End Sub
+    #Region "Fields"
+
+    Private PropogatingDown As Boolean = False
+    Private PropogatingUp As Boolean = False
+
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal MoviesToDelete As List(Of Long)) As System.Windows.Forms.DialogResult
         Populate_FileList(MoviesToDelete)
         Return MyBase.ShowDialog
     End Function
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        DeleteSelectedMovies()
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+    Private Sub AddFileNode(ByVal ParentNode As TreeNode, ByVal item As IO.FileInfo)
+        Try
+            Dim NewNode As TreeNode = ParentNode.Nodes.Add(item.FullName, item.Name)
+            NewNode.Tag = item.FullName
+            NewNode.ImageKey = "FILE"
+            NewNode.SelectedImageKey = "FILE"
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Throw
+        End Try
+    End Sub
+
+    Private Sub AddFolderNode(ByVal ParentNode As TreeNode, ByVal dir As IO.DirectoryInfo)
+        Try
+            Dim NewNode As TreeNode = ParentNode.Nodes.Add(dir.FullName, dir.Name)
+            NewNode.Tag = dir.FullName
+            NewNode.ImageKey = "FOLDER"
+            NewNode.SelectedImageKey = "FOLDER"
+
+            If Not Master.SourcesList.Contains(dir.FullName) Then
+                'populate all the sub-folders in the folder
+                For Each item As IO.DirectoryInfo In dir.GetDirectories
+                    AddFolderNode(NewNode, item)
+                Next
+            End If
+
+            'populate all the files in the folder
+            For Each item As IO.FileInfo In dir.GetFiles()
+                AddFileNode(NewNode, item)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Throw
+        End Try
+    End Sub
+
+    Private Sub btnToggleAllFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllFiles.Click
+        ToggleAllNodes()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(714, "Confirm Items To Be Deleted")
-        Me.btnToggleAllFiles.Text = Master.eLang.GetString(715, "Toggle All Files")
-
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
     Private Function DeleteSelectedMovies() As Boolean
@@ -95,6 +124,16 @@ Public Class dlgDeleteConfirm
         End Try
     End Function
 
+    Private Sub dlgDeleteConfirm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        DeleteSelectedMovies()
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
     Private Sub Populate_FileList(ByVal MoviesToDelete As List(Of Long))
         Dim mMovie As New Structures.DBMovie
         Dim hadError As Boolean = False
@@ -103,7 +142,6 @@ Public Class dlgDeleteConfirm
         Dim MovieParentNode As New TreeNode
         Try
             With tvwFiles
-
 
                 For Each MovieId As Long In MoviesToDelete
                     hadError = False
@@ -152,40 +190,29 @@ Public Class dlgDeleteConfirm
         End Try
     End Sub
 
-    Private Sub AddFolderNode(ByVal ParentNode As TreeNode, ByVal dir As IO.DirectoryInfo)
-        Try
-            Dim NewNode As TreeNode = ParentNode.Nodes.Add(dir.FullName, dir.Name)
-            NewNode.Tag = dir.FullName
-            NewNode.ImageKey = "FOLDER"
-            NewNode.SelectedImageKey = "FOLDER"
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(714, "Confirm Items To Be Deleted")
+        Me.btnToggleAllFiles.Text = Master.eLang.GetString(715, "Toggle All Files")
 
-            If Not Master.SourcesList.Contains(dir.FullName) Then
-                'populate all the sub-folders in the folder
-                For Each item As IO.DirectoryInfo In dir.GetDirectories
-                    AddFolderNode(NewNode, item)
-                Next
-            End If
-
-            'populate all the files in the folder
-            For Each item As IO.FileInfo In dir.GetFiles()
-                AddFileNode(NewNode, item)
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Throw
-        End Try
-
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Private Sub AddFileNode(ByVal ParentNode As TreeNode, ByVal item As IO.FileInfo)
+    Private Sub ToggleAllNodes()
         Try
-            Dim NewNode As TreeNode = ParentNode.Nodes.Add(item.FullName, item.Name)
-            NewNode.Tag = item.FullName
-            NewNode.ImageKey = "FILE"
-            NewNode.SelectedImageKey = "FILE"
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Throw
+            Dim Checked As Nullable(Of Boolean)
+            With tvwFiles
+                If .Nodes.Count = 0 Then Return
+                For Each node As TreeNode In .Nodes
+                    If Not Checked.HasValue Then
+                        'this is the first node of this type, set toggle status based on this
+                        Checked = Not node.Checked
+                    End If
+                    node.Checked = Checked.Value
+                Next
+            End With
+        Catch
+            'swallow this - not a critical function
         End Try
     End Sub
 
@@ -257,25 +284,6 @@ Public Class dlgDeleteConfirm
         End Try
     End Sub
 
-    Private Sub btnToggleAllFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllFiles.Click
-        ToggleAllNodes()
-    End Sub
+    #End Region 'Methods
 
-    Private Sub ToggleAllNodes()
-        Try
-            Dim Checked As Nullable(Of Boolean)
-            With tvwFiles
-                If .Nodes.Count = 0 Then Return
-                For Each node As TreeNode In .Nodes
-                    If Not Checked.HasValue Then
-                        'this is the first node of this type, set toggle status based on this
-                        Checked = Not node.Checked
-                    End If
-                    node.Checked = Checked.Value
-                Next
-            End With
-        Catch
-            'swallow this - not a critical function
-        End Try
-    End Sub
 End Class

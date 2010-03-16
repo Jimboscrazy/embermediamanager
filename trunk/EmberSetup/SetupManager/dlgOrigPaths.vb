@@ -18,36 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
-
 Public Class dlgOrigPaths
-    Sub FillPaths()
-        ListView1.Items.Clear()
-        Dim i As ListViewItem
-        For Each p As frmMainManager.OrigPaths In frmMainManager.OPaths
-            i = New ListViewItem
-            i.Name = p.origpath
-            i.Text = p.platform
-            i.SubItems.Add(p.origpath)
-            i.SubItems.Add(p.emberpath)
-            If p.recursive Then
-                i.SubItems.Add("Yes")
-            Else
-                i.SubItems.Add("No")
-            End If
-            ListView1.Items.Add(i)
-        Next
-    End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
+    #Region "Methods"
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Using ed As New dlgEditOrigPath
@@ -63,21 +36,6 @@ Public Class dlgOrigPaths
             End If
 
         End Using
-
-    End Sub
-
-    Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
-        If ListView1.SelectedItems.Count > 0 Then
-            Button2.Enabled = True
-            Button3.Enabled = True
-        Else
-            Button2.Enabled = False
-            Button3.Enabled = False
-        End If
-    End Sub
-
-    Private Sub dlgOrigPaths_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        FillPaths()
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -107,4 +65,49 @@ Public Class dlgOrigPaths
             Next
         End Using
     End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub dlgOrigPaths_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        FillPaths()
+    End Sub
+
+    Sub FillPaths()
+        ListView1.Items.Clear()
+        Dim i As ListViewItem
+        For Each p As frmMainManager.OrigPaths In frmMainManager.OPaths
+            i = New ListViewItem
+            i.Name = p.origpath
+            i.Text = p.platform
+            i.SubItems.Add(p.origpath)
+            i.SubItems.Add(p.emberpath)
+            If p.recursive Then
+                i.SubItems.Add("Yes")
+            Else
+                i.SubItems.Add("No")
+            End If
+            ListView1.Items.Add(i)
+        Next
+    End Sub
+
+    Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
+        If ListView1.SelectedItems.Count > 0 Then
+            Button2.Enabled = True
+            Button3.Enabled = True
+        Else
+            Button2.Enabled = False
+            Button3.Enabled = False
+        End If
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
+    #End Region 'Methods
+
 End Class

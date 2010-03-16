@@ -26,19 +26,34 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 
 Public Class Trailers
+
+    #Region "Fields"
+
     Public IMDBURL As String
 
+    Private WebPage As New HTTP
     Private _ImdbID As String = String.Empty
     Private _ImdbTrailerPage As String = String.Empty
     Private _TrailerList As New List(Of String)
-    Private WebPage As New HTTP
 
-    Public Event ProgressUpdated(ByVal iPercent As Integer)
+    #End Region 'Fields
+
+    #Region "Constructors"
 
     Public Sub New()
         Me.Clear()
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
+
+    #End Region 'Constructors
+
+    #Region "Events"
+
+    Public Event ProgressUpdated(ByVal iPercent As Integer)
+
+    #End Region 'Events
+
+    #Region "Methods"
 
     Public Sub Clear()
         Me._TrailerList.Clear()
@@ -46,13 +61,76 @@ Public Class Trailers
         Me._ImdbTrailerPage = String.Empty
     End Sub
 
+    Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
+        Dim parPath As String = Directory.GetParent(sPath).FullName
+        Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+        For Each t As String In Master.eSettings.ValidExts
+            If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpName, "-trailer", t))
+            ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpName, "[trailer]", t))
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
+            End If
+        Next
+    End Sub
+
     Public Sub DownloadProgressUpdated(ByVal iPercent As Integer)
         RaiseEvent ProgressUpdated(iPercent)
     End Sub
 
+    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isSingle As Boolean, ByVal currNfoTrailer As String) As String
+        Dim tURL As String = String.Empty
+        Try
+            Me._TrailerList.Clear()
+
+            If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, True) Then
+                Me.GetTrailers(ImdbID, True)
+
+                If Me._TrailerList.Count > 0 Then
+                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0).ToString, sPath, False, "trailer")
+                    If Not String.IsNullOrEmpty(tURL) Then
+                        'delete any other trailer if enabled in settings and download successful
+                        If Master.eSettings.DeleteAllTrailers Then
+                            Me.DeleteTrailers(sPath, tURL)
+                        End If
+                    End If
+                End If
+            ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, False) Then
+                Me.GetTrailers(ImdbID, True)
+
+                If Me._TrailerList.Count > 0 Then
+                    tURL = Me._TrailerList.Item(0).ToString
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return tURL
+    End Function
+
+    Public Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
+        Dim tURL As String = String.Empty
+
+        If Not String.IsNullOrEmpty(sURL) Then
+            tURL = WebPage.DownloadFile(sURL, sPath, True, "trailer")
+
+            If Not String.IsNullOrEmpty(tURL) Then
+                'delete any other trailer if enabled in settings and download successful
+                If Master.eSettings.DeleteAllTrailers Then
+                    Me.DeleteTrailers(sPath, tURL)
+                End If
+            End If
+        End If
+
+        Return tURL
+    End Function
+
     Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As List(Of String)
         Me._ImdbID = ImdbID
-
 
         For Each TP As Enums.TrailerPages In Master.eSettings.TrailerSites
             If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
@@ -72,8 +150,44 @@ Public Class Trailers
         Next
 
         Return Me._TrailerList
-
     End Function
+
+    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, ByVal currNfoTrailer As String, Optional ByVal isSS As Boolean = False) As Boolean
+        Dim fScanner As New Scanner
+
+        If isDL Then
+            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.OverwriteTrailer Then
+                Return True
+            Else
+                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) Then
+                    If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
+            End If
+        Else
+            If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+    End Function
+
+    Private Sub GetAllHTPCTrailer()
+        Dim AllHTPC As New AllHTPC.Scraper
+        Dim YT As String = AllHTPC.GetTrailer(_ImdbID)
+
+        If Not String.IsNullOrEmpty(YT) Then
+            Me._TrailerList.Add(YT)
+        End If
+
+        AllHTPC = Nothing
+    End Sub
 
     Private Sub GetImdbTrailer()
         Dim TrailerNumber As Integer = 0
@@ -116,16 +230,12 @@ Public Class Trailers
         End If
     End Sub
 
-    Private Sub GetAllHTPCTrailer()
-        Dim AllHTPC As New AllHTPC.Scraper
-        Dim YT As String = AllHTPC.GetTrailer(_ImdbID)
-
-        If Not String.IsNullOrEmpty(YT) Then
-            Me._TrailerList.Add(YT)
+    Private Function GetImdbTrailerPage() As Boolean
+        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer"))
+        If _ImdbTrailerPage.ToLower.Contains("page not found") Then
+            _ImdbTrailerPage = String.Empty
         End If
-
-        AllHTPC = Nothing
-    End Sub
+    End Function
 
     Private Sub GetTMDBTrailer()
         Dim TMDB As New TMDB.Scraper
@@ -138,102 +248,6 @@ Public Class Trailers
         TMDB = Nothing
     End Sub
 
-    Private Function GetImdbTrailerPage() As Boolean
-        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer"))
-        If _ImdbTrailerPage.ToLower.Contains("page not found") Then
-            _ImdbTrailerPage = String.Empty
-        End If
-    End Function
-
-    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isSingle As Boolean, ByVal currNfoTrailer As String) As String
-        Dim tURL As String = String.Empty
-        Try
-            Me._TrailerList.Clear()
-
-            If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, True) Then
-                Me.GetTrailers(ImdbID, True)
-
-                If Me._TrailerList.Count > 0 Then
-                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0).ToString, sPath, False, "trailer")
-                    If Not String.IsNullOrEmpty(tURL) Then
-                        'delete any other trailer if enabled in settings and download successful
-                        If Master.eSettings.DeleteAllTrailers Then
-                            Me.DeleteTrailers(sPath, tURL)
-                        End If
-                    End If
-                End If
-            ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, False) Then
-                Me.GetTrailers(ImdbID, True)
-
-                If Me._TrailerList.Count > 0 Then
-                    tURL = Me._TrailerList.Item(0).ToString
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return tURL
-    End Function
-
-    Public Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
-
-        Dim tURL As String = String.Empty
-
-        If Not String.IsNullOrEmpty(sURL) Then
-            tURL = WebPage.DownloadFile(sURL, sPath, True, "trailer")
-
-            If Not String.IsNullOrEmpty(tURL) Then
-                'delete any other trailer if enabled in settings and download successful
-                If Master.eSettings.DeleteAllTrailers Then
-                    Me.DeleteTrailers(sPath, tURL)
-                End If
-            End If
-        End If
-
-        Return tURL
-    End Function
-
-    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, ByVal currNfoTrailer As String, Optional ByVal isSS As Boolean = False) As Boolean
-        Dim fScanner As New Scanner
-
-        If isDL Then
-            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.OverwriteTrailer Then
-                Return True
-            Else
-                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) Then
-                    If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Else
-                    Return False
-                End If
-            End If
-        Else
-            If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
-                Return True
-            Else
-                Return False
-            End If
-        End If
-    End Function
-
-    Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
-        Dim parPath As String = Directory.GetParent(sPath).FullName
-        Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-        For Each t As String In Master.eSettings.ValidExts
-            If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpName, "-trailer", t))
-            ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpName, "[trailer]", t))
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
-            End If
-        Next
-    End Sub
+    #End Region 'Methods
 
 End Class

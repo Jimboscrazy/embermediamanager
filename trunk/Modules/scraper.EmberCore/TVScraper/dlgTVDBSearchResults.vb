@@ -19,190 +19,20 @@
 ' ################################################################################
 
 Public Class dlgTVDBSearchResults
-    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
+    #Region "Fields"
+
+    Friend  WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+
+    Private lvResultsSorter As New ListViewColumnSorter
     Private sHTTP As New HTTP
     Private sInfo As Structures.ScrapeInfo
-    Private _skipdownload As Boolean = False
     Private _manualresult As Scraper.TVSearchResults = Nothing
-    Private lvResultsSorter As New ListViewColumnSorter
+    Private _skipdownload As Boolean = False
 
-    Private Structure Results
-        Dim Result As Image
-    End Structure
+    #End Region 'Fields
 
-    Private Structure Arguments
-        Dim pURL As String
-    End Structure
-
-    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))
-
-        While sHTTP.IsDownloading
-            Application.DoEvents()
-        End While
-
-        e.Result = New Results With {.Result = sHTTP.Image()}
-
-    End Sub
-
-    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        Try
-            Me.pbBanner.Image = Res.Result
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
-        If Me.lvSearchResults.SelectedItems.Count > 0 Then
-            Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
-            Me.sInfo.TVDBID = sResults.ID.ToString
-            Me.sInfo.SelectedLang = sResults.Language.ShortLang
-
-            If Not _skipdownload Then
-                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
-                Me.pnlLoading.Visible = True
-                Scraper.sObject.DownloadSeriesAsync(sInfo)
-            Else
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
-            End If
-        ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
-            Me.sInfo.TVDBID = Me._manualresult.ID.ToString
-            Me.sInfo.SelectedLang = Me._manualresult.Language.ShortLang
-
-            If Not _skipdownload Then
-                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
-                Me.pnlLoading.Visible = True
-                Scraper.sObject.DownloadSeriesAsync(sInfo)
-            Else
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
-            End If
-        End If
-
-    End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
-
-    Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        Me.pbBanner.Visible = areVisible
-        Me.lblTitle.Visible = areVisible
-        Me.lblAiredHeader.Visible = areVisible
-        Me.lblAired.Visible = areVisible
-        Me.lblPlotHeader.Visible = areVisible
-        Me.txtOutline.Visible = areVisible
-    End Sub
-
-    Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Try
-            AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
-            End Using
-
-            Me.lvSearchResults.ListViewItemSorter = Me.lvResultsSorter
-
-            Me.SetUp()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
-        Select Case eType
-            Case Enums.TVScraperEventType.SearchResultsDownloaded
-                Dim lItem As ListViewItem
-                Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
-
-                Me.lvSearchResults.Items.Clear()
-                Me.ClearInfo()
-
-                If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
-                    For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) r.Lev)
-                        lItem = New ListViewItem(sRes.Name)
-                        lItem.SubItems.Add(sRes.Language.LongLang)
-                        lItem.SubItems.Add(sRes.Lev.ToString)
-                        lItem.SubItems.Add(sRes.ID.ToString)
-                        lItem.SubItems.Add(sRes.Language.ShortLang)
-                        lItem.Tag = sRes
-                        Me.lvSearchResults.Items.Add(lItem)
-                    Next
-                End If
-
-                Me.pnlLoading.Visible = False
-
-                If Me.lvSearchResults.Items.Count > 0 Then
-                    If sResults.Select(Function(s) s.ID).Distinct.Count = 1 Then
-                        'they're all for the same show... try to find one with the preferred language
-                        For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                            If fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
-                                fItem.Selected = True
-                                fItem.EnsureVisible()
-                                Exit For
-                            End If
-                        Next
-                    Else
-                        'we've got a bunch of different shows... try to find a "best match" title with the preferred language
-                        If sResults.Where(Function(s) s.Lev <= 5).Count > 0 Then
-                            For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                                If Convert.ToInt32(fItem.SubItems(2).Text) <= 5 AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
-                                    fItem.Selected = True
-                                    fItem.EnsureVisible()
-                                    Exit For
-                                End If
-                            Next
-
-                            If Me.lvSearchResults.SelectedItems.Count = 0 Then
-                                'get the id for the best english match and see if we have one for the preferred language with same id
-                                Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.ShortLang = "en").ID
-                                If tID > 0 Then
-                                    For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                                        If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
-                                            fItem.Selected = True
-                                            fItem.EnsureVisible()
-                                            Exit For
-                                        End If
-                                    Next
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If Me.lvSearchResults.SelectedItems.Count = 0 Then
-                        Me.lvSearchResults.Items(0).Selected = True
-                    End If
-                    Me.lvSearchResults.Select()
-                End If
-
-                Me.chkManual.Enabled = True
-
-            Case Enums.TVScraperEventType.ShowDownloaded
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
-        End Select
-    End Sub
-
-    Private Sub ClearInfo()
-        Me.ControlsVisible(False)
-        Me.lblTitle.Text = String.Empty
-        Me.lblAired.Text = String.Empty
-        Me.pbBanner.Image = Nothing
-        Scraper.sObject.CancelAsync()
-    End Sub
+    #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
         Me.sInfo = _sInfo
@@ -226,119 +56,16 @@ Public Class dlgTVDBSearchResults
         End If
     End Function
 
-    Private Sub lvSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSearchResults.GotFocus
-        Me.AcceptButton = Me.OK_Button
-    End Sub
-
-    Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
-        Me.ClearInfo()
-        If Me.lvSearchResults.SelectedItems.Count > 0 AndAlso Not Me.chkManual.Checked Then
-            Dim SelectedShow As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
-            If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
-                If Me.bwDownloadPic.IsBusy Then
-                    Me.bwDownloadPic.CancelAsync()
-                End If
-
-                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                Me.bwDownloadPic.WorkerSupportsCancellation = True
-                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = SelectedShow.Banner})
-            End If
-
-            Me.OK_Button.Tag = SelectedShow.ID
-            Me.lblTitle.Text = SelectedShow.Name
-            Me.txtOutline.Text = SelectedShow.Overview
-            Me.lblAired.Text = SelectedShow.Aired
-            Me.OK_Button.Enabled = True
-            Me.ControlsVisible(True)
-        End If
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(781, "TV Search Results")
-        Me.Label1.Text = Me.Text
-        Me.Label2.Text = Master.eLang.GetString(782, "View details of each result to find the proper TV show.")
-        Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:")
-
-        Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title")
-        Me.lvSearchResults.Columns(1).Text = Master.eLang.GetString(610, "Language")
-
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-
-    End Sub
-
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+            Me.sInfo.ShowTitle = Me.txtSearch.Text
+            Me.ClearInfo()
             Me.chkManual.Enabled = False
             Me.chkManual.Checked = False
             Me.txtSearch.Text = String.Empty
             Me.btnVerify.Enabled = False
-            Me.sInfo.ShowTitle = Me.txtSearch.Text
             Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
             Me.pnlLoading.Visible = True
-        End If
-    End Sub
-
-    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
-        Me.AcceptButton = Me.btnSearch
-    End Sub
-
-    Private Sub lvSearchResults_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvSearchResults.ColumnClick
-        ' Determine if the clicked column is already the column that is 
-        ' being sorted.
-        Try
-            If (e.Column = Me.lvResultsSorter.SortColumn) Then
-                ' Reverse the current sort direction for this column.
-                If (Me.lvResultsSorter.Order = SortOrder.Ascending) Then
-                    Me.lvResultsSorter.Order = SortOrder.Descending
-                Else
-                    Me.lvResultsSorter.Order = SortOrder.Ascending
-                End If
-            Else
-                ' Set the column number that is to be sorted; default to ascending.
-                Me.lvResultsSorter.SortColumn = e.Column
-                Me.lvResultsSorter.Order = SortOrder.Ascending
-            End If
-
-            ' Perform the sort with these new sort options.
-            Me.lvSearchResults.Sort()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub txtTVDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVDBID.GotFocus
-        Me.AcceptButton = Me.btnVerify
-    End Sub
-
-    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
-        Me.ClearInfo()
-        Me.OK_Button.Enabled = False
-        Me.txtTVDBID.Enabled = Me.chkManual.Checked
-        Me.btnVerify.Enabled = Me.chkManual.Checked
-        Me.lvSearchResults.Enabled = Not Me.chkManual.Checked
-
-        If Not Me.chkManual.Checked Then
-            txtTVDBID.Text = String.Empty
-        Else
-            Me.lvSearchResults.SelectedItems(0).Selected = False
-        End If
-    End Sub
-
-    Private Sub txtTVDBID_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVDBID.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
-    End Sub
-
-    Private Sub txtTVDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBID.TextChanged
-        If String.IsNullOrEmpty(Me.txtTVDBID.Text) Then
-            Me.btnVerify.Enabled = False
-            Me.OK_Button.Enabled = False
-        Else
-            If Me.chkManual.Checked Then
-                Me.btnVerify.Enabled = True
-                Me.OK_Button.Enabled = False
-            End If
         End If
     End Sub
 
@@ -407,9 +134,300 @@ Public Class dlgTVDBSearchResults
                 Me.pnlLoading.Visible = False
             End If
 
-
         Else
             MsgBox(Master.eLang.GetString(836, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
     End Sub
+
+    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Args.pURL))
+
+        While sHTTP.IsDownloading
+            Application.DoEvents()
+        End While
+
+        e.Result = New Results With {.Result = sHTTP.Image()}
+    End Sub
+
+    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
+        Dim Res As Results = DirectCast(e.Result, Results)
+
+        Try
+            Me.pbBanner.Image = Res.Result
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
+        Me.ClearInfo()
+        Me.OK_Button.Enabled = False
+        Me.txtTVDBID.Enabled = Me.chkManual.Checked
+        Me.btnVerify.Enabled = Me.chkManual.Checked
+        Me.lvSearchResults.Enabled = Not Me.chkManual.Checked
+
+        If Not Me.chkManual.Checked Then
+            txtTVDBID.Text = String.Empty
+        Else
+            Me.lvSearchResults.SelectedItems(0).Selected = False
+        End If
+    End Sub
+
+    Private Sub ClearInfo()
+        Me.ControlsVisible(False)
+        Me.lblTitle.Text = String.Empty
+        Me.lblAired.Text = String.Empty
+        Me.pbBanner.Image = Nothing
+        Scraper.sObject.CancelAsync()
+    End Sub
+
+    Private Sub ControlsVisible(ByVal areVisible As Boolean)
+        Me.pbBanner.Visible = areVisible
+        Me.lblTitle.Visible = areVisible
+        Me.lblAiredHeader.Visible = areVisible
+        Me.lblAired.Visible = areVisible
+        Me.lblPlotHeader.Visible = areVisible
+        Me.txtOutline.Visible = areVisible
+    End Sub
+
+    Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Try
+            AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
+
+            Me.lvSearchResults.ListViewItemSorter = Me.lvResultsSorter
+
+            Me.SetUp()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub lvSearchResults_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvSearchResults.ColumnClick
+        ' Determine if the clicked column is already the column that is
+        ' being sorted.
+        Try
+            If (e.Column = Me.lvResultsSorter.SortColumn) Then
+                ' Reverse the current sort direction for this column.
+                If (Me.lvResultsSorter.Order = SortOrder.Ascending) Then
+                    Me.lvResultsSorter.Order = SortOrder.Descending
+                Else
+                    Me.lvResultsSorter.Order = SortOrder.Ascending
+                End If
+            Else
+                ' Set the column number that is to be sorted; default to ascending.
+                Me.lvResultsSorter.SortColumn = e.Column
+                Me.lvResultsSorter.Order = SortOrder.Ascending
+            End If
+
+            ' Perform the sort with these new sort options.
+            Me.lvSearchResults.Sort()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub lvSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSearchResults.GotFocus
+        Me.AcceptButton = Me.OK_Button
+    End Sub
+
+    Private Sub lvSearchResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSearchResults.SelectedIndexChanged
+        Me.ClearInfo()
+        If Me.lvSearchResults.SelectedItems.Count > 0 AndAlso Not Me.chkManual.Checked Then
+            Dim SelectedShow As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
+            If Not String.IsNullOrEmpty(SelectedShow.Banner) Then
+                If Me.bwDownloadPic.IsBusy Then
+                    Me.bwDownloadPic.CancelAsync()
+                End If
+
+                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                Me.bwDownloadPic.WorkerSupportsCancellation = True
+                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = SelectedShow.Banner})
+            End If
+
+            Me.OK_Button.Tag = SelectedShow.ID
+            Me.lblTitle.Text = SelectedShow.Name
+            Me.txtOutline.Text = SelectedShow.Overview
+            Me.lblAired.Text = SelectedShow.Aired
+            Me.OK_Button.Enabled = True
+            Me.ControlsVisible(True)
+        End If
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        If Me.lvSearchResults.SelectedItems.Count > 0 Then
+            Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
+            Me.sInfo.TVDBID = sResults.ID.ToString
+            Me.sInfo.SelectedLang = sResults.Language.ShortLang
+
+            If Not _skipdownload Then
+                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
+                Me.pnlLoading.Visible = True
+                Scraper.sObject.DownloadSeriesAsync(sInfo)
+            Else
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
+        ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
+            Me.sInfo.TVDBID = Me._manualresult.ID.ToString
+            Me.sInfo.SelectedLang = Me._manualresult.Language.ShortLang
+
+            If Not _skipdownload Then
+                Me.Label3.Text = Master.eLang.GetString(780, "Downloading show info...")
+                Me.pnlLoading.Visible = True
+                Scraper.sObject.DownloadSeriesAsync(sInfo)
+            Else
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
+        End If
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(781, "TV Search Results")
+        Me.Label1.Text = Me.Text
+        Me.Label2.Text = Master.eLang.GetString(782, "View details of each result to find the proper TV show.")
+        Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:")
+
+        Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title")
+        Me.lvSearchResults.Columns(1).Text = Master.eLang.GetString(610, "Language")
+
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+    End Sub
+
+    Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Select Case eType
+            Case Enums.TVScraperEventType.SearchResultsDownloaded
+                Dim lItem As ListViewItem
+                Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
+
+                Me.lvSearchResults.Items.Clear()
+
+                If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
+                    For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) r.Lev)
+                        lItem = New ListViewItem(sRes.Name)
+                        lItem.SubItems.Add(sRes.Language.LongLang)
+                        lItem.SubItems.Add(sRes.Lev.ToString)
+                        lItem.SubItems.Add(sRes.ID.ToString)
+                        lItem.SubItems.Add(sRes.Language.ShortLang)
+                        lItem.Tag = sRes
+                        Me.lvSearchResults.Items.Add(lItem)
+                    Next
+                End If
+
+                Me.pnlLoading.Visible = False
+
+                If Me.lvSearchResults.Items.Count > 0 Then
+                    If sResults.Select(Function(s) s.ID).Distinct.Count = 1 Then
+                        'they're all for the same show... try to find one with the preferred language
+                        For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                            If fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
+                                fItem.Selected = True
+                                fItem.EnsureVisible()
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        'we've got a bunch of different shows... try to find a "best match" title with the preferred language
+                        If sResults.Where(Function(s) s.Lev <= 5).Count > 0 Then
+                            For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                                If Convert.ToInt32(fItem.SubItems(2).Text) <= 5 AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
+                                    fItem.Selected = True
+                                    fItem.EnsureVisible()
+                                    Exit For
+                                End If
+                            Next
+
+                            If Me.lvSearchResults.SelectedItems.Count = 0 Then
+                                'get the id for the best english match and see if we have one for the preferred language with same id
+                                Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.ShortLang = "en").ID
+                                If tID > 0 Then
+                                    For Each fItem As ListViewItem In Me.lvSearchResults.Items
+                                        If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
+                                            fItem.Selected = True
+                                            fItem.EnsureVisible()
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                            End If
+                        End If
+                    End If
+
+                    If Me.lvSearchResults.SelectedItems.Count = 0 Then
+                        Me.lvSearchResults.Items(0).Selected = True
+                    End If
+                    Me.lvSearchResults.Select()
+                End If
+
+                Me.chkManual.Enabled = True
+
+            Case Enums.TVScraperEventType.ShowDownloaded
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+        End Select
+    End Sub
+
+    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
+        Me.AcceptButton = Me.btnSearch
+    End Sub
+
+    Private Sub txtTVDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVDBID.GotFocus
+        Me.AcceptButton = Me.btnVerify
+    End Sub
+
+    Private Sub txtTVDBID_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVDBID.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
+    End Sub
+
+    Private Sub txtTVDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBID.TextChanged
+        If String.IsNullOrEmpty(Me.txtTVDBID.Text) Then
+            Me.btnVerify.Enabled = False
+            Me.OK_Button.Enabled = False
+        Else
+            If Me.chkManual.Checked Then
+                Me.btnVerify.Enabled = True
+                Me.OK_Button.Enabled = False
+            End If
+        End If
+    End Sub
+
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
+    Private Structure Arguments
+
+        #Region "Fields"
+
+        Dim pURL As String
+
+        #End Region 'Fields
+
+    End Structure
+
+    Private Structure Results
+
+        #Region "Fields"
+
+        Dim Result As Image
+
+        #End Region 'Fields
+
+    End Structure
+
+    #End Region 'Nested Types
+
 End Class

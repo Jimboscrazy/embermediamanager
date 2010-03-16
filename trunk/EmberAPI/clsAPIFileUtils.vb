@@ -22,7 +22,133 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 
 Namespace FileUtils
+
+    Public Class Common
+
+        #Region "Methods"
+
+        Public Shared Function GetDirectory(ByVal sPath As String) As String
+            If String.IsNullOrEmpty(sPath) Then Return String.Empty
+            If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
+            sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
+            If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
+            Return sPath
+        End Function
+
+        Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
+            Dim lFileList As New List(Of FileInfo)
+            Select Case True
+                Case isBDRip(sPath) OrElse ForceBDMV
+                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.m2ts"))
+                Case isVideoTS(sPath)
+                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
+            End Select
+
+            Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
+        End Function
+
+        Public Shared Function isBDRip(ByVal sPath As String) As Boolean
+            If String.IsNullOrEmpty(sPath) Then Return False
+            If Path.HasExtension(sPath) Then
+                Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
+            Else
+                Return GetDirectory(sPath).ToLower = "stream" AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv"
+            End If
+        End Function
+
+        Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
+            If String.IsNullOrEmpty(sPath) Then Return False
+            If Path.HasExtension(sPath) Then
+                Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
+            Else
+                Return GetDirectory(sPath).ToLower = "video_ts"
+            End If
+        End Function
+
+        ''' <summary>
+        ''' Copy a file from one location to another using a stream/buffer
+        ''' </summary>
+        ''' <param name="sPathFrom">Old path of file to move.</param>
+        ''' <param name="sPathTo">New path of file to move.</param>
+        Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
+            Try
+                Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
+                    Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
+                        Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
+
+                        SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                        DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
+
+                        StreamBuffer = Nothing
+                    End Using
+                End Using
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+
+        ''' <summary>
+        ''' Get the entire path and filename of a file, but without the extension
+        ''' </summary>
+        ''' <param name="sPath">Full path to file.</param>
+        ''' <returns>Path and filename of a file, without the extension</returns>
+        Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
+            Try
+                Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
+            Catch
+                Return String.Empty
+            End Try
+        End Function
+
+        #End Region 'Methods
+
+    End Class
+
     Public Class Delete
+
+        #Region "Methods"
+
+        ''' <summary>
+        ''' Safer method of deleting a diretory and all it's contents
+        ''' </summary>
+        ''' <param name="sPath">Full path of directory to delete</param>
+        Public Shared Sub DeleteDirectory(ByVal sPath As String)
+            Try
+                If String.IsNullOrEmpty(sPath) Then Return
+
+                If Directory.Exists(sPath) Then
+
+                    Dim Dirs As New List(Of String)
+
+                    Try
+                        Dirs.AddRange(Directory.GetDirectories(sPath))
+                    Catch
+                    End Try
+
+                    For Each inDir As String In Dirs
+                        DeleteDirectory(inDir)
+                    Next
+
+                    Dim fFiles As New List(Of String)
+
+                    Try
+                        fFiles.AddRange(Directory.GetFiles(sPath))
+                    Catch
+                    End Try
+
+                    For Each fFile As String In fFiles
+                        Try
+                            File.Delete(fFile)
+                        Catch
+                        End Try
+                    Next
+
+                    Directory.Delete(sPath, True)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
 
         ''' <summary>
         ''' Delete files as selected by cleaner settings or all files related to a movie
@@ -451,52 +577,19 @@ Namespace FileUtils
             Return ItemsToDelete
         End Function
 
-        ''' <summary>
-        ''' Safer method of deleting a diretory and all it's contents
-        ''' </summary>
-        ''' <param name="sPath">Full path of directory to delete</param>
-        Public Shared Sub DeleteDirectory(ByVal sPath As String)
-            Try
-                If String.IsNullOrEmpty(sPath) Then Return
+        #End Region 'Methods
 
-                If Directory.Exists(sPath) Then
-
-                    Dim Dirs As New List(Of String)
-
-                    Try
-                        Dirs.AddRange(Directory.GetDirectories(sPath))
-                    Catch
-                    End Try
-
-                    For Each inDir As String In Dirs
-                        DeleteDirectory(inDir)
-                    Next
-
-
-                    Dim fFiles As New List(Of String)
-
-                    Try
-                        fFiles.AddRange(Directory.GetFiles(sPath))
-                    Catch
-                    End Try
-
-                    For Each fFile As String In fFiles
-                        Try
-                            File.Delete(fFile)
-                        Catch
-                        End Try
-                    Next
-
-                    Directory.Delete(sPath, True)
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End Sub
     End Class
 
     Public Class FileSorter
+
+        #Region "Events"
+
         Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
+
+        #End Region 'Events
+
+        #Region "Methods"
 
         Public Sub SortFiles(ByVal sPath As String)
             Dim tmpAL As New List(Of String)
@@ -539,86 +632,10 @@ Namespace FileUtils
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
+
+        #End Region 'Methods
+
     End Class
 
-    Public Class Common
-        ''' <summary>
-        ''' Get the entire path and filename of a file, but without the extension
-        ''' </summary>
-        ''' <param name="sPath">Full path to file.</param>
-        ''' <returns>Path and filename of a file, without the extension</returns>
-        Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
-
-            Try
-                Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
-            Catch
-                Return String.Empty
-            End Try
-
-        End Function
-
-        ''' <summary>
-        ''' Copy a file from one location to another using a stream/buffer
-        ''' </summary>
-        ''' <param name="sPathFrom">Old path of file to move.</param>
-        ''' <param name="sPathTo">New path of file to move.</param>
-        Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
-
-            Try
-                Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-                    Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                        Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
-
-                        SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                        DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                        StreamBuffer = Nothing
-                    End Using
-                End Using
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-        End Sub
-
-        Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
-
-            Dim lFileList As New List(Of FileInfo)
-            Select Case True
-                Case isBDRip(sPath) OrElse ForceBDMV
-                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.m2ts"))
-                Case isVideoTS(sPath)
-                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
-            End Select
-
-            Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
-
-        End Function
-
-        Public Shared Function isBDRip(ByVal sPath As String) As Boolean
-            If String.IsNullOrEmpty(sPath) Then Return False
-            If Path.HasExtension(sPath) Then
-                Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
-            Else
-                Return GetDirectory(sPath).ToLower = "stream" AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv"
-            End If
-        End Function
-
-        Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
-            If String.IsNullOrEmpty(sPath) Then Return False
-            If Path.HasExtension(sPath) Then
-                Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
-            Else
-                Return GetDirectory(sPath).ToLower = "video_ts"
-            End If
-        End Function
-
-        Public Shared Function GetDirectory(ByVal sPath As String) As String
-            If String.IsNullOrEmpty(sPath) Then Return String.Empty
-            If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
-            sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
-            If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
-            Return sPath
-        End Function
-    End Class
 End Namespace
+

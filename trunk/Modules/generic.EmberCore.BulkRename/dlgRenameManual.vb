@@ -21,18 +21,25 @@
 Imports System.IO
 
 Public Class dlgRenameManual
-    Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Cursor.Current = Cursors.WaitCursor
-        OK_Button.Enabled = False
-        Cancel_Button.Enabled = False
-        txtFolder.Enabled = False
-        txtFile.Enabled = False
-        pnlStatus.visible = True
-        Application.DoEvents()
-        Me.bwRename = New System.ComponentModel.BackgroundWorker
-        Me.bwRename.RunWorkerAsync()
+    #Region "Fields"
+
+    Friend  WithEvents bwRename As New System.ComponentModel.BackgroundWorker
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
+        'If JobLogger.Enabled Then Master.JobLogList.AddJobItem("ManualRename", JobLogger.ItemTypes.Generic, "DoRename", JobLogger.ItemStatus.OK, _
+        '    String.Concat("Movie=", Master.currMovie.ToString, vbCrLf, "Folder=", txtFolder.Text, vbCrLf, "File=", txtFile.Text, vbCrLf))
+        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
+    End Sub
+
+    Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
+        Cursor.Current = Cursors.Default
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -58,20 +65,16 @@ Public Class dlgRenameManual
         '    String.Concat("stackMark=", stackMark, vbCrLf, "Filename=", FileName, vbCrLf, "Folder=", txtFolder.Text, vbCrLf))
     End Sub
 
-    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
-        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
-            OK_Button.Enabled = True
-        Else
-            OK_Button.Enabled = False
-        End If
-    End Sub
-
-    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
-        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
-            OK_Button.Enabled = True
-        Else
-            OK_Button.Enabled = False
-        End If
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Cursor.Current = Cursors.WaitCursor
+        OK_Button.Enabled = False
+        Cancel_Button.Enabled = False
+        txtFolder.Enabled = False
+        txtFile.Enabled = False
+        pnlStatus.visible = True
+        Application.DoEvents()
+        Me.bwRename = New System.ComponentModel.BackgroundWorker
+        Me.bwRename.RunWorkerAsync()
     End Sub
 
     Sub SetUp()
@@ -85,15 +88,22 @@ Public Class dlgRenameManual
         Me.txtTitle.Text = Master.currMovie.Movie.Title
     End Sub
 
-    Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
-        Cursor.Current = Cursors.Default
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
+        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
+            OK_Button.Enabled = True
+        Else
+            OK_Button.Enabled = False
+        End If
     End Sub
 
-    Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        'If JobLogger.Enabled Then Master.JobLogList.AddJobItem("ManualRename", JobLogger.ItemTypes.Generic, "DoRename", JobLogger.ItemStatus.OK, _
-        '    String.Concat("Movie=", Master.currMovie.ToString, vbCrLf, "Folder=", txtFolder.Text, vbCrLf, "File=", txtFile.Text, vbCrLf))
-        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
+    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
+        If Not String.IsNullOrEmpty(txtFolder.Text) AndAlso Not String.IsNullOrEmpty(txtFile.Text) Then
+            OK_Button.Enabled = True
+        Else
+            OK_Button.Enabled = False
+        End If
     End Sub
+
+    #End Region 'Methods
+
 End Class

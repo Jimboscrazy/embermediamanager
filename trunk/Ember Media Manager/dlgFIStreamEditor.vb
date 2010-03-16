@@ -21,9 +21,16 @@
 Imports System.Text.RegularExpressions
 
 Public Class dlgFIStreamEditor
-    Private stream_v As New MediaInfo.Video
+
+    #Region "Fields"
+
     Private stream_a As New MediaInfo.Audio
     Private stream_s As New MediaInfo.Subtitle
+    Private stream_v As New MediaInfo.Video
+
+    #End Region 'Fields
+
+    #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaInfo.Fileinfo, ByVal idx As Integer) As Object
         Try
@@ -120,18 +127,24 @@ Public Class dlgFIStreamEditor
         End Try
     End Function
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
-
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
+    Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
+        'If cbAudioCodec.SelectedIndex >= 0 Then
+        'Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(cbAudioCodec.SelectedItem, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.@searchstring
+        'End If
+    End Sub
+
     Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub SetUp()
@@ -155,10 +168,6 @@ Public Class dlgFIStreamEditor
         Me.Label8.Text = Me.Label6.Text
     End Sub
 
-    Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
-        'If cbAudioCodec.SelectedIndex >= 0 Then
-        'Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(cbAudioCodec.SelectedItem, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.@searchstring
-        'End If
+    #End Region 'Methods
 
-    End Sub
 End Class

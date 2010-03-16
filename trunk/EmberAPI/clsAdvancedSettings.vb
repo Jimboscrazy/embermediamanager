@@ -18,45 +18,34 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-Imports System.Xml.Linq
-Imports System.Xml
 Imports System
 Imports System.IO
-Imports System.Xml.Serialization
 Imports System.Linq
+Imports System.Xml
+Imports System.Xml.Linq
+Imports System.Xml.Serialization
 
-<Serializable()> _
+<Serializable> _
 Public Class AdvancedSettings
-    Private Shared Sub SetDefaults()
-        _DoNotSave = True
-        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
-        _DoNotSave = False
-    End Sub
-    ' ******************************************************************************
-    Private Class SettingItem
-        Public Section As String
-        Public Name As String
-        Public Value As String
-        Public DefaultValue As String
-    End Class
+
+    #Region "Fields"
+
     Private Shared _AdvancedSettings As New List(Of SettingItem)
     Private Shared _DoNotSave As Boolean = False
+
+    #End Region 'Fields
+
+    #Region "Constructors"
+
     Public Sub New()
         SetDefaults()
         Load()
     End Sub
-    Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "") As String
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
-            End If
-        End If
-        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
-    End Function
+
+    #End Region 'Constructors
+
+    #Region "Methods"
+
     Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "") As Boolean
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
@@ -68,40 +57,35 @@ Public Class AdvancedSettings
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
         Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
     End Function
-    Public Shared Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "") As Boolean
+
+    Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "") As String
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v(0) Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
-            Else
-                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = value
-            End If
         End If
-        If Not _DoNotSave Then Save()
-        Return True
+        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
     End Function
-    Public Shared Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "") As Boolean
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+
+    Public Shared Sub Load()
+        _DoNotSave = True
+        Try
+            If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
+                Dim xdoc As New XDocument
+                xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+                For Each i As XElement In xdoc...<Setting>
+                    _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                Next
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v(0) Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
-            Else
-                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = Convert.ToString(value)
-            End If
-        End If
-        If Not _DoNotSave Then Save()
-        Return True
-    End Function
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        _DoNotSave = False
+    End Sub
+
     Public Shared Sub Save()
         Try
 
@@ -128,19 +112,67 @@ Public Class AdvancedSettings
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-    Public Shared Sub Load()
-        _DoNotSave = True
-        Try
-            If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
-                Dim xdoc As New XDocument
-                xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-                For Each i As XElement In xdoc...<Setting>
-                    _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
-                Next
+
+    Public Shared Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "") As Boolean
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
             End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v(0) Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
+            Else
+                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = Convert.ToString(value)
+            End If
+        End If
+        If Not _DoNotSave Then Save()
+        Return True
+    End Function
+
+    Public Shared Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "") As Boolean
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v(0) Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
+            Else
+                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = value
+            End If
+        End If
+        If Not _DoNotSave Then Save()
+        Return True
+    End Function
+
+    Private Shared Sub SetDefaults()
+        _DoNotSave = True
+        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
         _DoNotSave = False
     End Sub
+
+    #End Region 'Methods
+
+    #Region "Nested Types"
+
+    ' ******************************************************************************
+    Private Class SettingItem
+
+        #Region "Fields"
+
+        Public DefaultValue As String
+        Public Name As String
+        Public Section As String
+        Public Value As String
+
+        #End Region 'Fields
+
+    End Class
+
+    #End Region 'Nested Types
+
 End Class

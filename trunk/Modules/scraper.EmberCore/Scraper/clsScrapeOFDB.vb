@@ -18,27 +18,43 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
 Imports System.IO.Compression
 Imports System.Text.RegularExpressions
 
 Public Class OFDB
-    Private _title As String
+
+    #Region "Fields"
+
+    Private imdbID As String
+    Private OFDBMovie As MediaContainers.Movie
+    Private _genre As String
     Private _outline As String
     Private _plot As String
-    Private _genre As String
+    Private _title As String
 
-    Private OFDBMovie As MediaContainers.Movie
-    Private imdbID As String
+    #End Region 'Fields
 
-    Public Property Title() As String
+    #Region "Constructors"
+
+    Public Sub New(ByVal sID As String, ByRef mMovie As MediaContainers.Movie)
+        Clear()
+        imdbID = sID
+        OFDBMovie = mMovie
+
+        GetOFDBDetails()
+    End Sub
+
+    #End Region 'Constructors
+
+    #Region "Properties"
+
+    Public Property Genre() As String
         Get
-            Return _title
+            Return _genre
         End Get
         Set(ByVal value As String)
-            _title = value
+            _genre = value
         End Set
     End Property
 
@@ -60,14 +76,31 @@ Public Class OFDB
         End Set
     End Property
 
-    Public Property Genre() As String
+    Public Property Title() As String
         Get
-            Return _genre
+            Return _title
         End Get
         Set(ByVal value As String)
-            _genre = value
+            _title = value
         End Set
     End Property
+
+    #End Region 'Properties
+
+    #Region "Methods"
+
+    Private Function CleanTitle(ByVal sString As String) As String
+        Dim CleanString As String = sString
+
+        Try
+            If sString.StartsWith("""") Then CleanString = sString.Remove(0, 1)
+
+            If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return CleanString
+    End Function
 
     Private Sub Clear()
         _title = String.Empty
@@ -76,34 +109,35 @@ Public Class OFDB
         _genre = String.Empty
     End Sub
 
-    Public Sub New(ByVal sID As String, ByRef mMovie As MediaContainers.Movie)
-        Clear()
-        imdbID = sID
-        OFDBMovie = mMovie
+    Private Function GetFullPlot(ByVal sURL As String) As String
+        Dim FullPlot As String = String.Empty
 
-        GetOFDBDetails()
-    End Sub
-
-    Private Function GetOFDBUrlFromIMDBID() As String
-        Dim ofdbURL As String = String.Empty
         Try
+            If Not String.IsNullOrEmpty(sURL) Then
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(sURL)
+                sHTTP = Nothing
 
-            Dim sHTTP As New HTTP
-            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
-            sHTTP = Nothing
+                Dim D, W, B As Integer
+                Dim tmpHTML As String
 
-            If Not String.IsNullOrEmpty(HTML) Then
-                Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
-                If mcOFDBURL.Count > 0 Then
-                    'just use the first one if more are found
-                    ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
+                D = Html.IndexOf("Eine Inhaltsangabe von")
+                If D > 0 Then
+                    Dim L As Integer = Html.Length
+                    tmpHTML = Html.Substring(D + 22, L - (D + 22)).Trim
+                    W = tmpHTML.IndexOf("</b></b><br><br>")
+                    If W > 0 Then
+                        B = tmpHTML.IndexOf("</font></p>", W + 16)
+                        FullPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(W + 16, B - (W + 16)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
+                    End If
                 End If
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return ofdbURL
+        Return FullPlot
     End Function
 
     Private Sub GetOFDBDetails()
@@ -178,51 +212,30 @@ Public Class OFDB
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
     End Sub
 
-    Private Function GetFullPlot(ByVal sURL As String) As String
-        Dim FullPlot As String = String.Empty
-
+    Private Function GetOFDBUrlFromIMDBID() As String
+        Dim ofdbURL As String = String.Empty
         Try
-            If Not String.IsNullOrEmpty(sURL) Then
-                Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(sURL)
-                sHTTP = Nothing
 
-                Dim D, W, B As Integer
-                Dim tmpHTML As String
+            Dim sHTTP As New HTTP
+            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+            sHTTP = Nothing
 
-                D = Html.IndexOf("Eine Inhaltsangabe von")
-                If D > 0 Then
-                    Dim L As Integer = Html.Length
-                    tmpHTML = Html.Substring(D + 22, L - (D + 22)).Trim
-                    W = tmpHTML.IndexOf("</b></b><br><br>")
-                    If W > 0 Then
-                        B = tmpHTML.IndexOf("</font></p>", W + 16)
-                        FullPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(W + 16, B - (W + 16)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
-                    End If
+            If Not String.IsNullOrEmpty(HTML) Then
+                Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
+                If mcOFDBURL.Count > 0 Then
+                    'just use the first one if more are found
+                    ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
                 End If
             End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return FullPlot
+        Return ofdbURL
     End Function
 
-    Private Function CleanTitle(ByVal sString As String) As String
-        Dim CleanString As String = sString
-
-        Try
-            If sString.StartsWith("""") Then CleanString = sString.Remove(0, 1)
-
-            If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return CleanString
-    End Function
+    #End Region 'Methods
 
 End Class

@@ -1,9 +1,63 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
 Partial Class dlgUpdateMedia
     Inherits System.Windows.Forms.Form
 
+    #Region "Fields"
+
+    Friend  WithEvents chkAllMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkCast As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkCert As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkCrew As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkDirector As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkExtraMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkFanartMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkGenre As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkMetaMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkMPAA As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkMusicBy As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkNFOMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkOutline As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkPlot As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkPosterMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkProducers As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkRating As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkRelease As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkRuntime As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkStudio As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkTagline As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkTitle As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkTop250 As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkTrailer As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkTrailerMod As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkVotes As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkWriters As System.Windows.Forms.CheckBox
+    Friend  WithEvents chkYear As System.Windows.Forms.CheckBox
+    Friend  WithEvents gbOptions As System.Windows.Forms.GroupBox
+    Friend  WithEvents gbUpdateItems As System.Windows.Forms.GroupBox
+    Friend  WithEvents gbUpdateModifier As System.Windows.Forms.GroupBox
+    Friend  WithEvents gbUpdateType As System.Windows.Forms.GroupBox
+    Friend  WithEvents Label2 As System.Windows.Forms.Label
+    Friend  WithEvents Label4 As System.Windows.Forms.Label
+    Friend  WithEvents OK_Button As System.Windows.Forms.Button
+    Friend  WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend  WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend  WithEvents rbUpdateModifier_All As System.Windows.Forms.RadioButton
+    Friend  WithEvents rbUpdateModifier_Marked As System.Windows.Forms.RadioButton
+    Friend  WithEvents rbUpdateModifier_Missing As System.Windows.Forms.RadioButton
+    Friend  WithEvents rbUpdateModifier_New As System.Windows.Forms.RadioButton
+    Friend  WithEvents rbUpdate_Ask As System.Windows.Forms.RadioButton
+    Friend  WithEvents rbUpdate_Auto As System.Windows.Forms.RadioButton
+    Friend  WithEvents Update_Button As System.Windows.Forms.Button
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,13 +68,10 @@ Partial Class dlgUpdateMedia
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgUpdateMedia))
         Me.OK_Button = New System.Windows.Forms.Button
@@ -690,51 +741,8 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.ResumeLayout(False)
-
     End Sub
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents rbUpdateModifier_All As System.Windows.Forms.RadioButton
-    Friend WithEvents gbUpdateModifier As System.Windows.Forms.GroupBox
-    Friend WithEvents rbUpdateModifier_Missing As System.Windows.Forms.RadioButton
-    Friend WithEvents rbUpdateModifier_New As System.Windows.Forms.RadioButton
-    Friend WithEvents rbUpdateModifier_Marked As System.Windows.Forms.RadioButton
-    Friend WithEvents gbUpdateType As System.Windows.Forms.GroupBox
-    Friend WithEvents rbUpdate_Auto As System.Windows.Forms.RadioButton
-    Friend WithEvents rbUpdate_Ask As System.Windows.Forms.RadioButton
-    Friend WithEvents gbUpdateItems As System.Windows.Forms.GroupBox
-    Friend WithEvents Update_Button As System.Windows.Forms.Button
-    Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMusicBy As System.Windows.Forms.CheckBox
-    Friend WithEvents chkProducers As System.Windows.Forms.CheckBox
-    Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
-    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkDirector As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCast As System.Windows.Forms.CheckBox
-    Friend WithEvents chkVotes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
-    Friend WithEvents chkYear As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents chkAllMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTrailerMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExtraMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMetaMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFanartMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPosterMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkNFOMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCert As System.Windows.Forms.CheckBox
+
+    #End Region 'Methods
 
 End Class

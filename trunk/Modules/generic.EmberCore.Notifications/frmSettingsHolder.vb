@@ -20,10 +20,17 @@
 
 Public Class frmSettingsHolder
 
+    #Region "Events"
+
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
+
     Public Event ModuleSettingsChanged()
 
-    Private Sub chkOnError_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnError.CheckedChanged
+    #End Region 'Events
+
+    #Region "Methods"
+
+    Private Sub chkAddNewMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnNewMovie.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -31,7 +38,7 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
-    Private Sub chkAddNewMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnNewMovie.CheckedChanged
+    Private Sub chkOnError_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnError.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -42,4 +49,7 @@ Public Class frmSettingsHolder
     Private Sub chkOnNewEp_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnNewEp.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
+    #End Region 'Methods
+
 End Class

@@ -18,26 +18,94 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
 Imports System
 Imports System.IO
-Imports System.Xml
-Imports System.Xml.Serialization
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports System.Xml
+Imports System.Xml.Serialization
 
 Public Class APIXML
 
-    Public Shared FlagsXML As New XDocument
+    #Region "Fields"
+
     Public Shared alFlags As New List(Of String)
-    Public Shared GenreXML As New XDocument
     Public Shared alGenres As New List(Of String)
     Public Shared dStudios As New Dictionary(Of String, String)
+    Public Shared FlagsXML As New XDocument
+    Public Shared GenreXML As New XDocument
     Public Shared RatingXML As New XDocument
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Public Shared Sub CacheXMLs()
+        Try
+            Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
+            If File.Exists(fPath) Then
+                FlagsXML = XDocument.Load(fPath)
+            Else
+                MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
+
+            If Directory.Exists(Directory.GetParent(fPath).FullName) Then
+                Try
+                    alFlags.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                Catch
+                End Try
+                alFlags = alFlags.ConvertAll(Function(s) s.ToLower)
+            End If
+
+            Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+            If File.Exists(gPath) Then
+                GenreXML = XDocument.Load(gPath)
+            Else
+                MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
+
+            If Directory.Exists(Directory.GetParent(gPath).FullName) Then
+                Try
+                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                Catch
+                End Try
+                alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
+            End If
+
+            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
+
+            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
+                Try
+                    'get all images in the main folder
+                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
+                        dStudios.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
+                    Next
+
+                    'now get all images in sub folders
+                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
+                        For Each lFile As String In Directory.GetFiles(iDir, "*.png")
+                            'hard code "\" here, then resplace when retrieving images
+                            dStudios.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
+                        Next
+                    Next
+                Catch
+                End Try
+            End If
+
+            Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+            If File.Exists(rPath) Then
+                RatingXML = XDocument.Load(rPath)
+            Else
+                MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     'Public Shared LanguageXML As New XDocument
-
     Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean) As Image()
-
         '//
         ' Parse the Flags XML and set the proper images
         '\\
@@ -176,22 +244,30 @@ Public Class APIXML
         Return iReturn
     End Function
 
-    Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
+    Public Shared Function GetFileSource(ByVal sPath As String) As String
+        Dim sourceCheck As String = String.Empty
 
-        Dim imgStudio As Image = Nothing
+        Try
+            If FileUtils.Common.isVideoTS(sPath) Then
+                sourceCheck = "dvd"
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+                sourceCheck = "bluray"
+            Else
+                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+            End If
 
-        If dStudios.ContainsKey(strStudio.ToLower) Then
-            Using fsImage As New FileStream(dStudios.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
-                imgStudio = Image.FromStream(fsImage)
-            End Using
-        End If
+            Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
+            If xVSourceFlag.Count > 0 Then
+                Return xVSourceFlag(0).ToString
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
-        Return imgStudio
-
+        Return String.Empty
     End Function
 
     Public Shared Function GetGenreImage(ByVal strGenre As String) As Image
-
         '//
         ' Set the proper images based on the genre string
         '\\
@@ -229,8 +305,35 @@ Public Class APIXML
         Return imgGenre
     End Function
 
-    Public Shared Function GetRatingImage(ByVal strRating As String) As Image
+    Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As Object()
+        Dim retGenre As New List(Of String)
+        Try
+            If LangsOnly Then
+                Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
+                If xGenre.Count > 0 Then
+                    retGenre.AddRange(xGenre.ToArray)
+                End If
+            Else
+                Dim splitLang() As String
+                Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
+                If xGenre.Count > 0 Then
+                    For i As Integer = 0 To xGenre.Count - 1
+                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
+                        For Each strGen As String In splitLang
+                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
+                                retGenre.Add(xGenre(i).searchstring)
+                            End If
+                        Next
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retGenre.ToArray
+    End Function
 
+    Public Shared Function GetRatingImage(ByVal strRating As String) As Image
         '//
         ' Parse the floating Rating box
         '\\
@@ -269,8 +372,68 @@ Public Class APIXML
         Return imgRating
     End Function
 
-    Public Shared Function GetTVRatingImage(ByVal strRating As String) As Image
+    Public Shared Function GetRatingList() As Object()
+        Dim retRatings As New List(Of String)
+        Try
+            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    retRatings.AddRange(xRating.ToArray)
+                End If
+            Else
+                Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    retRatings.AddRange(xRating.ToArray)
+                End If
+            End If
 
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retRatings.ToArray
+    End Function
+
+    Public Shared Function GetRatingRegions() As Object()
+        Dim retRatings As New List(Of String)
+        Try
+            Dim xRating = From xRat In RatingXML...<ratings>.Elements.Descendants("tv") Select (xRat.Parent.Name.ToString)
+            If xRating.Count > 0 Then
+                retRatings.AddRange(xRating.ToArray)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retRatings.ToArray
+    End Function
+
+    Public Shared Function GetSourceList() As Object()
+        Dim retSources As New List(Of String)
+        Try
+
+            Dim xSource = From xSrc In FlagsXML...<vsource>...<name> Select xSrc.@searchstring.ToString.Replace("|", " | ")
+            If xSource.Count > 0 Then
+                retSources.AddRange(xSource.ToArray)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retSources.ToArray
+    End Function
+
+    Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
+        Dim imgStudio As Image = Nothing
+
+        If dStudios.ContainsKey(strStudio.ToLower) Then
+            Using fsImage As New FileStream(dStudios.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
+                imgStudio = Image.FromStream(fsImage)
+            End Using
+        End If
+
+        Return imgStudio
+    End Function
+
+    Public Shared Function GetTVRatingImage(ByVal strRating As String) As Image
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
 
@@ -305,130 +468,6 @@ Public Class APIXML
         Return imgRating
     End Function
 
-    Public Shared Function XMLToLowerCase(ByVal sXML As String) As String
-        Dim sMatches As MatchCollection = Regex.Matches(sXML, "\<(.*?)\>", RegexOptions.IgnoreCase)
-        For Each sMatch As Match In sMatches
-            sXML = sXML.Replace(sMatch.Groups(1).Value, sMatch.Groups(1).Value.ToLower)
-        Next
-        Return sXML
-    End Function
-
-    Public Shared Sub CacheXMLs()
-
-        Try
-            Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
-            If File.Exists(fPath) Then
-                FlagsXML = XDocument.Load(fPath)
-            Else
-                MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
-            End If
-
-            If Directory.Exists(Directory.GetParent(fPath).FullName) Then
-                Try
-                    alFlags.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
-                Catch
-                End Try
-                alFlags = alFlags.ConvertAll(Function(s) s.ToLower)
-            End If
-
-            Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
-            If File.Exists(gPath) Then
-                GenreXML = XDocument.Load(gPath)
-            Else
-                MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
-            End If
-
-            If Directory.Exists(Directory.GetParent(gPath).FullName) Then
-                Try
-                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
-                Catch
-                End Try
-                alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
-            End If
-
-            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
-
-            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-                Try
-                    'get all images in the main folder
-                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
-                        dStudios.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
-                    Next
-
-                    'now get all images in sub folders
-                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
-                        For Each lFile As String In Directory.GetFiles(iDir, "*.png")
-                            'hard code "\" here, then resplace when retrieving images
-                            dStudios.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
-                        Next
-                    Next
-                Catch
-                End Try
-            End If
-
-            Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
-            If File.Exists(rPath) Then
-                RatingXML = XDocument.Load(rPath)
-            Else
-                MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
-            End If
-
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As Object()
-        Dim retGenre As New List(Of String)
-        Try
-            If LangsOnly Then
-                Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
-                If xGenre.Count > 0 Then
-                    retGenre.AddRange(xGenre.ToArray)
-                End If
-            Else
-                Dim splitLang() As String
-                Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
-                If xGenre.Count > 0 Then
-                    For i As Integer = 0 To xGenre.Count - 1
-                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
-                        For Each strGen As String In splitLang
-                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-                                retGenre.Add(xGenre(i).searchstring)
-                            End If
-                        Next
-                    Next
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retGenre.ToArray
-    End Function
-
-    Public Shared Function GetRatingList() As Object()
-        Dim retRatings As New List(Of String)
-        Try
-            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            Else
-                Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retRatings.ToArray
-    End Function
-
     Public Shared Function GetTVRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
@@ -450,54 +489,14 @@ Public Class APIXML
         Return retRatings.ToArray
     End Function
 
-    Public Shared Function GetFileSource(ByVal sPath As String) As String
-        Dim sourceCheck As String = String.Empty
-
-        Try
-            If FileUtils.Common.isVideoTS(sPath) Then
-                sourceCheck = "dvd"
-            ElseIf FileUtils.Common.isBDRip(sPath) Then
-                sourceCheck = "bluray"
-            Else
-                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
-            End If
-
-            Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
-            If xVSourceFlag.Count > 0 Then
-                Return xVSourceFlag(0).ToString
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        Return String.Empty
+    Public Shared Function XMLToLowerCase(ByVal sXML As String) As String
+        Dim sMatches As MatchCollection = Regex.Matches(sXML, "\<(.*?)\>", RegexOptions.IgnoreCase)
+        For Each sMatch As Match In sMatches
+            sXML = sXML.Replace(sMatch.Groups(1).Value, sMatch.Groups(1).Value.ToLower)
+        Next
+        Return sXML
     End Function
 
-    Public Shared Function GetSourceList() As Object()
-        Dim retSources As New List(Of String)
-        Try
+    #End Region 'Methods
 
-            Dim xSource = From xSrc In FlagsXML...<vsource>...<name> Select xSrc.@searchstring.ToString.Replace("|", " | ")
-            If xSource.Count > 0 Then
-                retSources.AddRange(xSource.ToArray)
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retSources.ToArray
-    End Function
-
-    Public Shared Function GetRatingRegions() As Object()
-        Dim retRatings As New List(Of String)
-        Try
-            Dim xRating = From xRat In RatingXML...<ratings>.Elements.Descendants("tv") Select (xRat.Parent.Name.ToString)
-            If xRating.Count > 0 Then
-                retRatings.AddRange(xRating.ToArray)
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retRatings.ToArray
-    End Function
 End Class

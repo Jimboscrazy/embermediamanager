@@ -18,8 +18,5 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
-
 Public Class frmXMLSettingsHolder
-
 End Class

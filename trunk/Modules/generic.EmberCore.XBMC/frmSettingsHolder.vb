@@ -17,17 +17,32 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
-Imports System.Windows.Forms
 
 Public Class frmSettingsHolder
-    Public Event ModuleEnabledChanged(ByVal State As Boolean, ByVal difforder As Integer)
-    Public Event ModuleSettingsChanged()
+
+    #Region "Fields"
 
     Public XComs As New List(Of XBMCxCom.XBMCCom)
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
+    #End Region 'Fields
+
+    #Region "Events"
+
+    Public Event ModuleEnabledChanged(ByVal State As Boolean, ByVal difforder As Integer)
+
+    Public Event ModuleSettingsChanged()
+
+    #End Region 'Events
+
+    #Region "Methods"
+
+    Public Sub LoadXComs()
+        Me.lbXBMCCom.Items.Clear()
+        For Each x As XBMCxCom.XBMCCom In Me.XComs
+            Me.lbXBMCCom.Items.Add(x.Name)
+        Next
     End Sub
 
     Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
@@ -66,20 +81,6 @@ Public Class frmSettingsHolder
         Else
             MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
             txtName.Focus()
-        End If
-    End Sub
-    Public Sub LoadXComs()
-        Me.lbXBMCCom.Items.Clear()
-        For Each x As XBMCxCom.XBMCCom In Me.XComs
-            Me.lbXBMCCom.Items.Add(x.Name)
-        Next
-    End Sub
-    Private Sub RemoveXCom()
-        If Me.lbXBMCCom.SelectedItems.Count > 0 Then
-            Me.XComs.RemoveAt(Me.lbXBMCCom.SelectedIndex)
-            LoadXComs()
-            'Me.SetApplyButton(True)
-            RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
 
@@ -128,9 +129,16 @@ Public Class frmSettingsHolder
             MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
-
-
     End Sub
+
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
+    End Sub
+
+    Private Sub frmSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SetUp()
+    End Sub
+
     Private Sub lbXBMCCom_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbXBMCCom.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveXCom()
     End Sub
@@ -146,6 +154,16 @@ Public Class frmSettingsHolder
 
         btnEditCom.Enabled = True
     End Sub
+
+    Private Sub RemoveXCom()
+        If Me.lbXBMCCom.SelectedItems.Count > 0 Then
+            Me.XComs.RemoveAt(Me.lbXBMCCom.SelectedIndex)
+            LoadXComs()
+            'Me.SetApplyButton(True)
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
     Sub SetUp()
         Me.GroupBox11.Text = Master.eLang.GetString(554, "XBMC Communication")
         Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
@@ -158,7 +176,6 @@ Public Class frmSettingsHolder
         Me.btnRemoveCom.Text = Master.eLang.GetString(519, "Remove Selected")
     End Sub
 
-    Private Sub frmSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
-    End Sub
+    #End Region 'Methods
+
 End Class

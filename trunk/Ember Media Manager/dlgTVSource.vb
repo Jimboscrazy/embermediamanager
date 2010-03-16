@@ -23,15 +23,19 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgTVSource
 
-    Private currNameText As String = String.Empty
-    Private prevNameText As String = String.Empty
-    Private currPathText As String = String.Empty
-    Private prevPathText As String = String.Empty
+    #Region "Fields"
 
+    Private currNameText As String = String.Empty
+    Private currPathText As String = String.Empty
+    Private prevNameText As String = String.Empty
+    Private prevPathText As String = String.Empty
     Private _id As Integer = -1
 
-    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
+    #End Region 'Fields
 
+    #Region "Methods"
+
+    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
         '//
         ' Overload to pass data
         '\\
@@ -41,41 +45,7 @@ Public Class dlgTVSource
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
-                    Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
-                    End If
-                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
-                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
-
-                    parName.Value = txtSourceName.Text.Trim
-                    parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
-
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        End Try
-
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
-
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
-
         Try
             With Me.fbdBrowse
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -89,26 +59,9 @@ Public Class dlgTVSource
         End Try
     End Sub
 
-    Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
-        Me.OK_Button.Enabled = False
-        Me.currNameText = Me.txtSourceName.Text
-
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
-    End Sub
-
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Me.prevNameText = Me.currNameText Then
-            Me.tmrName.Enabled = True
-        Else
-            Me.prevNameText = Me.currNameText
-        End If
-    End Sub
-
-    Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick
-        Me.tmrWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrName.Enabled = False
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
     End Sub
 
     Private Sub CheckConditions()
@@ -139,29 +92,6 @@ Public Class dlgTVSource
         End If
     End Sub
 
-    Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
-        If Me.prevPathText = Me.currPathText Then
-            Me.tmrPath.Enabled = True
-        Else
-            Me.prevPathText = Me.currPathText
-        End If
-    End Sub
-
-    Private Sub tmrPath_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPath.Tick
-        Me.tmrPathWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrPath.Enabled = False
-    End Sub
-
-    Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
-        Me.OK_Button.Enabled = False
-        Me.currPathText = Me.txtSourcePath.Text
-
-        Me.tmrPathWait.Enabled = False
-        Me.tmrPathWait.Enabled = True
-    End Sub
-
-
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         Try
@@ -179,6 +109,38 @@ Public Class dlgTVSource
         End Try
     End Sub
 
+    Private Sub dlgTVSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    If Me._id >= 0 Then
+                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
+                    Else
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
+                    End If
+                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+
+                    parName.Value = txtSourceName.Text.Trim
+                    parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End Try
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(705, "TV Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
@@ -188,7 +150,50 @@ Public Class dlgTVSource
         Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
     End Sub
 
-    Private Sub dlgTVSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+    Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick
+        Me.tmrWait.Enabled = False
+        Me.CheckConditions()
+        Me.tmrName.Enabled = False
     End Sub
+
+    Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
+        If Me.prevPathText = Me.currPathText Then
+            Me.tmrPath.Enabled = True
+        Else
+            Me.prevPathText = Me.currPathText
+        End If
+    End Sub
+
+    Private Sub tmrPath_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPath.Tick
+        Me.tmrPathWait.Enabled = False
+        Me.CheckConditions()
+        Me.tmrPath.Enabled = False
+    End Sub
+
+    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        If Me.prevNameText = Me.currNameText Then
+            Me.tmrName.Enabled = True
+        Else
+            Me.prevNameText = Me.currNameText
+        End If
+    End Sub
+
+    Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
+        Me.OK_Button.Enabled = False
+        Me.currNameText = Me.txtSourceName.Text
+
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
+    End Sub
+
+    Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
+        Me.OK_Button.Enabled = False
+        Me.currPathText = Me.txtSourcePath.Text
+
+        Me.tmrPathWait.Enabled = False
+        Me.tmrPathWait.Enabled = True
+    End Sub
+
+    #End Region 'Methods
+
 End Class

@@ -21,43 +21,27 @@
 Imports System.IO
 
 Public Class dlgNewVersion
-    Private WithEvents bwDownloadSetup As New System.ComponentModel.BackgroundWorker
-    Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
 
+    #Region "Fields"
+
+    Private  WithEvents bwDownloadSetup As New System.ComponentModel.BackgroundWorker
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
         If Master.isWindows Then
-            Process.Start("http://www.embermm.com/tab/show/embermm")
+            Process.Start(Path.Combine(Functions.AppPath, "EmberSetup.exe"), "-force")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.embermm.com/tab/show/embermm"
+                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(Functions.AppPath, "EmberSetup.exe"), " -force")
                 Explorer.Start()
             End Using
         End If
-
-    End Sub
-
-    Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-    End Sub
-
-    Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", vbNewLine)
-
-        Me.SetUp()
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
-        Me.lblNew.Text = Me.Text
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
-        Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
-        Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
-        Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
-        Me.btnYes.Text = Master.eLang.GetString(719, "YES")
-        Me.btnNo.Text = Master.eLang.GetString(720, "NO")
-        Me.btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
-
+        DialogResult = Windows.Forms.DialogResult.Abort
+        Me.Close()
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpgrade.Click
@@ -90,17 +74,41 @@ Public Class dlgNewVersion
         lhttp.DownloadFile("http://www.embermm.com/Updates/EmberSetup.exe", Path.Combine(Functions.AppPath, "EmberSetup.exe"), False, "other")
     End Sub
 
-    Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
+    Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", vbNewLine)
+
+        Me.SetUp()
+    End Sub
+
+    Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
+
+    Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
         If Master.isWindows Then
-            Process.Start(Path.Combine(Functions.AppPath, "EmberSetup.exe"), "-force")
+            Process.Start("http://www.embermm.com/tab/show/embermm")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(Functions.AppPath, "EmberSetup.exe"), " -force")
+                Explorer.StartInfo.Arguments = "http://www.embermm.com/tab/show/embermm"
                 Explorer.Start()
             End Using
         End If
-        DialogResult = Windows.Forms.DialogResult.Abort
-        Me.Close()
     End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
+        Me.lblNew.Text = Me.Text
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
+        Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
+        Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
+        Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
+        Me.btnYes.Text = Master.eLang.GetString(719, "YES")
+        Me.btnNo.Text = Master.eLang.GetString(720, "NO")
+        Me.btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
+    End Sub
+
+    #End Region 'Methods
+
 End Class

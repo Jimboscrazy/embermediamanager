@@ -18,16 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System
 Imports System.IO
-Imports System.Text
-Imports System.Text.Encoding
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
+Imports System.Text
+Imports System.Text.Encoding
 
 Public Class HashFile
+
+    #Region "Methods"
 
     Public Shared Function ComputeMovieHash(ByVal filename As String) As Byte()
         Dim result As Byte()
@@ -62,14 +62,6 @@ Public Class HashFile
         Return result
     End Function
 
-    Public Shared Function ToHexadecimal(ByVal bytes As Byte()) As String
-        Dim hexBuilder As New StringBuilder()
-        For i As Integer = 0 To bytes.Length - 1
-            hexBuilder.Append(bytes(i).ToString("x2"))
-        Next
-        Return hexBuilder.ToString()
-    End Function
-
     Public Shared Function CurrentETHashes(ByVal sPath As String) As List(Of String)
         Dim ETHashes As New List(Of String)
         Dim tPath As String = String.Empty
@@ -99,7 +91,6 @@ Public Class HashFile
     End Function
 
     Public Shared Function HashCalcFile(ByVal filepath As String) As String
-
         Using reader As New FileStream(filepath, FileMode.Open, FileAccess.Read)
             Dim KeyValue As Byte() = (New System.Text.UnicodeEncoding).GetBytes("HashingKey")
             Using HMA As New HMACSHA1(KeyValue, True)
@@ -110,11 +101,17 @@ Public Class HashFile
 
             End Using
         End Using
+    End Function
 
+    Public Shared Function ToHexadecimal(ByVal bytes As Byte()) As String
+        Dim hexBuilder As New StringBuilder()
+        For i As Integer = 0 To bytes.Length - 1
+            hexBuilder.Append(bytes(i).ToString("x2"))
+        Next
+        Return hexBuilder.ToString()
     End Function
 
     Private Shared Function ByteArrayToString(ByVal arrInput() As Byte) As String
-
         Dim sb As New StringBuilder(arrInput.Length * 2)
 
         For i As Integer = 0 To arrInput.Length - 1
@@ -122,8 +119,8 @@ Public Class HashFile
         Next
 
         Return sb.ToString().ToLower
-
     End Function
 
+    #End Region 'Methods
 
 End Class

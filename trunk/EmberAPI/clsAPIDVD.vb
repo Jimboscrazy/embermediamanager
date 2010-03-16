@@ -17,114 +17,174 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
 'Class originally developed by blackducksoftware and highly modified for Ember Media Manager
 
 Imports System.IO
 
 Public Class DVD
-    Private Const ifo_SECTOR_SIZE As Short = 2048
+
+    #Region "Fields"
+
     Private Const ifo_CellInfoSize As Short = 24
-
-    Private ParsedIFOFile As struct_IFO_VST_Parse
-
-    Private oEnc As System.Text.Encoding = System.Text.ASCIIEncoding.GetEncoding(1252)
+    Private Const ifo_SECTOR_SIZE As Short = 2048
 
     'Variables
     Dim mAudioModes As New Hashtable
     Dim mVideoCodingMode As New Hashtable
     Dim mVideoResolution()() As String = {New String() {"720x480", "704x480", "352x480", "352x240"}, New String() {"720x576", "704x576", "352x576", "352x288"}}
+    Private oEnc As System.Text.Encoding = System.Text.ASCIIEncoding.GetEncoding(1252)
+    Private ParsedIFOFile As struct_IFO_VST_Parse
 
-    'All these types are used for the IFO Parsing
-    Private Structure VTS_PTT_SRPT
-        Dim PackedString As String
-        Dim NumberOfTitles As Integer
-        Dim EndAddress_VST_PTT As Integer
-        Dim OffsetTo_PPT As Integer
-    End Structure
+    #End Region 'Fields
 
-    'Program time information
-    Private Structure DVD_Time_Type
-        Dim hours As Byte
-        Dim minutes As Byte
-        Dim seconds As Byte
-        Dim frame As Byte
-    End Structure
+    #Region "Constructors"
 
-    'Individual Cell information
-    Private Structure PGC_Cell_Info_Type
-        Dim CellPlayBackTime As DVD_Time_Type
-    End Structure
+    Public Sub New()
+        MyBase.New()
+        'Audio Format
+        mAudioModes.Add("0", "ac3")
+        mAudioModes.Add("1", String.Empty)
+        mAudioModes.Add("2", "mp1")
+        mAudioModes.Add("3", "mp2")
+        mAudioModes.Add("4", "wav")
+        mAudioModes.Add("5", String.Empty)
+        mAudioModes.Add("6", "dca")
+        mAudioModes.Add("7", String.Empty)
 
-    Private Structure struct_SRPT
-        Dim Coding_Mode As Byte
-        Dim Resolution As Byte
-        Dim LetterBoxed As Boolean
-        Dim Aspect_Ratio As Byte
-    End Structure
+        mVideoCodingMode.Add("0", "mpeg1")
+        mVideoCodingMode.Add("1", "mpeg2")
+    End Sub
 
-    Private Structure struct_VideoAttributes_VTS_VOBS
-        Dim Video_Standard As Byte
-        Dim Coding_Mode As Byte
-        Dim Resolution As Byte
-        Dim LetterBoxed As Boolean
-        Dim Aspect_Ratio As Byte
-    End Structure
+    #End Region 'Constructors
 
-    'Audio Type
-    Private Structure struct_AudioAttributes_VTSM_VTS
-        Dim CodingMode As Byte
-        Dim NumberOfChannels As Byte
-        Dim LanguageCode As String
-    End Structure
+    #Region "Properties"
 
-    'SubPicture Type
-    Private Structure SubPictureAtt_VTSM_VTS_Type
-        Dim CodingMode As Byte
-        Dim LanguageCode As String
-        Dim CodeExtention As Byte
-    End Structure
+    Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Integer) As String()
+        Get
+            Dim ReturnArray(2) As String
+            Try
+                If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
+                    bytAudioIndex -= 1
+                    If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
+                        ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString).ToString
+                    Else
+                        'assume ac3
+                        ReturnArray(0) = "ac3"
+                    End If
+                    ReturnArray(1) = Localization.ISOGetLangByCode2(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
+                    ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            Return ReturnArray
+        End Get
+    End Property
 
-    'IFO VST Program Chain Information
-    Private Structure struct_Program_Chain_Type
-        Dim NumberOfPrograms As Byte
-        Dim NumberOfCells As Byte
-        Dim PlayBackTime As DVD_Time_Type
-        'Currently only implamenting basic useful information
-    End Structure
+    Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer
+        Get
+            Return ParsedIFOFile.NumAudioStreams_VTS_VOBS
+        End Get
+    End Property
 
-    'IFO VST information
-    Private Structure struct_IFO_VST_Parse
-        Dim IFO_FileName As String
-        Dim FileType_Header As String
-        Dim LastSectorOfTitle As Long
-        Dim LastSectorOfIFO As Long
-        Dim VSTCategory As Long
-        Dim VersionNumber As Long
-        Dim EndByteAddress_VTS_MAT As Long
-        Dim StartSector_MenuVOB As Long
-        Dim StartSector_TitleVOB As Long
-        Dim SectorPointer_VTS_PTT_SRPT As Long
-        Dim SectorPointer_VTS_PGCI As Long
-        Dim SectorPointer_VTSM_PGCI_UT As Long
-        Dim SectorPointer_VTS_TMAPTI As Long
-        Dim SectorPointer_VSTM_C_ADT As Long
-        Dim SectorPointer_VSTM_VOBU_ADMAP As Long
-        Dim SectorPointer_VST_C_ADT As Long
-        Dim SectorPointer_VTS_VOBU_ADMAP As Long
-        Dim NumberOfProgramChains As Long
-        Dim ProgramChainInformation() As struct_Program_Chain_Type
-        Dim VideoAtt_VSTM_VOBS As struct_VideoAttributes_VTS_VOBS
-        Dim NumOfAudioStreamsIn_VTSM_VOBS As Integer
-        Dim AudioAtt_VTSM_VOBS() As struct_AudioAttributes_VTSM_VTS
-        Dim NumSubPictureStreams_VTSM_VOBS As Integer
-        Dim SubPictureAtt_VTSM_VOBS As SubPictureAtt_VTSM_VTS_Type
-        Dim VideoAtt_VTS_VOBS As struct_VideoAttributes_VTS_VOBS
-        Dim NumAudioStreams_VTS_VOBS As Integer
-        Dim AudioAtt_VTS_VOBS() As struct_AudioAttributes_VTSM_VTS
-        Dim NumSubPictureStreams_VTS_VOBS As Integer
-        Dim SubPictureAtt_VTS_VOBS() As SubPictureAtt_VTSM_VTS_Type
-    End Structure
+    Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Integer) As String
+        Get
+            Try
+                If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
+                    bytSubPicIndex -= 1
+                    Return Localization.ISOGetLangByCode2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            Return String.Empty
+        End Get
+    End Property
+
+    Public ReadOnly Property GetIFOSubPicNumberOf() As Integer
+        Get
+            Return ParsedIFOFile.NumSubPictureStreams_VTS_VOBS
+        End Get
+    End Property
+
+    Public ReadOnly Property GetIFOVideo() As String()
+        Get
+            Dim ReturnArray(2) As String
+            Try
+                If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
+                    ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString).ToString
+                Else
+                    'assume mpeg2
+                    ReturnArray(0) = "mpeg2"
+                End If
+                ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
+                If ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 AndAlso ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
+                    ReturnArray(2) = "1.85"
+                ElseIf ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 OrElse ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
+                    ReturnArray(2) = "1.78"
+                ElseIf ReturnArray(1).Contains("x") Then
+                    Dim strAspect() As String = ReturnArray(1).Split(Convert.ToChar("x"))
+                    Dim strReturn As String = FormatNumber(NumUtils.ConvertToSingle(strAspect(0)) / NumUtils.ConvertToSingle(strAspect(1)), 2, TriState.False).Replace(",", ".")
+                    If strReturn.EndsWith("0") Then
+                        ReturnArray(2) = strReturn.Substring(0, strReturn.Length - 1)
+                    Else
+                        ReturnArray(2) = strReturn
+                    End If
+                Else
+                    ReturnArray(2) = String.Empty
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            Return ReturnArray
+        End Get
+    End Property
+
+    Public ReadOnly Property GetNumberProgramChains() As Integer
+        Get
+            Return Convert.ToInt32(ParsedIFOFile.NumberOfProgramChains)
+        End Get
+    End Property
+
+    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal MinsOnly As Boolean = False) As String
+        Get
+            Try
+                If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
+                    bytProChainIndex = Convert.ToByte(bytProChainIndex - 1)
+
+                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            Return String.Empty
+        End Get
+    End Property
+
+    #End Region 'Properties
+
+    #Region "Methods"
+
+    Public Sub Close()
+        Me.Finalize()
+    End Sub
+
+    Public Function CovertByteToHex(ByVal BytConvert() As Byte) As String
+        Dim hexStr As String = String.Empty
+        Try
+
+            Dim i As Integer
+            For i = 0 To BytConvert.Length - 1
+                hexStr = hexStr + (BytConvert(i)).ToString("X")
+            Next i
+            hexStr = hexStr.PadLeft(16, Convert.ToChar("0"))
+            hexStr = hexStr.Insert(0, "0x")
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return hexStr
+    End Function
 
     Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
         Dim IFOFiles As New List(Of String)
@@ -164,119 +224,15 @@ Public Class DVD
         Return False
     End Function
 
-    Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer
-        Get
-            Return ParsedIFOFile.NumAudioStreams_VTS_VOBS
-        End Get
-    End Property
+    Protected Overrides Sub Finalize()
+        mAudioModes = Nothing
+        mVideoCodingMode = Nothing
+        mVideoResolution = Nothing
+        oEnc = Nothing
 
-    Public ReadOnly Property GetIFOSubPicNumberOf() As Integer
-        Get
-            Return ParsedIFOFile.NumSubPictureStreams_VTS_VOBS
-        End Get
-    End Property
-
-    Public ReadOnly Property GetNumberProgramChains() As Integer
-        Get
-            Return Convert.ToInt32(ParsedIFOFile.NumberOfProgramChains)
-        End Get
-    End Property
-
-    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal MinsOnly As Boolean = False) As String
-        Get
-            Try
-                If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
-                    bytProChainIndex = Convert.ToByte(bytProChainIndex - 1)
-
-                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            Return String.Empty
-        End Get
-    End Property
-
-    Public ReadOnly Property GetIFOVideo() As String()
-        Get
-            Dim ReturnArray(2) As String
-            Try
-                If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
-                    ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString).ToString
-                Else
-                    'assume mpeg2
-                    ReturnArray(0) = "mpeg2"
-                End If
-                ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
-                If ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 AndAlso ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
-                    ReturnArray(2) = "1.85"
-                ElseIf ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 OrElse ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
-                    ReturnArray(2) = "1.78"
-                ElseIf ReturnArray(1).Contains("x") Then
-                    Dim strAspect() As String = ReturnArray(1).Split(Convert.ToChar("x"))
-                    Dim strReturn As String = FormatNumber(NumUtils.ConvertToSingle(strAspect(0)) / NumUtils.ConvertToSingle(strAspect(1)), 2, TriState.False).Replace(",", ".")
-                    If strReturn.EndsWith("0") Then
-                        ReturnArray(2) = strReturn.Substring(0, strReturn.Length - 1)
-                    Else
-                        ReturnArray(2) = strReturn
-                    End If
-                Else
-                    ReturnArray(2) = String.Empty
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            Return ReturnArray
-        End Get
-    End Property
-
-    Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Integer) As String()
-        Get
-            Dim ReturnArray(2) As String
-            Try
-                If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
-                    bytAudioIndex -= 1
-                    If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
-                        ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString).ToString
-                    Else
-                        'assume ac3
-                        ReturnArray(0) = "ac3"
-                    End If
-                    ReturnArray(1) = Localization.ISOGetLangByCode2(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
-                    ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            Return ReturnArray
-        End Get
-    End Property
-
-    Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Integer) As String
-        Get
-            Try
-                If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
-                    bytSubPicIndex -= 1
-                    Return Localization.ISOGetLangByCode2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            Return String.Empty
-        End Get
-    End Property
-    Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
-        Try
-            If MinsOnly Then
-                Return ((PlayBack.hours * 60) + PlayBack.minutes).ToString
-            Else
-                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return String.Empty
-    End Function
+        MyBase.Finalize()
+        GC.Collect()
+    End Sub
 
     'Fill in the Audio Header Information
     Private Function fctAudioAttVTSM_VTS(ByVal strAudioInfo As String) As struct_AudioAttributes_VTSM_VTS
@@ -303,7 +259,6 @@ Public Class DVD
             If (byteInfo(0) And 128) = 128 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
             tVTSM.CodingMode = bytTempValue
 
-
             If (byteInfo(1) And 1) = 1 Then bytTempValue = 1
             If (byteInfo(1) And 2) = 2 Then bytTempValue = Convert.ToByte(bytTempValue + 2)
             If (byteInfo(1) And 4) = 4 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
@@ -320,29 +275,6 @@ Public Class DVD
 
     Private Function fctHexTimeToDecTime(ByVal bytAmountHex As Byte) As Byte
         Return Convert.ToByte(bytAmountHex.ToString("X2"))
-    End Function
-
-    Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
-        Dim ChainLoc As Integer
-        Dim PCT As New struct_Program_Chain_Type
-        Try
-            'Setup the Start loc for the File
-            ChainLoc = Convert.ToInt32((tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(Convert.ToInt32(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8), 4)))
-
-            'The Program Number
-            PCT.NumberOfPrograms = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1)))
-
-            'Number of Cells in Program Chain
-            PCT.NumberOfCells = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1)))
-
-            'Get DVD Chain Type Info
-            PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
-            PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
-            PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return PCT
     End Function
 
     'Open an IFO file and return the Parsed Variable
@@ -436,46 +368,41 @@ Public Class DVD
         Return tmpIFO
     End Function
 
-    Public Function CovertByteToHex(ByVal BytConvert() As Byte) As String
-        Dim hexStr As String = String.Empty
+    Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
         Try
-
-            Dim i As Integer
-            For i = 0 To BytConvert.Length - 1
-                hexStr = hexStr + (BytConvert(i)).ToString("X")
-            Next i
-            hexStr = hexStr.PadLeft(16, Convert.ToChar("0"))
-            hexStr = hexStr.Insert(0, "0x")
-
+            If MinsOnly Then
+                Return ((PlayBack.hours * 60) + PlayBack.minutes).ToString
+            Else
+                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return hexStr
+        Return String.Empty
     End Function
 
-    'Convert a string of Bytes (0x00-0xFF) into a complete number
-    Private Function fctStrByteToHex(ByVal strHexString As String) As Integer
-        Dim i As Long
-        Dim HexTotal As Double = 0
-        Dim HexMod As Double
-        Dim CharNum As Long
-
+    Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
+        Dim ChainLoc As Integer
+        Dim PCT As New struct_Program_Chain_Type
         Try
-            For i = 0 To (strHexString).Length - 1
-                CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(Convert.ToInt32(i), 1).Chars(0))(0))
-                If i <> (strHexString).Length Then
-                    HexMod = 256 ^ (((strHexString).Length - 1) - i)
-                    HexTotal = HexTotal + CharNum * HexMod
-                Else
-                    HexTotal = HexTotal + CharNum
-                End If
-            Next
+            'Setup the Start loc for the File
+            ChainLoc = Convert.ToInt32((tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(Convert.ToInt32(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8), 4)))
+
+            'The Program Number
+            PCT.NumberOfPrograms = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1)))
+
+            'Number of Cells in Program Chain
+            PCT.NumberOfCells = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1)))
+
+            'Get DVD Chain Type Info
+            PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
+            PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
+            PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return Convert.ToInt32(HexTotal)
+        Return PCT
     End Function
-
 
     'Creates the Video info from a string of 2 bytes
     Private Function fctSRPT(ByVal VideoInfo As String) As struct_SRPT
@@ -509,6 +436,40 @@ Public Class DVD
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return tSRPT
+    End Function
+
+    'Convert a string of Bytes (0x00-0xFF) into a complete number
+    Private Function fctStrByteToHex(ByVal strHexString As String) As Integer
+        Dim i As Long
+        Dim HexTotal As Double = 0
+        Dim HexMod As Double
+        Dim CharNum As Long
+
+        Try
+            For i = 0 To (strHexString).Length - 1
+                CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(Convert.ToInt32(i), 1).Chars(0))(0))
+                If i <> (strHexString).Length Then
+                    HexMod = 256 ^ (((strHexString).Length - 1) - i)
+                    HexTotal = HexTotal + CharNum * HexMod
+                Else
+                    HexTotal = HexTotal + CharNum
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return Convert.ToInt32(HexTotal)
+    End Function
+
+    Private Function fctSubPictureAttVTSM_VTS(ByVal strSubPictureInfo As String) As SubPictureAtt_VTSM_VTS_Type
+        Dim SubPicATT As New SubPictureAtt_VTSM_VTS_Type
+        Try
+            SubPicATT.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
+            SubPicATT.CodeExtention = Convert.ToByte(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return SubPicATT
     End Function
 
     'Creates the Video info from a string of 2 bytes
@@ -549,44 +510,160 @@ Public Class DVD
         Return tVTSVOB
     End Function
 
-    Private Function fctSubPictureAttVTSM_VTS(ByVal strSubPictureInfo As String) As SubPictureAtt_VTSM_VTS_Type
-        Dim SubPicATT As New SubPictureAtt_VTSM_VTS_Type
-        Try
-            SubPicATT.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
-            SubPicATT.CodeExtention = Convert.ToByte(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return SubPicATT
-    End Function
+    #End Region 'Methods
 
-    Public Sub New()
-        MyBase.New()
-        'Audio Format
-        mAudioModes.Add("0", "ac3")
-        mAudioModes.Add("1", String.Empty)
-        mAudioModes.Add("2", "mp1")
-        mAudioModes.Add("3", "mp2")
-        mAudioModes.Add("4", "wav")
-        mAudioModes.Add("5", String.Empty)
-        mAudioModes.Add("6", "dca")
-        mAudioModes.Add("7", String.Empty)
+    #Region "Nested Types"
 
-        mVideoCodingMode.Add("0", "mpeg1")
-        mVideoCodingMode.Add("1", "mpeg2")
-    End Sub
+    'Program time information
+    Private Structure DVD_Time_Type
 
-    Protected Overrides Sub Finalize()
-        mAudioModes = Nothing
-        mVideoCodingMode = Nothing
-        mVideoResolution = Nothing
-        oEnc = Nothing
+        #Region "Fields"
 
-        MyBase.Finalize()
-        GC.Collect()
-    End Sub
+        Dim frame As Byte
+        Dim hours As Byte
+        Dim minutes As Byte
+        Dim seconds As Byte
 
-    Public Sub Close()
-        Me.Finalize()
-    End Sub
+        #End Region 'Fields
+
+    End Structure
+
+    'Individual Cell information
+    Private Structure PGC_Cell_Info_Type
+
+        #Region "Fields"
+
+        Dim CellPlayBackTime As DVD_Time_Type
+
+        #End Region 'Fields
+
+    End Structure
+
+    'Audio Type
+    Private Structure struct_AudioAttributes_VTSM_VTS
+
+        #Region "Fields"
+
+        Dim CodingMode As Byte
+        Dim LanguageCode As String
+        Dim NumberOfChannels As Byte
+
+        #End Region 'Fields
+
+    End Structure
+
+    'IFO VST information
+    Private Structure struct_IFO_VST_Parse
+
+        #Region "Fields"
+
+        Dim AudioAtt_VTSM_VOBS() As struct_AudioAttributes_VTSM_VTS
+        Dim AudioAtt_VTS_VOBS() As struct_AudioAttributes_VTSM_VTS
+        Dim EndByteAddress_VTS_MAT As Long
+        Dim FileType_Header As String
+        Dim IFO_FileName As String
+        Dim LastSectorOfIFO As Long
+        Dim LastSectorOfTitle As Long
+        Dim NumAudioStreams_VTS_VOBS As Integer
+        Dim NumberOfProgramChains As Long
+        Dim NumOfAudioStreamsIn_VTSM_VOBS As Integer
+        Dim NumSubPictureStreams_VTSM_VOBS As Integer
+        Dim NumSubPictureStreams_VTS_VOBS As Integer
+        Dim ProgramChainInformation() As struct_Program_Chain_Type
+        Dim SectorPointer_VSTM_C_ADT As Long
+        Dim SectorPointer_VSTM_VOBU_ADMAP As Long
+        Dim SectorPointer_VST_C_ADT As Long
+        Dim SectorPointer_VTSM_PGCI_UT As Long
+        Dim SectorPointer_VTS_PGCI As Long
+        Dim SectorPointer_VTS_PTT_SRPT As Long
+        Dim SectorPointer_VTS_TMAPTI As Long
+        Dim SectorPointer_VTS_VOBU_ADMAP As Long
+        Dim StartSector_MenuVOB As Long
+        Dim StartSector_TitleVOB As Long
+        Dim SubPictureAtt_VTSM_VOBS As SubPictureAtt_VTSM_VTS_Type
+        Dim SubPictureAtt_VTS_VOBS() As SubPictureAtt_VTSM_VTS_Type
+        Dim VersionNumber As Long
+        Dim VideoAtt_VSTM_VOBS As struct_VideoAttributes_VTS_VOBS
+        Dim VideoAtt_VTS_VOBS As struct_VideoAttributes_VTS_VOBS
+        Dim VSTCategory As Long
+
+        #End Region 'Fields
+
+    End Structure
+
+    'IFO VST Program Chain Information
+    Private Structure struct_Program_Chain_Type
+
+        #Region "Fields"
+
+        Dim NumberOfCells As Byte
+        Dim NumberOfPrograms As Byte
+        Dim PlayBackTime As DVD_Time_Type
+
+        #End Region 'Fields
+
+        #Region "Other"
+
+        'Currently only implamenting basic useful information
+
+        #End Region 'Other
+
+    End Structure
+
+    Private Structure struct_SRPT
+
+        #Region "Fields"
+
+        Dim Aspect_Ratio As Byte
+        Dim Coding_Mode As Byte
+        Dim LetterBoxed As Boolean
+        Dim Resolution As Byte
+
+        #End Region 'Fields
+
+    End Structure
+
+    Private Structure struct_VideoAttributes_VTS_VOBS
+
+        #Region "Fields"
+
+        Dim Aspect_Ratio As Byte
+        Dim Coding_Mode As Byte
+        Dim LetterBoxed As Boolean
+        Dim Resolution As Byte
+        Dim Video_Standard As Byte
+
+        #End Region 'Fields
+
+    End Structure
+
+    'SubPicture Type
+    Private Structure SubPictureAtt_VTSM_VTS_Type
+
+        #Region "Fields"
+
+        Dim CodeExtention As Byte
+        Dim CodingMode As Byte
+        Dim LanguageCode As String
+
+        #End Region 'Fields
+
+    End Structure
+
+    'All these types are used for the IFO Parsing
+    Private Structure VTS_PTT_SRPT
+
+        #Region "Fields"
+
+        Dim EndAddress_VST_PTT As Integer
+        Dim NumberOfTitles As Integer
+        Dim OffsetTo_PPT As Integer
+        Dim PackedString As String
+
+        #End Region 'Fields
+
+    End Structure
+
+    #End Region 'Nested Types
+
 End Class

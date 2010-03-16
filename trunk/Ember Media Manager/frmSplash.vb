@@ -19,17 +19,29 @@
 ' ################################################################################
 
 Public NotInheritable Class frmSplash
+
+    #Region "Delegates"
+
     Delegate Sub DelegateToCloseForm()
+
+    #End Region 'Delegates
+
+    #Region "Methods"
 
     ' if the splash form, is closed by the main form, it is cross-thread
     ' operation. so we need to use the Invoke method to deal with it.
     Public Sub CloseForm()
-
         If (Me.InvokeRequired) Then
             Me.Invoke(New DelegateToCloseForm(AddressOf CloseForm))
         Else
             Me.Close()
         End If
+    End Sub
+
+    Public Sub SetStage(ByVal txt As String)
+        Me.txtStage.Text = txt
+        Me.pbLoading.Value += 1
+        Application.DoEvents()
     End Sub
 
     Private Sub frmSplash_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -38,9 +50,6 @@ Public NotInheritable Class frmSplash
         Version.Text = String.Format("Revision: {0}", My.Application.Info.Version.Revision)
     End Sub
 
-    Public Sub SetStage(ByVal txt As String)
-        Me.txtStage.Text = txt
-        Me.pbLoading.Value += 1
-        Application.DoEvents()
-    End Sub
+    #End Region 'Methods
+
 End Class

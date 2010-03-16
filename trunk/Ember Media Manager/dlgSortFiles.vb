@@ -18,18 +18,28 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Imports System.IO
 Imports System.Text.RegularExpressions
 
 Public Class dlgSortFiles
-    Private _hitgo As Boolean = False
-    Private fSorter As New FileUtils.FileSorter
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = If(Me._hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)
-        Me.Close()
+    #Region "Fields"
+
+    Private fSorter As New FileUtils.FileSorter
+    Private _hitgo As Boolean = False
+
+    #End Region 'Fields
+
+    #Region "Methods"
+
+    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath) Then
+                    Me.txtPath.Text = .SelectedPath
+                End If
+            End If
+        End With
     End Sub
 
     Private Sub btnGo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGo.Click
@@ -52,23 +62,9 @@ Public Class dlgSortFiles
         End If
     End Sub
 
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
-        With Me.fbdBrowse
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                If Not String.IsNullOrEmpty(.SelectedPath) Then
-                    Me.txtPath.Text = .SelectedPath
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub UpdateProgress(ByVal iPercent As Integer, ByVal sStatus As String)
-        If String.IsNullOrEmpty(sStatus) Then
-            pbStatus.Maximum = iPercent
-        Else
-            lblStatus.Text = sStatus
-            pbStatus.Value = iPercent
-        End If
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = If(Me._hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)
+        Me.Close()
     End Sub
 
     Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -90,4 +86,16 @@ Public Class dlgSortFiles
         Me.Label1.Text = Master.eLang.GetString(217, "Path to Sort:")
         Me.fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
     End Sub
+
+    Private Sub UpdateProgress(ByVal iPercent As Integer, ByVal sStatus As String)
+        If String.IsNullOrEmpty(sStatus) Then
+            pbStatus.Maximum = iPercent
+        Else
+            lblStatus.Text = sStatus
+            pbStatus.Value = iPercent
+        End If
+    End Sub
+
+    #End Region 'Methods
+
 End Class

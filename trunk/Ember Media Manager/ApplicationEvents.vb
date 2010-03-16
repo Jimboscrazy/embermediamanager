@@ -22,7 +22,9 @@ Imports System.IO
 
 Namespace My
 
-    Partial Friend Class MyApplication
+    Friend Partial Class MyApplication
+
+        #Region "Methods"
 
         ''' <summary>
         ''' Process/load information before beginning the main application.
@@ -63,6 +65,9 @@ Namespace My
             MsgBox(e.Exception, MsgBoxStyle.OkOnly, "Ember Media Manager")
             My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub
+
+        #End Region 'Methods
+
     End Class
 
 End Namespace
