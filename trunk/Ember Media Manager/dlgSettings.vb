@@ -2263,7 +2263,7 @@ Public Class dlgSettings
             Me.chkIgnoreLastScan.Checked = Master.eSettings.IgnoreLastScan
             Me.chkTVCleanDB.Checked = Master.eSettings.TVCleanDB
             Me.chkTVIgnoreLastScan.Checked = Master.eSettings.TVIgnoreLastScan
-            Me.ShowRegex = Master.eSettings.TVShowRegexes
+            Me.ShowRegex.AddRange(Master.eSettings.TVShowRegexes)
             Me.LoadShowRegex()
             Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
             Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
@@ -3293,7 +3293,8 @@ Public Class dlgSettings
             Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
             Master.eSettings.TVCleanDB = Me.chkTVCleanDB.Checked
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
-            Master.eSettings.TVShowRegexes = Me.ShowRegex
+            Master.eSettings.TVShowRegexes.Clear()
+            Master.eSettings.TVShowRegexes.AddRange(Me.ShowRegex)
             If String.IsNullOrEmpty(Me.cbRatingRegion.Text) Then
                 Master.eSettings.ShowRatingRegion = "usa"
             Else
