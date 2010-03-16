@@ -773,11 +773,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTrailerQuality_SelectedIndexChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
+    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -926,11 +922,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkDeleteAllTrailers_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
+    Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -951,10 +943,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    End Sub
-
-    Private Sub chkDownloadTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
         Me.SetApplyButton(True)
         Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
 
@@ -1288,11 +1277,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkNoDLTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
+    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1371,11 +1356,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkOverwriteTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
+    Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1409,14 +1390,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRelease.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1767,11 +1740,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSingleScrapeTrailer_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
+    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1855,10 +1824,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUseIMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
         Me.SetApplyButton(True)
         Me.gbRTFormat.Enabled = Me.chkUseMIDuration.Checked
@@ -1867,14 +1832,6 @@ Public Class dlgSettings
         Else
             If Me.txtRuntimeFormat.Text = String.Empty Then Me.txtRuntimeFormat.Text = "<m> mins"
         End If
-    End Sub
-
-    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkUseTMDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
@@ -3782,10 +3739,10 @@ Public Class dlgSettings
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
-        Me.lvShowRegex.Columns(0).Text = Master.eLang.GetString(696, "Show Regex")
-        Me.lvShowRegex.Columns(1).Text = Master.eLang.GetString(694, "Apply To")
-        Me.lvShowRegex.Columns(2).Text = Master.eLang.GetString(697, "Episode Regex")
-        Me.lvShowRegex.Columns(3).Text = Master.eLang.GetString(693, "Apply To")
+        Me.lvShowRegex.Columns(1).Text = Master.eLang.GetString(696, "Show Regex")
+        Me.lvShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
+        Me.lvShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")
+        Me.lvShowRegex.Columns(4).Text = Master.eLang.GetString(694, "Apply To")
         Me.lvMovies.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvMovies.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvMovies.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
@@ -4159,39 +4116,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtGenreLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtGenreLimit.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtIP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
-    End Sub
-
-    Private Sub txtIP_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -4296,14 +4225,6 @@ Public Class dlgSettings
         Me.sResult.NeedsUpdate = True
     End Sub
 
-    Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         Me.SetApplyButton(True)
     End Sub
@@ -4314,10 +4235,6 @@ Public Class dlgSettings
             btnEditTVMetaDataFT.Enabled = False
             btnRemoveTVMetaDataFT.Enabled = False
         End If
-    End Sub
-
-    Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub ValidateRegex()
