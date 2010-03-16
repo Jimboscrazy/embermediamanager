@@ -2496,6 +2496,9 @@ Public Class frmMain
         If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+
+                    doFill = Me.RefreshSeason(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
+
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, " AND Missing = 0;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
