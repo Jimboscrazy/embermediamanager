@@ -56,8 +56,9 @@ Public Class Scanner
 
                 For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Directory.GetParent(sPath).Name, Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
                     Try
+                        cSeason = New Seasons
+
                         If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
-                            cSeason = New Seasons
                             If IsNumeric(sMatch.Groups("season").Value) Then
                                 cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
                             ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
@@ -65,22 +66,26 @@ Public Class Scanner
                             Else
                                 cSeason.Season = -1
                             End If
-
-                            Select Case rShow.EpisodeRetrieve
-                                Case Settings.EpRetrieve.FromDirectory
-                                    epMatch = Directory.GetParent(sPath).Name
-                                Case Settings.EpRetrieve.FromFilename
-                                    epMatch = Path.GetFileNameWithoutExtension(sPath)
-                                Case Settings.EpRetrieve.FromSeasonResult
-                                    epMatch = sMatch.Value
-                            End Select
-
-                            For Each eMatch As Match In Regex.Matches(epMatch, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                                If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                            Next
-
-                            retSeason.Add(cSeason)
+                        Else
+                            cSeason.Season = -1
                         End If
+
+                        Select Case rShow.EpisodeRetrieve
+                            Case Settings.EpRetrieve.FromDirectory
+                                epMatch = Directory.GetParent(sPath).Name
+                            Case Settings.EpRetrieve.FromFilename
+                                epMatch = Path.GetFileNameWithoutExtension(sPath)
+                            Case Settings.EpRetrieve.FromSeasonResult
+                                epMatch = sMatch.Value
+                        End Select
+
+                        For Each eMatch As Match In Regex.Matches(epMatch, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                            If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                        Next
+
+                        If cSeason.Episodes.Count = 0 Then cSeason.Episodes.Add(-1)
+
+                        retSeason.Add(cSeason)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
