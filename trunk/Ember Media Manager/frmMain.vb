@@ -2867,17 +2867,17 @@ Public Class frmMain
         Try
             If Not Me.tabsMain.SelectedIndex = 0 Then Return
 
-            Me.tmrWaitShow.Enabled = False
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrWait.Enabled = False
-            Me.tmrLoadShow.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
-            Me.tmrLoadEp.Enabled = False
-            Me.tmrLoad.Enabled = False
+            Me.tmrWaitShow.Stop()
+            Me.tmrWaitSeason.Stop()
+            Me.tmrWaitEp.Stop()
+            Me.tmrWait.Stop()
+            Me.tmrLoadShow.Stop()
+            Me.tmrLoadSeason.Stop()
+            Me.tmrLoadEp.Stop()
+            Me.tmrLoad.Stop()
 
             Me.currRow = e.RowIndex
-            Me.tmrWait.Enabled = True
+            Me.tmrWait.Start()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3134,20 +3134,19 @@ Public Class frmMain
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
         Try
-
-            Me.tmrWaitShow.Enabled = False
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrWait.Enabled = False
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrLoadShow.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
-            Me.tmrLoad.Enabled = False
-            Me.tmrLoadEp.Enabled = False
-
             If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 2 Then Return
 
+            Me.tmrWaitShow.Stop()
+            Me.tmrWaitSeason.Stop()
+            Me.tmrWait.Stop()
+            Me.tmrWaitEp.Stop()
+            Me.tmrLoadShow.Stop()
+            Me.tmrLoadSeason.Stop()
+            Me.tmrLoad.Stop()
+            Me.tmrLoadEp.Stop()
+
             Me.currEpRow = e.RowIndex
-            Me.tmrWaitEp.Enabled = True
+            Me.tmrWaitEp.Start()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3381,19 +3380,19 @@ Public Class frmMain
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
         Try
 
-            Me.tmrWaitShow.Enabled = False
-            Me.tmrWait.Enabled = False
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrLoadShow.Enabled = False
-            Me.tmrLoad.Enabled = False
-            Me.tmrLoadEp.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
-
             If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 1 Then Return
 
+            Me.tmrWaitShow.Stop()
+            Me.tmrWait.Stop()
+            Me.tmrWaitEp.Stop()
+            Me.tmrWaitSeason.Stop()
+            Me.tmrLoadShow.Stop()
+            Me.tmrLoad.Stop()
+            Me.tmrLoadEp.Stop()
+            Me.tmrLoadSeason.Stop()
+
             Me.currSeasonRow = e.RowIndex
-            Me.tmrWaitSeason.Enabled = True
+            Me.tmrWaitSeason.Start()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3616,19 +3615,19 @@ Public Class frmMain
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
         Try
-            Me.tmrWait.Enabled = False
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrWaitShow.Enabled = False
-            Me.tmrLoad.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
-            Me.tmrLoadEp.Enabled = False
-            Me.tmrLoadShow.Enabled = False
-
             If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 0 Then Return
 
+            Me.tmrWait.Stop()
+            Me.tmrWaitSeason.Stop()
+            Me.tmrWaitEp.Stop()
+            Me.tmrWaitShow.Stop()
+            Me.tmrLoad.Stop()
+            Me.tmrLoadSeason.Stop()
+            Me.tmrLoadEp.Stop()
+            Me.tmrLoadShow.Stop()
+
             Me.currShowRow = e.RowIndex
-            Me.tmrWaitShow.Enabled = True
+            Me.tmrWaitShow.Start()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4000,6 +3999,8 @@ Public Class frmMain
                 End If
             End If
 
+            Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+
             If isCL Then
                 Me.LoadingDone = True
             Else
@@ -4077,7 +4078,6 @@ Public Class frmMain
                 End If
 
                 Me.dgvTVShows.Enabled = False
-                Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
                 If Me.dtShows.Rows.Count > 0 Then
 
@@ -4121,7 +4121,7 @@ Public Class frmMain
 
                         .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                        If .dgvTVShows.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 1 Then
+                        If .dgvTVShows.RowCount > 0 Then
                             'Set current cell and automatically load the info for the first show in the list
                             .dgvTVShows.Rows(iIndex).Cells(1).Selected = True
                             .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(1)
@@ -4131,12 +4131,12 @@ Public Class frmMain
                     End With
                 End If
                 Me.dgvTVShows.Enabled = True
+            End If
 
-                If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
-                    Me.SetControlsEnabled(False)
-                    Me.SetStatus(String.Empty)
-                    Me.ClearInfo()
-                End If
+            If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
+                Me.SetControlsEnabled(False)
+                Me.SetStatus(String.Empty)
+                Me.ClearInfo()
             End If
         Catch ex As Exception
             Me.LoadingDone = True
@@ -7839,8 +7839,8 @@ Public Class frmMain
     End Sub
 
     Private Sub tmrLoadEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadEp.Tick
-        Me.tmrWaitEp.Enabled = False
-        Me.tmrLoadEp.Enabled = False
+        Me.tmrWaitEp.Stop()
+        Me.tmrLoadEp.Stop()
         Try
 
             If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
@@ -7858,8 +7858,8 @@ Public Class frmMain
     End Sub
 
     Private Sub tmrLoadSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadSeason.Tick
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrLoadSeason.Enabled = False
+        Me.tmrWaitSeason.Stop()
+        Me.tmrLoadSeason.Stop()
         Try
             If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
 
@@ -7876,8 +7876,8 @@ Public Class frmMain
     End Sub
 
     Private Sub tmrLoadShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadShow.Tick
-        Me.tmrWaitShow.Enabled = False
-        Me.tmrLoadShow.Enabled = False
+        Me.tmrWaitShow.Stop()
+        Me.tmrLoadShow.Stop()
         Try
             If Me.dgvTVShows.SelectedRows.Count > 0 Then
 
@@ -7894,8 +7894,8 @@ Public Class frmMain
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Me.tmrWait.Enabled = False
-        Me.tmrLoad.Enabled = False
+        Me.tmrWait.Stop()
+        Me.tmrLoad.Stop()
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
 
@@ -7955,53 +7955,57 @@ Public Class frmMain
     End Sub
 
     Private Sub tmrWaitEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitEp.Tick
-        Me.tmrLoadSeason.Enabled = False
-        Me.tmrLoadShow.Enabled = False
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrWaitShow.Enabled = False
+        Me.tmrLoadSeason.Stop()
+        Me.tmrLoadShow.Stop()
+        Me.tmrWaitSeason.Stop()
+        Me.tmrWaitShow.Stop()
 
         If Not Me.prevEpRow = Me.currEpRow Then
             Me.prevEpRow = Me.currEpRow
-            Me.tmrLoadEp.Enabled = True
+            Me.tmrLoadEp.Start()
         Else
-            Me.tmrLoadEp.Enabled = False
+            Me.tmrLoadEp.Stop()
+            Me.tmrWaitEp.Stop()
         End If
     End Sub
 
     Private Sub tmrWaitSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitSeason.Tick
-        Me.tmrLoadShow.Enabled = False
-        Me.tmrLoadEp.Enabled = False
-        Me.tmrWaitShow.Enabled = False
-        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoadShow.Stop()
+        Me.tmrLoadEp.Stop()
+        Me.tmrWaitShow.Stop()
+        Me.tmrWaitEp.Stop()
 
         If Not Me.prevSeasonRow = Me.currSeasonRow Then
             Me.prevSeasonRow = Me.currSeasonRow
-            Me.tmrLoadSeason.Enabled = True
+            Me.tmrLoadSeason.Start()
         Else
-            Me.tmrLoadSeason.Enabled = False
+            Me.tmrLoadSeason.Stop()
+            Me.tmrWaitSeason.Stop()
         End If
     End Sub
 
     Private Sub tmrWaitShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitShow.Tick
-        Me.tmrLoadSeason.Enabled = False
-        Me.tmrLoadEp.Enabled = False
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoadSeason.Stop()
+        Me.tmrLoadEp.Stop()
+        Me.tmrWaitSeason.Stop()
+        Me.tmrWaitEp.Stop()
 
         If Not Me.prevShowRow = Me.currShowRow Then
             Me.prevShowRow = Me.currShowRow
-            Me.tmrLoadShow.Enabled = True
+            Me.tmrLoadShow.Start()
         Else
-            Me.tmrLoadShow.Enabled = False
+            Me.tmrLoadShow.Stop()
+            Me.tmrWaitShow.Stop()
         End If
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         If Not Me.prevRow = Me.currRow Then
             Me.prevRow = Me.currRow
-            Me.tmrLoad.Enabled = True
+            Me.tmrLoad.Start()
         Else
-            Me.tmrLoad.Enabled = False
+            Me.tmrLoad.Stop()
+            Me.tmrWait.Stop()
         End If
     End Sub
 

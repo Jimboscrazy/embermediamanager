@@ -3554,13 +3554,13 @@ Partial Class frmMain
         'mnuMoviesUpdate
         '
         Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
-        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(123, 22)
         Me.mnuMoviesUpdate.Text = "Movies"
         '
         'mnuTVShowUpdate
         '
         Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
-        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(123, 22)
         Me.mnuTVShowUpdate.Text = "TV Shows"
         '
         'tsbMediaCenters
