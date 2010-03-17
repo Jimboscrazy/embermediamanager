@@ -74,7 +74,7 @@ Public Class FrameExtrator
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType)
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieFrameExtrator})
         End Get
     End Property
 
@@ -113,7 +113,8 @@ Public Class FrameExtrator
         Select Case mType
             Case Enums.ModuleEventType.MovieFrameExtrator
                 frmMovie = New frmMovieExtrator
-                _params(0) = DirectCast(frmMovie.pnlExtrator, Panel)
+                _params(0) = frmMovie.pnlExtrator
+                AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
             Case Enums.ModuleEventType.TVFrameExtrator
                 frmTV = New frmTVExtrator
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
