@@ -8,9 +8,29 @@ Public Class frmTVExtrator
 
     Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
 
-    Private Sub pbFrame_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFrame.Click
 
+    Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
     End Sub
+
+    Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tbFrame.MouseUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
+
+    Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
+        Try
+            Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
+            lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         If Not IsNothing(pbFrame.Image) Then
             'Me.Poster.Image = New Bitmap(pbFrame.Image)
@@ -18,15 +38,7 @@ Public Class frmTVExtrator
             RaiseEvent GenericEvent(Enums.ModuleEventType.TVFrameExtrator, New List(Of Object)(New Object() {New Bitmap(pbFrame.Image), pbFrame.Image}))
         End If
     End Sub
-    Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
 
-    End Sub
-    Private Sub lblTime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblTime.Click
-
-    End Sub
-    Private Sub pnlFrameProgress_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlFrameProgress.Paint
-
-    End Sub
     Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
         Try
             Using ffmpeg As New Process()
@@ -82,6 +94,64 @@ Public Class frmTVExtrator
             tbFrame.Enabled = False
             pbFrame.Image = Nothing
         End Try
+    End Sub
+    Private Sub GrabTheFrame()
+        Try
 
+            tbFrame.Enabled = False
+            Dim ffmpeg As New Process()
+
+            ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currShow.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+            ffmpeg.EnableRaisingEvents = False
+            ffmpeg.StartInfo.UseShellExecute = False
+            ffmpeg.StartInfo.CreateNoWindow = True
+            ffmpeg.StartInfo.RedirectStandardOutput = True
+            ffmpeg.StartInfo.RedirectStandardError = True
+
+            pnlFrameProgress.Visible = True
+            btnFrameSave.Enabled = False
+
+            ffmpeg.Start()
+
+            ffmpeg.WaitForExit()
+            ffmpeg.Close()
+
+            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+                Using fsFImage As FileStream = New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
+                    pbFrame.Image = Image.FromStream(fsFImage)
+                End Using
+                tbFrame.Enabled = True
+                btnFrameSave.Enabled = True
+                pnlFrameProgress.Visible = False
+                PreviousFrameValue = tbFrame.Value
+            Else
+                lblTime.Text = String.Empty
+                tbFrame.Maximum = 0
+                tbFrame.Value = 0
+                tbFrame.Enabled = False
+                btnFrameSave.Enabled = False
+                btnFrameLoad.Enabled = True
+                pbFrame.Image = Nothing
+                pnlFrameProgress.Visible = False
+                PreviousFrameValue = tbFrame.Value
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            PreviousFrameValue = 0
+            lblTime.Text = String.Empty
+            tbFrame.Maximum = 0
+            tbFrame.Value = 0
+            tbFrame.Enabled = False
+            btnFrameSave.Enabled = False
+            btnFrameLoad.Enabled = True
+            pbFrame.Image = Nothing
+        End Try
+    End Sub
+
+    Sub SetUp()
+        Me.btnFrameLoad.Text = Master.eLang.GetString(661, "Load Episode")
+        Me.btnFrameSave.Text = Master.eLang.GetString(662, "Save as Poster")
     End Sub
 End Class

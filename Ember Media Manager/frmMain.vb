@@ -1875,14 +1875,14 @@ Public Class frmMain
             Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
             Using dEditEpisode As New dlgEditEpisode
-
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
-
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3123,14 +3123,14 @@ Public Class frmMain
             Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
             Using dEditEpisode As New dlgEditEpisode
-
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         If Me.RefreshEpisode(ID) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
-
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3234,14 +3234,14 @@ Public Class frmMain
                 Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
                 Using dEditEpisode As New dlgEditEpisode
-
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                     Select Case dEditEpisode.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             If Me.RefreshEpisode(ID) Then
                                 Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                             End If
                     End Select
-
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 End Using
             End If
         Catch ex As Exception
@@ -8089,9 +8089,11 @@ Public Class frmMain
                         Me.tspbLoading.Visible = True
                         Me.tslLoading.Visible = True
                         Using dEditEp As New dlgEditEpisode
+                            AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack
                             If dEditEp.ShowDialog = Windows.Forms.DialogResult.OK Then
                                 Me.RefreshEpisode(Master.currShow.EpID)
                             End If
+                            RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEp.GenericRunCallBack
                         End Using
                         Me.tspbLoading.Visible = False
                         Me.tslLoading.Visible = False

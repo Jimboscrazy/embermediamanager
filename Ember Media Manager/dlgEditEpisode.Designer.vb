@@ -75,18 +75,11 @@ Partial Class dlgEditEpisode
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.btnFrameSave = New System.Windows.Forms.Button
-        Me.pnlFrameProgress = New System.Windows.Forms.Panel
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.lblTime = New System.Windows.Forms.Label
-        Me.tbFrame = New System.Windows.Forms.TrackBar
-        Me.btnFrameLoad = New System.Windows.Forms.Button
-        Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
+        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -101,9 +94,6 @@ Partial Class dlgEditEpisode
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
-        Me.pnlFrameProgress.SuspendLayout()
-        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage5.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -660,12 +650,7 @@ Partial Class dlgEditEpisode
         '
         'TabPage4
         '
-        Me.TabPage4.Controls.Add(Me.btnFrameSave)
-        Me.TabPage4.Controls.Add(Me.pnlFrameProgress)
-        Me.TabPage4.Controls.Add(Me.lblTime)
-        Me.TabPage4.Controls.Add(Me.tbFrame)
-        Me.TabPage4.Controls.Add(Me.btnFrameLoad)
-        Me.TabPage4.Controls.Add(Me.pbFrame)
+        Me.TabPage4.Controls.Add(Me.pnlFrameExtrator)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
@@ -673,92 +658,6 @@ Partial Class dlgEditEpisode
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'btnFrameSave
-        '
-        Me.btnFrameSave.Enabled = False
-        Me.btnFrameSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFrameSave.Image = CType(resources.GetObject("btnFrameSave.Image"), System.Drawing.Image)
-        Me.btnFrameSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSave.Location = New System.Drawing.Point(735, 362)
-        Me.btnFrameSave.Name = "btnFrameSave"
-        Me.btnFrameSave.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameSave.TabIndex = 7
-        Me.btnFrameSave.Text = "Save as Poster"
-        Me.btnFrameSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnFrameSave.UseVisualStyleBackColor = True
-        '
-        'pnlFrameProgress
-        '
-        Me.pnlFrameProgress.BackColor = System.Drawing.Color.White
-        Me.pnlFrameProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFrameProgress.Controls.Add(Me.Label3)
-        Me.pnlFrameProgress.Controls.Add(Me.ProgressBar1)
-        Me.pnlFrameProgress.Location = New System.Drawing.Point(241, 175)
-        Me.pnlFrameProgress.Name = "pnlFrameProgress"
-        Me.pnlFrameProgress.Size = New System.Drawing.Size(252, 51)
-        Me.pnlFrameProgress.TabIndex = 6
-        Me.pnlFrameProgress.Visible = False
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(2, 7)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(103, 13)
-        Me.Label3.TabIndex = 1
-        Me.Label3.Text = "Extracting Frame..."
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(4, 26)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(242, 16)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 0
-        '
-        'lblTime
-        '
-        Me.lblTime.Location = New System.Drawing.Point(671, 422)
-        Me.lblTime.Name = "lblTime"
-        Me.lblTime.Size = New System.Drawing.Size(59, 23)
-        Me.lblTime.TabIndex = 4
-        Me.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'tbFrame
-        '
-        Me.tbFrame.BackColor = System.Drawing.Color.White
-        Me.tbFrame.Enabled = False
-        Me.tbFrame.Location = New System.Drawing.Point(6, 422)
-        Me.tbFrame.Name = "tbFrame"
-        Me.tbFrame.Size = New System.Drawing.Size(659, 45)
-        Me.tbFrame.TabIndex = 2
-        Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
-        '
-        'btnFrameLoad
-        '
-        Me.btnFrameLoad.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFrameLoad.Image = CType(resources.GetObject("btnFrameLoad.Image"), System.Drawing.Image)
-        Me.btnFrameLoad.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameLoad.Location = New System.Drawing.Point(735, 6)
-        Me.btnFrameLoad.Name = "btnFrameLoad"
-        Me.btnFrameLoad.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameLoad.TabIndex = 1
-        Me.btnFrameLoad.Text = "Load Episode"
-        Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnFrameLoad.UseVisualStyleBackColor = True
-        '
-        'pbFrame
-        '
-        Me.pbFrame.BackColor = System.Drawing.Color.DimGray
-        Me.pbFrame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbFrame.Location = New System.Drawing.Point(6, 6)
-        Me.pbFrame.Name = "pbFrame"
-        Me.pbFrame.Size = New System.Drawing.Size(724, 414)
-        Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbFrame.TabIndex = 8
-        Me.pbFrame.TabStop = False
         '
         'TabPage5
         '
@@ -795,6 +694,13 @@ Partial Class dlgEditEpisode
         Me.OK_Button.TabIndex = 61
         Me.OK_Button.Text = "OK"
         '
+        'pnlFrameExtrator
+        '
+        Me.pnlFrameExtrator.Location = New System.Drawing.Point(1, 0)
+        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
+        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
+        Me.pnlFrameExtrator.TabIndex = 1
+        '
         'dlgEditEpisode
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -829,11 +735,6 @@ Partial Class dlgEditEpisode
         Me.TabPage3.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
-        Me.TabPage4.PerformLayout()
-        Me.pnlFrameProgress.ResumeLayout(False)
-        Me.pnlFrameProgress.PerformLayout()
-        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage5.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -876,14 +777,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents btnSetPoster As System.Windows.Forms.Button
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
-    Friend WithEvents btnFrameSave As System.Windows.Forms.Button
-    Friend WithEvents pnlFrameProgress As System.Windows.Forms.Panel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents lblTime As System.Windows.Forms.Label
-    Friend WithEvents tbFrame As System.Windows.Forms.TrackBar
-    Friend WithEvents btnFrameLoad As System.Windows.Forms.Button
-    Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
     Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
@@ -902,5 +795,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
+    Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
 
 End Class

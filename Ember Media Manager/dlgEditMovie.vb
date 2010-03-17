@@ -540,8 +540,7 @@ Public Class dlgEditMovie
 
             Me.LoadGenres()
             Me.LoadRatings()
-            Dim params As New List(Of Object)
-            params.Add(New Panel)
+            Dim params As New List(Of Object)(New Object() {New Panel})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieFrameExtrator, params, True)
             pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
 
