@@ -120,7 +120,10 @@ Public Class FrameExtrator
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = DirectCast(frmTV.pnlExtrator, Panel)
             Case Enums.ModuleEventType.RandomFrameExtrator
-                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
+                Dim dbm As Structures.DBMovie = DirectCast(_params(0), Structures.DBMovie)
+                Dim auto As Integer = DirectCast(_params(1), Integer)
+                Dim edit As Boolean = DirectCast(_params(2), Boolean)
+                _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)
         End Select
     End Function
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))

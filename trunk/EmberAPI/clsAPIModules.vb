@@ -573,7 +573,6 @@ Public Class ModulesManager
             If ret.breakChain Then Exit For
         Next
     End Sub
-
 #End Region 'Methods
 
 #Region "Nested Types"
