@@ -8,6 +8,9 @@ Public Class frmTVExtrator
 
     Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
 
+    Private Sub frmTVExtrator_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SetUp()
+    End Sub
 
     Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
         If tbFrame.Value <> PreviousFrameValue Then
@@ -154,4 +157,6 @@ Public Class frmTVExtrator
         Me.btnFrameLoad.Text = Master.eLang.GetString(661, "Load Episode")
         Me.btnFrameSave.Text = Master.eLang.GetString(662, "Save as Poster")
     End Sub
+
+
 End Class
