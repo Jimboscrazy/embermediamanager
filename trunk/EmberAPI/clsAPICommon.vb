@@ -305,6 +305,12 @@ Public Class Enums
         ListTitle = 7
     End Enum
 
+    Public Enum Ordering As Integer
+        Standard = 0
+        DVD = 1
+        Absolute = 2
+    End Enum
+
     Public Enum PosterSize As Integer
         Xlrg = 0
         Lrg = 1
@@ -904,7 +910,7 @@ Public Class Structures
         Dim Source As String
         Dim TVEp As MediaContainers.EpisodeDetails
         Dim TVShow As MediaContainers.TVShow
-        Dim UseDVDOrder As Boolean
+        Dim Ordering As Enums.Ordering
 
         #End Region 'Fields
 
@@ -926,7 +932,7 @@ Public Class Structures
         #Region "Fields"
 
         Dim CurrentImage As Image
-        Dim DVDOrder As Boolean
+        Dim Ordering As Enums.Ordering
         Dim iEpisode As Integer
         Dim ImageType As Enums.TVImageType
         Dim iSeason As Integer
