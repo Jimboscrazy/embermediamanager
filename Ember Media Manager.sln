@@ -30,7 +30,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.BenceExtras", "Modu
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.XBMC", "Modules\generic.EmberCore.XBMC\generic.EmberCore.XBMC.vbproj", "{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Extrator", "Modules\generic.EmberCore.Extrator\generic.EmberCore.Extrator.vbproj", "{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Extractor", "Modules\generic.EmberCore.Extractor\generic.EmberCore.Extractor.vbproj", "{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.EmberCore.XML", "Modules\scraper.EmberCore.XML\scraper.EmberCore.XML.vbproj", "{E567C031-1F7B-4637-9B3A-806988DE50CF}"
 EndProject
