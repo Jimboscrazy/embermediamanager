@@ -133,6 +133,13 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XMLScraper\MediaTags\AlbumTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\ArtistTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\Fanart.vb" />
+    <Compile Include="XMLScraper\MediaTags\MediaTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\MovieTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\MusicVideoTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\PersonInfo.vb" />
     <Compile Include="scraperTVNativeModule.vb" />
     <Compile Include="Scraper\clsScrapeTrailers.vb" />
     <Compile Include="Scraper\clsScrapeAllHTPC.vb" />
@@ -202,6 +209,8 @@
     </Compile>
     <Compile Include="scraperMovieNativeModule.vb" />
     <Compile Include="scraperMovieXMLModule.vb" />
+    <Compile Include="XMLScraper\MediaTags\Thumbnail.vb" />
+    <Compile Include="XMLScraper\MediaTags\TVEpisodeTag.vb" />
     <Compile Include="TVScraper\clsScrapeTVDB.vb" />
     <Compile Include="TVScraper\dlgTVChangeEp.Designer.vb">
       <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
@@ -227,6 +236,30 @@
     <Compile Include="TVScraper\dlgTVImageSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="XMLScraper\MediaTags\TVShow.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Enumerators.vb" />
+    <Compile Include="XMLScraper\ScraperLib\FunctionInformation.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Include.vb" />
+    <Compile Include="XMLScraper\ScraperLib\IncludeManager.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Scraper.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScrapeResultsEntity.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperEvaluation.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperExpression.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperFunction.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperFunctionContainer.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperNode.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperRegExp.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperSettings.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Tester.vb" />
+    <Compile Include="XMLScraper\ScraperXML\Delegates.vb" />
+    <Compile Include="XMLScraper\ScraperXML\GenericScraper.vb" />
+    <Compile Include="XMLScraper\ScraperXML\IncludeInfo.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperInfo.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperManager.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperParser.vb" />
+    <Compile Include="XMLScraper\Utilities\Extensions.vb" />
+    <Compile Include="XMLScraper\Utilities\UrlInfo.vb" />
+    <Compile Include="XMLScraper\Utilities\Util.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
