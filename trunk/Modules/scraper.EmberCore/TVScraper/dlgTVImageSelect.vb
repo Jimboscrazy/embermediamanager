@@ -1134,7 +1134,7 @@ Public Class dlgTVImageSelect
                             iCount = 0
                             For Each SImage As Scraper.TVDBSeasonPoster In SeasonList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                                 If Not IsNothing(SImage.Image) Then
-                                    Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount, Nothing)
+                                    Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount, New ImageTag With {.URL = SImage.URL, .Path = SImage.LocalFile, .isFanart = False})
                                 End If
                                 iCount += 1
                             Next
