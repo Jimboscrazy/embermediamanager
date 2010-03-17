@@ -403,7 +403,7 @@ Namespace XMLScraper
                 Dim stringResults As String = Me._parser.ParseFunction("GetSettings")
                 Dim results As XElement = ParseStringXML(stringResults)
                 If IsNothing(results) Then
-                    ErrorMessage(ErrorType.GeneralError, "Settings Cannot be loaded for " & Parser.XmlScraper.Root.Element("name").Value)
+                    'ErrorMessage(ErrorType.GeneralError, "Settings Cannot be loaded for " & Parser.XmlScraper.Root.Element("name").Value)
                     Return Nothing
                 End If
 

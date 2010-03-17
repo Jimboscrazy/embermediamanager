@@ -102,11 +102,16 @@ Public Class EmberXMLScraperModule
     Sub Enabled()
         If XMLManager Is Nothing Then
             Dim tPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML"))
+            Dim cPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML", Path.DirectorySeparatorChar, "Cache"))
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
-            Else
-                XMLManager = New ScraperManager(tPath)
             End If
+            If Not Directory.Exists(cPath) Then
+                Directory.CreateDirectory(cPath)
+            End If
+
+            XMLManager = New ScraperManager(tPath, cPath)
+            XMLManager.ReloadScrapers()
         End If
     End Sub
 
@@ -144,6 +149,7 @@ Public Class EmberXMLScraperModule
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
+        PopulateSettings()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
         Spanel.Text = _Name
         Spanel.Prefix = "XMLMovieInfo_"
@@ -184,6 +190,12 @@ Public Class EmberXMLScraperModule
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+    Sub PopulateSettings()
+        _setup.cbScraper.Items.Clear()
+        For Each s As ScraperInfo In XMLManager.AllScrapers
+            _setup.cbScraper.Items.Add(s.ScraperName)
+        Next
+    End Sub
 
     #End Region 'Methods
 

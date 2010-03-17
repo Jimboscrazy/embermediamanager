@@ -29,12 +29,16 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
+        Me.cbScraper = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.cbScraper)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
         Me.pnlSettings.Name = "pnlSettings"
@@ -95,6 +99,23 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'cbScraper
+        '
+        Me.cbScraper.FormattingEnabled = True
+        Me.cbScraper.Location = New System.Drawing.Point(58, 41)
+        Me.cbScraper.Name = "cbScraper"
+        Me.cbScraper.Size = New System.Drawing.Size(183, 21)
+        Me.cbScraper.TabIndex = 83
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(7, 44)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(45, 13)
+        Me.Label1.TabIndex = 84
+        Me.Label1.Text = "Scraper"
+        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -111,6 +132,7 @@ Partial Class frmXMLSettingsHolder
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Setup"
         Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
@@ -122,5 +144,7 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cbScraper As System.Windows.Forms.ComboBox
 
 End Class
