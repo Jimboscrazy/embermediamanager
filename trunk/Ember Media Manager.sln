@@ -30,6 +30,10 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.BenceExtras", "Modu
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.XBMC", "Modules\generic.EmberCore.XBMC\generic.EmberCore.XBMC.vbproj", "{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Extrator", "Modules\generic.EmberCore.Extrator\generic.EmberCore.Extrator.vbproj", "{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.EmberCore.XML", "Modules\scraper.EmberCore.XML\scraper.EmberCore.XML.vbproj", "{E567C031-1F7B-4637-9B3A-806988DE50CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -306,6 +310,46 @@ Global
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.Release|x64.Build.0 = Release|x64
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.Release|x86.ActiveCfg = Release|x86
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.Release|x86.Build.0 = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.All|Any CPU.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.All|x64.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.All|x86.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.All|x86.Build.0 = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|x64.ActiveCfg = Debug|x64
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|x64.Build.0 = Debug|x64
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|x86.ActiveCfg = Debug|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Debug|x86.Build.0 = Debug|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Ember Media Manager|Any CPU.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Ember Media Manager|x64.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Ember Media Manager|x86.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Ember Media Manager|x86.Build.0 = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|x64.ActiveCfg = Release|x64
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|x64.Build.0 = Release|x64
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|x86.ActiveCfg = Release|x86
+		{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}.Release|x86.Build.0 = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.All|Any CPU.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.All|x64.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.All|x86.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.All|x86.Build.0 = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|x64.ActiveCfg = Debug|x64
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|x64.Build.0 = Debug|x64
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|x86.ActiveCfg = Debug|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Debug|x86.Build.0 = Debug|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Ember Media Manager|Any CPU.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Ember Media Manager|x64.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Ember Media Manager|x86.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Ember Media Manager|x86.Build.0 = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|x64.ActiveCfg = Release|x64
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|x64.Build.0 = Release|x64
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|x86.ActiveCfg = Release|x86
+		{E567C031-1F7B-4637-9B3A-806988DE50CF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

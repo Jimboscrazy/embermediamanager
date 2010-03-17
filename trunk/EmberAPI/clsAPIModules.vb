@@ -156,6 +156,8 @@ Public Class ModulesManager
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
                                 _externalProcessorModule.Type = ProcessorModule.ModuleType
+                                externalProcessorModules.Add(_externalProcessorModule)
+                                ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
@@ -165,12 +167,10 @@ Public Class ModulesManager
                                 Next
                                 If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
                                     _externalProcessorModule.ProcessorModule.Enabled = True
-                                    SetModuleEnable(_externalProcessorModule.AssemblyName, True)
+                                    'SetModuleEnable(_externalProcessorModule.AssemblyName, True)
                                 End If
-                                externalProcessorModules.Add(_externalProcessorModule)
-                                ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
-                                ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
+                                'ProcessorModule.Enabled = _externalProcessorModule.ProcessorModule.Enabled
                             End If
                         Catch ex As Exception
                         End Try
@@ -218,7 +218,8 @@ Public Class ModulesManager
                             _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
                             Dim found As Boolean = False
-
+                            externalScrapersModules.Add(_externalScraperModule)
+                            _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
                                 ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
@@ -232,8 +233,6 @@ Public Class ModulesManager
                                 _externalScraperModule.ScraperOrder = 999
                                 _externalScraperModule.PostScraperOrder = 999
                             End If
-                            externalScrapersModules.Add(_externalScraperModule)
-                            _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                         End If
                     Next
                 Catch ex As Exception
@@ -289,7 +288,8 @@ Public Class ModulesManager
                             _externaltvScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externaltvScraperModule.AssemblyFileName = Path.GetFileName(file)
                             Dim found As Boolean = False
-
+                            externalTVScrapersModules.Add(_externaltvScraperModule)
+                            _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externaltvScraperModule.AssemblyName)
                                 _externaltvScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
                                 ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
@@ -303,8 +303,6 @@ Public Class ModulesManager
                                 _externaltvScraperModule.ScraperOrder = 999
                                 _externaltvScraperModule.PostScraperOrder = 999
                             End If
-                            externalTVScrapersModules.Add(_externaltvScraperModule)
-                            _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_TVScraperEvent
                         End If
                     Next
@@ -401,7 +399,6 @@ Public Class ModulesManager
 
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            _externalProcessorModule.ProcessorModule.Enabled = value
             _externalProcessorModule.ProcessorModule.Enabled = value
         Next
     End Sub
