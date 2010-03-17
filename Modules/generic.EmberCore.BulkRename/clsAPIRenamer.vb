@@ -595,7 +595,7 @@ Public Class FileFolderRenamer
                                 Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                                 Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                             Else
-                                If Not Directory.Exists(destDir) Then Directory.CreateDirectory(Path.GetDirectoryName(destDir))
+                                If Not Directory.Exists(destDir) Then Directory.CreateDirectory(destDir)
                                 Directory.Move(srcDir, destDir)
                             End If
                         End If

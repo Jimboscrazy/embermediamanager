@@ -100,7 +100,7 @@ Public Class EmberXMLScraperModule
 
     #Region "Methods"
     Sub Enabled()
-        If Not XMLManager Is Nothing Then
+        If XMLManager Is Nothing Then
             Dim tPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML"))
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
