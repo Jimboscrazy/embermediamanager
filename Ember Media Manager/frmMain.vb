@@ -1174,7 +1174,10 @@ Public Class frmMain
                             End Using
                         End If
                         If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
-                            Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
+                            'Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
+                            Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
+                            Dim ETasFA As String = DirectCast(params(3), String)
                             If Not String.IsNullOrEmpty(ETasFA) Then
                                 MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                                 DBScrapeMovie.ExtraPath = "TRUE"
@@ -5904,7 +5907,9 @@ Public Class frmMain
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
                     Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
                     Application.DoEvents()
-                    ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
+                    'ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
+                    Dim params As New List(Of Object)(New Object() {Master.currMovie, Master.eSettings.AutoThumbs, True, ""})
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
                 End If
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
