@@ -737,6 +737,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub cbOrdering_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbOrdering.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub cboEpRetrieve_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboEpRetrieve.SelectedIndexChanged
         Me.ValidateRegex()
     End Sub
@@ -963,10 +967,6 @@ Public Class dlgSettings
         Else
             Me.cbTrailerQuality.Enabled = True
         End If
-    End Sub
-
-    Private Sub chkDVDOrderDefault_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDVDOrderDefault.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkEnableCredentials_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableCredentials.CheckedChanged
@@ -2314,7 +2314,7 @@ Public Class dlgSettings
             Me.chkDisplayAllSeason.Checked = Master.eSettings.DisplayAllSeason
             Me.chkMarkNewShows.Checked = Master.eSettings.MarkNewShows
             Me.chkMarkNewEpisodes.Checked = Master.eSettings.MarkNewEpisodes
-            Me.chkDVDOrderDefault.Checked = Master.eSettings.DVDOrderDefault
+            Me.cbOrdering.SelectedIndex = Master.eSettings.OrderDefault
             Me.chkOnlyValueForCert.Checked = Master.eSettings.OnlyValueForCert
 
             Me.RefreshSources()
@@ -3361,7 +3361,7 @@ Public Class dlgSettings
             Master.eSettings.DisplayAllSeason = Me.chkDisplayAllSeason.Checked
             Master.eSettings.MarkNewShows = Me.chkMarkNewShows.Checked
             Master.eSettings.MarkNewEpisodes = Me.chkMarkNewEpisodes.Checked
-            Master.eSettings.DVDOrderDefault = Me.chkDVDOrderDefault.Checked
+            Master.eSettings.OrderDefault = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
@@ -3723,7 +3723,7 @@ Public Class dlgSettings
         Me.gbHelp.Text = Master.eLang.GetString(458, "     Help")
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
-        Me.chkDVDOrderDefault.Text = Master.eLang.GetString(797, "Default to using DVD Ordering")
+        Me.lblOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
         Me.rbBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.rbPoster.Text = Me.GroupBox5.Text
@@ -3765,6 +3765,8 @@ Public Class dlgSettings
         Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
+
+        Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(350, "DVD"), Master.eLang.GetString(839, "Absolute")})
 
         Me.LoadTrailerQualities()
 
@@ -4247,5 +4249,4 @@ Public Class dlgSettings
     End Sub
 
     #End Region 'Methods
-
 End Class

@@ -494,7 +494,8 @@ Partial Class dlgSettings
         Me.Label50 = New System.Windows.Forms.Label
         Me.chkTVScanMetaData = New System.Windows.Forms.CheckBox
         Me.gbTVScraperOptions = New System.Windows.Forms.GroupBox
-        Me.chkDVDOrderDefault = New System.Windows.Forms.CheckBox
+        Me.lblOrdering = New System.Windows.Forms.Label
+        Me.cbOrdering = New System.Windows.Forms.ComboBox
         Me.lblTVUpdate = New System.Windows.Forms.Label
         Me.cboTVUpdate = New System.Windows.Forms.ComboBox
         Me.lblAPIKey = New System.Windows.Forms.Label
@@ -2698,13 +2699,12 @@ Partial Class dlgSettings
         '
         'lblCurrent
         '
-        Me.lblCurrent.AutoSize = True
         Me.lblCurrent.BackColor = System.Drawing.Color.SteelBlue
         Me.lblCurrent.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCurrent.ForeColor = System.Drawing.Color.White
         Me.lblCurrent.Location = New System.Drawing.Point(26, -1)
         Me.lblCurrent.Name = "lblCurrent"
-        Me.lblCurrent.Size = New System.Drawing.Size(81, 25)
+        Me.lblCurrent.Size = New System.Drawing.Size(489, 25)
         Me.lblCurrent.TabIndex = 63
         Me.lblCurrent.Text = "General"
         '
@@ -5941,7 +5941,8 @@ Partial Class dlgSettings
         '
         'gbTVScraperOptions
         '
-        Me.gbTVScraperOptions.Controls.Add(Me.chkDVDOrderDefault)
+        Me.gbTVScraperOptions.Controls.Add(Me.lblOrdering)
+        Me.gbTVScraperOptions.Controls.Add(Me.cbOrdering)
         Me.gbTVScraperOptions.Controls.Add(Me.lblTVUpdate)
         Me.gbTVScraperOptions.Controls.Add(Me.cboTVUpdate)
         Me.gbTVScraperOptions.Controls.Add(Me.lblAPIKey)
@@ -5957,15 +5958,25 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.TabStop = False
         Me.gbTVScraperOptions.Text = "Options"
         '
-        'chkDVDOrderDefault
+        'lblOrdering
         '
-        Me.chkDVDOrderDefault.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDVDOrderDefault.Location = New System.Drawing.Point(6, 279)
-        Me.chkDVDOrderDefault.Name = "chkDVDOrderDefault"
-        Me.chkDVDOrderDefault.Size = New System.Drawing.Size(190, 17)
-        Me.chkDVDOrderDefault.TabIndex = 6
-        Me.chkDVDOrderDefault.Text = "Default to using DVD Ordering"
-        Me.chkDVDOrderDefault.UseVisualStyleBackColor = True
+        Me.lblOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblOrdering.Location = New System.Drawing.Point(12, 284)
+        Me.lblOrdering.Name = "lblOrdering"
+        Me.lblOrdering.Size = New System.Drawing.Size(177, 13)
+        Me.lblOrdering.TabIndex = 8
+        Me.lblOrdering.Text = "Default Episode Ordering:"
+        Me.lblOrdering.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbOrdering
+        '
+        Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbOrdering.FormattingEnabled = True
+        Me.cbOrdering.Location = New System.Drawing.Point(17, 304)
+        Me.cbOrdering.Name = "cbOrdering"
+        Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
+        Me.cbOrdering.TabIndex = 7
         '
         'lblTVUpdate
         '
@@ -6880,9 +6891,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlMovies)
@@ -6892,6 +6900,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlMain)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -6954,7 +6965,6 @@ Partial Class dlgSettings
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
         Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlExtensions.ResumeLayout(False)
         Me.GroupBox22.ResumeLayout(False)
@@ -7602,7 +7612,6 @@ Partial Class dlgSettings
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents chkMarkNewShows As System.Windows.Forms.CheckBox
     Friend WithEvents chkMarkNewEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkDVDOrderDefault As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyValueForCert As System.Windows.Forms.CheckBox
     Friend WithEvents rbPoster As System.Windows.Forms.RadioButton
     Friend WithEvents rbBanner As System.Windows.Forms.RadioButton
@@ -7620,4 +7629,6 @@ Partial Class dlgSettings
     Friend WithEvents lblAllSPosterSize As System.Windows.Forms.Label
     Friend WithEvents cbAllSPosterSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkOverwriteAllSPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents cbOrdering As System.Windows.Forms.ComboBox
+    Friend WithEvents lblOrdering As System.Windows.Forms.Label
 End Class

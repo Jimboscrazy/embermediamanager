@@ -67,7 +67,7 @@ Public Class Settings
     Private _displaymissingepisodes As Boolean
     Private _displayyear As Boolean
     Private _downloadtrailers As Boolean
-    Private _dvdorderdefault As Boolean
+    Private _orderdefault As Enums.Ordering
     Private _emberModules As List(Of ModulesManager._XMLEmberModuleClass)
     Private _enableifoscan As Boolean
     Private _epfanartheight As Integer
@@ -696,12 +696,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property DVDOrderDefault() As Boolean
+    Public Property OrderDefault() As Enums.Ordering
         Get
-            Return Me._dvdorderdefault
+            Return Me._orderdefault
         End Get
-        Set(ByVal value As Boolean)
-            Me._dvdorderdefault = value
+        Set(ByVal value As Enums.Ordering)
+            Me._orderdefault = value
         End Set
     End Property
 
@@ -3415,7 +3415,7 @@ Public Class Settings
         Me._displayallseason = True
         Me._marknewshows = False
         Me._marknewepisodes = False
-        Me._dvdorderdefault = False
+        Me._orderdefault = Enums.Ordering.Standard
         Me._onlyvalueforcert = False
     End Sub
 

@@ -29,7 +29,7 @@ Public Class dlgOfflineHolder
     Friend  WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
 
     Private currNameText As String = String.Empty
-    Private currText As String = Master.eLang.GetString(350, "Insert DVD")
+    Private currText As String = Master.eLang.GetString(341, "Insert DVD")
     Private def_pbPreview_h As Integer
     Private def_pbPreview_w As Integer
     Private destPath As String

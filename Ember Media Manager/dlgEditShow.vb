@@ -75,7 +75,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnASChangePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASChangePosterScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbASPoster.Image)
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Me.pbASPoster.Image)
 
         If Not IsNothing(tImage) Then
             Me.ASPoster.Image = New Bitmap(tImage)
@@ -188,7 +188,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbFanart.Image)
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Me.pbFanart.Image)
 
         If Not IsNothing(tImage) Then
             Me.Fanart.Image = New Bitmap(tImage)
@@ -233,7 +233,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.UseDVDOrder, Me.pbPoster.Image)
+        Dim tImage As Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Me.pbPoster.Image)
 
         If Not IsNothing(tImage) Then
             Me.Poster.Image = New Bitmap(tImage)
@@ -383,7 +383,7 @@ Public Class dlgEditShow
 
     Private Sub FillInfo()
         With Me
-            .chkDVDOrder.Checked = Master.currShow.UseDVDOrder
+            .cbOrdering.SelectedIndex = Master.currShow.Ordering
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then .txtTitle.Text = Master.currShow.TVShow.Title
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Plot) Then .txtPlot.Text = Master.currShow.TVShow.Plot
@@ -678,7 +678,7 @@ Public Class dlgEditShow
     Private Sub SetInfo()
         Try
             With Me
-                Master.currShow.UseDVDOrder = .chkDVDOrder.Checked
+                Master.currShow.Ordering = DirectCast(.cbOrdering.SelectedIndex, Enums.Ordering)
 
                 Master.currShow.TVShow.Title = .txtTitle.Text.Trim
                 Master.currShow.TVShow.Plot = .txtPlot.Text.Trim
@@ -781,7 +781,10 @@ Public Class dlgEditShow
         Me.btnASChangePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnASChangePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
         Me.btnASPosterChangeDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.chkDVDOrder.Text = Master.eLang.GetString(739, "Attempt to use DVD ordering when scraping episodes for this show.")
+        Me.lblOrdering.Text = Master.eLang.GetString(739, "Episode Ordering:")
+
+        Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(350, "DVD"), Master.eLang.GetString(839, "Absolute")})
+
     End Sub
 
     #End Region 'Methods

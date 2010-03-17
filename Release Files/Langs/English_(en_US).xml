@@ -349,7 +349,7 @@
   <string id="347">Select Font...</string>
   <string id="348">Tagline Top:</string>
   <string id="349">Information</string>
-  <string id="350">Insert DVD</string>
+  <string id="350">DVD</string>
   <string id="351">Invalid</string>
   <string id="352">Movie (Folder Name)</string>
   <string id="353">Source Folder</string>
@@ -738,7 +738,7 @@
   <string id="736">Only Get Images for the Selected Language</string>
   <string id="737">Also Get English Images</string>
   <string id="738">API Key:</string>
-  <string id="739">Attempt to use DVD ordering when scraping episodes for this show.</string>
+  <string id="739">Episode Ordering:</string>
   <string id="740">Re-download Show Information Every:</string>
   <string id="741">Preferred Language:</string>
   <string id="742">Fetch Available Languages</string>
@@ -796,7 +796,7 @@
   <string id="794">&amp;Module Settings...</string>
   <string id="795">Interface</string>
   <string id="796">Scan in order of last write time</string>
-  <string id="797">Default to using DVD Ordering</string>
+  <string id="797">Default Episode Ordering:</string>
   <string id="798">Get Images From:</string>
   <string id="799">Scraper - Trailers</string>
   <string id="800">Preferred Quality:</string>
@@ -838,4 +838,5 @@
   <string id="836">The ID you entered is not a valid TVDB ID.</string>
   <string id="837">Scrapers - Images</string>
   <string id="838">Banner</string>
+  <string id="839">Absolute</string>
 </strings>
