@@ -860,7 +860,6 @@ Public Class Structures
         Dim ID As Long
         Dim IsLock As Boolean
         Dim IsMark As Boolean
-        Dim IsNew As Boolean
         Dim isSingle As Boolean
         Dim ListTitle As String
         Dim Movie As MediaContainers.Movie
@@ -893,9 +892,6 @@ Public Class Structures
         Dim IsMarkEp As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
-        Dim IsNewEp As Boolean
-        Dim IsNewSeason As Boolean
-        Dim IsNewShow As Boolean
         Dim SeasonFanartPath As String
         Dim SeasonPosterPath As String
         Dim ShowFanartPath As String

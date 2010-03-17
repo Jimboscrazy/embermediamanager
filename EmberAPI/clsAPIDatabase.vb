@@ -825,7 +825,6 @@ Public Class Database
 
         _TVDB.IsLockSeason = _tmpTVDB.IsLockSeason
         _TVDB.IsMarkSeason = _tmpTVDB.IsMarkSeason
-        _TVDB.IsNewSeason = _tmpTVDB.IsNewSeason
         _TVDB.SeasonPosterPath = _tmpTVDB.SeasonPosterPath
         _TVDB.SeasonFanartPath = _tmpTVDB.SeasonFanartPath
     End Sub
@@ -1264,7 +1263,6 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
                         _TVDB.IsLockSeason = Convert.ToBoolean(SQLReader("Lock"))
                         _TVDB.IsMarkSeason = Convert.ToBoolean(SQLReader("Mark"))
-                        _TVDB.IsNewSeason = Convert.ToBoolean(SQLReader("New"))
                     End If
                 End Using
             End Using
@@ -1467,7 +1465,7 @@ Public Class Database
                 parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.SubPath)
                 parHasExtra.Value = Not String.IsNullOrEmpty(_movieDB.ExtraPath)
 
-                parNew.Value = _movieDB.IsNew
+                parNew.Value = IsNew
                 parMark.Value = _movieDB.IsMark
                 parLock.Value = _movieDB.IsLock
 
@@ -1793,7 +1791,7 @@ Public Class Database
                 parHasPoster.Value = Not String.IsNullOrEmpty(_TVEpDB.EpPosterPath)
                 parHasFanart.Value = Not String.IsNullOrEmpty(_TVEpDB.EpFanartPath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_TVEpDB.EpNfoPath)
-                parNew.Value = _TVEpDB.IsNewEp
+                parNew.Value = IsNew
                 parMark.Value = _TVEpDB.IsMarkEp
                 parTVEpPathID.Value = PathID
                 parLock.Value = _TVEpDB.IsLockEp
@@ -1967,7 +1965,7 @@ Public Class Database
             parSeasonFanartPath.Value = _TVSeasonDB.SeasonFanartPath
             parSeasonLock.Value = _TVSeasonDB.IsLockSeason
             parSeasonMark.Value = _TVSeasonDB.IsMarkSeason
-            parSeasonNew.Value = _TVSeasonDB.IsNewSeason
+            parSeasonNew.Value = IsNew
             SQLcommandTVSeason.ExecuteNonQuery()
         End Using
 
@@ -2036,7 +2034,7 @@ Public Class Database
                 parHasFanart.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowFanartPath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowNfoPath)
 
-                parNew.Value = _TVShowDB.IsNewShow
+                parNew.Value = IsNew
                 parMark.Value = _TVShowDB.IsMarkShow
                 parLock.Value = _TVShowDB.IsLockShow
                 parSource.Value = _TVShowDB.Source
