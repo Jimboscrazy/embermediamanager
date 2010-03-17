@@ -19,4 +19,10 @@
 ' ################################################################################
 
 Public Class frmXMLSettingsHolder
+    Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+    Public Event ModuleSettingsChanged()
+
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    End Sub
 End Class
