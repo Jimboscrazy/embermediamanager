@@ -117,18 +117,6 @@ Partial Class dlgEditMovie
         Me.ilThumbs = New System.Windows.Forms.ImageList(Me.components)
         Me.pbExtraThumbs = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.txtThumbCount = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.btnAutoGen = New System.Windows.Forms.Button
-        Me.btnFrameSave = New System.Windows.Forms.Button
-        Me.pnlFrameProgress = New System.Windows.Forms.Panel
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.lblTime = New System.Windows.Forms.Label
-        Me.tbFrame = New System.Windows.Forms.TrackBar
-        Me.btnFrameLoad = New System.Windows.Forms.Button
-        Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.TabPage6 = New System.Windows.Forms.TabPage
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
@@ -137,6 +125,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
         Me.DelayTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -155,10 +144,6 @@ Partial Class dlgEditMovie
         Me.Panel1.SuspendLayout()
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.pnlFrameProgress.SuspendLayout()
-        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage6.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1174,13 +1159,7 @@ Partial Class dlgEditMovie
         '
         'TabPage4
         '
-        Me.TabPage4.Controls.Add(Me.GroupBox1)
-        Me.TabPage4.Controls.Add(Me.btnFrameSave)
-        Me.TabPage4.Controls.Add(Me.pnlFrameProgress)
-        Me.TabPage4.Controls.Add(Me.lblTime)
-        Me.TabPage4.Controls.Add(Me.tbFrame)
-        Me.TabPage4.Controls.Add(Me.btnFrameLoad)
-        Me.TabPage4.Controls.Add(Me.pbFrame)
+        Me.TabPage4.Controls.Add(Me.pnlFrameExtrator)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
@@ -1188,136 +1167,6 @@ Partial Class dlgEditMovie
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.txtThumbCount)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.btnAutoGen)
-        Me.GroupBox1.Location = New System.Drawing.Point(733, 175)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(99, 100)
-        Me.GroupBox1.TabIndex = 10
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Auto-Generate"
-        '
-        'txtThumbCount
-        '
-        Me.txtThumbCount.Location = New System.Drawing.Point(68, 18)
-        Me.txtThumbCount.Name = "txtThumbCount"
-        Me.txtThumbCount.Size = New System.Drawing.Size(25, 22)
-        Me.txtThumbCount.TabIndex = 11
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label5.Location = New System.Drawing.Point(2, 23)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(67, 13)
-        Me.Label5.TabIndex = 10
-        Me.Label5.Text = "# to Create:"
-        '
-        'btnAutoGen
-        '
-        Me.btnAutoGen.Enabled = False
-        Me.btnAutoGen.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnAutoGen.Image = CType(resources.GetObject("btnAutoGen.Image"), System.Drawing.Image)
-        Me.btnAutoGen.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAutoGen.Location = New System.Drawing.Point(5, 49)
-        Me.btnAutoGen.Name = "btnAutoGen"
-        Me.btnAutoGen.Size = New System.Drawing.Size(89, 45)
-        Me.btnAutoGen.TabIndex = 9
-        Me.btnAutoGen.Text = "Auto-Gen"
-        Me.btnAutoGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAutoGen.UseVisualStyleBackColor = True
-        '
-        'btnFrameSave
-        '
-        Me.btnFrameSave.Enabled = False
-        Me.btnFrameSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnFrameSave.Image = CType(resources.GetObject("btnFrameSave.Image"), System.Drawing.Image)
-        Me.btnFrameSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSave.Location = New System.Drawing.Point(735, 363)
-        Me.btnFrameSave.Name = "btnFrameSave"
-        Me.btnFrameSave.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameSave.TabIndex = 7
-        Me.btnFrameSave.Text = "Save Extrathumb"
-        Me.btnFrameSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnFrameSave.UseVisualStyleBackColor = True
-        '
-        'pnlFrameProgress
-        '
-        Me.pnlFrameProgress.BackColor = System.Drawing.Color.White
-        Me.pnlFrameProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFrameProgress.Controls.Add(Me.Label3)
-        Me.pnlFrameProgress.Controls.Add(Me.ProgressBar1)
-        Me.pnlFrameProgress.Location = New System.Drawing.Point(241, 175)
-        Me.pnlFrameProgress.Name = "pnlFrameProgress"
-        Me.pnlFrameProgress.Size = New System.Drawing.Size(252, 51)
-        Me.pnlFrameProgress.TabIndex = 6
-        Me.pnlFrameProgress.Visible = False
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(2, 7)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(103, 13)
-        Me.Label3.TabIndex = 1
-        Me.Label3.Text = "Extracting Frame..."
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(4, 26)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(242, 16)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 0
-        '
-        'lblTime
-        '
-        Me.lblTime.Location = New System.Drawing.Point(671, 422)
-        Me.lblTime.Name = "lblTime"
-        Me.lblTime.Size = New System.Drawing.Size(59, 23)
-        Me.lblTime.TabIndex = 4
-        Me.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'tbFrame
-        '
-        Me.tbFrame.BackColor = System.Drawing.Color.White
-        Me.tbFrame.Enabled = False
-        Me.tbFrame.Location = New System.Drawing.Point(6, 422)
-        Me.tbFrame.Name = "tbFrame"
-        Me.tbFrame.Size = New System.Drawing.Size(659, 45)
-        Me.tbFrame.TabIndex = 2
-        Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
-        '
-        'btnFrameLoad
-        '
-        Me.btnFrameLoad.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnFrameLoad.Image = CType(resources.GetObject("btnFrameLoad.Image"), System.Drawing.Image)
-        Me.btnFrameLoad.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameLoad.Location = New System.Drawing.Point(735, 6)
-        Me.btnFrameLoad.Name = "btnFrameLoad"
-        Me.btnFrameLoad.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameLoad.TabIndex = 1
-        Me.btnFrameLoad.Text = "Load Movie"
-        Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnFrameLoad.UseVisualStyleBackColor = True
-        '
-        'pbFrame
-        '
-        Me.pbFrame.BackColor = System.Drawing.Color.DimGray
-        Me.pbFrame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbFrame.Location = New System.Drawing.Point(6, 6)
-        Me.pbFrame.Name = "pbFrame"
-        Me.pbFrame.Size = New System.Drawing.Size(724, 414)
-        Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbFrame.TabIndex = 8
-        Me.pbFrame.TabStop = False
         '
         'TabPage6
         '
@@ -1392,6 +1241,13 @@ Partial Class dlgEditMovie
         '
         Me.DelayTimer.Interval = 250
         '
+        'pnlFrameExtrator
+        '
+        Me.pnlFrameExtrator.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
+        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
+        Me.pnlFrameExtrator.TabIndex = 0
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1434,13 +1290,6 @@ Partial Class dlgEditMovie
         Me.Panel1.ResumeLayout(False)
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
-        Me.TabPage4.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.pnlFrameProgress.ResumeLayout(False)
-        Me.pnlFrameProgress.PerformLayout()
-        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage6.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -1514,14 +1363,6 @@ Partial Class dlgEditMovie
     Friend WithEvents lblStudio As System.Windows.Forms.Label
     Friend WithEvents txtStudio As System.Windows.Forms.TextBox
     Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
-    Friend WithEvents btnFrameLoad As System.Windows.Forms.Button
-    Friend WithEvents tbFrame As System.Windows.Forms.TrackBar
-    Friend WithEvents lblTime As System.Windows.Forms.Label
-    Friend WithEvents pnlFrameProgress As System.Windows.Forms.Panel
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents btnFrameSave As System.Windows.Forms.Button
-    Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
     Friend WithEvents chkMark As System.Windows.Forms.CheckBox
     Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
     Friend WithEvents pbExtraThumbs As System.Windows.Forms.PictureBox
@@ -1534,10 +1375,6 @@ Partial Class dlgEditMovie
     Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
     Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
-    Friend WithEvents btnAutoGen As System.Windows.Forms.Button
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtThumbCount As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents btnThumbsRefresh As System.Windows.Forms.Button
     Friend WithEvents btnStudio As System.Windows.Forms.Button
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
@@ -1559,5 +1396,6 @@ Partial Class dlgEditMovie
     Friend WithEvents DelayTimer As System.Windows.Forms.Timer
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
+    Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
 
 End Class

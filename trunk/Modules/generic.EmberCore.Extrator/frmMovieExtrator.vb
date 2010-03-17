@@ -7,6 +7,7 @@ Imports EmberAPI
 Public Class frmMovieExtrator
     Private PreviousFrameValue As Integer
 
+    Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
 
     Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
         Try
@@ -165,5 +166,45 @@ Public Class frmMovieExtrator
     Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DelayTimer.Tick
         DelayTimer.Stop()
         GrabTheFrame()
+    End Sub
+
+    Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
+        Try
+            If Convert.ToInt32(txtThumbCount.Text) > 0 Then
+                pnlFrameProgress.Visible = True
+                Me.Refresh()
+                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
+                pnlFrameProgress.Visible = False
+                'Me.RefreshExtraThumbs()
+                RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, Nothing)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
+        Me.AcceptButton = Me.btnAutoGen
+    End Sub
+    Private Sub txtThumbCount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtThumbCount.TextChanged
+        btnAutoGen.Enabled = Not String.IsNullOrEmpty(txtThumbCount.Text)
+    End Sub
+
+
+    Private Sub frmMovieExtrator_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Master.eSettings.AutoThumbs > 0 Then
+            txtThumbCount.Text = Master.eSettings.AutoThumbs.ToString
+        End If
+
+    End Sub
+
+    Sub SetUp()
+        Me.GroupBox1.Text = Master.eLang.GetString(257, "Auto-Generate")
+        Me.Label5.Text = Master.eLang.GetString(258, "# to Create:")
+        Me.btnAutoGen.Text = Master.eLang.GetString(259, "Auto-Gen")
+        Me.btnFrameSave.Text = Master.eLang.GetString(260, "Save Extrathumb")
+        Me.Label3.Text = Master.eLang.GetString(261, "Extracting Frame...")
+        Me.btnFrameLoad.Text = Master.eLang.GetString(263, "Load Movie")
+
     End Sub
 End Class

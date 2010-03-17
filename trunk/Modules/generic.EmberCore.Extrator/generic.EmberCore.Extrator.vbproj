@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.XBMC</RootNamespace>
-    <AssemblyName>generic.EmberCore.XBMC</AssemblyName>
+    <RootNamespace>generic.EmberCore.Extrator</RootNamespace>
+    <AssemblyName>generic.EmberCore.Extrator</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>

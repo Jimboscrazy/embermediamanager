@@ -54,7 +54,7 @@ Partial Class frmMovieExtrator
         Me.pnlExtrator.Controls.Add(Me.tbFrame)
         Me.pnlExtrator.Controls.Add(Me.btnFrameLoad)
         Me.pnlExtrator.Controls.Add(Me.pbFrame)
-        Me.pnlExtrator.Location = New System.Drawing.Point(1, 1)
+        Me.pnlExtrator.Location = New System.Drawing.Point(2, 2)
         Me.pnlExtrator.Name = "pnlExtrator"
         Me.pnlExtrator.Size = New System.Drawing.Size(836, 452)
         Me.pnlExtrator.TabIndex = 0
@@ -193,7 +193,7 @@ Partial Class frmMovieExtrator
         '
         Me.DelayTimer.Interval = 250
         '
-        'frmExtrator
+        'frmMovieExtrator
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -202,7 +202,7 @@ Partial Class frmMovieExtrator
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmExtrator"
+        Me.Name = "frmMovieExtrator"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmExtrator"
