@@ -290,6 +290,9 @@ Public Class Enums
         MovieScraperRDYtoSave = 2       ' Called when scraper finishs but before save
         RenameMovie = 3                 ' Called when need to rename a Movie ... from several places
         RenameMovieManual = 4           ' Will call only First Register Module (use Master.currMovie)
+        MovieFrameExtrator = 5
+        TVFrameExtrator = 6
+        RandomFrameExtrator = 7
     End Enum
 
     Public Enum MovieScraperEventType As Integer
