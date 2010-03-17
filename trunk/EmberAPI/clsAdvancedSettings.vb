@@ -30,6 +30,11 @@ Public Class AdvancedSettings
 
     #Region "Fields"
 
+    Private Class SettingGroupItem
+        Public Section As String
+        Public GroupName As String
+        Public Items As New List(Of SettingItem)
+    End Class
     Private Shared _AdvancedSettings As New List(Of SettingItem)
     Private Shared _DoNotSave As Boolean = False
 
