@@ -2843,7 +2843,7 @@ Public Class frmMain
             Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
-
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
@@ -2861,7 +2861,7 @@ Public Class frmMain
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
-
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2970,7 +2970,7 @@ Public Class frmMain
                 Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
-
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
@@ -2988,7 +2988,7 @@ Public Class frmMain
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
-
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 End Using
 
             End If
@@ -5920,6 +5920,7 @@ Public Class frmMain
                 Application.DoEvents()
 
                 Using dEditMovie As New dlgEditMovie
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
@@ -5939,6 +5940,7 @@ Public Class frmMain
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 End Using
 
             End If
