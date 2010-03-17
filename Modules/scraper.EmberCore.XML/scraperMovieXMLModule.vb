@@ -19,8 +19,8 @@
 ' ################################################################################
 
 Imports System.IO
-
 Imports EmberAPI
+Imports EmberScraperModule.XMLScraper.ScraperXML
 
 Public Class EmberXMLScraperModule
     Implements Interfaces.EmberMovieScraperModule
@@ -31,7 +31,7 @@ Public Class EmberXMLScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmXMLSettingsHolder
-
+    Private XMLManager As ScraperManager
     #End Region 'Fields
 
     #Region "Events"
@@ -88,13 +88,31 @@ Public Class EmberXMLScraperModule
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled = value
+            If _ScraperEnabled Then
+                Enabled()
+            Else
+                Disabled()
+            End If
         End Set
     End Property
 
     #End Region 'Properties
 
     #Region "Methods"
+    Sub Enabled()
+        If Not XMLManager Is Nothing Then
+            Dim tPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML"))
+            If Not Directory.Exists(tPath) Then
+                Directory.CreateDirectory(tPath)
+            Else
+                XMLManager = New ScraperManager(tPath)
+            End If
+        End If
+    End Sub
 
+    Sub Disabled()
+
+    End Sub
     Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
     End Function
 
@@ -111,37 +129,56 @@ Public Class EmberXMLScraperModule
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
         Dim Spanel As New Containers.SettingsPanel
-        Spanel.Name = Me._Name
+        Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
-        Spanel.Prefix = "XMLMovie_"
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        Spanel.Prefix = "XMLMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
+        Spanel.Panel = New Panel 'Me._setupPost.pnlSettings
         Return Spanel
     End Function
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
-        Spanel.Name = Me._Name
-        Spanel.Text = Me._Name
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
+        _setup.cbEnabled.Checked = _ScraperEnabled
+        Spanel.Name = String.Concat(Me._Name, "Scraper")
+        Spanel.Text = _Name
+        Spanel.Prefix = "XMLMovieInfo_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieData"
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(_ScraperEnabled, 9, 10)
+        Spanel.Panel = _setup.pnlSettings
+        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return Spanel
     End Function
+    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
+
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 
     Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupScraper
+        ScraperEnabled = _setup.cbEnabled.Checked
+        ModulesManager.Instance.SaveSettings()
+        If DoDispose Then
+            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            _setup.Dispose()
+        End If
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
+
     End Function
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType

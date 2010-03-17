@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EF6A550E-DD76-4F4D-8250-8598140F828B}</ProjectGuid>
+    <ProjectGuid>{E567C031-1F7B-4637-9B3A-806988DE50CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EmberScraperModule</RootNamespace>
-    <AssemblyName>scraper.EmberCore</AssemblyName>
+    <AssemblyName>scraper.EmberCore.XML</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -140,46 +140,6 @@
     <Compile Include="XMLScraper\MediaTags\MovieTag.vb" />
     <Compile Include="XMLScraper\MediaTags\MusicVideoTag.vb" />
     <Compile Include="XMLScraper\MediaTags\PersonInfo.vb" />
-    <Compile Include="scraperTVNativeModule.vb" />
-    <Compile Include="Scraper\clsScrapeTrailers.vb" />
-    <Compile Include="Scraper\clsScrapeAllHTPC.vb" />
-    <Compile Include="Scraper\clsScrapeImages.vb" />
-    <Compile Include="Scraper\clsScrapeIMDB.vb" />
-    <Compile Include="Scraper\clsScrapeIMPA.vb" />
-    <Compile Include="Scraper\clsScrapeMPDB.vb" />
-    <Compile Include="Scraper\clsScrapeOFDB.vb" />
-    <Compile Include="Scraper\clsScrapeTMDB.vb" />
-    <Compile Include="Scraper\clsScrapeYouTube.vb" />
-    <Compile Include="Scraper\dlgIMDBSearchResults.Designer.vb">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgIMDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scraper\dlgImgSelect.Designer.vb">
-      <DependentUpon>dlgImgSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgImgSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scraper\dlgTrailer.Designer.vb">
-      <DependentUpon>dlgTrailer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgTrailer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scraper\dlgTrailerFormat.Designer.vb">
-      <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgTrailerFormat.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmMediaSettingsHolder.Designer.vb">
-      <DependentUpon>frmMediaSettingsHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmMediaSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmXMLSettingsHolder.Designer.vb">
       <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
     </Compile>
@@ -201,41 +161,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmInfoSettingsHolder.Designer.vb">
-      <DependentUpon>frmInfoSettingsHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmInfoSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="scraperMovieNativeModule.vb" />
     <Compile Include="scraperMovieXMLModule.vb" />
     <Compile Include="XMLScraper\MediaTags\Thumbnail.vb" />
     <Compile Include="XMLScraper\MediaTags\TVEpisodeTag.vb" />
-    <Compile Include="TVScraper\clsScrapeTVDB.vb" />
-    <Compile Include="TVScraper\dlgTVChangeEp.Designer.vb">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVChangeEp.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVDBSearchResults.Designer.vb">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVEpisodePoster.Designer.vb">
-      <DependentUpon>dlgTVEpisodePoster.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVEpisodePoster.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVImageSelect.Designer.vb">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TVScraper\dlgTVImageSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="XMLScraper\MediaTags\TVShow.vb" />
     <Compile Include="XMLScraper\ScraperLib\Enumerators.vb" />
     <Compile Include="XMLScraper\ScraperLib\FunctionInformation.vb" />
@@ -262,30 +190,6 @@
     <Compile Include="XMLScraper\Utilities\Util.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scraper\dlgImgSelect.resx">
-      <DependentUpon>dlgImgSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scraper\dlgTrailer.resx">
-      <DependentUpon>dlgTrailer.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scraper\dlgTrailerFormat.resx">
-      <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmMediaSettingsHolder.resx">
-      <DependentUpon>frmMediaSettingsHolder.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmInfoSettingsHolder.resx">
-      <DependentUpon>frmInfoSettingsHolder.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmXMLSettingsHolder.resx">
       <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -294,22 +198,6 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TVScraper\dlgTVChangeEp.resx">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TVScraper\dlgTVDBSearchResults.resx">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TVScraper\dlgTVEpisodePoster.resx">
-      <DependentUpon>dlgTVEpisodePoster.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TVScraper\dlgTVImageSelect.resx">
-      <DependentUpon>dlgTVImageSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
