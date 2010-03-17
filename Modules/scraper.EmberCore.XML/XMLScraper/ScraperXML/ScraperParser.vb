@@ -290,12 +290,13 @@ Namespace XMLScraper
                 For Each RegExpItem As XElement In FunctionElement.Elements("RegExp")
                     ParseNext(RegExpItem)
                 Next
+                Dim ret As String = Me._buffers(WhereToFind)
 
                 If _FunctionClearBuffers Then
                     ClearBuffers()
                 End If
 
-                Return Me._buffers(WhereToFind)
+                Return ret
             End Function
 
             Public Sub setBuffer(ByVal Index As Integer, ByVal strValue As String)
