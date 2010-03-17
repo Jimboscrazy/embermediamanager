@@ -7197,7 +7197,7 @@ Public Class frmMain
                 End If
 
             End With
-
+            Me.tsbAutoPilot.Enabled = (Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
