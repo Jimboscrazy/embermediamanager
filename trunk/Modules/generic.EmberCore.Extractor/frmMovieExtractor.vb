@@ -4,7 +4,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 
-Public Class frmMovieExtrator
+Public Class frmMovieExtractor
     Private PreviousFrameValue As Integer
 
     Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))

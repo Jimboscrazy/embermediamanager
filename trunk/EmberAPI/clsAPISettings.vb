@@ -3554,9 +3554,9 @@ Public Class Settings
         If Master.eSettings.TVShowRegexes.Count <= 0 Then
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 0, .SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 1, .SeasonRegex = "[\W_]*(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "[\W_]*(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", .SeasonFromDirectory = False, .EpisodeRegex = "(([0-9]+|-)(?<episode>[0-9][0-9]))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "^(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "[\W_]*(\([0-9]{4}\))|((?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9]))", .SeasonFromDirectory = False, .EpisodeRegex = "(\([0-9]{4}\))|((([0-9]+|-)(?<episode>[0-9][0-9])))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "^(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
     End Sub
 

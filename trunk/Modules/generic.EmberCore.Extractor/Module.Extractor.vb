@@ -35,7 +35,7 @@ Public Class FrameExtrator
     Private _name As String = "Frame Extrator"
     Private _setup As frmSettingsHolder
     Private frmTV As frmTVExtrator
-    Private frmMovie As frmMovieExtrator
+    Private frmMovie As frmMovieExtractor
 
 #End Region 'Fields
 
@@ -112,7 +112,7 @@ Public Class FrameExtrator
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.MovieFrameExtrator
-                frmMovie = New frmMovieExtrator
+                frmMovie = New frmMovieExtractor
                 _params(0) = frmMovie.pnlExtrator
                 AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
             Case Enums.ModuleEventType.TVFrameExtrator
