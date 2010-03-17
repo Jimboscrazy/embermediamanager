@@ -857,7 +857,6 @@ Public Class Scraper
                         tShow.EpNfoPath = String.Empty
                         tShow.IsLockEp = False
                         tShow.IsMarkEp = False
-                        tShow.IsNewEp = False
                         tShow.EpID = -1
                         If tEpisodes.Count > 0 Then
                             For Each Episode As MediaContainers.EpisodeDetails In tEpisodes

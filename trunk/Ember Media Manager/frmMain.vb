@@ -6260,7 +6260,6 @@ Public Class frmMain
     End Sub
 
     Private Function RefreshEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpEp As New MediaContainers.EpisodeDetails
 
@@ -6287,20 +6286,33 @@ Public Class frmMain
                     tmpShowDb.TVEp.Title = StringUtils.FilterTVEpName(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
                 End If
 
-                If dRow.Count > 0 Then Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
-
                 Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
                 fScanner.GetEpFolderContents(eContainer)
                 tmpShowDb.EpPosterPath = eContainer.Poster
-                If dRow.Count > 0 Then Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(eContainer.Poster), False, True)})
                 tmpShowDb.EpFanartPath = eContainer.Fanart
-                If dRow.Count > 0 Then Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(eContainer.Fanart), False, True)})
                 'assume invalid nfo if no title
                 tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
-                If dRow.Count > 0 Then Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
 
-                If dRow.Count > 0 Then tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
-                If dRow.Count > 0 Then tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+                Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+
+                If Not IsNothing(dRow(0)) Then
+                    tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
+                    tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+
+                    If Me.InvokeRequired Then
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(eContainer.Poster), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(eContainer.Fanart), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, False})
+                    Else
+                        DirectCast(dRow(0), DataRow).Item(3) = tmpShowDb.TVEp.Title
+                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(eContainer.Poster), False, True)
+                        DirectCast(dRow(0), DataRow).Item(5) = If(String.IsNullOrEmpty(eContainer.Fanart), False, True)
+                        DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)
+                        DirectCast(dRow(0), DataRow).Item(7) = False
+                    End If
+                End If
 
                 Master.DB.SaveTVEpToDB(tmpShowDb, False, False, BatchMode, ToNfo)
 
@@ -6321,7 +6333,6 @@ Public Class frmMain
     End Function
 
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpMovie As New MediaContainers.Movie
         Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
@@ -6380,73 +6391,52 @@ Public Class frmMain
                         tmpMovieDb.ListTitle = tTitle
                     End If
                 End If
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(3) = tmpMovieDb.ListTitle
-                    DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
-                    DirectCast(dRow(0), DataRow).Item(50) = tmpMovieDb.Movie.SortTitle
-                    DirectCast(dRow(0), DataRow).Item(24) = tmpMovieDb.Movie.Genre
-                End If
 
                 tmpMovieDb.FileSource = APIXML.GetFileSource(tmpMovieDb.Filename)
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
                 fScanner.GetMovieFolderContents(mContainer)
                 tmpMovieDb.PosterPath = mContainer.Poster
-
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(mContainer.Poster), False, True)
-                End If
                 tmpMovieDb.FanartPath = mContainer.Fanart
-
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(5) = If(String.IsNullOrEmpty(mContainer.Fanart), False, True)
-                End If
                 'assume invalid nfo if no title
                 tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo)
-
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)
-                End If
                 tmpMovieDb.TrailerPath = mContainer.Trailer
-
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(7) = If(String.IsNullOrEmpty(mContainer.Trailer), False, True)
-                End If
                 tmpMovieDb.SubPath = mContainer.Subs
-
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(8) = If(String.IsNullOrEmpty(mContainer.Subs), False, True)
-                End If
                 tmpMovieDb.ExtraPath = mContainer.Extra
 
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(9) = If(String.IsNullOrEmpty(mContainer.Extra), False, True)
-                End If
+                Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
-                If Me.InvokeRequired Then
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
-                Else
-                    DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
-                End If
-                tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
-                tmpMovieDb.IsLock = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(14))
+                If Not IsNothing(dRow(0)) Then
+                    tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+                    tmpMovieDb.IsLock = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(14))
 
+                    If Me.InvokeRequired Then
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
+                    Else
+                        DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
+                        DirectCast(dRow(0), DataRow).Item(3) = tmpMovieDb.ListTitle
+                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(mContainer.Poster), False, True)
+                        DirectCast(dRow(0), DataRow).Item(5) = If(String.IsNullOrEmpty(mContainer.Fanart), False, True)
+                        DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)
+                        DirectCast(dRow(0), DataRow).Item(7) = If(String.IsNullOrEmpty(mContainer.Trailer), False, True)
+                        DirectCast(dRow(0), DataRow).Item(8) = If(String.IsNullOrEmpty(mContainer.Subs), False, True)
+                        DirectCast(dRow(0), DataRow).Item(9) = If(String.IsNullOrEmpty(mContainer.Extra), False, True)
+                        DirectCast(dRow(0), DataRow).Item(10) = False
+                        DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
+                        DirectCast(dRow(0), DataRow).Item(50) = tmpMovieDb.Movie.SortTitle
+                        DirectCast(dRow(0), DataRow).Item(24) = tmpMovieDb.Movie.Genre
+                    End If
+                End If
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
             Else
@@ -6467,7 +6457,6 @@ Public Class frmMain
     End Function
 
     Private Function RefreshSeason(ByVal ShowID As Integer, ByVal Season As Integer, ByVal BatchMode As Boolean) As Boolean
-        Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item(2)) = Season Select drvRow
         Dim tmpSeasonDb As New Structures.DBTV
         Dim tmpShow As New MediaContainers.TVShow
 
@@ -6488,9 +6477,23 @@ Public Class frmMain
             'fake file just for getting images
             tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
             fScanner.GetSeasonImages(tmpSeasonDb, Season)
-            Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
-            If Master.eSettings.SeasonFanartEnabled Then
-                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
+
+            Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item(2)) = Season Select drvRow
+
+            If Not IsNothing(dRow(0)) Then
+                If Me.InvokeRequired Then
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
+                    If Master.eSettings.SeasonFanartEnabled Then
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
+                    End If
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, False})
+                Else
+                    DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)
+                    If Master.eSettings.SeasonFanartEnabled Then
+                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
+                    End If
+                    DirectCast(dRow(0), DataRow).Item(9) = False
+                End If
             End If
 
             If Not BatchMode Then
@@ -6523,7 +6526,6 @@ Public Class frmMain
             Application.DoEvents()
         End If
 
-        Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpShow As New MediaContainers.TVShow
 
@@ -6552,20 +6554,33 @@ Public Class frmMain
                     tmpShowDb.TVShow.Title = StringUtils.FilterTVShowName(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
                 End If
 
-                Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
-
                 Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}
                 fScanner.GetShowFolderContents(sContainer)
                 tmpShowDb.ShowPosterPath = sContainer.Poster
-                Me.Invoke(myDelegate, New Object() {dRow(0), 2, If(String.IsNullOrEmpty(sContainer.Poster), False, True)})
                 tmpShowDb.ShowFanartPath = sContainer.Fanart
-                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(sContainer.Fanart), False, True)})
                 'assume invalid nfo if no title
                 tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.Nfo)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
 
-                tmpShowDb.IsMarkShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(6))
-                tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
+                Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+
+                If Not IsNothing(dRow(0)) Then
+                    tmpShowDb.IsMarkShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(6))
+                    tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
+
+                    If Me.InvokeRequired Then
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 2, If(String.IsNullOrEmpty(sContainer.Poster), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(sContainer.Fanart), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, False})
+                    Else
+                        DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.TVShow.Title
+                        DirectCast(dRow(0), DataRow).Item(2) = If(String.IsNullOrEmpty(sContainer.Poster), False, True)
+                        DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(sContainer.Fanart), False, True)
+                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)
+                        DirectCast(dRow(0), DataRow).Item(5) = False
+                    End If
+                End If
 
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
 

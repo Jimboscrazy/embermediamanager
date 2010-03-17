@@ -642,7 +642,6 @@ Public Class Scanner
                 tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.Source = mContainer.Source
                 tmpMovieDB.FileSource = APIXML.GetFileSource(mContainer.Filename)
-                tmpMovieDB.IsNew = True
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MarkNew
                 'Do the Save
@@ -1143,7 +1142,6 @@ Public Class Scanner
                     tmpTVDB.ShowNfoPath = TVContainer.Nfo
                     tmpTVDB.ShowPosterPath = TVContainer.Poster
                     tmpTVDB.ShowFanartPath = TVContainer.Fanart
-                    tmpTVDB.IsNewShow = True
                     tmpTVDB.IsLockShow = False
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
@@ -1162,10 +1160,8 @@ Public Class Scanner
                             tmpTVDB.EpNfoPath = Episode.Nfo
                             tmpTVDB.EpPosterPath = Episode.Poster
                             tmpTVDB.Source = Episode.Source
-                            tmpTVDB.IsNewEp = True
                             tmpTVDB.IsLockEp = False
                             tmpTVDB.IsMarkEp = False
-                            tmpTVDB.IsNewSeason = True
                             tmpTVDB.IsLockSeason = False
                             tmpTVDB.IsMarkSeason = False
 
