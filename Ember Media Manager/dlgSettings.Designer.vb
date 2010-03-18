@@ -185,6 +185,7 @@ Partial Class dlgSettings
         Me.pnlMovies = New System.Windows.Forms.Panel
         Me.gbGenreFilter = New System.Windows.Forms.GroupBox
         Me.gbFilters = New System.Windows.Forms.GroupBox
+        Me.btnResetMovieFilters = New System.Windows.Forms.Button
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.chkProperCase = New System.Windows.Forms.CheckBox
@@ -214,6 +215,7 @@ Partial Class dlgSettings
         Me.txtNoStack = New System.Windows.Forms.TextBox
         Me.lstNoStack = New System.Windows.Forms.ListBox
         Me.GroupBox18 = New System.Windows.Forms.GroupBox
+        Me.btnResetValidExts = New System.Windows.Forms.Button
         Me.btnRemMovieExt = New System.Windows.Forms.Button
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
@@ -339,6 +341,7 @@ Partial Class dlgSettings
         Me.lblRatingRegion = New System.Windows.Forms.Label
         Me.cbRatingRegion = New System.Windows.Forms.ComboBox
         Me.gbEpFilter = New System.Windows.Forms.GroupBox
+        Me.btnResetEpFilter = New System.Windows.Forms.Button
         Me.chkNoFilterEpisode = New System.Windows.Forms.CheckBox
         Me.btnEpFilterDown = New System.Windows.Forms.Button
         Me.btnEpFilterUp = New System.Windows.Forms.Button
@@ -348,6 +351,7 @@ Partial Class dlgSettings
         Me.txtEpFilter = New System.Windows.Forms.TextBox
         Me.lstEpFilters = New System.Windows.Forms.ListBox
         Me.gbShowFilter = New System.Windows.Forms.GroupBox
+        Me.btnResetShowFilters = New System.Windows.Forms.Button
         Me.btnShowFilterDown = New System.Windows.Forms.Button
         Me.btnShowFilterUp = New System.Windows.Forms.Button
         Me.chkShowProperCase = New System.Windows.Forms.CheckBox
@@ -575,6 +579,7 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
+        Me.btnResetShowRegex = New System.Windows.Forms.Button
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1204,9 +1209,9 @@ Partial Class dlgSettings
         Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox12.Location = New System.Drawing.Point(5, 205)
+        Me.GroupBox12.Location = New System.Drawing.Point(6, 7)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(199, 161)
+        Me.GroupBox12.Size = New System.Drawing.Size(219, 80)
         Me.GroupBox12.TabIndex = 1
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
@@ -1259,9 +1264,9 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
         Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(209, 4)
+        Me.GroupBox2.Location = New System.Drawing.Point(7, 92)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(218, 362)
+        Me.GroupBox2.Size = New System.Drawing.Size(218, 279)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
@@ -2484,15 +2489,16 @@ Partial Class dlgSettings
         '
         Me.gbGenreFilter.Controls.Add(Me.lbGenre)
         Me.gbGenreFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGenreFilter.Location = New System.Drawing.Point(432, 135)
+        Me.gbGenreFilter.Location = New System.Drawing.Point(428, 209)
         Me.gbGenreFilter.Name = "gbGenreFilter"
-        Me.gbGenreFilter.Size = New System.Drawing.Size(176, 151)
+        Me.gbGenreFilter.Size = New System.Drawing.Size(183, 151)
         Me.gbGenreFilter.TabIndex = 7
         Me.gbGenreFilter.TabStop = False
         Me.gbGenreFilter.Text = "Genre Language Filter"
         '
         'gbFilters
         '
+        Me.gbFilters.Controls.Add(Me.btnResetMovieFilters)
         Me.gbFilters.Controls.Add(Me.btnDown)
         Me.gbFilters.Controls.Add(Me.btnUp)
         Me.gbFilters.Controls.Add(Me.chkProperCase)
@@ -2501,17 +2507,26 @@ Partial Class dlgSettings
         Me.gbFilters.Controls.Add(Me.txtFilter)
         Me.gbFilters.Controls.Add(Me.lstFilters)
         Me.gbFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbFilters.Location = New System.Drawing.Point(5, 4)
+        Me.gbFilters.Location = New System.Drawing.Point(229, 7)
         Me.gbFilters.Name = "gbFilters"
-        Me.gbFilters.Size = New System.Drawing.Size(199, 198)
+        Me.gbFilters.Size = New System.Drawing.Size(382, 200)
         Me.gbFilters.TabIndex = 6
         Me.gbFilters.TabStop = False
         Me.gbFilters.Text = "Folder/File Name Filters"
         '
+        'btnResetMovieFilters
+        '
+        Me.btnResetMovieFilters.Image = CType(resources.GetObject("btnResetMovieFilters.Image"), System.Drawing.Image)
+        Me.btnResetMovieFilters.Location = New System.Drawing.Point(355, 11)
+        Me.btnResetMovieFilters.Name = "btnResetMovieFilters"
+        Me.btnResetMovieFilters.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetMovieFilters.TabIndex = 8
+        Me.btnResetMovieFilters.UseVisualStyleBackColor = True
+        '
         'btnDown
         '
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(129, 169)
+        Me.btnDown.Location = New System.Drawing.Point(313, 172)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 5
@@ -2520,7 +2535,7 @@ Partial Class dlgSettings
         'btnUp
         '
         Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(105, 169)
+        Me.btnUp.Location = New System.Drawing.Point(289, 172)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 4
@@ -2540,7 +2555,7 @@ Partial Class dlgSettings
         'btnRemoveFilter
         '
         Me.btnRemoveFilter.Image = CType(resources.GetObject("btnRemoveFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveFilter.Location = New System.Drawing.Point(170, 169)
+        Me.btnRemoveFilter.Location = New System.Drawing.Point(354, 172)
         Me.btnRemoveFilter.Name = "btnRemoveFilter"
         Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveFilter.TabIndex = 6
@@ -2549,7 +2564,7 @@ Partial Class dlgSettings
         'btnAddFilter
         '
         Me.btnAddFilter.Image = CType(resources.GetObject("btnAddFilter.Image"), System.Drawing.Image)
-        Me.btnAddFilter.Location = New System.Drawing.Point(68, 169)
+        Me.btnAddFilter.Location = New System.Drawing.Point(247, 172)
         Me.btnAddFilter.Name = "btnAddFilter"
         Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddFilter.TabIndex = 3
@@ -2558,19 +2573,19 @@ Partial Class dlgSettings
         'txtFilter
         '
         Me.txtFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilter.Location = New System.Drawing.Point(6, 170)
+        Me.txtFilter.Location = New System.Drawing.Point(6, 173)
         Me.txtFilter.Name = "txtFilter"
-        Me.txtFilter.Size = New System.Drawing.Size(61, 22)
+        Me.txtFilter.Size = New System.Drawing.Size(239, 22)
         Me.txtFilter.TabIndex = 2
         '
         'lstFilters
         '
         Me.lstFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstFilters.FormattingEnabled = True
-        Me.lstFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstFilters.Location = New System.Drawing.Point(6, 36)
         Me.lstFilters.Name = "lstFilters"
         Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFilters.Size = New System.Drawing.Size(187, 134)
+        Me.lstFilters.Size = New System.Drawing.Size(371, 134)
         Me.lstFilters.TabIndex = 1
         '
         'GroupBox27
@@ -2582,75 +2597,69 @@ Partial Class dlgSettings
         Me.GroupBox27.Controls.Add(Me.chkMissingFanart)
         Me.GroupBox27.Controls.Add(Me.chkMissingPoster)
         Me.GroupBox27.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox27.Location = New System.Drawing.Point(432, 4)
+        Me.GroupBox27.Location = New System.Drawing.Point(229, 209)
         Me.GroupBox27.Name = "GroupBox27"
-        Me.GroupBox27.Size = New System.Drawing.Size(176, 123)
+        Me.GroupBox27.Size = New System.Drawing.Size(185, 123)
         Me.GroupBox27.TabIndex = 5
         Me.GroupBox27.TabStop = False
         Me.GroupBox27.Text = "Missing Items Filter"
         '
         'chkMissingExtra
         '
-        Me.chkMissingExtra.AutoSize = True
         Me.chkMissingExtra.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingExtra.Location = New System.Drawing.Point(8, 98)
         Me.chkMissingExtra.Name = "chkMissingExtra"
-        Me.chkMissingExtra.Size = New System.Drawing.Size(142, 17)
+        Me.chkMissingExtra.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingExtra.TabIndex = 11
         Me.chkMissingExtra.Text = "Check for Extrathumbs"
         Me.chkMissingExtra.UseVisualStyleBackColor = True
         '
         'chkMissingSubs
         '
-        Me.chkMissingSubs.AutoSize = True
         Me.chkMissingSubs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingSubs.Location = New System.Drawing.Point(8, 82)
         Me.chkMissingSubs.Name = "chkMissingSubs"
-        Me.chkMissingSubs.Size = New System.Drawing.Size(103, 17)
+        Me.chkMissingSubs.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingSubs.TabIndex = 10
         Me.chkMissingSubs.Text = "Check for Subs"
         Me.chkMissingSubs.UseVisualStyleBackColor = True
         '
         'chkMissingTrailer
         '
-        Me.chkMissingTrailer.AutoSize = True
         Me.chkMissingTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingTrailer.Location = New System.Drawing.Point(8, 66)
         Me.chkMissingTrailer.Name = "chkMissingTrailer"
-        Me.chkMissingTrailer.Size = New System.Drawing.Size(109, 17)
+        Me.chkMissingTrailer.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingTrailer.TabIndex = 9
         Me.chkMissingTrailer.Text = "Check for Trailer"
         Me.chkMissingTrailer.UseVisualStyleBackColor = True
         '
         'chkMissingNFO
         '
-        Me.chkMissingNFO.AutoSize = True
         Me.chkMissingNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingNFO.Location = New System.Drawing.Point(8, 50)
         Me.chkMissingNFO.Name = "chkMissingNFO"
-        Me.chkMissingNFO.Size = New System.Drawing.Size(101, 17)
+        Me.chkMissingNFO.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingNFO.TabIndex = 8
         Me.chkMissingNFO.Text = "Check for NFO"
         Me.chkMissingNFO.UseVisualStyleBackColor = True
         '
         'chkMissingFanart
         '
-        Me.chkMissingFanart.AutoSize = True
         Me.chkMissingFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingFanart.Location = New System.Drawing.Point(8, 34)
         Me.chkMissingFanart.Name = "chkMissingFanart"
-        Me.chkMissingFanart.Size = New System.Drawing.Size(111, 17)
+        Me.chkMissingFanart.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingFanart.TabIndex = 7
         Me.chkMissingFanart.Text = "Check for Fanart"
         Me.chkMissingFanart.UseVisualStyleBackColor = True
         '
         'chkMissingPoster
         '
-        Me.chkMissingPoster.AutoSize = True
         Me.chkMissingPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMissingPoster.Location = New System.Drawing.Point(8, 18)
         Me.chkMissingPoster.Name = "chkMissingPoster"
-        Me.chkMissingPoster.Size = New System.Drawing.Size(110, 17)
+        Me.chkMissingPoster.Size = New System.Drawing.Size(174, 17)
         Me.chkMissingPoster.TabIndex = 6
         Me.chkMissingPoster.Text = "Check for Poster"
         Me.chkMissingPoster.UseVisualStyleBackColor = True
@@ -2800,6 +2809,7 @@ Partial Class dlgSettings
         '
         'GroupBox18
         '
+        Me.GroupBox18.Controls.Add(Me.btnResetValidExts)
         Me.GroupBox18.Controls.Add(Me.btnRemMovieExt)
         Me.GroupBox18.Controls.Add(Me.btnAddMovieExt)
         Me.GroupBox18.Controls.Add(Me.txtMovieExt)
@@ -2812,10 +2822,19 @@ Partial Class dlgSettings
         Me.GroupBox18.TabStop = False
         Me.GroupBox18.Text = "Valid Video Extensions"
         '
+        'btnResetValidExts
+        '
+        Me.btnResetValidExts.Image = CType(resources.GetObject("btnResetValidExts.Image"), System.Drawing.Image)
+        Me.btnResetValidExts.Location = New System.Drawing.Point(164, 12)
+        Me.btnResetValidExts.Name = "btnResetValidExts"
+        Me.btnResetValidExts.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetValidExts.TabIndex = 9
+        Me.btnResetValidExts.UseVisualStyleBackColor = True
+        '
         'btnRemMovieExt
         '
         Me.btnRemMovieExt.Image = CType(resources.GetObject("btnRemMovieExt.Image"), System.Drawing.Image)
-        Me.btnRemMovieExt.Location = New System.Drawing.Point(163, 353)
+        Me.btnRemMovieExt.Location = New System.Drawing.Point(163, 356)
         Me.btnRemMovieExt.Name = "btnRemMovieExt"
         Me.btnRemMovieExt.Size = New System.Drawing.Size(23, 23)
         Me.btnRemMovieExt.TabIndex = 3
@@ -2824,7 +2843,7 @@ Partial Class dlgSettings
         'btnAddMovieExt
         '
         Me.btnAddMovieExt.Image = CType(resources.GetObject("btnAddMovieExt.Image"), System.Drawing.Image)
-        Me.btnAddMovieExt.Location = New System.Drawing.Point(68, 353)
+        Me.btnAddMovieExt.Location = New System.Drawing.Point(68, 356)
         Me.btnAddMovieExt.Name = "btnAddMovieExt"
         Me.btnAddMovieExt.Size = New System.Drawing.Size(23, 23)
         Me.btnAddMovieExt.TabIndex = 2
@@ -2833,7 +2852,7 @@ Partial Class dlgSettings
         'txtMovieExt
         '
         Me.txtMovieExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieExt.Location = New System.Drawing.Point(6, 354)
+        Me.txtMovieExt.Location = New System.Drawing.Point(6, 357)
         Me.txtMovieExt.Name = "txtMovieExt"
         Me.txtMovieExt.Size = New System.Drawing.Size(61, 22)
         Me.txtMovieExt.TabIndex = 1
@@ -2842,10 +2861,10 @@ Partial Class dlgSettings
         '
         Me.lstMovieExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstMovieExts.FormattingEnabled = True
-        Me.lstMovieExts.Location = New System.Drawing.Point(6, 16)
+        Me.lstMovieExts.Location = New System.Drawing.Point(6, 37)
         Me.lstMovieExts.Name = "lstMovieExts"
         Me.lstMovieExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstMovieExts.Size = New System.Drawing.Size(180, 329)
+        Me.lstMovieExts.Size = New System.Drawing.Size(180, 316)
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 0
         '
@@ -3792,6 +3811,7 @@ Partial Class dlgSettings
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.btnResetShowRegex)
         Me.TabPage4.Controls.Add(Me.gbShowRegex)
         Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
         Me.TabPage4.Controls.Add(Me.btnRemoveShowRegex)
@@ -3816,9 +3836,9 @@ Partial Class dlgSettings
         Me.gbShowRegex.Controls.Add(Me.lblEpisodeMatch)
         Me.gbShowRegex.Controls.Add(Me.cboEpRetrieve)
         Me.gbShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbShowRegex.Location = New System.Drawing.Point(6, 169)
+        Me.gbShowRegex.Location = New System.Drawing.Point(6, 196)
         Me.gbShowRegex.Name = "gbShowRegex"
-        Me.gbShowRegex.Size = New System.Drawing.Size(592, 194)
+        Me.gbShowRegex.Size = New System.Drawing.Size(592, 148)
         Me.gbShowRegex.TabIndex = 15
         Me.gbShowRegex.TabStop = False
         Me.gbShowRegex.Text = "Show Match Regex"
@@ -3920,7 +3940,7 @@ Partial Class dlgSettings
         Me.btnEditShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnEditShowRegex.Image = CType(resources.GetObject("btnEditShowRegex.Image"), System.Drawing.Image)
         Me.btnEditShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditShowRegex.Location = New System.Drawing.Point(1, 140)
+        Me.btnEditShowRegex.Location = New System.Drawing.Point(1, 167)
         Me.btnEditShowRegex.Name = "btnEditShowRegex"
         Me.btnEditShowRegex.Size = New System.Drawing.Size(104, 23)
         Me.btnEditShowRegex.TabIndex = 5
@@ -3933,7 +3953,7 @@ Partial Class dlgSettings
         Me.btnRemoveShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveShowRegex.Image = CType(resources.GetObject("btnRemoveShowRegex.Image"), System.Drawing.Image)
         Me.btnRemoveShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveShowRegex.Location = New System.Drawing.Point(494, 140)
+        Me.btnRemoveShowRegex.Location = New System.Drawing.Point(494, 167)
         Me.btnRemoveShowRegex.Name = "btnRemoveShowRegex"
         Me.btnRemoveShowRegex.Size = New System.Drawing.Size(104, 23)
         Me.btnRemoveShowRegex.TabIndex = 6
@@ -3947,7 +3967,7 @@ Partial Class dlgSettings
         Me.lvShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvShowRegex.FullRowSelect = True
         Me.lvShowRegex.HideSelection = False
-        Me.lvShowRegex.Location = New System.Drawing.Point(0, 1)
+        Me.lvShowRegex.Location = New System.Drawing.Point(0, 28)
         Me.lvShowRegex.Name = "lvShowRegex"
         Me.lvShowRegex.Size = New System.Drawing.Size(598, 135)
         Me.lvShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
@@ -4004,9 +4024,9 @@ Partial Class dlgSettings
         Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
         Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
         Me.gbTVListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVListOptions.Location = New System.Drawing.Point(192, 6)
+        Me.gbTVListOptions.Location = New System.Drawing.Point(6, 150)
         Me.gbTVListOptions.Name = "gbTVListOptions"
-        Me.gbTVListOptions.Size = New System.Drawing.Size(218, 385)
+        Me.gbTVListOptions.Size = New System.Drawing.Size(218, 245)
         Me.gbTVListOptions.TabIndex = 5
         Me.gbTVListOptions.TabStop = False
         Me.gbTVListOptions.Text = "Media List Options"
@@ -4158,40 +4178,37 @@ Partial Class dlgSettings
         Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVMisc.Location = New System.Drawing.Point(6, 6)
         Me.gbTVMisc.Name = "gbTVMisc"
-        Me.gbTVMisc.Size = New System.Drawing.Size(180, 385)
+        Me.gbTVMisc.Size = New System.Drawing.Size(218, 142)
         Me.gbTVMisc.TabIndex = 2
         Me.gbTVMisc.TabStop = False
         Me.gbTVMisc.Text = "Miscellaneous"
         '
         'chkMarkNewShows
         '
-        Me.chkMarkNewShows.AutoSize = True
         Me.chkMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMarkNewShows.Location = New System.Drawing.Point(8, 90)
         Me.chkMarkNewShows.Name = "chkMarkNewShows"
-        Me.chkMarkNewShows.Size = New System.Drawing.Size(115, 17)
+        Me.chkMarkNewShows.Size = New System.Drawing.Size(204, 17)
         Me.chkMarkNewShows.TabIndex = 6
         Me.chkMarkNewShows.Text = "Mark New Shows"
         Me.chkMarkNewShows.UseVisualStyleBackColor = True
         '
         'chkMarkNewEpisodes
         '
-        Me.chkMarkNewEpisodes.AutoSize = True
         Me.chkMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
         Me.chkMarkNewEpisodes.Name = "chkMarkNewEpisodes"
-        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(127, 17)
+        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
         Me.chkMarkNewEpisodes.TabIndex = 5
         Me.chkMarkNewEpisodes.Text = "Mark New Episodes"
         Me.chkMarkNewEpisodes.UseVisualStyleBackColor = True
         '
         'chkDisplayAllSeason
         '
-        Me.chkDisplayAllSeason.AutoSize = True
         Me.chkDisplayAllSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkDisplayAllSeason.Location = New System.Drawing.Point(8, 67)
         Me.chkDisplayAllSeason.Name = "chkDisplayAllSeason"
-        Me.chkDisplayAllSeason.Size = New System.Drawing.Size(154, 17)
+        Me.chkDisplayAllSeason.Size = New System.Drawing.Size(204, 17)
         Me.chkDisplayAllSeason.TabIndex = 4
         Me.chkDisplayAllSeason.Text = "Display All Season Poster"
         Me.chkDisplayAllSeason.UseVisualStyleBackColor = True
@@ -4218,6 +4235,7 @@ Partial Class dlgSettings
         '
         'gbEpFilter
         '
+        Me.gbEpFilter.Controls.Add(Me.btnResetEpFilter)
         Me.gbEpFilter.Controls.Add(Me.chkNoFilterEpisode)
         Me.gbEpFilter.Controls.Add(Me.btnEpFilterDown)
         Me.gbEpFilter.Controls.Add(Me.btnEpFilterUp)
@@ -4227,12 +4245,21 @@ Partial Class dlgSettings
         Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
         Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
         Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpFilter.Location = New System.Drawing.Point(416, 184)
+        Me.gbEpFilter.Location = New System.Drawing.Point(229, 185)
         Me.gbEpFilter.Name = "gbEpFilter"
-        Me.gbEpFilter.Size = New System.Drawing.Size(193, 207)
+        Me.gbEpFilter.Size = New System.Drawing.Size(382, 205)
         Me.gbEpFilter.TabIndex = 1
         Me.gbEpFilter.TabStop = False
         Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
+        '
+        'btnResetEpFilter
+        '
+        Me.btnResetEpFilter.Image = CType(resources.GetObject("btnResetEpFilter.Image"), System.Drawing.Image)
+        Me.btnResetEpFilter.Location = New System.Drawing.Point(354, 38)
+        Me.btnResetEpFilter.Name = "btnResetEpFilter"
+        Me.btnResetEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetEpFilter.TabIndex = 8
+        Me.btnResetEpFilter.UseVisualStyleBackColor = True
         '
         'chkNoFilterEpisode
         '
@@ -4240,15 +4267,16 @@ Partial Class dlgSettings
         Me.chkNoFilterEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkNoFilterEpisode.Location = New System.Drawing.Point(6, 15)
         Me.chkNoFilterEpisode.Name = "chkNoFilterEpisode"
-        Me.chkNoFilterEpisode.Size = New System.Drawing.Size(180, 30)
+        Me.chkNoFilterEpisode.Size = New System.Drawing.Size(371, 21)
         Me.chkNoFilterEpisode.TabIndex = 7
         Me.chkNoFilterEpisode.Text = "Build Episode Title Instead of Filtering"
+        Me.chkNoFilterEpisode.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkNoFilterEpisode.UseVisualStyleBackColor = True
         '
         'btnEpFilterDown
         '
         Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
-        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 176)
+        Me.btnEpFilterDown.Location = New System.Drawing.Point(320, 176)
         Me.btnEpFilterDown.Name = "btnEpFilterDown"
         Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterDown.TabIndex = 5
@@ -4257,7 +4285,7 @@ Partial Class dlgSettings
         'btnEpFilterUp
         '
         Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
-        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 176)
+        Me.btnEpFilterUp.Location = New System.Drawing.Point(296, 176)
         Me.btnEpFilterUp.Name = "btnEpFilterUp"
         Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterUp.TabIndex = 4
@@ -4277,7 +4305,7 @@ Partial Class dlgSettings
         'btnRemoveEpFilter
         '
         Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 176)
+        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(354, 176)
         Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
         Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveEpFilter.TabIndex = 6
@@ -4286,7 +4314,7 @@ Partial Class dlgSettings
         'btnAddEpFilter
         '
         Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
-        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 176)
+        Me.btnAddEpFilter.Location = New System.Drawing.Point(260, 176)
         Me.btnAddEpFilter.Name = "btnAddEpFilter"
         Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddEpFilter.TabIndex = 3
@@ -4297,7 +4325,7 @@ Partial Class dlgSettings
         Me.txtEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtEpFilter.Location = New System.Drawing.Point(6, 177)
         Me.txtEpFilter.Name = "txtEpFilter"
-        Me.txtEpFilter.Size = New System.Drawing.Size(61, 22)
+        Me.txtEpFilter.Size = New System.Drawing.Size(252, 22)
         Me.txtEpFilter.TabIndex = 2
         '
         'lstEpFilters
@@ -4307,11 +4335,12 @@ Partial Class dlgSettings
         Me.lstEpFilters.Location = New System.Drawing.Point(6, 64)
         Me.lstEpFilters.Name = "lstEpFilters"
         Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstEpFilters.Size = New System.Drawing.Size(180, 108)
+        Me.lstEpFilters.Size = New System.Drawing.Size(371, 108)
         Me.lstEpFilters.TabIndex = 1
         '
         'gbShowFilter
         '
+        Me.gbShowFilter.Controls.Add(Me.btnResetShowFilters)
         Me.gbShowFilter.Controls.Add(Me.btnShowFilterDown)
         Me.gbShowFilter.Controls.Add(Me.btnShowFilterUp)
         Me.gbShowFilter.Controls.Add(Me.chkShowProperCase)
@@ -4320,17 +4349,26 @@ Partial Class dlgSettings
         Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
         Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
         Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbShowFilter.Location = New System.Drawing.Point(416, 6)
+        Me.gbShowFilter.Location = New System.Drawing.Point(229, 7)
         Me.gbShowFilter.Name = "gbShowFilter"
-        Me.gbShowFilter.Size = New System.Drawing.Size(193, 172)
+        Me.gbShowFilter.Size = New System.Drawing.Size(382, 175)
         Me.gbShowFilter.TabIndex = 0
         Me.gbShowFilter.TabStop = False
         Me.gbShowFilter.Text = "Show Folder/File Name Filters"
         '
+        'btnResetShowFilters
+        '
+        Me.btnResetShowFilters.Image = CType(resources.GetObject("btnResetShowFilters.Image"), System.Drawing.Image)
+        Me.btnResetShowFilters.Location = New System.Drawing.Point(354, 9)
+        Me.btnResetShowFilters.Name = "btnResetShowFilters"
+        Me.btnResetShowFilters.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetShowFilters.TabIndex = 7
+        Me.btnResetShowFilters.UseVisualStyleBackColor = True
+        '
         'btnShowFilterDown
         '
         Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
-        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 142)
+        Me.btnShowFilterDown.Location = New System.Drawing.Point(320, 146)
         Me.btnShowFilterDown.Name = "btnShowFilterDown"
         Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterDown.TabIndex = 5
@@ -4339,7 +4377,7 @@ Partial Class dlgSettings
         'btnShowFilterUp
         '
         Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
-        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 142)
+        Me.btnShowFilterUp.Location = New System.Drawing.Point(296, 146)
         Me.btnShowFilterUp.Name = "btnShowFilterUp"
         Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterUp.TabIndex = 4
@@ -4349,7 +4387,7 @@ Partial Class dlgSettings
         '
         Me.chkShowProperCase.AutoSize = True
         Me.chkShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 14)
+        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 18)
         Me.chkShowProperCase.Name = "chkShowProperCase"
         Me.chkShowProperCase.Size = New System.Drawing.Size(181, 17)
         Me.chkShowProperCase.TabIndex = 0
@@ -4359,7 +4397,7 @@ Partial Class dlgSettings
         'btnRemoveShowFilter
         '
         Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 142)
+        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(354, 146)
         Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
         Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveShowFilter.TabIndex = 6
@@ -4368,7 +4406,7 @@ Partial Class dlgSettings
         'btnAddShowFilter
         '
         Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
-        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 142)
+        Me.btnAddShowFilter.Location = New System.Drawing.Point(260, 146)
         Me.btnAddShowFilter.Name = "btnAddShowFilter"
         Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddShowFilter.TabIndex = 3
@@ -4377,19 +4415,19 @@ Partial Class dlgSettings
         'txtShowFilter
         '
         Me.txtShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtShowFilter.Location = New System.Drawing.Point(6, 143)
+        Me.txtShowFilter.Location = New System.Drawing.Point(6, 147)
         Me.txtShowFilter.Name = "txtShowFilter"
-        Me.txtShowFilter.Size = New System.Drawing.Size(61, 22)
+        Me.txtShowFilter.Size = New System.Drawing.Size(252, 22)
         Me.txtShowFilter.TabIndex = 2
         '
         'lstShowFilters
         '
         Me.lstShowFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lstShowFilters.FormattingEnabled = True
-        Me.lstShowFilters.Location = New System.Drawing.Point(6, 31)
+        Me.lstShowFilters.Location = New System.Drawing.Point(6, 35)
         Me.lstShowFilters.Name = "lstShowFilters"
         Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
+        Me.lstShowFilters.Size = New System.Drawing.Size(371, 108)
         Me.lstShowFilters.TabIndex = 1
         '
         'pnlTVImages
@@ -6875,6 +6913,15 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
+        'btnResetShowRegex
+        '
+        Me.btnResetShowRegex.Image = CType(resources.GetObject("btnResetShowRegex.Image"), System.Drawing.Image)
+        Me.btnResetShowRegex.Location = New System.Drawing.Point(576, 3)
+        Me.btnResetShowRegex.Name = "btnResetShowRegex"
+        Me.btnResetShowRegex.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetShowRegex.TabIndex = 16
+        Me.btnResetShowRegex.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -6891,18 +6938,18 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlMain)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -6961,7 +7008,6 @@ Partial Class dlgSettings
         Me.gbFilters.ResumeLayout(False)
         Me.gbFilters.PerformLayout()
         Me.GroupBox27.ResumeLayout(False)
-        Me.GroupBox27.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
         Me.Panel1.ResumeLayout(False)
@@ -7631,4 +7677,9 @@ Partial Class dlgSettings
     Friend WithEvents chkOverwriteAllSPoster As System.Windows.Forms.CheckBox
     Friend WithEvents cbOrdering As System.Windows.Forms.ComboBox
     Friend WithEvents lblOrdering As System.Windows.Forms.Label
+    Friend WithEvents btnResetShowFilters As System.Windows.Forms.Button
+    Friend WithEvents btnResetEpFilter As System.Windows.Forms.Button
+    Friend WithEvents btnResetMovieFilters As System.Windows.Forms.Button
+    Friend WithEvents btnResetValidExts As System.Windows.Forms.Button
+    Friend WithEvents btnResetShowRegex As System.Windows.Forms.Button
 End Class

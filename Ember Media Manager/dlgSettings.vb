@@ -601,6 +601,43 @@ Public Class dlgSettings
         Me.Close()
     End Sub
 
+    Private Sub btnResetShowFilters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetShowFilters.Click
+        If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
+            Me.RefreshShowFilters()
+        End If
+    End Sub
+
+    Private Sub btnResetEpFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetEpFilter.Click
+        If MsgBox(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
+            Me.RefreshEpFilters()
+        End If
+    End Sub
+
+    Private Sub btnResetMovieFilters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetMovieFilters.Click
+        If MsgBox(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
+            Me.RefreshMovieFilters()
+        End If
+    End Sub
+
+    Private Sub btnResetValidExts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetValidExts.Click
+        If MsgBox(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
+            Me.RefreshValidExts()
+        End If
+    End Sub
+
+    Private Sub btnResetShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetShowRegex.Click
+        If MsgBox(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowRegex, True)
+            Me.ShowRegex.Clear()
+            Me.ShowRegex.AddRange(Master.eSettings.TVShowRegexes)
+            Me.LoadShowRegex()
+        End If
+    End Sub
+
     Private Sub btnRemMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemMovieExt.Click
         Me.RemoveMovieExt()
     End Sub
@@ -1947,11 +1984,8 @@ Public Class dlgSettings
 
     Private Sub FillSettings()
         Try
-            Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
-            Me.lstShowFilters.Items.AddRange(Master.eSettings.ShowFilterCustom.ToArray)
             Me.chkShowProperCase.Checked = Master.eSettings.ShowProperCase
-            Me.lstEpFilters.Items.AddRange(Master.eSettings.EpFilterCustom.ToArray)
             Me.chkEpProperCase.Checked = Master.eSettings.EpProperCase
             Me.chkCleanFolderJPG.Checked = Master.eSettings.CleanFolderJPG
             Me.chkCleanMovieTBN.Checked = Master.eSettings.CleanMovieTBN
@@ -1966,14 +2000,12 @@ Public Class dlgSettings
             Me.chkCleanMovieNameJPG.Checked = Master.eSettings.CleanMovieNameJPG
             Me.chkCleanDotFanartJPG.Checked = Master.eSettings.CleanDotFanartJPG
             Me.chkCleanExtrathumbs.Checked = Master.eSettings.CleanExtraThumbs
-            tcCleaner.SelectedTab = If(Master.eSettings.ExpertCleaner, tpExpert, tpStandard)
+            Me.tcCleaner.SelectedTab = If(Master.eSettings.ExpertCleaner, Me.tpExpert, Me.tpStandard)
             Me.chkWhitelistVideo.Checked = Master.eSettings.CleanWhitelistVideo
             Me.lstWhitelist.Items.AddRange(Master.eSettings.CleanWhitelistExts.ToArray)
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
             Me.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
-
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
-            Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
             Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
             Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
@@ -2319,6 +2351,10 @@ Public Class dlgSettings
 
             Me.RefreshSources()
             Me.RefreshTVSources()
+            Me.RefreshShowFilters()
+            Me.RefreshEpFilters()
+            Me.RefreshMovieFilters()
+            Me.RefreshValidExts()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2708,10 +2744,25 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub RefreshEpFilters()
+        Me.lstEpFilters.Items.Clear()
+        Me.lstEpFilters.Items.AddRange(Master.eSettings.EpFilterCustom.ToArray)
+    End Sub
+
     Private Sub RefreshHelpStrings(ByVal Language As String)
         For Each sKey As String In dHelp.Keys
             dHelp.Item(sKey) = Master.eLang.GetHelpString(sKey)
         Next
+    End Sub
+
+    Private Sub RefreshMovieFilters()
+        Me.lstFilters.Items.Clear()
+        Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
+    End Sub
+
+    Private Sub RefreshShowFilters()
+        Me.lstShowFilters.Items.Clear()
+        Me.lstShowFilters.Items.AddRange(Master.eSettings.ShowFilterCustom.ToArray)
     End Sub
 
     Private Sub RefreshSources()
@@ -2748,6 +2799,11 @@ Public Class dlgSettings
                 End While
             End Using
         End Using
+    End Sub
+
+    Private Sub RefreshValidExts()
+        Me.lstMovieExts.Items.Clear()
+        Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
     End Sub
 
     Private Sub RemoveCurrPanel()
@@ -4248,5 +4304,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
+
 End Class

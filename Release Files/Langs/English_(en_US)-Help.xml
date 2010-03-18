@@ -350,4 +350,9 @@
 	<string control="Core_chkOnlyValueForCert">If enabled, Ember will only save the value of the certification to the MPAA field. (Example: "Germany:18" will save as "18")</string>
 	<string control="Core_rbBanner">If enabled, Ember will attempt to download a banner (wide) image of the selected type as the default show poster.</string>
 	<string control="Core_rbPoster">If enabled, Ember will attempt to download a poster image of the selected type as the default show poster.</string>
+	<string control="Core_btnResetShowFilters">This will reset the show filters to the default list. WARNING: This WILL delete any custom filters you have entered.</string>
+	<string control="Core_btnResetEpFilter">This will reset the episode filters to the default list. WARNING: This WILL delete any custom filters you have entered.</string>
+	<string control="Core_btnResetMovieFilters">This will reset the movie filters to the default list. WARNING: This WILL delete any custom filters you have entered.</string>
+	<string control="Core_btnResetValidExts">This will reset the valid extensions to the default list. WARNING: This WILL delete any custom extensions you have entered.</string>
+	<string control="Core_ResetShowRegex">This will reset the show regex to the default list. WARNING: This WILL delete any custom regex you have entered.</string>
 </strings>
