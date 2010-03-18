@@ -40,6 +40,11 @@ Public Class HTTP
         Me.Clear()
     End Sub
 
+    Protected Overrides Sub Finalize()
+        Me.wrRequest = Nothing
+        MyBase.Finalize()
+    End Sub
+
     #End Region 'Constructors
 
     #Region "Events"
@@ -71,7 +76,7 @@ Public Class HTTP
 
     Public Sub Cancel()
         Me._cancel = True
-        Me.wrRequest.Abort()
+        If Not IsNothing(Me.wrRequest) Then Me.wrRequest.Abort()
     End Sub
 
     Public Sub Clear()
@@ -88,9 +93,9 @@ Public Class HTTP
 
         Try
 
-            Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            wrRequest.Timeout = 20000
-            wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -100,10 +105,10 @@ Public Class HTTP
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
-                wrRequest.Proxy = wProxy
+                Me.wrRequest.Proxy = wProxy
             End If
 
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
                     'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
                     Case wrResponse.ContentType.ToLower.Contains("application/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
@@ -122,7 +127,6 @@ Public Class HTTP
                 End Using
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
-            wrRequest = Nothing
         Catch ex As Exception
         End Try
 
@@ -132,9 +136,11 @@ Public Class HTTP
     Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
         Dim outFile As String = String.Empty
 
+        Me._cancel = False
+
         Try
-            Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            wrRequest.Timeout = 20000
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = 20000
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -144,12 +150,13 @@ Public Class HTTP
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
-                wrRequest.Proxy = wProxy
+                Me.wrRequest.Proxy = wProxy
             End If
 
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
+                    Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(URL))
+                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
                     Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
                     Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("flv") OrElse (URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain"))) 'matttrailer reports "text/plain" for flv files
@@ -192,14 +199,13 @@ Public Class HTTP
                                         RaiseEvent ProgressUpdated(iProgress)
                                     End If
                                 End If
-                            Loop While BlockSize > 0
+                            Loop While BlockSize > 0 AndAlso Not Me._cancel
                             StreamBuffer = Nothing
                         End Using
                     End Using
                 End If
 
             End Using
-            wrRequest = Nothing
         Catch
         End Try
 
@@ -209,8 +215,8 @@ Public Class HTTP
     Public Sub DownloadImage()
         Try
             If StringUtils.isValidURL(Me._URL) Then
-                wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
-                wrRequest.Timeout = 20000
+                Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
+                Me.wrRequest.Timeout = 20000
 
                 If Me._cancel Then Return
 
@@ -223,12 +229,12 @@ Public Class HTTP
                     Else
                         wProxy.Credentials = CredentialCache.DefaultCredentials
                     End If
-                    wrRequest.Proxy = wProxy
+                    Me.wrRequest.Proxy = wProxy
                 End If
 
                 If Me._cancel Then Return
 
-                Using wrResponse As WebResponse = wrRequest.GetResponse()
+                Using wrResponse As WebResponse = Me.wrRequest.GetResponse()
                     If Me._cancel Then Return
                     Dim temp As String = wrResponse.ContentType.ToString
                     If wrResponse.ContentType.ToLower.Contains("image") Then
@@ -237,17 +243,16 @@ Public Class HTTP
                     End If
                 End Using
 
-                wrRequest = Nothing
             End If
         Catch
         End Try
     End Sub
 
     Public Function DownloadZip(ByVal URL As String) As Byte()
-        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+        Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
         Try
-            wrRequest.Timeout = 20000
+            Me.wrRequest.Timeout = 20000
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -257,10 +262,10 @@ Public Class HTTP
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
-                wrRequest.Proxy = wProxy
+                Me.wrRequest.Proxy = wProxy
             End If
 
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch
@@ -274,10 +279,9 @@ Public Class HTTP
     End Function
 
     Public Function IsValidURL(ByVal URL As String) As Boolean
-        Dim wrRequest As WebRequest
         Dim wrResponse As WebResponse
         Try
-            wrRequest = HttpWebRequest.Create(URL)
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -287,19 +291,18 @@ Public Class HTTP
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
-                wrRequest.Proxy = wProxy
+                Me.wrRequest.Proxy = wProxy
             End If
 
             Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
-            wrRequest.CachePolicy = noCachePolicy
-            wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
-            wrResponse = wrRequest.GetResponse()
+            Me.wrRequest.CachePolicy = noCachePolicy
+            Me.wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
+            wrResponse = Me.wrRequest.GetResponse()
         Catch ex As Exception
             Return False
         End Try
         wrResponse.Close()
         wrResponse = Nothing
-        wrRequest = Nothing
         Return True
     End Function
 
@@ -333,5 +336,4 @@ Public Class HTTP
     End Sub
 
     #End Region 'Methods
-
 End Class

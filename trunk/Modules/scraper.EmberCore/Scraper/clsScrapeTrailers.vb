@@ -55,6 +55,10 @@ Public Class Trailers
 
     #Region "Methods"
 
+    Public Sub Cancel()
+        Me.WebPage.Cancel()
+    End Sub
+
     Public Sub Clear()
         Me._TrailerList.Clear()
         Me._ImdbID = String.Empty

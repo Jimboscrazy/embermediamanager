@@ -158,6 +158,7 @@ Partial Class dlgTrailer
         'txtManual
         '
         Me.txtManual.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtManual.Location = New System.Drawing.Point(9, 82)
         Me.txtManual.Name = "txtManual"
         Me.txtManual.Size = New System.Drawing.Size(365, 22)
@@ -176,6 +177,7 @@ Partial Class dlgTrailer
         'txtYouTube
         '
         Me.txtYouTube.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtYouTube.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtYouTube.Location = New System.Drawing.Point(9, 28)
         Me.txtYouTube.Name = "txtYouTube"
         Me.txtYouTube.Size = New System.Drawing.Size(392, 22)
