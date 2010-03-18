@@ -87,7 +87,6 @@ Public Class dlgSettings
                                 .Tag = 400}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
-        'TODO: MODULES - Add method to add button from modules - Tag = position
 
         If TSBs.Count > 0 Then
             'calculate the spacer width
@@ -3481,18 +3480,29 @@ Public Class dlgSettings
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
 
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
-                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
-                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                Try
+                    If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
+                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
-                If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
-                If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                Try
+                    If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
+                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
-                s.ProcessorModule.SaveSetup(Not isApply)
+                Try
+                    s.ProcessorModule.SaveSetup(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
             Next
             ModulesManager.Instance.SaveSettings()
-
             Master.eSettings.Save()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
