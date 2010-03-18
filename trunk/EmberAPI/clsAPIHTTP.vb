@@ -157,6 +157,8 @@ Public Class HTTP
                 Select Case True
                     Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(URL))
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
+                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("quicktime")
+                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mov", "[trailer].mov")))
                     Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
                     Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("flv") OrElse (URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain"))) 'matttrailer reports "text/plain" for flv files
