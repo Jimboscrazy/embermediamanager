@@ -139,11 +139,12 @@ Public Class EmberNativeScraperModule
     End Sub
 
     Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        '_PostScraperEnabled = _setup.cbEnabled.Checked
+        PostScraperEnabled = state
         RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
     End Sub
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
 

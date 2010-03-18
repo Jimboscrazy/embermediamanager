@@ -31,8 +31,9 @@ Public Class EmberXMLScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmXMLSettingsHolder
-    Private XMLManager As New ScraperManager
+    Private XMLManager As ScraperManager = Nothing
     Private scraperName As String = String.Empty
+    Friend WithEvents bwPopulate As New System.ComponentModel.BackgroundWorker
     #End Region 'Fields
 
     #Region "Events"
@@ -101,19 +102,7 @@ Public Class EmberXMLScraperModule
 
     #Region "Methods"
     Sub Enabled()
-        If XMLManager Is Nothing Then
-            Dim tPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML"))
-            Dim cPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML", Path.DirectorySeparatorChar, "Cache"))
-            If Not Directory.Exists(tPath) Then
-                Directory.CreateDirectory(tPath)
-            End If
-            If Not Directory.Exists(cPath) Then
-                Directory.CreateDirectory(cPath)
-            End If
-
-            XMLManager = New ScraperManager(tPath, cPath)
-            XMLManager.ReloadScrapers()
-        End If
+        'PrepareScraper()
     End Sub
 
     Sub Disabled()
@@ -135,6 +124,7 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+        PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
@@ -148,10 +138,16 @@ Public Class EmberXMLScraperModule
     End Function
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
+        PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
-        PopulateSettings()
+        If _setup.cbScraper.Items.Count = 0 Then
+            _setup.cbScraper.Items.Add(scraperName)
+            _setup.cbScraper.SelectedIndex = 0
+        Else
+            _setup.cbScraper.SelectedIndex = _setup.cbScraper.Items.IndexOf(scraperName)
+        End If
         Spanel.Name = String.Concat(Me._Name, "Scraper")
         Spanel.Text = _Name
         Spanel.Prefix = "XMLMovieInfo_"
@@ -162,10 +158,12 @@ Public Class EmberXMLScraperModule
         Spanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler _setup.PopulateScrapers, AddressOf PopulateSettings
         Return Spanel
     End Function
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
 
@@ -178,17 +176,21 @@ Public Class EmberXMLScraperModule
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupScraper
         ScraperEnabled = _setup.cbEnabled.Checked
-        scraperName = _setup.cbScraper.SelectedItem.ToString
-        AdvancedSettings.SetSetting("ScraperName", scraperName)
+        If Not _setup.cbScraper.SelectedItem Is Nothing Then
+            scraperName = _setup.cbScraper.SelectedItem.ToString
+            AdvancedSettings.SetSetting("ScraperName", scraperName)
+        End If
         ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.PopulateScrapers, AddressOf PopulateSettings
             _setup.Dispose()
         End If
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
+        PrepareScraper()
         If scraperName = String.Empty Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No XML Scraper Defined {0}."), vbNewLine), Nothing}))
             Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -213,10 +215,38 @@ Public Class EmberXMLScraperModule
     End Function
 
     Sub PopulateSettings()
+        bwPopulate.WorkerReportsProgress = True
+        bwPopulate.RunWorkerAsync()
+    End Sub
+    Private Sub bwPopulate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPopulate.DoWork
+        XMLManager.ReloadScrapers()
+
+    End Sub
+    Private Sub bwPopulate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPopulate.RunWorkerCompleted
         _setup.cbScraper.Items.Clear()
         For Each s As ScraperInfo In XMLManager.AllScrapers
             _setup.cbScraper.Items.Add(s.ScraperName)
         Next
+        If _setup.cbScraper.Items.Count = 0 Then
+            _setup.cbScraper.Items.Add(scraperName)
+            _setup.cbScraper.SelectedIndex = 0
+        Else
+            _setup.cbScraper.SelectedIndex = _setup.cbScraper.Items.IndexOf(scraperName)
+        End If
+        _setup.parentRunning = False
+    End Sub
+    Sub PrepareScraper()
+        If XMLManager Is Nothing Then
+            Dim tPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML"))
+            Dim cPath As String = Path.Combine(Functions.AppPath, String.Concat("Modules", Path.DirectorySeparatorChar, "XBMC-XML", Path.DirectorySeparatorChar, "Cache"))
+            If Not Directory.Exists(tPath) Then
+                Directory.CreateDirectory(tPath)
+            End If
+            If Not Directory.Exists(cPath) Then
+                Directory.CreateDirectory(cPath)
+            End If
+            XMLManager = New ScraperManager(tPath, cPath)
+        End If
     End Sub
 
     #End Region 'Methods

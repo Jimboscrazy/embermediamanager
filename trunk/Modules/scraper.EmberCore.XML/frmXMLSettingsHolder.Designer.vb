@@ -24,19 +24,25 @@ Partial Class frmXMLSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.cbScraper = New System.Windows.Forms.ComboBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
-        Me.cbScraper = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.btnPopulate = New System.Windows.Forms.Button
+        Me.pnlLoading = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.pnlLoading.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.pnlLoading)
+        Me.pnlSettings.Controls.Add(Me.btnPopulate)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.cbScraper)
         Me.pnlSettings.Controls.Add(Me.Panel1)
@@ -44,6 +50,24 @@ Partial Class frmXMLSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(7, 44)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(45, 13)
+        Me.Label1.TabIndex = 84
+        Me.Label1.Text = "Scraper"
+        '
+        'cbScraper
+        '
+        Me.cbScraper.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbScraper.FormattingEnabled = True
+        Me.cbScraper.Location = New System.Drawing.Point(58, 41)
+        Me.cbScraper.Name = "cbScraper"
+        Me.cbScraper.Size = New System.Drawing.Size(183, 21)
+        Me.cbScraper.TabIndex = 83
         '
         'Panel1
         '
@@ -99,22 +123,35 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
-        'cbScraper
+        'btnPopulate
         '
-        Me.cbScraper.FormattingEnabled = True
-        Me.cbScraper.Location = New System.Drawing.Point(58, 41)
-        Me.cbScraper.Name = "cbScraper"
-        Me.cbScraper.Size = New System.Drawing.Size(183, 21)
-        Me.cbScraper.TabIndex = 83
+        Me.btnPopulate.Location = New System.Drawing.Point(86, 68)
+        Me.btnPopulate.Name = "btnPopulate"
+        Me.btnPopulate.Size = New System.Drawing.Size(129, 23)
+        Me.btnPopulate.TabIndex = 85
+        Me.btnPopulate.Text = "Populate Scrapers"
+        Me.btnPopulate.UseVisualStyleBackColor = True
         '
-        'Label1
+        'pnlLoading
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(7, 44)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(45, 13)
-        Me.Label1.TabIndex = 84
-        Me.Label1.Text = "Scraper"
+        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLoading.Controls.Add(Me.Label3)
+        Me.pnlLoading.Location = New System.Drawing.Point(41, 97)
+        Me.pnlLoading.Name = "pnlLoading"
+        Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
+        Me.pnlLoading.TabIndex = 86
+        Me.pnlLoading.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.DarkRed
+        Me.Label3.Location = New System.Drawing.Point(40, 12)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(117, 15)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = "Loading Please Wait"
         '
         'frmXMLSettingsHolder
         '
@@ -135,6 +172,8 @@ Partial Class frmXMLSettingsHolder
         Me.pnlSettings.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.pnlLoading.ResumeLayout(False)
+        Me.pnlLoading.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -146,5 +185,8 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cbScraper As System.Windows.Forms.ComboBox
+    Friend WithEvents btnPopulate As System.Windows.Forms.Button
+    Friend WithEvents pnlLoading As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 
 End Class

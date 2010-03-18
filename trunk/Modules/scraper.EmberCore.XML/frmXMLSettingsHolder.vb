@@ -21,8 +21,33 @@
 Public Class frmXMLSettingsHolder
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
     Public Event ModuleSettingsChanged()
+    Public Event PopulateScrapers()
+    Public parentRunning As Boolean = False
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    End Sub
+
+    Private Sub cbScraper_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbScraper.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
+
+    End Sub
+
+    Private Sub btnPopulate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPopulate.Click
+        parentRunning = True
+        btnPopulate.Enabled = False
+        cbScraper.Enabled = False
+        pnlLoading.Visible = True
+        RaiseEvent PopulateScrapers()
+        While parentRunning
+            Application.DoEvents()
+        End While
+        btnPopulate.Enabled = True
+        cbScraper.Enabled = True
+        pnlLoading.Visible = False
+
     End Sub
 End Class
