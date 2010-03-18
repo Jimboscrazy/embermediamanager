@@ -20,23 +20,22 @@
 
 Imports EmberAPI
 
-' TODO update the tooltip and label with all the new settings
 Public Class BulkRenamerModule
     Implements Interfaces.EmberExternalModule
 
-    #Region "Fields"
+#Region "Fields"
 
-    Private  WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private MySettings As New _MySettings
-    Private  WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
     Private _setup As frmSettingsHolder
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Events"
+#Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
 
@@ -44,9 +43,9 @@ Public Class BulkRenamerModule
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
+#Region "Properties"
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
@@ -82,9 +81,9 @@ Public Class BulkRenamerModule
         End Get
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Select Case mType
@@ -228,13 +227,13 @@ Public Class BulkRenamerModule
         AdvancedSettings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Structure _MySettings
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim AutoRenameMulti As Boolean
         Dim AutoRenameSingle As Boolean
@@ -243,10 +242,10 @@ Public Class BulkRenamerModule
         Dim FoldersPattern As String
         Dim GenericModule As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

@@ -121,8 +121,8 @@
   <data name="PictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAcHQAA
-        HB0BHwPHUwAADZJJREFUaEPtWAlwU3UejqDi4rUKM6vuqsvoqLOrzro7jrOrzrrryjqu5466uroueKII
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAcGwAA
+        HBsBnwCDyAAADZJJREFUaEPtWAlwU3UejqDi4rUKM6vuqsvoqLOrzro7jrOrzrrryjqu5466uroueKII
         rCgKKkdBKLQJLW3aHD3TKy1tgVKg90Wh95E0zdWkadOmaZMmTdI7bZNvf/8X2q0I0gIu7Mxm5j8veUfe
         932/73e8xwPAu1RrIoO3eLDhrQqf6UvA8dxamG5fPF8slww8AzrW+N6Gkb5t/rrKVTgke8E7pF3RAPXy
         FfMhcckIuLbwFnu7svoAJ0oK/4Vb7roNDz1yNwwNHwBtr8RDwls4FyKXjMDYyWffnxw1wz8+CiT8Fs7M
@@ -186,8 +186,8 @@
   <data name="btnCancel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK7AAA
-        CuwB0M+rJQAABDhJREFUSEu1lVtMHGUUx0eNNlYfpNta2JndmZ3ZYdmdZS8Mu13YBVkuK0mNTbxUax/U
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6gAA
+        CuoBUMzvvgAABDhJREFUSEu1lVtMHGUUx0eNNlYfpNta2JndmZ3ZYdmdZS8Mu13YBVkuK0mNTbxUax/U
         qPHFxEviJb7YWvogYsEGL9iIUqoFpLSWUqhpMezWskCFIDRUiNsXjKaxaV+sEWg+/990Z1m6IDbqwz/z
         zTn/c37f+WZ3hiGEMP+nbqp5lGHuiDHM7TezoVUBM6GCLYlIUUvi/sBEotL3a6LK9wvWY4lIoOlHValc
         DbYiYLLQFZ6p8I1NhwvI1CaFTLokMqlYNJ1zW8lUwEmmwyqZrvDFJtz2gpVAywImggUvTqF43JtLRixG

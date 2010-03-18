@@ -151,204 +151,6 @@ Namespace FileUtils
         End Sub
 
         ''' <summary>
-        ''' Delete files as selected by cleaner settings or all files related to a movie
-        ''' </summary>
-        ''' <param name="isCleaner">Called from cleaner?</param>
-        ''' <param name="mMovie">DBMovie object to get paths from.</param>
-        ''' <param name="SourcesList">List(of String) of paths for each source.</param>
-        ''' <returns>True if files were deleted, false if not.</returns>
-        ''' <remarks>Deprecated for all but cleaner... needs cleanup to reflect</remarks>
-        Public Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As Boolean
-            Dim dPath As String = String.Empty
-            Dim bReturn As Boolean = False
-            Dim fScanner As New Scanner
-
-            Try
-                If Master.eSettings.VideoTSParent AndAlso Common.isVideoTS(mMovie.Filename) Then
-                    dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
-                ElseIf Master.eSettings.VideoTSParent AndAlso Common.isBDRip(mMovie.Filename) Then
-                    dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".ext")
-                Else
-                    dPath = mMovie.Filename
-                End If
-
-                Dim sOrName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
-                Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
-
-                Dim dirInfo As New DirectoryInfo(sPathShort)
-                Dim ioFi As New List(Of FileInfo)
-
-                Try
-                    ioFi.AddRange(dirInfo.GetFiles())
-                Catch
-                End Try
-
-                If isCleaner AndAlso Master.eSettings.ExpertCleaner Then
-
-                    For Each sFile As FileInfo In ioFi
-                        If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
-                            File.Delete(sFile.FullName)
-                            bReturn = True
-                        End If
-                    Next
-
-                Else
-
-                    If Not isCleaner Then
-                        Dim fPath As String = mMovie.FanartPath
-                        Dim tPath As String = String.Empty
-                        If Not String.IsNullOrEmpty(fPath) Then
-                            If FileUtils.Common.isVideoTS(fPath) Then
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
-                            ElseIf FileUtils.Common.isBDRip(fPath) Then
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
-                            Else
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
-                            End If
-                        End If
-                        If Not String.IsNullOrEmpty(tPath) Then
-                            File.Delete(tPath)
-                        End If
-                    End If
-
-                    If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(Directory.GetParent(mMovie.Filename).FullName) Then
-                        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                            DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
-                        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                            DeleteDirectory(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName)
-                        Else
-                            'check if there are other folders with movies in them
-                            If Not fScanner.SubDirsHaveMovies(New DirectoryInfo(Directory.GetParent(mMovie.Filename).FullName)) Then
-                                'no movies in sub dirs... delete the whole thing
-                                DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
-                            Else
-                                'just delete the movie file itself
-                                File.Delete(mMovie.Filename)
-                            End If
-                        End If
-                    Else
-                        For Each lFI As FileInfo In ioFi
-                            If isCleaner Then
-                                If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
-                                    OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
-                                    OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
-                                    OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
-                                    OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
-                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
-                                    File.Delete(lFI.FullName)
-                                    bReturn = True
-                                    Continue For
-                                End If
-                            End If
-                        Next
-
-                        If Not isCleaner Then
-
-                            ioFi.Clear()
-                            Try
-                                If mMovie.isSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
-                            Catch
-                            End Try
-
-                            Try
-                                ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
-                            Catch
-                            End Try
-
-                            For Each sFile As FileInfo In ioFi
-                                File.Delete(sFile.FullName)
-                            Next
-
-                        End If
-
-                        If Master.eSettings.CleanExtraThumbs Then
-                            If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                                DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
-                                bReturn = True
-                            End If
-                        End If
-
-                    End If
-                End If
-
-                ioFi = Nothing
-                dirInfo = Nothing
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            Return bReturn
-        End Function
-
-        ''' <summary>
         ''' Gather a list of all files to be deleted for display in a confirmation dialog.
         ''' </summary>
         ''' <param name="isCleaner">Is the function being called from the cleaner?</param>
@@ -358,7 +160,6 @@ Namespace FileUtils
         ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
         Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As List(Of IO.FileSystemInfo)
             Dim dPath As String = String.Empty
-            Dim bReturn As Boolean = False
             Dim ItemsToDelete As New List(Of FileSystemInfo)
             Dim fScanner As New Scanner
 
@@ -391,7 +192,6 @@ Namespace FileUtils
                     For Each sFile As FileInfo In ioFi
                         If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
                             sFile.Delete()
-                            bReturn = True
                         End If
                     Next
 
@@ -454,7 +254,6 @@ Namespace FileUtils
                                     OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
                                     OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
                                     File.Delete(lFI.FullName)
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -469,7 +268,6 @@ Namespace FileUtils
                                     Else
                                         ItemsToDelete.Add(lFI)
                                     End If
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -484,7 +282,6 @@ Namespace FileUtils
                                     Else
                                         ItemsToDelete.Add(lFI)
                                     End If
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -499,7 +296,6 @@ Namespace FileUtils
                                     Else
                                         ItemsToDelete.Add(lFI)
                                     End If
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -514,7 +310,6 @@ Namespace FileUtils
                                     Else
                                         ItemsToDelete.Add(lFI)
                                     End If
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -529,7 +324,6 @@ Namespace FileUtils
                                     Else
                                         ItemsToDelete.Add(lFI)
                                     End If
-                                    bReturn = True
                                     Continue For
                                 End If
                             End If
@@ -562,7 +356,6 @@ Namespace FileUtils
                                         ItemsToDelete.Add(dir)
                                     End If
                                 End If
-                                bReturn = True
                             End If
                         End If
 
@@ -577,19 +370,19 @@ Namespace FileUtils
             Return ItemsToDelete
         End Function
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class FileSorter
 
-        #Region "Events"
+#Region "Events"
 
         Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
 
-        #End Region 'Events
+#End Region 'Events
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub SortFiles(ByVal sPath As String)
             Dim tmpAL As New List(Of String)
@@ -633,7 +426,7 @@ Namespace FileUtils
             End Try
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
