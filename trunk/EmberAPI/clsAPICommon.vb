@@ -270,6 +270,13 @@ Public Class Enums
         ShowRegex = 5
     End Enum
 
+    Public Enum DelType As Integer
+        Movies = 0
+        Shows = 1
+        Seasons = 2
+        Episodes = 3
+    End Enum
+
     Public Enum FanartSize As Integer
         Lrg = 0
         Mid = 1

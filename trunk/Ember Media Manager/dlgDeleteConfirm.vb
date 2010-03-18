@@ -24,13 +24,15 @@ Public Class dlgDeleteConfirm
 
     Private PropogatingDown As Boolean = False
     Private PropogatingUp As Boolean = False
+    Private _deltype As Enums.DelType
 
     #End Region 'Fields
 
     #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal MoviesToDelete As List(Of Long)) As System.Windows.Forms.DialogResult
-        Populate_FileList(MoviesToDelete)
+    Public Overloads Function ShowDialog(ByVal ItemsToDelete As Dictionary(Of Long, Long), ByVal DelType As Enums.DelType) As System.Windows.Forms.DialogResult
+        Me._deltype = DelType
+        Populate_FileList(ItemsToDelete)
         Return MyBase.ShowDialog
     End Function
 
@@ -79,46 +81,57 @@ Public Class dlgDeleteConfirm
         Me.Close()
     End Sub
 
-    Private Function DeleteSelectedMovies() As Boolean
+    Private Function DeleteSelectedItems() As Boolean
         Dim result As Boolean = True
+        Dim tPair As New KeyValuePair(Of Long, Long)
         Try
             With tvwFiles
                 If .Nodes.Count = 0 Then Return False
 
-                For Each MovieParentNode As TreeNode In .Nodes
-                    Dim mMovie As Structures.DBMovie = CType(MovieParentNode.Tag, Structures.DBMovie)
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
+                    For Each ItemParentNode As TreeNode In .Nodes
+                        Select Case Me._deltype
+                            Case Enums.DelType.Movies
+                                Master.DB.DeleteFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
+                            Case Enums.DelType.Shows
+                                Master.DB.DeleteTVShowFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
+                            Case Enums.DelType.Seasons
+                                tPair = DirectCast(ItemParentNode.Tag, KeyValuePair(Of Long, Long))
+                            Case Enums.DelType.Episodes
+                                Master.DB.DeleteTVEpFromDB(Convert.ToInt64(ItemParentNode.Tag), True, True, True)
+                        End Select
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
-                        Master.DB.DeleteFromDB(mMovie.ID, True)
-                        SQLtransaction.Commit()
-                    End Using
+                        If ItemParentNode.Nodes.Count > 0 Then
+                            For Each node As TreeNode In ItemParentNode.Nodes
+                                If node.Checked Then
+                                    Select Case node.ImageKey
+                                        Case "FOLDER"
+                                            Dim oDir As New IO.DirectoryInfo(node.Tag.ToString)
+                                            If oDir.Exists Then
+                                                oDir.Delete(True)
+                                                If _deltype = Enums.DelType.Seasons Then  Master.DB.DeleteTVSeasonFromDB(tPair.Value, Convert.ToInt32(tPair.Key), True)
+                                                Exit For
+                                            End If
 
-                    If MovieParentNode.Nodes.Count > 0 Then
-                        For Each node As TreeNode In MovieParentNode.Nodes
-                            If node.Checked Then
-                                Select Case node.ImageKey
-                                    Case "FOLDER"
-                                        Dim oDir As New IO.DirectoryInfo(node.Tag.ToString)
-                                        If oDir.Exists Then
-                                            oDir.Delete(True)
-                                            Exit For
-                                        End If
+                                        Case "FILE"
+                                            Dim oFile As New IO.FileInfo(node.Tag.ToString)
+                                            If oFile.Exists Then
+                                                oFile.Delete()
+                                                If _deltype = Enums.DelType.Seasons AndAlso Master.eSettings.ValidExts.Contains(IO.Path.GetExtension(node.Tag.ToString)) Then Master.DB.DeleteTVEpFromDBByPath(node.Tag.ToString, True, True)
+                                            End If
+                                    End Select
 
-                                    Case "FILE"
-                                        Dim oFile As New IO.FileInfo(node.Tag.ToString)
-                                        If oFile.Exists Then
-                                            oFile.Delete()
-                                        End If
-                                End Select
+                                End If
+                            Next
 
-                            End If
-                        Next
+                        End If
 
-                    End If
-
-                Next
-                Return result
+                    Next
+                    If Me._deltype = Enums.DelType.Seasons OrElse Me._deltype = Enums.DelType.Episodes Then Master.DB.CleanSeasons(True)
+                    SQLtransaction.Commit()
+                End Using
             End With
+            Return result
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -129,60 +142,184 @@ Public Class dlgDeleteConfirm
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        DeleteSelectedMovies()
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        If DeleteSelectedItems() Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
         Me.Close()
     End Sub
 
-    Private Sub Populate_FileList(ByVal MoviesToDelete As List(Of Long))
-        Dim mMovie As New Structures.DBMovie
+    Private Sub Populate_FileList(ByVal ItemsToDelete As Dictionary(Of Long, Long))
         Dim hadError As Boolean = False
+        Dim ePath As String = String.Empty
         Dim fDeleter As New FileUtils.Delete
-        Dim ItemsToDelete As New List(Of IO.FileSystemInfo)
-        Dim MovieParentNode As New TreeNode
+        Dim ItemsList As New List(Of IO.FileSystemInfo)
+        Dim ItemParentNode As New TreeNode
+
         Try
             With tvwFiles
 
-                For Each MovieId As Long In MoviesToDelete
-                    hadError = False
-                    mMovie = Master.DB.LoadMovieFromDB(MovieId)
+                Select Case Me._deltype
+                    Case Enums.DelType.Movies
+                        Dim mMovie As New Structures.DBMovie
 
-                    MovieParentNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
-                    MovieParentNode.ImageKey = "MOVIE"
-                    MovieParentNode.SelectedImageKey = "MOVIE"
-                    MovieParentNode.Tag = mMovie
+                        For Each MovieId As Long In ItemsToDelete.Keys
+                            hadError = False
+                            mMovie = Master.DB.LoadMovieFromDB(MovieId)
 
-                    'get the associated files
-                    ItemsToDelete = fDeleter.GetItemsToDelete(False, mMovie)
+                            ItemParentNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
+                            ItemParentNode.ImageKey = "MOVIE"
+                            ItemParentNode.SelectedImageKey = "MOVIE"
+                            ItemParentNode.Tag = mMovie.ID
 
-                    For Each fileItem As IO.FileSystemInfo In ItemsToDelete
-                        If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
-                            If TypeOf fileItem Is IO.DirectoryInfo Then
-                                Try
-                                    AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
-                                Catch
-                                    hadError = True
-                                    Exit For
-                                End Try
-                            Else
-                                Try
-                                    AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
-                                Catch
-                                    hadError = True
-                                    Exit For
-                                End Try
-                            End If
-                        End If
-                    Next
+                            'get the associated files
+                            ItemsList = fDeleter.GetItemsToDelete(False, mMovie)
 
-                    If hadError Then .Nodes.Remove(MovieParentNode)
-                Next
+                            For Each fileItem As IO.FileSystemInfo In ItemsList
+                                If Not ItemParentNode.Nodes.ContainsKey(fileItem.FullName) Then
+                                    If TypeOf fileItem Is IO.DirectoryInfo Then
+                                        Try
+                                            AddFolderNode(ItemParentNode, DirectCast(fileItem, IO.DirectoryInfo))
+                                        Catch
+                                            hadError = True
+                                            Exit For
+                                        End Try
+                                    Else
+                                        Try
+                                            AddFileNode(ItemParentNode, DirectCast(fileItem, IO.FileInfo))
+                                        Catch
+                                            hadError = True
+                                            Exit For
+                                        End Try
+                                    End If
+                                End If
+                            Next
 
-                'check all the nodes
-                For Each node As TreeNode In .Nodes
-                    node.Checked = True
-                    node.Expand()
-                Next
+                            If hadError Then .Nodes.Remove(ItemParentNode)
+                        Next
+                    Case Enums.DelType.Shows
+                        Dim tShow As New Structures.DBTV
+
+                        For Each ShowID As Long In ItemsToDelete.Keys
+                            hadError = False
+
+                            tShow = Master.DB.LoadTVShowFromDB(ShowID)
+
+                            ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.TVShow.Title)
+                            ItemParentNode.ImageKey = "MOVIE"
+                            ItemParentNode.SelectedImageKey = "MOVIE"
+                            ItemParentNode.Tag = tShow.ShowID
+
+                            Try
+                                AddFolderNode(ItemParentNode, New IO.DirectoryInfo(tShow.ShowPath))
+                            Catch
+                                .Nodes.Remove(ItemParentNode)
+                            End Try
+                        Next
+                    Case Enums.DelType.Seasons
+                        Dim tSeason As New Structures.DBTV
+
+                        Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            For Each Season As KeyValuePair(Of Long, Long) In ItemsToDelete
+                                hadError = False
+
+                                tSeason = Master.DB.LoadTVSeasonFromDB(Season.Value, Convert.ToInt32(Season.Key), True)
+                                ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVEp.Season))
+                                ItemParentNode.ImageKey = "MOVIE"
+                                ItemParentNode.SelectedImageKey = "MOVIE"
+                                ItemParentNode.Tag = Season
+
+                                SQLDelCommand.CommandText = String.Concat("SELECT ID, TVEpPathID FROM TVEps WHERE TVShowID = ", Season.Value, " AND Season = ", Season.Key, ";")
+                                Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
+                                    While SQLDelReader.Read
+                                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
+                                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                                If SQLReader.HasRows Then
+                                                    If Functions.IsSeasonDirectory(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName) Then
+                                                        Try
+                                                            AddFolderNode(ItemParentNode, New IO.DirectoryInfo(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                        Catch
+                                                            .Nodes.Remove(ItemParentNode)
+                                                        End Try
+                                                        Exit While
+                                                    Else
+                                                        Try
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
+                                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("TVEpPath").ToString))
+                                                            If IO.File.Exists(String.Concat(ePath, ".nfo")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".nfo")))
+                                                            If IO.File.Exists(String.Concat(ePath, ".tbn")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".tbn")))
+                                                            If IO.File.Exists(String.Concat(ePath, ".jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".jpg")))
+                                                            If IO.File.Exists(String.Concat(ePath, "-fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, "-fanart.jpg")))
+                                                            If IO.File.Exists(String.Concat(ePath, ".fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".fanart.jpg")))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString))
+                                                            If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
+                                                        Catch
+                                                            .Nodes.Remove(ItemParentNode)
+                                                            Exit While
+                                                        End Try
+                                                    End If
+                                                End If
+                                            End Using
+                                        End Using
+                                    End While
+                                End Using
+                            Next
+                        End Using
+                    Case Enums.DelType.Episodes
+                        Dim tEp As New Structures.DBTV
+
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            For Each Ep As Long In ItemsToDelete.Keys
+                                hadError = False
+
+                                tEp = Master.DB.LoadTVEpFromDB(Ep, True)
+                                ItemParentNode = .Nodes.Add(Ep.ToString, tEp.TVEp.Title)
+                                ItemParentNode.ImageKey = "MOVIE"
+                                ItemParentNode.SelectedImageKey = "MOVIE"
+                                ItemParentNode.Tag = Ep
+
+                                SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", Ep, ";")
+                                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                    If SQLReader.HasRows Then
+                                        Try
+                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
+                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("TVEpPath").ToString))
+                                            If IO.File.Exists(String.Concat(ePath, ".nfo")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".nfo")))
+                                            If IO.File.Exists(String.Concat(ePath, ".tbn")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".tbn")))
+                                            If IO.File.Exists(String.Concat(ePath, ".jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".jpg")))
+                                            If IO.File.Exists(String.Concat(ePath, "-fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, "-fanart.jpg")))
+                                            If IO.File.Exists(String.Concat(ePath, ".fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".fanart.jpg")))
+                                        Catch
+                                            .Nodes.Remove(ItemParentNode)
+                                        End Try
+                                    End If
+                                End Using
+                            Next
+                        End Using
+
+                End Select
+
+        'check all the nodes
+        For Each node As TreeNode In .Nodes
+            node.Checked = True
+            node.Expand()
+        Next
 
             End With
         Catch ex As Exception

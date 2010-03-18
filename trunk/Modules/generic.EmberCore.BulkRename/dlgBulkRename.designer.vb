@@ -17,8 +17,7 @@ Partial Class dlgBulkRenamer
     Friend  WithEvents lblFile As System.Windows.Forms.Label
     Friend  WithEvents lblFilePattern As System.Windows.Forms.Label
     Friend  WithEvents lblFolderPattern As System.Windows.Forms.Label
-    Friend  WithEvents lblLabel As System.Windows.Forms.Label
-    Friend  WithEvents pbCompile As System.Windows.Forms.ProgressBar
+    Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend  WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend  WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend  WithEvents pnlTop As System.Windows.Forms.Panel
@@ -83,7 +82,6 @@ Partial Class dlgBulkRenamer
         Me.lblFilePattern = New System.Windows.Forms.Label
         Me.txtFile = New System.Windows.Forms.TextBox
         Me.txtFolder = New System.Windows.Forms.TextBox
-        Me.lblLabel = New System.Windows.Forms.Label
         Me.txtFolderNotSingle = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.chkRenamedOnly = New System.Windows.Forms.CheckBox
@@ -98,7 +96,7 @@ Partial Class dlgBulkRenamer
         '
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(898, 457)
+        Me.Close_Button.Location = New System.Drawing.Point(898, 445)
         Me.Close_Button.Name = "Close_Button"
         Me.Close_Button.Size = New System.Drawing.Size(80, 23)
         Me.Close_Button.TabIndex = 0
@@ -225,7 +223,7 @@ Partial Class dlgBulkRenamer
         Me.Rename_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Rename_Button.Enabled = False
         Me.Rename_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Rename_Button.Location = New System.Drawing.Point(812, 457)
+        Me.Rename_Button.Location = New System.Drawing.Point(812, 445)
         Me.Rename_Button.Name = "Rename_Button"
         Me.Rename_Button.Size = New System.Drawing.Size(80, 23)
         Me.Rename_Button.TabIndex = 67
@@ -326,18 +324,6 @@ Partial Class dlgBulkRenamer
         Me.txtFolder.TabIndex = 73
         Me.txtFolder.Text = "$T ($Y)"
         '
-        'lblLabel
-        '
-        Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.lblLabel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblLabel.Location = New System.Drawing.Point(13, 453)
-        Me.lblLabel.Name = "lblLabel"
-        Me.lblLabel.Size = New System.Drawing.Size(793, 26)
-        Me.lblLabel.TabIndex = 74
-        Me.lblLabel.Tag = ""
-        Me.lblLabel.Text = "Label"
-        Me.lblLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'txtFolderNotSingle
         '
         Me.txtFolderNotSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -373,10 +359,9 @@ Partial Class dlgBulkRenamer
         Me.AcceptButton = Me.Close_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(992, 486)
+        Me.ClientSize = New System.Drawing.Size(992, 472)
         Me.Controls.Add(Me.txtFolderNotSingle)
         Me.Controls.Add(Me.chkRenamedOnly)
-        Me.Controls.Add(Me.lblLabel)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtFolder)
         Me.Controls.Add(Me.pnlCancel)
@@ -404,6 +389,7 @@ Partial Class dlgBulkRenamer
         Me.cmsMovieList.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
     End Sub
 
     #End Region 'Methods

@@ -1254,13 +1254,11 @@ Public Class frmMain
                                 If Me.bwNonScrape.CancellationPending Then GoTo doCancel
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-                                If fDeleter.DeleteFiles(True, scrapeMovie) Then
-                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
-                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                Else
-                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
-                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                End If
+
+                                fDeleter.GetItemsToDelete(True, scrapeMovie)
+
+                                Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
+                                Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                             Next
                         Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
@@ -1304,7 +1302,7 @@ Public Class frmMain
                             Next
                     End Select
 
-        doCancel:
+doCancel:
                     If Not Args.scrapeType = Enums.ScrapeType.CopyBD Then
                         SQLtransaction.Commit()
                     End If
@@ -1752,54 +1750,29 @@ Public Class frmMain
 
     Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
         Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(765, "Are you sure you want to delete the selected Season and all of its Episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Dim ePath As String = String.Empty
 
-                Me.ClearInfo(False)
+            Dim SeasonsToDelete As New Dictionary(Of Long, Long)
+            Dim ShowId As Long = -1
+            Dim SeasonNum As Integer = -1
 
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                            SQLDelCommand.CommandText = String.Concat("SELECT ID, TVEpPathID FROM TVEps WHERE TVShowID = ", sRow.Cells(0).Value, " AND Season = ", sRow.Cells(2).Value, ";")
-                            Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
-                                While SQLDelReader.Read
-                                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                        SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
-                                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                            If SQLReader.HasRows Then
-                                                If Functions.IsSeasonDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName) Then
-                                                    FileUtils.Delete.DeleteDirectory(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName)
-                                                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells(0).Value), Convert.ToInt32(sRow.Cells(2).Value), True)
-                                                    Exit While
-                                                Else
-                                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                                    File.Delete(SQLReader("TVEpPath").ToString)
-                                                    File.Delete(String.Concat(ePath, ".nfo"))
-                                                    File.Delete(String.Concat(ePath, ".tbn"))
-                                                    File.Delete(String.Concat(ePath, ".jpg"))
-                                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
-                                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(SQLDelReader("ID")), False, False, True)
-                                                End If
-                                            End If
-                                        End Using
-                                    End Using
-                                End While
-                            End Using
-                        Next
-                    End Using
+            For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                ShowId = Convert.ToInt64(sRow.Cells(0).Value)
+                SeasonNum = Convert.ToInt32(sRow.Cells(2).Value)
+                'seasonnum first... showid can't be key or else only one season will be deleted
+                If Not SeasonsToDelete.ContainsKey(SeasonNum) Then
+                    SeasonsToDelete.Add(SeasonNum, ShowId)
+                End If
+            Next
 
-                    Master.DB.CleanSeasons()
-
-                    SQLTrans.Commit()
+            If SeasonsToDelete.Count > 0 Then
+                Using dlg As New dlgDeleteConfirm
+                    If dlg.ShowDialog(SeasonsToDelete, Enums.DelType.Seasons) = Windows.Forms.DialogResult.OK Then
+                        Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value))
+                        Me.SetTVCount()
+                    End If
                 End Using
-
-                Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value))
-
-                Me.SetTVCount()
-
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1807,62 +1780,53 @@ Public Class frmMain
 
     Private Sub cmnuDeleteTVEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVEp.Click
         Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(764, "Are you sure you want to delete the selected Episode?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Dim ePath As String = String.Empty
 
-                Me.ClearInfo(False)
+            Dim EpsToDelete As New Dictionary(Of Long, Long)
+            Dim EpId As Long = -1
 
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells(9).Value.ToString, ";")
-                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                If SQLReader.HasRows Then
-                                    ePath = Path.Combine(Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                    File.Delete(SQLReader("TVEpPath").ToString)
-                                    File.Delete(String.Concat(ePath, ".nfo"))
-                                    File.Delete(String.Concat(ePath, ".tbn"))
-                                    File.Delete(String.Concat(ePath, ".jpg"))
-                                    File.Delete(String.Concat(ePath, "-fanart.jpg"))
-                                    File.Delete(String.Concat(ePath, ".fanart.jpg"))
-                                    Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True)
-                                End If
-                            End Using
-                        Next
-                    End Using
+            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                EpId = Convert.ToInt64(sRow.Cells(0).Value)
+                If Not EpsToDelete.ContainsKey(EpId) Then
+                    EpsToDelete.Add(EpId, 0)
+                End If
+            Next
 
-                    Master.DB.CleanSeasons()
-
-                    SQLTrans.Commit()
+            If EpsToDelete.Count > 0 Then
+                Using dlg As New dlgDeleteConfirm
+                    If dlg.ShowDialog(EpsToDelete, Enums.DelType.Episodes) = Windows.Forms.DialogResult.OK Then
+                        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
+                        Me.SetTVCount()
+                    End If
                 End Using
-
-                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
-
-                Me.SetTVCount()
-
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
     End Sub
 
     Private Sub cmnuDeleteTVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuDeleteTVShow.Click
         Try
-            'TODO: Add method for confirmation dialog
-            If MsgBox(Master.eLang.GetString(763, "Are you sure you want to delete the selected TV Show(s) and all of the accompanying episodes?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
-                Me.ClearInfo()
 
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                        FileUtils.Delete.DeleteDirectory(sRow.Cells(7).Value.ToString)
-                        Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells(0).Value), True)
-                    Next
-                    SQLTrans.Commit()
+            Dim ShowsToDelete As New Dictionary(Of Long, Long)
+            Dim ShowId As Long = -1
+
+            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                ShowId = Convert.ToInt64(sRow.Cells(0).Value)
+                If Not ShowsToDelete.ContainsKey(ShowId) Then
+                    ShowsToDelete.Add(ShowId, 0)
+                End If
+            Next
+
+            If ShowsToDelete.Count > 0 Then
+                Using dlg As New dlgDeleteConfirm
+                    If dlg.ShowDialog(ShowsToDelete, Enums.DelType.Shows) = Windows.Forms.DialogResult.OK Then
+                        Me.FillList(0)
+                    End If
                 End Using
-
-                Me.FillList(0)
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2792,19 +2756,19 @@ Public Class frmMain
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
         Try
-            Dim MoviesToDelete As New List(Of Long)
+            Dim MoviesToDelete As New Dictionary(Of Long, Long)
             Dim MovieId As Int64 = -1
 
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                 MovieId = Convert.ToInt64(sRow.Cells(0).Value)
-                If Not MoviesToDelete.Contains(MovieId) Then
-                    MoviesToDelete.Add(MovieId)
+                If Not MoviesToDelete.ContainsKey(MovieId) Then
+                    MoviesToDelete.Add(MovieId, 0)
                 End If
             Next
 
             If MoviesToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(MoviesToDelete) = Windows.Forms.DialogResult.OK Then
+                    If dlg.ShowDialog(MoviesToDelete, Enums.DelType.Movies) = Windows.Forms.DialogResult.OK Then
                         Me.FillList(0)
                     End If
                 End Using
@@ -5180,6 +5144,7 @@ Public Class frmMain
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
+                            'TODO: re-enable command line scraping
                             'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
                             MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                         Else

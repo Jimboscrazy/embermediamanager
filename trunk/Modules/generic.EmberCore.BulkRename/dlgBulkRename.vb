@@ -326,7 +326,6 @@ Public Class dlgBulkRenamer
     Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
 
-        Dim frmToolTip As New ToolTip()
         FFRenamer = New FileFolderRenamer
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
@@ -334,11 +333,6 @@ Public Class dlgBulkRenamer
             Me.pnlTop.BackgroundImage = iBackground
         End Using
 
-        'testing proposes
-        Dim s As String = String.Format(Master.eLang.GetString(12, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
-        lblLabel.Text = s.Replace(vbCrLf, "    ")
-        frmToolTip.SetToolTip(txtFolder, s)
-        frmToolTip.SetToolTip(txtFile, s)
     End Sub
 
     Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -457,6 +451,12 @@ Public Class dlgBulkRenamer
         Me.lblFilePattern.Text = Master.eLang.GetString(8, "File Pattern")
         Me.Label1.Text = Master.eLang.GetString(9, "Folder Pattern (for Multiple movies in Folder)")
         Me.chkRenamedOnly.Text = Master.eLang.GetString(10, "Display Only Movies That Will Be Renamed")
+
+        Dim frmToolTip As New ToolTip()
+        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        frmToolTip.SetToolTip(Me.txtFolder, s)
+        frmToolTip.SetToolTip(Me.txtFile, s)
+        frmToolTip.SetToolTip(Me.txtFolderNotSingle, s)
     End Sub
 
     Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean

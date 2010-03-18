@@ -18,9 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-' Nuno Reminders:
-' TODO: Need to do "strings" on all this stuff..
-
 Imports System
 Imports System.IO
 Imports System.Xml
