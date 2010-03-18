@@ -325,7 +325,7 @@ Public Class Scraper
                         If Not String.IsNullOrEmpty(sXML) Then
                             Dim xdEps As XDocument = XDocument.Parse(sXML)
 
-                            For Each Episode As XElement In xdEps.Descendants("Episode")
+                            For Each Episode As XElement In xdEps.Descendants("Episodes")
                                 tEpisode = New MediaContainers.EpisodeDetails
 
                                 tOrdering = Enums.Ordering.Standard
@@ -335,6 +335,7 @@ Public Class Scraper
                                     Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
                                     Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
                                         tSeas = Convert.ToInt32(Episode.Element("SeasonNumber").Value)
+                                        If sInfo.iSeason >= 0 AndAlso Not tSeas = sInfo.iSeason Then Continue For
                                         If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
                                             tOrdering = Enums.Ordering.DVD
                                         End If
@@ -351,6 +352,8 @@ Public Class Scraper
                                             tOrdering = Enums.Ordering.DVD
                                         End If
                                     End If
+                                Else
+                                    If sInfo.iSeason >= 0 AndAlso Not Convert.ToInt32(Episode.Element("SeasonNumber").Value) = sInfo.iSeason Then Continue For
                                 End If
 
                                 With tEpisode

@@ -31,7 +31,7 @@ Public Class EmberXMLScraperModule
     Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmXMLSettingsHolder
-    Private XMLManager As ScraperManager
+    Private XMLManager As New ScraperManager
     #End Region 'Fields
 
     #Region "Events"
@@ -162,6 +162,7 @@ Public Class EmberXMLScraperModule
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return Spanel
     End Function
+
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
@@ -190,6 +191,7 @@ Public Class EmberXMLScraperModule
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
     Sub PopulateSettings()
         _setup.cbScraper.Items.Clear()
         For Each s As ScraperInfo In XMLManager.AllScrapers

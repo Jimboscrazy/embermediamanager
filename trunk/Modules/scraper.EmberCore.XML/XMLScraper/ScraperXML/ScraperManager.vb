@@ -35,12 +35,13 @@ Namespace XMLScraper
             End Sub
 
             Public Sub New(ByVal strScraperFolder As String, ByVal strCacheFolder As String)
+                Me.Clear()
                 pCache = strCacheFolder
                 FileIO.VerifyCacheFolder(pCache)
                 pFolder = strScraperFolder
             End Sub
 
-            Private Sub New()
+            Public Sub New()
                 Me.Clear()
             End Sub
 
