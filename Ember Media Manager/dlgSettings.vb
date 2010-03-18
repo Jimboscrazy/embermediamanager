@@ -601,6 +601,60 @@ Public Class dlgSettings
         Me.Close()
     End Sub
 
+    Private Sub btnRegexUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegexUp.Click
+        Try
+            If Me.lvShowRegex.Items.Count > 0 AndAlso Me.lvShowRegex.SelectedItems.Count > 0 AndAlso Not Me.lvShowRegex.SelectedItems(0).Index = 0 Then
+                Dim selItem As Settings.TVShowRegEx = Me.ShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvShowRegex.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvShowRegex.SuspendLayout()
+                    Dim iIndex As Integer = Me.ShowRegex.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvShowRegex.SelectedIndices(0)
+                    Me.ShowRegex.Remove(selItem)
+                    Me.ShowRegex.Insert(iIndex - 1, selItem)
+
+                    Me.RenumberRegex()
+                    Me.LoadShowRegex()
+
+                    Me.lvShowRegex.Items(selIndex - 1).Selected = True
+                    Me.lvShowRegex.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvShowRegex.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnRegexDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegexDown.Click
+        Try
+            If Me.lvShowRegex.Items.Count > 0 AndAlso Me.lvShowRegex.SelectedItems.Count > 0 AndAlso Me.lvShowRegex.SelectedItems(0).Index < (Me.lvShowRegex.Items.Count - 1) Then
+                Dim selItem As Settings.TVShowRegEx = Me.ShowRegex.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(Me.lvShowRegex.SelectedItems(0).Text))
+
+                If Not IsNothing(selItem) Then
+                    Me.lvShowRegex.SuspendLayout()
+                    Dim iIndex As Integer = Me.ShowRegex.IndexOf(selItem)
+                    Dim selIndex As Integer = Me.lvShowRegex.SelectedIndices(0)
+                    Me.ShowRegex.Remove(selItem)
+                    Me.ShowRegex.Insert(iIndex + 1, selItem)
+
+                    Me.RenumberRegex()
+                    Me.LoadShowRegex()
+
+                    Me.lvShowRegex.Items(selIndex + 1).Selected = True
+                    Me.lvShowRegex.ResumeLayout()
+                End If
+
+                Me.SetApplyButton(True)
+                Me.lvShowRegex.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub btnResetShowFilters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetShowFilters.Click
         If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
@@ -2986,6 +3040,12 @@ Public Class dlgSettings
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub RenumberRegex()
+        For i As Integer = 0 To Me.ShowRegex.Count - 1
+            Me.ShowRegex(i).ID = i
+        Next
     End Sub
 
     Private Sub SaveSettings(ByVal isApply As Boolean)

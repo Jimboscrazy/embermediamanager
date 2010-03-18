@@ -302,6 +302,7 @@ Partial Class dlgSettings
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.btnResetShowRegex = New System.Windows.Forms.Button
         Me.gbShowRegex = New System.Windows.Forms.GroupBox
         Me.lblSeasonMatch = New System.Windows.Forms.Label
         Me.btnAddShowRegex = New System.Windows.Forms.Button
@@ -579,7 +580,8 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.btnResetShowRegex = New System.Windows.Forms.Button
+        Me.btnRegexDown = New System.Windows.Forms.Button
+        Me.btnRegexUp = New System.Windows.Forms.Button
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -3811,6 +3813,8 @@ Partial Class dlgSettings
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.btnRegexDown)
+        Me.TabPage4.Controls.Add(Me.btnRegexUp)
         Me.TabPage4.Controls.Add(Me.btnResetShowRegex)
         Me.TabPage4.Controls.Add(Me.gbShowRegex)
         Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
@@ -3823,6 +3827,15 @@ Partial Class dlgSettings
         Me.TabPage4.TabIndex = 1
         Me.TabPage4.Text = "Regex"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'btnResetShowRegex
+        '
+        Me.btnResetShowRegex.Image = CType(resources.GetObject("btnResetShowRegex.Image"), System.Drawing.Image)
+        Me.btnResetShowRegex.Location = New System.Drawing.Point(576, 3)
+        Me.btnResetShowRegex.Name = "btnResetShowRegex"
+        Me.btnResetShowRegex.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetShowRegex.TabIndex = 16
+        Me.btnResetShowRegex.UseVisualStyleBackColor = True
         '
         'gbShowRegex
         '
@@ -6913,14 +6926,23 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
-        'btnResetShowRegex
+        'btnRegexDown
         '
-        Me.btnResetShowRegex.Image = CType(resources.GetObject("btnResetShowRegex.Image"), System.Drawing.Image)
-        Me.btnResetShowRegex.Location = New System.Drawing.Point(576, 3)
-        Me.btnResetShowRegex.Name = "btnResetShowRegex"
-        Me.btnResetShowRegex.Size = New System.Drawing.Size(23, 23)
-        Me.btnResetShowRegex.TabIndex = 16
-        Me.btnResetShowRegex.UseVisualStyleBackColor = True
+        Me.btnRegexDown.Image = CType(resources.GetObject("btnRegexDown.Image"), System.Drawing.Image)
+        Me.btnRegexDown.Location = New System.Drawing.Point(304, 167)
+        Me.btnRegexDown.Name = "btnRegexDown"
+        Me.btnRegexDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnRegexDown.TabIndex = 18
+        Me.btnRegexDown.UseVisualStyleBackColor = True
+        '
+        'btnRegexUp
+        '
+        Me.btnRegexUp.Image = CType(resources.GetObject("btnRegexUp.Image"), System.Drawing.Image)
+        Me.btnRegexUp.Location = New System.Drawing.Point(280, 167)
+        Me.btnRegexUp.Name = "btnRegexUp"
+        Me.btnRegexUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnRegexUp.TabIndex = 17
+        Me.btnRegexUp.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -6929,6 +6951,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6938,10 +6961,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlMovies)
@@ -6950,6 +6969,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlTVScraper)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -7682,4 +7704,6 @@ Partial Class dlgSettings
     Friend WithEvents btnResetMovieFilters As System.Windows.Forms.Button
     Friend WithEvents btnResetValidExts As System.Windows.Forms.Button
     Friend WithEvents btnResetShowRegex As System.Windows.Forms.Button
+    Friend WithEvents btnRegexDown As System.Windows.Forms.Button
+    Friend WithEvents btnRegexUp As System.Windows.Forms.Button
 End Class
