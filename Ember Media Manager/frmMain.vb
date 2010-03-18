@@ -3009,6 +3009,7 @@ Public Class frmMain
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
 
+                        Me.mnuMediaList.Enabled = True
                         Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditMovie.Visible = False
                         Me.ScrapingToolStripMenuItem.Visible = True
@@ -3054,11 +3055,14 @@ Public Class frmMain
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                             Me.mnuMediaList.Enabled = False
+                        Else
+                            Me.mnuMediaList.Enabled = True
                         End If
 
                         cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvMediaList.CurrentCell = Nothing
                             Me.dgvMediaList.ClearSelection()
                             Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
@@ -3074,6 +3078,9 @@ Public Class frmMain
                         Me.SetGenreToolStripMenuItem.Enabled = False
                         Me.RemoveGenreToolStripMenuItem.Enabled = False
                     End If
+                Else
+                    Me.mnuMediaList.Enabled = False
+                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
         Catch ex As Exception
@@ -3266,6 +3273,7 @@ Public Class frmMain
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
 
+                        Me.mnuEpisodes.Enabled = True
                         Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.ToolStripSeparator9.Visible = False
                         Me.cmnuEditEpisode.Visible = False
@@ -3304,6 +3312,8 @@ Public Class frmMain
 
                         If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
                             Me.mnuEpisodes.Enabled = False
+                        Else
+                            Me.mnuEpisodes.Enabled = True
                         End If
 
                         cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
@@ -3319,6 +3329,9 @@ Public Class frmMain
                             Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
                         End If
                     End If
+                Else
+                    Me.mnuEpisodes.Enabled = False
+                    Me.cmnuEpTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
         Catch ex As Exception
@@ -3498,6 +3511,7 @@ Public Class frmMain
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
 
+                        Me.mnuSeasons.Enabled = True
                         Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.ToolStripSeparator16.Visible = False
                         Me.cmnuSeasonChangeImages.Visible = False
@@ -3534,6 +3548,8 @@ Public Class frmMain
 
                         If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
                             Me.mnuSeasons.Enabled = False
+                        Else
+                            Me.mnuSeasons.Enabled = True
                         End If
 
                         Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
@@ -3549,6 +3565,9 @@ Public Class frmMain
                             Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
                         End If
                     End If
+                Else
+                    Me.mnuSeasons.Enabled = False
+                    Me.cmnuSeasonTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
         Catch ex As Exception
@@ -3741,6 +3760,7 @@ Public Class frmMain
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
 
+                        Me.mnuShows.Enabled = True
                         Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.ToolStripSeparator8.Visible = False
                         Me.cmnuEditShow.Visible = False
@@ -3779,6 +3799,8 @@ Public Class frmMain
 
                         If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
                             Me.mnuShows.Enabled = False
+                        Else
+                            Me.mnuShows.Enabled = True
                         End If
 
                         Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
@@ -3794,6 +3816,9 @@ Public Class frmMain
                             Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
                         End If
                     End If
+                Else
+                    Me.mnuShows.Enabled = False
+                    Me.cmnuShowTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
         Catch ex As Exception
