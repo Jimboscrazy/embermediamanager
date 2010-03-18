@@ -334,7 +334,7 @@ Public Class dlgTrailer
             Me.OK_Button.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
-                Me.OK_Button.Text = Master.eLang.GetString(846, "Move")
+                Me.OK_Button.Text = Master.eLang.GetString(846, "Copy")
                 Me.btnSetNfo.Enabled = False
             Else
                 Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
