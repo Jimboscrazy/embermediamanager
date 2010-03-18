@@ -846,4 +846,7 @@
   <string id="844">Are you sure you want to reset to the default list of show regex?</string>
   <string id="845">&gt;&gt; No Item Selected &lt;&lt;</string>
   <string id="846">Copy</string>
+  <string id="847">Move</string>
+  <string id="848">Moving specified file to trailer...</string>
+  <string id="849">Copying specified file to trailer...</string>
 </strings>

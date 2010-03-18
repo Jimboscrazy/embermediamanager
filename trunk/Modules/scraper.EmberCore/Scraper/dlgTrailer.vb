@@ -87,6 +87,7 @@ Public Class dlgTrailer
                 didCancel = True
             End If
         ElseIf Me.txtManual.Text.Length > 0 Then
+            Me.lblStatus.Text = Master.eLang.GetString(849, "Copying specified file to trailer...")
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
                     Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
@@ -198,20 +199,53 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
-        Dim didCancel As Boolean = False
 
-        If StringUtils.isValidURL(Me.txtYouTube.Text) Then
-            tURL = Me.txtYouTube.Text
-        ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
-            tURL = lbTrailers.SelectedItem.ToString
+        If Me.btnSetNfo.Text = Master.eLang.GetString(847, "Move") Then
+            If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+                Me.OK_Button.Enabled = False
+                Me.btnSetNfo.Enabled = False
+                Me.btnPlayTrailer.Enabled = False
+                Me.lbTrailers.Enabled = False
+                Me.txtYouTube.Enabled = False
+                Me.txtManual.Enabled = False
+                Me.btnBrowse.Enabled = False
+                Me.lblStatus.Text = Master.eLang.GetString(848, "Moving specified file to trailer...")
+                Me.pbStatus.Style = ProgressBarStyle.Continuous
+                Me.pbStatus.Value = 0
+                Me.pnlStatus.Visible = True
+                Application.DoEvents()
+
+                Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+                File.Move(Me.txtManual.Text, Me.tURL)
+
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            Else
+                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
+                Me.pnlStatus.Visible = False
+                Me.lbTrailers.Enabled = True
+                Me.txtYouTube.Enabled = True
+                Me.txtManual.Enabled = True
+                Me.btnBrowse.Enabled = True
+                Me.SetEnabled(False)
+            End If
         Else
-            didCancel = True
+            Dim didCancel As Boolean = False
+
+            If StringUtils.isValidURL(Me.txtYouTube.Text) Then
+                tURL = Me.txtYouTube.Text
+            ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
+                tURL = lbTrailers.SelectedItem.ToString
+            Else
+                didCancel = True
+            End If
+
+            If Not didCancel Then
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
         End If
 
-        If Not didCancel Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End If
     End Sub
 
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
@@ -332,19 +366,21 @@ Public Class dlgTrailer
 
         If StringUtils.isValidURL(Me.txtYouTube.Text) OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
             Me.OK_Button.Enabled = True
+            Me.btnSetNfo.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
                 Me.OK_Button.Text = Master.eLang.GetString(846, "Copy")
-                Me.btnSetNfo.Enabled = False
+                Me.btnSetNfo.Text = Master.eLang.GetString(847, "Move")
             Else
                 Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
-                Me.btnSetNfo.Enabled = True
+                Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
             End If
         Else
             Me.OK_Button.Enabled = False
             Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
             Me.btnPlayTrailer.Enabled = False
             Me.btnSetNfo.Enabled = False
+            Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
         End If
     End Sub
 
