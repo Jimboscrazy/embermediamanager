@@ -32,6 +32,7 @@ Public Class EmberXMLScraperModule
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmXMLSettingsHolder
     Private XMLManager As New ScraperManager
+    Private scraperName As String = String.Empty
     #End Region 'Fields
 
     #Region "Events"
@@ -130,6 +131,7 @@ Public Class EmberXMLScraperModule
     End Function
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
+        scraperName = AdvancedSettings.GetSetting("ScraperName", "NFO Scraper")
     End Sub
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
@@ -176,6 +178,8 @@ Public Class EmberXMLScraperModule
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupScraper
         ScraperEnabled = _setup.cbEnabled.Checked
+        scraperName = _setup.cbScraper.SelectedItem.ToString
+        AdvancedSettings.SetSetting("ScraperName", scraperName)
         ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -185,7 +189,12 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
-
+        If scraperName = String.Empty Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No Scraper Defined {0}."), vbNewLine), Nothing}))
+        Else
+            Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+            res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+        End If
     End Function
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
