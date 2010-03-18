@@ -261,6 +261,15 @@ Public Class Enums
 
     #Region "Enumerations"
 
+    Public Enum DefaultType As Integer
+        All = 0
+        MovieFilters = 1
+        ShowFilters = 2
+        EpFilters = 3
+        ValidExts = 4
+        ShowRegex = 5
+    End Enum
+
     Public Enum FanartSize As Integer
         Lrg = 0
         Mid = 1

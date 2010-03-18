@@ -839,4 +839,9 @@
   <string id="837">Scrapers - Images</string>
   <string id="838">Banner</string>
   <string id="839">Absolute</string>
+  <string id="840">Are you sure you want to reset to the default list of show filters?</string>
+  <string id="841">Are you sure you want to reset to the default list of episode filters?</string>
+  <string id="842">Are you sure you want to reset to the default list of movie filters?</string>
+  <string id="843">Are you sure you want to reset to the default list of valid video extensions?</string>
+  <string id="844">Are you sure you want to reset to the default list of show regex?</string>
 </strings>

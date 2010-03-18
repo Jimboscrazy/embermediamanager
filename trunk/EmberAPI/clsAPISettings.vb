@@ -3439,8 +3439,8 @@ Public Class Settings
             Master.eSettings = New Settings
         End Try
 
-        If Not Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-            SetDefaultsForLists()
+        If Not Me._version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+            SetDefaultsForLists(Enums.DefaultType.All, False)
         End If
     End Sub
 
@@ -3459,104 +3459,109 @@ Public Class Settings
         Return Me._seasonfanartjpg OrElse Me._seasondashfanart OrElse Me._seasondotfanart
     End Function
 
-    Public Sub SetDefaultsForLists()
-        If Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters Then
-            Master.eSettings.FilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.FilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.FilterCustom.Add("\.[->] ")
+    Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Me._filterCustom.Count <= 0 AndAlso Not Me._nofilters)) Then
+            Me._filterCustom.Clear()
+            Me._filterCustom.Add("[\W_]\(?\d{4}\)?.*")
+            Me._filterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Me._filterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Me._filterCustom.Add("(?i)[\W_]dvd.*")
+            Me._filterCustom.Add("(?i)[\W_]720.*")
+            Me._filterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Me._filterCustom.Add("(?i)[\W_]ac3.*")
+            Me._filterCustom.Add("(?i)[\W_]dts.*")
+            Me._filterCustom.Add("(?i)[\W_]divx.*")
+            Me._filterCustom.Add("(?i)[\W_]xvid.*")
+            Me._filterCustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Me._filterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Me._filterCustom.Add("(?i)[\W_]extended.*")
+            Me._filterCustom.Add("(?i)[\W_]hd(tv)?.*")
+            Me._filterCustom.Add("(?i)[\W_]unrated.*")
+            Me._filterCustom.Add("(?i)[\W_]uncut.*")
+            Me._filterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Me._filterCustom.Add("(?i)[\W_]\[offline\].*")
+            Me._filterCustom.Add("(?i)[\W_]ntsc.*")
+            Me._filterCustom.Add("[\W_]PAL[\W_]?.*")
+            Me._filterCustom.Add("\.[->] ")
         End If
 
-        If Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters Then
-            Master.eSettings.ShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Me._showfiltercustom.Count <= 0 AndAlso Not Me._noshowfilters)) Then
+            Me._showfiltercustom.Clear()
+            Me._showfiltercustom.Add("[\W_]\(?\d{4}\)?.*")
             'would there ever be season or episode info in the show folder name??
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.ShowFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.ShowFilterCustom.Add("\.[->] ")
+            'Me._ShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
+            'Me._ShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
+            'Me._ShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
+            'Me._ShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
+            Me._showfiltercustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Me._showfiltercustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Me._showfiltercustom.Add("(?i)[\W_]dvd.*")
+            Me._showfiltercustom.Add("(?i)[\W_]720.*")
+            Me._showfiltercustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Me._showfiltercustom.Add("(?i)[\W_]ac3.*")
+            Me._showfiltercustom.Add("(?i)[\W_]dts.*")
+            Me._showfiltercustom.Add("(?i)[\W_]divx.*")
+            Me._showfiltercustom.Add("(?i)[\W_]xvid.*")
+            Me._showfiltercustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Me._showfiltercustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Me._showfiltercustom.Add("(?i)[\W_]extended.*")
+            Me._showfiltercustom.Add("(?i)[\W_]hd(tv)?.*")
+            Me._showfiltercustom.Add("(?i)[\W_]unrated.*")
+            Me._showfiltercustom.Add("(?i)[\W_]uncut.*")
+            Me._showfiltercustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Me._showfiltercustom.Add("(?i)[\W_]\[offline\].*")
+            Me._showfiltercustom.Add("(?i)[\W_]ntsc.*")
+            Me._showfiltercustom.Add("[\W_]PAL[\W_]?.*")
+            Me._showfiltercustom.Add("\.[->] ")
         End If
 
-        If Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters Then
-            Master.eSettings.EpFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.EpFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.EpFilterCustom.Add("\.[->] ")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Me._epfiltercustom.Count <= 0 AndAlso Not Me._noepfilters)) Then
+            Me._epfiltercustom.Clear()
+            Me._epfiltercustom.Add("[\W_]\(?\d{4}\)?.*")
+            Me._epfiltercustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
+            Me._epfiltercustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
+            Me._epfiltercustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
+            Me._epfiltercustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
+            Me._epfiltercustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Me._epfiltercustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Me._epfiltercustom.Add("(?i)[\W_]dvd.*")
+            Me._epfiltercustom.Add("(?i)[\W_]720.*")
+            Me._epfiltercustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Me._epfiltercustom.Add("(?i)[\W_]ac3.*")
+            Me._epfiltercustom.Add("(?i)[\W_]dts.*")
+            Me._epfiltercustom.Add("(?i)[\W_]divx.*")
+            Me._epfiltercustom.Add("(?i)[\W_]xvid.*")
+            Me._epfiltercustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Me._epfiltercustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Me._epfiltercustom.Add("(?i)[\W_]extended.*")
+            Me._epfiltercustom.Add("(?i)[\W_]hd(tv)?.*")
+            Me._epfiltercustom.Add("(?i)[\W_]unrated.*")
+            Me._epfiltercustom.Add("(?i)[\W_]uncut.*")
+            Me._epfiltercustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Me._epfiltercustom.Add("(?i)[\W_]\[offline\].*")
+            Me._epfiltercustom.Add("(?i)[\W_]ntsc.*")
+            Me._epfiltercustom.Add("[\W_]PAL[\W_]?.*")
+            Me._epfiltercustom.Add("\.[->] ")
         End If
 
-        If Master.eSettings.SortTokens.Count <= 0 AndAlso Not Master.eSettings.NoTokens Then
-            Master.eSettings.SortTokens.Add("the[\W_]")
-            Master.eSettings.SortTokens.Add("a[\W_]")
-            Master.eSettings.SortTokens.Add("an[\W_]")
+        If Type = Enums.DefaultType.All AndAlso Me._sorttokens.Count <= 0 AndAlso Not Me._notokens Then
+            Me._sorttokens.Add("the[\W_]")
+            Me._sorttokens.Add("a[\W_]")
+            Me._sorttokens.Add("an[\W_]")
         End If
 
-        If Master.eSettings.ValidExts.Count <= 0 Then
-            Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb", ","))
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Me._validexts.Count <= 0) Then
+            Me._validexts.Clear()
+            Me._validexts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb", ","))
         End If
 
-        If Master.eSettings.TVShowRegexes.Count <= 0 Then
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 0, .SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 1, .SeasonRegex = "[\W_]*(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "[\W_]*(\([0-9]{4}\))|((?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9]))", .SeasonFromDirectory = False, .EpisodeRegex = "(\([0-9]{4}\))|((([0-9]+|-)(?<episode>[0-9][0-9])))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "^(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowRegex) AndAlso (Force OrElse Me._tvshowregexes.Count <= 0) Then
+            Me._tvshowregexes.Clear()
+            Me._tvshowregexes.Add(New TVShowRegEx With {.ID = 0, .SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Me._tvshowregexes.Add(New TVShowRegEx With {.ID = 1, .SeasonRegex = "[\W_]*(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Me._tvshowregexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "[\W_]*(\([0-9]{4}\))|((?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9]))", .SeasonFromDirectory = False, .EpisodeRegex = "(\([0-9]{4}\))|((([0-9]+|-)(?<episode>[0-9][0-9])))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Me._tvshowregexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+            Me._tvshowregexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "^(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^\w]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
     End Sub
 
