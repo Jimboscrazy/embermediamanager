@@ -302,6 +302,8 @@ Partial Class dlgSettings
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.btnRegexDown = New System.Windows.Forms.Button
+        Me.btnRegexUp = New System.Windows.Forms.Button
         Me.btnResetShowRegex = New System.Windows.Forms.Button
         Me.gbShowRegex = New System.Windows.Forms.GroupBox
         Me.lblSeasonMatch = New System.Windows.Forms.Label
@@ -580,8 +582,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.btnRegexDown = New System.Windows.Forms.Button
-        Me.btnRegexUp = New System.Windows.Forms.Button
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2267,8 +2267,8 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(6, "image.png")
         Me.ilSettings.Images.SetKeyName(7, "television.ico")
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
-        Me.ilSettings.Images.SetKeyName(9, "accept.png")
-        Me.ilSettings.Images.SetKeyName(10, "delete.png")
+        Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
+        Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
         '
         'tvSettings
         '
@@ -3827,6 +3827,24 @@ Partial Class dlgSettings
         Me.TabPage4.TabIndex = 1
         Me.TabPage4.Text = "Regex"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'btnRegexDown
+        '
+        Me.btnRegexDown.Image = CType(resources.GetObject("btnRegexDown.Image"), System.Drawing.Image)
+        Me.btnRegexDown.Location = New System.Drawing.Point(304, 167)
+        Me.btnRegexDown.Name = "btnRegexDown"
+        Me.btnRegexDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnRegexDown.TabIndex = 18
+        Me.btnRegexDown.UseVisualStyleBackColor = True
+        '
+        'btnRegexUp
+        '
+        Me.btnRegexUp.Image = CType(resources.GetObject("btnRegexUp.Image"), System.Drawing.Image)
+        Me.btnRegexUp.Location = New System.Drawing.Point(280, 167)
+        Me.btnRegexUp.Name = "btnRegexUp"
+        Me.btnRegexUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnRegexUp.TabIndex = 17
+        Me.btnRegexUp.UseVisualStyleBackColor = True
         '
         'btnResetShowRegex
         '
@@ -6925,24 +6943,6 @@ Partial Class dlgSettings
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
-        '
-        'btnRegexDown
-        '
-        Me.btnRegexDown.Image = CType(resources.GetObject("btnRegexDown.Image"), System.Drawing.Image)
-        Me.btnRegexDown.Location = New System.Drawing.Point(304, 167)
-        Me.btnRegexDown.Name = "btnRegexDown"
-        Me.btnRegexDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnRegexDown.TabIndex = 18
-        Me.btnRegexDown.UseVisualStyleBackColor = True
-        '
-        'btnRegexUp
-        '
-        Me.btnRegexUp.Image = CType(resources.GetObject("btnRegexUp.Image"), System.Drawing.Image)
-        Me.btnRegexUp.Location = New System.Drawing.Point(280, 167)
-        Me.btnRegexUp.Name = "btnRegexUp"
-        Me.btnRegexUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnRegexUp.TabIndex = 17
-        Me.btnRegexUp.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '

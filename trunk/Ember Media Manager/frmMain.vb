@@ -2863,7 +2863,7 @@ doCancel:
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 1
+                pt.Y = 3
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
 
                 e.Handled = True
@@ -2897,6 +2897,18 @@ doCancel:
                 Else
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
+
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 Then
+                    e.PaintBackground(e.ClipBounds, True)
+
+                    Dim pt As Point = e.CellBounds.Location
+                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                    pt.X += offset
+                    pt.Y = e.CellBounds.Top + 3
+                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    e.Handled = True
                 End If
             End If
 
@@ -3176,6 +3188,18 @@ doCancel:
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
+
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 6 Then
+                    e.PaintBackground(e.ClipBounds, True)
+
+                    Dim pt As Point = e.CellBounds.Location
+                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                    pt.X += offset
+                    pt.Y = e.CellBounds.Top + 3
+                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    e.Handled = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3422,6 +3446,18 @@ doCancel:
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
+
+                If e.ColumnIndex = 3 OrElse e.ColumnIndex = 4 Then
+                    e.PaintBackground(e.ClipBounds, True)
+
+                    Dim pt As Point = e.CellBounds.Location
+                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                    pt.X += offset
+                    pt.Y = e.CellBounds.Top + 3
+                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    e.Handled = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3662,6 +3698,18 @@ doCancel:
                 Else
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
+
+                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 4 Then
+                    e.PaintBackground(e.ClipBounds, True)
+
+                    Dim pt As Point = e.CellBounds.Location
+                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                    pt.X += offset
+                    pt.Y = e.CellBounds.Top + 3
+                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    e.Handled = True
                 End If
             End If
         Catch ex As Exception
