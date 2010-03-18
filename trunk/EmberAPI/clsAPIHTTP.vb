@@ -157,14 +157,8 @@ Public Class HTTP
                 Select Case True
                     Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(URL))
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
-                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("quicktime")
-                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mov", "[trailer].mov")))
-                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
-                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
-                    Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("flv") OrElse (URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain"))) 'matttrailer reports "text/plain" for flv files
-                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-                    Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("shockwave") OrElse wrResponse.ContentType.Contains("flash"))
-                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.swf", "[trailer].swf")))
+                    Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
+                        outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
                     Case Type = "translation"
                         outFile = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
                     Case Type = "template"
