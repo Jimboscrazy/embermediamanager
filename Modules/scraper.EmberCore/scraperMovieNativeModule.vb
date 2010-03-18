@@ -149,6 +149,7 @@ Public Class EmberNativeScraperModule
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
         _AssemblyName = sAssemblyName
+        LoadSettings()
     End Sub
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
@@ -272,7 +273,7 @@ Public Class EmberNativeScraperModule
     End Sub
 
     Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
-        LoadSettings()
+        'LoadSettings()
         Dim Poster As New Images
         Dim Fanart As New Images
         Dim pResults As Containers.ImgResult
@@ -462,7 +463,7 @@ Public Class EmberNativeScraperModule
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
-        LoadSettings()
+        'LoadSettings()
         IMDB.IMDBURL = MySettings.IMDBURL
         IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
         IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
