@@ -86,15 +86,20 @@ Public Class dlgTrailer
                 System.Diagnostics.Process.Start(String.Concat("""", Me.prePath, """"))
                 didCancel = True
             End If
-        ElseIf Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
-            If CloseDialog Then
-                Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-                FileUtils.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+        ElseIf Me.txtManual.Text.Length > 0 Then
+            If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+                If CloseDialog Then
+                    Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+                    FileUtils.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
 
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Close()
+                Else
+                    System.Diagnostics.Process.Start(String.Concat("""", Me.txtManual.Text, """"))
+                    didCancel = True
+                End If
             Else
-                System.Diagnostics.Process.Start(String.Concat("""", Me.txtManual.Text, """"))
+                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 didCancel = True
             End If
         ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
@@ -110,41 +115,41 @@ Public Class dlgTrailer
                     didCancel = True
                 End If
             End Using
-        ElseIf StringUtils.isValidURL(Me.txtYouTube.Text) Then
-            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-            Me.bwDownloadTrailer.WorkerReportsProgress = True
-            Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
-        Else
-            If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-                Using dFormats As New dlgTrailerFormat
-                    Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
-
-                    If Not String.IsNullOrEmpty(sFormat) Then
-                        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadTrailer.WorkerReportsProgress = True
-                        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                        Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
-                    Else
-                        didCancel = True
-                    End If
-                End Using
-            Else
+            ElseIf StringUtils.isValidURL(Me.txtYouTube.Text) Then
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
                 Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
-            End If
-        End If
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
+            Else
+                If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                    Using dFormats As New dlgTrailerFormat
+                        Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
 
-        If didCancel Then
-            Me.pnlStatus.Visible = False
-            Me.lbTrailers.Enabled = True
-            Me.txtYouTube.Enabled = True
-            Me.txtManual.Enabled = True
-            Me.btnBrowse.Enabled = True
-            Me.SetEnabled(False)
-        End If
+                        If Not String.IsNullOrEmpty(sFormat) Then
+                            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                            Me.bwDownloadTrailer.WorkerReportsProgress = True
+                            Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                        Else
+                            didCancel = True
+                        End If
+                    End Using
+                Else
+                    Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                    Me.bwDownloadTrailer.WorkerReportsProgress = True
+                    Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
+                End If
+            End If
+
+            If didCancel Then
+                Me.pnlStatus.Visible = False
+                Me.lbTrailers.Enabled = True
+                Me.txtYouTube.Enabled = True
+                Me.txtManual.Enabled = True
+                Me.btnBrowse.Enabled = True
+                Me.SetEnabled(False)
+            End If
     End Sub
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
@@ -329,12 +334,15 @@ Public Class dlgTrailer
             Me.OK_Button.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
+                Me.OK_Button.Text = Master.eLang.GetString(846, "Move")
                 Me.btnSetNfo.Enabled = False
             Else
+                Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
                 Me.btnSetNfo.Enabled = True
             End If
         Else
             Me.OK_Button.Enabled = False
+            Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
             Me.btnPlayTrailer.Enabled = False
             Me.btnSetNfo.Enabled = False
         End If

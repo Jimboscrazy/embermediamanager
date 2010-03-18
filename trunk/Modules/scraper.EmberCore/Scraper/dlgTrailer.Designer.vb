@@ -149,7 +149,7 @@ Partial Class dlgTrailer
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(376, 80)
+        Me.btnBrowse.Location = New System.Drawing.Point(376, 82)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 5
