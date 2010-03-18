@@ -31,12 +31,11 @@ Public Class dlgTrailer
     Friend  WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
 
     Private cTrailer As New Trailers
-    Dim imdbID As String = String.Empty
-    Dim prePath As String = String.Empty
-    Private sHTTP As New HTTP
-    Dim sPath As String = String.Empty
-    Dim tArray As New List(Of String)
-    Dim tURL As String = String.Empty
+    Private imdbID As String = String.Empty
+    Private prePath As String = String.Empty
+    Private sPath As String = String.Empty
+    Private tArray As New List(Of String)
+    Private tURL As String = String.Empty
 
     #End Region 'Fields
 
@@ -55,7 +54,6 @@ Public Class dlgTrailer
 
     Protected Overrides Sub Finalize()
         cTrailer = Nothing
-        sHTTP = Nothing
         MyBase.Finalize()
     End Sub
 
@@ -286,6 +284,8 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.cTrailer.Cancel()
+
         If Me.bwCompileList.IsBusy Then Me.bwCompileList.CancelAsync()
         If Me.bwDownloadTrailer.IsBusy Then Me.bwDownloadTrailer.CancelAsync()
 
@@ -301,7 +301,6 @@ Public Class dlgTrailer
         Me.SetUp()
         cTrailer.IMDBURL = IMDBURL
         AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
-        AddHandler sHTTP.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
