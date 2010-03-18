@@ -4848,7 +4848,9 @@ doCancel:
                 Master.eSettings.InfoPanelState = Me.aniType
                 Master.eSettings.ShowInfoPanelState = Me.aniShowType
                 Master.eSettings.FilterPanelState = Me.aniFilterRaise
-                Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
+                Master.eSettings.SplitterPanelState = Me.scMain.SplitterDistance
+                Master.eSettings.ShowSplitterPanelState = Me.scTV.SplitterDistance
+                Master.eSettings.SeasonSplitterPanelState = Me.SplitContainer2.SplitterDistance
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
@@ -5223,7 +5225,9 @@ doCancel:
                     Me.btnFilterUp.Enabled = True
                 End If
 
-                Me.scMain.SplitterDistance = Master.eSettings.SpliterPanelState
+                Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
+                Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
+                Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
 
                 Me.ClearInfo()
 

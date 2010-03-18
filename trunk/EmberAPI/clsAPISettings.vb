@@ -219,6 +219,8 @@ Public Class Settings
     Private _scanordermodify As Boolean
     Private _scantvmediainfo As Boolean
     Private _scmainstate As Integer
+    Private _scshowstate As Integer
+    Private _scseasonstate As Integer
     Private _scraperepactors As Boolean
     Private _scraperepaired As Boolean
     Private _scraperepcredits As Boolean
@@ -2813,12 +2815,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SpliterPanelState() As Integer
+    Public Property SplitterPanelState() As Integer
         Get
             Return Me._scmainstate
         End Get
         Set(ByVal value As Integer)
             Me._scmainstate = value
+        End Set
+    End Property
+
+    Public Property ShowSplitterPanelState() As Integer
+        Get
+            Return Me._scshowstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._scshowstate = value
+        End Set
+    End Property
+
+    Public Property SeasonSplitterPanelState() As Integer
+        Get
+            Return Me._scseasonstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._scseasonstate = value
         End Set
     End Property
 
@@ -3251,6 +3271,8 @@ Public Class Settings
         Me._showinfopanelstate = 0
         Me._filterPanelState = False
         Me._scmainstate = 364
+        Me._scshowstate = 200
+        Me._scseasonstate = 200
         Me._infopanelanim = True
         Me._checkupdates = True
         Me._bdpath = String.Empty
