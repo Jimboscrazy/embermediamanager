@@ -32,7 +32,7 @@ Public Class FrameExtrator
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
-    Private _name As String = "Frame Extrator"
+    Private _name As String = "Frame Extractor"
     Private _setup As frmSettingsHolder
     Private frmTV As frmTVExtrator
     Private frmMovie As frmMovieExtractor
