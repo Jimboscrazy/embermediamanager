@@ -150,12 +150,12 @@
         'colName
         '
         Me.colName.Text = "Title"
-        Me.colName.Width = 250
+        Me.colName.Width = 223
         '
         'colLang
         '
         Me.colLang.Text = "Language"
-        Me.colLang.Width = 63
+        Me.colLang.Width = 89
         '
         'colLev
         '
