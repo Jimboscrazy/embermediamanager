@@ -190,11 +190,22 @@ Public Class EmberXMLScraperModule
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         If scraperName = String.Empty Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No Scraper Defined {0}."), vbNewLine), Nothing}))
-        Else
-            Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
-            res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No XML Scraper Defined {0}."), vbNewLine), Nothing}))
+            Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
+        Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+        Select Case ScrapeType
+            Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                ' Get first and go
+            Case Else
+                res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                If res.Count > 0 Then
+                    'Dialog
+                End If
+        End Select
+
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
