@@ -3361,7 +3361,7 @@ Public Class Settings
         Me._tvshowregexes = New List(Of TVShowRegEx)
         Me._seasonalltbn = True
         Me._seasonalljpg = False
-        Me._showfolderjpg = False
+        Me._showfolderjpg = True
         Me._showtbn = True
         Me._showjpg = False
         Me._showpostertbn = False
