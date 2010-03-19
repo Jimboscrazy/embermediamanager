@@ -584,7 +584,7 @@ Public Class NFO
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim xmlEp As New MediaContainers.EpisodeDetails
 
-        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= 0 Then
+        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= -1 Then
             Try
                 If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                     'better way to read multi-root xml??

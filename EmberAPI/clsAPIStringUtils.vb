@@ -61,7 +61,7 @@ Public Class StringUtils
         Dim d As Integer(,) = New Integer(n, m) {}
 
         If n = 0 Then
-            Return (Master.eSettings.LevTolerance + 1)
+            Return 100
         End If
 
         If m = 0 Then

@@ -7384,6 +7384,8 @@ doCancel:
 
         If ShowCount > 0 Then
             Me.tabTV.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
+        Else
+            Me.tabTV.Text = Master.eLang.GetString(653, "TV")
         End If
     End Sub
 
