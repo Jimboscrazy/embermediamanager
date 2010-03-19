@@ -26,10 +26,11 @@ Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports System.Drawing.Imaging
 
 Public Class frmMainManager
 
-    #Region "Fields"
+#Region "Fields"
 
     Public Shared EmberVersions As New UpgradeList
     Public Shared ModulesVersions As New _LastVersion
@@ -41,7 +42,7 @@ Public Class frmMainManager
     Public MasterDB As New DB
     Public Platform As String = "x86"
 
-    Friend  WithEvents bwFF As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwFF As New System.ComponentModel.BackgroundWorker
 
     Dim AddCommand As Boolean = False
     Dim CmdsChanged As Boolean = False
@@ -53,9 +54,9 @@ Public Class frmMainManager
     Dim SetupSettings As New SetupManager.Settings
     Dim _cmds As New InstallCommands
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
@@ -749,6 +750,20 @@ Public Class frmMainManager
         MasterDB.Close()
     End Sub
 
+    Private Sub frmMainManager_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Leave
+
+    End Sub
+
+    'Gilles Khouzams colour corrected grayscale shear
+
+    'Dim cm As ColorMatrix = New ColorMatrix(New Single()() _
+    '     {New Single() {0.3, 0.3, 0.3, 0, 0}, _
+    '    New Single() {0.59, 0.59, 0.59, 0, 0}, _
+    '    New Single() {0.11, 0.11, 0.11, 0, 0}, _
+    '    New Single() {0, 0, 0, 1, 0}, _
+    '    New Single() {0, 0, 0, 0, 1}})
+
+
     Private Sub frmMainManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         If Not Directory.Exists(Path.Combine(AppPath, "Site")) Then Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
         If Not Directory.Exists(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files"))) Then Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
@@ -846,9 +861,11 @@ Public Class frmMainManager
         End Using
     End Sub
 
+    Dim AllFilesCount As Integer
     Sub LoadFiles(Optional ByVal showAll As Boolean = True)
         lstFiles.Items.Clear()
         txtEMMVersion.Text = ""
+        AllFilesCount = 0
         RemoveHandler lstFiles.ItemCheck, AddressOf lstFiles_ItemCheck
         Using SQLcommand As SQLite.SQLiteCommand = MasterDB.SQLcn.CreateCommand
             SQLcommand.CommandText = String.Concat("SELECT OrigPath,EmberPath,Filename,Hash,UseFile,Platform FROM EmberFiles ORDER BY EmberPath,Filename  ;")
@@ -870,6 +887,7 @@ Public Class frmMainManager
                         i.SubItems.Add(o.FTI.EmberPath)
                         i.SubItems.Add(o.FTI.Platform)
                         i.Checked = o.UseFile
+                        If o.UseFile Then AllFilesCount += 1
                         lstFiles.Items.Add(i)
                         If o.FTI.EmberPath = Path.DirectorySeparatorChar AndAlso o.FTI.Filename = "Ember Media Manager.exe" Then
                             If File.Exists(Path.Combine(o.FTI.OriginalPath, "Ember Media Manager.exe")) Then
@@ -885,6 +903,7 @@ Public Class frmMainManager
             End Using
         End Using
         AddHandler lstFiles.ItemCheck, AddressOf lstFiles_ItemCheck
+        Label14.Text = AllFilesCount.ToString
     End Sub
 
     Sub LoadSettings()
@@ -1092,30 +1111,30 @@ Public Class frmMainManager
         ' Next
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Structure FilesInFolders
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim EmberPath As String
         Dim Filename As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Class DB
 
-        #Region "Fields"
+#Region "Fields"
 
         Public SQLcn As New SQLite.SQLiteConnection()
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Function BeginTransaction() As SQLite.SQLiteTransaction
             Return SQLcn.BeginTransaction
@@ -1330,32 +1349,32 @@ Public Class frmMainManager
             Return o
         End Function
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Class EmberFiles
 
-        #Region "Fields"
+#Region "Fields"
 
         Public FTI As FileToInstall
         Public UseFile As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Class
 
     Class ListViewItemComparer
         Implements IComparer
 
-        #Region "Fields"
+#Region "Fields"
 
         ' Implements the manual sorting of items by columns.
         Private col As Integer
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             col = 0
@@ -1365,32 +1384,32 @@ Public Class frmMainManager
             col = column
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements IComparer.Compare
             Return -1 * Convert.ToInt32(CType(x, ListViewItem).SubItems(col).Text).CompareTo(Convert.ToInt32(CType(y, ListViewItem).SubItems(col).Text))
             'Return Convert.ToInt32(x.text).CompareTo(Convert.ToInt32(y))
         End Function
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Class OrigPaths
 
-        #Region "Fields"
+#Region "Fields"
 
         Public emberpath As String
         Public origpath As String
         Public platform As String
         Public recursive As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

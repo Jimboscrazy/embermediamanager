@@ -85,6 +85,7 @@ Partial Class frmMainManager
         Me.ColumnHeader9 = New System.Windows.Forms.ColumnHeader
         Me.Label12 = New System.Windows.Forms.Label
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.cboStats = New System.Windows.Forms.ComboBox
         Me.lstStats = New System.Windows.Forms.ListView
         Me.ColumnHeader12 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader13 = New System.Windows.Forms.ColumnHeader
@@ -94,7 +95,7 @@ Partial Class frmMainManager
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
-        Me.cboStats = New System.Windows.Forms.ComboBox
+        Me.Label14 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -157,6 +158,7 @@ Partial Class frmMainManager
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label14)
         Me.TabPage1.Controls.Add(Me.Label3)
         Me.TabPage1.Controls.Add(Me.cbPlatform)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
@@ -373,42 +375,42 @@ Partial Class frmMainManager
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllwaysExcludeFileToolStripMenuItem, Me.RemoveExclusionToolStripMenuItem, Me.AllwaysExcludeFileinFolderMenuItem, Me.RemoveExcludeFileinFolderToolStripMenuItem, Me.AllwaysExcludeFolderToolStripMenuItem, Me.RemoveFolderExclusionToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(245, 136)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(250, 136)
         '
         'AllwaysExcludeFileToolStripMenuItem
         '
         Me.AllwaysExcludeFileToolStripMenuItem.Name = "AllwaysExcludeFileToolStripMenuItem"
-        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFileToolStripMenuItem.Text = "Allways Exclude File"
         '
         'RemoveExclusionToolStripMenuItem
         '
         Me.RemoveExclusionToolStripMenuItem.Name = "RemoveExclusionToolStripMenuItem"
-        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveExclusionToolStripMenuItem.Text = "Remove File Exclusion"
         '
         'AllwaysExcludeFileinFolderMenuItem
         '
         Me.AllwaysExcludeFileinFolderMenuItem.Name = "AllwaysExcludeFileinFolderMenuItem"
-        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFileinFolderMenuItem.Text = "Allways Exclude File in this Folder"
         '
         'RemoveExcludeFileinFolderToolStripMenuItem
         '
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Name = "RemoveExcludeFileinFolderToolStripMenuItem"
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Text = "Remove File in Folder Exclusion"
         '
         'AllwaysExcludeFolderToolStripMenuItem
         '
         Me.AllwaysExcludeFolderToolStripMenuItem.Name = "AllwaysExcludeFolderToolStripMenuItem"
-        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFolderToolStripMenuItem.Text = "Allways Exclude Folder"
         '
         'RemoveFolderExclusionToolStripMenuItem
         '
         Me.RemoveFolderExclusionToolStripMenuItem.Name = "RemoveFolderExclusionToolStripMenuItem"
-        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveFolderExclusionToolStripMenuItem.Text = "Remove Folder Exclusion"
         '
         'txtEMMVersion
@@ -662,6 +664,16 @@ Partial Class frmMainManager
         Me.TabPage4.Text = "Stats"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'cboStats
+        '
+        Me.cboStats.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboStats.Enabled = False
+        Me.cboStats.FormattingEnabled = True
+        Me.cboStats.Location = New System.Drawing.Point(212, 3)
+        Me.cboStats.Name = "cboStats"
+        Me.cboStats.Size = New System.Drawing.Size(121, 21)
+        Me.cboStats.TabIndex = 7
+        '
         'lstStats
         '
         Me.lstStats.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader12, Me.ColumnHeader13})
@@ -738,15 +750,14 @@ Partial Class frmMainManager
         Me.btnUpdateFrom.Text = "Update from Site"
         Me.btnUpdateFrom.UseVisualStyleBackColor = True
         '
-        'cboStats
+        'Label14
         '
-        Me.cboStats.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboStats.Enabled = False
-        Me.cboStats.FormattingEnabled = True
-        Me.cboStats.Location = New System.Drawing.Point(212, 3)
-        Me.cboStats.Name = "cboStats"
-        Me.cboStats.Size = New System.Drawing.Size(121, 21)
-        Me.cboStats.TabIndex = 7
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(699, 372)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(45, 13)
+        Me.Label14.TabIndex = 12
+        Me.Label14.Text = "Label14"
         '
         'frmMainManager
         '
@@ -855,5 +866,6 @@ Partial Class frmMainManager
     Friend WithEvents ColumnHeader13 As System.Windows.Forms.ColumnHeader
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents cboStats As System.Windows.Forms.ComboBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
 
 End Class
