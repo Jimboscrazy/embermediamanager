@@ -450,7 +450,7 @@ Namespace IMDB
                             Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 26)
 
                             PlotOutline = Web.HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
-                                               , String.Empty, PlotOutline.Replace("|", String.Empty)).Trim)
+                                               , String.Empty, PlotOutline.Replace("|", String.Empty).Replace("&raquo;", String.Empty)).Trim)
                             'check if outline has links to other IMDB entry
                             If Not String.IsNullOrEmpty(PlotOutline) Then
                                 For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
