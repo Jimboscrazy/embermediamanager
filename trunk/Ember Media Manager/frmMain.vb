@@ -5954,6 +5954,15 @@ doCancel:
                     'ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                     Dim params As New List(Of Object)(New Object() {Master.currMovie, Master.eSettings.AutoThumbs, True, ""})
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
+                    Dim ETasFA As String = DirectCast(params(3), String)
+                    If Not String.IsNullOrEmpty(ETasFA) Then
+                        MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
+                        Master.currMovie.ExtraPath = "TRUE"
+                        If Not ETasFA = "TRUE" Then
+                            MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
+                            Master.currMovie.FanartPath = ETasFA
+                        End If
+                    End If
                 End If
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
