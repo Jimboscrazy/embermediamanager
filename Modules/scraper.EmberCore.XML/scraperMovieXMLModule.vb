@@ -22,6 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports EmberScraperModule.XMLScraper.ScraperXML
 Imports System.Reflection
+Imports System.Drawing.Imaging
 
 Public Class EmberXMLScraperModule
     Implements Interfaces.EmberMovieScraperModule
@@ -234,7 +235,6 @@ Public Class EmberXMLScraperModule
         End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-
     Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag)
         'DBMovie.Movie.Actors = lMediaTag.Actors
 
