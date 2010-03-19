@@ -24,19 +24,19 @@ Public Class ImageUtils
 
     Public Shared Function AddMissingStamp(ByVal oImage As Image) As Image
         Dim nImage As New Bitmap(oImage)
-        Dim X As Integer
-        Dim Y As Integer
-        Dim clr As Integer
 
         'first let's convert the background to grayscale
-        For X = 0 To nImage.Width - 1
-            For Y = 0 To nImage.Height - 1
-                clr = (CInt(nImage.GetPixel(X, Y).R) + _
-                       nImage.GetPixel(X, Y).G + _
-                       nImage.GetPixel(X, Y).B) \ 3
-                nImage.SetPixel(X, Y, Color.FromArgb(clr, clr, clr))
-            Next Y
-        Next X
+        Dim g As Graphics = Graphics.FromImage(nImage)
+        Dim cm As Imaging.ColorMatrix = New Imaging.ColorMatrix(New Single()() _
+             {New Single() {0.5, 0.5, 0.5, 0, 0}, _
+            New Single() {0.5, 0.5, 0.5, 0, 0}, _
+            New Single() {0.5, 0.5, 0.5, 0, 0}, _
+            New Single() {0, 0, 0, 1, 0}, _
+            New Single() {0, 0, 0, 0, 1}})
+
+        Dim ia As Imaging.ImageAttributes = New Imaging.ImageAttributes()
+        ia.SetColorMatrix(cm)
+        g.DrawImage(oImage, New Rectangle(0, 0, oImage.Width, oImage.Height), 0, 0, oImage.Width, oImage.Height, GraphicsUnit.Pixel, ia)
 
         'now overlay "missing" image
         Dim grOverlay As Graphics = Graphics.FromImage(nImage)
