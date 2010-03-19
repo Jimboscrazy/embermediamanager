@@ -76,25 +76,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
-        Try
-            If Me.lvActors.SelectedItems.Count > 0 Then
-                Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
-                Using dAddEditActor As New dlgAddEditActor
-                    eActor = dAddEditActor.ShowDialog(False, eActor)
-                End Using
-                If Not IsNothing(eActor) Then
-                    lvwItem.Text = eActor.Name
-                    lvwItem.SubItems(1).Text = eActor.Role
-                    lvwItem.SubItems(2).Text = eActor.Thumb
-                    lvwItem.Selected = True
-                    lvwItem.EnsureVisible()
-                End If
-                eActor = Nothing
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        Me.EditActor()
     End Sub
 
 
@@ -142,9 +124,6 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
-        '//
-        ' Convert # rating to star images
-        '\\
 
         Try
             'f'in MS and them leaving control arrays out of VB.NET
@@ -273,6 +252,28 @@ Public Class dlgEditEpisode
         Me.FillInfo()
     End Sub
 
+    Private Sub EditActor()
+        Try
+            If Me.lvActors.SelectedItems.Count > 0 Then
+                Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
+                Dim eActor As New MediaContainers.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
+                Using dAddEditActor As New dlgAddEditActor
+                    eActor = dAddEditActor.ShowDialog(False, eActor)
+                End Using
+                If Not IsNothing(eActor) Then
+                    lvwItem.Text = eActor.Name
+                    lvwItem.SubItems(1).Text = eActor.Role
+                    lvwItem.SubItems(2).Text = eActor.Thumb
+                    lvwItem.Selected = True
+                    lvwItem.EnsureVisible()
+                End If
+                eActor = Nothing
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub FillInfo()
         With Me
             If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
@@ -320,8 +321,6 @@ Public Class dlgEditEpisode
         End With
     End Sub
 
-
-
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
         ' Determine if the clicked column is already the column that is
         ' being sorted.
@@ -344,6 +343,10 @@ Public Class dlgEditEpisode
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvActors.DoubleClick
+        EditActor()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -592,13 +595,14 @@ Public Class dlgEditEpisode
     Private Sub txtSeason_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSeason.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar, True)
     End Sub
+
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.TVFrameExtrator Then
             Me.Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
             Me.pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
         End If
-
     End Sub
-    #End Region 'Methods
+
+#End Region 'Methods
 
 End Class

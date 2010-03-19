@@ -136,10 +136,6 @@ Public Class dlgEditMovie
         EditActor()
     End Sub
 
-
-
- 
-
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog(Master.currMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
@@ -357,9 +353,6 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
-        '//
-        ' Convert # rating to star images
-        '\\
 
         Try
             'f'in MS and them leaving control arrays out of VB.NET
@@ -1393,8 +1386,6 @@ Public Class dlgEditMovie
         Me.AcceptButton = Me.OK_Button
     End Sub
 
-
-
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
         If StringUtils.isValidURL(txtTrailer.Text) Then
             Me.btnPlayTrailer.Enabled = True
@@ -1403,14 +1394,14 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    #End Region 'Methods
-
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.MovieFrameExtrator Then
             Me.RefreshExtraThumbs()
         End If
 
     End Sub
+
+    #End Region 'Methods
 
     #Region "Nested Types"
 
