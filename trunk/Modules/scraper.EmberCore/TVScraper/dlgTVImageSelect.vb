@@ -1049,7 +1049,7 @@ Public Class dlgTVImageSelect
                 If e.Node.Tag.ToString = "showp" Then
                     Me.SelSeason = -999
                     Me.SelIsPoster = True
-                    If Not IsNothing(Scraper.TVDBImages.ShowPoster) AndAlso Not IsNothing(Scraper.TVDBImages.ShowPoster.Image) Then
+                    If Not IsNothing(Scraper.TVDBImages.ShowPoster) AndAlso Not IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowPoster.Image.Image
                     Else
                         Me.pbCurrent.Image = Nothing
@@ -1057,13 +1057,13 @@ Public Class dlgTVImageSelect
 
                     iCount = ShowPosterList.Count
                     For i = 0 To iCount - 1
-                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) Then
+                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) AndAlso Not IsNothing(ShowPosterList(i).Image.Image) Then
                             Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
 
                     For i = 0 To GenericPosterList.Count - 1
-                        If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) Then
+                        If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) AndAlso Not IsNothing(GenericPosterList(i).Image.Image) Then
                             Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
@@ -1072,14 +1072,14 @@ Public Class dlgTVImageSelect
 
                     Me.SelSeason = -999
                     Me.SelIsPoster = False
-                    If Not IsNothing(Scraper.TVDBImages.ShowFanart) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image) Then
+                    If Not IsNothing(Scraper.TVDBImages.ShowFanart) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image) AndAlso Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                     Else
                         Me.pbCurrent.Image = Nothing
                     End If
 
                     For i = 0 To FanartList.Count - 1
-                        If Not IsNothing(FanartList(i)) AndAlso Not IsNothing(FanartList(i).Image) Then
+                        If Not IsNothing(FanartList(i)) AndAlso Not IsNothing(FanartList(i).Image) AndAlso Not IsNothing(FanartList(i).Image.Image) Then
                             Me.AddImage(FanartList(i).Image.Image, String.Format("{0}x{1}", FanartList(i).Image.Image.Width, FanartList(i).Image.Image.Height), i, New ImageTag With {.URL = FanartList(i).URL, .Path = FanartList(i).LocalFile, .isFanart = True})
                         End If
                     Next
@@ -1087,7 +1087,7 @@ Public Class dlgTVImageSelect
                 ElseIf e.Node.Tag.ToString = "allp" Then
                     Me.SelSeason = 999
                     Me.SelIsPoster = True
-                    If Not IsNothing(Scraper.TVDBImages.AllSeasonPoster) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image) Then
+                    If Not IsNothing(Scraper.TVDBImages.AllSeasonPoster) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image) AndAlso Not IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
                         Me.pbCurrent.Image = Scraper.TVDBImages.AllSeasonPoster.Image.Image
                     Else
                         Me.pbCurrent.Image = Nothing
@@ -1095,13 +1095,13 @@ Public Class dlgTVImageSelect
 
                     iCount = GenericPosterList.Count
                     For i = 0 To iCount - 1
-                        If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) Then
+                        If Not IsNothing(GenericPosterList(i)) AndAlso Not IsNothing(GenericPosterList(i).Image) AndAlso Not IsNothing(GenericPosterList(i).Image.Image) Then
                             Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i, New ImageTag With {.URL = GenericPosterList(i).URL, .Path = GenericPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
 
                     For i = 0 To ShowPosterList.Count - 1
-                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) Then
+                        If Not IsNothing(ShowPosterList(i)) AndAlso Not IsNothing(ShowPosterList(i).Image) AndAlso Not IsNothing(ShowPosterList(i).Image.Image) Then
                             Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i + iCount, New ImageTag With {.URL = ShowPosterList(i).URL, .Path = ShowPosterList(i).LocalFile, .isFanart = False})
                         End If
                     Next
@@ -1112,13 +1112,13 @@ Public Class dlgTVImageSelect
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
                             Me.SelIsPoster = False
                             Dim tFanart As Scraper.TVDBSeasonImage = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value))
-                            If Not IsNothing(tFanart) AndAlso Not IsNothing(tFanart.Fanart) AndAlso Not IsNothing(tFanart.Fanart.Image) Then
+                            If Not IsNothing(tFanart) AndAlso Not IsNothing(tFanart.Fanart) AndAlso Not IsNothing(tFanart.Fanart.Image) AndAlso Not IsNothing(tFanart.Fanart.Image.Image) Then
                                 Me.pbCurrent.Image = tFanart.Fanart.Image.Image
                             Else
                                 Me.pbCurrent.Image = Nothing
                             End If
                             For i = 0 To FanartList.Count - 1
-                                If Not IsNothing(FanartList(i)) AndAlso Not IsNothing(FanartList(i).Image) Then
+                                If Not IsNothing(FanartList(i)) AndAlso Not IsNothing(FanartList(i).Image) AndAlso Not IsNothing(FanartList(i).Image.Image) Then
                                     Me.AddImage(FanartList(i).Image.Image, String.Format("{0}x{1}", FanartList(i).Image.Image.Width, FanartList(i).Image.Image.Height), i, New ImageTag With {.URL = FanartList(i).URL, .Path = FanartList(i).LocalFile, .isFanart = True})
                                 End If
                             Next
@@ -1126,14 +1126,14 @@ Public Class dlgTVImageSelect
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
                             Me.SelIsPoster = True
                             Dim tPoster As Scraper.TVDBSeasonImage = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(f) f.Season = Me.SelSeason)
-                            If Not IsNothing(tPoster) AndAlso Not IsNothing(tPoster.Poster) Then
+                            If Not IsNothing(tPoster) AndAlso Not IsNothing(tPoster.Poster) AndAlso Not IsNothing(tPoster.Poster.Image) Then
                                 Me.pbCurrent.Image = tPoster.Poster.Image
                             Else
                                 Me.pbCurrent.Image = Nothing
                             End If
                             iCount = 0
                             For Each SImage As Scraper.TVDBSeasonPoster In SeasonList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
-                                If Not IsNothing(SImage.Image) Then
+                                If Not IsNothing(SImage.Image) AndAlso Not IsNothing(SImage.Image.Image) Then
                                     Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount, New ImageTag With {.URL = SImage.URL, .Path = SImage.LocalFile, .isFanart = False})
                                 End If
                                 iCount += 1
