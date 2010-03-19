@@ -7,11 +7,11 @@
 	<string control="Core_chkUpdates">If enabled, Ember will check for a new version at each start up.</string>
 	<string control="Core_chkOverwriteNfo">If enabled, NFO files will be overwritten when saving. If disabled, they will be renamed to *.info.</string>
 	<string control="Core_chkLogErrors">If enabled, all errors will be logged to a file located in &lt;Ember Installation Directory&gt;\Log\errlog.txt.</string>
-	<string control="Core_cbEpTheme">Select the theme to apply for the episode layout. (You must restart Ember for changes to take effect)</string>
-	<string control="Core_cbTVShowTheme">Select the theme to apply for the TV Show and Season layout. (You must restart Ember for changes to take effect)</string>
-	<string control="Core_cbMovieTheme">Select the theme to apply for the movie layout. (You must restart Ember for changes to take effect)</string>
+	<string control="Core_cbEpTheme">Select the theme to apply for the episode layout.</string>
+	<string control="Core_cbTVShowTheme">Select the theme to apply for the TV Show and Season layout.</string>
+	<string control="Core_cbMovieTheme">Select the theme to apply for the movie layout.</string>
 	<string control="Core_btnDLTrans">Download addons for Ember, including modules, themes, translations to other languages, and export templates.</string>
-	<string control="Core_cbIntLang">Select the language to use for Ember's interface.</string>
+	<string control="Core_cbIntLang">Select the language to use for Ember's interface. (You must restart Ember for changes to take effect)</string>
 	<string control="Core_chkCleanFolderJPG">Clean all files named "folder.jpg".</string>
 	<string control="Core_chkCleanExtrathumbs">Clean all "extrathumbs" folders.</string>
 	<string control="Core_chkCleanMovieTBN">Clean all files named "movie.tbn".</string>

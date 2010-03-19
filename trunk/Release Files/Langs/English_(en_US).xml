@@ -221,7 +221,7 @@
   <string id="219">Moving </string>
   <string id="220">WARNING: If you continue, all files will be sorted into separate folders.</string>
   <string id="221">The folder you entered does not exist. Please enter a valid path.</string>
-  <string id="222">Directory Not Found</string>
+  <string id="222">Folder Not Found</string>
   <string id="223">Select Studio</string>
   <string id="224">Edit the details for the selected movie.</string>
   <string id="225">Local Trailer Found</string>
@@ -252,7 +252,7 @@
   <string id="250">Remove Fanart</string>
   <string id="251">Change Fanart (Scrape)</string>
   <string id="252">Change Fanart (Local Browse)</string>
-  <string id="253">You have extrathumbs queued to be transferred to the movie directory.</string>
+  <string id="253">You have extrathumbs queued to be transferred to the movie folder.</string>
   <string id="254">Transfer Now</string>
   <string id="255">Set As Fanart</string>
   <string id="256">Frame Extraction</string>
@@ -363,7 +363,7 @@
   <string id="361">Finished</string>
   <string id="362">Done</string>
   <string id="363">Offline movie place holder created!</string>
-  <string id="364">Source directory does not exist or could not be found: </string>
+  <string id="364">Source folder does not exist or could not be found: </string>
   <string id="365">Sets Manager</string>
   <string id="366">Sets</string>
   <string id="367">Movies In Set</string>
@@ -528,7 +528,7 @@
   <string id="526">Timeout:</string>
   <string id="527">Get Trailers During "All Items" Scrapers</string>
   <string id="528">Supported Trailer Sites:</string>
-  <string id="529">Enable Downloading</string>
+  <string id="529">Enable Trailer Support</string>
   <string id="530">No Stack Extensions</string>
   <string id="531">Default Renaming Patterns</string>
   <string id="532">Files Pattern</string>
@@ -556,7 +556,7 @@
   <string id="554">XBMC Communication</string>
   <string id="555">Files and Sources</string>
   <string id="556">Scrapers - Data</string>
-  <string id="557">Scrapers - Images and Trailers</string>
+  <string id="557">Scrapers - Images &amp; Trailers</string>
   <string id="558">Wide</string>
   <string id="559">The name you are attempting to use for this XBMC installation is already in use. Please choose another.</string>
   <string id="560">Each name must be unique</string>
@@ -636,11 +636,11 @@
   <string id="634">File Name</string>
   <string id="635">You have selected {0} folders to open. Are you sure you want to do this?</string>
   <string id="636">Display Only Movies That Will Be Renamed</string>
-  <string id="637">An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer).</string>
-  <string id="638">Unable to Rename Directory</string>
+  <string id="637">An error occured while attempting to rename the folder:{0}{0}{1}{0}{0}Please ensure that you are not accessing this folder or any of its files from another program (including browsing via Windows Explorer).</string>
+  <string id="638">Unable to Rename Folder</string>
   <string id="639">An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.</string>
   <string id="640">Unable to Rename File</string>
-  <string id="641">Renaming Directory/Files...</string>
+  <string id="641">Renaming Folders/Files...</string>
   <string id="642">Sort Title</string>
   <string id="643">YAMJ Compatible Sets Saving</string>
   <string id="644">Cleaning Database...</string>
@@ -652,7 +652,7 @@
   <string id="650">Season</string>
   <string id="651">No Information is Available for This Show</string>
   <string id="652">No Information is Available for This Episode</string>
-  <string id="653">TV</string>
+  <string id="653">TV Shows</string>
   <string id="654">Season </string>
   <string id="655">Season Specials</string>
   <string id="656">Edit Episode</string>
@@ -833,7 +833,7 @@
   <string id="831">Current Image:</string>
   <string id="832">Display All Season Poster</string>
   <string id="833">These are Scraper specific settings and act as a filter.\nYou should also check Ember Global Settings.</string>
-  <string id="834">* Inside Season directory</string>
+  <string id="834">* Inside Season Folder</string>
   <string id="835">Only Save the Value to NFO</string>
   <string id="836">The ID you entered is not a valid TVDB ID.</string>
   <string id="837">Scrapers - Images</string>
