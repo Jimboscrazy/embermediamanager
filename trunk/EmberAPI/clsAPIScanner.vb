@@ -1120,7 +1120,9 @@ Public Class Scanner
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
         Dim toNfo As Boolean = False
+        Dim tRes As Object
         Dim tEp As Integer = -1
+
         Try
             If TVContainer.Episodes.Count > 0 Then
                 If Not htTVShows.ContainsKey(TVContainer.ShowPath.ToLower) Then
@@ -1170,11 +1172,16 @@ Public Class Scanner
 
                             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                                 SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM TVEps WHERE TVShowID = ", tmpTVDB.ShowID, ";")
-                                tEp = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                                If tEp > -1 Then
-                                    tEp = -1
+                                tRes = SQLCommand.ExecuteScalar
+                                If Not TypeOf tRes Is DBNull Then
+                                    tEp = Convert.ToInt32(tRes)
+                                    If tEp > -1 Then
+                                        tEp = -1
+                                    Else
+                                        tEp += -1
+                                    End If
                                 Else
-                                    tEp += -1
+                                    tEp = -1
                                 End If
                             End Using
 
@@ -1219,8 +1226,8 @@ Public Class Scanner
                                         If Not Master.eSettings.NoFilterEpisode Then tmpTVDB.TVEp.Title = StringUtils.FilterTVEpName(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
                                     End If
 
-                                    If tmpTVDB.TVEp.Season < 0 Then tmpTVDB.TVEp.Season = sSeasons.Season
-                                    If tmpTVDB.TVEp.Episode < 0 Then tmpTVDB.TVEp.Episode = i
+                                    If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sSeasons.Season
+                                    If tmpTVDB.TVEp.Episode = -999 Then tmpTVDB.TVEp.Episode = i
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'nothing usable in the title after filters have runs

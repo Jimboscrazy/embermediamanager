@@ -276,8 +276,8 @@ Namespace MediaContainers
 
         Public Sub Clear()
             Me._title = String.Empty
-            Me._season = -1
-            Me._episode = -1
+            Me._season = -999
+            Me._episode = -999
             Me._aired = String.Empty
             Me._rating = String.Empty
             Me._plot = String.Empty
