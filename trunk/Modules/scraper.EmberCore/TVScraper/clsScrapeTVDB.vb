@@ -370,7 +370,7 @@ Public Class Scraper
                                     End If
                                     .Aired = Episode.Element("FirstAired").Value
                                     .Rating = Episode.Element("Rating").Value
-                                    .Plot = Episode.Element("Overview").Value
+                                    .Plot = Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                     .Director = Episode.Element("Director").Value
                                     .Credits = CreditsString(Episode.Element("GuestStars").Value, Episode.Element("Writer").Value)
                                     .Actors = Actors
@@ -967,7 +967,7 @@ Public Class Scraper
                                         Continue For
                                     End If
                                     cResult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
-                                    cResult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value, String.Empty)
+                                    cResult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
                                     cResult.Banner = If(Not IsNothing(tSer.Element("banner")), tSer.Element("banner").Value, String.Empty)
                                     If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) AndAlso xSer.Where(Function(s) s.Element("seriesid").Value.ToString = cResult.ID.ToString AndAlso s.Element("language").Value.ToString = sLang).Count = 0 Then
                                         cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
@@ -995,7 +995,7 @@ Public Class Scraper
                             Continue For
                         End If
                         cResult.Aired = If(Not IsNothing(xS.Element("FirstAired")), xS.Element("FirstAired").Value, String.Empty)
-                        cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value, String.Empty)
+                        cResult.Overview = If(Not IsNothing(xS.Element("Overview")), xS.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf), String.Empty)
                         cResult.Banner = If(Not IsNothing(xS.Element("banner")), xS.Element("banner").Value, String.Empty)
                         If Not String.IsNullOrEmpty(cResult.Name) AndAlso Not String.IsNullOrEmpty(sLang) Then
                             cResult.Lev = StringUtils.ComputeLevenshtein(sInfo.ShowTitle, cResult.Name)
@@ -1054,7 +1054,7 @@ Public Class Scraper
                                     If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(Master.eSettings.ExternalTVDBAPIKey), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, Master.eSettings.ExternalTVDBAPIKey, sID, Master.eSettings.TVDBLanguage), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.ShowLockGenre) Then .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
                                     If sInfo.Options.bShowMPAA Then .MPAA = xS(0).Element("ContentRating").Value
-                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = xS(0).Element("Overview").Value
+                                    If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                     If sInfo.Options.bShowPremiered Then .Premiered = xS(0).Element("FirstAired").Value
                                     If sInfo.Options.bShowRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.ShowLockRating) Then .Rating = xS(0).Element("Rating").Value
                                     If sInfo.Options.bShowStudio AndAlso (String.IsNullOrEmpty(.Studio) OrElse Not Master.eSettings.ShowLockStudio) Then .Studio = xS(0).Element("Network").Value
@@ -1122,7 +1122,7 @@ Public Class Scraper
                                         End If
                                         If sInfo.Options.bEpAired Then .Aired = xE.Element("FirstAired").Value
                                         If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.EpLockRating) Then .Rating = xE.Element("Rating").Value
-                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.EpLockPlot) Then .Plot = xE.Element("Overview").Value
+                                        If sInfo.Options.bEpPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.EpLockPlot) Then .Plot = xE.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                                         If sInfo.Options.bEpDirector Then .Director = xE.Element("Director").Value
                                         If sInfo.Options.bEpCredits Then .Credits = CreditsString(xE.Element("GuestStars").Value, xE.Element("Writer").Value)
                                         If sInfo.Options.bEpActors Then .Actors = Actors
