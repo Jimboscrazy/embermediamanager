@@ -796,6 +796,14 @@ Public Class Scraper
             Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                If Master.eSettings.DisplayMissingEpisodes Then
+                    'clear old missing episode from db
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
+                        SQLCommand.ExecuteNonQuery()
+                    End Using
+                End If
+
                 Try
                     For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
