@@ -750,8 +750,10 @@ Public Class frmMainManager
     End Sub
 
     Private Sub frmMainManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
-        Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
+        If Not Directory.Exists(Path.Combine(AppPath, "Site")) Then Directory.CreateDirectory(Path.Combine(AppPath, "Site"))
+        If Not Directory.Exists(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files"))) Then Directory.CreateDirectory(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
+        If Not Directory.Exists(Path.Combine(AppPath, "logs")) Then Directory.CreateDirectory(Path.Combine(AppPath, "logs"))
+
         MasterDB.Connect()
         If File.Exists(Path.Combine(AppPath, "errors.log")) Then
             File.Delete(Path.Combine(AppPath, "errors.log"))
