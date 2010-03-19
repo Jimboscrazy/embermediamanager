@@ -45,13 +45,12 @@ Public Class Scanner
 
     #Region "Methods"
 
-    Public Shared Function GetSeasons(ByVal sPath As String) As List(Of Seasons)
+    Public Shared Function GetSeasons(ByVal sPath As String, ByVal ShowID As Long, ByVal MinEp As Integer) As List(Of Seasons)
         Dim retSeason As New List(Of Seasons)
         Dim epMatch As String = String.Empty
         Dim cSeason As Seasons
 
         For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes
-
             Try
 
                 For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Directory.GetParent(sPath).Name, Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
@@ -83,7 +82,10 @@ Public Class Scanner
                             If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
                         Next
 
-                        If cSeason.Episodes.Count = 0 Then cSeason.Episodes.Add(-1)
+                        If cSeason.Episodes.Count = 0 Then
+                            cSeason.Episodes.Add(MinEp)
+                            MinEp += -1
+                        End If
 
                         retSeason.Add(cSeason)
                     Catch ex As Exception
@@ -101,7 +103,7 @@ Public Class Scanner
         'nothing found
         cSeason = New Seasons
         cSeason.Season = -1
-        cSeason.Episodes.Add(-1)
+        cSeason.Episodes.Add(MinEp)
         retSeason.Add(cSeason)
 
         Return retSeason
@@ -1118,6 +1120,7 @@ Public Class Scanner
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
         Dim toNfo As Boolean = False
+        Dim tEp As Integer = -1
         Try
             If TVContainer.Episodes.Count > 0 Then
                 If Not htTVShows.ContainsKey(TVContainer.ShowPath.ToLower) Then
@@ -1165,7 +1168,17 @@ Public Class Scanner
                             tmpTVDB.IsLockSeason = False
                             tmpTVDB.IsMarkSeason = False
 
-                            For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
+                            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                                SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM TVEps WHERE TVShowID = ", tmpTVDB.ShowID, ";")
+                                tEp = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                                If tEp > -1 Then
+                                    tEp = -1
+                                Else
+                                    tEp += -1
+                                End If
+                            End Using
+
+                            For Each sSeasons As Seasons In GetSeasons(Episode.Filename, tmpTVDB.ShowID, tEp)
                                 For Each i As Integer In sSeasons.Episodes
 
                                     toNfo = False
