@@ -2460,30 +2460,43 @@ Public Class dlgSettings
     End Sub
 
     Private Sub Handle_ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
-        SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).ImageIndex = If(State, 9, 10)
-        Try
-            Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-            If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
-            If Not diffOrder = 0 Then
-                Dim p As TreeNode = t.Parent
-                Dim i As Integer = t.Index
-                If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
-                    SettingsPanels.FirstOrDefault(Function(s) s.Name = t.PrevNode.Name).Order = i + (diffOrder * -1)
-                End If
-                If diffOrder > 0 AndAlso Not t.NextNode Is Nothing Then
-                    SettingsPanels.FirstOrDefault(Function(s) s.Name = t.NextNode.Name).Order = i + (diffOrder * -1)
-                End If
-                p.Nodes.Remove(t)
-                p.Nodes.Insert(i + diffOrder, t)
-                t.TreeView.SelectedNode = t
-                SettingsPanels.FirstOrDefault(Function(s) s.Name = Name).Order = i + diffOrder
-            End If
-            t.ImageIndex = If(State, 9, 10)
-            t.SelectedImageIndex = If(State, 9, 10)
+        Dim tSetPan As New Containers.SettingsPanel
+        Dim oSetPan As New Containers.SettingsPanel
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        tSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = Name)
+
+        If Not IsNothing(tSetPan) Then
+            tSetPan.ImageIndex = If(State, 9, 10)
+
+            Try
+                Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
+                If Not IsNothing(t) Then
+                    'If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
+                    If Not diffOrder = 0 Then
+                        Dim p As TreeNode = t.Parent
+                        Dim i As Integer = t.Index
+                        If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
+                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t.PrevNode.Name)
+                            If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
+                        End If
+                        If diffOrder > 0 AndAlso Not t.NextNode Is Nothing Then
+                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t.NextNode.Name)
+                            If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
+                        End If
+                        p.Nodes.Remove(t)
+                        p.Nodes.Insert(i + diffOrder, t)
+                        t.TreeView.SelectedNode = t
+                        tSetPan.Order = i + diffOrder
+                    End If
+                    t.ImageIndex = If(State, 9, 10)
+                    t.SelectedImageIndex = If(State, 9, 10)
+                    Me.pbCurrent.Image = Me.ilSettings.Images(If(State, 9, 10))
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
+
         Me.SetApplyButton(True)
     End Sub
 
