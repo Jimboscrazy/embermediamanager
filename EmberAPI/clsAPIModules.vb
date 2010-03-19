@@ -218,9 +218,9 @@ Public Class ModulesManager
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
-                                ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
+                                ScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
                                 _externalScraperModule.ProcessorModule.PostScraperEnabled = i.PostScraperEnabled
-                                PostScraperAnyEnabled = PostScraperAnyEnabled Or i.PostScraperEnabled
+                                PostScraperAnyEnabled = PostScraperAnyEnabled OrElse i.PostScraperEnabled
                                 _externalScraperModule.ScraperOrder = i.ScraperOrder
                                 _externalScraperModule.PostScraperOrder = i.PostScraperOrder
                                 found = True
@@ -289,9 +289,9 @@ Public Class ModulesManager
                             _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externaltvScraperModule.AssemblyName)
                                 _externaltvScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
-                                ScraperAnyEnabled = ScraperAnyEnabled Or i.ScraperEnabled
+                                ScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
                                 _externaltvScraperModule.ProcessorModule.PostScraperEnabled = i.PostScraperEnabled
-                                PostScraperAnyEnabled = PostScraperAnyEnabled Or i.PostScraperEnabled
+                                PostScraperAnyEnabled = PostScraperAnyEnabled OrElse i.PostScraperEnabled
                                 _externaltvScraperModule.ScraperOrder = i.ScraperOrder
                                 _externaltvScraperModule.PostScraperOrder = i.PostScraperOrder
                                 found = True
