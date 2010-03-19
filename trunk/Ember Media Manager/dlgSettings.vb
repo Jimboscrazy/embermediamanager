@@ -658,6 +658,7 @@ Public Class dlgSettings
         If MsgBox(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             Me.RefreshShowFilters()
+            Me.SetApplyButton(True)
         End If
     End Sub
 
@@ -665,6 +666,7 @@ Public Class dlgSettings
         If MsgBox(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
             Me.RefreshEpFilters()
+            Me.SetApplyButton(True)
         End If
     End Sub
 
@@ -672,6 +674,7 @@ Public Class dlgSettings
         If MsgBox(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             Me.RefreshMovieFilters()
+            Me.SetApplyButton(True)
         End If
     End Sub
 
@@ -679,6 +682,7 @@ Public Class dlgSettings
         If MsgBox(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             Me.RefreshValidExts()
+            Me.SetApplyButton(True)
         End If
     End Sub
 
@@ -688,6 +692,7 @@ Public Class dlgSettings
             Me.ShowRegex.Clear()
             Me.ShowRegex.AddRange(Master.eSettings.TVShowRegexes)
             Me.LoadShowRegex()
+            Me.SetApplyButton(True)
         End If
     End Sub
 

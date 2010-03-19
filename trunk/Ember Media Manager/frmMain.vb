@@ -3159,7 +3159,11 @@ doCancel:
             End If
 
             If (e.ColumnIndex = 2 OrElse e.ColumnIndex = 3) AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
+                If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
+                    e.CellStyle.ForeColor = Color.Gray
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+                    e.CellStyle.SelectionForeColor = Color.LightGray
+                ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, e.RowIndex).Value) Then
                     e.CellStyle.ForeColor = Color.Crimson
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
@@ -3177,8 +3181,6 @@ doCancel:
             If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 6 AndAlso e.RowIndex >= 0 Then
 
                 If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, e.RowIndex).Value) Then
-                    e.CellStyle.ForeColor = Color.Gray
-                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                     e.CellStyle.BackColor = Color.White
                     e.CellStyle.SelectionBackColor = Color.DarkGray
                 ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, e.RowIndex).Value) Then
