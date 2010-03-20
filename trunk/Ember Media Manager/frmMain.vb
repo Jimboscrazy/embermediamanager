@@ -7213,12 +7213,15 @@ doCancel:
 
                 Me.mnuMoviesUpdate.DropDownItems.Clear()
                 Me.cmnuTrayIconUpdateMovies.DropDownItems.Clear()
-                mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                mnuItem.Tag = String.Empty
-                mnuItem = Me.cmnuTrayIconUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                    SQLNewcommand.CommandText = "SELECT COUNT(ID) AS cID FROM Sources;"
+                    If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
+                        mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                        mnuItem.Tag = String.Empty
+                        mnuItem = Me.cmnuTrayIconUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                        mnuItem.Tag = String.Empty
+                    End If
+                    SQLNewcommand.CommandText = "SELECT Name FROM Sources;"
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
@@ -7231,12 +7234,15 @@ doCancel:
 
                 Me.mnuTVShowUpdate.DropDownItems.Clear()
                 Me.cmnuTrayIconUpdateTV.DropDownItems.Clear()
-                mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                mnuItem.Tag = String.Empty
-                mnuItem = Me.cmnuTrayIconUpdateTV.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
+                    SQLNewcommand.CommandText = "SELECT COUNT(ID) AS cID FROM TVSources;"
+                    If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
+                        mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
+                        mnuItem.Tag = String.Empty
+                        mnuItem = Me.cmnuTrayIconUpdateTV.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
+                        mnuItem.Tag = String.Empty
+                    End If
+                    SQLNewcommand.CommandText = "SELECT Name FROM TVSources;"
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
