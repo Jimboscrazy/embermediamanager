@@ -2804,7 +2804,7 @@ doCancel:
     Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
         Try
             If Not Me.tabsMain.SelectedIndex = 0 Then Return
-            Me.tsbAutoPilot.Enabled = (Me.dgvMediaList.RowCount > 0)
+
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrWaitEp.Stop()
@@ -6508,7 +6508,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(10) = False
                         DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
                         DirectCast(dRow(0), DataRow).Item(50) = tmpMovieDb.Movie.SortTitle
-                        DirectCast(dRow(0), DataRow).Item(24) = tmpMovieDb.Movie.Genre
+                        DirectCast(dRow(0), DataRow).Item(26) = tmpMovieDb.Movie.Genre
                     End If
                 End If
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
