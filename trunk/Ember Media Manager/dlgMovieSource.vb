@@ -52,6 +52,7 @@ Public Class dlgMovieSource
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
+                        If String.IsNullOrEmpty(txtSourceName.Text) Then txtSourceName.Text = Path.GetFileNameWithoutExtension(.SelectedPath)
                     End If
                 End If
             End With

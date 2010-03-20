@@ -27,7 +27,8 @@ Public Class Database
     #Region "Fields"
 
     Public SQLcn As New SQLite.SQLiteConnection()
-
+    ' NOTE: This will use another DB because: can grow alot, Don't want to stress Media DB with this stuff
+    Public SQLcnJobLog As New SQLite.SQLiteConnection()
 #End Region 'Fields
 
 #Region "Methods"
@@ -188,6 +189,7 @@ Public Class Database
             SQLcommand.ExecuteNonQuery()
         End Using
         Me.SQLcn.Close()
+        CloseJobLog()
     End Sub
 
     ''' <summary>
@@ -591,6 +593,7 @@ Public Class Database
                 End Using
                 SQLtransaction.Commit()
             End Using
+            ConnectJobLog()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2114,6 +2117,48 @@ Public Class Database
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+    '''''''''''''''''''''''''''''''''''''''''''
+    Sub ConnectJobLog()
+        Dim NewDB As Boolean = False
+        'create database if it doesn't exist
+        If Not File.Exists(Path.Combine(Functions.AppPath, "JobLogs.emm")) Then
+            NewDB = True
+            'ElseIf Delete Then
+            'NewDB = True
+            'File.Delete(Path.Combine(Functions.AppPath, "Media.emm"))
+        End If
+        SQLcnJobLog.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Functions.AppPath, "JobLogs.emm"))
+        SQLcnJobLog.Open()
+        If NewDB Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Me.SQLcnJobLog.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcnJobLog.CreateCommand
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Jobs(" & _
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                        "MediaType INTEGER NOT NULL, " & _
+                        "MediaID INTEGER NOT NULL, " & _
+                        "LastDateAdd TEXT " & _
+                         ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS JobsEntry(" & _
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                        "ItemType INTEGER NOT NULL, " & _
+                        "Message INTEGER NOT NULL, " & _
+                        "Details INTEGER NOT NULL, " & _
+                        "DateAdd TEXT " & _
+                         ");"
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+    Sub CloseJobLog()
+        Using SQLcommand As SQLite.SQLiteCommand = CreateCommand()
+            SQLcommand.CommandText = "VACUUM;"
+            SQLcommand.ExecuteNonQuery()
+        End Using
+        Me.SQLcnJobLog.Close()
     End Sub
 
 #End Region 'Methods

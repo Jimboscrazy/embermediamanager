@@ -2595,7 +2595,6 @@ doCancel:
     End Sub
 
     Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
-        'Dim jobid As Double = Master.JobLogList.AddJob("ManualRename", JobLogger.JobTypes.Rename, "Manual Renaming Movie", JobLogger.JobStatus.Open)
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
         Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
@@ -2607,7 +2606,6 @@ doCancel:
                 End If
                 Me.SetStatus(Master.currMovie.Filename)
         End Select
-        'Master.JobLogList.CloseJob(jobid)
     End Sub
 
     Private Sub cmnuRescrapeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeEp.Click
@@ -4970,8 +4968,9 @@ doCancel:
 
             If doSave Then Master.DB.ClearNew()
 
-            If Not isCL Then Master.DB.Close()
-
+            If Not isCL Then
+                Master.DB.Close()
+            End If
             If Not Master.eSettings.PersistImgCache Then
                 Me.ClearCache()
             End If
