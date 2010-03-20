@@ -504,6 +504,13 @@ Public Class dlgEditMovie
         Me.Thumbs = Nothing
     End Sub
 
+    Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If Me.bwThumbs.IsBusy Then Me.bwThumbs.CancelAsync()
+        While Me.bwThumbs.IsBusy
+            Application.DoEvents()
+        End While
+    End Sub
+
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
@@ -707,6 +714,7 @@ Public Class dlgEditMovie
                         pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                             TabControl1.TabPages.Remove(TabPage4)
                         Else
+                            .bwThumbs.WorkerSupportsCancellation = True
                             .bwThumbs.RunWorkerAsync()
                         End If
                     End If
@@ -794,8 +802,10 @@ Public Class dlgEditMovie
 
                 If lFI.Count > 0 Then
                     For Each thumb As FileInfo In lFI.OrderBy(Function(t) Convert.ToInt32(Regex.Match(t.Name, "(\d+)").Groups(0).ToString))
+                        If Me.bwThumbs.CancellationPending Then Return
                         If Not Me.DeleteList.Contains(thumb.Name) Then
                             Using fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                                If Me.bwThumbs.CancellationPending Then Return
                                 Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
                                 ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
                             End Using
@@ -1017,6 +1027,7 @@ Public Class dlgEditMovie
 
     Private Sub RefreshExtraThumbs()
         Try
+            If Me.bwThumbs.IsBusy Then Me.bwThumbs.CancelAsync()
             While Me.bwThumbs.IsBusy
                 Application.DoEvents()
             End While
@@ -1025,6 +1036,7 @@ Public Class dlgEditMovie
             lvThumbs.Clear()
             ilThumbs.Images.Clear()
 
+            Me.bwThumbs.WorkerSupportsCancellation = True
             Me.bwThumbs.RunWorkerAsync()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
