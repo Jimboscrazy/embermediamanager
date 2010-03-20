@@ -2706,6 +2706,7 @@ doCancel:
                 ReDim Preserve Me.pnlGenre(i)
                 ReDim Preserve Me.pbGenre(i)
                 Me.pnlGenre(i) = New Panel()
+                Me.pnlGenre(i).Visible = False
                 Me.pbGenre(i) = New PictureBox()
                 Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
                 Me.pnlGenre(i).Size = New Size(68, 100)
@@ -4223,7 +4224,6 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            Me.pnlTop.Visible = True
             Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, Master.eLang.GetString(689, " [MISSING]")), Master.currShow.TVEp.Title)
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
@@ -4258,7 +4258,13 @@ doCancel:
                 Me.lstActors.SelectedIndex = 0
             End If
 
-            Me.pnlMPAA.Visible = False
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
+                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+                If Not IsNothing(tmpRatingImg) Then
+                    Me.pbMPAA.Image = tmpRatingImg
+                    Me.MoveMPAA()
+                End If
+            End If
 
             Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEp.Rating)
             If tmpRating > 0 Then
@@ -4303,12 +4309,10 @@ doCancel:
                 End If
 
                 Me.pbPoster.Location = New Point(4, 4)
-                Me.pnlPoster.Visible = True
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
                     Me.pbPoster.Image = Nothing
-                    Me.pnlPoster.Visible = False
                 End If
             End If
 
@@ -4338,8 +4342,6 @@ doCancel:
                 End If
             End If
 
-            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
-
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
@@ -4351,6 +4353,16 @@ doCancel:
                 Me.dgvTVShows.Enabled = True
                 Me.dgvTVEpisodes.Focus()
             End If
+
+            Application.DoEvents()
+
+            Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To UBound(Me.pnlGenre)
+                Me.pnlGenre(i).Visible = True
+            Next
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4366,7 +4378,6 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            Me.pnlTop.Visible = True
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                 Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovie.Movie.Title, Master.currMovie.Movie.Year)
             ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
@@ -4423,9 +4434,6 @@ doCancel:
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
-                    Me.pnlMPAA.Visible = True
-                Else
-                    Me.pnlMPAA.Visible = False
                 End If
             End If
 
@@ -4481,12 +4489,10 @@ doCancel:
                 End If
 
                 Me.pbPoster.Location = New Point(4, 4)
-                Me.pnlPoster.Visible = True
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
                     Me.pbPoster.Image = Nothing
-                    Me.pnlPoster.Visible = False
                 End If
             End If
 
@@ -4526,6 +4532,15 @@ doCancel:
             End If
             Me.dgvMediaList.Focus()
 
+            Application.DoEvents()
+
+            Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To UBound(Me.pnlGenre)
+                Me.pnlGenre(i).Visible = True
+            Next
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4540,7 +4555,6 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            Me.pnlTop.Visible = True
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
                 Me.lblTitle.Text = Master.currShow.TVShow.Title
             End If
@@ -4577,9 +4591,6 @@ doCancel:
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
-                    Me.pnlMPAA.Visible = True
-                Else
-                    Me.pnlMPAA.Visible = False
                 End If
             End If
 
@@ -4618,12 +4629,10 @@ doCancel:
                 End If
 
                 Me.pbPoster.Location = New Point(4, 4)
-                Me.pnlPoster.Visible = True
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
                     Me.pbPoster.Image = Nothing
-                    Me.pnlPoster.Visible = False
                 End If
             End If
 
@@ -4653,8 +4662,6 @@ doCancel:
                 End If
             End If
 
-            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
-
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
@@ -4666,6 +4673,16 @@ doCancel:
                 Me.dgvTVShows.Enabled = True
                 Me.dgvTVSeasons.Focus()
             End If
+
+            Application.DoEvents()
+
+            Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To UBound(Me.pnlGenre)
+                Me.pnlGenre(i).Visible = True
+            Next
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4681,7 +4698,6 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            Me.pnlTop.Visible = True
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
                 Me.lblTitle.Text = Master.currShow.TVShow.Title
             End If
@@ -4718,9 +4734,6 @@ doCancel:
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
-                    Me.pnlMPAA.Visible = True
-                Else
-                    Me.pnlMPAA.Visible = False
                 End If
             End If
 
@@ -4759,12 +4772,10 @@ doCancel:
                 End If
 
                 Me.pbPoster.Location = New Point(4, 4)
-                Me.pnlPoster.Visible = True
             Else
                 If Not IsNothing(Me.pbPoster.Image) Then
                     Me.pbPoster.Image.Dispose()
                     Me.pbPoster.Image = Nothing
-                    Me.pnlPoster.Visible = False
                 End If
             End If
 
@@ -4812,13 +4823,11 @@ doCancel:
 
                 Me.pbAllSeason.Location = New Point(4, 4)
                 Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
-                Me.pnlAllSeason.Visible = True
             Else
                 If Not IsNothing(Me.pbAllSeason.Image) Then
                     Me.pbAllSeason.Image.Dispose()
                     Me.pbAllSeason.Image = Nothing
                 End If
-                Me.pnlAllSeason.Visible = False
             End If
 
             Me.InfoCleared = False
@@ -4832,6 +4841,16 @@ doCancel:
                 Me.dgvTVShows.Enabled = True
                 Me.dgvTVShows.Focus()
             End If
+
+            Application.DoEvents()
+
+            Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
+            For i As Integer = 0 To UBound(Me.pnlGenre)
+                Me.pnlGenre(i).Visible = True
+            Next
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5971,10 +5990,8 @@ doCancel:
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
                     Dim ETasFA As String = DirectCast(params(3), String)
                     If Not String.IsNullOrEmpty(ETasFA) Then
-                        MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                         Master.currMovie.ExtraPath = "TRUE"
                         If Not ETasFA = "TRUE" Then
-                            MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                             Master.currMovie.FanartPath = ETasFA
                         End If
                     End If

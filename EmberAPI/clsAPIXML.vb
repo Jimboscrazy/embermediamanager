@@ -45,8 +45,6 @@ Public Class APIXML
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
             If File.Exists(fPath) Then
                 FlagsXML = XDocument.Load(fPath)
-            Else
-                MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
             If Directory.Exists(Directory.GetParent(fPath).FullName) Then
@@ -60,8 +58,6 @@ Public Class APIXML
             Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
             If File.Exists(gPath) Then
                 GenreXML = XDocument.Load(gPath)
-            Else
-                MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
             If Directory.Exists(Directory.GetParent(gPath).FullName) Then
@@ -95,8 +91,6 @@ Public Class APIXML
             Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
             If File.Exists(rPath) Then
                 RatingXML = XDocument.Load(rPath)
-            Else
-                MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
         Catch ex As Exception
@@ -104,13 +98,11 @@ Public Class APIXML
         End Try
     End Sub
 
-    'Public Shared LanguageXML As New XDocument
     Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean) As Image()
-        '//
-        ' Parse the Flags XML and set the proper images
-        '\\
 
         Dim iReturn(5) As Image
+        Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
+        Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
         If FlagsXML.Nodes.Count > 0 Then
             Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
@@ -121,8 +113,6 @@ Public Class APIXML
                 Dim vtypeImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
-                Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
                 Dim sourceCheck As String = String.Empty
 
                 If FileUtils.Common.isVideoTS(fName) Then
@@ -206,18 +196,24 @@ Public Class APIXML
                     Using fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
                         iReturn(0) = Image.FromStream(fsImage)
                     End Using
+                Else
+                    iReturn(0) = My.Resources.defaultscreen
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso alFlags.Contains(vsourceImage.ToLower) Then
                     Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
                         iReturn(1) = Image.FromStream(fsImage)
                     End Using
+                Else
+                    iReturn(1) = My.Resources.defaultscreen
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso alFlags.Contains(vtypeImage.ToLower) Then
                     Using fsImage As New FileStream(vtypeImage, FileMode.Open, FileAccess.Read)
                         iReturn(2) = Image.FromStream(fsImage)
                     End Using
+                Else
+                    iReturn(2) = My.Resources.defaultscreen
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
@@ -228,17 +224,35 @@ Public Class APIXML
                             iReturn(3) = Image.FromStream(fsImage)
                         End If
                     End Using
+                Else
+                    If tAudio.HasPreferred Then
+                        iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+                    Else
+                        iReturn(3) = My.Resources.defaultsound
+                    End If
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso alFlags.Contains(achanImage.ToLower) Then
                     Using fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
                         iReturn(4) = Image.FromStream(fsImage)
                     End Using
+                Else
+                    iReturn(4) = My.Resources.defaultsound
                 End If
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+        Else
+            iReturn(0) = My.Resources.defaultscreen
+            iReturn(1) = My.Resources.defaultscreen
+            iReturn(2) = My.Resources.defaultscreen
+            If tAudio.HasPreferred Then
+                iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+            Else
+                iReturn(3) = My.Resources.defaultsound
+            End If
+            iReturn(4) = My.Resources.defaultsound
         End If
 
         Return iReturn
@@ -295,11 +309,15 @@ Public Class APIXML
                     Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
                         imgGenre = Image.FromStream(fsImage)
                     End Using
+                Else
+                    imgGenre = My.Resources.defaultgenre
                 End If
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+        Else
+            imgGenre = My.Resources.defaultgenre
         End If
 
         Return imgGenre
@@ -429,6 +447,8 @@ Public Class APIXML
                 imgStudio = Image.FromStream(fsImage)
             End Using
         End If
+
+        If IsNothing(imgStudio) Then imgStudio = My.Resources.defaultscreen
 
         Return imgStudio
     End Function

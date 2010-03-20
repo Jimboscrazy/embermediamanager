@@ -1905,6 +1905,10 @@ Public Class dlgSettings
         If Not Me.chkUseCertForMPAA.Checked Then Me.chkOnlyValueForCert.Checked = False
     End Sub
 
+    Private Sub chkUseETasFA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseETasFA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkUseImgCacheUpdaters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseImgCacheUpdaters.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3629,7 +3633,7 @@ Public Class dlgSettings
         Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use if no Fanart Found")
         Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers")
         Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
-        Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Extract During Automated Scrapers")
+        Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Extract During Scrapers")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
 
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")

@@ -67,8 +67,8 @@ Partial Class dlgStudioSelect
         '
         'ilStudios
         '
-        Me.ilStudios.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
-        Me.ilStudios.ImageSize = New System.Drawing.Size(96, 54)
+        Me.ilStudios.ColorDepth = System.Windows.Forms.ColorDepth.Depth16Bit
+        Me.ilStudios.ImageSize = New System.Drawing.Size(64, 44)
         Me.ilStudios.TransparentColor = System.Drawing.Color.Transparent
         '
         'dlgStudioSelect

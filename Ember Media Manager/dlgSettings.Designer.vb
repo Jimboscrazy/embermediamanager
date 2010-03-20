@@ -2167,7 +2167,7 @@ Partial Class dlgSettings
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(188, 30)
         Me.chkAutoThumbs.TabIndex = 5
-        Me.chkAutoThumbs.Text = "Extract During Automated Scrapers"
+        Me.chkAutoThumbs.Text = "Extract During Scrapers"
         Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
@@ -6951,8 +6951,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel2)
