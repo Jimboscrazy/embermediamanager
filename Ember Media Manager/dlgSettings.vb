@@ -2475,7 +2475,7 @@ Public Class dlgSettings
             Try
                 Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
                 If Not IsNothing(t) Then
-                    'If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
+                    If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
                     If Not diffOrder = 0 Then
                         Dim p As TreeNode = t.Parent
                         Dim i As Integer = t.Index

@@ -22,19 +22,19 @@ Public Class dlgStudioSelect
 
     #Region "Fields"
 
-    Private _MovieId As Long = -1
+    Private _CurrMovie As Structures.DBMovie = Nothing
     Private _studio As String = String.Empty
 
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal MovieID As Long) As String
+    Public Overloads Function ShowDialog(ByVal CurrMovie As Structures.DBMovie) As String
         '//
         ' Overload to pass data
         '\\
 
-        Me._MovieId = MovieID
+        Me._CurrMovie = CurrMovie
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return Me._studio
@@ -50,12 +50,11 @@ Public Class dlgStudioSelect
 
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        Dim DBMovie As New Structures.DBMovie
-        DBMovie.Movie = New MediaContainers.Movie
-        DBMovie = Master.DB.LoadMovieFromDB(_MovieId)
+        'Dim DBMovie As New Structures.DBMovie
+        'DBMovie.Movie = New MediaContainers.Movie
         'DBMovie.Movie.IMDBID = Me._MovieId
-        Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(DBMovie)
-        If alStudio.Count = 0 Then alStudio.Add(DBMovie.Movie.Studio)
+        Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(_CurrMovie)
+        If alStudio.Count = 0 Then alStudio.Add(_CurrMovie.Movie.Studio)
         For i As Integer = 0 To alStudio.Count - 1
             ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
             lvStudios.Items.Add(alStudio(i).ToString, i)
