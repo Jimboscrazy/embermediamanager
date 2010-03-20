@@ -545,9 +545,7 @@ Public Class EmberNativeScraperModule
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                 DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
             Else
-                'NOTE.NOTE.NOTE what is Row 46 ??????????
-                'If Convert.ToBoolean(drvRow.Item(46)) AndAlso DBMovie.isSingle Then
-                If True AndAlso DBMovie.isSingle Then
+                If DBMovie.UseFolder AndAlso DBMovie.isSingle Then
                     DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
                 Else
                     DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))

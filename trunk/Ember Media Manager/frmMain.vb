@@ -2828,7 +2828,7 @@ doCancel:
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Rows(e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
 
             'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
@@ -3122,7 +3122,7 @@ doCancel:
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Rows(e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
 
             'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 6 AndAlso e.RowIndex = -1 Then
@@ -3394,7 +3394,7 @@ doCancel:
     Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Rows(e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
 
             'icons
             If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex = -1 Then
@@ -3652,7 +3652,7 @@ doCancel:
     Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Rows(e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
 
             'icons
             If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 4 AndAlso e.RowIndex = -1 Then
