@@ -322,7 +322,7 @@ Public Class dlgEditMovie
 
     Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
-            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.Movie.IMDBID)
+            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.ID)
             If Not String.IsNullOrEmpty(tStudio) Then
                 Me.txtStudio.Text = tStudio
             End If

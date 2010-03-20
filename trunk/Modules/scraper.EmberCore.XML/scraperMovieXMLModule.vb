@@ -243,6 +243,7 @@ Public Class EmberXMLScraperModule
         DBMovie.Movie.Director = Strings.Join(lMediaTag.Directors.ToArray(), " / ")
         DBMovie.Movie.Genre = Strings.Join(lMediaTag.Genres.ToArray(), " / ")
         DBMovie.Movie.MPAA = lMediaTag.MPAA
+        DBMovie.Movie.Plot = lMediaTag.Plot
         DBMovie.Movie.Outline = lMediaTag.Outline
         DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
         DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
@@ -252,13 +253,22 @@ Public Class EmberXMLScraperModule
         DBMovie.Movie.Studio = lMediaTag.Studio
         DBMovie.Movie.Tagline = lMediaTag.Tagline
         DBMovie.Movie.Title = lMediaTag.Title
-        'lMediaTag.Thumbs
+        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
+            DBMovie.Movie.Thumb.Add(t.Thumb)
+        Next
         DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
         'DBMovie.Movie.Trailer = lMediaTag.Trailers
         DBMovie.Movie.Votes = lMediaTag.Votes.ToString
         DBMovie.Movie.Credits = Strings.Join(lMediaTag.Writers.ToArray, " / ")
         DBMovie.Movie.Year = lMediaTag.Year.ToString
         DBMovie.Movie.ID = lMediaTag.ID
+        For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
+            Dim person As New MediaContainers.Person
+            person.Name = p.Name
+            person.Role = p.Role
+            person.Thumb = p.Thumb.Thumb
+            DBMovie.Movie.Actors.Add(person)
+        Next
     End Sub
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType

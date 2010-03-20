@@ -420,6 +420,7 @@ Public Class EmberNativeScraperModule
         ConfigScrapeModifier.Poster = _setupPost.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setupPost.chkScrapeFanart.Checked
         SaveSettings()
+        ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
             RemoveHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
