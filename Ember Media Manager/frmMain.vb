@@ -52,28 +52,13 @@ Public Class frmMain
     Private bsMedia As New BindingSource
     Private bsSeasons As New BindingSource
     Private bsShows As New BindingSource
-    Private currEpRow As Integer = -1
-    Private currList As Integer = 0
 
-    'Loading Delays
-    Private currRow As Integer = -2
-    Private currSeasonRow As Integer = -1
-    Private currShowRow As Integer = -1
-    Private currText As String = String.Empty
-    Private currThemeType As Theming.ThemeType
-    Private dScrapeRow As DataRow = Nothing
     Private dtEpisodes As New DataTable
     Private dtMedia As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
-    Private filGenre As String = String.Empty
-    Private filMissing As String = String.Empty
+    Private dScrapeRow As DataRow = Nothing
 
-    'filters
-    Private filSearch As String = String.Empty
-    Private filSource As String = String.Empty
-    Private FilterArray As New List(Of String)
-    Private filYear As String = String.Empty
     Private fScanner As New Scanner
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
@@ -84,10 +69,6 @@ Public Class frmMain
     Private MainPoster As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
-    Private prevEpRow As Integer = -1
-    Private prevRow As Integer = -1
-    Private prevSeasonRow As Integer = -1
-    Private prevShowRow As Integer = -1
     Private prevText As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private ScrapeList As New List(Of DataRow)
@@ -97,14 +78,35 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private tmpTVDB As String = String.Empty
     Private tmpOrdering As Enums.Ordering = Enums.Ordering.Standard
-    Private tTheme As New Theming
-    Private _genrepanelcolor As Color = Color.Gainsboro
-    Private _ipmid As Integer = 280
-    Private _ipup As Integer = 500
+
+    'Loading Delays
+    Private currRow As Integer = -1
+    Private currEpRow As Integer = -1
+    Private currSeasonRow As Integer = -1
+    Private currShowRow As Integer = -1
+    Private currList As Integer = 0
+    Private currText As String = String.Empty
+    Private currThemeType As Theming.ThemeType
+    Private prevEpRow As Integer = -1
+    Private prevRow As Integer = -1
+    Private prevSeasonRow As Integer = -1
+    Private prevShowRow As Integer = -1
+
+    'filters
+    Private FilterArray As New List(Of String)
+    Private filSearch As String = String.Empty
+    Private filSource As String = String.Empty
+    Private filYear As String = String.Empty
+    Private filGenre As String = String.Empty
+    Private filMissing As String = String.Empty
 
     'Theme Information
     Private _postermaxheight As Integer = 160
     Private _postermaxwidth As Integer = 160
+    Private tTheme As New Theming
+    Private _genrepanelcolor As Color = Color.Gainsboro
+    Private _ipmid As Integer = 280
+    Private _ipup As Integer = 500
 
     #End Region 'Fields
 
@@ -3072,7 +3074,10 @@ doCancel:
     End Sub
 
     Private Sub dgvMediaList_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Sorted
+        Me.prevRow = -1
         If Me.dgvMediaList.RowCount > 0 Then
+            Me.dgvMediaList.CurrentCell = Nothing
+            Me.dgvMediaList.ClearSelection()
             Me.dgvMediaList.Rows(0).Selected = True
             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
         End If
@@ -3340,7 +3345,10 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Sorted
+        Me.prevEpRow = -1
         If Me.dgvTVEpisodes.RowCount > 0 Then
+            Me.dgvTVEpisodes.CurrentCell = Nothing
+            Me.dgvTVEpisodes.ClearSelection()
             Me.dgvTVEpisodes.Rows(0).Selected = True
             Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Rows(0).Cells(3)
         End If
@@ -3587,7 +3595,10 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Sorted
+        Me.prevSeasonRow = -1
         If Me.dgvTVSeasons.RowCount > 0 Then
+            Me.dgvTVSeasons.CurrentCell = Nothing
+            Me.dgvTVSeasons.ClearSelection()
             Me.dgvTVSeasons.Rows(0).Selected = True
             Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Rows(0).Cells(1)
         End If
@@ -3857,7 +3868,10 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Sorted
+        Me.prevShowRow = -1
         If Me.dgvTVShows.RowCount > 0 Then
+            Me.dgvTVShows.CurrentCell = Nothing
+            Me.dgvTVShows.ClearSelection()
             Me.dgvTVShows.Rows(0).Selected = True
             Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(0).Cells(1)
         End If
@@ -4040,9 +4054,6 @@ doCancel:
             Me.bsEpisodes.DataSource = Nothing
             Me.dgvTVEpisodes.DataSource = Nothing
 
-            Me.prevRow = -1
-            Me.prevShowRow = -1
-
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
@@ -4120,14 +4131,10 @@ doCancel:
                         If Master.isWindows Then .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMediaList()
 
-                        .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
-
                         If .dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0 Then
-                            'Set current cell and automatically load the info for the first movie in the list
-                            .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
-                            .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
+                            .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                            Me.SetControlsEnabled(True)
+                            .SetControlsEnabled(True)
                         End If
 
                     End With
@@ -4175,14 +4182,10 @@ doCancel:
                         If Master.isWindows Then .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeTVLists(1)
 
-                        .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
-
                         If .dgvTVShows.RowCount > 0 Then
-                            'Set current cell and automatically load the info for the first show in the list
-                            .dgvTVShows.Rows(iIndex).Cells(1).Selected = True
-                            .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(1)
+                            .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                            Me.SetControlsEnabled(True)
+                            .SetControlsEnabled(True)
                         End If
                     End With
                 End If
@@ -8053,6 +8056,7 @@ doCancel:
 
         If Not Me.prevEpRow = Me.currEpRow Then
             Me.prevEpRow = Me.currEpRow
+            Me.tmrWaitEp.Stop()
             Me.tmrLoadEp.Start()
         Else
             Me.tmrLoadEp.Stop()
@@ -8068,6 +8072,7 @@ doCancel:
 
         If Not Me.prevSeasonRow = Me.currSeasonRow Then
             Me.prevSeasonRow = Me.currSeasonRow
+            Me.tmrWaitSeason.Stop()
             Me.tmrLoadSeason.Start()
         Else
             Me.tmrLoadSeason.Stop()
@@ -8083,6 +8088,7 @@ doCancel:
 
         If Not Me.prevShowRow = Me.currShowRow Then
             Me.prevShowRow = Me.currShowRow
+            Me.tmrWaitShow.Stop()
             Me.tmrLoadShow.Start()
         Else
             Me.tmrLoadShow.Stop()
@@ -8093,6 +8099,7 @@ doCancel:
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         If Not Me.prevRow = Me.currRow Then
             Me.prevRow = Me.currRow
+            Me.tmrWait.Stop()
             Me.tmrLoad.Start()
         Else
             Me.tmrLoad.Stop()
