@@ -37,7 +37,7 @@ Public Class Master
     Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
     Public Shared is64Bit As Boolean = Functions.Check64Bit
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
-    Public Shared JobLogList As New JobLogger
+    'Public Shared MediaJobLog As New MediaLog
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared tmpMovie As New MediaContainers.Movie

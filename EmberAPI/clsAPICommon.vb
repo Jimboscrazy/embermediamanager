@@ -893,7 +893,7 @@ Public Class Structures
         Dim SubPath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
-
+        Dim JobLog As MediaLog
         #End Region 'Fields
 
     End Structure
