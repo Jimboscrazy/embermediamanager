@@ -22,10 +22,11 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Xml.Schema
+Imports System.Text
 
 Public Class dlgManualEdit
 
-    #Region "Fields"
+#Region "Fields"
 
     Private Changed As Boolean = False
     Private currFile As String
@@ -36,9 +37,9 @@ Public Class dlgManualEdit
     Private ReturnOK As Boolean = False
     Private TagStack As New Stack()
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
         Me.currFile = nfoPath
@@ -88,8 +89,8 @@ Public Class dlgManualEdit
             Dim DResult As MsgBoxResult
             DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
             If DResult = MsgBoxResult.Yes Then
-
-                RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
+                File.WriteAllText(currFile, RichTextBox1.Text, Encoding.UTF8)
+                'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
                 Me.DialogResult = Windows.Forms.DialogResult.OK
 
             ElseIf DResult = MsgBoxResult.Cancel Then
@@ -109,7 +110,8 @@ Public Class dlgManualEdit
         Me.SetUp()
 
         If File.Exists(currFile) Then
-            RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+            RichTextBox1.Text = File.ReadAllText(currFile, Encoding.UTF8)
+            'RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
         End If
         Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
 
@@ -123,7 +125,8 @@ Public Class dlgManualEdit
             Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
             Dim tempfile As String = Path.GetTempPath + "nfo-uf.tmp"
-            RichTextBox1.SaveFile(tempfile, RichTextBoxStreamType.PlainText)
+            File.WriteAllText(tempfile, RichTextBox1.Text, Encoding.UTF8)
+            'RichTextBox1.SaveFile(tempfile, RichTextBoxStreamType.PlainText)
 
             Dim IfErr As Boolean = False
             Dim StrR As New StreamReader(tempfile)
@@ -303,7 +306,8 @@ Public Class dlgManualEdit
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
-        RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
+        File.WriteAllText(currFile, RichTextBox1.Text, Encoding.UTF8)
+        'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
         ReturnOK = True
         Changed = False
     End Sub
@@ -316,7 +320,8 @@ Public Class dlgManualEdit
         Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
         Dim tempFile As String = Path.GetTempPath + "nfo.tmp"
-        RichTextBox1.SaveFile(tempFile, RichTextBoxStreamType.PlainText)
+        File.WriteAllText(tempFile, RichTextBox1.Text, Encoding.UTF8)
+        'RichTextBox1.SaveFile(tempFile, RichTextBoxStreamType.PlainText)
 
         Dim xmlP As New XmlTextReader(tempFile)
         ' Set the validation settings.
@@ -393,6 +398,6 @@ Public Class dlgManualEdit
         ListBox1.Items.Add(ErrStr)
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class
