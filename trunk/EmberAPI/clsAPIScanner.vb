@@ -553,6 +553,7 @@ Public Class Scanner
             dInfo.Name.ToLower = "recycler" OrElse _
             dInfo.Name.ToLower = "subs" OrElse _
             dInfo.Name.ToLower = "subtitles" OrElse _
+            dInfo.Name.ToLower = ".trashes" OrElse _
             dInfo.Name.ToLower.Contains("-trailer") OrElse _
             dInfo.Name.ToLower.Contains("[trailer") OrElse _
             dInfo.Name.ToLower.Contains("temporary files") OrElse _
