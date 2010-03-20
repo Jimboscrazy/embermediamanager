@@ -326,59 +326,61 @@ Public Class Scraper
                             Dim xdEps As XDocument = XDocument.Parse(sXML)
 
                             For Each Episode As XElement In xdEps.Descendants("Episode")
-                                tEpisode = New MediaContainers.EpisodeDetails
+                                If Not IsNothing(Episode.Element("EpisodeName").Value) AndAlso Not String.IsNullOrEmpty(Episode.Element("EpisodeName").Value) Then
+                                    tEpisode = New MediaContainers.EpisodeDetails
 
-                                tOrdering = Enums.Ordering.Standard
+                                    tOrdering = Enums.Ordering.Standard
 
-                                If sInfo.Ordering = Enums.Ordering.DVD Then
-                                    If Not IsNothing(Episode.Element("SeasonNumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value.ToString) AndAlso _
-                                    Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
-                                    Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
-                                        tSeas = Convert.ToInt32(Episode.Element("SeasonNumber").Value)
-                                        If sInfo.iSeason >= 0 AndAlso Not tSeas = sInfo.iSeason Then Continue For
-                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
-                                            tOrdering = Enums.Ordering.DVD
+                                    If sInfo.Ordering = Enums.Ordering.DVD Then
+                                        If Not IsNothing(Episode.Element("SeasonNumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value.ToString) AndAlso _
+                                        Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                        Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
+                                            tSeas = Convert.ToInt32(Episode.Element("SeasonNumber").Value)
+                                            If sInfo.iSeason >= 0 AndAlso Not tSeas = sInfo.iSeason Then Continue For
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_season")) OrElse String.IsNullOrEmpty(e.Element("DVD_season").Value.ToString) OrElse IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
+                                                tOrdering = Enums.Ordering.DVD
+                                            End If
+                                        ElseIf Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
+                                        Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
+                                            tSeas = Convert.ToInt32(Episode.Element("DVD_season").Value)
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
+                                                tOrdering = Enums.Ordering.DVD
+                                            End If
                                         End If
-                                    ElseIf Not IsNothing(Episode.Element("DVD_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_season").Value.ToString) AndAlso _
-                                    Not IsNothing(Episode.Element("DVD_episodenumber")) AndAlso Not String.IsNullOrEmpty(Episode.Element("DVD_episodenumber").Value.ToString) Then
-                                        tSeas = Convert.ToInt32(Episode.Element("DVD_season").Value)
-                                        If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("DVD_season").Value) = tSeas AndAlso (IsNothing(e.Element("DVD_episodenumber")) OrElse String.IsNullOrEmpty(e.Element("DVD_episodenumber").Value.ToString))).Count = 0 Then
-                                            tOrdering = Enums.Ordering.DVD
+                                    ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
+                                        If Not IsNothing(Episode.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(Episode.Element("absolute_number").Value.ToString) Then
+                                            If xdEps.Descendants("Episode").Where(Function(e) IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString)).Count = 0 Then
+                                                tOrdering = Enums.Ordering.Absolute
+                                            End If
                                         End If
-                                    End If
-                                ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
-                                    If Not IsNothing(Episode.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(Episode.Element("absolute_number").Value.ToString) Then
-                                        If xdEps.Descendants("Episode").Where(Function(e) IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString)).Count = 0 Then
-                                            tOrdering = Enums.Ordering.Absolute
-                                        End If
-                                    End If
-                                Else
-                                    If sInfo.iSeason >= 0 AndAlso Not Convert.ToInt32(Episode.Element("SeasonNumber").Value) = sInfo.iSeason Then Continue For
-                                End If
-
-                                With tEpisode
-                                    .Title = Episode.Element("EpisodeName").Value
-                                    If tOrdering = Enums.Ordering.DVD Then
-                                        .Season = Convert.ToInt32(Episode.Element("DVD_season").Value)
-                                        .Episode = Convert.ToInt32(CLng(Episode.Element("DVD_episodenumber").Value))
-                                    ElseIf tOrdering = Enums.Ordering.Absolute Then
-                                        .Season = 1
-                                        .Episode = Convert.ToInt32(Episode.Element("absolute_number").Value)
                                     Else
-                                        .Season = If(IsNothing(Episode.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
-                                        .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
+                                        If sInfo.iSeason >= 0 AndAlso Not Convert.ToInt32(Episode.Element("SeasonNumber").Value) = sInfo.iSeason Then Continue For
                                     End If
-                                    .Aired = Episode.Element("FirstAired").Value
-                                    .Rating = Episode.Element("Rating").Value
-                                    .Plot = Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                    .Director = Episode.Element("Director").Value
-                                    .Credits = CreditsString(Episode.Element("GuestStars").Value, Episode.Element("Writer").Value)
-                                    .Actors = Actors
-                                    .PosterURL = If(IsNothing(Episode.Element("filename")) OrElse String.IsNullOrEmpty(Episode.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Episode.Element("filename").Value))
-                                    .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))
-                                End With
 
-                                tEpisodes.Add(tEpisode)
+                                    With tEpisode
+                                        .Title = Episode.Element("EpisodeName").Value
+                                        If tOrdering = Enums.Ordering.DVD Then
+                                            .Season = Convert.ToInt32(Episode.Element("DVD_season").Value)
+                                            .Episode = Convert.ToInt32(CLng(Episode.Element("DVD_episodenumber").Value))
+                                        ElseIf tOrdering = Enums.Ordering.Absolute Then
+                                            .Season = 1
+                                            .Episode = Convert.ToInt32(Episode.Element("absolute_number").Value)
+                                        Else
+                                            .Season = If(IsNothing(Episode.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
+                                            .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
+                                        End If
+                                        .Aired = Episode.Element("FirstAired").Value
+                                        .Rating = Episode.Element("Rating").Value
+                                        .Plot = Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                                        .Director = Episode.Element("Director").Value
+                                        .Credits = CreditsString(Episode.Element("GuestStars").Value, Episode.Element("Writer").Value)
+                                        .Actors = Actors
+                                        .PosterURL = If(IsNothing(Episode.Element("filename")) OrElse String.IsNullOrEmpty(Episode.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Episode.Element("filename").Value))
+                                        .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))
+                                    End With
+
+                                    tEpisodes.Add(tEpisode)
+                                End If
                             Next
 
                         End If
