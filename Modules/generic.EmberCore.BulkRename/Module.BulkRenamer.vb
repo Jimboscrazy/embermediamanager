@@ -32,7 +32,10 @@ Public Class BulkRenamerModule
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
     Private _setup As frmSettingsHolder
-
+    Private ctxMyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private MyMenuSep As New System.Windows.Forms.ToolStripSeparator
+    Private WithEvents ctxMySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents ctxMySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
 #End Region 'Fields
 
 #Region "Events"
@@ -113,6 +116,24 @@ Public Class BulkRenamerModule
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+    Private Sub FolderSubMenuItemAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu1.Click
+        Cursor.Current = Cursors.WaitCursor
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaList.Item(0, indX).Value)
+        FileFolderRenamer.RenameSingle(Master.currMovie, MySettings.FoldersPattern, MySettings.FilesPattern, True, True, True)
+        RaiseEvent GenericEvent(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {ID, indX}))
+        Cursor.Current = Cursors.Default
+    End Sub
+    Private Sub FolderSubMenuItemManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ctxMySubMenu2.Click
+        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaList.SelectedRows(0).Index
+        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaList.Item(0, indX).Value)
+        Using dRenameManual As New dlgRenameManual
+            Select Case dRenameManual.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {ID, indX}))
+            End Select
+        End Using
+    End Sub
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
@@ -120,6 +141,8 @@ Public Class BulkRenamerModule
         tsi.DropDownItems.Remove(MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyTrayMenu)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(ctxMyMenu)
         '_enabled = False
     End Sub
 
@@ -134,6 +157,17 @@ Public Class BulkRenamerModule
         MyTrayMenu.Text = Master.eLang.GetString(13, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
+
+        ctxMyMenu.Text = Master.eLang.GetString(168, "...Rename")
+        ctxMyMenu.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        ctxMySubMenu1.Text = Master.eLang.GetString(630, "Auto")
+        ctxMySubMenu2.Text = Master.eLang.GetString(631, "Manual")
+        ctxMyMenu.DropDownItems.Add(ctxMySubMenu1)
+        ctxMyMenu.DropDownItems.Add(ctxMySubMenu2)
+
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(ctxMyMenu)
+
         '_enabled = True
     End Sub
 

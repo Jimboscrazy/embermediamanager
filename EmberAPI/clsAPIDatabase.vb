@@ -2154,11 +2154,14 @@ Public Class Database
         End If
     End Sub
     Sub CloseJobLog()
-        Using SQLcommand As SQLite.SQLiteCommand = CreateCommand()
-            SQLcommand.CommandText = "VACUUM;"
-            SQLcommand.ExecuteNonQuery()
-        End Using
-        Me.SQLcnJobLog.Close()
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcnJobLog.CreateCommand
+                SQLcommand.CommandText = "VACUUM;"
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            Me.SQLcnJobLog.Close()
+        Catch ex As Exception
+        End Try
     End Sub
 
 #End Region 'Methods
