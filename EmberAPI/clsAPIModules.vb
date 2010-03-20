@@ -189,6 +189,7 @@ Public Class ModulesManager
     Public Sub loadScrapersModules()
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
+        Dim ScraperFound As Boolean = False
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -213,19 +214,20 @@ Public Class ModulesManager
                             _externalScraperModule.ProcessorModule = ProcessorModule
                             _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
-                            Dim found As Boolean = False
+
                             externalScrapersModules.Add(_externalScraperModule)
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
                                 ScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
+                                PostScraperAnyEnabled = PostScraperAnyEnabled OrElse i.PostScraperEnabled
                                 _externalScraperModule.ProcessorModule.PostScraperEnabled = i.PostScraperEnabled
                                 PostScraperAnyEnabled = PostScraperAnyEnabled OrElse i.PostScraperEnabled
                                 _externalScraperModule.ScraperOrder = i.ScraperOrder
                                 _externalScraperModule.PostScraperOrder = i.PostScraperOrder
-                                found = True
+                                ScraperFound = True
                             Next
-                            If Not found Then
+                            If Not ScraperFound Then
                                 _externalScraperModule.ScraperOrder = 999
                                 _externalScraperModule.PostScraperOrder = 999
                             End If
@@ -244,11 +246,11 @@ Public Class ModulesManager
                 ext.PostScraperOrder = c
                 c += 1
             Next
-            If Not ScraperAnyEnabled Then
+            If Not ScraperAnyEnabled AndAlso Not ScraperFound Then
                 SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
                 'SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
-            If Not PostScraperAnyEnabled Then
+            If Not PostScraperAnyEnabled AndAlso Not ScraperFound Then
                 SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
                 'SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             End If
@@ -534,7 +536,7 @@ Public Class ModulesManager
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie) As List(Of String)
         Dim ret As Interfaces.ModuleResult
         Dim sStudio As New List(Of String)
-        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PostScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
             ret = _externalScraperModule.ProcessorModule.GetMovieStudio(DBMovie, sStudio)
             If ret.breakChain Then Exit For
         Next

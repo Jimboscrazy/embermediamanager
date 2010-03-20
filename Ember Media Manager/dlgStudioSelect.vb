@@ -22,19 +22,19 @@ Public Class dlgStudioSelect
 
     #Region "Fields"
 
-    Private _imdbid As String = String.Empty
+    Private _MovieId As Long = -1
     Private _studio As String = String.Empty
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal IMDBID As String) As String
+    Public Overloads Function ShowDialog(ByVal MovieID As Long) As String
         '//
         ' Overload to pass data
         '\\
 
-        Me._imdbid = IMDBID
+        Me._MovieId = MovieID
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return Me._studio
@@ -52,8 +52,10 @@ Public Class dlgStudioSelect
         Me.SetUp()
         Dim DBMovie As New Structures.DBMovie
         DBMovie.Movie = New MediaContainers.Movie
-        DBMovie.Movie.IMDBID = Me._imdbid
+        DBMovie = Master.DB.LoadMovieFromDB(_MovieId)
+        'DBMovie.Movie.IMDBID = Me._MovieId
         Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(DBMovie)
+        If alStudio.Count = 0 Then alStudio.Add(DBMovie.Movie.Studio)
         For i As Integer = 0 To alStudio.Count - 1
             ilStudios.Images.Add(alStudio(i).ToString, APIXML.GetStudioImage(alStudio(i).ToString))
             lvStudios.Items.Add(alStudio(i).ToString, i)
@@ -81,6 +83,6 @@ Public Class dlgStudioSelect
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class

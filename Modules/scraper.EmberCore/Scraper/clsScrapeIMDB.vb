@@ -644,7 +644,6 @@ Namespace IMDB
 
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
-
             Dim sHTTP As New HTTP
             Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, "/combined"))
             sHTTP = Nothing
