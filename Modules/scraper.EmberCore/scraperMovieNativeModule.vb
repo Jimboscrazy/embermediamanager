@@ -212,6 +212,8 @@ Public Class EmberNativeScraperModule
         _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
         _setup.chkTop250.Checked = ConfigOptions.bTop250
         _setup.chkCertification.Checked = ConfigOptions.bCert
+        _setup.chkFullCast.Checked = ConfigOptions.bFullCast
+        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
         _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
         _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
         _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
@@ -255,6 +257,8 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
         ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL", "akas.imdb.com")
@@ -369,6 +373,8 @@ Public Class EmberNativeScraperModule
     End Function
 
     Sub SaveSettings()
+        AdvancedSettings.SetBooleanSetting("DoFullCast", ConfigOptions.bFullCast)
+        AdvancedSettings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
         AdvancedSettings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
         AdvancedSettings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
         AdvancedSettings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
@@ -395,7 +401,6 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)
         AdvancedSettings.SetBooleanSetting("UseOFDBPlot", MySettings.UseOFDBPlot)
         AdvancedSettings.SetBooleanSetting("UseOFDBGenre", MySettings.UseOFDBGenre)
-
         AdvancedSettings.SetBooleanSetting("DownloadTraliers", MySettings.DownloadTrailers)
         AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
         AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
