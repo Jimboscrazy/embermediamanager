@@ -1260,7 +1260,7 @@ Public Class frmMain
                                 fDeleter.GetItemsToDelete(True, scrapeMovie)
 
                                 Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
-                                Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                'Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                             Next
                         Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
@@ -2838,7 +2838,7 @@ doCancel:
     Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
         Try
             If Not Me.tabsMain.SelectedIndex = 0 Then Return
-
+            Me.tsbAutoPilot.Enabled = (Me.dgvMediaList.RowCount > 0)
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrWaitEp.Stop()
@@ -5052,7 +5052,9 @@ doCancel:
         Functions.DGVDoubleBuffer(Me.dgvTVShows)
         Functions.DGVDoubleBuffer(Me.dgvTVSeasons)
         Functions.DGVDoubleBuffer(Me.dgvTVEpisodes)
-
+        SetStyle(ControlStyles.DoubleBuffer, True)
+        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        SetStyle(ControlStyles.UserPaint, True)
         'old place of log stuff
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
