@@ -111,9 +111,6 @@ Partial Class frmMain
         Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator
         Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmuRenamer = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRenameAuto = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmnuRenameManual = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -1003,7 +1000,7 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
         Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
         '
@@ -1250,27 +1247,6 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(241, 6)
-        '
-        'cmuRenamer
-        '
-        Me.cmuRenamer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRenameAuto, Me.cmnuRenameManual})
-        Me.cmuRenamer.Image = CType(resources.GetObject("cmuRenamer.Image"), System.Drawing.Image)
-        Me.cmuRenamer.Name = "cmuRenamer"
-        Me.cmuRenamer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        Me.cmuRenamer.Size = New System.Drawing.Size(244, 22)
-        Me.cmuRenamer.Text = "Rename"
-        '
-        'cmnuRenameAuto
-        '
-        Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
-        Me.cmnuRenameAuto.Size = New System.Drawing.Size(114, 22)
-        Me.cmnuRenameAuto.Text = "Auto"
-        '
-        'cmnuRenameManual
-        '
-        Me.cmnuRenameManual.Name = "cmnuRenameManual"
-        Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
-        Me.cmnuRenameManual.Text = "Manual"
         '
         'ToolStripSeparator1
         '
@@ -4774,9 +4750,6 @@ Partial Class frmMain
     Friend WithEvents mnuFilterAskExtra As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuFilterAskTrailer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuFilterAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmuRenamer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuRenameAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuRenameManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnSortTitle As System.Windows.Forms.Button
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents btnIMDBRating As System.Windows.Forms.Button
