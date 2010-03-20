@@ -1818,9 +1818,9 @@ Partial Class dlgSettings
         Me.Label24.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label24.Location = New System.Drawing.Point(3, 131)
         Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(82, 13)
+        Me.Label24.Size = New System.Drawing.Size(47, 13)
         Me.Label24.TabIndex = 44
-        Me.Label24.Text = "Poster Quality:"
+        Me.Label24.Text = "Quality:"
         '
         'Label11
         '
@@ -1848,9 +1848,9 @@ Partial Class dlgSettings
         Me.chkResizePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizePoster.Location = New System.Drawing.Point(6, 82)
         Me.chkResizePoster.Name = "chkResizePoster"
-        Me.chkResizePoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkResizePoster.Size = New System.Drawing.Size(133, 17)
         Me.chkResizePoster.TabIndex = 2
-        Me.chkResizePoster.Text = "Automatically Resize Poster:"
+        Me.chkResizePoster.Text = "Automatically Resize:"
         Me.chkResizePoster.UseVisualStyleBackColor = True
         '
         'lblPosterSize
@@ -1859,9 +1859,9 @@ Partial Class dlgSettings
         Me.lblPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPosterSize.Location = New System.Drawing.Point(4, 18)
         Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(112, 13)
+        Me.lblPosterSize.Size = New System.Drawing.Size(80, 13)
         Me.lblPosterSize.TabIndex = 14
-        Me.lblPosterSize.Text = "Preferred Poster Size"
+        Me.lblPosterSize.Text = "Preferred Size:"
         '
         'cbPosterSize
         '
@@ -1879,9 +1879,9 @@ Partial Class dlgSettings
         Me.chkOverwritePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 62)
         Me.chkOverwritePoster.Name = "chkOverwritePoster"
-        Me.chkOverwritePoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkOverwritePoster.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwritePoster.TabIndex = 1
-        Me.chkOverwritePoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwritePoster.Text = "Overwrite Existing"
         Me.chkOverwritePoster.UseVisualStyleBackColor = True
         '
         'GroupBox13
@@ -1963,9 +1963,9 @@ Partial Class dlgSettings
         Me.Label26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label26.Location = New System.Drawing.Point(2, 131)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(83, 13)
+        Me.Label26.Size = New System.Drawing.Size(47, 13)
         Me.Label26.TabIndex = 47
-        Me.Label26.Text = "Fanart Quality:"
+        Me.Label26.Text = "Quality:"
         '
         'Label9
         '
@@ -1993,9 +1993,9 @@ Partial Class dlgSettings
         Me.chkResizeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeFanart.Location = New System.Drawing.Point(6, 82)
         Me.chkResizeFanart.Name = "chkResizeFanart"
-        Me.chkResizeFanart.Size = New System.Drawing.Size(169, 17)
+        Me.chkResizeFanart.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeFanart.TabIndex = 3
-        Me.chkResizeFanart.Text = "Automatically Resize Fanart:"
+        Me.chkResizeFanart.Text = "Automatically Resize:"
         Me.chkResizeFanart.UseVisualStyleBackColor = True
         '
         'cbFanartSize
@@ -2014,9 +2014,9 @@ Partial Class dlgSettings
         Me.lblFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFanartSize.Location = New System.Drawing.Point(4, 18)
         Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(113, 13)
+        Me.lblFanartSize.Size = New System.Drawing.Size(80, 13)
         Me.lblFanartSize.TabIndex = 15
-        Me.lblFanartSize.Text = "Preferred Fanart Size"
+        Me.lblFanartSize.Text = "Preferred Size:"
         '
         'chkOverwriteFanart
         '
@@ -2024,9 +2024,9 @@ Partial Class dlgSettings
         Me.chkOverwriteFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 62)
         Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
-        Me.chkOverwriteFanart.Size = New System.Drawing.Size(155, 17)
+        Me.chkOverwriteFanart.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteFanart.TabIndex = 2
-        Me.chkOverwriteFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteFanart.Text = "Overwrite Existing"
         Me.chkOverwriteFanart.UseVisualStyleBackColor = True
         '
         'GroupBox9
@@ -2060,9 +2060,9 @@ Partial Class dlgSettings
         Me.chkSingleScrapeImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 19)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
-        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 36)
+        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(173, 19)
         Me.chkSingleScrapeImages.TabIndex = 3
-        Me.chkSingleScrapeImages.Text = "Get Images on Single Scrape"
+        Me.chkSingleScrapeImages.Text = "Get on Single Scrape"
         Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
         '
@@ -2124,7 +2124,7 @@ Partial Class dlgSettings
         Me.chkUseETasFA.Name = "chkUseETasFA"
         Me.chkUseETasFA.Size = New System.Drawing.Size(171, 30)
         Me.chkUseETasFA.TabIndex = 8
-        Me.chkUseETasFA.Text = "Use Extrathumb if no Fanart Found"
+        Me.chkUseETasFA.Text = "Use if no Fanart Found"
         Me.chkUseETasFA.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseETasFA.UseVisualStyleBackColor = True
         '
@@ -2167,7 +2167,7 @@ Partial Class dlgSettings
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(188, 30)
         Me.chkAutoThumbs.TabIndex = 5
-        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs During Scrapers"
+        Me.chkAutoThumbs.Text = "Extract During Automated Scrapers"
         Me.chkAutoThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
@@ -3081,7 +3081,7 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
         Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(152, 30)
         Me.chkDeleteAllTrailers.TabIndex = 11
-        Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
+        Me.chkDeleteAllTrailers.Text = "Delete All Existing"
         Me.chkDeleteAllTrailers.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
         '
@@ -3092,9 +3092,9 @@ Partial Class dlgSettings
         Me.chkOverwriteTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteTrailer.Location = New System.Drawing.Point(25, 145)
         Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
-        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(110, 17)
+        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteTrailer.TabIndex = 10
-        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
+        Me.chkOverwriteTrailer.Text = "Overwrite Existing"
         Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
         '
         'chkNoDLTrailer
@@ -3106,7 +3106,7 @@ Partial Class dlgSettings
         Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
         Me.chkNoDLTrailer.Size = New System.Drawing.Size(151, 30)
         Me.chkNoDLTrailer.TabIndex = 8
-        Me.chkNoDLTrailer.Text = "Only Get URLs During Scrapers"
+        Me.chkNoDLTrailer.Text = "Only Get URLs When Scraping"
         Me.chkNoDLTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkNoDLTrailer.UseVisualStyleBackColor = True
         '
@@ -3119,7 +3119,7 @@ Partial Class dlgSettings
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
         Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(154, 34)
         Me.chkSingleScrapeTrailer.TabIndex = 9
-        Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
+        Me.chkSingleScrapeTrailer.Text = "Get During Single Scrape"
         Me.chkSingleScrapeTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
         '
@@ -3132,7 +3132,7 @@ Partial Class dlgSettings
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
         Me.chkUpdaterTrailer.Size = New System.Drawing.Size(151, 33)
         Me.chkUpdaterTrailer.TabIndex = 7
-        Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
+        Me.chkUpdaterTrailer.Text = "Get During Automated Scrapers"
         Me.chkUpdaterTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
         '
@@ -3173,7 +3173,7 @@ Partial Class dlgSettings
         Me.chkAutoETSize.Name = "chkAutoETSize"
         Me.chkAutoETSize.Size = New System.Drawing.Size(188, 43)
         Me.chkAutoETSize.TabIndex = 67
-        Me.chkAutoETSize.Text = "Download All Fanart Images of the Following Size as Extrathumbs"
+        Me.chkAutoETSize.Text = "Download All Fanart Images of the Following Size as Extrathumbs:"
         Me.chkAutoETSize.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkAutoETSize.UseVisualStyleBackColor = True
         '
@@ -3921,7 +3921,7 @@ Partial Class dlgSettings
         Me.cboSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboSeasonRetrieve.FormattingEnabled = True
-        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"Directory Name", "File Name"})
+        Me.cboSeasonRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name"})
         Me.cboSeasonRetrieve.Location = New System.Drawing.Point(443, 40)
         Me.cboSeasonRetrieve.Name = "cboSeasonRetrieve"
         Me.cboSeasonRetrieve.Size = New System.Drawing.Size(135, 21)
@@ -3960,7 +3960,7 @@ Partial Class dlgSettings
         Me.cboEpRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEpRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboEpRetrieve.FormattingEnabled = True
-        Me.cboEpRetrieve.Items.AddRange(New Object() {"Directory Name", "File Name", "Season Result"})
+        Me.cboEpRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name", "Season Result"})
         Me.cboEpRetrieve.Location = New System.Drawing.Point(443, 84)
         Me.cboEpRetrieve.Name = "cboEpRetrieve"
         Me.cboEpRetrieve.Size = New System.Drawing.Size(135, 21)
@@ -4625,9 +4625,9 @@ Partial Class dlgSettings
         Me.lblAllSPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAllSPosterQ.Location = New System.Drawing.Point(3, 141)
         Me.lblAllSPosterQ.Name = "lblAllSPosterQ"
-        Me.lblAllSPosterQ.Size = New System.Drawing.Size(82, 13)
+        Me.lblAllSPosterQ.Size = New System.Drawing.Size(47, 13)
         Me.lblAllSPosterQ.TabIndex = 44
-        Me.lblAllSPosterQ.Text = "Poster Quality:"
+        Me.lblAllSPosterQ.Text = "Quality:"
         '
         'lblAllSPosterWidth
         '
@@ -4655,9 +4655,9 @@ Partial Class dlgSettings
         Me.chkResizeAllSPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeAllSPoster.Location = New System.Drawing.Point(6, 92)
         Me.chkResizeAllSPoster.Name = "chkResizeAllSPoster"
-        Me.chkResizeAllSPoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkResizeAllSPoster.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeAllSPoster.TabIndex = 2
-        Me.chkResizeAllSPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeAllSPoster.Text = "Automatically Resize:"
         Me.chkResizeAllSPoster.UseVisualStyleBackColor = True
         '
         'lblAllSPosterSize
@@ -4666,9 +4666,9 @@ Partial Class dlgSettings
         Me.lblAllSPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAllSPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblAllSPosterSize.Name = "lblAllSPosterSize"
-        Me.lblAllSPosterSize.Size = New System.Drawing.Size(115, 13)
+        Me.lblAllSPosterSize.Size = New System.Drawing.Size(83, 13)
         Me.lblAllSPosterSize.TabIndex = 14
-        Me.lblAllSPosterSize.Text = "Preferred Poster Type"
+        Me.lblAllSPosterSize.Text = "Preferred Type:"
         '
         'cbAllSPosterSize
         '
@@ -4686,9 +4686,9 @@ Partial Class dlgSettings
         Me.chkOverwriteAllSPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteAllSPoster.Location = New System.Drawing.Point(6, 76)
         Me.chkOverwriteAllSPoster.Name = "chkOverwriteAllSPoster"
-        Me.chkOverwriteAllSPoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkOverwriteAllSPoster.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteAllSPoster.TabIndex = 1
-        Me.chkOverwriteAllSPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteAllSPoster.Text = "Overwrite Existing"
         Me.chkOverwriteAllSPoster.UseVisualStyleBackColor = True
         '
         'gbShowPosterOpts
@@ -4785,9 +4785,9 @@ Partial Class dlgSettings
         Me.lblShowPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblShowPosterQ.Location = New System.Drawing.Point(3, 141)
         Me.lblShowPosterQ.Name = "lblShowPosterQ"
-        Me.lblShowPosterQ.Size = New System.Drawing.Size(82, 13)
+        Me.lblShowPosterQ.Size = New System.Drawing.Size(47, 13)
         Me.lblShowPosterQ.TabIndex = 44
-        Me.lblShowPosterQ.Text = "Poster Quality:"
+        Me.lblShowPosterQ.Text = "Quality:"
         '
         'lblShowPosterWidth
         '
@@ -4815,9 +4815,9 @@ Partial Class dlgSettings
         Me.chkResizeShowPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeShowPoster.Location = New System.Drawing.Point(6, 92)
         Me.chkResizeShowPoster.Name = "chkResizeShowPoster"
-        Me.chkResizeShowPoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkResizeShowPoster.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeShowPoster.TabIndex = 2
-        Me.chkResizeShowPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeShowPoster.Text = "Automatically Resize:"
         Me.chkResizeShowPoster.UseVisualStyleBackColor = True
         '
         'lblShowPosterSize
@@ -4826,9 +4826,9 @@ Partial Class dlgSettings
         Me.lblShowPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblShowPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblShowPosterSize.Name = "lblShowPosterSize"
-        Me.lblShowPosterSize.Size = New System.Drawing.Size(115, 13)
+        Me.lblShowPosterSize.Size = New System.Drawing.Size(83, 13)
         Me.lblShowPosterSize.TabIndex = 14
-        Me.lblShowPosterSize.Text = "Preferred Poster Type"
+        Me.lblShowPosterSize.Text = "Preferred Type:"
         '
         'cbShowPosterSize
         '
@@ -4846,9 +4846,9 @@ Partial Class dlgSettings
         Me.chkOverwriteShowPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteShowPoster.Location = New System.Drawing.Point(6, 76)
         Me.chkOverwriteShowPoster.Name = "chkOverwriteShowPoster"
-        Me.chkOverwriteShowPoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkOverwriteShowPoster.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteShowPoster.TabIndex = 1
-        Me.chkOverwriteShowPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteShowPoster.Text = "Overwrite Existing"
         Me.chkOverwriteShowPoster.UseVisualStyleBackColor = True
         '
         'gbShowFanartOpts
@@ -4919,9 +4919,9 @@ Partial Class dlgSettings
         Me.lblShowFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblShowFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblShowFanartQ.Name = "lblShowFanartQ"
-        Me.lblShowFanartQ.Size = New System.Drawing.Size(83, 13)
+        Me.lblShowFanartQ.Size = New System.Drawing.Size(47, 13)
         Me.lblShowFanartQ.TabIndex = 47
-        Me.lblShowFanartQ.Text = "Fanart Quality:"
+        Me.lblShowFanartQ.Text = "Quality:"
         '
         'lblShowFanartWidth
         '
@@ -4949,9 +4949,9 @@ Partial Class dlgSettings
         Me.chkResizeShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeShowFanart.Location = New System.Drawing.Point(6, 69)
         Me.chkResizeShowFanart.Name = "chkResizeShowFanart"
-        Me.chkResizeShowFanart.Size = New System.Drawing.Size(169, 17)
+        Me.chkResizeShowFanart.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeShowFanart.TabIndex = 3
-        Me.chkResizeShowFanart.Text = "Automatically Resize Fanart:"
+        Me.chkResizeShowFanart.Text = "Automatically Resize:"
         Me.chkResizeShowFanart.UseVisualStyleBackColor = True
         '
         'cbShowFanartSize
@@ -4970,9 +4970,9 @@ Partial Class dlgSettings
         Me.lblShowFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblShowFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblShowFanartSize.Name = "lblShowFanartSize"
-        Me.lblShowFanartSize.Size = New System.Drawing.Size(113, 13)
+        Me.lblShowFanartSize.Size = New System.Drawing.Size(80, 13)
         Me.lblShowFanartSize.TabIndex = 15
-        Me.lblShowFanartSize.Text = "Preferred Fanart Size"
+        Me.lblShowFanartSize.Text = "Preferred Size:"
         '
         'chkOverwriteShowFanart
         '
@@ -4980,9 +4980,9 @@ Partial Class dlgSettings
         Me.chkOverwriteShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteShowFanart.Location = New System.Drawing.Point(6, 53)
         Me.chkOverwriteShowFanart.Name = "chkOverwriteShowFanart"
-        Me.chkOverwriteShowFanart.Size = New System.Drawing.Size(155, 17)
+        Me.chkOverwriteShowFanart.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteShowFanart.TabIndex = 2
-        Me.chkOverwriteShowFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteShowFanart.Text = "Overwrite Existing"
         Me.chkOverwriteShowFanart.UseVisualStyleBackColor = True
         '
         'TabPage6
@@ -5064,9 +5064,9 @@ Partial Class dlgSettings
         Me.lblSeaPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSeaPosterQ.Location = New System.Drawing.Point(3, 118)
         Me.lblSeaPosterQ.Name = "lblSeaPosterQ"
-        Me.lblSeaPosterQ.Size = New System.Drawing.Size(82, 13)
+        Me.lblSeaPosterQ.Size = New System.Drawing.Size(47, 13)
         Me.lblSeaPosterQ.TabIndex = 44
-        Me.lblSeaPosterQ.Text = "Poster Quality:"
+        Me.lblSeaPosterQ.Text = "Quality:"
         '
         'lblSeaPosterWidth
         '
@@ -5094,9 +5094,9 @@ Partial Class dlgSettings
         Me.chkSeaResizePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSeaResizePoster.Location = New System.Drawing.Point(6, 69)
         Me.chkSeaResizePoster.Name = "chkSeaResizePoster"
-        Me.chkSeaResizePoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkSeaResizePoster.Size = New System.Drawing.Size(133, 17)
         Me.chkSeaResizePoster.TabIndex = 2
-        Me.chkSeaResizePoster.Text = "Automatically Resize Poster:"
+        Me.chkSeaResizePoster.Text = "Automatically Resize:"
         Me.chkSeaResizePoster.UseVisualStyleBackColor = True
         '
         'lblSeaPosterSize
@@ -5105,9 +5105,9 @@ Partial Class dlgSettings
         Me.lblSeaPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSeaPosterSize.Location = New System.Drawing.Point(3, 14)
         Me.lblSeaPosterSize.Name = "lblSeaPosterSize"
-        Me.lblSeaPosterSize.Size = New System.Drawing.Size(115, 13)
+        Me.lblSeaPosterSize.Size = New System.Drawing.Size(83, 13)
         Me.lblSeaPosterSize.TabIndex = 14
-        Me.lblSeaPosterSize.Text = "Preferred Poster Type"
+        Me.lblSeaPosterSize.Text = "Preferred Type:"
         '
         'cbSeaPosterSize
         '
@@ -5125,9 +5125,9 @@ Partial Class dlgSettings
         Me.chkSeaOverwritePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSeaOverwritePoster.Location = New System.Drawing.Point(6, 53)
         Me.chkSeaOverwritePoster.Name = "chkSeaOverwritePoster"
-        Me.chkSeaOverwritePoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkSeaOverwritePoster.Size = New System.Drawing.Size(119, 17)
         Me.chkSeaOverwritePoster.TabIndex = 1
-        Me.chkSeaOverwritePoster.Text = "Overwrite Existing Poster"
+        Me.chkSeaOverwritePoster.Text = "Overwrite Existing"
         Me.chkSeaOverwritePoster.UseVisualStyleBackColor = True
         '
         'gbSeaFanartOpts
@@ -5198,9 +5198,9 @@ Partial Class dlgSettings
         Me.lblSeaFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSeaFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblSeaFanartQ.Name = "lblSeaFanartQ"
-        Me.lblSeaFanartQ.Size = New System.Drawing.Size(83, 13)
+        Me.lblSeaFanartQ.Size = New System.Drawing.Size(47, 13)
         Me.lblSeaFanartQ.TabIndex = 47
-        Me.lblSeaFanartQ.Text = "Fanart Quality:"
+        Me.lblSeaFanartQ.Text = "Quality:"
         '
         'lblSeaFanartWidth
         '
@@ -5228,9 +5228,9 @@ Partial Class dlgSettings
         Me.chkSeaResizeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSeaResizeFanart.Location = New System.Drawing.Point(6, 69)
         Me.chkSeaResizeFanart.Name = "chkSeaResizeFanart"
-        Me.chkSeaResizeFanart.Size = New System.Drawing.Size(169, 17)
+        Me.chkSeaResizeFanart.Size = New System.Drawing.Size(133, 17)
         Me.chkSeaResizeFanart.TabIndex = 3
-        Me.chkSeaResizeFanart.Text = "Automatically Resize Fanart:"
+        Me.chkSeaResizeFanart.Text = "Automatically Resize:"
         Me.chkSeaResizeFanart.UseVisualStyleBackColor = True
         '
         'cbSeaFanartSize
@@ -5249,9 +5249,9 @@ Partial Class dlgSettings
         Me.lblSeaFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSeaFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblSeaFanartSize.Name = "lblSeaFanartSize"
-        Me.lblSeaFanartSize.Size = New System.Drawing.Size(113, 13)
+        Me.lblSeaFanartSize.Size = New System.Drawing.Size(80, 13)
         Me.lblSeaFanartSize.TabIndex = 15
-        Me.lblSeaFanartSize.Text = "Preferred Fanart Size"
+        Me.lblSeaFanartSize.Text = "Preferred Size:"
         '
         'chkSeaOverwriteFanart
         '
@@ -5259,9 +5259,9 @@ Partial Class dlgSettings
         Me.chkSeaOverwriteFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSeaOverwriteFanart.Location = New System.Drawing.Point(6, 53)
         Me.chkSeaOverwriteFanart.Name = "chkSeaOverwriteFanart"
-        Me.chkSeaOverwriteFanart.Size = New System.Drawing.Size(155, 17)
+        Me.chkSeaOverwriteFanart.Size = New System.Drawing.Size(119, 17)
         Me.chkSeaOverwriteFanart.TabIndex = 2
-        Me.chkSeaOverwriteFanart.Text = "Overwrite Existing Fanart"
+        Me.chkSeaOverwriteFanart.Text = "Overwrite Existing"
         Me.chkSeaOverwriteFanart.UseVisualStyleBackColor = True
         '
         'TabPage7
@@ -5342,9 +5342,9 @@ Partial Class dlgSettings
         Me.lblEpPosterQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblEpPosterQ.Location = New System.Drawing.Point(1, 78)
         Me.lblEpPosterQ.Name = "lblEpPosterQ"
-        Me.lblEpPosterQ.Size = New System.Drawing.Size(82, 13)
+        Me.lblEpPosterQ.Size = New System.Drawing.Size(47, 13)
         Me.lblEpPosterQ.TabIndex = 44
-        Me.lblEpPosterQ.Text = "Poster Quality:"
+        Me.lblEpPosterQ.Text = "Quality:"
         '
         'lblEpPosterWidth
         '
@@ -5372,9 +5372,9 @@ Partial Class dlgSettings
         Me.chkResizeEpPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeEpPoster.Location = New System.Drawing.Point(4, 30)
         Me.chkResizeEpPoster.Name = "chkResizeEpPoster"
-        Me.chkResizeEpPoster.Size = New System.Drawing.Size(168, 17)
+        Me.chkResizeEpPoster.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeEpPoster.TabIndex = 2
-        Me.chkResizeEpPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeEpPoster.Text = "Automatically Resize:"
         Me.chkResizeEpPoster.UseVisualStyleBackColor = True
         '
         'chkOverwriteEpPoster
@@ -5383,9 +5383,9 @@ Partial Class dlgSettings
         Me.chkOverwriteEpPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteEpPoster.Location = New System.Drawing.Point(4, 14)
         Me.chkOverwriteEpPoster.Name = "chkOverwriteEpPoster"
-        Me.chkOverwriteEpPoster.Size = New System.Drawing.Size(154, 17)
+        Me.chkOverwriteEpPoster.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteEpPoster.TabIndex = 1
-        Me.chkOverwriteEpPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteEpPoster.Text = "Overwrite Existing"
         Me.chkOverwriteEpPoster.UseVisualStyleBackColor = True
         '
         'gbEpFanartOpts
@@ -5456,9 +5456,9 @@ Partial Class dlgSettings
         Me.lblEpFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblEpFanartQ.Location = New System.Drawing.Point(3, 118)
         Me.lblEpFanartQ.Name = "lblEpFanartQ"
-        Me.lblEpFanartQ.Size = New System.Drawing.Size(83, 13)
+        Me.lblEpFanartQ.Size = New System.Drawing.Size(47, 13)
         Me.lblEpFanartQ.TabIndex = 47
-        Me.lblEpFanartQ.Text = "Fanart Quality:"
+        Me.lblEpFanartQ.Text = "Quality:"
         '
         'lblEpFanartWidth
         '
@@ -5486,9 +5486,9 @@ Partial Class dlgSettings
         Me.chkResizeEpFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkResizeEpFanart.Location = New System.Drawing.Point(6, 69)
         Me.chkResizeEpFanart.Name = "chkResizeEpFanart"
-        Me.chkResizeEpFanart.Size = New System.Drawing.Size(169, 17)
+        Me.chkResizeEpFanart.Size = New System.Drawing.Size(133, 17)
         Me.chkResizeEpFanart.TabIndex = 3
-        Me.chkResizeEpFanart.Text = "Automatically Resize Fanart:"
+        Me.chkResizeEpFanart.Text = "Automatically Resize:"
         Me.chkResizeEpFanart.UseVisualStyleBackColor = True
         '
         'cbEpFanartSize
@@ -5507,9 +5507,9 @@ Partial Class dlgSettings
         Me.lblEpFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblEpFanartSize.Location = New System.Drawing.Point(3, 14)
         Me.lblEpFanartSize.Name = "lblEpFanartSize"
-        Me.lblEpFanartSize.Size = New System.Drawing.Size(113, 13)
+        Me.lblEpFanartSize.Size = New System.Drawing.Size(80, 13)
         Me.lblEpFanartSize.TabIndex = 15
-        Me.lblEpFanartSize.Text = "Preferred Fanart Size"
+        Me.lblEpFanartSize.Text = "Preferred Size:"
         '
         'chkOverwriteEpFanart
         '
@@ -5517,9 +5517,9 @@ Partial Class dlgSettings
         Me.chkOverwriteEpFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOverwriteEpFanart.Location = New System.Drawing.Point(6, 53)
         Me.chkOverwriteEpFanart.Name = "chkOverwriteEpFanart"
-        Me.chkOverwriteEpFanart.Size = New System.Drawing.Size(155, 17)
+        Me.chkOverwriteEpFanart.Size = New System.Drawing.Size(119, 17)
         Me.chkOverwriteEpFanart.TabIndex = 2
-        Me.chkOverwriteEpFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteEpFanart.Text = "Overwrite Existing"
         Me.chkOverwriteEpFanart.UseVisualStyleBackColor = True
         '
         'pnlTVScraper
@@ -6951,6 +6951,10 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6962,14 +6966,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.DoubleBuffered = True

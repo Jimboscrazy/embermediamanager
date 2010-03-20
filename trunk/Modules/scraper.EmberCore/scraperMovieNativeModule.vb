@@ -306,7 +306,7 @@ Public Class EmberNativeScraperModule
                             End If
                         End If
                     ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
-                        MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
+                        MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size:"))
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.IMDBURL = MySettings.IMDBURL
                             pResults = dImgSelect.ShowDialog(DBMovie, Enums.ImageType.Posters)
@@ -339,7 +339,7 @@ Public Class EmberNativeScraperModule
                             End If
                         End If
                     ElseIf ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
-                        MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
+                        MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size:"))
 
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.IMDBURL = MySettings.IMDBURL
