@@ -60,6 +60,27 @@ Namespace My.Resources
             End Set
         End Property
         
+        Friend ReadOnly Property defaultgenre() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defaultgenre", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property defaultscreen() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defaultscreen", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property defaultsound() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defaultsound", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property haslanguage() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("haslanguage", resourceCulture)

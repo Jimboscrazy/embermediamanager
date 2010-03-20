@@ -236,15 +236,14 @@ Public Class ThumbGenerator
                     If fThumbs.Count <= 0 Then
                         FileUtils.Delete.DeleteDirectory(tPath)
                     Else
-                        Dim exFanart As New Images
                         'always set to something if extrathumbs are created so we know during scrapers
                         _setfa = "TRUE"
-                        If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(_movie.FanartPath) Then
-                            exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
-                            _setfa = exFanart.SaveAsFanart(_movie)
-                        End If
-                        exFanart.Dispose()
-                        exFanart = Nothing
+                        Using exFanart As New Images
+                            If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(_movie.FanartPath) Then
+                                exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
+                                _setfa = exFanart.SaveAsFanart(_movie)
+                            End If
+                        End Using
                     End If
 
                 End If

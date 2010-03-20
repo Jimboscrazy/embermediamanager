@@ -506,7 +506,7 @@
   <string id="504">Meta Data is not available for this episode. Try rescanning.</string>
   <string id="505">No Spoilers</string>
   <string id="506">Number To Create:</string>
-  <string id="507">Extract During Automated Scrapers</string>
+  <string id="507">Extract During Scrapers</string>
   <string id="508">Use Outline for Plot if Plot is Empty</string>
   <string id="509">IMDB Mirror:</string>
   <string id="510">Scrape Only Actors With Images</string>
