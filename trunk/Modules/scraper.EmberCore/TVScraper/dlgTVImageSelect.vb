@@ -694,8 +694,10 @@ Public Class dlgTVImageSelect
                         If Not File.Exists(Epi.TVEp.LocalFile) Then
                             If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
                                 Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
-                                Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
-                                Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                                If Not IsNothing(Epi.TVEp.Poster.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
+                                    Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                                End If
                             End If
                         Else
                             Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
@@ -719,13 +721,16 @@ Public Class dlgTVImageSelect
                         If Not File.Exists(Seas.LocalFile) Then
                             If Not String.IsNullOrEmpty(Seas.URL) Then
                                 Seas.Image.FromWeb(Seas.URL)
-                                Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
-                                Seas.Image.Save(Seas.LocalFile)
+                                If Not IsNothing(Seas.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(Seas.LocalFile).FullName)
+                                    Seas.Image.Save(Seas.LocalFile)
+                                    SeasonList.Add(Seas)
+                                End If
                             End If
                         Else
                             Seas.Image.FromFile(Seas.LocalFile)
+                            SeasonList.Add(Seas)
                         End If
-                        SeasonList.Add(Seas)
 
                         If Me.bwLoadImages.CancellationPending Then
                             Return True
@@ -745,13 +750,16 @@ Public Class dlgTVImageSelect
                         If Not File.Exists(SPost.LocalFile) Then
                             If Not String.IsNullOrEmpty(SPost.URL) Then
                                 SPost.Image.FromWeb(SPost.URL)
-                                Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
-                                SPost.Image.Save(SPost.LocalFile)
+                                If Not IsNothing(SPost.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SPost.LocalFile).FullName)
+                                    SPost.Image.Save(SPost.LocalFile)
+                                    ShowPosterList.Add(SPost)
+                                End If
                             End If
                         Else
                             SPost.Image.FromFile(SPost.LocalFile)
+                            ShowPosterList.Add(SPost)
                         End If
-                        ShowPosterList.Add(SPost)
 
                         If Me.bwLoadImages.CancellationPending Then
                             Return True
@@ -771,13 +779,16 @@ Public Class dlgTVImageSelect
                         If Not File.Exists(SFan.LocalThumb) Then
                             If Not String.IsNullOrEmpty(SFan.ThumbnailURL) Then
                                 SFan.Image.FromWeb(SFan.ThumbnailURL)
-                                Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
-                                SFan.Image.Image.Save(SFan.LocalThumb)
+                                If Not IsNothing(SFan.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
+                                    SFan.Image.Image.Save(SFan.LocalThumb)
+                                    FanartList.Add(SFan)
+                                End If
                             End If
                         Else
                             SFan.Image.FromFile(SFan.LocalThumb)
+                            FanartList.Add(SFan)
                         End If
-                        FanartList.Add(SFan)
 
                         If Me.bwLoadImages.CancellationPending Then
                             Return True
@@ -798,13 +809,16 @@ Public Class dlgTVImageSelect
                         If Not File.Exists(Post.LocalFile) Then
                             If Not String.IsNullOrEmpty(Post.URL) Then
                                 Post.Image.FromWeb(Post.URL)
-                                Directory.CreateDirectory(Directory.GetParent(Post.LocalFile).FullName)
-                                Post.Image.Save(Post.LocalFile)
+                                If Not IsNothing(Post.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(Post.LocalFile).FullName)
+                                    Post.Image.Save(Post.LocalFile)
+                                    GenericPosterList.Add(Post)
+                                End If
                             End If
                         Else
                             Post.Image.FromFile(Post.LocalFile)
+                            GenericPosterList.Add(Post)
                         End If
-                        GenericPosterList.Add(Post)
 
                         If Me.bwLoadImages.CancellationPending Then
                             Return True
