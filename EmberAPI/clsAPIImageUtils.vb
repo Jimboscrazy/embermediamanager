@@ -23,6 +23,19 @@ Public Class ImageUtils
     #Region "Methods"
 
     Public Shared Function AddMissingStamp(ByVal oImage As Image) As Image
+        Dim nImage As New Bitmap(GrayScale(oImage))
+
+        'now overlay "missing" image
+        Dim grOverlay As Graphics = Graphics.FromImage(nImage)
+        Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
+        Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
+        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
+
+        Return nImage
+    End Function
+
+    Public Shared Function GrayScale(ByVal oImage As Image) As Image
         Dim nImage As New Bitmap(oImage)
 
         'first let's convert the background to grayscale
@@ -37,13 +50,6 @@ Public Class ImageUtils
         Dim ia As Imaging.ImageAttributes = New Imaging.ImageAttributes()
         ia.SetColorMatrix(cm)
         g.DrawImage(oImage, New Rectangle(0, 0, oImage.Width, oImage.Height), 0, 0, oImage.Width, oImage.Height, GraphicsUnit.Pixel, ia)
-
-        'now overlay "missing" image
-        Dim grOverlay As Graphics = Graphics.FromImage(nImage)
-        Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
-        Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
-        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
 
         Return nImage
     End Function

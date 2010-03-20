@@ -821,13 +821,21 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayFanart Then
+                Dim NeedsGS As Boolean = False
                 If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
                     Me.MainFanart.FromFile(Master.currShow.EpFanartPath)
                 Else
                     Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                    NeedsGS = True
                 End If
 
-                If Not IsNothing(Me.MainFanart.Image) AndAlso String.IsNullOrEmpty(Master.currShow.Filename) Then Me.MainFanart.Image = ImageUtils.AddMissingStamp(Me.MainFanart.Image)
+                If Not IsNothing(Me.MainFanart.Image) Then
+                    If String.IsNullOrEmpty(Master.currShow.Filename) Then
+                        Me.MainFanart.Image = ImageUtils.AddMissingStamp(Me.MainFanart.Image)
+                    ElseIf NeedsGS Then
+                        Me.MainFanart.Image = ImageUtils.GrayScale(Me.MainFanart.Image)
+                    End If
+                End If
             End If
 
             'wait for mediainfo to update the nfo
@@ -930,13 +938,7 @@ Public Class frmMain
                 Return
             End If
 
-            If Not Master.eSettings.NoDisplayPoster Then
-                If Not String.IsNullOrEmpty(Master.currShow.SeasonPosterPath) Then
-                    Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
-                Else
-                    Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
-                End If
-            End If
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
 
             If bwLoadSeasonInfo.CancellationPending Then
                 e.Cancel = True
@@ -948,6 +950,7 @@ Public Class frmMain
                     Me.MainFanart.FromFile(Master.currShow.SeasonFanartPath)
                 Else
                     Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                    If Not IsNothing(Me.MainFanart.Image) Then Me.MainFanart.Image = ImageUtils.GrayScale(Me.MainFanart.Image)
                 End If
             End If
 
