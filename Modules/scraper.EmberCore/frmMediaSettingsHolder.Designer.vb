@@ -196,9 +196,9 @@ Partial Class frmMediaSettingsHolder
         Me.chkDownloadTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 19)
         Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(135, 17)
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(140, 17)
         Me.chkDownloadTrailer.TabIndex = 84
-        Me.chkDownloadTrailer.Text = "Enable Downloading"
+        Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
         'Label23
@@ -229,7 +229,7 @@ Partial Class frmMediaSettingsHolder
         Me.GroupBox2.Size = New System.Drawing.Size(161, 79)
         Me.GroupBox2.TabIndex = 83
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Supported Trailer Sites:"
+        Me.GroupBox2.Text = "Supported Sites:"
         '
         'lbTrailerSites
         '

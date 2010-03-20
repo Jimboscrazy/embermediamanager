@@ -1979,7 +1979,7 @@ Public Class dlgSettings
         Me.txtSeasonRegex.Text = lItem.SubItems(1).Text
 
         Select Case lItem.SubItems(2).Text
-            Case "Directory"
+            Case "Folder"
                 Me.cboSeasonRetrieve.SelectedIndex = 0
             Case "File"
                 Me.cboSeasonRetrieve.SelectedIndex = 1
@@ -1988,7 +1988,7 @@ Public Class dlgSettings
         Me.txtEpRegex.Text = lItem.SubItems(3).Text
 
         Select Case lItem.SubItems(4).Text
-            Case "Directory"
+            Case "Folder"
                 Me.cboEpRetrieve.SelectedIndex = 0
             Case "File"
                 Me.cboEpRetrieve.SelectedIndex = 1
@@ -2562,11 +2562,11 @@ Public Class dlgSettings
         For Each rShow As Settings.TVShowRegEx In Me.ShowRegex
             lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.SeasonRegex)
-            lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Directory", "File"))
+            lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Folder", "File"))
             lvItem.SubItems.Add(rShow.EpisodeRegex)
             Select Case rShow.EpisodeRetrieve
                 Case Settings.EpRetrieve.FromDirectory
-                    lvItem.SubItems.Add("Directory")
+                    lvItem.SubItems.Add("Folder")
                 Case Settings.EpRetrieve.FromFilename
                     lvItem.SubItems.Add("File")
                 Case Settings.EpRetrieve.FromSeasonResult
@@ -3599,20 +3599,20 @@ Public Class dlgSettings
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
         Me.btnAddTVSource.Text = Me.btnMovieAddFolder.Text
         Me.GroupBox14.Text = Me.GroupBox5.Text
-        Me.Label24.Text = Master.eLang.GetString(478, "Poster Quality:")
+        Me.Label24.Text = Master.eLang.GetString(478, "Quality:")
         Me.Label11.Text = Master.eLang.GetString(479, "Max Width:")
         Me.Label12.Text = Master.eLang.GetString(480, "Max Height:")
-        Me.chkResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
-        Me.lblPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
-        Me.chkOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
+        Me.chkResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize:")
+        Me.lblPosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
+        Me.chkOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.GroupBox13.Text = Me.GroupBox6.Text
         Me.chkFanartOnly.Text = Master.eLang.GetString(145, "Only")
-        Me.Label26.Text = Master.eLang.GetString(484, "Fanart Quality:")
+        Me.Label26.Text = Me.Label24.Text
         Me.Label9.Text = Me.Label11.Text
         Me.Label10.Text = Me.Label12.Text
-        Me.chkResizeFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
-        Me.lblFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
-        Me.chkOverwriteFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
+        Me.chkResizeFanart.Text = Me.chkResizePoster.Text
+        Me.lblFanartSize.Text = Me.lblPosterSize.Text
+        Me.chkOverwriteFanart.Text = Me.chkOverwritePoster.Text
         Me.GroupBox10.Text = Master.eLang.GetString(488, "Global Locks")
         Me.chkLockTrailer.Text = Master.eLang.GetString(489, "Lock Trailer")
         Me.chkLockGenre.Text = Master.eLang.GetString(490, "Lock Genre")
@@ -3623,13 +3623,13 @@ Public Class dlgSettings
         Me.chkLockOutline.Text = Master.eLang.GetString(495, "Lock Outline")
         Me.chkLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
         Me.GroupBox9.Text = Master.eLang.GetString(497, "Images")
-        Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save Image URLs to Nfo")
-        Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Scrape Images on Single Scrape")
+        Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
+        Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Get on Single Scrape")
 
-        Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use Extrathumb if no Fanart Found")
+        Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use if no Fanart Found")
         Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers")
         Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
-        Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Automatically Extract Extrathumbs During Scrapers")
+        Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Extract During Automated Scrapers")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
 
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
@@ -3651,14 +3651,14 @@ Public Class dlgSettings
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
         Me.GroupBox31.Text = Me.GroupBox26.Text
 
-        Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing Trailers")
-        Me.chkOverwriteTrailer.Text = Master.eLang.GetString(523, "Overwrite Trailer")
-        Me.chkNoDLTrailer.Text = Master.eLang.GetString(524, "Only Get URLs During Scrapers")
-        Me.chkSingleScrapeTrailer.Text = Master.eLang.GetString(525, "Get Trailers During Single-Scrape")
+        Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing")
+        Me.chkOverwriteTrailer.Text = Master.eLang.GetString(483, "Overwrite Existing")
+        Me.chkNoDLTrailer.Text = Master.eLang.GetString(524, "Only Get URLs When Scraping")
+        Me.chkSingleScrapeTrailer.Text = Master.eLang.GetString(525, "Get During Single Scrape")
 
-        Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get Trailers During ""All Items"" Scrapers")
+        Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get During Automated Scrapers")
 
-        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Downloading")
+        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Support")
         Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
 
         Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Video Extensions")
@@ -3678,7 +3678,7 @@ Public Class dlgSettings
         Me.rbETCustom.Text = Master.eLang.GetString(545, "Use Custom Size")
         Me.rbETNative.Text = Master.eLang.GetString(546, "Use Native Resolution")
         Me.GroupBox17.Text = Master.eLang.GetString(547, "Caching")
-        Me.chkUseImgCacheUpdaters.Text = Master.eLang.GetString(548, "Use Image Cache for Scrapers")
+        Me.chkUseImgCacheUpdaters.Text = Master.eLang.GetString(548, "Use During Automated Scrapers")
         Me.chkPersistImgCache.Text = Master.eLang.GetString(550, "Persistent Image Cache")
         Me.chkUseImgCache.Text = Master.eLang.GetString(551, "Use Image Cache")
         Me.fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops.")
@@ -3734,7 +3734,7 @@ Public Class dlgSettings
         Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
 
-        Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
+        Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs:")
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.Label1.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.Label3.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
@@ -3790,7 +3790,7 @@ Public Class dlgSettings
         Me.lblEpisodeRetrieve.Text = Me.lblSeasonRetrieve.Text
         Me.btnAddShowRegex.Text = Master.eLang.GetString(695, "Edit Regex")
         Me.gbShowPosterOpts.Text = Me.GroupBox5.Text
-        Me.lblShowPosterSize.Text = Master.eLang.GetString(730, "Preferred Poster Type")
+        Me.lblShowPosterSize.Text = Master.eLang.GetString(730, "Preferred Type:")
         Me.chkOverwriteShowPoster.Text = Me.chkOverwritePoster.Text
         Me.chkResizeShowPoster.Text = Me.chkResizePoster.Text
         Me.lblShowPosterWidth.Text = Me.Label11.Text
@@ -3864,7 +3864,7 @@ Public Class dlgSettings
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
         Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
-        Me.gbHelp.Text = Master.eLang.GetString(458, "     Help")
+        Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.lblOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
