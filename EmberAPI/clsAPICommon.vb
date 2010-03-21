@@ -309,6 +309,7 @@ Public Class Enums
         MovieFrameExtrator = 5
         TVFrameExtrator = 6
         RandomFrameExtrator = 7
+        CL_MovieExporter = 8            ' Command Line Exporter
     End Enum
 
     Public Enum MovieScraperEventType As Integer

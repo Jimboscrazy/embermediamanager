@@ -1119,6 +1119,9 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
+        If isCL Then
+            Me.ScraperDone = True
+        End If
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
             MovieInfoDownloaded()
@@ -4989,12 +4992,12 @@ doCancel:
 
         If Args.Count > 1 Then
             isCL = True
-        Else
-            fLoading.Show(Me)
-            Application.DoEvents()
         End If
+        fLoading.Show(Me)
+        Application.DoEvents()
 
-        If Not isCL Then fLoading.SetStage("Basic setup...")
+        fLoading.SetStage("Basic setup...")
+
         Dim currentDomain As AppDomain = AppDomain.CurrentDomain
         ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
                 .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
@@ -5015,14 +5018,15 @@ doCancel:
         If Not Directory.Exists(sPath) Then
             Directory.CreateDirectory(sPath)
         End If
-        If Not isCL Then fLoading.SetStage("Loading settings...")
+        fLoading.SetStage("Loading settings...")
         Master.eSettings.Load()
         If Not isCL Then fLoading.SetStage("Creating default options...")
+        fLoading.SetStage("Creating default options...")
         Functions.CreateDefaultOptions()
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
-        If Not isCL Then fLoading.SetStage("Loading modules...")
+        fLoading.SetStage("Loading modules...")
         'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
         'ExternalModulesManager = New ModulesManager
         ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.mnuMediaList
@@ -5071,26 +5075,26 @@ doCancel:
 
                 Select Case Args(i).ToLower
                     Case "-fullask"
-                        clScrapeType = Enums.ScrapeType.FullAsk
-                        clAsk = True
+                        'clScrapeType = Enums.ScrapeType.FullAsk
+                        'clAsk = True
                     Case "-fullauto"
                         clScrapeType = Enums.ScrapeType.FullAuto
                         clAsk = False
                     Case "-missask"
-                        clScrapeType = Enums.ScrapeType.UpdateAsk
-                        clAsk = True
+                        'clScrapeType = Enums.ScrapeType.UpdateAsk
+                        'clAsk = True
                     Case "-missauto"
                         clScrapeType = Enums.ScrapeType.UpdateAuto
                         clAsk = False
                     Case "-newask"
-                        clScrapeType = Enums.ScrapeType.NewAsk
-                        clAsk = True
+                        'clScrapeType = Enums.ScrapeType.NewAsk
+                        'clAsk = True
                     Case "-newauto"
                         clScrapeType = Enums.ScrapeType.NewAuto
                         clAsk = False
                     Case "-markask"
-                        clScrapeType = Enums.ScrapeType.MarkAsk
-                        clAsk = True
+                        'clScrapeType = Enums.ScrapeType.MarkAsk
+                        'clAsk = True
                     Case "-markauto"
                         clScrapeType = Enums.ScrapeType.MarkAuto
                         clAsk = False
@@ -5156,9 +5160,15 @@ doCancel:
                 End Select
             Next
             APIXML.CacheXMLs()
+            fLoading.SetStage("Loading database...")
             Master.DB.Connect(False, False)
+            If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+                Master.DB.PatchDatabase()
+                File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+            End If
+
             If clExport = True Then
-                'TODO: Re-enable for command line
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CL_MovieExporter, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
                 'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
             End If
             If Not IsNothing(clScrapeType) Then
@@ -5168,15 +5178,15 @@ doCancel:
                         While Not Me.LoadingDone
                             Application.DoEvents()
                         End While
-                        'TODO: command line scraping - need to work on this later
-                        ' *** ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
-                        MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
+                        fLoading.pbLoading.Style = ProgressBarStyle.Marquee
+                        fLoading.SetStage("Command Line Scraping...")
+                        MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
+                        'MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 Else
                     Try
-
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
                             Me.tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
@@ -5232,9 +5242,9 @@ doCancel:
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
-                            'TODO: re-enable command line scraping
-                            'Me.ScrapeData(Enums.ScrapeType.SingleScrape, Master.DefaultOptions, Nothing, clAsk)
-                            MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
+                            fLoading.SetStage("Command Line Scraping...")
+                            MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                            'MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                         Else
                             Me.ScraperDone = True
                         End If
@@ -5268,13 +5278,13 @@ doCancel:
                         End Using
                     End If
                 End If
-                If Not isCL Then fLoading.SetStage("Loading translations...")
+                fLoading.SetStage("Loading translations...")
                 APIXML.CacheXMLs()
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
-                If Not isCL Then fLoading.SetStage("Positioning controls...")
+                fLoading.SetStage("Positioning controls...")
                 Me.Location = Master.eSettings.WindowLoc
                 Me.Size = Master.eSettings.WindowSize
                 Me.WindowState = Master.eSettings.WindowState
@@ -5318,7 +5328,7 @@ doCancel:
                 Me.ClearInfo()
 
                 Application.DoEvents()
-                If Not isCL Then fLoading.SetStage("Loading database...")
+                fLoading.SetStage("Loading database...")
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
                     If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
@@ -5345,7 +5355,7 @@ doCancel:
 
                 End If
 
-                If Not isCL Then fLoading.SetStage("Setting menus...")
+                fLoading.SetStage("Setting menus...")
                 Me.SetMenus(True)
                 Functions.GetListOfSources()
                 cmnuTrayIconExit.Enabled = True
@@ -6911,7 +6921,9 @@ doCancel:
 
     Private Sub ScanningCompleted()
         If isCL Then
-            Me.ScraperDone = True
+            Me.FillList(0)
+            'Me.ScraperDone = True
+            'Me.LoadingDone = True
         Else
             Me.SetStatus(String.Empty)
             Me.FillList(0)
