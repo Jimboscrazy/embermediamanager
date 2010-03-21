@@ -30,6 +30,7 @@ Imports System.Xml.Serialization
 Public Class frmMain
 
     #Region "Fields"
+    Private fLoading As New frmSplash
 
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
@@ -3973,6 +3974,7 @@ doCancel:
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click, cmnuTrayIconExit.Click
         If isCL Then
+            fLoading.SetStage("Canceling ...")
             If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy
@@ -4993,7 +4995,7 @@ doCancel:
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Visible = False
-        Dim fLoading As New frmSplash
+        fLoading = New frmSplash
 
         Me.TrayIcon.Icon = Me.Icon
         Dim Args() As String = Environment.GetCommandLineArgs
@@ -5083,26 +5085,26 @@ doCancel:
 
                     Select Case Args(i).ToLower
                         Case "-fullask"
-                            'clScrapeType = Enums.ScrapeType.FullAsk
-                            'clAsk = True
+                            clScrapeType = Enums.ScrapeType.FullAsk
+                            clAsk = True
                         Case "-fullauto"
                             clScrapeType = Enums.ScrapeType.FullAuto
                             clAsk = False
                         Case "-missask"
-                            'clScrapeType = Enums.ScrapeType.UpdateAsk
-                            'clAsk = True
+                            clScrapeType = Enums.ScrapeType.UpdateAsk
+                            clAsk = True
                         Case "-missauto"
                             clScrapeType = Enums.ScrapeType.UpdateAuto
                             clAsk = False
                         Case "-newask"
-                            'clScrapeType = Enums.ScrapeType.NewAsk
-                            'clAsk = True
+                            clScrapeType = Enums.ScrapeType.NewAsk
+                            clAsk = True
                         Case "-newauto"
                             clScrapeType = Enums.ScrapeType.NewAuto
                             clAsk = False
                         Case "-markask"
-                            'clScrapeType = Enums.ScrapeType.MarkAsk
-                            'clAsk = True
+                            clScrapeType = Enums.ScrapeType.MarkAsk
+                            clAsk = True
                         Case "-markauto"
                             clScrapeType = Enums.ScrapeType.MarkAuto
                             clAsk = False
