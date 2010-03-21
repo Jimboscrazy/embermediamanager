@@ -5020,7 +5020,6 @@ doCancel:
         End If
         fLoading.SetStage("Loading settings...")
         Master.eSettings.Load()
-        If Not isCL Then fLoading.SetStage("Creating default options...")
         fLoading.SetStage("Creating default options...")
         Functions.CreateDefaultOptions()
         '//
@@ -5181,7 +5180,6 @@ doCancel:
                         fLoading.pbLoading.Style = ProgressBarStyle.Marquee
                         fLoading.SetStage("Command Line Scraping...")
                         MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
-                        'MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
@@ -5242,9 +5240,9 @@ doCancel:
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
+                            fLoading.pbLoading.Style = ProgressBarStyle.Marquee
                             fLoading.SetStage("Command Line Scraping...")
                             MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
-                            'MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                         Else
                             Me.ScraperDone = True
                         End If
