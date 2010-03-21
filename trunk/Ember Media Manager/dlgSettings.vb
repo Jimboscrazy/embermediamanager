@@ -3268,9 +3268,6 @@ Public Class dlgSettings
                 Master.eSettings.PreferredTrailerQuality = DirectCast(Me.cbTrailerQuality.SelectedValue, Enums.TrailerQuality)
             End If
 
-            Master.eSettings.TrailerSites.Clear()
-            'If Me.lbTrailerSites.CheckedItems.Count > 0 Then
-
             Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
             Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
 
@@ -3278,16 +3275,7 @@ Public Class dlgSettings
             Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
             Master.eSettings.OverwriteTrailer = Me.chkOverwriteTrailer.Checked
             Master.eSettings.DeleteAllTrailers = Me.chkDeleteAllTrailers.Checked
-            'Master.eSettings. = Me.chkAutoThumbs.Checked
-            'Else
-            'Master.eSettings.DownloadTrailers = False
-            'Master.eSettings.UpdaterTrailers = False
-            'Master.eSettings.SingleScrapeTrailer = False
-            'Master.eSettings.TrailerTimeout = 2
-            'Master.eSettings.UpdaterTrailersNoDownload = False
-            'Master.eSettings.OverwriteTrailer = False
-            'Master.eSettings.DeleteAllTrailers = False
-            'End If
+
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
                 If Me.lbGenre.CheckedItems.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) Then

@@ -135,20 +135,22 @@ Public Class Trailers
 
     Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As List(Of String)
         Me._ImdbID = ImdbID
-
-        For Each TP As Enums.TrailerPages In Master.eSettings.TrailerSites
-            If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
+        Dim tCount As Integer = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerSiteCount", "0"))
+        For iTrailer = 0 To tCount - 1
+            If BreakAfterFound AndAlso tCount > 0 Then
                 Exit For
             End If
             Try
-                Select Case TP
-                    Case Enums.TrailerPages.AllHTPC
-                        Me.GetAllHTPCTrailer()
-                    Case Enums.TrailerPages.TMDB
-                        Me.GetTMDBTrailer()
-                    Case Enums.TrailerPages.IMDB
-                        Me.GetImdbTrailer()
-                End Select
+                If AdvancedSettings.GetBooleanSetting(String.Concat("TrailerSite", iTrailer.ToString), False) Then
+                    Select Case iTrailer
+                        Case Enums.TrailerPages.AllHTPC
+                            Me.GetAllHTPCTrailer()
+                        Case Enums.TrailerPages.TMDB
+                            Me.GetTMDBTrailer()
+                        Case Enums.TrailerPages.IMDB
+                            Me.GetImdbTrailer()
+                    End Select
+                End If
             Catch
             End Try
         Next
