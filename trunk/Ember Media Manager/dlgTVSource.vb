@@ -37,10 +37,6 @@ Public Class dlgTVSource
     #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
-        '//
-        ' Overload to pass data
-        '\\
-
         Me._id = id
 
         Return MyBase.ShowDialog()
@@ -163,8 +159,7 @@ Public Class dlgTVSource
             Me.tmrPath.Enabled = True
         Else
             If String.IsNullOrEmpty(txtSourceName.Text) OrElse Me.autoName Then
-                Me.txtSourceName.Text = Path.GetFileNameWithoutExtension(Me.txtSourcePath.Text)
-                'Can't use FileUtils.Common.GetDirectory(Me.txtSourcePath.Text) .. Will break no file in string
+                Me.txtSourceName.Text = FileUtils.Common.GetDirectory(Me.txtSourcePath.Text)
                 Me.autoName = True
             End If
             Me.prevPathText = Me.currPathText

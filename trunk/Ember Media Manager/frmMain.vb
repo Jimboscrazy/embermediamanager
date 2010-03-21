@@ -1249,7 +1249,6 @@ Public Class frmMain
     End Sub
 
     Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
-        'TODO: make a cleanup on Arguments when old scraper code is removed
         Dim scrapeMovie As Structures.DBMovie
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)

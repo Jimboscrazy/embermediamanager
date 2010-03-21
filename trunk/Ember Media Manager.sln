@@ -10,8 +10,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberSetup", "EmberSetup\Em
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberSetupManager", "EmberSetup\SetupManager\EmberSetupManager.vbproj", "{441BE4FC-68C8-4871-924B-2643AFA73468}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Module.Nuno", "Modules\Module.nuno\Module.Nuno.vbproj", "{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MovieExporter", "Modules\generic.EmberCore.MovieExport\generic.EmberCore.MovieExporter.vbproj", "{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.OfflineHolder", "Modules\generic.EmberCore.OfflineHolder\generic.EmberCore.OfflineHolder.vbproj", "{E7FDD1C9-BCF7-4624-B033-D3888E422A8B}"
@@ -25,8 +23,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E9F71C6-CBF9-4259-9C50-7A24E134D9B7}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.EmberExtras", "Modules\scraper.EmberExtras\scraper.EmberExtras.vbproj", "{62356BCF-D15A-4BF1-B980-395CEC0004A9}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.BenceExtras", "Modules\scraper.BenceExtras\scraper.BenceExtras.vbproj", "{28C615DE-B3FE-4508-B88C-9915C8AAD60D}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.XBMC", "Modules\generic.EmberCore.XBMC\generic.EmberCore.XBMC.vbproj", "{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}"
 EndProject
@@ -142,22 +138,6 @@ Global
 		{441BE4FC-68C8-4871-924B-2643AFA73468}.Release|Any CPU.Build.0 = Release|Any CPU
 		{441BE4FC-68C8-4871-924B-2643AFA73468}.Release|x64.ActiveCfg = Release|Any CPU
 		{441BE4FC-68C8-4871-924B-2643AFA73468}.Release|x86.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.All|Any CPU.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.All|Any CPU.Build.0 = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.All|x64.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.All|x86.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Debug|x64.ActiveCfg = Debug|x64
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Debug|x86.ActiveCfg = Debug|x86
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Ember Media Manager|Any CPU.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Ember Media Manager|Any CPU.Build.0 = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Ember Media Manager|x64.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Ember Media Manager|x86.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Release|x64.ActiveCfg = Release|x64
-		{0093CFB3-F178-484F-BEBA-3F5FFD4964B8}.Release|x86.ActiveCfg = Release|x86
 		{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}.All|Any CPU.ActiveCfg = Release|x86
 		{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}.All|x64.ActiveCfg = Release|x86
 		{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}.All|x86.ActiveCfg = Release|x86
@@ -274,22 +254,6 @@ Global
 		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x64.ActiveCfg = Release|Any CPU
 		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x86.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.All|Any CPU.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.All|Any CPU.Build.0 = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.All|x64.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.All|x86.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Ember Media Manager|Any CPU.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Ember Media Manager|Any CPU.Build.0 = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Ember Media Manager|x64.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Ember Media Manager|x86.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Release|x64.ActiveCfg = Release|Any CPU
-		{28C615DE-B3FE-4508-B88C-9915C8AAD60D}.Release|x86.ActiveCfg = Release|Any CPU
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.All|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.All|Any CPU.Build.0 = Release|Any CPU
 		{6FE33C61-E2C2-4982-9536-63AEF0A98AAA}.All|x64.ActiveCfg = Release|Any CPU
