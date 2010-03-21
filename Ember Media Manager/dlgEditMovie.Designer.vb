@@ -117,6 +117,7 @@ Partial Class dlgEditMovie
         Me.ilThumbs = New System.Windows.Forms.ImageList(Me.components)
         Me.pbExtraThumbs = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.TabPage6 = New System.Windows.Forms.TabPage
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
@@ -125,7 +126,6 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
         Me.DelayTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -883,7 +883,7 @@ Partial Class dlgEditMovie
         Me.lblPosterSize.Size = New System.Drawing.Size(104, 23)
         Me.lblPosterSize.TabIndex = 25
         Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblPosterSize.Visible = False
         '
         'btnSetPosterScrape
@@ -1168,6 +1168,13 @@ Partial Class dlgEditMovie
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'pnlFrameExtrator
+        '
+        Me.pnlFrameExtrator.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
+        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
+        Me.pnlFrameExtrator.TabIndex = 0
+        '
         'TabPage6
         '
         Me.TabPage6.Controls.Add(Me.pnlFileInfo)
@@ -1240,13 +1247,6 @@ Partial Class dlgEditMovie
         'DelayTimer
         '
         Me.DelayTimer.Interval = 250
-        '
-        'pnlFrameExtrator
-        '
-        Me.pnlFrameExtrator.Location = New System.Drawing.Point(0, 0)
-        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
-        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
-        Me.pnlFrameExtrator.TabIndex = 0
         '
         'dlgEditMovie
         '
