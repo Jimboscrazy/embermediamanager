@@ -160,6 +160,7 @@ Public Class dlgTVSource
         If Me.prevPathText = Me.currPathText Then
             Me.tmrPath.Enabled = True
         Else
+            If String.IsNullOrEmpty(txtSourceName.Text) Then txtSourceName.Text = Path.GetFileNameWithoutExtension(Me.txtSourcePath.Text)
             Me.prevPathText = Me.currPathText
         End If
     End Sub
@@ -189,7 +190,6 @@ Public Class dlgTVSource
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
         Me.OK_Button.Enabled = False
         Me.currPathText = Me.txtSourcePath.Text
-
         Me.tmrPathWait.Enabled = False
         Me.tmrPathWait.Enabled = True
     End Sub
