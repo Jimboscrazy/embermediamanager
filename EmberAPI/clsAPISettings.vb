@@ -302,7 +302,6 @@ Public Class Settings
     Private _sorttokens As List(Of String)
     Private _sourcefromfolder As Boolean
     Private _trailerquality As Enums.TrailerQuality
-    Private _trailersites As List(Of Enums.TrailerPages)
     Private _trailertimeout As Integer
     Private _tvcleandb As Boolean
     Private _tvdblanguage As String
@@ -2842,15 +2841,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TrailerSites() As List(Of Enums.TrailerPages)
-        Get
-            Return Me._trailersites
-        End Get
-        Set(ByVal value As List(Of Enums.TrailerPages))
-            Me._trailersites = value
-        End Set
-    End Property
-
     Public Property TrailerTimeout() As Integer
         Get
             Return Me._trailertimeout
@@ -3294,7 +3284,6 @@ Public Class Settings
         Me._trailertimeout = 2
         Me._overwritetrailer = False
         Me._deletealltrailers = False
-        Me._trailersites = New List(Of Enums.TrailerPages)
         Me._sets = New List(Of String)
         Me._nosaveimagestonfo = False
         Me._showdims = False

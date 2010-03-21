@@ -158,11 +158,10 @@ Public Class EmberNativeScraperModule
         _setupPost = New frmMediaSettingsHolder
         LoadSettings()
         _setupPost.cbEnabled.Checked = _PostScraperEnabled
-        If Master.eSettings.TrailerSites.Count > 0 Then
-            For Each iTrailer As Integer In Master.eSettings.TrailerSites
-                _setupPost.lbTrailerSites.SetItemChecked(iTrailer, True)
-            Next
-        End If
+        Dim tCount As Integer = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerSiteCount", "0"))
+        For iTrailer = 0 To tCount - 1
+            _setupPost.lbTrailerSites.SetItemChecked(iTrailer, AdvancedSettings.GetBooleanSetting(String.Concat("TrailerSite", iTrailer.ToString), False))
+        Next
         _setupPost.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setupPost.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
         _setupPost.chkUseTMDB.Checked = Master.eSettings.UseTMDB
@@ -183,7 +182,7 @@ Public Class EmberNativeScraperModule
 
         AddHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
         AddHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
-        Return SPanel
+        Return Spanel
     End Function
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
@@ -409,10 +408,14 @@ Public Class EmberNativeScraperModule
 
     Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
         MySettings.DownloadTrailers = _setupPost.chkDownloadTrailer.Checked
-        ' TODO: this should move to Advanced Serttings (Modules) OR SPECIFIC settings file
-        For Each iTrailer As Integer In _setupPost.lbTrailerSites.CheckedIndices
-            Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Enums.TrailerPages))
+        For iTrailer = 0 To _setupPost.lbTrailerSites.Items.Count
+            If _setupPost.lbTrailerSites.CheckedIndices.Contains(iTrailer) Then
+                AdvancedSettings.SetBooleanSetting(String.Concat("TrailerSite", iTrailer.ToString), True)
+            Else
+                AdvancedSettings.SetBooleanSetting(String.Concat("TrailerSite", iTrailer.ToString), False)
+            End If
         Next
+        AdvancedSettings.SetSetting("TrailerSiteCount", _setupPost.lbTrailerSites.Items.Count.ToString)
         Master.eSettings.TrailerTimeout = Convert.ToInt32(_setupPost.txtTimeout.Text)
         Master.eSettings.UseTMDB = _setupPost.chkUseTMDB.Checked
         Master.eSettings.UseIMPA = _setupPost.chkUseIMPA.Checked
