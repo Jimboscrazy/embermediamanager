@@ -492,6 +492,7 @@ Partial Class frmMain
         Me.Label7 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel
+        Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -4389,6 +4390,10 @@ Partial Class frmMain
         Me.pnlLoadingSettings.TabIndex = 13
         Me.pnlLoadingSettings.Visible = False
         '
+        'tmrAppExit
+        '
+        Me.tmrAppExit.Interval = 1000
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -4959,4 +4964,5 @@ Partial Class frmMain
     Friend WithEvents pnlAllSeason As System.Windows.Forms.Panel
     Friend WithEvents pbAllSeason As System.Windows.Forms.PictureBox
     Friend WithEvents pbAllSeasonCache As System.Windows.Forms.PictureBox
+    Friend WithEvents tmrAppExit As System.Windows.Forms.Timer
 End Class
