@@ -5081,6 +5081,7 @@ doCancel:
                 Dim clExportResizePoster As Integer = 0
                 Dim clExportTemplate As String = "template"
                 Dim clAsk As Boolean = False
+                Dim nowindow As Boolean = False
                 For i As Integer = 1 To Args.Count - 1
 
                     Select Case Args(i).ToLower
@@ -5163,6 +5164,8 @@ doCancel:
                             Functions.SetScraperMod(Enums.ModType.Extra, True)
                         Case "--verbose"
                             clAsk = True
+                        Case "-nowindow"
+                            nowindow = True
                         Case Else
                             'If File.Exists(Args(2).Replace("""", String.Empty)) Then
                             'MoviePath = Args(2).Replace("""", String.Empty)
@@ -5181,6 +5184,7 @@ doCancel:
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CL_MovieExporter, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
                     'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
                 End If
+                If nowindow Then fLoading.Visible = False
                 If Not IsNothing(clScrapeType) Then
                     Me.cmnuTrayIconExit.Enabled = True
                     Me.cmnuTrayIcon.Enabled = True
