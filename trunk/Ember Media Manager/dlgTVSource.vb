@@ -163,7 +163,8 @@ Public Class dlgTVSource
             Me.tmrPath.Enabled = True
         Else
             If String.IsNullOrEmpty(txtSourceName.Text) OrElse Me.autoName Then
-                Me.txtSourceName.Text = FileUtils.Common.GetDirectory(Me.txtSourcePath.Text)
+                Me.txtSourceName.Text = Path.GetFileNameWithoutExtension(Me.txtSourcePath.Text)
+                'Can't use FileUtils.Common.GetDirectory(Me.txtSourcePath.Text) .. Will break no file in string
                 Me.autoName = True
             End If
             Me.prevPathText = Me.currPathText
