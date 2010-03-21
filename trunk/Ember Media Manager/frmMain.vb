@@ -6372,7 +6372,8 @@ doCancel:
     Private Function RefreshEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpEp As New MediaContainers.EpisodeDetails
-
+        Dim SeasonChanged As Boolean = False
+        Dim ShowID As Integer = -1
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
@@ -6409,6 +6410,11 @@ doCancel:
                     tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(8))
                     tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
 
+                    If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(12)) = tmpShowDb.TVEp.Season Then
+                        SeasonChanged = True
+                        ShowID = Convert.ToInt32(tmpShowDb.ShowID)
+                    End If
+
                     If Me.InvokeRequired Then
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(eContainer.Poster), False, True)})
@@ -6432,7 +6438,12 @@ doCancel:
             End If
 
             If Not BatchMode Then
-                Me.LoadEpisodeInfo(Convert.ToInt32(ID))
+                If SeasonChanged AndAlso ShowID > -1 Then
+                    Master.DB.CleanSeasons(BatchMode)
+                    Me.FillSeasons(ShowID)
+                Else
+                    Me.LoadEpisodeInfo(Convert.ToInt32(ID))
+                End If
             End If
 
         Catch ex As Exception
