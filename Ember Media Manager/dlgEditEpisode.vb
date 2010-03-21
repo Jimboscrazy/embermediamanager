@@ -603,6 +603,79 @@ Public Class dlgEditEpisode
         End If
     End Sub
 
+
+    Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
+                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Poster.FromFile(ofdImage.FileName)
+                pbPoster.Image = Poster.Image
+
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                    Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
+                    pbPoster.Image = Poster.Image
+
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
+                .Filter = "JPEGs|*.jpg"
+                .FilterIndex = 4
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Fanart.FromFile(ofdImage.FileName)
+                pbFanart.Image = Fanart.Image
+
+                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                Me.lblFanartSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                    Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
+                    pbFanart.Image = Fanart.Image
+
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
 #End Region 'Methods
 
 End Class

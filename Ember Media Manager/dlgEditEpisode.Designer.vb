@@ -80,6 +80,7 @@ Partial Class dlgEditEpisode
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
+        Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -796,5 +797,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
+    Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
 
 End Class
