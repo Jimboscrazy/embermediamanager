@@ -52,7 +52,6 @@ Public Class dlgMovieSource
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
-                        If String.IsNullOrEmpty(txtSourceName.Text) Then txtSourceName.Text = Path.GetFileNameWithoutExtension(.SelectedPath)
                     End If
                 End If
             End With
@@ -183,6 +182,7 @@ Public Class dlgMovieSource
         If Me.prevPathText = Me.currPathText Then
             Me.tmrPath.Enabled = True
         Else
+            If String.IsNullOrEmpty(txtSourceName.Text) Then txtSourceName.Text = Path.GetFileNameWithoutExtension(Me.txtSourcePath.Text)
             Me.prevPathText = Me.currPathText
         End If
     End Sub
@@ -212,7 +212,6 @@ Public Class dlgMovieSource
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
         Me.OK_Button.Enabled = False
         Me.currPathText = Me.txtSourcePath.Text
-
         Me.tmrPathWait.Enabled = False
         Me.tmrPathWait.Enabled = True
     End Sub
