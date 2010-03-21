@@ -110,7 +110,6 @@ Partial Class frmMain
         Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator
         Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -1000,9 +999,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
         '
         'cmnuTitle
         '
@@ -1242,11 +1241,6 @@ Partial Class frmMain
         Me.OpenContainingFolderToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
         Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(241, 6)
         '
         'ToolStripSeparator1
         '
@@ -4667,7 +4661,6 @@ Partial Class frmMain
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents cmnuSep2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents OpenContainingFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteMovieToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuLock As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CopyExistingFanartToBackdropsFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

@@ -92,7 +92,6 @@ Public Class BulkRenamerModule
         Select Case mType
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
                 Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
-                ' TODO: Some of the Bellow setting should move to Module
                 If MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then
                     FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
                 End If
