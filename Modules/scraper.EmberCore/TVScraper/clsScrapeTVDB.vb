@@ -57,8 +57,8 @@ Public Class Scraper
         sObject.CancelAsync()
     End Sub
 
-    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String) As MediaContainers.EpisodeDetails
-        Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID})
+    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
+        Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .SelectedLang = Lang, .iSeason = -999})
     End Function
 
     Public Function GetLangs(ByVal sMirror As String) As List(Of Containers.TVLanguage)
@@ -300,7 +300,7 @@ Public Class Scraper
             Dim Actors As New List(Of MediaContainers.Person)
             Dim tEpisodes As New List(Of MediaContainers.EpisodeDetails)
             Dim tEpisode As New MediaContainers.EpisodeDetails
-            Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))
+            Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
             Dim tSeas As Integer = -1
             Dim tOrdering As Enums.Ordering = Enums.Ordering.Standard
 
@@ -576,12 +576,14 @@ Public Class Scraper
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Episodes(0)
-                            If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                            If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso File.Exists(Master.currShow.TVEp.LocalFile) Then
                                 Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                                Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                                Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                    Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                End If
                             End If
-                            Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                            If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
                             If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
 
                             If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
@@ -595,12 +597,14 @@ Public Class Scraper
                     DownloadSeries(sInfo)
                     If tmpTVDBShow.Episodes(0).TVShow.ID.Length > 0 Then
                         Master.currShow = tmpTVDBShow.Episodes(0)
-                        If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                        If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
                             Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                            Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                            Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                            If Not IsNothing(Master.currShow.TVEp.Poster.Image) Then
+                                Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                            End If
                         End If
-                        Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                        If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
                         If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
 
                         If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
@@ -611,12 +615,15 @@ Public Class Scraper
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
-                                If Not File.Exists(Master.currShow.TVEp.LocalFile) Then
+                                If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
                                     Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                                    Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                                    Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                    If Not IsNothing(Master.currShow.TVEp.Poster) Then
+                                        Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
+                                        Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                    End If
                                 End If
-                                Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+                                If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
+
                                 If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then Master.currShow.EpFanartPath = Master.currShow.ShowFanartPath
 
                                 If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Master.currShow)
@@ -627,7 +634,7 @@ Public Class Scraper
                             End If
                         End Using
                     End If
-                End If
+                    End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
