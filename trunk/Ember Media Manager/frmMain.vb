@@ -1334,11 +1334,17 @@ doCancel:
 
     Private Sub bwRefreshMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovies.DoWork
         Dim iCount As Integer = 0
+        Dim MovieIDs As New Dictionary(Of Long, String)
+
+        For Each sRow As DataRow In Me.dtMedia.Rows
+            MovieIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(3).ToString)
+        Next
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            For Each sRow As DataRow In Me.dtMedia.Rows
+            For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
                 If Me.bwMovieScraper.CancellationPending Then Return
-                Me.bwRefreshMovies.ReportProgress(iCount, sRow.Item(1))
-                Me.RefreshMovie(Convert.ToInt64(sRow.Item(0)), True)
+                Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
+                Me.RefreshMovie(KVP.Key, True)
                 iCount += 1
             Next
             SQLtransaction.Commit()
@@ -1354,7 +1360,7 @@ doCancel:
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
-        Me.SetControlsEnabled(True)
+        Me.SetControlsEnabled(True, True)
         Me.EnableFilters(True)
 
         Me.FillList(0)
@@ -2875,6 +2881,8 @@ doCancel:
                 End If
 
                 If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 Then
+
+
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -6315,7 +6323,7 @@ doCancel:
     Private Sub RefreshAllMovies()
         If Me.dtMedia.Rows.Count > 0 Then
 
-            Me.SetControlsEnabled(False)
+            Me.SetControlsEnabled(False, True)
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
 

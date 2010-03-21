@@ -122,11 +122,11 @@ Public Class frmNotify
                 If Me.Height > 2 Then
                     Me.SetBounds(Me.Left, Me.Top + 2, Me.Width, Me.Height - 2)
                 Else
+                    Me.AnimationTimer.Stop()
                     Me.Close()
                 End If
 
         End Select
-        Me.Refresh()
     End Sub
 
     <DllImport("user32.dll", SetLastError:=True)> _
