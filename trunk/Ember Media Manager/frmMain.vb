@@ -1772,6 +1772,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuChangeEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuChangeEp.Click
+        Me.SetControlsEnabled(False, True)
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Me.tmpTVDB, Me.tmpLang)
 
         If Not IsNothing(tEpisode) Then
@@ -1782,6 +1783,7 @@ doCancel:
 
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
+        Me.SetControlsEnabled(True, True)
     End Sub
 
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
