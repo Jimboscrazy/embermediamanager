@@ -5322,8 +5322,8 @@ doCancel:
                 End If
 
                 Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
-                Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
                 Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+                Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
 
                 Me.ClearInfo()
 
