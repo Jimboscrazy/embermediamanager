@@ -108,6 +108,7 @@ Public Class frmMain
     Private _genrepanelcolor As Color = Color.Gainsboro
     Private _ipmid As Integer = 280
     Private _ipup As Integer = 500
+    Private CloseApp As Boolean = False
 
     #End Region 'Fields
 
@@ -4989,7 +4990,7 @@ doCancel:
             End If
         Catch ex As Exception
             'Application exit can not be used without the close of the form... this is reported somewher in MS
-            Application.Exit()
+            'Application.Exit()
         End Try
     End Sub
 
@@ -5286,98 +5287,97 @@ doCancel:
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
-                                fLoading.Close()
-                                fLoading.Dispose()
-                                Me.Close()
-                                Application.Exit()
-                                Return
+                                tmrAppExit.Enabled = True
+                                CloseApp = True
                             End If
                         End Using
                     End If
                 End If
-                fLoading.SetStage("Loading translations...")
-                APIXML.CacheXMLs()
+                If Not CloseApp Then
+                    fLoading.SetStage("Loading translations...")
+                    APIXML.CacheXMLs()
 
-                Me.SetUp(True)
-                Me.cbSearch.SelectedIndex = 0
+                    Me.SetUp(True)
+                    Me.cbSearch.SelectedIndex = 0
 
-                fLoading.SetStage("Positioning controls...")
-                Me.Location = Master.eSettings.WindowLoc
-                Me.Size = Master.eSettings.WindowSize
-                Me.WindowState = Master.eSettings.WindowState
+                    fLoading.SetStage("Positioning controls...")
+                    Me.Location = Master.eSettings.WindowLoc
+                    Me.Size = Master.eSettings.WindowSize
+                    Me.WindowState = Master.eSettings.WindowState
 
-                Me.aniType = Master.eSettings.InfoPanelState
-                Select Case Me.aniType
-                    Case 0
-                        Me.pnlInfoPanel.Height = 25
-                        Me.btnDown.Enabled = False
-                        Me.btnMid.Enabled = True
-                        Me.btnUp.Enabled = True
-                    Case 1
-                        Me.pnlInfoPanel.Height = Me.IPMid
-                        Me.btnMid.Enabled = False
-                        Me.btnDown.Enabled = True
-                        Me.btnUp.Enabled = True
-                    Case 2
-                        Me.pnlInfoPanel.Height = Me.IPUp
-                        Me.btnUp.Enabled = False
-                        Me.btnDown.Enabled = True
-                        Me.btnMid.Enabled = True
-                End Select
+                    Me.aniType = Master.eSettings.InfoPanelState
+                    Select Case Me.aniType
+                        Case 0
+                            Me.pnlInfoPanel.Height = 25
+                            Me.btnDown.Enabled = False
+                            Me.btnMid.Enabled = True
+                            Me.btnUp.Enabled = True
+                        Case 1
+                            Me.pnlInfoPanel.Height = Me.IPMid
+                            Me.btnMid.Enabled = False
+                            Me.btnDown.Enabled = True
+                            Me.btnUp.Enabled = True
+                        Case 2
+                            Me.pnlInfoPanel.Height = Me.IPUp
+                            Me.btnUp.Enabled = False
+                            Me.btnDown.Enabled = True
+                            Me.btnMid.Enabled = True
+                    End Select
 
-                Me.aniShowType = Master.eSettings.ShowInfoPanelState
+                    Me.aniShowType = Master.eSettings.ShowInfoPanelState
 
-                Me.aniFilterRaise = Master.eSettings.FilterPanelState
-                If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
-                    Me.btnFilterDown.Enabled = True
-                    Me.btnFilterUp.Enabled = False
-                Else
-                    Me.pnlFilter.Height = 25
-                    Me.btnFilterDown.Enabled = False
-                    Me.btnFilterUp.Enabled = True
-                End If
-
-                Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
-                Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
-                Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
-
-                Me.ClearInfo()
-
-                Application.DoEvents()
-                fLoading.SetStage("Loading database...")
-                If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                    Master.DB.Connect(False, False)
-                    If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
-                        Master.DB.PatchDatabase()
-                        File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
-                    End If
-                    Me.FillList(0)
-                    Me.Visible = True
-                Else
-                    Master.DB.Connect(True, False)
-                    If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
-                        Master.DB.PatchDatabase()
-                        File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
-                    End If
-                    If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Application.DoEvents()
-                        Me.SetUp(False) 'just in case user changed languages
-                        Me.Visible = True
-                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                    Me.aniFilterRaise = Master.eSettings.FilterPanelState
+                    If Me.aniFilterRaise Then
+                        Me.pnlFilter.Height = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+                        Me.btnFilterDown.Enabled = True
+                        Me.btnFilterUp.Enabled = False
                     Else
+                        Me.pnlFilter.Height = 25
+                        Me.btnFilterDown.Enabled = False
+                        Me.btnFilterUp.Enabled = True
+                    End If
+
+                    Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
+                    Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+                    Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
+
+                    Me.ClearInfo()
+
+                    Application.DoEvents()
+                    fLoading.SetStage("Loading database...")
+                    If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+                        Master.DB.Connect(False, False)
+                        If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+                            Master.DB.PatchDatabase()
+                            File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+                        End If
                         Me.FillList(0)
                         Me.Visible = True
+                    Else
+                        Master.DB.Connect(True, False)
+                        If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+                            Master.DB.PatchDatabase()
+                            File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+                        End If
+                        If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                            Application.DoEvents()
+                            Me.SetUp(False) 'just in case user changed languages
+                            Me.Visible = True
+                            Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                        Else
+                            Me.FillList(0)
+                            Me.Visible = True
+                        End If
+
                     End If
 
+                    fLoading.SetStage("Setting menus...")
+                    Me.SetMenus(True)
+                    Functions.GetListOfSources()
+                    cmnuTrayIconExit.Enabled = True
+                    cmnuTrayIconSettings.Enabled = True
+                    If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
                 End If
-
-                fLoading.SetStage("Setting menus...")
-                Me.SetMenus(True)
-                Functions.GetListOfSources()
-                cmnuTrayIconExit.Enabled = True
-                cmnuTrayIconSettings.Enabled = True
-                If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -5408,10 +5408,12 @@ doCancel:
     End Sub
 
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.BringToFront()
-        Me.Activate()
-        Me.cmnuTrayIcon.Enabled = True
-        If Not Functions.CheckIfWindows Then Mono_Shown()
+        If Not CloseApp Then
+            Me.BringToFront()
+            Me.Activate()
+            Me.cmnuTrayIcon.Enabled = True
+            If Not Functions.CheckIfWindows Then Mono_Shown()
+        End If
     End Sub
 
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
@@ -8397,4 +8399,8 @@ doCancel:
 
     #End Region 'Nested Types
 
+    Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
+        tmrAppExit.Enabled = False
+        Me.Close()
+    End Sub
 End Class
