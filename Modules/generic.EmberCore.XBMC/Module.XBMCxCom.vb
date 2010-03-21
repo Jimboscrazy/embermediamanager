@@ -318,14 +318,39 @@ Public Class XBMCxCom
         Public Shared Function Load() As MySettings
             Dim tmp As New MySettings
             Try
-                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
-                    Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                    tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
-                    strmReader.Close()
-                Else
-                    tmp = New MySettings
+                Dim Asett As New List(Of Hashtable)
+                Asett = AdvancedSettings.GetComplexSetting("XBMCHosts")
+                If Not Asett Is Nothing Then
+                    Dim t As XBMCxCom.XBMCCom
+                    For Each i In Asett
+                        t = New XBMCxCom.XBMCCom
+                        For Each k In i.Keys
+                            Select Case k.ToString
+                                Case "Name"
+                                    t.Name = i.Item("Name").ToString
+                                Case "IP"
+                                    t.IP = i.Item("IP").ToString
+                                Case "Port"
+                                    t.Port = i.Item("Port").ToString
+                                Case "Username"
+                                    t.Username = i.Item("Username").ToString
+                                Case "Password"
+                                    t.Password = i.Item("Password").ToString
+                            End Select
+                        Next
+                        tmp.XComs.Add(t)
+                    Next
                 End If
+                'Dim tmp As New MySettings
+                'Try
+                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+                'If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
+                ' Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
+                'tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
+                'strmReader.Close()
+                'Else
+                'tmp = New MySettings
+                'End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 tmp = New MySettings
@@ -335,11 +360,24 @@ Public Class XBMCxCom
 
         Public Shared Sub Save(ByVal tmp As MySettings)
             Try
-                Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
 
-                xmlSerial.Serialize(xmlWriter, tmp)
-                xmlWriter.Close()
+                Dim Asett As New List(Of Hashtable)
+                For Each t As XBMCxCom.XBMCCom In tmp.XComs
+                    Dim h As New Hashtable
+                    h.Add("Name", t.Name)
+                    h.Add("IP", t.IP)
+                    h.Add("Port", t.Port)
+                    h.Add("Username", t.Username)
+                    h.Add("Password", t.Password)
+                    Asett.Add(h)
+                Next
+                AdvancedSettings.ClearComplexSetting("XBMCHosts")
+                AdvancedSettings.SetComplexSetting("XBMCHosts", Asett)
+
+                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
+                'Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
+                'xmlSerial.Serialize(xmlWriter, tmp)
+                'xmlWriter.Close()
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
