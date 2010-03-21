@@ -37,6 +37,7 @@ Public Class dlgOfflineHolder
     '    Private currTopText As String
     '    Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
+    Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private FileName As String = Path.Combine(WorkingPath, "PlaceHolder.avi")
     Private idxStsImage As Integer = -1
     Private idxStsMovie As Integer = -1
@@ -56,7 +57,7 @@ Public Class dlgOfflineHolder
     Private txtTopPos As Integer
     Private Video_Height As Integer
     Private Video_Width As Integer
-    Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
+
 
     #End Region 'Fields
 
