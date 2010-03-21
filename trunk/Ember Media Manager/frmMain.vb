@@ -849,7 +849,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -906,7 +906,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -960,7 +960,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -1015,7 +1015,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -1055,7 +1055,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
@@ -1142,65 +1142,69 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
         For Each dRow As DataRow In ScrapeList
-            If bwMovieScraper.CancellationPending Then Exit For
-            OldTitle = dRow.Item(3).ToString
-            bwMovieScraper.ReportProgress(1, OldTitle)
-
-            dScrapeRow = dRow
-            Dim DBScrapeMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
-
-            If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
-                    MediaInfo.UpdateMediaInfo(DBScrapeMovie)
-                End If
+            Try
                 If bwMovieScraper.CancellationPending Then Exit For
-                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+                OldTitle = dRow.Item(3).ToString
+                bwMovieScraper.ReportProgress(1, OldTitle)
 
-                    NewTitle = DBScrapeMovie.ListTitle
+                dScrapeRow = dRow
+                Dim DBScrapeMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
 
-                    If Not NewTitle = OldTitle Then
-                        bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
+                If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
+                    If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
+                        MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                     End If
-
-                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
-                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
-
-                    Dim didEts As Interfaces.ModuleResult = ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
-
                     If bwMovieScraper.CancellationPending Then Exit For
-                    ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+                    If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                        MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
 
-                    If Master.GlobalScrapeMod.Extra Then
-                        If Master.eSettings.AutoET AndAlso Not didEts.BoolProperty Then
-                            Using Fanart As New Images
-                                Fanart.GetPreferredFAasET(DBScrapeMovie.Movie.IMDBID, DBScrapeMovie.Filename)
-                            End Using
+                        NewTitle = DBScrapeMovie.ListTitle
+
+                        If Not NewTitle = OldTitle Then
+                            bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                         End If
-                        If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
-                            'Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
-                            Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
-                            Dim ETasFA As String = DirectCast(params(3), String)
-                            If Not String.IsNullOrEmpty(ETasFA) Then
-                                MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
-                                DBScrapeMovie.ExtraPath = "TRUE"
-                                If Not ETasFA = "TRUE" Then
-                                    MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
-                                    DBScrapeMovie.FanartPath = ETasFA
+
+                        MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
+                        MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+
+                        Dim didEts As Interfaces.ModuleResult = ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
+
+                        If bwMovieScraper.CancellationPending Then Exit For
+                        ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+
+                        If Master.GlobalScrapeMod.Extra Then
+                            If Master.eSettings.AutoET AndAlso Not didEts.BoolProperty Then
+                                Using Fanart As New Images
+                                    Fanart.GetPreferredFAasET(DBScrapeMovie.Movie.IMDBID, DBScrapeMovie.Filename)
+                                End Using
+                            End If
+                            If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
+                                'Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
+                                Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
+                                Dim ETasFA As String = DirectCast(params(3), String)
+                                If Not String.IsNullOrEmpty(ETasFA) Then
+                                    MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
+                                    DBScrapeMovie.ExtraPath = "TRUE"
+                                    If Not ETasFA = "TRUE" Then
+                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
+                                        DBScrapeMovie.FanartPath = ETasFA
+                                    End If
                                 End If
                             End If
                         End If
-                    End If
 
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
-                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
-                    bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
-                Else
-                    Master.tmpMovie = DBScrapeMovie.Movie
+                        Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                        bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
+                        bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
+                    Else
+                        Master.tmpMovie = DBScrapeMovie.Movie
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            End Try
         Next
 
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
@@ -1230,15 +1234,17 @@ Public Class frmMain
     Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
-        btnCancel.Visible = False
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
+        Me.btnCancel.Visible = False
+        Me.lblCanceling.Visible = False
+        Me.pbCanceling.Visible = False
         Me.pnlCancel.Visible = False
-        Me.SetControlsEnabled(True)
+        Me.SetControlsEnabled(True, True)
+        Me.EnableFilters(True)
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
-        'Will Need to make a cleanup on Arguments when old scraper code is removed
+        'TODO: make a cleanup on Arguments when old scraper code is removed
         Dim scrapeMovie As Structures.DBMovie
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -1251,59 +1257,65 @@ Public Class frmMain
                         Case Enums.ScrapeType.CleanFolders
                             Dim fDeleter As New FileUtils.Delete
                             For Each drvRow As DataRow In Me.dtMedia.Rows
+                                Try
+                                    Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
+                                    iCount += 1
+                                    If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
-                                Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
-                                iCount += 1
-                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+                                    If Me.bwNonScrape.CancellationPending Then GoTo doCancel
 
-                                If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+                                    scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
+                                    fDeleter.GetItemsToDelete(True, scrapeMovie)
 
-                                fDeleter.GetItemsToDelete(True, scrapeMovie)
-
-                                Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
-                                'Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
+                                    Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                Catch ex As Exception
+                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                                End Try
                             Next
                         Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
+                                Try
+                                    Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
+                                    iCount += 1
 
-                                Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
-                                iCount += 1
-
-                                If Me.bwNonScrape.CancellationPending Then GoTo doCancel
-                                sPath = drvRow.Item(40).ToString
-                                If Not String.IsNullOrEmpty(sPath) Then
-                                    If FileUtils.Common.isVideoTS(sPath) Then
-                                        If Master.eSettings.VideoTSParent Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                    If Me.bwNonScrape.CancellationPending Then GoTo doCancel
+                                    sPath = drvRow.Item(40).ToString
+                                    If Not String.IsNullOrEmpty(sPath) Then
+                                        If FileUtils.Common.isVideoTS(sPath) Then
+                                            If Master.eSettings.VideoTSParent Then
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                            Else
+                                                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                Else
+                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                End If
+                                            End If
+                                        ElseIf FileUtils.Common.isBDRip(sPath) Then
+                                            If Master.eSettings.VideoTSParent Then
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
+                                            Else
+                                                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
+                                                Else
+                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                End If
+                                            End If
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
                                             Else
                                                 FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
-                                        End If
-                                    ElseIf FileUtils.Common.isBDRip(sPath) Then
-                                        If Master.eSettings.VideoTSParent Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
-                                        Else
-                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
-                                            Else
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                            End If
-                                        End If
-                                    Else
-                                        If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
-                                        Else
-                                            FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                        End If
 
+                                        End If
                                     End If
-                                End If
+                                Catch ex As Exception
+                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                                End Try
                             Next
                     End Select
 
@@ -1313,16 +1325,21 @@ doCancel:
                     End If
                 End If
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
             End Try
         End Using
     End Sub
 
     Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
         If Not isCL Then
-            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
-                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                    Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
-                End If
+            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMediaList.SelectedRows.Count > 0 Then
+                Try
+                    If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+                        Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+                    End If
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                End Try
             Else
                 Me.SetStatus(e.UserState.ToString)
                 Me.tspbLoading.Value = e.ProgressPercentage
@@ -1342,9 +1359,13 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
-                If Me.bwMovieScraper.CancellationPending Then Return
-                Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
-                Me.RefreshMovie(KVP.Key, True)
+                Try
+                    If Me.bwMovieScraper.CancellationPending Then Return
+                    Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
+                    Me.RefreshMovie(KVP.Key, True)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                End Try
                 iCount += 1
             Next
             SQLtransaction.Commit()
@@ -1364,6 +1385,7 @@ doCancel:
         Me.EnableFilters(True)
 
         Me.FillList(0)
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
@@ -2977,7 +2999,6 @@ doCancel:
                         'Me.cmuRenamer.Visible = False
                         Me.cmnuMetaData.Visible = False
                         Me.cmnuSep2.Visible = False
-                        Me.ToolStripSeparator2.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
@@ -5137,6 +5158,7 @@ doCancel:
             APIXML.CacheXMLs()
             Master.DB.Connect(False, False)
             If clExport = True Then
+                'TODO: Re-enable for command line
                 'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
             End If
             If Not IsNothing(clScrapeType) Then
@@ -5146,7 +5168,7 @@ doCancel:
                         While Not Me.LoadingDone
                             Application.DoEvents()
                         End While
-                        ' *** TODO command line scraping - need to work on this later
+                        'TODO: command line scraping - need to work on this later
                         ' *** ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                         MsgBox("Command Line scraping disabled for now", MsgBoxStyle.OkOnly)
                     Catch ex As Exception
@@ -6158,12 +6180,15 @@ doCancel:
     End Function
 
     Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
+        Me.Cursor = Cursors.WaitCursor
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
+        Me.SetControlsEnabled(False, True)
+        Me.EnableFilters(False)
 
         bwNonScrape.WorkerReportsProgress = True
         bwNonScrape.WorkerSupportsCancellation = True
@@ -6322,7 +6347,7 @@ doCancel:
 
     Private Sub RefreshAllMovies()
         If Me.dtMedia.Rows.Count > 0 Then
-
+            Me.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
