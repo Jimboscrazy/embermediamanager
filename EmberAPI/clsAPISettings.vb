@@ -3163,7 +3163,7 @@ Public Class Settings
         Me._showbanner = True
         Me._showbannertype = Enums.ShowBannerType.None
         Me._showpostersize = Enums.PosterSize.Xlrg
-        Me._allsbanner = True
+        Me._allsbanner = False
         Me._allsbannertype = Enums.ShowBannerType.None
         Me._allspostersize = Enums.PosterSize.Xlrg
         Me._showfanartsize = Enums.FanartSize.Lrg
@@ -3254,7 +3254,7 @@ Public Class Settings
         Me._seasonposterwidth = 0
         Me._autothumbs = 0
         Me._autothumbnospoilers = False
-        Me._windowloc = New Point(0, 0)
+        Me._windowloc = New Point(If(Screen.PrimaryScreen.WorkingArea.Width <= 1024, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width - 1024) / 2)), If(Screen.PrimaryScreen.WorkingArea.Height <= 768, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height - 768) / 2)))
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
         Me._infopanelstate = 0

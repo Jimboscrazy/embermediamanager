@@ -863,6 +863,8 @@ Public Class frmMain
             Else
                 Me.SetControlsEnabled(True, True)
             End If
+
+            Me.dgvTVEpisodes.ResumeLayout()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -921,6 +923,7 @@ Public Class frmMain
                 Me.SetControlsEnabled(True, True)
                 Me.EnableFilters(True)
             End If
+            Me.dgvMediaList.ResumeLayout()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -974,6 +977,7 @@ Public Class frmMain
             Else
                 Me.SetControlsEnabled(True, True)
             End If
+            Me.dgvTVSeasons.ResumeLayout()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1029,6 +1033,7 @@ Public Class frmMain
             Else
                 Me.SetControlsEnabled(True, True)
             End If
+            Me.dgvTVShows.ResumeLayout()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2860,7 +2865,10 @@ doCancel:
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
 
             'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
@@ -2894,7 +2902,6 @@ doCancel:
             End If
 
             If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex >= 0 Then
-
                 If Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
@@ -2907,8 +2914,6 @@ doCancel:
                 End If
 
                 If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 Then
-
-
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -2916,7 +2921,7 @@ doCancel:
 
                     pt.X += offset
                     pt.Y = e.CellBounds.Top + 3
-                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                     e.Handled = True
                 End If
             End If
@@ -3155,7 +3160,10 @@ doCancel:
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
 
             'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 6 AndAlso e.RowIndex = -1 Then
@@ -3213,7 +3221,7 @@ doCancel:
 
                     pt.X += offset
                     pt.Y = e.CellBounds.Top + 3
-                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                     e.Handled = True
                 End If
             End If
@@ -3427,7 +3435,10 @@ doCancel:
     Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
 
             'icons
             If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex = -1 Then
@@ -3477,7 +3488,7 @@ doCancel:
 
                     pt.X += offset
                     pt.Y = e.CellBounds.Top + 3
-                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                     e.Handled = True
                 End If
             End If
@@ -3685,7 +3696,10 @@ doCancel:
     Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then Exit Sub
+            If e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
 
             'icons
             If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 4 AndAlso e.RowIndex = -1 Then
@@ -3736,7 +3750,7 @@ doCancel:
 
                     pt.X += offset
                     pt.Y = e.CellBounds.Top + 3
-                    e.Graphics.DrawImage(If(Convert.ToBoolean(e.Value), Me.ilColumnIcons.Images(6), Me.ilColumnIcons.Images(7)), pt)
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
                     e.Handled = True
                 End If
             End If
@@ -5474,6 +5488,7 @@ doCancel:
 
     Private Sub LoadEpisodeInfo(ByVal ID As Integer)
         Try
+            Me.dgvTVEpisodes.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
@@ -5493,6 +5508,7 @@ doCancel:
 
     Private Sub LoadInfo(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, Optional ByVal setEnabled As Boolean = False)
         Try
+            Me.dgvMediaList.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
@@ -5522,6 +5538,7 @@ doCancel:
 
     Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer)
         Try
+            Me.dgvTVSeasons.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
@@ -5545,6 +5562,7 @@ doCancel:
 
     Private Sub LoadShowInfo(ByVal ID As Integer)
         Try
+            Me.dgvTVShows.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
