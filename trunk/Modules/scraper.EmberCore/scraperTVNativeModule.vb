@@ -107,8 +107,8 @@ Public Class EmberNativeTVScraperModule
         TVScraper.CancelAsync()
     End Sub
 
-    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ChangeEpisode
-        epDet = TVScraper.ChangeEpisode(ShowID, TVDBID)
+    Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ChangeEpisode
+        epDet = TVScraper.ChangeEpisode(ShowID, TVDBID, Lang)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
