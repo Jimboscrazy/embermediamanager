@@ -28,11 +28,18 @@ Namespace FileUtils
         #Region "Methods"
 
         Public Shared Function GetDirectory(ByVal sPath As String) As String
-            If String.IsNullOrEmpty(sPath) Then Return String.Empty
-            If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
-            sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
-            If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
-            Return sPath
+            Try
+                If String.IsNullOrEmpty(sPath) Then Return String.Empty
+                If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
+                If Not String.IsNullOrEmpty(Path.GetDirectoryName(sPath)) AndAlso sPath.StartsWith(Path.GetDirectoryName(sPath)) Then sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
+                If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
+                'it could be just a drive letter at this point. Check ending chars again
+                If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
+                If sPath.EndsWith(":") Then sPath = sPath.Substring(0, sPath.Length - 1)
+                Return sPath
+            Catch ex As Exception
+                Return String.Empty
+            End Try
         End Function
 
         Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
