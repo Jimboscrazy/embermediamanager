@@ -31,6 +31,7 @@ Public Class dlgMovieSource
     Private prevNameText As String = String.Empty
     Private prevPathText As String = String.Empty
     Private _id As Integer = -1
+    Private autoName As Boolean = True
 
     #End Region 'Fields
 
@@ -111,6 +112,7 @@ Public Class dlgMovieSource
                         Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
                         Me.chkSingle.Checked = Convert.ToBoolean(SQLreader("Single"))
                         Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
+                        Me.autoName = False
                     End Using
                 End Using
             End If
@@ -182,7 +184,10 @@ Public Class dlgMovieSource
         If Me.prevPathText = Me.currPathText Then
             Me.tmrPath.Enabled = True
         Else
-            If String.IsNullOrEmpty(txtSourceName.Text) Then txtSourceName.Text = Path.GetFileNameWithoutExtension(Me.txtSourcePath.Text)
+            If String.IsNullOrEmpty(txtSourceName.Text) OrElse Me.autoName Then
+                Me.txtSourceName.Text = FileUtils.Common.GetDirectory(Me.txtSourcePath.Text)
+                Me.autoName = True
+            End If
             Me.prevPathText = Me.currPathText
         End If
     End Sub
@@ -199,6 +204,10 @@ Public Class dlgMovieSource
         Else
             Me.prevNameText = Me.currNameText
         End If
+    End Sub
+
+    Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSourceName.KeyPress
+        Me.autoName = False
     End Sub
 
     Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
