@@ -69,7 +69,7 @@ Public Class frmSettingsHolder
                     Me.txtPassword.Text = String.Empty
 
                     Me.btnEditCom.Enabled = False
-                    'Me.SetApplyButton(True)
+                    RaiseEvent ModuleSettingsChanged()
                 Else
                     MsgBox(Master.eLang.GetString(561, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(564, "Please Enter a Port"))
                     txtPort.Focus()
@@ -113,7 +113,7 @@ Public Class frmSettingsHolder
                     Me.txtPort.Text = String.Empty
                     Me.txtUsername.Text = String.Empty
                     Me.txtPassword.Text = String.Empty
-
+                    Me.LoadXComs()
                     'Me.SetApplyButton(True)
                     RaiseEvent ModuleSettingsChanged()
                 Else
@@ -129,6 +129,7 @@ Public Class frmSettingsHolder
             MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
+
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
@@ -159,7 +160,6 @@ Public Class frmSettingsHolder
         If Me.lbXBMCCom.SelectedItems.Count > 0 Then
             Me.XComs.RemoveAt(Me.lbXBMCCom.SelectedIndex)
             LoadXComs()
-            'Me.SetApplyButton(True)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
@@ -178,4 +178,7 @@ Public Class frmSettingsHolder
 
     #End Region 'Methods
 
+    Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click
+        RemoveXCom()
+    End Sub
 End Class

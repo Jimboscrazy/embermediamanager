@@ -36,6 +36,7 @@ Public Class AdvancedSettings
         Public Items As New List(Of SettingItem)
     End Class
     Private Shared _AdvancedSettings As New List(Of SettingItem)
+    Private Shared _ComplexAdvancedSettings As New List(Of ComplexSettingItem)
     Private Shared _DoNotSave As Boolean = False
 
     #End Region 'Fields
@@ -75,6 +76,50 @@ Public Class AdvancedSettings
         Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
     End Function
 
+    Public Shared Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If Not v Is Nothing Then v.TableItem.Clear()
+        Catch ex As Exception
+        End Try
+    End Sub
+    Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of Hashtable)
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+        End If
+        Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        Return If(v Is Nothing, Nothing, v.TableItem)
+    End Function
+
+    Public Shared Function SetComplexSetting(ByVal key As String, ByVal value As List(Of Hashtable), Optional ByVal cAssembly As String = "") As Boolean
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
+                _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
+            Else
+                _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
+            End If
+        End If
+        If Not _DoNotSave Then Save()
+        Return True
+    End Function
+
     Public Shared Sub Load()
         _DoNotSave = True
         Try
@@ -83,6 +128,19 @@ Public Class AdvancedSettings
                 xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
                 For Each i As XElement In xdoc...<Setting>
                     _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                Next
+                For Each i As XElement In xdoc...<ComplexSettings>...<Table>
+                    Dim l As XElement = i
+                    Dim dict As New Hashtable
+                    For Each t As XElement In l...<Item>
+                        dict.Add(t.@Name, t.Value)
+                    Next
+                    Dim cs As ComplexSettingItem = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
+                    If cs Is Nothing Then
+                        _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = l.@Section, .Name = l.@Name})
+                        cs = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
+                    End If
+                    cs.TableItem.Add(dict)
                 Next
             End If
         Catch ex As Exception
@@ -93,12 +151,12 @@ Public Class AdvancedSettings
 
     Public Shared Sub Save()
         Try
-
             If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
                 File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             End If
             Dim xdoc As New XmlDocument()
             xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
+
             Dim count As Integer = 0
             For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
                 Dim elem As XmlElement = xdoc.CreateElement("Setting")
@@ -112,6 +170,29 @@ Public Class AdvancedSettings
                 xdoc.DocumentElement.AppendChild(elem)
                 count += 1
             Next
+            Dim elemp As XmlElement = xdoc.CreateElement("ComplexSettings")
+            For Each i As ComplexSettingItem In _ComplexAdvancedSettings
+                For Each o As Hashtable In i.TableItem
+                    Dim elem As XmlElement = xdoc.CreateElement("Table")
+                    Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                    attr.Value = i.Section
+                    elem.Attributes.SetNamedItem(attr)
+                    Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                    attr2.Value = i.Name
+                    elem.Attributes.SetNamedItem(attr2)
+                    For Each ti In o.Keys
+                        Dim elemi As XmlElement = xdoc.CreateElement("Item")
+                        Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                        attr3.Value = ti.ToString
+                        elemi.InnerText = o.Item(ti.ToString).ToString
+                        elemi.Attributes.SetNamedItem(attr3)
+                        elem.AppendChild(elemi)
+                    Next
+                    elemp.AppendChild(elem)
+                    count += 1
+                Next
+            Next
+            xdoc.DocumentElement.AppendChild(elemp)
             If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -125,11 +206,11 @@ Public Class AdvancedSettings
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v(0) Is Nothing Then
+            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
                 _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
             Else
-                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = Convert.ToString(value)
+                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
             End If
         End If
         If Not _DoNotSave Then Save()
@@ -143,11 +224,11 @@ Public Class AdvancedSettings
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v(0) Is Nothing Then
+            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
                 _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
             Else
-                _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)(0).Value = value
+                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
             End If
         End If
         If Not _DoNotSave Then Save()
@@ -166,17 +247,19 @@ Public Class AdvancedSettings
 
     ' ******************************************************************************
     Private Class SettingItem
-
-        #Region "Fields"
-
+#Region "Fields"
         Public DefaultValue As String
         Public Name As String
         Public Section As String
         Public Value As String
-
-        #End Region 'Fields
-
+#End Region 'Fields
     End Class
+    Public Class ComplexSettingItem
+        Public Name As String
+        Public Section As String
+        Public TableItem As New List(Of Hashtable)
+    End Class
+
 
     #End Region 'Nested Types
 
