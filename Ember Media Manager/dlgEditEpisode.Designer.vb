@@ -75,11 +75,11 @@ Partial Class dlgEditEpisode
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
-        Me.pnlFrameExtrator = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -659,6 +659,13 @@ Partial Class dlgEditEpisode
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'pnlFrameExtrator
+        '
+        Me.pnlFrameExtrator.Location = New System.Drawing.Point(1, 0)
+        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
+        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
+        Me.pnlFrameExtrator.TabIndex = 1
+        '
         'TabPage5
         '
         Me.TabPage5.Controls.Add(Me.pnlFileInfo)
@@ -693,13 +700,6 @@ Partial Class dlgEditEpisode
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 61
         Me.OK_Button.Text = "OK"
-        '
-        'pnlFrameExtrator
-        '
-        Me.pnlFrameExtrator.Location = New System.Drawing.Point(1, 0)
-        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
-        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
-        Me.pnlFrameExtrator.TabIndex = 1
         '
         'dlgEditEpisode
         '
