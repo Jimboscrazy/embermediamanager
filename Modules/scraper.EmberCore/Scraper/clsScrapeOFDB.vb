@@ -165,7 +165,7 @@ Public Class OFDB
 
                         If D > 0 Then
                             W = Html.IndexOf("<a href=""", D + 14)
-                            _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(D + 14, W - (D + 14)).Trim)
+                            _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(D + 14, W - (D + 14)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
                         End If
                     End If
 

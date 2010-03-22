@@ -279,7 +279,11 @@ Public Class dlgOfflineHolder
                     SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources WHERE Name = """, cbSources.SelectedItem.ToString, """;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         If SQLReader.Read Then
-                            destPath = Path.Combine(SQLReader("Path").ToString, MovieName)
+                            If Directory.GetDirectories(SQLReader("Path").ToString).Count = 0 Then
+                                destPath = SQLReader("Path").ToString
+                            Else
+                                destPath = Path.Combine(SQLReader("Path").ToString, MovieName)
+                            End If
                             lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
                             lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
                         End If

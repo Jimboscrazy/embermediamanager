@@ -542,6 +542,7 @@ Namespace IMDB
                                 Where Not DirectCast(M, Match).Groups("name").ToString.Trim = "more" _
                                 AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "(more)" _
                                 AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "WGA" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim.Contains("see more") _
                                 Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(DirectCast(M, Match).Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
                         If q.Count > 0 Then
