@@ -176,9 +176,10 @@ Public Class frmSettingsHolder
         Me.btnRemoveCom.Text = Master.eLang.GetString(519, "Remove Selected")
     End Sub
 
-    #End Region 'Methods
-
     Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click
         RemoveXCom()
     End Sub
+    #End Region 'Methods
+
+
 End Class

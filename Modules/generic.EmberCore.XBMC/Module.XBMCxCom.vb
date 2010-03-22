@@ -118,16 +118,23 @@ Public Class XBMCxCom
         Me.Enabled = _setup.cbEnabled.Checked
         _MySettings.XComs = _setup.XComs
         MySettings.Save(_MySettings)
+
+        If Me._enabled Then
+            Me.Disable()
+            Me.Enable()
+        End If
     End Sub
 
     Sub Disable()
         Try
-            Dim tsi As New ToolStripSplitButton
-            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
-            tsi.DropDownItems.Remove(MyMenu)
+            Dim tsb As New ToolStripSplitButton
+            tsb = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
+            tsb.DropDownItems.Remove(MyMenu)
             MyMenu.DropDownItems.Clear()
-            'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-            'tsi.DropDownItems.Remove(MyTrayMenu)
+            tsb.Visible = (tsb.DropDownItems.Count > 0)
+            Dim tsi As New ToolStripMenuItem
+            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconMediaCenters"), ToolStripMenuItem)
+            tsi.DropDownItems.Remove(MyTrayMenu)
             tsi.Visible = (tsi.DropDownItems.Count > 0)
         Catch ex As Exception
         End Try
@@ -160,27 +167,36 @@ Public Class XBMCxCom
         Try
             _MySettings = MySettings.Load
             Dim tSettingsHolder As New frmSettingsHolder
-            Dim tsi As New ToolStripSplitButton
+            Dim tsb As New ToolStripSplitButton
             MyMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
             MyMenu.Text = Master.eLang.GetString(13, "XBMC")
-            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
-            'MyTrayMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
-            'MyTrayMenu.Text = Master.eLang.GetString(13, "XBMC Controller")
-            'tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-            'tsi.DropDownItems.Add(MyTrayMenu)
+            tsb = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
+            Dim tsi As New ToolStripMenuItem
+            MyTrayMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
+            MyTrayMenu.Text = Master.eLang.GetString(13, "XBMC Controller")
+            tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconMediaCenters"), ToolStripMenuItem)
             tSettingsHolder.Dispose()
             MyMenu.DropDownItems.Clear()
             If _MySettings.XComs.Count > 0 Then
                 Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
                 AddHandler tMenu.Click, AddressOf xCom_Click
                 MyMenu.DropDownItems.Add(tMenu)
+                Dim tTrayMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
+                AddHandler tTrayMenu.Click, AddressOf xCom_Click
+                MyTrayMenu.DropDownItems.Add(tTrayMenu)
+
                 For Each xCom As XBMCCom In _MySettings.XComs
                     tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
                     AddHandler tMenu.Click, AddressOf xCom_Click
                     MyMenu.DropDownItems.Add(tMenu)
+                    tTrayMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+                    AddHandler tTrayMenu.Click, AddressOf xCom_Click
+                    MyTrayMenu.DropDownItems.Add(tTrayMenu)
                 Next
-                tsi.DropDownItems.Add(MyMenu)
+                tsb.DropDownItems.Add(MyMenu)
+                tsi.DropDownItems.Add(MyTrayMenu)
             End If
+            tsb.Visible = (tsb.DropDownItems.Count > 0)
             tsi.Visible = (tsi.DropDownItems.Count > 0)
         Catch ex As Exception
         End Try

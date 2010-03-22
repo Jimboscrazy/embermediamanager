@@ -139,16 +139,14 @@ Public Class MovieExporterModule
         Return SPanel
     End Function
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
-        Using dExportMovies As New dlgExportMovies
-            dExportMovies.ShowDialog()
-        End Using
-    End Sub
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
-    Private Sub MyTrayMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyTrayMenu.Click
         Using dExportMovies As New dlgExportMovies
             dExportMovies.ShowDialog()
         End Using
+
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
