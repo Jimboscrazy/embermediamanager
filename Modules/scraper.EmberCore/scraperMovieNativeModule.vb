@@ -367,6 +367,13 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
+        If Master.GlobalScrapeMod.Extra Then
+            If Master.eSettings.AutoET Then
+                'Using Fanart As New Images
+                ' Enable this **** ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
+                'End Using
+            End If
+        End If
         Master.GlobalScrapeMod = saveModifier
         Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = didEts}
     End Function
