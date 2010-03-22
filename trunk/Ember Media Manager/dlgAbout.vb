@@ -149,30 +149,29 @@ Public NotInheritable Class dlgAbout
 
     Private Sub pbAllHTPC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllHTPC.Click
         If Master.isWindows Then
-            Process.Start("http://www.allhtpc.com/")
+            Process.Start("http://hdtrailers.allhtpc.com/")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.allhtpc.com/"
+                Explorer.StartInfo.Arguments = "http://hdtrailers.allhtpc.com/"
                 Explorer.Start()
             End Using
         End If
     End Sub
 
     Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        'If Master.isWindows Then
-        '    Using nProc As New Process
-        '        nProc.StartInfo.Arguments = "http://www.ffmpeg.org/"
-        '        nProc.Start()
-        '    End Using
-        'Else
-        Using Explorer As New Process
-            If Not Master.isWindows Then Explorer.StartInfo.FileName = "xdg-open"
-            Explorer.StartInfo.UseShellExecute = True
-            Explorer.StartInfo.Arguments = "http://www.ffmpeg.org/"
-            Explorer.Start()
-        End Using
-        'End If
+        If Master.isWindows Then
+            Using nProc As New Process
+                nProc.StartInfo.Arguments = "http://www.ffmpeg.org/"
+                nProc.Start()
+            End Using
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://www.ffmpeg.org/"
+                Explorer.Start()
+            End Using
+        End If
     End Sub
 
     Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
