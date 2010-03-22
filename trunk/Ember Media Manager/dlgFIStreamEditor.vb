@@ -100,19 +100,19 @@ Public Class dlgFIStreamEditor
                     stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
-                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode2ByLang(cbVideoLanguage.SelectedItem.ToString)
+                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode3ByLang(cbVideoLanguage.SelectedItem.ToString)
                     Return stream_v
                 End If
                 If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                     stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem.ToString)
                     If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
-                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode2ByLang(cbAudioLanguage.SelectedItem.ToString)
+                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode3ByLang(cbAudioLanguage.SelectedItem.ToString)
                     If Not cbAudioChannels.SelectedItem Is Nothing Then stream_a.Channels = cbAudioChannels.SelectedItem.ToString
                     Return stream_a
                 End If
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
-                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode2ByLang(cbSubsLanguage.SelectedItem.ToString)
+                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode3ByLang(cbSubsLanguage.SelectedItem.ToString)
                     If Not cbSubsLanguage.SelectedItem Is Nothing Then
                         stream_s.SubsType = If(rbEmbedded.Checked, "Embedded", "External")
                     End If

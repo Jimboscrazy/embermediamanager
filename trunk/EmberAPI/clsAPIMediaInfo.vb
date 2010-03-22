@@ -183,7 +183,7 @@ Public Class MediaInfo
                         aLang = ifoAudio(1)
                         If Not String.IsNullOrEmpty(aLang) Then
                             miAudio.LongLanguage = aLang
-                            miAudio.Language = Localization.ISOLangGetCode2ByLang(miAudio.LongLanguage)
+                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
                         End If
                         With miAudio
                             If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
@@ -198,7 +198,7 @@ Public Class MediaInfo
                         sLang = cDVD.GetIFOSubPic(s)
                         If Not String.IsNullOrEmpty(sLang) Then
                             miSubtitle.LongLanguage = sLang
-                            miSubtitle.Language = Localization.ISOLangGetCode2ByLang(miSubtitle.LongLanguage)
+                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                             miSubtitle.SubsType = "Embedded"
                             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
@@ -479,7 +479,7 @@ Public Class MediaInfo
                     vLang = Me.Get_(StreamKind.Visual, v, "Language/String")
                     If Not String.IsNullOrEmpty(vLang) Then
                         miVideo.LongLanguage = vLang
-                        miVideo.Language = Localization.ISOLangGetCode2ByLang(miVideo.LongLanguage)
+                        miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
                     End If
                 Next
 
@@ -496,7 +496,7 @@ Public Class MediaInfo
                     aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
                     If Not String.IsNullOrEmpty(aLang) Then
                         miAudio.LongLanguage = aLang
-                        miAudio.Language = Localization.ISOLangGetCode2ByLang(miAudio.LongLanguage)
+                        miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
                     End If
                     With miAudio
                         If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
@@ -511,7 +511,7 @@ Public Class MediaInfo
                     sLang = Me.Get_(StreamKind.Text, s, "Language/String")
                     If Not String.IsNullOrEmpty(sLang) Then
                         miSubtitle.LongLanguage = sLang
-                        miSubtitle.Language = Localization.ISOLangGetCode2ByLang(miSubtitle.LongLanguage)
+                        miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                         miSubtitle.SubsType = "Embedded"
                     End If
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
