@@ -2791,6 +2791,7 @@ doCancel:
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
+                Functions.SetScraperMod(Enums.ModType.All, True)
                 Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
             Else
                 Me.SetControlsEnabled(True)
