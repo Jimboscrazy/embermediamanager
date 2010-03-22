@@ -654,6 +654,263 @@ Public Class ScrapeImages
         Return hasImages
     End Function
 
+    Public Shared Sub GetPreferredFAasET(ByVal IMDBID As String, ByVal sPath As String)
+        Dim _Image As Image
+        Dim TMDB As New TMDB.Scraper
+        Dim IMPA As New IMPA.Scraper
+        Dim MPDB As New MPDB.Scraper
+        If Master.eSettings.UseTMDB Then
+
+            Dim tmpListTMDB As New List(Of MediaContainers.Image)
+            Dim ETHashes As New List(Of String)
+
+            Dim CachePath As String = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, IMDBID, Path.DirectorySeparatorChar, "fanart")
+
+            If Master.eSettings.AutoET Then
+                ETHashes = HashFile.CurrentETHashes(sPath)
+            End If
+
+            If Master.eSettings.UseImgCacheUpdaters Then
+                Dim lFi As New List(Of FileInfo)
+
+                If Not Directory.Exists(CachePath) Then
+                    Directory.CreateDirectory(CachePath)
+                Else
+                    Dim di As New DirectoryInfo(CachePath)
+
+                    Try
+                        lFi.AddRange(di.GetFiles("*.jpg"))
+                    Catch
+                    End Try
+                End If
+
+                If lFi.Count > 0 Then
+                    For Each sFile As FileInfo In lFi
+                        Select Case True
+                            Case sFile.Name.Contains("(original)")
+                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
+                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                        SaveFAasET(sFile.FullName, sPath)
+                                    End If
+                                End If
+                            Case sFile.Name.Contains("(mid)")
+                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
+                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                        SaveFAasET(sFile.FullName, sPath)
+                                    End If
+                                End If
+                            Case sFile.Name.Contains("(thumb)")
+                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
+                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                        SaveFAasET(sFile.FullName, sPath)
+                                    End If
+                                End If
+                        End Select
+                    Next
+                Else
+                    'download all the fanart from TMDB
+                    tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
+
+                    If tmpListTMDB.Count > 0 Then
+
+                        'setup fanart for nfo
+                        Dim thumbLink As String = String.Empty
+                        For Each miFanart As MediaContainers.Image In tmpListTMDB
+                            miFanart.WebImage.FromWeb(miFanart.URL)
+                            If Not IsNothing(miFanart.WebImage.Image) Then
+                                _Image = miFanart.WebImage.Image
+                                Dim savePath As String = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
+                                Save(_Image, savePath)
+                                If Master.eSettings.AutoET Then
+                                    Select Case miFanart.Description.ToLower
+                                        Case "original"
+                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
+                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                    SaveFAasET(savePath, sPath)
+                                                End If
+                                            End If
+                                        Case "mid"
+                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
+                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                    SaveFAasET(savePath, sPath)
+                                                End If
+                                            End If
+                                        Case "thumb"
+                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
+                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                    SaveFAasET(savePath, sPath)
+                                                End If
+                                            End If
+                                    End Select
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+            Else
+                'download all the fanart from TMDB
+                tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
+
+                If tmpListTMDB.Count > 0 Then
+
+                    If Not Directory.Exists(CachePath) Then
+                        Directory.CreateDirectory(CachePath)
+                    End If
+
+                    Dim savePath As String = String.Empty
+                    For Each miFanart As MediaContainers.Image In tmpListTMDB
+                        Select Case miFanart.Description.ToLower
+                            Case "original"
+                                If Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
+                                    miFanart.WebImage.FromWeb(miFanart.URL)
+                                    If Not IsNothing(miFanart.WebImage.Image) Then
+                                        _Image = miFanart.WebImage.Image
+                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
+                                        Save(_Image, savePath)
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                            SaveFAasET(savePath, sPath)
+                                        End If
+                                    End If
+                                End If
+                            Case "mid"
+                                If Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
+                                    miFanart.WebImage.FromWeb(miFanart.URL)
+                                    If Not IsNothing(miFanart.WebImage.Image) Then
+                                        _Image = miFanart.WebImage.Image
+                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
+                                        Save(_Image, savePath)
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                            SaveFAasET(savePath, sPath)
+                                        End If
+                                    End If
+                                End If
+                            Case "thumb"
+                                If Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
+                                    miFanart.WebImage.FromWeb(miFanart.URL)
+                                    If Not IsNothing(miFanart.WebImage.Image) Then
+                                        _Image = miFanart.WebImage.Image
+                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
+                                        Save(_Image, savePath)
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                            SaveFAasET(savePath, sPath)
+                                        End If
+                                    End If
+                                End If
+                        End Select
+                        'Me.Clear()
+                    Next
+
+                    _Image = Nothing
+                    FileUtils.Delete.DeleteDirectory(CachePath)
+
+                End If
+            End If
+        End If
+    End Sub
+
+    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
+        Try
+            Select Case fType
+                Case Enums.ImageType.Fanart
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
+                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
+                    Master.eSettings.UseTMDB Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Else
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
+                    (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
+                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterJPG OrElse Master.eSettings.FolderJPG) AndAlso _
+                     (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+            End Select
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return False
+        End Try
+    End Function
+    Public Shared Sub SaveFAasET(ByVal faPath As String, ByVal inPath As String)
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+        Dim extraPath As String = String.Empty
+
+        If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(inPath) Then
+            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(inPath).FullName).FullName, "extrathumbs")
+        ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(inPath) Then
+            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(inPath).FullName).FullName).FullName, "extrathumbs")
+        Else
+            extraPath = Path.Combine(Directory.GetParent(inPath).FullName, "extrathumbs")
+        End If
+
+        iMod = Functions.GetExtraModifier(extraPath)
+        iVal = iMod + 1
+
+        If Not Directory.Exists(extraPath) Then
+            Directory.CreateDirectory(extraPath)
+        End If
+
+        FileUtils.Common.MoveFileWithStream(faPath, Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")))
+    End Sub
+
+
+    Public Shared Sub Save(ByVal _image As Image, ByVal sPath As String, Optional ByVal iQuality As Long = 0)
+        Try
+            If IsNothing(_image) Then Exit Sub
+
+            Dim doesExist As Boolean = File.Exists(sPath)
+            Dim fAtt As New FileAttributes
+            If Not String.IsNullOrEmpty(sPath) AndAlso (Not doesExist OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
+                If doesExist Then
+                    'get the current attributes to set them back after writing
+                    fAtt = File.GetAttributes(sPath)
+                    'set attributes to none for writing
+                    File.SetAttributes(sPath, FileAttributes.Normal)
+                End If
+
+                Using msSave As New MemoryStream
+                    Dim retSave() As Byte
+                    Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
+                    Dim EncPars As EncoderParameters = New EncoderParameters(If(iQuality > 0, 2, 1))
+
+                    EncPars.Param(0) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
+
+                    If iQuality > 0 Then
+                        EncPars.Param(1) = New EncoderParameter(Encoder.Quality, iQuality)
+                    End If
+
+                    _image.Save(msSave, ICI, EncPars)
+
+                    retSave = msSave.ToArray
+
+                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                        fs.Write(retSave, 0, retSave.Length)
+                        fs.Flush()
+                    End Using
+                    msSave.Flush()
+                End Using
+
+                If doesExist Then File.SetAttributes(sPath, fAtt)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Private Shared Function GetEncoderInfo(ByVal Format As ImageFormat) As ImageCodecInfo
+        Dim Encoders() As ImageCodecInfo = ImageCodecInfo.GetImageEncoders()
+
+        For i As Integer = 0 To UBound(Encoders)
+            If Encoders(i).FormatID = Format.Guid Then
+                Return Encoders(i)
+            End If
+        Next
+
+        Return Nothing
+    End Function
     #End Region 'Methods
 
 End Class
