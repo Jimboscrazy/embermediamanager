@@ -5469,8 +5469,9 @@ doCancel:
                     fLoading.SetStage("Setting menus...")
                     Me.SetMenus(True)
                     Functions.GetListOfSources()
-                    cmnuTrayIconExit.Enabled = True
-                    cmnuTrayIconSettings.Enabled = True
+                    Me.cmnuTrayIconExit.Enabled = True
+                    Me.cmnuTrayIconSettings.Enabled = True
+                    Me.EditToolStripMenuItem.Enabled = True
                     If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
                 End If
             Catch ex As Exception
