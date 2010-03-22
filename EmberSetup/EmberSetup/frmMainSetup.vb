@@ -70,6 +70,11 @@ Public Class frmMainSetup
     Dim SlowDown As Integer = 0
     Private w As New dlgCommands
 
+    Dim ProxyURI As String = ""
+    Dim ProxyPort As Integer = 0
+    Dim ProxyUserName As String = ""
+    Dim ProxyPassword As String = ""
+
     #End Region 'Fields
 
     #Region "Methods"
@@ -201,7 +206,6 @@ Public Class frmMainSetup
         Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
         Return myBuildInfo.ProductPrivatePart
     End Function
-
     Public Function GetURLDataBin(ByVal URL As String, ByVal FName As String, _
         Optional ByRef UserName As String = "", _
         Optional ByRef Password As String = "") As Boolean
@@ -212,6 +216,7 @@ Public Class frmMainSetup
             If System.IO.File.Exists(FName) Then
                 System.IO.File.Delete(FName)
             End If
+
             'Ignore bad https certificates - expired, untrusted, bad name, etc.
             'ServicePointManager.CertificatePolicy = New MyAcceptCertificatePolicy
             'Dim value As RemoteCertificateValidationCallback
@@ -219,6 +224,18 @@ Public Class frmMainSetup
             'ServicePointManager.ServerCertificateValidationCallback = New ServicePointManager.ServerCertificateValidationCallback
             'create a web request to the URL
             Req = HttpWebRequest.Create(URL)
+            '---
+            ' TODO Enable this after 1.0 release
+            'If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
+            'Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
+            'wProxy.BypassProxyOnLocal = True
+            'If Not String.IsNullOrEmpty(UserName) Then
+            'wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
+            'Else
+            'wProxy.Credentials = CredentialCache.DefaultCredentials
+            'End If
+            'Req.Proxy = wProxy
+            'End If
             '---
             Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
             Req.CachePolicy = noCachePolicy
