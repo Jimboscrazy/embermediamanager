@@ -336,15 +336,24 @@ Public Class MediaInfo
         Handle = Nothing
     End Sub
 
-    Private Function ConvertAFormat(ByVal sFormat As String) As String
+    Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
+
             Select Case sFormat.ToLower
                 Case "ac-3", "a_ac3"
                     Return "ac3"
                 Case "wma2"
                     Return "wmav2"
                 Case "dts", "a_dts"
-                    Return "dca"
+                    Select Case sProfile.ToUpper
+                        Case "MA"   'master audio
+                            Return "dtsma"
+                        Case "HRA"   'high resolution
+                            Return "dtshr"
+                        Case Else
+                            Return "dca"
+                    End Select
+
                 Case Else
                     Return sFormat.ToLower
             End Select
@@ -487,10 +496,11 @@ Public Class MediaInfo
                 Dim aCodec As String = String.Empty
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New Audio
-                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
+                    Dim a_profile As String = Me.Get_(StreamKind.Audio, a, "Format_Profile")
+                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), a_profile)
                     If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                        aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
-                        miAudio.Codec = If(IsNumeric(aCodec) OrElse String.IsNullOrEmpty(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
+                        aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_profile)
+                        miAudio.Codec = If(IsNumeric(aCodec) OrElse String.IsNullOrEmpty(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_profile), aCodec)
                     End If
                     miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
                     aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
