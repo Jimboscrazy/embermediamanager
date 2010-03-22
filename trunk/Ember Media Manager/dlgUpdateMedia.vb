@@ -54,7 +54,7 @@ Public Class dlgUpdateMedia
             chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
         Else
-            chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
+            If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         End If
 
         chkNFOMod.Enabled = Not chkAllMod.Checked
@@ -79,6 +79,17 @@ Public Class dlgUpdateMedia
         Else
             Update_Button.Enabled = False
         End If
+
+        If Me.chkAllMod.Checked Then
+            Functions.SetScraperMod(Enums.ModType.All, True)
+        Else
+            Functions.SetScraperMod(Enums.ModType.Extra, chkExtraMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.Meta, chkMetaMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.NFO, chkNFOMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.Poster, chkPosterMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.Trailer, chkTrailerMod.Checked, False)
+        End If
     End Sub
 
     Private Sub CheckNewAndMark()
@@ -96,7 +107,6 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkAllMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAllMod.Click
-        Functions.SetScraperMod(Enums.ModType.All, chkAllMod.Checked)
         CheckEnable()
     End Sub
 
@@ -121,12 +131,10 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkExtraMod.Click
-        Functions.SetScraperMod(Enums.ModType.Extra, chkExtraMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkFanartMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFanartMod.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)
         CheckEnable()
     End Sub
 
@@ -136,7 +144,6 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkMetaMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMetaMod.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, chkMetaMod.Checked, False)
         CheckEnable()
     End Sub
 
@@ -151,7 +158,6 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkNFOMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNFOMod.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, chkNFOMod.Checked, False)
         CheckEnable()
     End Sub
 
@@ -166,7 +172,6 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkPosterMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkPosterMod.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, chkPosterMod.Checked, False)
         CheckEnable()
     End Sub
 
@@ -211,7 +216,6 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkTrailerMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkTrailerMod.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, chkTrailerMod.Checked, False)
         CheckEnable()
     End Sub
 

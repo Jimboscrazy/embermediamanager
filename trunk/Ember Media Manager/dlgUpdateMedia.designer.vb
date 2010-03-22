@@ -741,6 +741,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.ResumeLayout(False)
+
     End Sub
 
     #End Region 'Methods
