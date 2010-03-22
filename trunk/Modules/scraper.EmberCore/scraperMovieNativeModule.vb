@@ -273,7 +273,7 @@ Public Class EmberNativeScraperModule
         MySettings.DownloadTrailers = AdvancedSettings.GetBooleanSetting("DownloadTraliers", False)
 
 
-        MySettings.TrailerTimeout = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerTimeout", "30"))
+        MySettings.TrailerTimeout = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerTimeout", "10"))
         MySettings.UseIMPA = AdvancedSettings.GetBooleanSetting("UseIMPA", False)
         MySettings.UseMPDB = AdvancedSettings.GetBooleanSetting("UseMPDB", False)
         MySettings.UseTMDB = AdvancedSettings.GetBooleanSetting("UseTMDB", False)
