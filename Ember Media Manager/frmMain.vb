@@ -1929,7 +1929,7 @@ doCancel:
                         If Me.InfoCleared Then
                             Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                         Else
-                            Me.SetControlsEnabled(False)
+                            Me.SetControlsEnabled(True)
                         End If
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -2717,12 +2717,12 @@ doCancel:
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click, SortFilesIntoFoldersToolStripMenuItem.Click
-        Me.SetControlsEnabled(False, True)
+        Me.SetControlsEnabled(False)
         Using dSortFiles As New dlgSortFiles
             If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 Me.LoadMedia(New Structures.Scans With {.Movies = True})
             Else
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
             End If
         End Using
     End Sub
@@ -2786,14 +2786,14 @@ doCancel:
     End Sub
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click, TrayCustomUpdaterToolStripMenuItem.Click
-        Me.SetControlsEnabled(False, True)
+        Me.SetControlsEnabled(False)
         Using dUpdate As New dlgUpdateMedia
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
                 Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
             Else
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
             End If
         End Using
     End Sub
@@ -7479,11 +7479,11 @@ doCancel:
     End Sub
 
     Private Sub SetsManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetsManagerToolStripMenuItem.Click, SetsManagerToolStripMenuItem1.Click
-        Me.SetControlsEnabled(False, True)
+        Me.SetControlsEnabled(False)
         Using dSetsManager As New dlgSetsManager
             dSetsManager.ShowDialog()
         End Using
-        Me.SetControlsEnabled(True, False)
+        Me.SetControlsEnabled(True)
     End Sub
 
     Private Sub SetStatus(ByVal sText As String)
