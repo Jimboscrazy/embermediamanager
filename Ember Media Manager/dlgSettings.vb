@@ -3731,8 +3731,8 @@ Public Class dlgSettings
         Me.Label1.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.Label3.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
-        Me.GroupBox28.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
-        Me.gbTVMIDefaults.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
+        Me.GroupBox28.Text = Master.eLang.GetString(625, "Defaults by File Type")
+        Me.gbTVMIDefaults.Text = Me.gbTVMIDefaults.Text
         Me.Label34.Text = Master.eLang.GetString(626, "File Type")
         Me.Label49.Text = Me.Label34.Text
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")

@@ -5913,7 +5913,7 @@ Partial Class dlgSettings
         Me.gbTVMIDefaults.Size = New System.Drawing.Size(183, 144)
         Me.gbTVMIDefaults.TabIndex = 8
         Me.gbTVMIDefaults.TabStop = False
-        Me.gbTVMIDefaults.Text = "Meta Data Defaults by File Type"
+        Me.gbTVMIDefaults.Text = "Defaults by File Type"
         '
         'lstTVMetaData
         '
@@ -6485,7 +6485,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Size = New System.Drawing.Size(183, 144)
         Me.GroupBox28.TabIndex = 8
         Me.GroupBox28.TabStop = False
-        Me.GroupBox28.Text = "Meta Data Defaults by File Type"
+        Me.GroupBox28.Text = "Defaults by File Type"
         '
         'lstMetaData
         '
@@ -6951,10 +6951,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 647)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6964,14 +6960,18 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
