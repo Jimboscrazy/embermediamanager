@@ -1002,7 +1002,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
         '
         'cmnuTitle
         '
@@ -3659,7 +3659,6 @@ Partial Class frmMain
         '
         'cmnuTrayIcon
         '
-        Me.cmnuTrayIcon.Enabled = False
         Me.cmnuTrayIcon.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayIconTitle, Me.ToolStripSeparator21, Me.cmnuTrayIconUpdateMedia, Me.cmnuTrayIconScrapeMedia, Me.cmnuTrayIconMediaCenters, Me.ToolStripSeparator23, Me.cmnuTrayIconTools, Me.ToolStripSeparator22, Me.cmnuTrayIconSettings, Me.ToolStripSeparator13, Me.cmnuTrayIconExit})
         Me.cmnuTrayIcon.Name = "cmnuTrayIcon"
         Me.cmnuTrayIcon.Size = New System.Drawing.Size(195, 182)
@@ -3681,7 +3680,6 @@ Partial Class frmMain
         'cmnuTrayIconUpdateMedia
         '
         Me.cmnuTrayIconUpdateMedia.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayIconUpdateMovies, Me.cmnuTrayIconUpdateTV})
-        Me.cmnuTrayIconUpdateMedia.Enabled = False
         Me.cmnuTrayIconUpdateMedia.Image = CType(resources.GetObject("cmnuTrayIconUpdateMedia.Image"), System.Drawing.Image)
         Me.cmnuTrayIconUpdateMedia.Name = "cmnuTrayIconUpdateMedia"
         Me.cmnuTrayIconUpdateMedia.Size = New System.Drawing.Size(194, 22)
@@ -3702,7 +3700,6 @@ Partial Class frmMain
         'cmnuTrayIconScrapeMedia
         '
         Me.cmnuTrayIconScrapeMedia.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TrayFullToolStripMenuItem, Me.TrayUpdateOnlyToolStripMenuItem, Me.TrayNewMoviesToolStripMenuItem, Me.TrayMarkedMoviesToolStripMenuItem, Me.TrayCurrentFilterToolStripMenuItem, Me.TrayCustomUpdaterToolStripMenuItem})
-        Me.cmnuTrayIconScrapeMedia.Enabled = False
         Me.cmnuTrayIconScrapeMedia.Image = CType(resources.GetObject("cmnuTrayIconScrapeMedia.Image"), System.Drawing.Image)
         Me.cmnuTrayIconScrapeMedia.Name = "cmnuTrayIconScrapeMedia"
         Me.cmnuTrayIconScrapeMedia.Size = New System.Drawing.Size(194, 22)
@@ -4229,11 +4226,11 @@ Partial Class frmMain
         '
         'cmnuTrayIconMediaCenters
         '
-        Me.cmnuTrayIconMediaCenters.Enabled = False
         Me.cmnuTrayIconMediaCenters.Image = CType(resources.GetObject("cmnuTrayIconMediaCenters.Image"), System.Drawing.Image)
         Me.cmnuTrayIconMediaCenters.Name = "cmnuTrayIconMediaCenters"
         Me.cmnuTrayIconMediaCenters.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayIconMediaCenters.Text = "Initiate XBMC Update"
+        Me.cmnuTrayIconMediaCenters.Text = "Media Centers"
+        Me.cmnuTrayIconMediaCenters.Visible = False
         '
         'ToolStripSeparator23
         '
@@ -4243,7 +4240,6 @@ Partial Class frmMain
         'cmnuTrayIconTools
         '
         Me.cmnuTrayIconTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFilesToolStripMenuItem, Me.SortFilesIntoFoldersToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem1, Me.ToolStripSeparator24, Me.SetsManagerToolStripMenuItem1, Me.ToolStripSeparator25, Me.ClearAllCachesToolStripMenuItem1, Me.ReloadAllMoviesToolStripMenuItem, Me.CleanDatabaseToolStripMenuItem1, Me.ToolStripSeparator26})
-        Me.cmnuTrayIconTools.Enabled = False
         Me.cmnuTrayIconTools.Image = CType(resources.GetObject("cmnuTrayIconTools.Image"), System.Drawing.Image)
         Me.cmnuTrayIconTools.Name = "cmnuTrayIconTools"
         Me.cmnuTrayIconTools.Size = New System.Drawing.Size(194, 22)
@@ -4320,7 +4316,6 @@ Partial Class frmMain
         '
         'cmnuTrayIconSettings
         '
-        Me.cmnuTrayIconSettings.Enabled = False
         Me.cmnuTrayIconSettings.Image = CType(resources.GetObject("cmnuTrayIconSettings.Image"), System.Drawing.Image)
         Me.cmnuTrayIconSettings.Name = "cmnuTrayIconSettings"
         Me.cmnuTrayIconSettings.Size = New System.Drawing.Size(194, 22)
@@ -4333,7 +4328,6 @@ Partial Class frmMain
         '
         'cmnuTrayIconExit
         '
-        Me.cmnuTrayIconExit.Enabled = False
         Me.cmnuTrayIconExit.Image = CType(resources.GetObject("cmnuTrayIconExit.Image"), System.Drawing.Image)
         Me.cmnuTrayIconExit.Name = "cmnuTrayIconExit"
         Me.cmnuTrayIconExit.Size = New System.Drawing.Size(194, 22)

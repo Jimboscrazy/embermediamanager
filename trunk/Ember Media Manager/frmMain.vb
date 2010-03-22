@@ -748,8 +748,6 @@ Public Class frmMain
     Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted
         Me.SetStatus(String.Empty)
         Me.tspbLoading.Visible = False
-        Me.SetControlsEnabled(True)
-        Me.EnableFilters(True)
 
         Me.FillList(0)
     End Sub
@@ -1390,8 +1388,6 @@ doCancel:
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
-        Me.SetControlsEnabled(True, True)
-        Me.EnableFilters(True)
 
         Me.FillList(0)
         Me.Cursor = Cursors.Default
@@ -1624,7 +1620,7 @@ doCancel:
     End Sub
 
     Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanDatabaseToolStripMenuItem.Click, CleanDatabaseToolStripMenuItem1.Click
-        Me.SetControlsEnabled(False)
+        Me.SetControlsEnabled(False, True)
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
         Me.EnableFilters(False)
 
@@ -1882,6 +1878,8 @@ doCancel:
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
             Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
 
+            Me.SetControlsEnabled(False)
+
             Using dEditEpisode As New dlgEditEpisode
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
                 Select Case dEditEpisode.ShowDialog()
@@ -1892,6 +1890,9 @@ doCancel:
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
+
+            Me.SetControlsEnabled(True)
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1903,6 +1904,8 @@ doCancel:
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
+            Me.SetControlsEnabled(False)
+
             Using dEditMovie As New dlgEditMovie
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
@@ -1911,6 +1914,8 @@ doCancel:
                         Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
+                        Else
+                            Me.SetControlsEnabled(True)
                         End If
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType.All, True, True)
@@ -1921,7 +1926,11 @@ doCancel:
                         Functions.SetScraperMod(Enums.ModType.All, True, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                     Case Else
-                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
+                        If Me.InfoCleared Then
+                            Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
+                        Else
+                            Me.SetControlsEnabled(False)
+                        End If
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
@@ -1937,6 +1946,8 @@ doCancel:
 
             Master.currShow = Master.DB.LoadTVFullShowFromDB(ID)
 
+            Me.SetControlsEnabled(False)
+
             Using dEditShow As New dlgEditShow
 
                 Select Case dEditShow.ShowDialog()
@@ -1944,10 +1955,15 @@ doCancel:
                         Me.SetShowListItemAfterEdit(ID, indX)
                         If Me.RefreshShow(ID, False, True, False, False) Then
                             Me.FillList(0)
+                        Else
+                            Me.SetControlsEnabled(True)
                         End If
+                    Case Else
+                        Me.SetControlsEnabled(True)
                 End Select
 
             End Using
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2592,7 +2608,7 @@ doCancel:
 
         Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), False, False, True)
+                Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells(0).Value), True, False, True)
             Next
 
             Master.DB.CleanSeasons(True)
@@ -2600,7 +2616,13 @@ doCancel:
             SQLTrans.Commit()
         End Using
 
-        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, Me.currSeasonRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, Me.currSeasonRow).Value))
+        Dim cSeas As Integer = 0
+
+        If Not Me.currSeasonRow = -1 Then
+            cSeas = Me.currSeasonRow
+        End If
+
+        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, cSeas).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, cSeas).Value))
 
         Me.SetTVCount()
     End Sub
@@ -2641,6 +2663,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
+        Me.SetControlsEnabled(False)
         Using dEditSeason As New dlgEditSeason
             If dEditSeason.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 If Me.RefreshSeason(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season, False) Then
@@ -2648,6 +2671,7 @@ doCancel:
                 End If
             End If
         End Using
+        Me.SetControlsEnabled(True)
     End Sub
 
     Private Sub cmnuSeasonOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonOpenFolder.Click
@@ -2693,8 +2717,13 @@ doCancel:
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click, SortFilesIntoFoldersToolStripMenuItem.Click
+        Me.SetControlsEnabled(False, True)
         Using dSortFiles As New dlgSortFiles
-            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(New Structures.Scans With {.Movies = True})
+            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                Me.LoadMedia(New Structures.Scans With {.Movies = True})
+            Else
+                Me.SetControlsEnabled(True, True)
+            End If
         End Using
     End Sub
 
@@ -2756,12 +2785,15 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click
+    Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click, TrayCustomUpdaterToolStripMenuItem.Click
+        Me.SetControlsEnabled(False, True)
         Using dUpdate As New dlgUpdateMedia
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
                 Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
+            Else
+                Me.SetControlsEnabled(True, True)
             End If
         End Using
     End Sub
@@ -3040,24 +3072,20 @@ doCancel:
                         Me.ScrapingToolStripMenuItem.Visible = False
                         Me.cmnuRescrape.Visible = True
                         Me.cmnuSearchNew.Visible = True
-                        'Me.cmuRenamer.Visible = True
                         Me.cmnuMetaData.Visible = True
                         Me.cmnuSep.Visible = True
                         Me.cmnuSep2.Visible = True
 
-                        If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.mnuMediaList.Enabled = False
-                        Else
-                            Me.mnuMediaList.Enabled = True
-                        End If
-
                         cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuMediaList.Enabled = False
                             Me.dgvMediaList.CurrentCell = Nothing
                             Me.dgvMediaList.ClearSelection()
                             Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
+                        Else
+                            Me.mnuMediaList.Enabled = True
                         End If
 
                         Me.cmnuMark.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
@@ -3271,78 +3299,134 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub ShowEpisodeMenuItems(ByVal Visible As Boolean)
+        Dim cMnu As ToolStripMenuItem
+        Dim cSep As ToolStripSeparator
+
+        Try
+            If Visible Then
+                For Each cMnuItem As Object In Me.mnuEpisodes.Items
+                    If TypeOf cMnuItem Is ToolStripMenuItem Then
+                        DirectCast(cMnuItem, ToolStripMenuItem).Visible = True
+                    ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
+                        DirectCast(cMnuItem, ToolStripSeparator).Visible = True
+                    End If
+                Next
+                Me.cmnuDeleteTVEp.Visible = True
+            Else
+                For Each cMnuItem As Object In Me.mnuEpisodes.Items
+                    If TypeOf cMnuItem Is ToolStripMenuItem Then
+                        cMnu = DirectCast(cMnuItem, ToolStripMenuItem)
+                        If Not cMnu.Name = "RemoveEpToolStripMenuItem" AndAlso Not cMnu.Name = "cmnuEpTitle" Then
+                            cMnu.Visible = False
+                        End If
+                    ElseIf TypeOf cMnuItem Is ToolStripSeparator Then
+                        cSep = DirectCast(cMnuItem, ToolStripSeparator)
+                        If Not cSep.Name = "ToolStripSeparator6" Then
+                            cSep.Visible = False
+                        End If
+                    End If
+                    Me.cmnuDeleteTVEp.Visible = False
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Private Sub dgvTVEpisodes_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVEpisodes.MouseDown
         Try
+            Dim hasMissing As Boolean = False
+
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                    For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        If Convert.ToBoolean(sRow.Cells(22).Value) Then
-                            Me.mnuEpisodes.Enabled = False
-                            Exit Sub
-                        End If
-                    Next
-
                     If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
-                        Dim setMark As Boolean = False
-                        Dim setLock As Boolean = False
-
-                        Me.mnuEpisodes.Enabled = True
-                        Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.ToolStripSeparator9.Visible = False
-                        Me.cmnuEditEpisode.Visible = False
-                        Me.ToolStripSeparator10.Visible = False
-                        Me.cmnuRescrapeEp.Visible = False
-                        Me.cmnuChangeEp.Visible = False
-                        Me.ToolStripSeparator12.Visible = False
-                        Me.cmnuEpOpenFolder.Visible = False
-
                         For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
-                                setMark = True
-                                If setLock Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                                setLock = True
-                                If setMark Then Exit For
+                            If Convert.ToBoolean(sRow.Cells(22).Value) Then
+                                hasMissing = True
+                                Exit For
                             End If
                         Next
 
-                        Me.cmnuMarkEp.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuLockEp.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                    Else
+                        Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
-                        Me.ToolStripSeparator9.Visible = True
-                        Me.cmnuEditEpisode.Visible = True
-                        Me.ToolStripSeparator10.Visible = True
-                        Me.cmnuRescrapeEp.Visible = True
-                        Me.cmnuChangeEp.Visible = True
-                        Me.ToolStripSeparator12.Visible = True
-                        Me.cmnuEpOpenFolder.Visible = True
+                        If hasMissing Then
+                            Me.ShowEpisodeMenuItems(False)
+                        Else
+                            Dim setMark As Boolean = False
+                            Dim setLock As Boolean = False
+
+                            Me.ShowEpisodeMenuItems(True)
+
+                            Me.mnuEpisodes.Enabled = True
+                            Me.ToolStripSeparator9.Visible = False
+                            Me.cmnuEditEpisode.Visible = False
+                            Me.ToolStripSeparator10.Visible = False
+                            Me.cmnuRescrapeEp.Visible = False
+                            Me.cmnuChangeEp.Visible = False
+                            Me.ToolStripSeparator12.Visible = False
+                            Me.cmnuEpOpenFolder.Visible = False
+
+                            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                                'if any one item is set as unmarked, set menu to mark
+                                'else they are all marked, so set menu to unmark
+                                If Not Convert.ToBoolean(sRow.Cells(8).Value) Then
+                                    setMark = True
+                                    If setLock Then Exit For
+                                End If
+                                'if any one item is set as unlocked, set menu to lock
+                                'else they are all locked so set menu to unlock
+                                If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                                    setLock = True
+                                    If setMark Then Exit For
+                                End If
+                            Next
+
+                            Me.cmnuMarkEp.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                            Me.cmnuLockEp.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                        End If
+                    Else
+                        cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
 
                         If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
                             Me.mnuEpisodes.Enabled = False
-                        Else
-                            Me.mnuEpisodes.Enabled = True
-                        End If
-
-                        cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
-                        Me.cmnuMarkEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuLockEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-
-                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
                             Me.prevEpRow = -1
                             Me.currList = 2
                             Me.dgvTVEpisodes.CurrentCell = Nothing
                             Me.dgvTVEpisodes.ClearSelection()
                             Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex)
+                        Else
+                            Me.mnuEpisodes.Enabled = True
                         End If
+
+                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                            If Convert.ToBoolean(sRow.Cells(22).Value) Then
+                                hasMissing = True
+                                Exit For
+                            End If
+                        Next
+
+                        If hasMissing Then
+                            Me.ShowEpisodeMenuItems(False)
+                        Else
+                            Me.ShowEpisodeMenuItems(True)
+
+                            Me.ToolStripSeparator9.Visible = True
+                            Me.cmnuEditEpisode.Visible = True
+                            Me.ToolStripSeparator10.Visible = True
+                            Me.cmnuRescrapeEp.Visible = True
+                            Me.cmnuChangeEp.Visible = True
+                            Me.ToolStripSeparator12.Visible = True
+                            Me.cmnuEpOpenFolder.Visible = True
+
+                            Me.cmnuMarkEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                            Me.cmnuLockEp.Text = If(Convert.ToBoolean(Me.dgvTVEpisodes.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                        End If
+
                     End If
                 Else
                     Me.mnuEpisodes.Enabled = False
@@ -3582,23 +3666,20 @@ doCancel:
                         Me.ToolStripSeparator15.Visible = True
                         Me.cmnuSeasonOpenFolder.Visible = True
 
-                        If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
-                            Me.mnuSeasons.Enabled = False
-                        Else
-                            Me.mnuSeasons.Enabled = True
-                        End If
-
                         Me.cmnuSeasonTitle.Text = String.Concat(">> ", Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(8, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockSeason.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item(7, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
+                            Me.mnuSeasons.Enabled = False
                             Me.prevSeasonRow = -1
                             Me.currList = 1
                             Me.dgvTVSeasons.CurrentCell = Nothing
                             Me.dgvTVSeasons.ClearSelection()
                             Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Item(1, dgvHTI.RowIndex)
+                        Else
+                            Me.mnuSeasons.Enabled = True
                         End If
                     End If
                 Else
@@ -3854,23 +3935,20 @@ doCancel:
                         Me.cmnuShowOpenFolder.Visible = True
                         Me.ToolStripSeparator20.Visible = True
 
-                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
-                            Me.mnuShows.Enabled = False
-                        Else
-                            Me.mnuShows.Enabled = True
-                        End If
-
                         Me.cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
                         Me.cmnuMarkShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(6, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuLockShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(10, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
+                            Me.mnuShows.Enabled = False
                             Me.prevShowRow = -1
                             Me.currList = 0
                             Me.dgvTVShows.CurrentCell = Nothing
                             Me.dgvTVShows.ClearSelection()
                             Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
+                        Else
+                            Me.mnuShows.Enabled = True
                         End If
                     End If
                 Else
@@ -5434,6 +5512,11 @@ doCancel:
 
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         Select Case mType
+            Case Enums.ModuleEventType.Generic
+                Select Case _params(0).ToString
+                    Case "controlsenabled"
+                        Me.SetControlsEnabled(Convert.ToBoolean(_params(1)), If(_params.Count = 3, Convert.ToBoolean(_params(2)), False))
+                End Select
             Case Enums.ModuleEventType.Notification
                 Select Case _params(0).ToString
                     Case "error"
@@ -5961,16 +6044,7 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
-    ' *** MONO issues
-    Sub Mono_MovieDeSelectAll()
-        If Me.dgvMediaList.SelectedRows.Count > 0 Then
-            For Each r As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                r.Selected = False
-            Next
-        End If
-    End Sub
-
-    Sub Mono_Shown()
+    Private Sub Mono_Shown()
         Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
     End Sub
 
@@ -6959,16 +7033,14 @@ doCancel:
     End Sub
 
     Private Sub ScanningCompleted()
-        If isCL Then
-            Me.FillList(0)
-            'Me.ScraperDone = True
-            'Me.LoadingDone = True
-        Else
+        If Not isCL Then
             Me.SetStatus(String.Empty)
             Me.FillList(0)
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
         End If
+
+        Me.FillList(0)
     End Sub
 
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved
@@ -7168,12 +7240,11 @@ doCancel:
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
+        Me.EditToolStripMenuItem.Enabled = isEnabled
         Me.ToolsToolStripMenuItem.Enabled = isEnabled
-        Me.cmnuTrayIconTools.Enabled = isEnabled
-        Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.tabsMain.SelectedIndex = 0
-        Me.cmnuTrayIconScrapeMedia.Enabled = Me.tsbAutoPilot.Enabled
+        Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
-        Me.cmnuTrayIconUpdateMedia.Enabled = isEnabled
+        Me.tsbMediaCenters.Enabled = isEnabled
         Me.mnuMediaList.Enabled = isEnabled
         Me.mnuShows.Enabled = isEnabled
         Me.mnuSeasons.Enabled = isEnabled
@@ -7182,6 +7253,16 @@ doCancel:
         Me.tabsMain.Enabled = isEnabled
         Me.btnMarkAll.Enabled = isEnabled
         Me.btnMetaDataRefresh.Enabled = isEnabled
+        Me.scMain.IsSplitterFixed = Not isEnabled
+        Me.scTV.IsSplitterFixed = Not isEnabled
+        Me.SplitContainer2.IsSplitterFixed = Not isEnabled
+        Me.HelpToolStripMenuItem.Enabled = isEnabled
+        Me.cmnuTrayIconTools.Enabled = isEnabled
+        Me.cmnuTrayIconScrapeMedia.Enabled = Me.tsbAutoPilot.Enabled
+        Me.cmnuTrayIconUpdateMedia.Enabled = isEnabled
+        Me.cmnuTrayIconMediaCenters.Enabled = isEnabled
+        Me.cmnuTrayIconSettings.Enabled = isEnabled
+        Me.cmnuTrayIconExit.Enabled = isEnabled
 
         If withLists Then
             Me.dgvMediaList.TabStop = isEnabled
@@ -7391,15 +7472,18 @@ doCancel:
 
             End With
             Me.tsbAutoPilot.Enabled = (Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0)
+            Me.cmnuTrayIconScrapeMedia.Enabled = Me.tsbAutoPilot.Enabled
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub SetsManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetsManagerToolStripMenuItem.Click, SetsManagerToolStripMenuItem1.Click
+        Me.SetControlsEnabled(False, True)
         Using dSetsManager As New dlgSetsManager
             dSetsManager.ShowDialog()
         End Using
+        Me.SetControlsEnabled(True, False)
     End Sub
 
     Private Sub SetStatus(ByVal sText As String)
@@ -7486,16 +7570,15 @@ doCancel:
             Me.SetMenus(True)
         Else
             Me.SetMenus(False)
+            Me.SetControlsEnabled(True, True)
         End If
+
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
         Try
-            Mono_MovieDeSelectAll()
-            Me.SettingsToolStripMenuItem.Enabled = False
+            Me.SetControlsEnabled(False, True)
             Me.pnlLoadingSettings.Visible = True
-            Me.cmnuTrayIconSettings.Enabled = False
-            Me.cmnuTrayIconExit.Enabled = False
 
             Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
             dThread.SetApartmentState(Threading.ApartmentState.STA)
@@ -7790,7 +7873,7 @@ doCancel:
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .cmnuTrayIconUpdateMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
-                .cmnuTrayIconMediaCenters.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
+                .cmnuTrayIconMediaCenters.Text = .tsbMediaCenters.Text
                 .Label6.Text = Master.eLang.GetString(579, "File Source:")
                 .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
@@ -8423,4 +8506,5 @@ doCancel:
         tmrAppExit.Enabled = False
         Me.Close()
     End Sub
+
 End Class

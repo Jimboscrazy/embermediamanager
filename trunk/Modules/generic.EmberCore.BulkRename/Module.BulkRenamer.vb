@@ -214,26 +214,18 @@ Public Class BulkRenamerModule
         MySettings.GenericModule = AdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
-        Using dBulkRename As New dlgBulkRenamer
-            dBulkRename.txtFolder.Text = MySettings.FoldersPattern
-            dBulkRename.txtFile.Text = MySettings.FilesPattern
-            Try
-                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
-                End If
-            Catch ex As Exception
-            End Try
-        End Using
-    End Sub
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
 
-    Private Sub MyTrayMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyTrayMenu.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+
         Using dBulkRename As New dlgBulkRenamer
             dBulkRename.txtFolder.Text = MySettings.FoldersPattern
             dBulkRename.txtFile.Text = MySettings.FilesPattern
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                Else
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
                 End If
             Catch ex As Exception
             End Try
