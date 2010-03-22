@@ -90,6 +90,15 @@ Public Class Localization
     #End Region 'Properties
 
     #Region "Methods"
+    ' ************************************************************************************************
+    ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
+    Shared Function ISOGetLangByCode2(ByVal code As String) As String
+        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha2Code = code))(0).Language
+    End Function
+
+    Shared Function ISOGetLangByCode3(ByVal code As String) As String
+        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha3Code = code))(0).Language
+    End Function
 
     Public Shared Function ISOLangGetCode2ByLang(ByVal lang As String) As String
         Return (From x As _ISOLanguage In _ISOLanguages Where (x.Language = lang))(0).Alpha2Code
@@ -110,6 +119,13 @@ Public Class Localization
     Public Shared Function ISOLangGetLanguagesListAlpha2() As ArrayList
         Dim r As New ArrayList
         For Each x As _ISOLanguage In _ISOLanguages.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha2Code))
+            r.Add(x.Language)
+        Next
+        Return r
+    End Function
+    Public Shared Function ISOLangGetLanguagesListAlpha3() As ArrayList
+        Dim r As New ArrayList
+        For Each x As _ISOLanguage In _ISOLanguages.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha3Code))
             r.Add(x.Language)
         Next
         Return r
@@ -235,15 +251,6 @@ Public Class Localization
         End Try
     End Sub
 
-    ' ************************************************************************************************
-    ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
-    Shared Function ISOGetLangByCode2(ByVal code As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha2Code = code))(0).Language
-    End Function
-
-    Shared Function ISOGetLangByCode3(ByVal code As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha3Code = code))(0).Language
-    End Function
 
     #End Region 'Methods
 
