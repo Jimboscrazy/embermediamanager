@@ -164,10 +164,10 @@ Public Class EmberNativeScraperModule
         Next
         _setupPost.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setupPost.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
-        _setupPost.chkUseTMDB.Checked = Master.eSettings.UseTMDB
-        _setupPost.chkUseIMPA.Checked = Master.eSettings.UseIMPA
-        _setupPost.chkUseMPDB.Checked = Master.eSettings.UseMPDB
-        _setupPost.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
+        _setupPost.chkUseTMDB.Checked = MySettings.UseTMDB
+        _setupPost.chkUseIMPA.Checked = MySettings.UseIMPA
+        _setupPost.chkUseMPDB.Checked = MySettings.UseMPDB
+        _setupPost.txtTimeout.Text = MySettings.TrailerTimeout.ToString
         _setupPost.chkDownloadTrailer.Checked = MySettings.DownloadTrailers
         _setupPost.CheckTrailer()
         _setupPost.orderChanged()
@@ -217,6 +217,8 @@ Public Class EmberNativeScraperModule
         _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
         _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
         _setup.chkOFDBGenre.Checked = MySettings.UseOFDBGenre
+        _setup.chkFullCast.Checked = ConfigOptions.bFullCast
+        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
 
         If String.IsNullOrEmpty(MySettings.IMDBURL) Then
             MySettings.IMDBURL = "akas.imdb.com"
@@ -260,12 +262,22 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
+
         MySettings.IMDBURL = AdvancedSettings.GetSetting("IMDBURL", "akas.imdb.com")
         MySettings.UseOFDBTitle = AdvancedSettings.GetBooleanSetting("UseOFDBTitle", False)
         MySettings.UseOFDBOutline = AdvancedSettings.GetBooleanSetting("UseOFDBOutline", False)
         MySettings.UseOFDBPlot = AdvancedSettings.GetBooleanSetting("UseOFDBPlot", False)
         MySettings.UseOFDBGenre = AdvancedSettings.GetBooleanSetting("UseOFDBGenre", False)
         MySettings.DownloadTrailers = AdvancedSettings.GetBooleanSetting("DownloadTraliers", False)
+
+
+        MySettings.TrailerTimeout = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerTimeout", "30"))
+        MySettings.UseIMPA = AdvancedSettings.GetBooleanSetting("UseIMPA", False)
+        MySettings.UseMPDB = AdvancedSettings.GetBooleanSetting("UseMPDB", False)
+        MySettings.UseTMDB = AdvancedSettings.GetBooleanSetting("UseTMDB", False)
+
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
@@ -369,9 +381,10 @@ Public Class EmberNativeScraperModule
         End If
         If Master.GlobalScrapeMod.Extra Then
             If Master.eSettings.AutoET Then
-                'Using Fanart As New Images
-                ' Enable this **** ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
-                'End Using
+                Try
+                    ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
+                Catch ex As Exception
+                End Try
             End If
         End If
         Master.GlobalScrapeMod = saveModifier
@@ -403,11 +416,20 @@ Public Class EmberNativeScraperModule
         AdvancedSettings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
         AdvancedSettings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
         AdvancedSettings.SetSetting("IMDBURL", MySettings.IMDBURL)
+
+        AdvancedSettings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
+        AdvancedSettings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
         AdvancedSettings.SetBooleanSetting("UseOFDBTitle", MySettings.UseOFDBTitle)
         AdvancedSettings.SetBooleanSetting("UseOFDBOutline", MySettings.UseOFDBOutline)
         AdvancedSettings.SetBooleanSetting("UseOFDBPlot", MySettings.UseOFDBPlot)
         AdvancedSettings.SetBooleanSetting("UseOFDBGenre", MySettings.UseOFDBGenre)
         AdvancedSettings.SetBooleanSetting("DownloadTraliers", MySettings.DownloadTrailers)
+
+        AdvancedSettings.SetSetting("TrailerTimeout", MySettings.TrailerTimeout.ToString)
+        AdvancedSettings.SetBooleanSetting("UseIMPA", MySettings.UseIMPA)
+        AdvancedSettings.SetBooleanSetting("UseMPDB", MySettings.UseMPDB)
+        AdvancedSettings.SetBooleanSetting("UseTMDB", MySettings.UseTMDB)
+
         AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
         AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
         AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
@@ -423,10 +445,10 @@ Public Class EmberNativeScraperModule
             End If
         Next
         AdvancedSettings.SetSetting("TrailerSiteCount", _setupPost.lbTrailerSites.Items.Count.ToString)
-        Master.eSettings.TrailerTimeout = Convert.ToInt32(_setupPost.txtTimeout.Text)
-        Master.eSettings.UseTMDB = _setupPost.chkUseTMDB.Checked
-        Master.eSettings.UseIMPA = _setupPost.chkUseIMPA.Checked
-        Master.eSettings.UseMPDB = _setupPost.chkUseMPDB.Checked
+        MySettings.TrailerTimeout = Convert.ToInt32(_setupPost.txtTimeout.Text)
+        MySettings.UseTMDB = _setupPost.chkUseTMDB.Checked
+        MySettings.UseIMPA = _setupPost.chkUseIMPA.Checked
+        MySettings.UseMPDB = _setupPost.chkUseMPDB.Checked
         ConfigScrapeModifier.Poster = _setupPost.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setupPost.chkScrapeFanart.Checked
         SaveSettings()
@@ -598,6 +620,10 @@ Public Class EmberNativeScraperModule
         Dim UseOFDBOutline As Boolean
         Dim UseOFDBPlot As Boolean
         Dim UseOFDBTitle As Boolean
+        Dim TrailerTimeout As Integer
+        Dim UseTMDB As Boolean
+        Dim UseIMPA As Boolean
+        Dim UseMPDB As Boolean
 
         #End Region 'Fields
 

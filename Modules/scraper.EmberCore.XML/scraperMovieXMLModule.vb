@@ -201,6 +201,7 @@ Public Class EmberXMLScraperModule
             PrepareScraper()
             If Not ScrapersLoaded Then
                 XMLManager.ReloadScrapers()
+                PoupulateForm()
                 ScrapersLoaded = True
             End If
             If scraperName = String.Empty Then
@@ -284,6 +285,10 @@ Public Class EmberXMLScraperModule
         ScrapersLoaded = True
     End Sub
     Private Sub bwPopulate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPopulate.RunWorkerCompleted
+        PoupulateForm()
+        _setup.parentRunning = False
+    End Sub
+    Sub PoupulateForm()
         _setup.cbScraper.Items.Clear()
         For Each s As ScraperInfo In XMLManager.AllScrapers
             _setup.cbScraper.Items.Add(s.ScraperName)
@@ -294,7 +299,6 @@ Public Class EmberXMLScraperModule
         Else
             _setup.cbScraper.SelectedIndex = _setup.cbScraper.Items.IndexOf(scraperName)
         End If
-        _setup.parentRunning = False
     End Sub
     Sub PrepareScraper()
         If XMLManager Is Nothing Then
