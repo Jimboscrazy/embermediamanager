@@ -534,8 +534,7 @@ Public Class ModulesManager
     End Sub
 
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
-        Dim ret As Boolean
-
+        Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
             ret = _externalScraperModule.ProcessorModule.QueryPostScraperCapabilities(cap)
