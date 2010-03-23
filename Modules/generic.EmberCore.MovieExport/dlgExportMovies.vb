@@ -581,120 +581,60 @@ Public Class dlgExportMovies
     End Sub
 
     Private Function GetAVImages(ByVal AVMovie As Structures.DBMovie, ByVal line As String) As String
-        '//
-        ' Parse the Flags XML and set the proper images
-        '\\
-
-        If APIXML.FlagsXML.Nodes.Count > 0 Then
-            'Dim mePath As String = ""
-            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
+        If APIXML.lFlags.Count > 0 Then
             Try
                 Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
-                Dim atypeRef As String = String.Empty
-                Dim vresImage As String = String.Empty
-                Dim vsourceImage As String = String.Empty
-                Dim vtypeImage As String = String.Empty
-                Dim atypeImage As String = String.Empty
-                Dim achanImage As String = String.Empty
                 Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
-                Dim sourceCheck As String = String.Empty
 
-                If FileUtils.Common.isVideoTS(AVMovie.Filename) Then
-                    sourceCheck = "dvd"
-                ElseIf FileUtils.Common.isBDRip(AVMovie.Filename) Then
-                    sourceCheck = "bluray"
+                Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                If Not IsNothing(vresFlag) Then
+                    line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                 Else
-                    sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
-                End If
-
-                'video resolution
-                Dim xVResDefault = From xDef In APIXML.FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
-                If xVResDefault.Count > 0 Then
-                    vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
-                End If
-
-                Dim strRes As String = NFO.GetResFromDimensions(tVideo).ToLower
-                If Not String.IsNullOrEmpty(strRes) Then
-                    Dim xVResFlag = From xVRes In APIXML.FlagsXML...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
-                    If xVResFlag.Count > 0 Then
-                        vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
+                    vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                    If Not IsNothing(vresFlag) Then
+                        line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
-                'video source
-                Dim xVSourceDefault = From xDef In APIXML.FlagsXML...<vsource> Select xDef.Element("default").Element("icon").Value
-                If xVSourceDefault.Count > 0 Then
-                    vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
-                End If
-
-                Dim xVSourceFlag = From xVSource In APIXML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
-                If xVSourceFlag.Count > 0 Then
-                    vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
-                End If
-
-                'video type
-                Dim xVTypeDefault = From xDef In APIXML.FlagsXML...<vtype> Select xDef.Element("default").Element("icon").Value
-                If xVTypeDefault.Count > 0 Then
-                    vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
-                End If
-
-                Dim vCodec As String = tVideo.Codec.ToLower
-                If Not String.IsNullOrEmpty(vCodec) Then
-                    Dim xVTypeFlag = From xVType In APIXML.FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
-                    If xVTypeFlag.Count > 0 Then
-                        vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
+                Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
+                If Not IsNothing(vsourceFlag) Then
+                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
+                Else
+                    vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
+                    If Not IsNothing(vsourceFlag) Then
+                        line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
-                'audio type
-                Dim xATypeDefault = From xDef In APIXML.FlagsXML...<atype> Select xDef.Element("default").Element("icon").Value
-                If xATypeDefault.Count > 0 Then
-                    atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
-                End If
-
-                Dim aCodec As String = tAudio.Codec.ToLower
-                If Not String.IsNullOrEmpty(aCodec) Then
-                    Dim xATypeFlag = From xAType In APIXML.FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
-                    If xATypeFlag.Count > 0 Then
-                        atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
-                        If Not IsNothing(xATypeFlag(0).ref) Then
-                            atypeRef = xATypeFlag(0).ref.ToString
-                        End If
+                Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                If Not IsNothing(vcodecFlag) Then
+                    line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
+                Else
+                    vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                    If Not IsNothing(vcodecFlag) Then
+                        line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
-                'audio channels
-                Dim xAChanDefault = From xDef In APIXML.FlagsXML...<achan> Select xDef.Element("default").Element("icon").Value
-                If xAChanDefault.Count > 0 Then
-                    achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
-                End If
-
-                If Not String.IsNullOrEmpty(tAudio.Channels) Then
-                    Dim xAChanFlag = From xAChan In APIXML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) AndAlso Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
-                    If xAChanFlag.Count > 0 Then
-                        achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
+                Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                If Not IsNothing(acodecFlag) Then
+                    line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
+                Else
+                    acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                    If Not IsNothing(acodecFlag) Then
+                        line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(vresImage) AndAlso APIXML.alFlags.Contains(vresImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage))).Replace("\", "/")
-                End If
-
-                If Not String.IsNullOrEmpty(vsourceImage) AndAlso APIXML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage))).Replace("\", "/")
-                End If
-
-                If Not String.IsNullOrEmpty(vtypeImage) AndAlso APIXML.alFlags.Contains(vtypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage))).Replace("\", "/")
-                End If
-
-                If Not String.IsNullOrEmpty(atypeImage) AndAlso APIXML.alFlags.Contains(atypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage))).Replace("\", "/")
-                End If
-
-                If Not String.IsNullOrEmpty(achanImage) AndAlso APIXML.alFlags.Contains(achanImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage))).Replace("\", "/")
+                Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
+                If Not IsNothing(achanFlag) Then
+                    line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+                Else
+                    achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
+                    If Not IsNothing(achanFlag) Then
+                        line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+                    End If
                 End If
 
             Catch ex As Exception

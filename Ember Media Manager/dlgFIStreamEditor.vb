@@ -41,10 +41,7 @@ Public Class dlgFIStreamEditor
 
             If stream_type = Master.eLang.GetString(595, "Video Stream") Then
                 GroupBox1.Visible = True
-                Dim xVTypeFlag = From xVType In APIXML.FlagsXML...<vtype>...<name> Select xVType.@searchstring
-                For Each p() As String In xVTypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
-                    cbVideoCodec.Items.AddRange(p)
-                Next
+                cbVideoCodec.Items.AddRange(APIXML.lFlags.Where(Function(f) f.Type = APIXML.FlagType.VideoCodec).ToArray)
                 Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbVideoLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
@@ -63,10 +60,7 @@ Public Class dlgFIStreamEditor
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                 GroupBox2.Visible = True
-                Dim xATypeFlag = From xAType In APIXML.FlagsXML...<atype>...<name> Select xAType.@searchstring
-                For Each p() As String In xATypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
-                    cbAudioCodec.Items.AddRange(p)
-                Next
+                cbAudioCodec.Items.AddRange(APIXML.lFlags.Where(Function(f) f.Type = APIXML.FlagType.AudioCodec).ToArray)
                 Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
                 cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})

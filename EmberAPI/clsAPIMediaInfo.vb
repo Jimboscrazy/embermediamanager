@@ -449,6 +449,7 @@ Public Class MediaInfo
                 Dim vLang As String = String.Empty
                 Dim aLang As String = String.Empty
                 Dim sLang As String = String.Empty
+                Dim a_Profile As String = String.Empty
 
                 Me.Handle = MediaInfo_New()
 
@@ -496,11 +497,11 @@ Public Class MediaInfo
                 Dim aCodec As String = String.Empty
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New Audio
-                    Dim a_profile As String = Me.Get_(StreamKind.Audio, a, "Format_Profile")
-                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), a_profile)
+                    a_Profile = Me.Get_(StreamKind.Audio, a, "Format_Profile")
+                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), a_Profile)
                     If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                        aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_profile)
-                        miAudio.Codec = If(IsNumeric(aCodec) OrElse String.IsNullOrEmpty(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_profile), aCodec)
+                        aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_Profile)
+                        miAudio.Codec = If(IsNumeric(aCodec) OrElse String.IsNullOrEmpty(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_Profile), aCodec)
                     End If
                     miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
                     aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
