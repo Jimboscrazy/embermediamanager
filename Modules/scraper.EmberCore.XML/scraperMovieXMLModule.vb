@@ -189,7 +189,7 @@ Public Class EmberXMLScraperModule
             scraperName = _setup.cbScraper.SelectedItem.ToString
             AdvancedSettings.SetSetting("ScraperName", scraperName)
         End If
-        ModulesManager.Instance.SaveSettings()
+        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
