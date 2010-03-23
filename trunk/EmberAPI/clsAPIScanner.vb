@@ -47,7 +47,6 @@ Public Class Scanner
 
     Public Shared Function GetSeasons(ByVal sPath As String, ByVal ShowID As Long, ByVal MinEp As Integer) As List(Of Seasons)
         Dim retSeason As New List(Of Seasons)
-        Dim epMatch As String = String.Empty
         Dim cSeason As Seasons
 
         For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes
@@ -71,16 +70,21 @@ Public Class Scanner
 
                         Select Case rShow.EpisodeRetrieve
                             Case Settings.EpRetrieve.FromDirectory
-                                epMatch = Directory.GetParent(sPath).Name
+                                For Each eMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                                    If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                                Next
                             Case Settings.EpRetrieve.FromFilename
-                                epMatch = Path.GetFileNameWithoutExtension(sPath)
+                                For Each eMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                                    If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                                Next
                             Case Settings.EpRetrieve.FromSeasonResult
-                                epMatch = sMatch.Value
+                                If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
+                                    For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                                        If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                                    Next
+                                End If
                         End Select
 
-                        For Each eMatch As Match In Regex.Matches(epMatch, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
-                            If Not String.IsNullOrEmpty(eMatch.Groups("episode").Value) Then cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-                        Next
 
                         If cSeason.Episodes.Count = 0 Then
                             cSeason.Episodes.Add(MinEp)
