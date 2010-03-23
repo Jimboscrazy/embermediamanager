@@ -112,7 +112,15 @@ Public Class EmberNativeScraperModule
 
     #Region "Methods"
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
-
+        Select Case cap
+            Case Enums.PostScraperCapabilities.Fanart
+                If MySettings.UseTMDB Then Return True
+            Case Enums.PostScraperCapabilities.Poster
+                If MySettings.UseTMDB OrElse MySettings.UseMPDB Then Return True
+            Case Enums.PostScraperCapabilities.Trailer
+                If MySettings.DownloadTrailers Then Return True
+        End Select
+        Return False
     End Function
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
         Using dTrailer As New dlgTrailer
