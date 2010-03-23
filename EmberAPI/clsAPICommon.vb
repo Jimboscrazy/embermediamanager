@@ -299,6 +299,12 @@ Public Class Enums
         All = 6
         DoSearch = 7
     End Enum
+    Public Enum PostScraperCapabilities
+        Poster = 1
+        Fanart = 2
+        Trailer = 2
+    End Enum
+
 
     Public Enum ModuleEventType As Integer
         Generic = 0
@@ -410,7 +416,7 @@ Public Class Enums
         Never = 4
     End Enum
 
-    #End Region 'Enumerations
+#End Region 'Enumerations
 
 End Class
 

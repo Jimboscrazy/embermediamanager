@@ -74,7 +74,9 @@ Public Class EmberExtrasScraperModule
     #End Region 'Properties
 
     #Region "Methods"
+    Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
 
+    End Function
     Public Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
     End Function
 

@@ -101,6 +101,8 @@ Public Class Interfaces
 
         Function InjectSetupPostScraper() As Containers.SettingsPanel
 
+        Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
+
         Function InjectSetupScraper() As Containers.SettingsPanel
 
         Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
