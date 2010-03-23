@@ -29,7 +29,6 @@ Public Class dlgSettings
     Private currText As String = String.Empty
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
-    Private LangChanged As Boolean = False
     Private Meta As New List(Of Settings.MetadataPerType)
     Private NoUpdate As Boolean = True
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
@@ -382,10 +381,6 @@ Public Class dlgSettings
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Try
             Me.SaveSettings(True)
-            If Me.LangChanged Then
-                Me.LangChanged = False
-                Me.SetUp()
-            End If
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
@@ -821,7 +816,6 @@ Public Class dlgSettings
 
     Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
         Me.SetApplyButton(True)
-        LangChanged = True
     End Sub
 
     Private Sub cbLanguages_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbLanguages.SelectedIndexChanged
@@ -2426,6 +2420,9 @@ Public Class dlgSettings
         Try
             Functions.PNLDoubleBuffer(Me.pnlMain)
             Me.SetUp()
+            Me.AddPanels()
+            Me.AddButtons()
+            Me.AddHelpHandlers(Me, "Core_")
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -2445,8 +2442,6 @@ Public Class dlgSettings
             Me.LoadThemes()
             Me.LoadRatingRegions()
             Me.FillSettings()
-
-            Me.LangChanged = False
 
             Me.sResult.NeedsUpdate = False
             Me.sResult.NeedsRefresh = False
@@ -3316,9 +3311,6 @@ Public Class dlgSettings
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
-            If Not cbIntLang.Text = Master.eSettings.Language Then
-                Master.eLang.LoadAllLanguage(cbIntLang.Text)
-            End If
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
             LoadGenreLangs()
@@ -3513,7 +3505,6 @@ Public Class dlgSettings
                 End Try
             Next
             ModulesManager.Instance.SaveSettings()
-            Master.eSettings.Save()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3533,7 +3524,6 @@ Public Class dlgSettings
             Me.Width = 980
         End If
 
-        Me.AddHelpHandlers(Me, "Core_")
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
 
@@ -3914,9 +3904,6 @@ Public Class dlgSettings
         Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(350, "DVD"), Master.eLang.GetString(839, "Absolute")})
 
         Me.LoadTrailerQualities()
-
-        Me.AddPanels()
-        Me.AddButtons()
     End Sub
 
     Private Sub tbAllSPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbAllSPosterQual.ValueChanged

@@ -164,6 +164,7 @@ Public Class Localization
     Public Sub LoadAllLanguage(ByVal language As String)
         htHelpStrings = New Hashtable
         htHelpStrings.Clear()
+        htArrayStrings.Clear()
         For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
             LoadLanguage(language, s.Replace(".dll", String.Empty))
         Next
