@@ -116,7 +116,7 @@ Public Class EmberNativeScraperModule
             Case Enums.PostScraperCapabilities.Fanart
                 If MySettings.UseTMDB Then Return True
             Case Enums.PostScraperCapabilities.Poster
-                If MySettings.UseTMDB OrElse MySettings.UseMPDB Then Return True
+                If MySettings.UseIMPA OrElse MySettings.UseMPDB Then Return True
             Case Enums.PostScraperCapabilities.Trailer
                 If MySettings.DownloadTrailers Then Return True
         End Select
