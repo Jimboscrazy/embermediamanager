@@ -546,11 +546,11 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sPath">Full path of the directory to check</param>
     ''' <returns>True if directory is valid, false if not.</returns>
-    Public Function isValidDir(ByVal dInfo As DirectoryInfo) As Boolean
+    Public Function isValidDir(ByVal dInfo As DirectoryInfo, ByVal isTV As Boolean) As Boolean
         Try
 
             If dInfo.Name.ToLower = "extrathumbs" OrElse _
-            dInfo.Name.ToLower = "extras" OrElse _
+            (Not isTV AndAlso dInfo.Name.ToLower = "extras") OrElse _
             dInfo.Name.ToLower = "video_ts" OrElse _
             dInfo.Name.ToLower = "bdmv" OrElse _
             dInfo.Name.ToLower = "audio_ts" OrElse _
@@ -828,12 +828,12 @@ Public Class Scanner
 
                 If Master.eSettings.ScanOrderModify Then
                     Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.LastWriteTime)
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
                     Catch
                     End Try
                 Else
                     Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.Name)
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s, False)).OrderBy(Function(d) d.Name)
                     Catch
                     End Try
                 End If
@@ -897,12 +897,12 @@ Public Class Scanner
 
                     If Master.eSettings.TVScanOrderModify Then
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.LastWriteTime)
+                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                         Catch
                         End Try
                     Else
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                            inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
                         Catch
                         End Try
                     End If
@@ -913,7 +913,7 @@ Public Class Scanner
 
                     LoadShow(currShowContainer)
                 Else
-                    For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d)).OrderBy(Function(d) d.Name)
+                    For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
                         currShowContainer = New TVShowContainer
                         currShowContainer.ShowPath = inDir.FullName
@@ -924,12 +924,12 @@ Public Class Scanner
 
                         If Master.eSettings.TVScanOrderModify Then
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.LastWriteTime)
+                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                             Catch
                             End Try
                         Else
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
                             Catch
                             End Try
                         End If
@@ -968,7 +968,7 @@ Public Class Scanner
             If Directory.Exists(MovieDir.FullName) Then
 
                 For Each inDir As DirectoryInfo In MovieDir.GetDirectories
-                    If isValidDir(inDir) Then
+                    If isValidDir(inDir, False) Then
                         If ScanSubs(inDir) Then Return True
                         SubDirsHaveMovies(inDir)
                     End If
