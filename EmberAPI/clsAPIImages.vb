@@ -336,163 +336,13 @@ Public Class Images
         End Try
     End Sub
 
-    Public Sub GetPreferredFAasET(ByVal IMDBID As String, ByVal sPath As String)
-        If Master.eSettings.UseTMDB Then
-
-            Dim tmpListTMDB As New List(Of MediaContainers.Image)
-            Dim ETHashes As New List(Of String)
-
-            Dim CachePath As String = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, IMDBID, Path.DirectorySeparatorChar, "fanart")
-
-            If Master.eSettings.AutoET Then
-                ETHashes = HashFile.CurrentETHashes(sPath)
-            End If
-
-            If Master.eSettings.UseImgCacheUpdaters Then
-                Dim lFi As New List(Of FileInfo)
-
-                If Not Directory.Exists(CachePath) Then
-                    Directory.CreateDirectory(CachePath)
-                Else
-                    Dim di As New DirectoryInfo(CachePath)
-
-                    Try
-                        lFi.AddRange(di.GetFiles("*.jpg"))
-                    Catch
-                    End Try
-                End If
-
-                If lFi.Count > 0 Then
-                    For Each sFile As FileInfo In lFi
-                        Select Case True
-                            Case sFile.Name.Contains("(original)")
-                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
-                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
-                                        SaveFAasET(sFile.FullName, sPath)
-                                    End If
-                                End If
-                            Case sFile.Name.Contains("(mid)")
-                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
-                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
-                                        SaveFAasET(sFile.FullName, sPath)
-                                    End If
-                                End If
-                            Case sFile.Name.Contains("(thumb)")
-                                If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
-                                    If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
-                                        SaveFAasET(sFile.FullName, sPath)
-                                    End If
-                                End If
-                        End Select
-                    Next
-                Else
-                    'download all the fanart from TMDB
-                    ' *** tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
-
-                    If tmpListTMDB.Count > 0 Then
-
-                        'setup fanart for nfo
-                        Dim thumbLink As String = String.Empty
-                        For Each miFanart As MediaContainers.Image In tmpListTMDB
-                            miFanart.WebImage.FromWeb(miFanart.URL)
-                            If Not IsNothing(miFanart.WebImage.Image) Then
-                                _image = miFanart.WebImage.Image
-                                Dim savePath As String = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
-                                Save(savePath)
-                                If Master.eSettings.AutoET Then
-                                    Select Case miFanart.Description.ToLower
-                                        Case "original"
-                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
-                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                                    SaveFAasET(savePath, sPath)
-                                                End If
-                                            End If
-                                        Case "mid"
-                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
-                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                                    SaveFAasET(savePath, sPath)
-                                                End If
-                                            End If
-                                        Case "thumb"
-                                            If Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
-                                                If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                                    SaveFAasET(savePath, sPath)
-                                                End If
-                                            End If
-                                    End Select
-                                End If
-                            End If
-                        Next
-                    End If
-                End If
-            Else
-                'download all the fanart from TMDB
-                ' *** tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
-
-                If tmpListTMDB.Count > 0 Then
-
-                    If Not Directory.Exists(CachePath) Then
-                        Directory.CreateDirectory(CachePath)
-                    End If
-
-                    Dim savePath As String = String.Empty
-                    For Each miFanart As MediaContainers.Image In tmpListTMDB
-                        Select Case miFanart.Description.ToLower
-                            Case "original"
-                                If Master.eSettings.AutoETSize = Enums.FanartSize.Lrg Then
-                                    miFanart.WebImage.FromWeb(miFanart.URL)
-                                    If Not IsNothing(miFanart.WebImage.Image) Then
-                                        _image = miFanart.WebImage.Image
-                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
-                                        Save(savePath)
-                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                            SaveFAasET(savePath, sPath)
-                                        End If
-                                    End If
-                                End If
-                            Case "mid"
-                                If Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
-                                    miFanart.WebImage.FromWeb(miFanart.URL)
-                                    If Not IsNothing(miFanart.WebImage.Image) Then
-                                        _image = miFanart.WebImage.Image
-                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
-                                        Save(savePath)
-                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                            SaveFAasET(savePath, sPath)
-                                        End If
-                                    End If
-                                End If
-                            Case "thumb"
-                                If Master.eSettings.AutoETSize = Enums.FanartSize.Small Then
-                                    miFanart.WebImage.FromWeb(miFanart.URL)
-                                    If Not IsNothing(miFanart.WebImage.Image) Then
-                                        _image = miFanart.WebImage.Image
-                                        savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringUtils.CleanURL(miFanart.URL), ").jpg"))
-                                        Save(savePath)
-                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
-                                            SaveFAasET(savePath, sPath)
-                                        End If
-                                    End If
-                                End If
-                        End Select
-                        Me.Clear()
-                    Next
-
-                    _image = Nothing
-                    FileUtils.Delete.DeleteDirectory(CachePath)
-
-                End If
-            End If
-        End If
-    End Sub
-
     Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
         Try
             Select Case fType
                 Case Enums.ImageType.Fanart
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
                     (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
-                    Master.eSettings.UseTMDB Then
+                    AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                         Return True
                     Else
                         Return False
@@ -501,7 +351,7 @@ Public Class Images
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
                      Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterJPG OrElse Master.eSettings.FolderJPG) AndAlso _
-                     (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then
+                     (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
                         Return True
                     Else
                         Return False
