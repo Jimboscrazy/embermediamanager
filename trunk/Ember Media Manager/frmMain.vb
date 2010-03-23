@@ -859,7 +859,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithEpisode()
             Else
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
             End If
 
             Me.dgvTVEpisodes.ResumeLayout()
@@ -919,7 +919,7 @@ Public Class frmMain
                 Me.fillScreenInfoWithMovie()
             Else
                 If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
-                    Me.SetControlsEnabled(True, True)
+                    Me.SetControlsEnabled(True)
                     Me.EnableFilters(True)
                 Else
                     Me.dgvMediaList.Enabled = True
@@ -977,7 +977,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithSeason()
             Else
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
             End If
             Me.dgvTVSeasons.ResumeLayout()
         Catch ex As Exception
@@ -1033,7 +1033,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithShow()
             Else
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
             End If
             Me.dgvTVShows.ResumeLayout()
         Catch ex As Exception
@@ -1120,7 +1120,7 @@ Public Class frmMain
                 Me.cmnuTrayIconUpdateMedia.Enabled = True
                 If (Me.tabsMain.SelectedIndex = 0 AndAlso Me.dgvMediaList.RowCount > 0) OrElse _
                    (Me.tabsMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
-                    Me.SetControlsEnabled(True, True)
+                    Me.SetControlsEnabled(True)
                 End If
             End If
         End If
@@ -1246,7 +1246,7 @@ Public Class frmMain
         Me.lblCanceling.Visible = False
         Me.pbCanceling.Visible = False
         Me.pnlCancel.Visible = False
-        Me.SetControlsEnabled(True, True)
+        Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
         Me.Cursor = Cursors.Default
     End Sub
@@ -1779,7 +1779,7 @@ doCancel:
 
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
-        Me.SetControlsEnabled(True, True)
+        Me.SetControlsEnabled(True)
     End Sub
 
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
@@ -2505,7 +2505,7 @@ doCancel:
             Me.dgvTVShows.Cursor = Cursors.Default
             Me.dgvTVSeasons.Cursor = Cursors.Default
             Me.dgvTVEpisodes.Cursor = Cursors.Default
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
 
             If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
         Catch ex As Exception
@@ -2548,7 +2548,7 @@ doCancel:
         Me.dgvTVShows.Cursor = Cursors.Default
         Me.dgvTVSeasons.Cursor = Cursors.Default
         Me.dgvTVEpisodes.Cursor = Cursors.Default
-        Me.SetControlsEnabled(True, True)
+        Me.SetControlsEnabled(True)
 
         If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
     End Sub
@@ -2580,7 +2580,7 @@ doCancel:
             Me.dgvTVShows.Cursor = Cursors.Default
             Me.dgvTVSeasons.Cursor = Cursors.Default
             Me.dgvTVEpisodes.Cursor = Cursors.Default
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
 
             If doFill Then FillList(0)
         Catch ex As Exception
@@ -4241,7 +4241,7 @@ doCancel:
                         If .dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0 Then
                             .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                            .SetControlsEnabled(True, True)
+                            .SetControlsEnabled(True)
                         End If
 
                     End With
@@ -4292,7 +4292,7 @@ doCancel:
                         If .dgvTVShows.RowCount > 0 Then
                             .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                            .SetControlsEnabled(True, True)
+                            .SetControlsEnabled(True)
                         End If
                     End With
                 End If
@@ -4454,7 +4454,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
                 Me.dgvTVEpisodes.Focus()
             Else
                 Me.dgvTVEpisodes.Enabled = True
@@ -4634,7 +4634,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
                 Me.EnableFilters(True)
             Else
                 Me.dgvMediaList.Enabled = True
@@ -4774,7 +4774,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
                 Me.dgvTVSeasons.Focus()
             Else
                 Me.dgvTVEpisodes.Enabled = True
@@ -4942,7 +4942,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
                 Me.dgvTVShows.Focus()
             Else
                 Me.dgvTVEpisodes.Enabled = True
@@ -5589,7 +5589,7 @@ doCancel:
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
 
         Catch ex As Exception
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
@@ -5619,7 +5619,7 @@ doCancel:
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
         Catch ex As Exception
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
@@ -5643,7 +5643,7 @@ doCancel:
             Me.FillEpisodes(ShowID, Season)
 
         Catch ex As Exception
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
@@ -5665,7 +5665,7 @@ doCancel:
             Me.FillSeasons(ID)
 
         Catch ex As Exception
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
@@ -6186,7 +6186,7 @@ doCancel:
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
         Me.SetStatus(String.Empty)
-        Me.SetControlsEnabled(True, True)
+        Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
     End Sub
 
@@ -6487,7 +6487,7 @@ doCancel:
             Me.bwRefreshMovies.WorkerSupportsCancellation = True
             Me.bwRefreshMovies.RunWorkerAsync()
         Else
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
         End If
     End Sub
 
@@ -6892,7 +6892,7 @@ doCancel:
             End Using
 
             Me.dgvMediaList.Cursor = Cursors.Default
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
@@ -7265,7 +7265,7 @@ doCancel:
         Me.cmnuTrayIconSettings.Enabled = isEnabled
         Me.cmnuTrayIconExit.Enabled = isEnabled
 
-        If withLists Then
+        If withLists OrElse isEnabled Then
             Me.dgvMediaList.TabStop = isEnabled
             Me.dgvTVShows.TabStop = isEnabled
             Me.dgvTVSeasons.TabStop = isEnabled
@@ -7573,7 +7573,7 @@ doCancel:
             Me.SetMenus(True)
         Else
             Me.SetMenus(False)
-            Me.SetControlsEnabled(True, True)
+            Me.SetControlsEnabled(True)
         End If
 
     End Sub
@@ -8328,7 +8328,7 @@ doCancel:
                 Me.tslLoading.Visible = False
                 Me.tslStatus.Visible = False
 
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
 
             Case Enums.TVScraperEventType.Searching
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
@@ -8363,7 +8363,7 @@ doCancel:
 
                                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
 
-                                Me.SetControlsEnabled(True, True)
+                                Me.SetControlsEnabled(True)
                             End If
                         End Using
                     Case 1 ' episode
@@ -8399,7 +8399,7 @@ doCancel:
 
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
 
-                Me.SetControlsEnabled(True, True)
+                Me.SetControlsEnabled(True)
         End Select
     End Sub
 
