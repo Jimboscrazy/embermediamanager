@@ -4101,7 +4101,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(1).Visible = False
                 .dgvTVEpisodes.Columns(2).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
-                .dgvTVEpisodes.Columns(2).Width = 30
+                .dgvTVEpisodes.Columns(2).Width = 40
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(755, "Episode #")
                 .dgvTVEpisodes.Columns(2).HeaderText = "#"
@@ -6979,7 +6979,7 @@ doCancel:
             End If
 
             If (iType = 0 OrElse iType = 3) AndAlso Me.dgvTVEpisodes.ColumnCount > 0 Then
-                Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 30 - _
+                Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 40 - _
                 If(Master.eSettings.EpisodePosterCol, 0, 20) - _
                 If(Master.eSettings.EpisodeFanartCol, 0, 20) - _
                 If(Master.eSettings.EpisodeNfoCol, 0, 20) - _
