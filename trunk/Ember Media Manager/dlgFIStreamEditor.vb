@@ -41,7 +41,7 @@ Public Class dlgFIStreamEditor
 
             If stream_type = Master.eLang.GetString(595, "Video Stream") Then
                 GroupBox1.Visible = True
-                cbVideoCodec.Items.AddRange(APIXML.lFlags.Where(Function(f) f.Type = APIXML.FlagType.VideoCodec).ToArray)
+                cbVideoCodec.Items.AddRange((From vCo In APIXML.lFlags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
                 Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbVideoLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
@@ -60,7 +60,7 @@ Public Class dlgFIStreamEditor
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                 GroupBox2.Visible = True
-                cbAudioCodec.Items.AddRange(APIXML.lFlags.Where(Function(f) f.Type = APIXML.FlagType.AudioCodec).ToArray)
+                cbAudioCodec.Items.AddRange((From aCo In APIXML.lFlags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
                 Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
                 cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})
