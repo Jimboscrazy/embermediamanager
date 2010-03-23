@@ -111,7 +111,9 @@ Public Class EmberNativeScraperModule
     #End Region 'Properties
 
     #Region "Methods"
+    Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
 
+    End Function
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
         Using dTrailer As New dlgTrailer
             sURL = dTrailer.ShowDialog(DBMovie.Movie.IMDBID, DBMovie.Filename)

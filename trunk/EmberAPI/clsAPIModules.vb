@@ -533,6 +533,17 @@ Public Class ModulesManager
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
+    Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
+        Dim ret As Boolean
+
+        Dim sStudio As New List(Of String)
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
+            ret = _externalScraperModule.ProcessorModule.QueryPostScraperCapabilities(cap)
+            If ret Then Exit For
+        Next
+        Return ret
+    End Function
+
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie) As List(Of String)
         Dim ret As Interfaces.ModuleResult
         Dim sStudio As New List(Of String)
