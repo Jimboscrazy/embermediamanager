@@ -75,12 +75,8 @@ Public Class FileFolderRenamer
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
         Try
             Dim pattern As String = opattern
-            Dim strSource As String = String.Empty
-            Dim xVSourceFlag = From xVSource In APIXML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
-            'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
-            If xVSourceFlag.Count > 0 Then
-                strSource = xVSourceFlag(0).ToString
-            End If
+            Dim strSource As String = APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
+
             'pattern = "$T{($S.$S)}"
             Dim nextC = pattern.IndexOf("$")
             Dim nextIB = pattern.IndexOf("{")

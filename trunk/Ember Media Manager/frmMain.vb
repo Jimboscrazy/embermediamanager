@@ -918,8 +918,12 @@ Public Class frmMain
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithMovie()
             Else
-                Me.SetControlsEnabled(True, True)
-                Me.EnableFilters(True)
+                If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                    Me.SetControlsEnabled(True, True)
+                    Me.EnableFilters(True)
+                Else
+                    Me.dgvMediaList.Enabled = True
+                End If
             End If
             Me.dgvMediaList.ResumeLayout()
         Catch ex As Exception
@@ -1225,11 +1229,7 @@ Public Class frmMain
         ElseIf e.ProgressPercentage = -2 Then
             If Me.dgvMediaList.SelectedRows.Count > 0 AndAlso Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString Then
                 If Me.dgvMediaList.CurrentCell Is Me.dgvMediaList.SelectedRows(0).Cells(3) Then
-                    Dim tCell As DataGridViewCell = Me.dgvMediaList.SelectedRows(0).Cells(3)
-                    Me.dgvMediaList.CurrentCell = Nothing
-                    Application.DoEvents()
-                    Me.dgvMediaList.CurrentCell = tCell
-                    'Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+                    Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
 
             End If
@@ -1342,7 +1342,7 @@ doCancel:
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMediaList.SelectedRows.Count > 0 Then
                 Try
                     If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                        Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
+                        Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
@@ -1406,7 +1406,7 @@ doCancel:
             Next
 
             If Not cbFilterFileSource.Text = Master.eLang.All Then
-                Me.FilterArray.Add(String.Format("FileSource = '{0}'", cbFilterFileSource.Text.Replace(" | ", "|")))
+                Me.FilterArray.Add(String.Format("FileSource = '{0}'", cbFilterFileSource.Text))
             End If
 
             Me.RunFilter()
@@ -4311,6 +4311,9 @@ doCancel:
 
         If Not isCL Then
             Me.tsbRefreshMedia.Enabled = True
+            Me.cmnuTrayIconExit.Enabled = True
+            Me.cmnuTrayIconSettings.Enabled = True
+            Me.EditToolStripMenuItem.Enabled = True
             Me.cmnuTrayIconUpdateMedia.Enabled = True
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
@@ -4630,7 +4633,7 @@ doCancel:
 
             Me.InfoCleared = False
 
-            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
                 Me.SetControlsEnabled(True, True)
                 Me.EnableFilters(True)
             Else
@@ -5376,7 +5379,6 @@ doCancel:
 
         Else
             Try
-                'Testing NEW Checks for new Ember And Modules Version
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
@@ -5462,7 +5464,6 @@ doCancel:
                             Me.FillList(0)
                             Me.Visible = True
                         End If
-
                     End If
 
                     fLoading.SetStage("Setting menus...")
@@ -6485,7 +6486,8 @@ doCancel:
             Me.bwRefreshMovies.WorkerReportsProgress = True
             Me.bwRefreshMovies.WorkerSupportsCancellation = True
             Me.bwRefreshMovies.RunWorkerAsync()
-
+        Else
+            Me.SetControlsEnabled(True, True)
         End If
     End Sub
 
@@ -7040,8 +7042,6 @@ doCancel:
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
         End If
-
-        Me.FillList(0)
     End Sub
 
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved
@@ -7467,7 +7467,7 @@ doCancel:
                     RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
                     cbFilterFileSource.Items.Clear()
                     cbFilterFileSource.Items.Add(Master.eLang.All)
-                    cbFilterFileSource.Items.AddRange(APIXML.GetSourceList)
+                    cbFilterFileSource.Items.AddRange(APIXML.SourceList.ToArray)
                     cbFilterFileSource.SelectedIndex = 0
                     AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
@@ -7580,7 +7580,7 @@ doCancel:
 
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click, cmnuTrayIconSettings.Click
         Try
-            Me.SetControlsEnabled(False, True)
+            Me.SetControlsEnabled(False)
             Me.pnlLoadingSettings.Visible = True
 
             Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)

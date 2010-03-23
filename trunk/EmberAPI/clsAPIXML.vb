@@ -29,12 +29,12 @@ Public Class APIXML
 
     #Region "Fields"
 
-    Public Shared alFlags As New List(Of String)
+    Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
     Public Shared dStudios As New Dictionary(Of String, String)
-    Public Shared FlagsXML As New XDocument
     Public Shared GenreXML As New XDocument
     Public Shared RatingXML As New XDocument
+    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv"})
 
     #End Region 'Fields
 
@@ -42,17 +42,24 @@ Public Class APIXML
 
     Public Shared Sub CacheXMLs()
         Try
-            Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
-            If File.Exists(fPath) Then
-                FlagsXML = XDocument.Load(fPath)
-            End If
-
-            If Directory.Exists(Directory.GetParent(fPath).FullName) Then
+            Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
+            If Directory.Exists(fPath) Then
+                Dim cFileName As String = String.Empty
+                Dim fType As FlagType = FlagType.Unknown
                 Try
-                    alFlags.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                    For Each lFile As String In Directory.GetFiles(fPath, "*.png")
+                        cFileName = Path.GetFileNameWithoutExtension(lFile)
+                        If cFileName.Contains("_") Then
+                            fType = GetFlagTypeFromString(cFileName.Substring(0, cFileName.IndexOf("_")))
+                            If Not fType = FlagType.Unknown Then
+                                Using fsImage As New FileStream(lFile, FileMode.Open, FileAccess.Read)
+                                    lFlags.Add(New Flag With {.Name = cFileName.Remove(0, cFileName.IndexOf("_") + 1), .Image = Image.FromStream(fsImage), .Path = lFile, .Type = fType})
+                                End Using
+                            End If
+                        End If
+                    Next
                 Catch
                 End Try
-                alFlags = alFlags.ConvertAll(Function(s) s.ToLower)
             End If
 
             Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
@@ -104,140 +111,80 @@ Public Class APIXML
         Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
-        If FlagsXML.Nodes.Count > 0 Then
-            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
+        If lFlags.Count > 0 Then
             Try
-                Dim atypeRef As String = String.Empty
-                Dim vresImage As String = String.Empty
-                Dim vsourceImage As String = String.Empty
-                Dim vtypeImage As String = String.Empty
-                Dim atypeImage As String = String.Empty
-                Dim achanImage As String = String.Empty
-                Dim sourceCheck As String = String.Empty
-
-                If FileUtils.Common.isVideoTS(fName) Then
-                    sourceCheck = "dvd"
-                ElseIf FileUtils.Common.isBDRip(fName) Then
-                    sourceCheck = "bluray"
+                Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
+                Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
+                If Not IsNothing(vresFlag) Then
+                    iReturn(0) = vresFlag.Image
                 Else
-                    sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower), Path.GetFileName(fName).ToLower)
-                End If
-
-                'video resolution
-                Dim xVResDefault = From xDef In FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
-                If xVResDefault.Count > 0 Then
-                    vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
-                End If
-
-                Dim strRes As String = NFO.GetResFromDimensions(tVideo).ToLower
-                If Not String.IsNullOrEmpty(strRes) Then
-                    Dim xVResFlag = From xVRes In FlagsXML...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
-                    If xVResFlag.Count > 0 Then
-                        vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
-                    End If
-                End If
-
-                'video source
-                Dim xVSourceDefault = From xDef In FlagsXML...<vsource> Select xDef.Element("default").Element("icon").Value
-                If xVSourceDefault.Count > 0 Then
-                    vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
-                End If
-
-                Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
-                If xVSourceFlag.Count > 0 Then
-                    vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
-                End If
-
-                'video type
-                Dim xVTypeDefault = From xDef In FlagsXML...<vtype> Select xDef.Element("default").Element("icon").Value
-                If xVTypeDefault.Count > 0 Then
-                    vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
-                End If
-
-                Dim vCodec As String = tVideo.Codec.ToLower
-                If Not String.IsNullOrEmpty(vCodec) Then
-                    Dim xVTypeFlag = From xVType In FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
-                    If xVTypeFlag.Count > 0 Then
-                        vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
-                    End If
-                End If
-
-                'audio type
-                Dim xATypeDefault = From xDef In FlagsXML...<atype> Select xDef.Element("default").Element("icon").Value
-                If xATypeDefault.Count > 0 Then
-                    atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
-                End If
-
-                Dim aCodec As String = tAudio.Codec.ToLower
-                If Not String.IsNullOrEmpty(aCodec) Then
-                    Dim xATypeFlag = From xAType In FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
-                    If xATypeFlag.Count > 0 Then
-                        atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
-                        If Not IsNothing(xATypeFlag(0).ref) Then
-                            atypeRef = xATypeFlag(0).ref.ToString
-                        End If
-                    End If
-                End If
-
-                'audio channels
-                Dim xAChanDefault = From xDef In FlagsXML...<achan> Select xDef.Element("default").Element("icon").Value
-                If xAChanDefault.Count > 0 Then
-                    achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
-                End If
-
-                If Not String.IsNullOrEmpty(tAudio.Channels) Then
-                    Dim xAChanFlag = From xAChan In FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) AndAlso Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
-                    If xAChanFlag.Count > 0 Then
-                        achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
-                    End If
-                End If
-
-                If Not String.IsNullOrEmpty(vresImage) AndAlso alFlags.Contains(vresImage.ToLower) Then
-                    Using fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
-                        iReturn(0) = Image.FromStream(fsImage)
-                    End Using
-                Else
-                    iReturn(0) = My.Resources.defaultscreen
-                End If
-
-                If Not String.IsNullOrEmpty(vsourceImage) AndAlso alFlags.Contains(vsourceImage.ToLower) Then
-                    Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
-                        iReturn(1) = Image.FromStream(fsImage)
-                    End Using
-                Else
-                    iReturn(1) = My.Resources.defaultscreen
-                End If
-
-                If Not String.IsNullOrEmpty(vtypeImage) AndAlso alFlags.Contains(vtypeImage.ToLower) Then
-                    Using fsImage As New FileStream(vtypeImage, FileMode.Open, FileAccess.Read)
-                        iReturn(2) = Image.FromStream(fsImage)
-                    End Using
-                Else
-                    iReturn(2) = My.Resources.defaultscreen
-                End If
-
-                If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
-                    Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
-                        If tAudio.HasPreferred Then
-                            iReturn(3) = ImageUtils.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.haslanguage, 4)
-                        Else
-                            iReturn(3) = Image.FromStream(fsImage)
-                        End If
-                    End Using
-                Else
-                    If tAudio.HasPreferred Then
-                        iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+                    vresFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoResolution)
+                    If Not IsNothing(vresFlag) Then
+                        iReturn(0) = vresFlag.Image
                     Else
-                        iReturn(3) = My.Resources.defaultsound
+                        iReturn(0) = My.Resources.defaultscreen
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(achanImage) AndAlso alFlags.Contains(achanImage.ToLower) Then
-                    Using fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
-                        iReturn(4) = Image.FromStream(fsImage)
-                    End Using
+                Dim vSource As String = GetFileSource(fName)
+                Dim vsourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vsource AndAlso f.Type = FlagType.VideoSource)
+                If Not IsNothing(vsourceFlag) Then
+                    iReturn(1) = vsourceFlag.Image
                 Else
-                    iReturn(4) = My.Resources.defaultsound
+                    vsourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoSource)
+                    If Not IsNothing(vsourceFlag) Then
+                        iReturn(1) = vsourceFlag.Image
+                    Else
+                        iReturn(1) = My.Resources.defaultscreen
+                    End If
+                End If
+
+                Dim vcodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = FlagType.VideoCodec)
+                If Not IsNothing(vcodecFlag) Then
+                    iReturn(2) = vcodecFlag.Image
+                Else
+                    vcodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoCodec)
+                    If Not IsNothing(vcodecFlag) Then
+                        iReturn(2) = vcodecFlag.Image
+                    Else
+                        iReturn(2) = My.Resources.defaultscreen
+                    End If
+                End If
+
+                Dim acodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = FlagType.AudioCodec)
+                If Not IsNothing(acodecFlag) Then
+                    If tAudio.HasPreferred Then
+                        iReturn(3) = ImageUtils.SetOverlay(acodecFlag.Image, 64, 44, My.Resources.haslanguage, 4)
+                    Else
+                        iReturn(3) = acodecFlag.Image
+                    End If
+                Else
+                    acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioCodec)
+                    If Not IsNothing(acodecFlag) Then
+                        If tAudio.HasPreferred Then
+                            iReturn(3) = ImageUtils.SetOverlay(acodecFlag.Image, 64, 44, My.Resources.haslanguage, 4)
+                        Else
+                            iReturn(3) = acodecFlag.Image
+                        End If
+                    Else
+                        If tAudio.HasPreferred Then
+                            iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+                        Else
+                            iReturn(3) = My.Resources.defaultsound
+                        End If
+                    End If
+                End If
+
+                Dim achanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = FlagType.AudioChan)
+                If Not IsNothing(achanFlag) Then
+                    iReturn(4) = achanFlag.Image
+                Else
+                    achanFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioChan)
+                    If Not IsNothing(achanFlag) Then
+                        iReturn(4) = achanFlag.Image
+                    Else
+                        iReturn(4) = My.Resources.defaultsound
+                    End If
                 End If
 
             Catch ex As Exception
@@ -263,17 +210,25 @@ Public Class APIXML
 
         Try
             If FileUtils.Common.isVideoTS(sPath) Then
-                sourceCheck = "dvd"
+                Return "dvd"
             ElseIf FileUtils.Common.isBDRip(sPath) Then
-                sourceCheck = "bluray"
+                Return "bluray"
             Else
                 sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+                Select Case True
+                    Case Regex.IsMatch(sourceCheck, "blu[-\s]?ray")
+                        Return "bluray"
+                    Case Regex.IsMatch(sourceCheck, "hd[-\s]?dvd")
+                        Return "hddvd"
+                    Case Regex.IsMatch(sourceCheck, "hd[-\s]?tv")
+                        Return "hdtv"
+                    Case Regex.IsMatch(sourceCheck, "(sd[-\s]?)?dvd")
+                        Return "dvd"
+                    Case Regex.IsMatch(sourceCheck, "sd[-\s]?tv")
+                        Return "sdtv"
+                End Select
             End If
 
-            Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
-            If xVSourceFlag.Count > 0 Then
-                Return xVSourceFlag(0).ToString
-            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -424,21 +379,6 @@ Public Class APIXML
         Return retRatings.ToArray
     End Function
 
-    Public Shared Function GetSourceList() As Object()
-        Dim retSources As New List(Of String)
-        Try
-
-            Dim xSource = From xSrc In FlagsXML...<vsource>...<name> Select xSrc.@searchstring.ToString.Replace("|", " | ")
-            If xSource.Count > 0 Then
-                retSources.AddRange(xSource.ToArray)
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return retSources.ToArray
-    End Function
-
     Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
         Dim imgStudio As Image = Nothing
 
@@ -517,6 +457,85 @@ Public Class APIXML
         Return sXML
     End Function
 
+    Public Shared Function GetFlagTypeFromString(ByVal sType As String) As FlagType
+        Select Case sType
+            Case "vcodec"
+                Return FlagType.VideoCodec
+            Case "vres"
+                Return FlagType.VideoResolution
+            Case "vsource"
+                Return FlagType.VideoSource
+            Case "acodec"
+                Return FlagType.AudioCodec
+            Case "achan"
+                Return FlagType.AudioChan
+            Case Else
+                Return FlagType.Unknown
+        End Select
+    End Function
+
     #End Region 'Methods
 
+    Public Enum FlagType
+        VideoCodec = 0
+        VideoResolution = 1
+        VideoSource = 3
+        AudioCodec = 4
+        AudioChan = 5
+        Unknown = 6
+    End Enum
+
+    Public Class Flag
+        Private _name As String
+        Private _image As Image
+        Private _path As String
+        Private _type As FlagType
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public Property Image() As Image
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Image)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property Path() As String
+            Get
+                Return Me._path
+            End Get
+            Set(ByVal value As String)
+                Me._path = value
+            End Set
+        End Property
+
+        Public Property Type() As FlagType
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As FlagType)
+                Me._type = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._name = String.Empty
+            Me._image = Nothing
+            Me._path = String.Empty
+            Me._type = FlagType.VideoCodec
+        End Sub
+    End Class
 End Class
