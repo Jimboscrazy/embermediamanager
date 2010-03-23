@@ -4241,7 +4241,7 @@ doCancel:
                         If .dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0 Then
                             .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                            .SetControlsEnabled(True)
+                            .SetControlsEnabled(True, True)
                         End If
 
                     End With
@@ -4292,7 +4292,7 @@ doCancel:
                         If .dgvTVShows.RowCount > 0 Then
                             .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                            .SetControlsEnabled(True)
+                            .SetControlsEnabled(True, True)
                         End If
                     End With
                 End If
