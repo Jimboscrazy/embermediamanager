@@ -92,15 +92,15 @@ Public Class ScrapeImages
                             Image.Clear()
                         Next
                     Else
-                        If Master.eSettings.UseTMDB Then
+                        If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                             tmpListTMDB.AddRange(TMDB.GetTMDBImages(IMDBID, "poster"))
                         End If
 
-                        If Master.eSettings.UseIMPA Then
+                        If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
                             tmpListTMDB.AddRange(IMPA.GetIMPAPosters(IMDBID))
                         End If
 
-                        If Master.eSettings.UseMPDB Then
+                        If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
                             tmpListTMDB.AddRange(MPDB.GetMPDBPosters(IMDBID))
                         End If
 
@@ -137,7 +137,7 @@ Public Class ScrapeImages
                         End If
                     End If
                 Else
-                    If Master.eSettings.UseTMDB Then
+                    If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                         'download all TMBD images
                         tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "poster")
 
@@ -180,7 +180,7 @@ Public Class ScrapeImages
                         End If
                     End If
 
-                    If Master.eSettings.UseIMPA Then
+                    If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
                         If IsNothing(Image.Image) Then
                             'no poster of the proper size from TMDB found... try IMPA
 
@@ -228,7 +228,7 @@ Public Class ScrapeImages
                         End If
                     End If
 
-                    If Master.eSettings.UseMPDB Then
+                    If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
                         If IsNothing(Image.Image) Then
                             'no poster of the proper size from TMDB or IMPA found... try MPDB
 
@@ -278,7 +278,7 @@ Public Class ScrapeImages
 
                     If IsNothing(Image.Image) AndAlso Not doAsk Then
                         'STILL no image found, just get the first available image, starting with the largest
-                        If Master.eSettings.UseTMDB Then
+                        If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                             'check TMDB first
                             If tmpListTMDB.Count > 0 Then
                                 Dim x = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "original"
@@ -310,7 +310,7 @@ Public Class ScrapeImages
 
                         Image.Clear()
 
-                        If Master.eSettings.UseIMPA Then
+                        If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
                             If tmpListIMPA.Count > 0 Then
                                 If Not IsNothing(tmpIMPAX) Then
                                     Image.Image = New Bitmap(tmpIMPAX)
@@ -337,7 +337,7 @@ Public Class ScrapeImages
 
                         Image.Clear()
 
-                        If Master.eSettings.UseMPDB Then
+                        If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
                             If tmpListMPDB.Count > 0 Then
                                 If Not IsNothing(tmpMPDBX) Then
                                     Image.Image = New Bitmap(tmpMPDBX)
@@ -370,7 +370,7 @@ Public Class ScrapeImages
 
             Else 'fanart
 
-                If Master.eSettings.UseTMDB Then
+                If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
 
                     Dim ETHashes As New List(Of String)
                     If Master.eSettings.AutoET AndAlso doETs Then
@@ -659,7 +659,8 @@ Public Class ScrapeImages
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
         Dim MPDB As New MPDB.Scraper
-        If Master.eSettings.UseTMDB Then
+
+        If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
 
             Dim tmpListTMDB As New List(Of MediaContainers.Image)
             Dim ETHashes As New List(Of String)
@@ -814,7 +815,7 @@ Public Class ScrapeImages
                 Case Enums.ImageType.Fanart
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
                     (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
-                    Master.eSettings.UseTMDB Then
+                    AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                         Return True
                     Else
                         Return False
@@ -823,7 +824,7 @@ Public Class ScrapeImages
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
                      Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterJPG OrElse Master.eSettings.FolderJPG) AndAlso _
-                     (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then
+                     (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
                         Return True
                     Else
                         Return False

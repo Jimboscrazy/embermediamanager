@@ -637,7 +637,7 @@ Public Class dlgImgSelect
             End If
 
             If NoneFound Then
-                If Master.eSettings.UseTMDB Then
+                If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                     If Master.eSettings.AutoET AndAlso Not Directory.Exists(CachePath) Then
                         Directory.CreateDirectory(CachePath)
                     End If
@@ -708,7 +708,7 @@ Public Class dlgImgSelect
             End If
 
             If NoneFound Then
-                If Master.eSettings.UseTMDB Then
+                If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                     Me.lblDL1.Text = Master.eLang.GetString(315, "Retrieving data from TheMovieDB.com...")
                     Me.lblDL1Status.Text = String.Empty
                     Me.pbDL1.Maximum = 3
@@ -722,7 +722,7 @@ Public Class dlgImgSelect
                     Me.lblDL1.Text = Master.eLang.GetString(316, "TheMovieDB.com is not enabled")
                 End If
 
-                If Master.eSettings.UseIMPA Then
+                If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
                     Me.lblDL2.Text = Master.eLang.GetString(317, "Retrieving data from IMPAwards.com...")
                     Me.lblDL2Status.Text = String.Empty
                     Me.pbDL2.Maximum = 3
@@ -736,7 +736,7 @@ Public Class dlgImgSelect
                     Me.lblDL2.Text = Master.eLang.GetString(318, "IMPAwards.com is not enabled")
                 End If
 
-                If Master.eSettings.UseMPDB Then
+                If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
                     Me.lblDL3.Text = Master.eLang.GetString(319, "Retrieving data from MoviePosterDB.com...")
                     Me.lblDL3Status.Text = String.Empty
                     Me.pbDL3.Maximum = 3

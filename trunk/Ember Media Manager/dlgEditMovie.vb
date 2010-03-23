@@ -735,11 +735,12 @@ Public Class dlgEditMovie
                         .lblPosterSize.Visible = True
                     End If
 
-                    If Not Master.eSettings.UseTMDB Then
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster) Then
+                        .btnSetPosterScrape.Enabled = False
+                    End If
+
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart) Then
                         .btnSetFanartScrape.Enabled = False
-                        If Not Master.eSettings.UseIMPA AndAlso Not Master.eSettings.UseMPDB Then
-                            .btnSetPosterScrape.Enabled = False
-                        End If
                     End If
 
                 End If

@@ -321,10 +321,7 @@ Public Class Settings
     Private _useetasfa As Boolean
     Private _useimgcache As Boolean
     Private _useimgcacheupdater As Boolean
-    Private _useIMPA As Boolean
     Private _usemiduration As Boolean
-    Private _useMPDB As Boolean
-    Private _useTMDB As Boolean
     Private _validexts As List(Of String)
     Private _version As String
     Private _videotsparent As Boolean
@@ -3012,39 +3009,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property UseIMPA() As Boolean
-        Get
-            Return Me._useIMPA
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useIMPA = value
-        End Set
-    End Property
-
     Public Property UseMIDuration() As Boolean
         Get
             Return Me._usemiduration
         End Get
         Set(ByVal value As Boolean)
             Me._usemiduration = value
-        End Set
-    End Property
-
-    Public Property UseMPDB() As Boolean
-        Get
-            Return Me._useMPDB
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useMPDB = value
-        End Set
-    End Property
-
-    Public Property UseTMDB() As Boolean
-        Get
-            Return Me._useTMDB
-        End Get
-        Set(ByVal value As Boolean)
-            Me._useTMDB = value
         End Set
     End Property
 
@@ -3155,9 +3125,6 @@ Public Class Settings
         Me._expertcleaner = False
         Me._cleanwhitelistvideo = False
         Me._cleanwhitelistexts = New List(Of String)
-        Me._useTMDB = True
-        Me._useIMPA = False
-        Me._useMPDB = False
         Me._postersize = Enums.PosterSize.Xlrg
         Me._fanartsize = Enums.FanartSize.Lrg
         Me._showbanner = True

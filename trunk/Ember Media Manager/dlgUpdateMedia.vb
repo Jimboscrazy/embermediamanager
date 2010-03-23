@@ -48,8 +48,8 @@ Public Class dlgUpdateMedia
 
         If chkAllMod.Checked Then
             chkNFOMod.Checked = chkAllMod.Checked
-            chkPosterMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.UseTMDB OrElse Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB)
-            chkFanartMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.UseTMDB
+            chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
+            chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
             chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
@@ -58,8 +58,8 @@ Public Class dlgUpdateMedia
         End If
 
         chkNFOMod.Enabled = Not chkAllMod.Checked
-        chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.UseTMDB OrElse Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB)
-        chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UseTMDB
+        chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
+        chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
         chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         chkExtraMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
         chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
