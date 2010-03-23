@@ -137,7 +137,7 @@ Public Class Trailers
         Me._ImdbID = ImdbID
         Dim tCount As Integer = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerSiteCount", "0"))
         For iTrailer = 0 To tCount - 1
-            If BreakAfterFound AndAlso tCount > 0 Then
+            If BreakAfterFound AndAlso _TrailerList.Count > 0 Then
                 Exit For
             End If
             Try
