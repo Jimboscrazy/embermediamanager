@@ -70,6 +70,7 @@ Public Class frmMainSetup
     Private ShowCredits As Boolean = False
     Dim SlowDown As Integer = 0
     Private w As New dlgCommands
+    Private RemoteSiteFolder As String = "Updates"
 
     Dim ProxyURI As String = ""
     Dim ProxyPort As Integer = 0
@@ -275,9 +276,9 @@ Public Class frmMainSetup
 
     Public Function GetURLFile(ByVal url As String, ByVal localfile As String)
         Try
-            LogWrite(String.Format("--- GetURL: URL=updates/{0}  File={1}", url, localfile))
+            LogWrite(String.Format("--- GetURL: URL={2}/{0}  File={1}", url, localfile, RemoteSiteFolder))
             If Not DEBUG Then
-                Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
+                Return GetURLDataBin(String.Concat(String.Format("http://www.embermm.com/{0}/", RemoteSiteFolder), url), localfile)
             Else
                 Return True
                 'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
@@ -1059,9 +1060,11 @@ Public Class frmMainSetup
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-
             SetupMyControls()
             InitCredits()
+            If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
+                RemoteSiteFolder = "UpdatesBeta"
+            End If
             'Me.lblStatus.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint Or ControlStyles.SupportsTransparentBackColor, True)
             Me.lblStatus.BackColor = System.Drawing.Color.Transparent
 
@@ -1159,7 +1162,7 @@ Public Class frmMainSetup
                         p = Process.GetProcessesByName("Ember Media Manager")
                         timeOut += 1
                         If timeOut > 30 Then ' ~15 seconds
-
+                            ' TODO Msg User and kill Ember
                         End If
                     End While
                 Catch ex As Exception
