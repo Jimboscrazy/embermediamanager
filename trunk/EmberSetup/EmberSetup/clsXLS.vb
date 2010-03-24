@@ -166,3 +166,68 @@ Public Class Versions
     #End Region 'Methods
 
 End Class
+
+Public Class Langs
+    Private Shared htStrings As New Hashtable
+
+    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
+        Try
+
+            If IsNothing(htStrings) Then
+                Return strDefault
+            End If
+            If htStrings.ContainsKey(ID) Then
+                Return htStrings.Item(ID).ToString
+            Else
+                Return strDefault
+            End If
+        Catch ex As Exception
+        End Try
+
+    End Function
+    Public Function LangExist(ByVal Language As String) As String
+        Dim lPath As String = String.Empty
+        Try
+            lPath = String.Concat(frmMainSetup.AppPath, "Langs", Path.DirectorySeparatorChar, "EmberSetup.", Language, ".xml")
+            If Not File.Exists(lPath) Then
+                lPath = String.Concat(frmMainSetup.AppPath, "EmberSetup.", Language, ".xml")
+                If Not File.Exists(lPath) Then
+                    lPath = String.Empty
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+
+        Return lPath
+    End Function
+
+    Public Sub LoadLanguage(ByVal Language As String)
+        Dim lPath As String = String.Empty
+        Dim lhPath As String = String.Empty
+        Try
+            If Not String.IsNullOrEmpty(Language) Then
+
+                htStrings = New Hashtable
+                htStrings.Clear()
+
+                lPath = LangExist(Language)
+                If Not String.IsNullOrEmpty(lPath) AndAlso File.Exists(lPath) Then
+                    Dim LangXML As XDocument = XDocument.Load(lPath)
+                    Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
+                    If xLanguage.Count > 0 Then
+                        For i As Integer = 0 To xLanguage.Count - 1
+                            htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
+                        Next
+                    Else
+                    End If
+                Else
+                    'MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+                End If
+            End If
+
+        Catch ex As Exception
+            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+End Class

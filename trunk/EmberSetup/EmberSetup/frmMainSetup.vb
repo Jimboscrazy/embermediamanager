@@ -48,6 +48,7 @@ Public Class frmMainSetup
     Public Force As Boolean = False
     Public mePainting As New Object
     Public NoArgs As Boolean = True
+    Public MyLang As New Langs
 
     Friend  WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
     Friend  WithEvents bwFF As New System.ComponentModel.BackgroundWorker
@@ -1058,6 +1059,7 @@ Public Class frmMainSetup
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
+
             SetupMyControls()
             InitCredits()
             'Me.lblStatus.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint Or ControlStyles.SupportsTransparentBackColor, True)
@@ -1091,6 +1093,9 @@ Public Class frmMainSetup
                         Force = True
                 End Select
             Next
+
+            MyLang.LoadLanguage("English_(en_US)")
+
             If Final Then
                 LogoStop = False
                 '"Wait Calling instace to finish
@@ -1144,6 +1149,20 @@ Public Class frmMainSetup
                 Catch ex As Exception
                     LogWrite(String.Format("--- Error: {0}", ex.Message))
                     LogWrite(ex.StackTrace)
+                End Try
+                Try
+                    Dim timeOut As Integer = 0
+                    p = Process.GetProcessesByName("Ember Media Manager")
+                    While p.Count > 0
+                        System.Threading.Thread.Sleep(500)
+                        Application.DoEvents()
+                        p = Process.GetProcessesByName("Ember Media Manager")
+                        timeOut += 1
+                        If timeOut > 30 Then ' ~15 seconds
+
+                        End If
+                    End While
+                Catch ex As Exception
                 End Try
                 Try
                     File.Delete(Path.Combine(AppPath, "install.log"))
