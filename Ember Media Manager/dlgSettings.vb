@@ -2442,8 +2442,8 @@ Public Class dlgSettings
             Me.LoadThemes()
             Me.LoadRatingRegions()
             Me.FillSettings()
-            Me.lvMovies.ListViewItemSorter = New ListViewItemComparer(2)
-            Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(2)
+            Me.lvMovies.ListViewItemSorter = New ListViewItemComparer(1)
+            Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
             Me.sResult.NeedsUpdate = False
             Me.sResult.NeedsRefresh = False
             Me.sResult.DidCancel = False
