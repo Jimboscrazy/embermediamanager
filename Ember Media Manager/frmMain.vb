@@ -7919,6 +7919,7 @@ doCancel:
                 .cmnuDeleteTVEp.Text = Master.eLang.GetString(773, "Delete Episode")
                 .DonateToolStripMenuItem.Text = Master.eLang.GetString(792, "Donate")
                 .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
+                .CheckUpdatesToolStripMenuItem.Text = Master.eLang.GetString(850, "&Check For Updates...")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -8467,7 +8468,23 @@ doCancel:
             End Using
         End If
     End Sub
+    Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
+        tmrAppExit.Enabled = False
+        Me.Close()
+    End Sub
 
+    Private Sub CheckUpdatesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckUpdatesToolStripMenuItem.Click
+        If Functions.CheckNeedUpdate() Then
+            Using dNewVer As New dlgNewVersion
+                If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
+                    tmrAppExit.Enabled = True
+                    CloseApp = True
+                End If
+            End Using
+        Else
+            MsgBox(Master.eLang.GetString(851, "No Updates at this time"), MsgBoxStyle.OkOnly, "Updates")
+        End If
+    End Sub
     #End Region 'Methods
 
     #Region "Nested Types"
@@ -8511,9 +8528,5 @@ doCancel:
 
     #End Region 'Nested Types
 
-    Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
-        tmrAppExit.Enabled = False
-        Me.Close()
-    End Sub
 
 End Class

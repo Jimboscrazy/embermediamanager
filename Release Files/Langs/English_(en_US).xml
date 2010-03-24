@@ -849,4 +849,6 @@
   <string id="847">Move</string>
   <string id="848">Moving specified file to trailer...</string>
   <string id="849">Copying specified file to trailer...</string>
+  <string id="850">&Check For Updates...</string>
+  <string id="851">No Updates at this time</string>
 </strings>
