@@ -2442,7 +2442,8 @@ Public Class dlgSettings
             Me.LoadThemes()
             Me.LoadRatingRegions()
             Me.FillSettings()
-
+            Me.lvMovies.ListViewItemSorter = New ListViewItemComparer(2)
+            Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(2)
             Me.sResult.NeedsUpdate = False
             Me.sResult.NeedsRefresh = False
             Me.sResult.DidCancel = False
@@ -2720,6 +2721,10 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub lvMovies_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvMovies.ColumnClick
+        Me.lvMovies.ListViewItemSorter = New ListViewItemComparer(e.Column)
+    End Sub
+
     Private Sub lvMovies_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovies.DoubleClick
         If lvMovies.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgMovieSource
@@ -2746,6 +2751,10 @@ Public Class dlgSettings
 
     Private Sub lvShowRegex_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvShowRegex.SelectedIndexChanged
         If Not String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then Me.ClearRegex()
+    End Sub
+
+    Private Sub lvTVSources_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvTVSources.ColumnClick
+        Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
     End Sub
 
     Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
@@ -4379,6 +4388,25 @@ Public Class dlgSettings
             Me.btnAddShowRegex.Enabled = False
         End If
     End Sub
+
+    Class ListViewItemComparer
+        Implements IComparer
+
+        Private col As Integer
+
+        Public Sub New()
+            col = 0
+        End Sub
+
+        Public Sub New(ByVal column As Integer)
+            col = column
+        End Sub
+
+        Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+           Implements IComparer.Compare
+            Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
+        End Function
+    End Class
 
 #End Region 'Methods
 
