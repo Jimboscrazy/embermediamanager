@@ -71,7 +71,7 @@ Public Class dlgNewVersion
             File.Delete(Path.Combine(Functions.AppPath, "EmberSetup.exe"))
         End If
         Dim lhttp As New HTTP
-        lhttp.DownloadFile("http://www.embermm.com/Updates/EmberSetup.exe", Path.Combine(Functions.AppPath, "EmberSetup.exe"), False, "other")
+        lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/EmberSetup.exe", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates")), Path.Combine(Functions.AppPath, "EmberSetup.exe"), False, "other")
     End Sub
 
     Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

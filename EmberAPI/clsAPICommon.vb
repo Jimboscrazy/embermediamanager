@@ -440,6 +440,13 @@ Public Class Functions
         Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
     End Function
 
+    Public Shared Function IsBetaEnabled() As Boolean
+        If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
+            Return True
+        End If
+        Return False
+    End Function
+
     ''' <summary>
     ''' Check for the lastest version of Ember
     ''' </summary>
@@ -448,7 +455,7 @@ Public Class Functions
         Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
         Dim platform As String = If(Master.is64Bit, "x64", "x86")
-        Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/versions.xml")
+        Dim updateXML As String = sHTTP.DownloadData(String.Format("http://www.embermm.com/{0}/versions.xml", If(IsBetaEnabled(), "UpdatesBeta", "Updates")))
         sHTTP = Nothing
         If updateXML.Length > 0 Then
             For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
@@ -472,36 +479,6 @@ Public Class Functions
             Next
             Return needUpdate
         End If
-    End Function
-
-    Public Shared Function CheckUpdate() As Integer
-        Try
-            Dim sHTTP As New HTTP
-            Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Update.xml")
-            sHTTP = Nothing
-
-            If updateXML.Length > 0 Then
-                Dim xmlUpdate As XDocument
-                Try
-                    xmlUpdate = XDocument.Parse(updateXML)
-                Catch
-                    Return 0
-                End Try
-
-                Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
-                If xUdpate.Count > 0 Then
-                    Return Convert.ToInt32(xUdpate(0))
-                Else
-                    Return 0
-                End If
-            Else
-                Return 0
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return 0
-        End Try
     End Function
 
     Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
@@ -582,7 +559,7 @@ Public Class Functions
     Public Shared Function GetChangelog() As String
         Try
             Dim sHTTP As New HTTP
-            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/WhatsNew.txt")
+            Dim strChangelog As String = sHTTP.DownloadData(String.Format("http://www.embermm.com/{0}/WhatsNew.txt", If(IsBetaEnabled(), "UpdatesBeta", "Updates")))
             sHTTP = Nothing
 
             If strChangelog.Length > 0 Then

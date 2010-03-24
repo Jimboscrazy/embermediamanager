@@ -46,9 +46,9 @@ Partial Class Uploading
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(54, 35)
+        Me.Label2.Location = New System.Drawing.Point(0, 35)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(318, 18)
+        Me.Label2.Size = New System.Drawing.Size(419, 18)
         Me.Label2.TabIndex = 3
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '

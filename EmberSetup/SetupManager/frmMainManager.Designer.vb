@@ -29,6 +29,7 @@ Partial Class frmMainManager
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Label14 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
@@ -95,7 +96,7 @@ Partial Class frmMainManager
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
-        Me.Label14 = New System.Windows.Forms.Label
+        Me.Button2 = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -174,6 +175,15 @@ Partial Class frmMainManager
         Me.TabPage1.Text = "Files"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(699, 372)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(45, 13)
+        Me.Label14.TabIndex = 12
+        Me.Label14.Text = "Label14"
+        '
         'Label3
         '
         Me.Label3.AutoSize = True
@@ -195,6 +205,7 @@ Partial Class frmMainManager
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button2)
         Me.GroupBox1.Controls.Add(Me.btnEditNews)
         Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.Label11)
@@ -216,7 +227,7 @@ Partial Class frmMainManager
         '
         'btnEditNews
         '
-        Me.btnEditNews.Location = New System.Drawing.Point(346, 17)
+        Me.btnEditNews.Location = New System.Drawing.Point(340, 17)
         Me.btnEditNews.Name = "btnEditNews"
         Me.btnEditNews.Size = New System.Drawing.Size(115, 23)
         Me.btnEditNews.TabIndex = 15
@@ -301,16 +312,16 @@ Partial Class frmMainManager
         '
         'btnUpload
         '
-        Me.btnUpload.Location = New System.Drawing.Point(472, 17)
+        Me.btnUpload.Location = New System.Drawing.Point(458, 17)
         Me.btnUpload.Name = "btnUpload"
-        Me.btnUpload.Size = New System.Drawing.Size(115, 23)
+        Me.btnUpload.Size = New System.Drawing.Size(129, 23)
         Me.btnUpload.TabIndex = 7
         Me.btnUpload.Text = "4. Upload Files"
         Me.btnUpload.UseVisualStyleBackColor = True
         '
         'btnPack
         '
-        Me.btnPack.Location = New System.Drawing.Point(225, 17)
+        Me.btnPack.Location = New System.Drawing.Point(220, 17)
         Me.btnPack.Name = "btnPack"
         Me.btnPack.Size = New System.Drawing.Size(115, 23)
         Me.btnPack.TabIndex = 6
@@ -750,14 +761,14 @@ Partial Class frmMainManager
         Me.btnUpdateFrom.Text = "Update from Site"
         Me.btnUpdateFrom.UseVisualStyleBackColor = True
         '
-        'Label14
+        'Button2
         '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(699, 372)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(45, 13)
-        Me.Label14.TabIndex = 12
-        Me.Label14.Text = "Label14"
+        Me.Button2.Location = New System.Drawing.Point(458, 43)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(129, 23)
+        Me.Button2.TabIndex = 16
+        Me.Button2.Text = "4. Upload Files (Beta)"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'frmMainManager
         '
@@ -867,5 +878,6 @@ Partial Class frmMainManager
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents cboStats As System.Windows.Forms.ComboBox
     Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 
 End Class

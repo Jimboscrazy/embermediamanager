@@ -1412,4 +1412,80 @@ Public Class frmMainManager
 
 #End Region 'Nested Types
 
+    Private Sub Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        ' Dim state = New FtpState
+        Dim ftp As New FTPClass
+        Dim dlg As New Uploading
+        Try
+            dlg.TopMost = True
+            dlg.Show()
+            dlg.Label1.Text = "Connecting to Server"
+            Application.DoEvents()
+            ftp.setRemoteHost(TextBox3.Text)
+            ftp.setRemoteUser(TextBox1.Text)
+            ftp.setRemotePass(TextBox2.Text)
+            ftp.setRemotePath("/public_html/UpdatesBeta")
+            ftp.login()
+            Dim dirRoot As String()
+            Dim dirFiles As List(Of String)
+            'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
+            'ftp.cmdPasv2Port()
+            Application.DoEvents()
+
+            dirRoot = ftp.getFileList("")
+            If Not dirRoot.Contains("Files") Then
+                ftp.mkdir("Files")
+            End If
+            ftp.chdir("Files")
+            dirFiles = ftp.getFileList("").ToList
+            dirFiles.Remove(".")
+            dirFiles.Remove("..")
+            Dim inDisk As Integer = Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files"))).Count
+            Dim done As Integer = 0
+            Dim skiped As Integer = 0
+
+            For Each s In Directory.GetFiles(Path.Combine(AppPath, String.Concat("Site", Path.DirectorySeparatorChar, "Files")))
+                Try
+                    dlg.Label1.Text = String.Format(" File {0} of {1} - Uploaded {2} , Skiped {3}", done + skiped, inDisk, done, skiped)
+                    dlg.Refresh()
+                    Application.DoEvents()
+                    If Not dirFiles.Contains(Path.GetFileName(s)) Then
+                        dirFiles.Remove(Path.GetFileName(s))
+                        dlg.Label2.Text = String.Concat("Uploading: ", Path.GetFileName(s))
+                        dlg.Refresh()
+                        Application.DoEvents()
+                        ftp.upload(s)
+                        ftp.chmod("644", Path.GetFileName(s))
+                        done += 1
+                    Else
+                        dirFiles.Remove(Path.GetFileName(s))
+                        skiped += 1
+                    End If
+                    dlg.Label2.Text = ""
+                Catch ex As Exception
+                    File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
+                End Try
+            Next
+            inDisk = dirFiles.Count
+            done = 0
+            For Each s As String In dirFiles.Where(Function(i) Not String.IsNullOrEmpty(i))
+                done += 1
+                dlg.Label1.Text = String.Format(" Removing obsolete files {0} of {1}", done, inDisk)
+                Application.DoEvents()
+                ftp.deleteRemoteFile(s)
+            Next
+            dlg.Label1.Text = "Uploading Configuration"
+            Application.DoEvents()
+            ftp.chdir("..")
+            For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
+                ftp.upload(s)
+                ftp.chmod("644", Path.GetFileName(s))
+            Next
+            ftp.close()
+        Catch ex As Exception
+            File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
+        End Try
+        dlg.Close()
+
+    End Sub
 End Class
