@@ -5100,6 +5100,7 @@ doCancel:
 
         If Args.Count > 1 Then
             isCL = True
+            fLoading.pbLoading.Maximum = 10
         End If
         fLoading.Show(Me)
         Application.DoEvents()
@@ -5288,6 +5289,8 @@ doCancel:
                     Me.cmnuTrayIcon.Enabled = True
                     If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
                         Try
+                            fLoading.pbLoading.Style = ProgressBarStyle.Marquee
+                            fLoading.SetStage("Loading Media...")
                             LoadMedia(New Structures.Scans With {.Movies = True})
                             While Not Me.LoadingDone
                                 Application.DoEvents()
@@ -7041,6 +7044,9 @@ doCancel:
             Me.FillList(0)
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
+        Else
+            Me.FillList(0)
+            LoadingDone = True
         End If
     End Sub
 
