@@ -172,7 +172,6 @@ Public Class Langs
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Try
-
             If IsNothing(htStrings) Then
                 Return strDefault
             End If
@@ -183,7 +182,7 @@ Public Class Langs
             End If
         Catch ex As Exception
         End Try
-
+        Return strDefault
     End Function
     Public Function LangExist(ByVal Language As String) As String
         Dim lPath As String = String.Empty
