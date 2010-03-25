@@ -51,7 +51,6 @@ Public Class Scanner
 
         For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes
             Try
-
                 For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Directory.GetParent(sPath).Name, Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
                     Try
                         cSeason = New Seasons
@@ -62,10 +61,30 @@ Public Class Scanner
                             ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
                                 cSeason.Season = 0
                             Else
-                                cSeason.Season = -1
+                                For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
+                                    For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
+                                        If IsNumeric(sfMatch.Groups("season").Value) Then
+                                            cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
+                                        ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                                            cSeason.Season = 0
+                                        Else
+                                            cSeason.Season = -1
+                                        End If
+                                    Next
+                                Next
                             End If
                         Else
-                            cSeason.Season = -1
+                            For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
+                                For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
+                                    If IsNumeric(sfMatch.Groups("season").Value) Then
+                                        cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
+                                    ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                                        cSeason.Season = 0
+                                    Else
+                                        cSeason.Season = -1
+                                    End If
+                                Next
+                            Next
                         End If
 
                         Select Case rShow.EpisodeRetrieve
