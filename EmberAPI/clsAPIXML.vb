@@ -319,7 +319,7 @@ Public Class APIXML
 
             Try
 
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>.Descendants.Count > 0 Then
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>.Descendants.Count > 0 Then
                     Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
