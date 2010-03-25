@@ -8,6 +8,12 @@
     ' StartupNextInstance: Raised when launching a single-instance application and the application is already active.
     ' NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.
     Friend Partial Class MyApplication
+
+        Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
+            MsgBox(e.Exception.Message, MsgBoxStyle.OkOnly, "Ember Setup")
+            frmMainSetup.LogWrite(String.Format("--- Error: {0}", e.Exception.Message))
+            frmMainSetup.LogWrite(e.Exception.StackTrace)
+        End Sub
     End Class
 
 End Namespace
