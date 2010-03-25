@@ -195,18 +195,18 @@ Public Class dlgExportMovies
                         tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                         tRes = NFO.GetResFromDimensions(tVid)
                         _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(11, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(11, "Unknown"), tVid.Codec)).ToUpper
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                         tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(11, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(11, "Unknown"), tAud.Channels)).ToUpper
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
                     End If
                 End If
 
                 'now check if we need to include this movie
                 If bSearch Then
-                    If strIn = Master.eLang.GetString(9, "Source Folder") Then
+                    If strIn = Master.eLang.GetString(1, "Source Folder") Then
                         Dim found As Boolean = False
                         For Each u As String In strFilter.Split(Convert.ToChar(";"))
                             If _curMovie.Source = u Then
@@ -219,8 +219,8 @@ Public Class dlgExportMovies
                     Else
                         If (strIn = Master.eLang.GetString(12, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
                            (strIn = Master.eLang.GetString(13, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
-                           (strIn = Master.eLang.GetString(14, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
-                           (strIn = Master.eLang.GetString(15, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) Then
+                           (strIn = Master.eLang.GetString(21, "Title", True) AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                           (strIn = Master.eLang.GetString(278, "Year", True) AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) Then
                             'included - build the output
                         Else
                             'filtered out - exclude this one
@@ -273,7 +273,7 @@ Public Class dlgExportMovies
             If Not Me.isCL Then
                 Dim outFile As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
                 DontSaveExtra = False
-                Me.SaveAll(If(doNavigate, Master.eLang.GetString(16, "Preparing preview. Please wait..."), String.Empty), Path.GetDirectoryName(htmlPath), outFile)
+                Me.SaveAll(If(doNavigate, Master.eLang.GetString(4, "Preparing preview. Please wait..."), String.Empty), Path.GetDirectoryName(htmlPath), outFile)
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
@@ -289,7 +289,7 @@ Public Class dlgExportMovies
             lstSources.Visible = False
             btnSource.ImageIndex = 0
             Dim sFilter As String = String.Empty
-            If cbSearch.Text = Master.eLang.GetString(9, "Source Folder") Then
+            If cbSearch.Text = Master.eLang.GetString(5, "Source Folder") Then
                 For Each s In lstSources.CheckedItems
                     sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
                 Next
@@ -362,7 +362,7 @@ Public Class dlgExportMovies
                 End If
                 LoadHTML()
             Else
-                wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
+                wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled", True), "</h1></center>")
             End If
             Me.pnlCancel.Visible = False
         End If
@@ -421,7 +421,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If ((cbSearch.Text = Master.eLang.GetString(9, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(5, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
@@ -429,12 +429,12 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
-        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(5, "Source Folder") AndAlso lstSources.CheckedItems.Count > 0) OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
         End If
-        If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+        If cbSearch.Text = Master.eLang.GetString(5, "Source Folder") Then
             'cbFilterSource.Visible = True
             btnSource.Visible = True
             txtSearch.ReadOnly = True
@@ -449,7 +449,7 @@ Public Class dlgExportMovies
         base_template = cbTemplate.Text
         DontSaveExtra = False
         Dim sFilter As String = String.Empty
-        If cbSearch.Text = Master.eLang.GetString(9, "Source Folder") Then
+        If cbSearch.Text = Master.eLang.GetString(5, "Source Folder") Then
             For Each s As String In lstSources.CheckedItems
                 sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
             Next
@@ -645,7 +645,7 @@ Public Class dlgExportMovies
     End Function
 
     Private Sub LoadHTML()
-        Warning(True, Master.eLang.GetString(10, "Loading. Please wait..."))
+        Warning(True, Master.eLang.GetString(6, "Loading. Please wait..."))
         Dim tmphtml As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
         wbMovieList.Navigate(tmphtml)
     End Sub
@@ -738,7 +738,7 @@ Public Class dlgExportMovies
             If Not IsNothing(myStream) Then
                 DontSaveExtra = False 'Force Full Save
                 Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
-                Me.SaveAll(Master.eLang.GetString(589, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
+                Me.SaveAll(Master.eLang.GetString(7, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
             End If
         End If
     End Sub
@@ -747,7 +747,7 @@ Public Class dlgExportMovies
         pnlSearch.Enabled = False
         use_filter = True
         Dim sFilter As String = String.Empty
-        If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+        If cbSearch.Text = Master.eLang.GetString(5, "Source Folder") Then
             For Each s As String In lstSources.CheckedItems
                 sFilter = String.Concat(sFilter, If(sFilter = String.Empty, String.Empty, ";"), s.ToString)
             Next
@@ -758,19 +758,19 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(1, "Export Movies")
-        Me.Save_Button.Text = Master.eLang.GetString(272, "Save", True)
+        Me.Text = Master.eLang.GetString(8, "Export Movies")
+        Me.Save_Button.Text = Master.eLang.GetString(273, "Save", True)
         Me.Close_Button.Text = Master.eLang.GetString(19, "Close", True)
-        Me.Reset_Button.Text = Master.eLang.GetString(2, "Reset")
-        Me.Label1.Text = Master.eLang.GetString(3, "Filter")
-        Me.Search_Button.Text = Master.eLang.GetString(4, "Apply")
-        Me.lblIn.Text = Master.eLang.GetString(5, "in")
-        Me.lblCompiling.Text = Master.eLang.GetString(6, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(7, "Canceling Compilation...")
+        Me.Reset_Button.Text = Master.eLang.GetString(9, "Reset")
+        Me.Label1.Text = Master.eLang.GetString(10, "Filter")
+        Me.Search_Button.Text = Master.eLang.GetString(176, "Apply", True)
+        Me.lblIn.Text = Master.eLang.GetString(11, "in")
+        Me.lblCompiling.Text = Master.eLang.GetString(12, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(13, "Canceling Compilation...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
-        Me.Label2.Text = Master.eLang.GetString(8, "Template")
+        Me.Label2.Text = Master.eLang.GetString(14, "Template")
 
-        Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag"), Master.eLang.GetString(353, "Source Folder")})
+        Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title", True), Master.eLang.GetString(278, "Year", True), Master.eLang.GetString(2, "Video Flag"), Master.eLang.GetString(3, "Audio Flag"), Master.eLang.GetString(1, "Source Folder")})
         lstSources.Items.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT * FROM Sources;")

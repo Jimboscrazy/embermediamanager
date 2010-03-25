@@ -227,7 +227,7 @@ Public Class Scraper
                         Return dChangeEp.ShowDialog(tEpisodes)
                     End Using
                 Else
-                    MsgBox(Master.eLang.GetString(778, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(779, "No Known Episodes"))
+                    MsgBox(Master.eLang.GetString(79, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(80, "No Known Episodes"))
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -455,7 +455,7 @@ Public Class Scraper
                                             End If
                                         End Using
                                     Else
-                                        MsgBox(Master.eLang.GetString(819, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(820, "No Poster Available"))
+                                        MsgBox(Master.eLang.GetString(81, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(31, "No Posters Found"))
                                         Return Nothing
                                     End If
                                 Else
@@ -490,7 +490,7 @@ Public Class Scraper
                                     End If
                                 End Using
                             Else
-                                MsgBox(Master.eLang.GetString(819, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(820, "No Poster Available"))
+                                MsgBox(Master.eLang.GetString(81, "There is no poster available for this episode."), MsgBoxStyle.OkOnly, Master.eLang.GetString(31, "No Posters Found"))
                                 Return Nothing
                             End If
                         Else
@@ -776,8 +776,8 @@ Public Class Scraper
 
         Private Function CreditsString(ByVal sGStars As String, ByVal sWriters As String) As String
             Dim cString As New List(Of String)
-            Dim gString As String = Master.eLang.GetString(776, "Guest Star")
-            Dim wString As String = Master.eLang.GetString(777, "Writer")
+            Dim gString As String = Master.eLang.GetString(82, "Guest Star")
+            Dim wString As String = Master.eLang.GetString(777, "Writer", True)
 
             If Not String.IsNullOrEmpty(sGStars) Then
                 For Each gStar In sGStars.Split(Convert.ToChar("|"))

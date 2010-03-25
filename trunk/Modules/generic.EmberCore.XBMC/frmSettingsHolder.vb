@@ -51,7 +51,7 @@ Public Class frmSettingsHolder
             'have to iterate the list instead of using .comtains so we can convert each to lower case
             For i As Integer = 0 To lbXBMCCom.Items.Count - 1
                 If lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox(Master.eLang.GetString(559, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(560, "Each name must be unique"))
+                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
                     txtName.Focus()
                     Exit Sub
                 End If
@@ -71,15 +71,15 @@ Public Class frmSettingsHolder
                     Me.btnEditCom.Enabled = False
                     RaiseEvent ModuleSettingsChanged()
                 Else
-                    MsgBox(Master.eLang.GetString(561, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(564, "Please Enter a Port"))
+                    MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
                     txtPort.Focus()
                 End If
             Else
-                MsgBox(Master.eLang.GetString(562, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(565, "Please Enter an IP"))
+                MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
                 txtIP.Focus()
             End If
         Else
-            MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
+            MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
     End Sub
@@ -91,7 +91,7 @@ Public Class frmSettingsHolder
 
             For i As Integer = 0 To lbXBMCCom.Items.Count - 1
                 If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox(Master.eLang.GetString(559, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(560, "Each name must be unique"))
+                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
                     txtName.Focus()
                     Exit Sub
                 End If
@@ -117,16 +117,16 @@ Public Class frmSettingsHolder
                     'Me.SetApplyButton(True)
                     RaiseEvent ModuleSettingsChanged()
                 Else
-                    MsgBox(Master.eLang.GetString(561, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(564, "Please Enter a Port"))
+                    MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
                     txtPort.Focus()
                 End If
             Else
-                MsgBox(Master.eLang.GetString(562, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(565, "Please Enter an IP"))
+                MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
                 txtIP.Focus()
             End If
 
         Else
-            MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
+            MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
 
@@ -165,15 +165,15 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.GroupBox11.Text = Master.eLang.GetString(554, "XBMC Communication")
-        Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
-        Me.Label16.Text = Master.eLang.GetString(423, "Name:")
-        Me.btnAddCom.Text = Master.eLang.GetString(424, "Add New")
-        Me.Label13.Text = Master.eLang.GetString(425, "Username:")
-        Me.Label14.Text = Master.eLang.GetString(426, "Password:")
-        Me.Label7.Text = Master.eLang.GetString(427, "XBMC IP:")
-        Me.Label6.Text = Master.eLang.GetString(428, "XBMC Port:")
-        Me.btnRemoveCom.Text = Master.eLang.GetString(519, "Remove Selected")
+        Me.GroupBox11.Text = Master.eLang.GetString(9, "XBMC Communication")
+        Me.btnEditCom.Text = Master.eLang.GetString(10, "Commit Edit")
+        Me.Label16.Text = Master.eLang.GetString(11, "Name:")
+        Me.btnAddCom.Text = Master.eLang.GetString(12, "Add New")
+        Me.Label13.Text = Master.eLang.GetString(425, "Username:", True)
+        Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
+        Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
+        Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
+        Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected", True)
     End Sub
 
     Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click

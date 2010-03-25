@@ -55,11 +55,11 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
-        Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
-        Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
-        Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
-        Me.lblFolderPattern.Text = Master.eLang.GetString(533, "Folders Pattern")
+        Me.chkRenameMulti.Text = Master.eLang.GetString(21, "Automatically Rename Files During Multi-Scraper")
+        Me.chkRenameSingle.Text = Master.eLang.GetString(22, "Automatically Rename Files During Single-Scraper")
+        Me.gbRenamerPatterns.Text = Master.eLang.GetString(23, "Default Renaming Patterns")
+        Me.lblFilePattern.Text = Master.eLang.GetString(24, "Files Pattern")
+        Me.lblFolderPattern.Text = Master.eLang.GetString(25, "Folders Pattern")
     End Sub
 
     Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged

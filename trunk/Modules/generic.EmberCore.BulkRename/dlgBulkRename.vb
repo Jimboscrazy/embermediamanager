@@ -119,12 +119,12 @@ Public Class dlgBulkRenamer
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                                         tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                                                         tRes = NFO.GetResFromDimensions(tVid)
-                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
+                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes))
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                                                         tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
-                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
+                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels))
                                                     End If
                                                 Catch ex As Exception
                                                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
@@ -389,7 +389,7 @@ Public Class dlgBulkRenamer
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
-        lblCompiling.Text = Master.eLang.GetString(11, "Renaming...")
+        lblCompiling.Text = Master.eLang.GetString(1, "Renaming...")
         lblFile.Visible = True
         pbCompile.Style = ProgressBarStyle.Continuous
         pbCompile.Maximum = FFRenamer.GetMoviesCount
@@ -435,8 +435,8 @@ Public Class dlgBulkRenamer
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(1, "Bulk Renamer")
-        Me.Close_Button.Text = Master.eLang.GetString(2, "Close")
+        Me.Text = Master.eLang.GetString(2, "Bulk Renamer")
+        Me.Close_Button.Text = Master.eLang.GetString(19, "Close", True)
         Me.Label2.Text = Master.eLang.GetString(3, "Rename movies and files")
         Me.Label4.Text = Me.Text
         Me.lblCompiling.Text = Master.eLang.GetString(4, "Compiling Movie List...")
@@ -453,7 +453,7 @@ Public Class dlgBulkRenamer
         Me.chkRenamedOnly.Text = Master.eLang.GetString(10, "Display Only Movies That Will Be Renamed")
 
         Dim frmToolTip As New ToolTip()
-        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(11, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
         frmToolTip.SetToolTip(Me.txtFolder, s)
         frmToolTip.SetToolTip(Me.txtFile, s)
         frmToolTip.SetToolTip(Me.txtFolderNotSingle, s)

@@ -152,14 +152,12 @@ Public Class XBMCxCom
             Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
                 Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
                 If Not Sr.Contains("OK") Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-                    'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
                 End If
             End Using
             Wr = Nothing
         Catch
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(147, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-            'MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
         End Try
     End Sub
 
@@ -169,27 +167,27 @@ Public Class XBMCxCom
             Dim tSettingsHolder As New frmSettingsHolder
             Dim tsb As New ToolStripSplitButton
             MyMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
-            MyMenu.Text = Master.eLang.GetString(13, "XBMC")
+            MyMenu.Text = Master.eLang.GetString(18, "XBMC")
             tsb = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTool.Items("tsbMediaCenters"), ToolStripSplitButton)
             Dim tsi As New ToolStripMenuItem
             MyTrayMenu.Image = New Bitmap(tSettingsHolder.Icon.ToBitmap)
-            MyTrayMenu.Text = Master.eLang.GetString(13, "XBMC Controller")
+            MyTrayMenu.Text = Master.eLang.GetString(19, "XBMC Controller")
             tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconMediaCenters"), ToolStripMenuItem)
             tSettingsHolder.Dispose()
             MyMenu.DropDownItems.Clear()
             If _MySettings.XComs.Count > 0 Then
-                Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
+                Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All", True), .Tag = Nothing}
                 AddHandler tMenu.Click, AddressOf xCom_Click
                 MyMenu.DropDownItems.Add(tMenu)
-                Dim tTrayMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All"), .Tag = Nothing}
+                Dim tTrayMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All", True), .Tag = Nothing}
                 AddHandler tTrayMenu.Click, AddressOf xCom_Click
                 MyTrayMenu.DropDownItems.Add(tTrayMenu)
 
                 For Each xCom As XBMCCom In _MySettings.XComs
-                    tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+                    tMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only", True), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
                     AddHandler tMenu.Click, AddressOf xCom_Click
                     MyMenu.DropDownItems.Add(tMenu)
-                    tTrayMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
+                    tTrayMenu = New System.Windows.Forms.ToolStripMenuItem With {.Text = String.Format(Master.eLang.GetString(143, "Update {0} Only", True), xCom.Name), .Tag = xCom, .DropDownDirection = ToolStripDropDownDirection.Left}
                     AddHandler tTrayMenu.Click, AddressOf xCom_Click
                     MyTrayMenu.DropDownItems.Add(tTrayMenu)
                 Next

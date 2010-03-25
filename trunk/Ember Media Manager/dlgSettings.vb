@@ -3874,10 +3874,12 @@ Public Class dlgSettings
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
+
         Me.lvShowRegex.Columns(1).Text = Master.eLang.GetString(696, "Show Regex")
         Me.lvShowRegex.Columns(2).Text = Master.eLang.GetString(694, "Apply To")
         Me.lvShowRegex.Columns(3).Text = Master.eLang.GetString(697, "Episode Regex")
         Me.lvShowRegex.Columns(4).Text = Master.eLang.GetString(694, "Apply To")
+
         Me.lvMovies.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvMovies.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvMovies.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
@@ -3911,6 +3913,12 @@ Public Class dlgSettings
 
         Me.cbOrdering.Items.Clear()
         Me.cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(350, "DVD"), Master.eLang.GetString(839, "Absolute")})
+
+        Me.cboSeasonRetrieve.Items.Clear()
+        Me.cboSeasonRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name")})
+
+        Me.cboEpRetrieve.Items.Clear()
+        Me.cboEpRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name"), Master.eLang.GetString(16, "Season Result")})
 
         Me.LoadTrailerQualities()
     End Sub
