@@ -1163,6 +1163,7 @@ Public Class frmMainSetup
                         timeOut += 1
                         If timeOut > 30 Then ' ~15 seconds
                             ' TODO Msg User and kill Ember
+                            Exit While
                         End If
                     End While
                 Catch ex As Exception
