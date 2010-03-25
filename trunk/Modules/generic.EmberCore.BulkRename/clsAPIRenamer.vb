@@ -95,7 +95,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    pattern = ApplyPattern(pattern, "A", If(Not String.IsNullOrEmpty(f.Audio), If(AdvancedSettings.GetBooleanSetting("Renamer.UseDTSInAudioChannel", False), f.Audio.Replace("dca", "dts"), f.Audio), String.Empty)) '*** dam hack
+                    strCond = ApplyPattern(strCond, "A", If(Not String.IsNullOrEmpty(f.Audio), If(AdvancedSettings.GetBooleanSetting("Renamer.UseDTSInAudioChannel", False), f.Audio.Replace("dca", "dts"), f.Audio), String.Empty)) '*** dam hack
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
