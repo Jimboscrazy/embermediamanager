@@ -47,6 +47,7 @@ Public Class Database
     Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean)
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
+        Dim sPath As String = String.Empty
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Me.SQLcn.BeginTransaction
                 If CleanMovies Then
@@ -84,7 +85,8 @@ Public Class Database
                                     tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
                                     If Not IsNothing(tSource) Then
                                         tPath = Directory.GetParent(SQLReader("MoviePath").ToString).FullName
-                                        If Not tPath.ToLower = "video_ts" AndAlso Not tPath.ToLower = "bdmv" AndAlso tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1 Then
+                                        sPath = FileUtils.Common.GetDirectory(tPath).ToLower
+                                        If tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso If(sPath = "video_ts" OrElse sPath = "bdmv", tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 2, tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1) Then
                                             MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                             Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                         ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.isSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
