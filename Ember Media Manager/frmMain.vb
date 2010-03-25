@@ -8485,6 +8485,36 @@ doCancel:
             MsgBox(Master.eLang.GetString(851, "No Updates at this time"), MsgBoxStyle.OkOnly, "Updates")
         End If
     End Sub
+    Private Sub lblIMDBHeader_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.DoubleClick
+        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
+            If Master.isWindows Then
+                Process.Start(String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text))
+            Else
+                Using Explorer As New Process
+                    Explorer.StartInfo.FileName = "xdg-open"
+                    Explorer.StartInfo.Arguments = String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text)
+                    Explorer.Start()
+                End Using
+            End If
+        End If
+    End Sub
+
+    Private Sub lblIMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseEnter
+        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
+            lblIMDBHeader.Tag = lblIMDBHeader.ForeColor
+            lblIMDBHeader.ForeColor = Color.Blue
+            Me.Cursor = Cursors.Hand
+        End If
+    End Sub
+
+    Private Sub lblIMDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseLeave
+        If Not lblIMDBHeader.Tag Is Nothing Then
+            lblIMDBHeader.ForeColor = DirectCast(lblIMDBHeader.Tag, Color)
+            Me.Cursor = Cursors.Default
+            lblIMDBHeader.Tag = Nothing
+        End If
+
+    End Sub
 
     #End Region 'Methods
 
@@ -8529,34 +8559,5 @@ doCancel:
 
     #End Region 'Nested Types
 
-    Private Sub lblIMDBHeader_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.DoubleClick
-        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
-            If Master.isWindows Then
-                Process.Start(String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text))
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text)
-                    Explorer.Start()
-                End Using
-            End If
-        End If
-    End Sub
 
-    Private Sub lblIMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseEnter
-        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
-            lblIMDBHeader.Tag = lblIMDBHeader.ForeColor
-            lblIMDBHeader.ForeColor = Color.Blue
-            Me.Cursor = Cursors.Hand
-        End If
-    End Sub
-
-    Private Sub lblIMDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseLeave
-        If Not lblIMDBHeader.Tag Is Nothing Then
-            lblIMDBHeader.ForeColor = DirectCast(lblIMDBHeader.Tag, Color)
-            Me.Cursor = Cursors.Default
-            lblIMDBHeader.Tag = Nothing
-        End If
-
-    End Sub
 End Class
