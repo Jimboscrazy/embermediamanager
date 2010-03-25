@@ -84,7 +84,7 @@ Public Class Database
                                     tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
                                     If Not IsNothing(tSource) Then
                                         tPath = Directory.GetParent(SQLReader("MoviePath").ToString).FullName
-                                        If tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1 Then
+                                        If Not tPath.ToLower = "video_ts" AndAlso Not tPath.ToLower = "bdmv" AndAlso tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1 Then
                                             MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                             Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                         ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.isSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
