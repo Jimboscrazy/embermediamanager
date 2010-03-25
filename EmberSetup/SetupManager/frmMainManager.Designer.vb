@@ -33,6 +33,7 @@ Partial Class frmMainManager
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbPlatform = New System.Windows.Forms.ComboBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Button2 = New System.Windows.Forms.Button
         Me.btnEditNews = New System.Windows.Forms.Button
         Me.Button3 = New System.Windows.Forms.Button
         Me.Label11 = New System.Windows.Forms.Label
@@ -96,7 +97,8 @@ Partial Class frmMainManager
         Me.btnOriginPath = New System.Windows.Forms.Button
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
+        Me.ColumnHeader14 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader15 = New System.Windows.Forms.ColumnHeader
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -224,6 +226,15 @@ Partial Class frmMainManager
         Me.GroupBox1.Size = New System.Drawing.Size(836, 74)
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(458, 43)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(129, 23)
+        Me.Button2.TabIndex = 16
+        Me.Button2.Text = "4. Upload Files (Beta)"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'btnEditNews
         '
@@ -386,42 +397,42 @@ Partial Class frmMainManager
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllwaysExcludeFileToolStripMenuItem, Me.RemoveExclusionToolStripMenuItem, Me.AllwaysExcludeFileinFolderMenuItem, Me.RemoveExcludeFileinFolderToolStripMenuItem, Me.AllwaysExcludeFolderToolStripMenuItem, Me.RemoveFolderExclusionToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(250, 136)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(245, 136)
         '
         'AllwaysExcludeFileToolStripMenuItem
         '
         Me.AllwaysExcludeFileToolStripMenuItem.Name = "AllwaysExcludeFileToolStripMenuItem"
-        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.AllwaysExcludeFileToolStripMenuItem.Text = "Allways Exclude File"
         '
         'RemoveExclusionToolStripMenuItem
         '
         Me.RemoveExclusionToolStripMenuItem.Name = "RemoveExclusionToolStripMenuItem"
-        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.RemoveExclusionToolStripMenuItem.Text = "Remove File Exclusion"
         '
         'AllwaysExcludeFileinFolderMenuItem
         '
         Me.AllwaysExcludeFileinFolderMenuItem.Name = "AllwaysExcludeFileinFolderMenuItem"
-        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.AllwaysExcludeFileinFolderMenuItem.Text = "Allways Exclude File in this Folder"
         '
         'RemoveExcludeFileinFolderToolStripMenuItem
         '
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Name = "RemoveExcludeFileinFolderToolStripMenuItem"
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Text = "Remove File in Folder Exclusion"
         '
         'AllwaysExcludeFolderToolStripMenuItem
         '
         Me.AllwaysExcludeFolderToolStripMenuItem.Name = "AllwaysExcludeFolderToolStripMenuItem"
-        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.AllwaysExcludeFolderToolStripMenuItem.Text = "Allways Exclude Folder"
         '
         'RemoveFolderExclusionToolStripMenuItem
         '
         Me.RemoveFolderExclusionToolStripMenuItem.Name = "RemoveFolderExclusionToolStripMenuItem"
-        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
+        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.RemoveFolderExclusionToolStripMenuItem.Text = "Remove Folder Exclusion"
         '
         'txtEMMVersion
@@ -687,11 +698,11 @@ Partial Class frmMainManager
         '
         'lstStats
         '
-        Me.lstStats.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader12, Me.ColumnHeader13})
+        Me.lstStats.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader12, Me.ColumnHeader13, Me.ColumnHeader14, Me.ColumnHeader15})
         Me.lstStats.FullRowSelect = True
         Me.lstStats.Location = New System.Drawing.Point(3, 32)
         Me.lstStats.Name = "lstStats"
-        Me.lstStats.Size = New System.Drawing.Size(330, 431)
+        Me.lstStats.Size = New System.Drawing.Size(448, 431)
         Me.lstStats.TabIndex = 6
         Me.lstStats.UseCompatibleStateImageBehavior = False
         Me.lstStats.View = System.Windows.Forms.View.Details
@@ -703,7 +714,7 @@ Partial Class frmMainManager
         '
         'ColumnHeader13
         '
-        Me.ColumnHeader13.Text = "Count"
+        Me.ColumnHeader13.Text = "x86"
         '
         'Button1
         '
@@ -761,14 +772,13 @@ Partial Class frmMainManager
         Me.btnUpdateFrom.Text = "Update from Site"
         Me.btnUpdateFrom.UseVisualStyleBackColor = True
         '
-        'Button2
+        'ColumnHeader14
         '
-        Me.Button2.Location = New System.Drawing.Point(458, 43)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(129, 23)
-        Me.Button2.TabIndex = 16
-        Me.Button2.Text = "4. Upload Files (Beta)"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.ColumnHeader14.Text = "x64"
+        '
+        'ColumnHeader15
+        '
+        Me.ColumnHeader15.Text = "Sum"
         '
         'frmMainManager
         '
@@ -879,5 +889,7 @@ Partial Class frmMainManager
     Friend WithEvents cboStats As System.Windows.Forms.ComboBox
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents ColumnHeader14 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader15 As System.Windows.Forms.ColumnHeader
 
 End Class

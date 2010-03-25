@@ -1086,7 +1086,19 @@ Public Class frmMainManager
             Dim t As String() = File.ReadAllLines(filename)
             For Each s As String In t
                 Dim i As String() = s.Split(Convert.ToChar(vbTab))
-                lstStats.Items.Add(i(0)).SubItems.Add(i(1))
+                Dim n As String = i(0).Replace("(x86) ", "").Replace("(x64) ", "")
+                Dim li As ListViewItem
+                li = lstStats.Items(n)
+                If li Is Nothing Then
+                    li = lstStats.Items.Add(n)
+                    li.Name = n
+                    li.SubItems.Add("0")
+                    li.SubItems.Add("0")
+                    li.SubItems.Add("0")
+                End If
+                li.SubItems(1).Text = (If(i(0).Contains("(x86)"), i(1), li.SubItems(1).Text))
+                li.SubItems(2).Text = (If(i(0).Contains("(x64)"), i(1), li.SubItems(2).Text))
+                li.SubItems(3).Text = (Convert.ToInt32(li.SubItems(1).Text) + Convert.ToInt32(li.SubItems(2).Text)).ToString
             Next
         End If
     End Sub
