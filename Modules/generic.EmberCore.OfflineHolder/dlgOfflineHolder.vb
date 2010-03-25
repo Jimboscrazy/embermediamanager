@@ -29,7 +29,7 @@ Public Class dlgOfflineHolder
     Friend  WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
 
     Private currNameText As String = String.Empty
-    Private currText As String = Master.eLang.GetString(341, "Insert DVD")
+    Private currText As String = Master.eLang.GetString(1, "Insert DVD")
     Private def_pbPreview_h As Integer
     Private def_pbPreview_w As Integer
     Private destPath As String
@@ -101,7 +101,7 @@ Public Class dlgOfflineHolder
         Dim imgTemp As Bitmap
         Dim imgFinal As Bitmap
         Dim newGraphics As Graphics
-        Me.bwCreateHolder.ReportProgress(0, Master.eLang.GetString(356, "Preparing Data"))
+        Me.bwCreateHolder.ReportProgress(0, Master.eLang.GetString(2, "Preparing Data"))
         If Directory.Exists(buildPath) Then
             FileUtils.Delete.DeleteDirectory(buildPath)
         End If
@@ -129,7 +129,7 @@ Public Class dlgOfflineHolder
         Dim drawPoint As New PointF(0.0F, txtTopPos)
         Dim stringSize As SizeF = newGraphics.MeasureString(drawString, drawFont)
         newGraphics.Dispose()
-        Me.bwCreateHolder.ReportProgress(1, Master.eLang.GetString(357, "Creating Movie"))
+        Me.bwCreateHolder.ReportProgress(1, Master.eLang.GetString(3, "Creating Movie"))
         'Let's cycle
         Dim f As Integer = 1
         For c As Integer = Video_Width To Convert.ToInt32(-stringSize.Width) Step -2
@@ -156,7 +156,7 @@ Public Class dlgOfflineHolder
             e.Cancel = True
             Return
         End If
-        Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(358, "Building Movie"))
+        Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(4, "Building Movie"))
         Using ffmpeg As New Process()
             ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
             ffmpeg.EnableRaisingEvents = False
@@ -174,7 +174,7 @@ Public Class dlgOfflineHolder
             e.Cancel = True
             Return
         End If
-        Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(359, "Moving Files"))
+        Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(5, "Moving Files"))
         If Directory.Exists(buildPath) Then
             FileUtils.Delete.DeleteDirectory(buildPath)
         End If
@@ -201,7 +201,7 @@ Public Class dlgOfflineHolder
 
         tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
 
-        Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(360, "Renaming Files"))
+        Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(6, "Renaming Files"))
         If Directory.Exists(buildPath) Then
             FileUtils.Delete.DeleteDirectory(buildPath)
         End If
@@ -215,12 +215,12 @@ Public Class dlgOfflineHolder
             e.Cancel = True
             Return
         End If
-        Me.bwCreateHolder.ReportProgress(5, Master.eLang.GetString(361, "Finished"))
+        Me.bwCreateHolder.ReportProgress(5, Master.eLang.GetString(361, "Finished", True))
     End Sub
 
     Private Sub bwCreateHolder_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateHolder.ProgressChanged
         If lvStatus.Items.Count > 0 Then
-            lvStatus.Items(lvStatus.Items.Count - 1).SubItems.Add(Master.eLang.GetString(362, "Done"))
+            lvStatus.Items(lvStatus.Items.Count - 1).SubItems.Add(Master.eLang.GetString(362, "Done", True))
         End If
         lvStatus.Items.Add(e.UserState.ToString)
     End Sub
@@ -228,7 +228,7 @@ Public Class dlgOfflineHolder
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted
         Me.pbProgress.Visible = False
         If Not e.Cancelled Then
-            MsgBox(Master.eLang.GetString(363, "Offline movie place holder created!"), MsgBoxStyle.OkOnly, Me.Text)
+            MsgBox(Master.eLang.GetString(7, "Offline movie place holder created!"), MsgBoxStyle.OkOnly, Me.Text)
             Me.DialogResult = Windows.Forms.DialogResult.OK
         End If
         Me.Close()
@@ -284,25 +284,25 @@ Public Class dlgOfflineHolder
                             Else
                                 destPath = Path.Combine(SQLReader("Path").ToString, MovieName)
                             End If
-                            lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                            lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(195, "Valid", True)
                             lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
                         End If
                     End Using
                 End Using
             Else
-                lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
+                lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid", True)
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Red
             End If
             If Not txtMovieName.Text = String.Empty Then
                 If Directory.Exists(destPath) Then
-                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists")
+                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists", True)
                     lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
                 Else
-                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(195, "Valid", True)
                     lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Green
                 End If
             Else
-                lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
+                lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid", True)
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
 
@@ -318,14 +318,14 @@ Public Class dlgOfflineHolder
             If chkUseFanart.Checked Then
                 If Not String.IsNullOrEmpty(fPath) Then
                     SetPreview(False, fPath)
-                    lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                    lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(195, "Valid", True)
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
                 Else
-                    lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
+                    lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid", True)
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Red
                 End If
             Else
-                lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                lvStatus.Items(idxStsImage).SubItems(1).Text = Master.eLang.GetString(195, "Valid", True)
                 lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
             End If
 
@@ -449,7 +449,7 @@ Public Class dlgOfflineHolder
         ' If the source directory does not exist, throw an exception.
         If Not dir.Exists Then
             Throw New DirectoryNotFoundException( _
-                Master.eLang.GetString(364, "Source directory does not exist or could not be found: ") _
+                Master.eLang.GetString(8, "Source directory does not exist or could not be found: ") _
                 + sourceDirName)
         End If
         ' If the destination directory does not exist, create it.
@@ -510,16 +510,16 @@ Public Class dlgOfflineHolder
             CreatePreview()
             tMovie.Movie = New MediaContainers.Movie
             tMovie.isSingle = True
-            idxStsSource = lvStatus.Items.Add(Master.eLang.GetString(353, "Source Folder")).Index
-            lvStatus.Items(idxStsSource).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
+            idxStsSource = lvStatus.Items.Add(Master.eLang.GetString(9, "Source Folder")).Index
+            lvStatus.Items(idxStsSource).SubItems.Add(Master.eLang.GetString(194, "Not Valid", True))
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Red
-            idxStsMovie = lvStatus.Items.Add(Master.eLang.GetString(352, "Movie (Folder Name)")).Index
-            lvStatus.Items(idxStsMovie).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
+            idxStsMovie = lvStatus.Items.Add(Master.eLang.GetString(10, "Movie (Folder Name)")).Index
+            lvStatus.Items(idxStsMovie).SubItems.Add(Master.eLang.GetString(194, "Not Valid", True))
             lvStatus.Items(idxStsMovie).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
-            idxStsImage = lvStatus.Items.Add(Master.eLang.GetString(354, "Place Holder Image")).Index
-            lvStatus.Items(idxStsImage).SubItems.Add(Master.eLang.GetString(195, "Valid"))
+            idxStsImage = lvStatus.Items.Add(Master.eLang.GetString(11, "Place Holder Image")).Index
+            lvStatus.Items(idxStsImage).SubItems.Add(Master.eLang.GetString(195, "Valid", True))
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
             'tbTagLine.Value = tbTagLine.Maximum - 470 'Video_Height - 100
@@ -595,29 +595,29 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(331, "Offline Media Manager")
-        Me.CLOSE_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.Label2.Text = Master.eLang.GetString(332, "Add Offline movie")
+        Me.Text = Master.eLang.GetString(12, "Offline Media Manager")
+        Me.CLOSE_Button.Text = Master.eLang.GetString(19, "Close", True)
+        Me.Label2.Text = Master.eLang.GetString(13, "Add Offline movie")
         Me.Label4.Text = Me.Text
-        Me.lblSources.Text = Master.eLang.GetString(333, "Add to Source:")
-        Me.lblMovie.Text = Master.eLang.GetString(334, "Place Holder Folder/Movie Name:")
-        Me.GetIMDB_Button.Text = Master.eLang.GetString(335, "Search IMDB")
-        Me.Bulk_Button.Text = Master.eLang.GetString(336, "Bulk Creator")
-        Me.colCondition.Text = Master.eLang.GetString(337, "Condition")
-        Me.colStatus.Text = Master.eLang.GetString(215, "Status")
-        Me.Create_Button.Text = Master.eLang.GetString(338, "Create")
-        Me.chkUseFanart.Text = Master.eLang.GetString(339, "Use Fanart for Place Holder Video")
-        Me.lblTagline.Text = Master.eLang.GetString(340, "Place Holder Video Tagline:")
-        Me.txtTagline.Text = Master.eLang.GetString(341, "Insert DVD")
-        Me.Label1.Text = Master.eLang.GetString(342, "Text Color:")
-        Me.GroupBox1.Text = Master.eLang.GetString(180, "Preview")
-        Me.Label6.Text = Master.eLang.GetString(343, "Place Holder Video Format:")
-        Me.chkBackground.Text = Master.eLang.GetString(344, "Use Tagline Background")
-        Me.Label5.Text = Master.eLang.GetString(345, "Tagline background Color:")
-        Me.chkOverlay.Text = Master.eLang.GetString(346, "Use Ember Overlay")
-        Me.btnFont.Text = Master.eLang.GetString(347, "Select Font...")
-        Me.Label3.Text = Master.eLang.GetString(348, "Tagline Top:")
-        Me.GroupBox2.Text = Master.eLang.GetString(349, "Information")
+        Me.lblSources.Text = Master.eLang.GetString(14, "Add to Source:")
+        Me.lblMovie.Text = Master.eLang.GetString(15, "Place Holder Folder/Movie Name:")
+        Me.GetIMDB_Button.Text = Master.eLang.GetString(16, "Search IMDB")
+        Me.Bulk_Button.Text = Master.eLang.GetString(17, "Bulk Creator")
+        Me.colCondition.Text = Master.eLang.GetString(18, "Condition")
+        Me.colStatus.Text = Master.eLang.GetString(215, "Status", True)
+        Me.Create_Button.Text = Master.eLang.GetString(19, "Create")
+        Me.chkUseFanart.Text = Master.eLang.GetString(20, "Use Fanart for Place Holder Video")
+        Me.lblTagline.Text = Master.eLang.GetString(21, "Place Holder Video Tagline:")
+        Me.txtTagline.Text = Master.eLang.GetString(1, "Insert DVD")
+        Me.Label1.Text = Master.eLang.GetString(22, "Text Color:")
+        Me.GroupBox1.Text = Master.eLang.GetString(180, "Preview", True)
+        Me.Label6.Text = Master.eLang.GetString(24, "Place Holder Video Format:")
+        Me.chkBackground.Text = Master.eLang.GetString(25, "Use Tagline Background")
+        Me.Label5.Text = Master.eLang.GetString(26, "Tagline background Color:")
+        Me.chkOverlay.Text = Master.eLang.GetString(27, "Use Ember Overlay")
+        Me.btnFont.Text = Master.eLang.GetString(28, "Select Font...")
+        Me.Label3.Text = Master.eLang.GetString(23, "Tagline Top:")
+        Me.GroupBox2.Text = Master.eLang.GetString(29, "Information")
     End Sub
 
     Private Sub tbTagLine_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll

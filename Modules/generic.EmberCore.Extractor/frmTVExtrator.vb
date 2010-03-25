@@ -36,8 +36,6 @@ Public Class frmTVExtrator
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         If Not IsNothing(pbFrame.Image) Then
-            'Me.Poster.Image = New Bitmap(pbFrame.Image)
-            'Me.pbPoster.Image = pbFrame.Image
             RaiseEvent GenericEvent(Enums.ModuleEventType.TVFrameExtrator, New List(Of Object)(New Object() {New Bitmap(pbFrame.Image), pbFrame.Image}))
         End If
     End Sub
@@ -154,9 +152,9 @@ Public Class frmTVExtrator
     End Sub
 
     Sub SetUp()
-        Me.btnFrameLoad.Text = Master.eLang.GetString(661, "Load Episode")
-        Me.btnFrameSave.Text = Master.eLang.GetString(662, "Save as Poster")
+        Me.Label3.Text = Master.eLang.GetString(5, "Extracting Frame...")
+        Me.btnFrameLoad.Text = Master.eLang.GetString(7, "Load Episode")
+        Me.btnFrameSave.Text = Master.eLang.GetString(8, "Save as Poster")
     End Sub
-
 
 End Class

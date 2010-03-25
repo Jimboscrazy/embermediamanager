@@ -685,11 +685,12 @@ Public Class frmMain
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
 
-                ToolTips.SetToolTip(.pbStar1, String.Format("Rating: {0:N}", sinRating))
-                ToolTips.SetToolTip(.pbStar2, String.Format("Rating: {0:N}", sinRating))
-                ToolTips.SetToolTip(.pbStar3, String.Format("Rating: {0:N}", sinRating))
-                ToolTips.SetToolTip(.pbStar4, String.Format("Rating: {0:N}", sinRating))
-                ToolTips.SetToolTip(.pbStar5, String.Format("Rating: {0:N}", sinRating))
+                Dim tTip As String = String.Concat(Master.eLang.GetString(245, "Rating:"), String.Format(" {0:N}", sinRating))
+                ToolTips.SetToolTip(.pbStar1, tTip)
+                ToolTips.SetToolTip(.pbStar2, tTip)
+                ToolTips.SetToolTip(.pbStar3, tTip)
+                ToolTips.SetToolTip(.pbStar4, tTip)
+                ToolTips.SetToolTip(.pbStar5, tTip)
 
                 If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
                     Select Case (sinRating / 2)
@@ -7920,11 +7921,11 @@ doCancel:
                 .DonateToolStripMenuItem.Text = Master.eLang.GetString(792, "Donate")
                 .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
                 .CheckUpdatesToolStripMenuItem.Text = Master.eLang.GetString(850, "&Check For Updates...")
+                .Label7.Text = Master.eLang.GetString(484, "Loading Settings...")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
                 .tsbRefreshMedia.ToolTipText = Master.eLang.GetString(85, "Scans sources for new content and cleans database.")
-                ' XBMC  .tsbMediaCenters.ToolTipText = Master.eLang.GetString(86, "Sends a command to XBMC to begin its internal ""Update Library"" process.")
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearch, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))

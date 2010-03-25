@@ -119,14 +119,10 @@ Public Class frmMediaSettingsHolder
 
     Sub SetUp()
         Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
-        'Me.GroupBox20.Text = Master.eLang.GetString(151, "Trailers")
-        Me.Label23.Text = Master.eLang.GetString(526, "Timeout:")
-        Me.GroupBox2.Text = Master.eLang.GetString(528, "Supported Sites:")
-        Me.chkUseMPDB.Text = Master.eLang.GetString(500, "MoviePosterDB.com")
-        Me.chkUseTMDB.Text = Master.eLang.GetString(501, "TheMovieDB.org")
-        Me.chkUseIMPA.Text = Master.eLang.GetString(502, "IMPAwards.com")
-        Me.GroupBox9.Text = Master.eLang.GetString(798, "Get Images From:")
-        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Support")
+        Me.Label23.Text = Master.eLang.GetString(7, "Timeout:")
+        Me.GroupBox2.Text = Master.eLang.GetString(8, "Supported Sites:")
+        Me.GroupBox9.Text = Master.eLang.GetString(9, "Get Images From:")
+        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Support", True)
     End Sub
 
     Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged

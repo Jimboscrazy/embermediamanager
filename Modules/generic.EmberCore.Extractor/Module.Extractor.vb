@@ -89,8 +89,6 @@ Public Class FrameExtrator
 #Region "Methods"
 
     Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        '_MySettings.XComs.AddRange(Master.eSettings.XBMCComs)
-
     End Sub
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup

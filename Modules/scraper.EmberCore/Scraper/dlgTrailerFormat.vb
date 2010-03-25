@@ -55,7 +55,7 @@ Public Class dlgTrailerFormat
             YouTube.GetVideoLinksAsync(Me._yturl)
 
         Catch ex As Exception
-            MsgBox(Master.eLang.GetString(647, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(648, "Error Retrieving Video Format Links"))
+            MsgBox(Master.eLang.GetString(71, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(72, "Error Retrieving Video Format Links"))
         End Try
     End Sub
 
@@ -78,11 +78,11 @@ Public Class dlgTrailerFormat
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(702, "Select Format")
-        Me.lblStatus.Text = Master.eLang.GetString(703, "Getting available formats...")
-        Me.GroupBox1.Text = Master.eLang.GetString(704, "Available Formats")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Text = Master.eLang.GetString(73, "Select Format")
+        Me.lblStatus.Text = Master.eLang.GetString(74, "Getting available formats...")
+        Me.GroupBox1.Text = Master.eLang.GetString(75, "Available Formats")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
     End Sub
 
     Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved

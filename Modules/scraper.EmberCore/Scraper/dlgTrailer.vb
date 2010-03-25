@@ -67,7 +67,7 @@ Public Class dlgTrailer
         Me.txtYouTube.Enabled = False
         Me.txtManual.Enabled = False
         Me.btnBrowse.Enabled = False
-        Me.lblStatus.Text = Master.eLang.GetString(380, "Downloading selected trailer...")
+        Me.lblStatus.Text = Master.eLang.GetString(56, "Downloading selected trailer...")
         Me.pbStatus.Style = ProgressBarStyle.Continuous
         Me.pbStatus.Value = 0
         Me.pnlStatus.Visible = True
@@ -87,7 +87,7 @@ Public Class dlgTrailer
                 didCancel = True
             End If
         ElseIf Me.txtManual.Text.Length > 0 Then
-            Me.lblStatus.Text = Master.eLang.GetString(849, "Copying specified file to trailer...")
+            Me.lblStatus.Text = Master.eLang.GetString(57, "Copying specified file to trailer...")
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
                     Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
@@ -100,7 +100,7 @@ Public Class dlgTrailer
                     didCancel = True
                 End If
             Else
-                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
+                MsgBox(Master.eLang.GetString(192, "File is not valid.", True), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid", True))
                 didCancel = True
             End If
         ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
@@ -188,7 +188,7 @@ Public Class dlgTrailer
         Try
             Me.BeginDownload(False)
         Catch
-            MsgBox(Master.eLang.GetString(382, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(383, "Error Playing Trailer"))
+            MsgBox(Master.eLang.GetString(58, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
             Me.pnlStatus.Visible = False
             Me.lbTrailers.Enabled = True
             Me.txtYouTube.Enabled = True
@@ -200,7 +200,7 @@ Public Class dlgTrailer
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
 
-        If Me.btnSetNfo.Text = Master.eLang.GetString(847, "Move") Then
+        If Me.btnSetNfo.Text = Master.eLang.GetString(60, "Move") Then
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 Me.OK_Button.Enabled = False
                 Me.btnSetNfo.Enabled = False
@@ -209,7 +209,7 @@ Public Class dlgTrailer
                 Me.txtYouTube.Enabled = False
                 Me.txtManual.Enabled = False
                 Me.btnBrowse.Enabled = False
-                Me.lblStatus.Text = Master.eLang.GetString(848, "Moving specified file to trailer...")
+                Me.lblStatus.Text = Master.eLang.GetString(62, "Moving specified file to trailer...")
                 Me.pbStatus.Style = ProgressBarStyle.Continuous
                 Me.pbStatus.Value = 0
                 Me.pnlStatus.Visible = True
@@ -221,7 +221,7 @@ Public Class dlgTrailer
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
-                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
+                MsgBox(Master.eLang.GetString(192, "File is not valid.", True), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid", True))
                 Me.pnlStatus.Visible = False
                 Me.lbTrailers.Enabled = True
                 Me.txtYouTube.Enabled = True
@@ -369,32 +369,32 @@ Public Class dlgTrailer
             Me.btnSetNfo.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
-                Me.OK_Button.Text = Master.eLang.GetString(846, "Copy")
-                Me.btnSetNfo.Text = Master.eLang.GetString(847, "Move")
+                Me.OK_Button.Text = Master.eLang.GetString(61, "Copy")
+                Me.btnSetNfo.Text = Master.eLang.GetString(60, "Move")
             Else
-                Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
-                Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
+                Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
+                Me.btnSetNfo.Text = Master.eLang.GetString(63, "Set To Nfo")
             End If
         Else
             Me.OK_Button.Enabled = False
-            Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
+            Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
             Me.btnPlayTrailer.Enabled = False
             Me.btnSetNfo.Enabled = False
-            Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
+            Me.btnSetNfo.Text = Master.eLang.GetString(63, "Set To Nfo")
         End If
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(372, "Select Trailer")
-        Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.GroupBox1.Text = Master.eLang.GetString(374, "Select Trailer to Scrape")
-        Me.GroupBox2.Text = Master.eLang.GetString(375, "Manual Trailer Entry")
-        Me.Label1.Text = Master.eLang.GetString(376, "Direct Link or YouTube URL:")
-        Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
-        Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
-        Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
-        Me.Label2.Text = Master.eLang.GetString(713, "Local Trailer:")
+        Me.Text = Master.eLang.GetString(64, "Select Trailer")
+        Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.GroupBox1.Text = Master.eLang.GetString(65, "Select Trailer to Download")
+        Me.GroupBox2.Text = Master.eLang.GetString(66, "Manual Trailer Entry")
+        Me.Label1.Text = Master.eLang.GetString(67, "Direct Link or YouTube URL:")
+        Me.lblStatus.Text = Master.eLang.GetString(68, "Compiling trailer list...")
+        Me.btnPlayTrailer.Text = Master.eLang.GetString(69, "Preview Trailer")
+        Me.btnSetNfo.Text = Master.eLang.GetString(63, "Set To Nfo")
+        Me.Label2.Text = Master.eLang.GetString(70, "Local Trailer:")
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged

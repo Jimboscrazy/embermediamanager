@@ -199,12 +199,12 @@ Public Class frmMovieExtractor
     End Sub
 
     Sub SetUp()
-        Me.GroupBox1.Text = Master.eLang.GetString(257, "Auto-Generate")
-        Me.Label5.Text = Master.eLang.GetString(258, "# to Create:")
-        Me.btnAutoGen.Text = Master.eLang.GetString(259, "Auto-Gen")
-        Me.btnFrameSave.Text = Master.eLang.GetString(260, "Save Extrathumb")
-        Me.Label3.Text = Master.eLang.GetString(261, "Extracting Frame...")
-        Me.btnFrameLoad.Text = Master.eLang.GetString(263, "Load Movie")
+        Me.GroupBox1.Text = Master.eLang.GetString(1, "Auto-Generate")
+        Me.Label5.Text = Master.eLang.GetString(2, "# to Create:")
+        Me.btnAutoGen.Text = Master.eLang.GetString(3, "Auto-Gen")
+        Me.btnFrameSave.Text = Master.eLang.GetString(4, "Save Extrathumb")
+        Me.Label3.Text = Master.eLang.GetString(5, "Extracting Frame...")
+        Me.btnFrameLoad.Text = Master.eLang.GetString(6, "Load Movie")
 
     End Sub
 End Class
