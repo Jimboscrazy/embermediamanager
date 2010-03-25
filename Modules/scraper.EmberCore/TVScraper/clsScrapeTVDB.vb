@@ -884,6 +884,9 @@ Public Class Scraper
                         tShow.EpFanartPath = String.Empty
                         tShow.EpPosterPath = String.Empty
                         tShow.EpNfoPath = String.Empty
+                        tShow.SeasonFanartPath = String.Empty
+                        tShow.SeasonPosterPath = String.Empty
+                        tShow.ShowFanartPath = String.Empty
                         tShow.IsLockEp = False
                         tShow.IsMarkEp = False
                         tShow.EpID = -1
