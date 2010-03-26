@@ -390,7 +390,7 @@ Public Class EmberNativeScraperModule
             End If
         End If
         If Master.GlobalScrapeMod.Extra Then
-            If Master.eSettings.AutoET Then
+            If Master.eSettings.AutoET AndAlso DBMovie.isSingle Then
                 Try
                     ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
                 Catch ex As Exception

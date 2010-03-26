@@ -659,7 +659,7 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers
+                .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
                     .txtStudio.Text = Master.currMovie.Movie.Studio
