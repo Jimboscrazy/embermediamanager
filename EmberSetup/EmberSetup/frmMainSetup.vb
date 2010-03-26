@@ -1066,6 +1066,17 @@ Public Class frmMainSetup
         'Application.DoEvents()
     End Sub
 
+    Private Sub SetUp()
+        Me.Text = MyLang.GetString(43, "Setup - Ember Media Manager")
+        Me.btnRunEmber.Text = MyLang.GetString(42, "Start Ember Media Manager")
+        Me.btnInstall.Text = MyLang.GetString(39, "Install")
+        Me.btnExit.Text = MyLang.GetString(38, "Exit")
+        Me.btnOptions.Text = MyLang.GetString(40, "Change Options")
+        Me.emmNotify.Text = MyLang.GetString(41, "EmberMM Setup")
+        Me.llAbout.Text = MyLang.GetString(36, "About")
+    End Sub
+
+
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             SetupMyControls()
@@ -1108,16 +1119,17 @@ Public Class frmMainSetup
             MyLang.GetFromSite()
             MyLang.Load()
             If MyLang.Languages.Count > 1 Then
-                MyLang.LoadLanguage(Language)
-            End If
+                Using dLang As New dlgLanguage
+                    dLang.cbLanguage.Items.AddRange(MyLang.Languages.ToArray)
+                    Dim si As Integer = dLang.cbLanguage.Items.IndexOf("English_(en_US)")
+                    If si >= 0 Then dLang.cbLanguage.SelectedIndex = si
+                    If dLang.ShowDialog() = Windows.Forms.DialogResult.OK Then
 
-            Me.Text = MyLang.GetString(43, "Setup - Ember Media Manager")
-            Me.btnRunEmber.Text = MyLang.GetString(42, "Start Ember Media Manager")
-            Me.btnInstall.Text = MyLang.GetString(39, "Install")
-            Me.btnExit.Text = MyLang.GetString(38, "Exit")
-            Me.btnOptions.Text = MyLang.GetString(40, "Change Options")
-            Me.emmNotify.Text = MyLang.GetString(41, "EmberMM Setup")
-            Me.llAbout.Text = MyLang.GetString(36, "About")
+                    End If
+                End Using
+            End If
+            MyLang.LoadLanguage(Language)
+            SetUp()
 
             If Final Then
                 LogoStop = False

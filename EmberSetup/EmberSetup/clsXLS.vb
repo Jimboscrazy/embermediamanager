@@ -248,6 +248,6 @@ Public Class Langs
         End Try
     End Sub
     Public Sub GetFromSite()
-
+        frmMainSetup.GetURLFile("Setup.Languages.xml", Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
     End Sub
 End Class
