@@ -169,7 +169,7 @@ End Class
 
 Public Class Langs
     Private Shared htStrings As New Hashtable
-
+    Public Languages As List(Of String)
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Try
             If IsNothing(htStrings) Then
@@ -187,7 +187,7 @@ Public Class Langs
     Public Function LangExist(ByVal Language As String) As String
         Dim lPath As String = String.Empty
         Try
-            lPath = String.Concat(frmMainSetup.AppPath, "Langs", Path.DirectorySeparatorChar, "EmberSetup.", Language, ".xml")
+            lPath = String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.", Language, ".xml")
             If Not File.Exists(lPath) Then
                 lPath = String.Concat(frmMainSetup.AppPath, "EmberSetup.", Language, ".xml")
                 If Not File.Exists(lPath) Then
@@ -227,6 +227,18 @@ Public Class Langs
         Catch ex As Exception
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
 
+    End Sub
+    Public Sub Save()
+        Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+        Using xmlSW As New StreamWriter(String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.Languages.xml"))
+            xmlSer.Serialize(xmlSW, Me)
+        End Using
+    End Sub
+    Public Sub Load()
+        Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+        Using xmlSW As New StreamReader(String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.Languages.xml"))
+            Languages = xmlSer.Deserialize(xmlSW)
+        End Using
+    End Sub
 End Class

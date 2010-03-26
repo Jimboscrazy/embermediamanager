@@ -227,17 +227,16 @@ Public Class frmMainSetup
             'create a web request to the URL
             Req = HttpWebRequest.Create(URL)
             '---
-            ' TODO Enable this after 1.0 release
-            'If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
-            'Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
-            'wProxy.BypassProxyOnLocal = True
-            'If Not String.IsNullOrEmpty(UserName) Then
-            'wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
-            'Else
-            'wProxy.Credentials = CredentialCache.DefaultCredentials
-            'End If
-            'Req.Proxy = wProxy
-            'End If
+            If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(UserName) Then
+                    wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                Req.Proxy = wProxy
+            End If
             '---
             Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
             Req.CachePolicy = noCachePolicy
@@ -305,14 +304,14 @@ Public Class frmMainSetup
     End Sub
 
     Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
-        If btnExit.Text = "Exit" Then
+        If btnExit.Text = MyLang.GetString(38, "Exit") Then
             Me.Close()
             Application.Exit()
         Else
             If bwDoInstall.IsBusy Then
                 bwDoInstall.CancelAsync()
                 lblStatus.ForeColor = Color.Red
-                lblStatus.Text = "Canceling..."
+                lblStatus.Text = MyLang.GetString(1, "Canceling...")
             End If
             While bwDoInstall.IsBusy
                 Application.DoEvents()
@@ -344,7 +343,7 @@ Public Class frmMainSetup
                 lblInfo.TextAlign = ContentAlignment.MiddleCenter
                 lblInfo.ForeColor = Color.Black
                 lblInfo.Font = New Font("Arial", 11, FontStyle.Regular)
-                lblInfo.Text = String.Format("Ember Media Manager Installation Path:{0}""{1}""", vbCrLf, emberPath)
+                lblInfo.Text = String.Format(MyLang.GetString(2, "Ember Media Manager Installation Path:{0}""{1}"""), vbCrLf, emberPath)
             Else
                 NeedDoEvents = False
             End If
@@ -391,12 +390,12 @@ Public Class frmMainSetup
         'Me.Activate()
         If e.Cancelled Then
             LogWrite(String.Format("--- Main: Cancelled by User ({0})", Now))
-            lblStatus.Text = "Installation Aborted"
+            lblStatus.Text = MyLang.GetString(3, "Installation Aborted")
             pnlProgress.Visible = False
             lblInfo.TextAlign = ContentAlignment.MiddleCenter
             lblInfo.ForeColor = Color.Red
             lblInfo.Font = New Font("Arial", 11, FontStyle.Bold)
-            lblInfo.Text = "Cancelled by User"
+            lblInfo.Text = MyLang.GetString(4, "Cancelled by User")
             btnOptions.Enabled = True
         End If
         Me.Refresh()
@@ -450,7 +449,7 @@ Public Class frmMainSetup
             lblInfo.Text = e.UserState
         End If
         If e.ProgressPercentage = 6 Then
-            lblStatus.Text = "Installation Finished"
+            lblStatus.Text = MyLang.GetString(5, "Installation Finished")
             lblInfo.TextAlign = ContentAlignment.MiddleCenter
             lblInfo.Font = New Font("Arial", 12, FontStyle.Bold)
             lblInfo.Text = e.UserState
@@ -461,7 +460,7 @@ Public Class frmMainSetup
             pbFiles.Visible = False
         End If
         If e.ProgressPercentage = 7 Then
-            lblStatus.Text = "Installation Aborted"
+            lblStatus.Text = MyLang.GetString(3, "Installation Aborted")
             pnlProgress.Visible = False
             lblInfo.TextAlign = ContentAlignment.MiddleCenter
             lblInfo.ForeColor = Color.Red
@@ -534,7 +533,7 @@ Public Class frmMainSetup
         Dim counter As Integer = 0
         Me.bwDoInstall.ReportProgress(9, Nothing)
         If Not Final Then
-            Me.bwDoInstall.ReportProgress(0, New Object() {1, "Looking for Ember Installation Folder"})
+            Me.bwDoInstall.ReportProgress(0, New Object() {1, MyLang.GetString(6, "Looking for Ember Installation Folder")})
             LogWrite(String.Format("--- Main: Looking for Ember Installation Folder ({0})", Now))
             If emberPath = String.Empty Then
                 If File.Exists(Path.Combine(AppPath, "Ember Media Manager.exe")) Then
@@ -559,7 +558,7 @@ Public Class frmMainSetup
         If Not emberPath = String.Empty Then
             If Not Final Then
                 Try
-                    Me.bwDoInstall.ReportProgress(0, New Object() {2, "Downloading Version List"})
+                    Me.bwDoInstall.ReportProgress(0, New Object() {2, MyLang.GetString(7, "Downloading Version List")})
                     LogWrite(String.Format("--- Main: Downloading Version List ({0})", Now))
                     CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
                     If CurrentEmberPlatform = String.Empty Then
@@ -568,7 +567,7 @@ Public Class frmMainSetup
                     If CurrentEmberPlatform = String.Empty Then
                         CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                         LogWrite(String.Format("*** Main: No Platform Selected ABORT"))
-                        Me.bwDoInstall.ReportProgress(7, "No Platform Selected") '  Error
+                        Me.bwDoInstall.ReportProgress(7, MyLang.GetString(8, "No Platform Selected")) '  Error
                         Return True
                     End If
 
@@ -578,7 +577,7 @@ Public Class frmMainSetup
                     If Not GetURLFile("versionlist.xml", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
                         ' Cant get Version List ... Abort
                         LogWrite(String.Format("*** Main: No Versions List, SITE DOWN? ABORT"))
-                        Me.bwDoInstall.ReportProgress(2, "Ember Download Site is Not Available." & vbCrLf & "Please try again later.") '  Error
+                        Me.bwDoInstall.ReportProgress(2, String.Format(MyLang.GetString(9, "Ember Download Site is Not Available.{0}Please try again later."), vbCrLf)) '  Error
                         Return True
                     Else
                         LoadVersions()
@@ -591,14 +590,14 @@ Public Class frmMainSetup
                         InstallVersion = EmberVersions.VersionList(EmberVersions.VersionList.Count - 1).Version
                         If InstallVersion <= CurrentEmberVersion AndAlso Not Force Then
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
-                            Me.bwDoInstall.ReportProgress(6, "No New Version to Install")
+                            Me.bwDoInstall.ReportProgress(6, MyLang.GetString(10, "No New Version to Install"))
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
                             Return True
                         End If
                         Me.bwDoInstall.ReportProgress(5, "")
                         '###################################################################################
                         If bwDoInstall.CancellationPending Then Return False
-                        Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Version Files"})
+                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
                         LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
                         Dim getFile As String = String.Format("version_{0}.xml", InstallVersion)
                         If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
@@ -619,7 +618,7 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(5, "")
                         '###################################################################################
                         If bwDoInstall.CancellationPending Then Return False
-                        Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Update Script Files"})
+                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(12, "Downloading Update Script Files")})
                         LogWrite(String.Format("--- Main: Downloading Update Script Files ({0})", Now))
                         getFile = String.Format("commands_base.xml")
                         If GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
@@ -655,7 +654,7 @@ Public Class frmMainSetup
                         'Need to mark files changed by user, and download all new (hash based) files
                         If bwDoInstall.CancellationPending Then Return False
                         If Not CurrentEmberVersion = String.Empty Then
-                            Me.bwDoInstall.ReportProgress(0, New Object() {0, "Checking Installed Files"})
+                            Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(13, "Checking Installed Files")})
                             LogWrite(String.Format("--- Main: Checking Installed Files ({0})", Now))
                             getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
                             xmlSer = New XmlSerializer(GetType(FilesList))
@@ -668,7 +667,7 @@ Public Class frmMainSetup
                         Dim hash As String = String.Empty
                         Dim curr_hash As String = String.Empty
                         Dim inCache As Boolean = False
-                        Me.bwDoInstall.ReportProgress(0, New Object() {0, "Downloading Files"})
+                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(14, "Downloading Files")})
                         Me.bwDoInstall.ReportProgress(8, _NewFiles.Files.Count)
                         counter = 0
                         For Each f As FileOfList In _NewFiles.Files
@@ -710,9 +709,9 @@ Public Class frmMainSetup
 
                                     If f.inCache Then
                                         LogWrite(String.Format("--- Main: File in cache: skipping ({0})", f.Filename))
-                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("In Cache: {0}", f.Filename)})
+                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format(MyLang.GetString(15, "In Cache: {0}"), f.Filename)})
                                     Else
-                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
+                                        Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format(MyLang.GetString(16, "Downloading: {0}"), f.Filename)})
                                         If Path.GetExtension(f.Filename) = ".dll" OrElse Path.GetExtension(f.Filename) = ".exe" Then
                                             getFile = String.Format("download.php?fname=({2}) {0}&hfname=Files/{1}.emm", f.Filename, f.Hash, CurrentEmberPlatform)
                                         Else
@@ -722,7 +721,7 @@ Public Class frmMainSetup
                                         If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))) Then
                                             ' Error Downloading File... Abort
                                             LogWrite(String.Format("+++ Main: Error downloading: {0}", f.Filename))
-                                            Me.bwDoInstall.ReportProgress(7, String.Format("Error downloading: {0}", f.Filename))
+                                            Me.bwDoInstall.ReportProgress(7, String.Format(MyLang.GetString(17, "Error downloading: {0}"), f.Filename))
                                             Return True
                                         End If
                                     End If
@@ -741,14 +740,14 @@ Public Class frmMainSetup
                         ' Keep separated from Check/Download so it can do in diferent fases if needed
                         ' If we separate in fases will need to load Saved File List
                         If bwDoInstall.CancellationPending Then Return False
-                        Me.bwDoInstall.ReportProgress(0, New Object() {0, "Installing Files"})
+                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(18, "Installing Files")})
                         LogWrite(String.Format("--- Main: Installing Files ({0})", Now))
                         Me.bwDoInstall.ReportProgress(8, _NewFiles.Files.Count)
                         counter = 0
                         Dim installedFiles As Integer = 0
                         For Stage As Integer = 1 To If(CheckIfWindows, 1, 2) ' Stage 2 = second pass for Mono
                             If Stage = 2 Then
-                                Me.bwDoInstall.ReportProgress(0, New Object() {0, "Installing Mono Specific Files"})
+                                Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(19, "Installing Mono Specific Files")})
                                 LogWrite(String.Format("--- Main: Installing Mono Specific Files ({0})", Now))
                             End If
 
@@ -766,7 +765,7 @@ Public Class frmMainSetup
                                         hash = GetHash(spath)
                                         If Not hash = f.Hash Then
                                             LogWrite(String.Format("*** Main: WARNING File Hash Not Correct : {0}", dpath))
-                                            Me.bwDoInstall.ReportProgress(0, New Object() {3, "WARNING File Hash Not Correct", dpath})
+                                            Me.bwDoInstall.ReportProgress(0, New Object() {3, MyLang.GetString(20, "WARNING File Hash Not Correct"), dpath})
                                             Return True
                                         End If
                                         If File.Exists(dpath) Then
@@ -820,12 +819,12 @@ Public Class frmMainSetup
                                         File.Copy(spath, dpath)
                                         installedFiles += 1
                                     Catch ex As Exception
-                                        Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0} {1}", dpath, ex.Message))
+                                        Me.bwDoInstall.ReportProgress(7, String.Format(MyLang.GetString(21, "Error: {0} {1}"), dpath, ex.Message))
                                         LogWrite(String.Format("--- Error: {0}", ex.Message))
                                         LogWrite(ex.StackTrace)
                                         Return True
                                     End Try
-                                    Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Installed: {0}", f.Filename)})
+                                    Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format(MyLang.GetString(22, "Installed: {0}"), f.Filename)})
                                 End If
                                 counter += 1
                                 f.NeedInstall = False
@@ -838,7 +837,7 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(9, Nothing)
                     End If
                 Catch ex As Exception
-                    Me.bwDoInstall.ReportProgress(7, String.Format("Error: {0}", ex.Message))
+                    Me.bwDoInstall.ReportProgress(7, String.Format(MyLang.GetString(23, "Error: {0}"), ex.Message))
                     LogWrite(String.Format("--- Error: {0}", ex.Message))
                     LogWrite(ex.StackTrace)
                     Return True
@@ -853,7 +852,7 @@ Public Class frmMainSetup
             Try
                 If bwDoInstall.CancellationPending Then Return False
 
-                Me.bwDoInstall.ReportProgress(0, New Object() {2, "Preparing For Ember Configuration"})
+                Me.bwDoInstall.ReportProgress(0, New Object() {2, MyLang.GetString(24, "Preparing For Ember Configuration")})
                 Me.bwDoInstall.ReportProgress(9, Nothing)
                 If Not Final Then
                     LogWrite(String.Format("--- Main: INFO: SETUP {0}", AppPath))
@@ -892,7 +891,7 @@ Public Class frmMainSetup
                 System.Threading.Thread.Sleep(3000)
                 If bwDoInstall.CancellationPending Then Return False
                 pnlProgress.Visible = False
-                Me.bwDoInstall.ReportProgress(5, "Build UpdateTasks")
+                Me.bwDoInstall.ReportProgress(5, MyLang.GetString(25, "Building Update Tasks"))
                 LogWrite(String.Format("*** Main: Commands START"))
                 'Dim cmds As New Commands(emberPath)
                 'Dim dbExist As Boolean = File.Exists(Path.Combine(emberPath, "Media.emm"))
@@ -908,7 +907,7 @@ Public Class frmMainSetup
                 Dim HaveCommands As Boolean = False
                 For Each f As FileInfo In fis
                     If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
-                        Me.bwDoInstall.ReportProgress(5, String.Format("Executing Commands for Version: {0}", f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
+                        Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Version: {0}"), f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
                         xmlSer = New XmlSerializer(GetType(InstallCommands))
                         Using xmlSW As New StreamReader(f.FullName)
                             _cmds = xmlSer.Deserialize(xmlSW)
@@ -947,7 +946,7 @@ Public Class frmMainSetup
 
         '###################################################################################
         Else
-            Me.bwDoInstall.ReportProgress(2, "No Installation Path Found") '  Error
+            Me.bwDoInstall.ReportProgress(2, MyLang.GetString(27, "No Installation Path Found")) '  Error
         'No Instalation Path, This never should happen
         End If
         Return True
@@ -1096,8 +1095,15 @@ Public Class frmMainSetup
                         Force = True
                 End Select
             Next
-
+            MyLang.Languages.Add("English_(en_US)")
             MyLang.LoadLanguage("English_(en_US)")
+            Me.Text = MyLang.GetString(43, "Setup - Ember Media Manager")
+            Me.btnRunEmber.Text = MyLang.GetString(42, "Start Ember Media Manager")
+            Me.btnInstall.Text = MyLang.GetString(39, "Install")
+            Me.btnExit.Text = MyLang.GetString(38, "Exit")
+            Me.btnOptions.Text = MyLang.GetString(40, "Change Options")
+            Me.emmNotify.Text = MyLang.GetString(41, "EmberMM Setup")
+            Me.llAbout.Text = MyLang.GetString(36, "About")
 
             If Final Then
                 LogoStop = False
@@ -1124,7 +1130,7 @@ Public Class frmMainSetup
                 lblStatus.TextAlign = ContentAlignment.MiddleCenter
                 lblStatus.ForeColor = Color.Blue
                 lblStatus.Font = New Font("Arial", 11, FontStyle.Bold)
-                lblStatus.Text = "Loading Settings"
+                lblStatus.Text = MyLang.GetString(27, "Loading Settings")
                 lblInfo.Text = ""
                 btnInstall.Enabled = False
                 btnOptions.Enabled = False
@@ -1141,7 +1147,7 @@ Public Class frmMainSetup
                     p = Process.GetProcessesByName("EmberSetup")
                     If p.Count > 1 Then
                         Dim w = New dlgCommands
-                        w.lblStatus.Text = "Can Only Run ONE Setup Instance"
+                        w.lblStatus.Text = MyLang.GetString(28, "Can Only Run ONE Setup Instance")
                         w.TopMost = True
                         w.Show()
                         Me.Refresh()
@@ -1182,10 +1188,10 @@ Public Class frmMainSetup
                     CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
                     LogWrite(String.Format("--- Main: Found Ember Platform: {0}", CurrentEmberPlatform))
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
-                    lblInfo.Text = String.Format("We have found a EMM Installation in {0}", vbCrLf)
+                    lblInfo.Text = String.Format(MyLang.GetString(29, "We have found a EMM Installation in {0}"), vbCrLf)
                     lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
                     If Not Force Then
-                        lblInfo.Text += "If you want to change this please use [Change Options]"
+                        lblInfo.Text += MyLang.GetString(30, "If you want to change this please use [Change Options]")
                     End If
 
                 Else
@@ -1197,12 +1203,12 @@ Public Class frmMainSetup
                     emberPath = If(Not emberPath.EndsWith(Path.DirectorySeparatorChar), String.Concat(emberPath, Path.DirectorySeparatorChar), emberPath)
                     CurrentEmberPlatform = If(Is64Bit, "x64", "x86")
                     lblInfo.TextAlign = ContentAlignment.MiddleCenter
-                    lblInfo.Text = String.Format("No Ember Media Manager Installation Found{0}", vbCrLf)
-                    lblInfo.Text += String.Format("Default Installation Folder{0}", vbCrLf)
+                    lblInfo.Text = String.Format(MyLang.GetString(31, "No Ember Media Manager Installation Found{0}"), vbCrLf)
+                    lblInfo.Text += String.Format(MyLang.GetString(32, "Default Installation Folder{0}"), vbCrLf)
                     lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
-                    lblInfo.Text += "Please use [Change Options] to change the Installation Folder"
+                    lblInfo.Text += MyLang.GetString(33, "Please use [Change Options] to change the Installation Folder")
                 End If
-                lblStatus.Text = "Welcome to Ember Media Manager Installation"
+                lblStatus.Text = MyLang.GetString(34, "Welcome to Ember Media Manager Installation")
             End If
             If Not emberPath = String.Empty AndAlso Not CurrentEmberPlatform = String.Empty Then
                 btnInstall.Enabled = True
@@ -1338,7 +1344,7 @@ Public Class frmMainSetup
         ShowCredits = Not ShowCredits
         If ShowCredits Then
             Timer1.Enabled = False
-            llAbout.Text = "Close"
+            llAbout.Text = MyLang.GetString(35, "Close")
             btnInstall.Tag = btnInstall.Visible
             btnInstall.Visible = False
             btnOptions.Tag = btnOptions.Visible
@@ -1347,7 +1353,7 @@ Public Class frmMainSetup
             PicY = Me.MyBackGround.Height
         Else
             Timer1.Enabled = True
-            llAbout.Text = "About"
+            llAbout.Text = MyLang.GetString(36, "About")
             btnInstall.Visible = btnInstall.Tag
             btnOptions.Visible = btnOptions.Tag
             LogoStop = True
@@ -1440,7 +1446,7 @@ Public Class frmMainSetup
     End Sub
 
     Sub StartWorker()
-        btnExit.Text = "Cancel"
+        btnExit.Text = MyLang.GetString(37, "Cancel")
         btnInstall.Enabled = False
         btnOptions.Enabled = False
         bwDoInstall.WorkerReportsProgress = True
