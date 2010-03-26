@@ -2901,7 +2901,7 @@ doCancel:
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMediaList.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
             End If
@@ -3192,7 +3192,7 @@ doCancel:
     Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
             End If
@@ -3523,7 +3523,7 @@ doCancel:
     Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
             End If
@@ -3781,7 +3781,7 @@ doCancel:
     Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
         Try
 
-            If e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
                 e.Handled = True
                 Return
             End If
