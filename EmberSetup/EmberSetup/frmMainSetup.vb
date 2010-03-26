@@ -55,6 +55,7 @@ Public Class frmMainSetup
     Friend  WithEvents lblInfo As New MyLabel
     Friend  WithEvents lblStatus As New MyLabel
 
+    Private Language As String = "English_(en_US)"
     Private BackAlpha As Integer = 0
     Private BackUp As Boolean = True
     Dim bCredits As Bitmap = Nothing
@@ -1016,6 +1017,7 @@ Public Class frmMainSetup
     End Sub
 
     Private Sub frmMainSetup_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+
         LogWrite(String.Format("*** Main: END {0}", Now))
 
         If bwFF.IsBusy Then
@@ -1037,6 +1039,13 @@ Public Class frmMainSetup
                 LogWrite(ex.StackTrace)
             End Try
         End If
+        If File.Exists(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml")) Then
+            File.Delete(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
+        End If
+        If File.Exists(Path.Combine(frmMainSetup.AppPath, String.Format("Setup.{0}.xml", Language))) Then
+            File.Delete(Path.Combine(frmMainSetup.AppPath, String.Format("Setup.{0}.xml", Language)))
+        End If
+
         End
     End Sub
 
@@ -1095,8 +1104,16 @@ Public Class frmMainSetup
                         Force = True
                 End Select
             Next
-            MyLang.Languages.Add("English_(en_US)")
-            MyLang.LoadLanguage("English_(en_US)")
+
+            'MyLang.Languages.Add(Language)
+            'MyLang.Save()
+
+            MyLang.GetFromSite()
+            MyLang.Load()
+            If MyLang.Languages.Count > 1 Then
+                MyLang.LoadLanguage(Language)
+            End If
+
             Me.Text = MyLang.GetString(43, "Setup - Ember Media Manager")
             Me.btnRunEmber.Text = MyLang.GetString(42, "Start Ember Media Manager")
             Me.btnInstall.Text = MyLang.GetString(39, "Install")

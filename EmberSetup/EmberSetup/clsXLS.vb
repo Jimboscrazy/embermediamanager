@@ -169,7 +169,7 @@ End Class
 
 Public Class Langs
     Private Shared htStrings As New Hashtable
-    Public Languages As List(Of String)
+    Public Languages As New List(Of String)
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Try
             If IsNothing(htStrings) Then
@@ -187,12 +187,9 @@ Public Class Langs
     Public Function LangExist(ByVal Language As String) As String
         Dim lPath As String = String.Empty
         Try
-            lPath = String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.", Language, ".xml")
+            lPath = Path.Combine(frmMainSetup.AppPath, String.Format("Setup.{0}.xml", Language))
             If Not File.Exists(lPath) Then
-                lPath = String.Concat(frmMainSetup.AppPath, "EmberSetup.", Language, ".xml")
-                If Not File.Exists(lPath) Then
-                    lPath = String.Empty
-                End If
+                lPath = String.Empty
             End If
         Catch ex As Exception
         End Try
@@ -230,15 +227,27 @@ Public Class Langs
 
     End Sub
     Public Sub Save()
-        Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
-        Using xmlSW As New StreamWriter(String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.Languages.xml"))
-            xmlSer.Serialize(xmlSW, Me)
-        End Using
+        Try
+            Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+            Using xmlSW As New StreamWriter(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
+                xmlSer.Serialize(xmlSW, Languages)
+            End Using
+
+        Catch ex As Exception
+        End Try
     End Sub
     Public Sub Load()
-        Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
-        Using xmlSW As New StreamReader(String.Concat(frmMainSetup.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Setup.Languages.xml"))
-            Languages = xmlSer.Deserialize(xmlSW)
-        End Using
+        Try
+            If File.Exists(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml")) Then
+                Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+                Using xmlSW As New StreamReader(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
+                    Languages = xmlSer.Deserialize(xmlSW)
+                End Using
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+    Public Sub GetFromSite()
+
     End Sub
 End Class
