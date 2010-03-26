@@ -1105,8 +1105,8 @@ Public Class frmMainSetup
                 End Select
             Next
 
-            'MyLang.Languages.Add(Language)
-            'MyLang.Save()
+            MyLang.Languages.Add(Language)
+            MyLang.Save()
 
             MyLang.GetFromSite()
             MyLang.Load()
