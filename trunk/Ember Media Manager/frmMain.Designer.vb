@@ -2027,7 +2027,7 @@ Partial Class frmMain
         Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterFileSource.FormattingEnabled = True
-        Me.cbFilterFileSource.Location = New System.Drawing.Point(77, 104)
+        Me.cbFilterFileSource.Location = New System.Drawing.Point(77, 105)
         Me.cbFilterFileSource.Name = "cbFilterFileSource"
         Me.cbFilterFileSource.Size = New System.Drawing.Size(139, 21)
         Me.cbFilterFileSource.TabIndex = 7
@@ -2036,7 +2036,7 @@ Partial Class frmMain
         '
         Me.chkFilterLock.AutoSize = True
         Me.chkFilterLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFilterLock.Location = New System.Drawing.Point(80, 18)
+        Me.chkFilterLock.Location = New System.Drawing.Point(76, 18)
         Me.chkFilterLock.Name = "chkFilterLock"
         Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterLock.TabIndex = 2
@@ -2047,9 +2047,9 @@ Partial Class frmMain
         '
         Me.GroupBox2.Controls.Add(Me.rbFilterAnd)
         Me.GroupBox2.Controls.Add(Me.rbFilterOr)
-        Me.GroupBox2.Location = New System.Drawing.Point(148, 10)
+        Me.GroupBox2.Location = New System.Drawing.Point(137, 10)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(68, 43)
+        Me.GroupBox2.Size = New System.Drawing.Size(79, 43)
         Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Modifier"
@@ -2095,7 +2095,7 @@ Partial Class frmMain
         Me.cbFilterYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYear.FormattingEnabled = True
         Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
-        Me.cbFilterYear.Location = New System.Drawing.Point(130, 80)
+        Me.cbFilterYear.Location = New System.Drawing.Point(130, 81)
         Me.cbFilterYear.Name = "cbFilterYear"
         Me.cbFilterYear.Size = New System.Drawing.Size(69, 21)
         Me.cbFilterYear.TabIndex = 6
@@ -2117,7 +2117,7 @@ Partial Class frmMain
         Me.cbFilterYearMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbFilterYearMod.FormattingEnabled = True
         Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
-        Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 80)
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 81)
         Me.cbFilterYearMod.Name = "cbFilterYearMod"
         Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
         Me.cbFilterYearMod.TabIndex = 5
@@ -2136,7 +2136,7 @@ Partial Class frmMain
         '
         Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilterGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 58)
+        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 56)
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
         Me.txtFilterGenre.Size = New System.Drawing.Size(166, 22)
@@ -2156,7 +2156,7 @@ Partial Class frmMain
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(6, 60)
+        Me.Label3.Location = New System.Drawing.Point(6, 58)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(41, 13)
         Me.Label3.TabIndex = 31
