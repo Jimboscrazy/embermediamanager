@@ -95,11 +95,40 @@ Public Class Trailers
                 Me.GetTrailers(ImdbID, True)
 
                 If Me._TrailerList.Count > 0 Then
-                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0).ToString, sPath, False, "trailer")
-                    If Not String.IsNullOrEmpty(tURL) Then
-                        'delete any other trailer if enabled in settings and download successful
-                        If Master.eSettings.DeleteAllTrailers Then
-                            Me.DeleteTrailers(sPath, tURL)
+
+                    Dim tLink As String = String.Empty
+                    If Regex.IsMatch(Me._TrailerList.Item(0).ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                        Dim YT As New YouTube.Scraper
+                        YT.GetVideoLinks(Me._TrailerList.Item(0).ToString)
+                        If YT.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
+                            tLink = YT.VideoLinks(Master.eSettings.PreferredTrailerQuality).URL
+                        Else
+                            Select Case Master.eSettings.PreferredTrailerQuality
+                                Case Enums.TrailerQuality.HD1080p
+                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.Standard) Then
+                                        tLink = YT.VideoLinks(Enums.TrailerQuality.Standard).URL
+                                    End If
+                                Case Enums.TrailerQuality.HD720p
+                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.Standard) Then
+                                        tLink = YT.VideoLinks(Enums.TrailerQuality.Standard).URL
+                                    End If
+                                Case Enums.TrailerQuality.Standard
+                                    tLink = String.Empty
+                            End Select
+                        End If
+                    Else
+                        tLink = Me._TrailerList.Item(0).ToString
+                    End If
+
+                    If Not String.IsNullOrEmpty(tLink) Then
+                        tURL = WebPage.DownloadFile(tLink, sPath, False, "trailer")
+                        If Not String.IsNullOrEmpty(tURL) Then
+                            'delete any other trailer if enabled in settings and download successful
+                            If Master.eSettings.DeleteAllTrailers Then
+                                Me.DeleteTrailers(sPath, tURL)
+                            End If
                         End If
                     End If
                 End If
