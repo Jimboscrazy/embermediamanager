@@ -348,7 +348,7 @@ Public Class APIXML
     Public Shared Function GetRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
+            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
                 Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)

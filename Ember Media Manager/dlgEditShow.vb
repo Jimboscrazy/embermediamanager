@@ -661,7 +661,7 @@ Public Class dlgEditShow
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
             Try
-                If APIXML.RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower).Descendants("tv").Count > 0 Then
+                If Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower).Descendants("tv").Count > 0 Then
                     Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currShow.TVShow.MPAA))
                     Me.lbMPAA.SelectedIndex = l
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
