@@ -1105,9 +1105,6 @@ Public Class frmMainSetup
                 End Select
             Next
 
-            MyLang.Languages.Add(Language)
-            MyLang.Save()
-
             MyLang.GetFromSite()
             MyLang.Load()
             If MyLang.Languages.Count > 1 Then
