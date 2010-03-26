@@ -88,12 +88,18 @@ Public Class dlgSettings
         TSBs.Add(TSB)
 
         If TSBs.Count > 0 Then
+            Dim spacerMod As Integer = 4
+
             'calculate the spacer width
             For Each tsbWidth As ToolStripButton In TSBs
                 ButtonsWidth += tsbWidth.Width
             Next
 
-            Dim sSpacer As String = New String(Convert.ToChar(" "), Convert.ToInt32(((Me.ToolStrip1.Width - ButtonsWidth) / (TSBs.Count + 1)) / 4))
+            Using g As Graphics = Me.CreateGraphics
+                spacerMod = Convert.ToInt32(4 * (g.DpiX / 100))
+            End Using
+
+            Dim sSpacer As String = New String(Convert.ToChar(" "), Convert.ToInt32(((Me.ToolStrip1.Width - ButtonsWidth) / (TSBs.Count + 1)) / spacermod))
 
             'add it all
             For Each tButton As ToolStripButton In TSBs.OrderBy(Function(b) Convert.ToInt32(b.Tag))
@@ -3525,13 +3531,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-        If Functions.CheckIfWindows Then
-            Me.Height = 675
-        Else
-            ' *** MONO issues
-            Me.Height = 930
-            Me.Width = 980
-        End If
 
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")

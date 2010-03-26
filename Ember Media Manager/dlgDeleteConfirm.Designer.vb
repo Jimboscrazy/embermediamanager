@@ -98,8 +98,8 @@ Partial Class dlgDeleteConfirm
         'dlgDeleteConfirm
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(508, 326)
         Me.Controls.Add(Me.OK_Button)
@@ -107,6 +107,7 @@ Partial Class dlgDeleteConfirm
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.lblNodeSelected)
         Me.Controls.Add(Me.tvwFiles)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgDeleteConfirm"

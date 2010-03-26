@@ -221,7 +221,7 @@ Partial Class dlgImgSelect
         Me.chkThumb.AutoSize = True
         Me.chkThumb.Location = New System.Drawing.Point(231, 8)
         Me.chkThumb.Name = "chkThumb"
-        Me.chkThumb.Size = New System.Drawing.Size(107, 17)
+        Me.chkThumb.Size = New System.Drawing.Size(111, 17)
         Me.chkThumb.TabIndex = 9
         Me.chkThumb.Text = "Check All Thumb"
         Me.chkThumb.UseVisualStyleBackColor = True
@@ -231,7 +231,7 @@ Partial Class dlgImgSelect
         Me.chkMid.AutoSize = True
         Me.chkMid.Location = New System.Drawing.Point(131, 8)
         Me.chkMid.Name = "chkMid"
-        Me.chkMid.Size = New System.Drawing.Size(91, 17)
+        Me.chkMid.Size = New System.Drawing.Size(96, 17)
         Me.chkMid.TabIndex = 7
         Me.chkMid.Text = "Check All Mid"
         Me.chkMid.UseVisualStyleBackColor = True
@@ -241,7 +241,7 @@ Partial Class dlgImgSelect
         Me.chkOriginal.AutoSize = True
         Me.chkOriginal.Location = New System.Drawing.Point(7, 8)
         Me.chkOriginal.Name = "chkOriginal"
-        Me.chkOriginal.Size = New System.Drawing.Size(109, 17)
+        Me.chkOriginal.Size = New System.Drawing.Size(118, 17)
         Me.chkOriginal.TabIndex = 8
         Me.chkOriginal.Text = "Check All Original"
         Me.chkOriginal.UseVisualStyleBackColor = True
@@ -400,8 +400,8 @@ Partial Class dlgImgSelect
         'dlgImgSelect
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(836, 545)
@@ -410,6 +410,7 @@ Partial Class dlgImgSelect
         Me.Controls.Add(Me.pnlDLStatus)
         Me.Controls.Add(Me.pnlBG)
         Me.Controls.Add(Me.pnlBottomMain)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

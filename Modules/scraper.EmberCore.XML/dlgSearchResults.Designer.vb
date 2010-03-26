@@ -282,7 +282,7 @@ Partial Class dlgSearchResults
         '
         Me.txtSearch.Location = New System.Drawing.Point(4, 71)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(252, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(252, 22)
         Me.txtSearch.TabIndex = 66
         '
         'pnlLoading
@@ -301,7 +301,7 @@ Partial Class dlgSearchResults
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(3, 10)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(94, 13)
+        Me.Label3.Size = New System.Drawing.Size(98, 13)
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "Searching IMDB..."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -318,10 +318,10 @@ Partial Class dlgSearchResults
         'dlgSearchResults
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 426)
+        Me.ClientSize = New System.Drawing.Size(643, 424)
         Me.ControlBox = False
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -343,6 +343,7 @@ Partial Class dlgSearchResults
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.pbPoster)
         Me.Controls.Add(Me.tvResults)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MaximumSize = New System.Drawing.Size(649, 452)
