@@ -48,10 +48,10 @@ Partial Class dlgFIStreamEditor
         Me.Label6 = New System.Windows.Forms.Label
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
         Me.rbExternal = New System.Windows.Forms.RadioButton
         Me.rbEmbedded = New System.Windows.Forms.RadioButton
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -266,6 +266,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
+        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(24, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(191, 194)
@@ -276,6 +277,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label9
         '
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.Location = New System.Drawing.Point(3, 75)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(68, 19)
@@ -294,6 +296,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label7
         '
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.Location = New System.Drawing.Point(3, 48)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(68, 19)
@@ -312,6 +315,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label6
         '
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(3, 21)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(68, 19)
@@ -345,27 +349,6 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox3.Text = "Subtitle  Streams"
         Me.GroupBox3.Visible = False
         '
-        'Label10
-        '
-        Me.Label10.Location = New System.Drawing.Point(5, 21)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(71, 19)
-        Me.Label10.TabIndex = 22
-        Me.Label10.Text = "Language"
-        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbSubsLanguage
-        '
-        Me.cbSubsLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.cbSubsLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbSubsLanguage.DropDownWidth = 120
-        Me.cbSubsLanguage.FormattingEnabled = True
-        Me.cbSubsLanguage.Location = New System.Drawing.Point(79, 21)
-        Me.cbSubsLanguage.Name = "cbSubsLanguage"
-        Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbSubsLanguage.Sorted = True
-        Me.cbSubsLanguage.TabIndex = 21
-        '
         'rbExternal
         '
         Me.rbExternal.AutoSize = True
@@ -391,17 +374,39 @@ Partial Class dlgFIStreamEditor
         Me.rbEmbedded.Text = "Embedded"
         Me.rbEmbedded.UseVisualStyleBackColor = True
         '
+        'Label10
+        '
+        Me.Label10.Location = New System.Drawing.Point(5, 21)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(71, 19)
+        Me.Label10.TabIndex = 22
+        Me.Label10.Text = "Language"
+        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbSubsLanguage
+        '
+        Me.cbSubsLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbSubsLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbSubsLanguage.DropDownWidth = 120
+        Me.cbSubsLanguage.FormattingEnabled = True
+        Me.cbSubsLanguage.Location = New System.Drawing.Point(79, 21)
+        Me.cbSubsLanguage.Name = "cbSubsLanguage"
+        Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
+        Me.cbSubsLanguage.Sorted = True
+        Me.cbSubsLanguage.TabIndex = 21
+        '
         'dlgFIStreamEditor
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(241, 247)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

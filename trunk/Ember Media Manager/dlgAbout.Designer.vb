@@ -26,6 +26,7 @@ Partial Class dlgAbout
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgAbout))
         Me.OKButton = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.pbAllHTPC = New System.Windows.Forms.PictureBox
         Me.pbYouTube = New System.Windows.Forms.PictureBox
         Me.pbXBMC = New System.Windows.Forms.PictureBox
         Me.pbMPDB = New System.Windows.Forms.PictureBox
@@ -35,8 +36,8 @@ Partial Class dlgAbout
         Me.pbIMPA = New System.Windows.Forms.PictureBox
         Me.pbTMDB = New System.Windows.Forms.PictureBox
         Me.picDisplay = New System.Windows.Forms.PictureBox
-        Me.pbAllHTPC = New System.Windows.Forms.PictureBox
         Me.Panel1.SuspendLayout()
+        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbYouTube, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -46,7 +47,6 @@ Partial Class dlgAbout
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OKButton
@@ -77,6 +77,17 @@ Partial Class dlgAbout
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(422, 114)
         Me.Panel1.TabIndex = 8
+        '
+        'pbAllHTPC
+        '
+        Me.pbAllHTPC.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbAllHTPC.Image = CType(resources.GetObject("pbAllHTPC.Image"), System.Drawing.Image)
+        Me.pbAllHTPC.Location = New System.Drawing.Point(159, 71)
+        Me.pbAllHTPC.Name = "pbAllHTPC"
+        Me.pbAllHTPC.Size = New System.Drawing.Size(91, 38)
+        Me.pbAllHTPC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAllHTPC.TabIndex = 18
+        Me.pbAllHTPC.TabStop = False
         '
         'pbYouTube
         '
@@ -181,27 +192,16 @@ Partial Class dlgAbout
         Me.picDisplay.TabIndex = 10
         Me.picDisplay.TabStop = False
         '
-        'pbAllHTPC
-        '
-        Me.pbAllHTPC.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbAllHTPC.Image = CType(resources.GetObject("pbAllHTPC.Image"), System.Drawing.Image)
-        Me.pbAllHTPC.Location = New System.Drawing.Point(159, 71)
-        Me.pbAllHTPC.Name = "pbAllHTPC"
-        Me.pbAllHTPC.Size = New System.Drawing.Size(91, 38)
-        Me.pbAllHTPC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAllHTPC.TabIndex = 18
-        Me.pbAllHTPC.TabStop = False
-        '
         'dlgAbout
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(435, 370)
         Me.Controls.Add(Me.picDisplay)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.OKButton)
         Me.DoubleBuffered = True
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -212,6 +212,7 @@ Partial Class dlgAbout
         Me.Text = "About Ember Media Manager"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbYouTube, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).EndInit()
@@ -221,7 +222,6 @@ Partial Class dlgAbout
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picDisplay, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

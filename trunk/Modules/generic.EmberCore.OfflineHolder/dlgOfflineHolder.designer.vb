@@ -501,8 +501,8 @@ Partial Class dlgOfflineHolder
         'dlgOfflineHolder
         '
         Me.AcceptButton = Me.CLOSE_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(727, 540)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -516,6 +516,7 @@ Partial Class dlgOfflineHolder
         Me.Controls.Add(Me.tbTagLine)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.CLOSE_Button)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -533,6 +534,7 @@ Partial Class dlgOfflineHolder
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
     End Sub
 
     #End Region 'Methods

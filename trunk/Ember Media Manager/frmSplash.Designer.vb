@@ -75,14 +75,15 @@ Partial Class frmSplash
         '
         'frmSplash
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(310, 312)
         Me.ControlBox = False
         Me.Controls.Add(Me.pbLoading)
         Me.Controls.Add(Me.txtStage)
         Me.Controls.Add(Me.Version)
         Me.Controls.Add(Me.PictureBox1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.MinimizeBox = False

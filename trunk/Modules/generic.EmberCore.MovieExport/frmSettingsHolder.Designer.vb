@@ -59,8 +59,8 @@ Partial Class frmSettingsHolder
         '
         'frmSettingsHolder
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(625, 342)
         Me.Controls.Add(Me.pnlSettings)

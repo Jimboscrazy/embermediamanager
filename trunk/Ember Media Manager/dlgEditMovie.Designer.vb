@@ -1251,8 +1251,8 @@ Partial Class dlgEditMovie
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
         Me.Controls.Add(Me.btnClearCache)
@@ -1263,6 +1263,7 @@ Partial Class dlgEditMovie
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.TabControl1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

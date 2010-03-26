@@ -24,6 +24,9 @@ Partial Class frmXMLSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.pnlLoading = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btnPopulate = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.cbScraper = New System.Windows.Forms.ComboBox
         Me.Panel1 = New System.Windows.Forms.Panel
@@ -31,12 +34,9 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
-        Me.btnPopulate = New System.Windows.Forms.Button
-        Me.pnlLoading = New System.Windows.Forms.Panel
-        Me.Label3 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
-        Me.Panel1.SuspendLayout()
         Me.pnlLoading.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -50,6 +50,36 @@ Partial Class frmXMLSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
+        '
+        'pnlLoading
+        '
+        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLoading.Controls.Add(Me.Label3)
+        Me.pnlLoading.Location = New System.Drawing.Point(41, 97)
+        Me.pnlLoading.Name = "pnlLoading"
+        Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
+        Me.pnlLoading.TabIndex = 86
+        Me.pnlLoading.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.DarkRed
+        Me.Label3.Location = New System.Drawing.Point(40, 12)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(117, 15)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = "Loading Please Wait"
+        '
+        'btnPopulate
+        '
+        Me.btnPopulate.Location = New System.Drawing.Point(86, 68)
+        Me.btnPopulate.Name = "btnPopulate"
+        Me.btnPopulate.Size = New System.Drawing.Size(129, 23)
+        Me.btnPopulate.TabIndex = 85
+        Me.btnPopulate.Text = "Populate Scrapers"
+        Me.btnPopulate.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -123,40 +153,10 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
-        'btnPopulate
-        '
-        Me.btnPopulate.Location = New System.Drawing.Point(86, 68)
-        Me.btnPopulate.Name = "btnPopulate"
-        Me.btnPopulate.Size = New System.Drawing.Size(129, 23)
-        Me.btnPopulate.TabIndex = 85
-        Me.btnPopulate.Text = "Populate Scrapers"
-        Me.btnPopulate.UseVisualStyleBackColor = True
-        '
-        'pnlLoading
-        '
-        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Location = New System.Drawing.Point(41, 97)
-        Me.pnlLoading.Name = "pnlLoading"
-        Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
-        Me.pnlLoading.TabIndex = 86
-        Me.pnlLoading.Visible = False
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.DarkRed
-        Me.Label3.Location = New System.Drawing.Point(40, 12)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(117, 15)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Loading Please Wait"
-        '
         'frmXMLSettingsHolder
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(652, 388)
         Me.Controls.Add(Me.pnlSettings)
@@ -170,10 +170,10 @@ Partial Class frmXMLSettingsHolder
         Me.Text = "Setup"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

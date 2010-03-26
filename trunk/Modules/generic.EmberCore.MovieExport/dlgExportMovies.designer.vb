@@ -222,7 +222,7 @@ Partial Class dlgExportMovies
         '
         Me.txtSearch.Location = New System.Drawing.Point(72, 4)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(123, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(123, 22)
         Me.txtSearch.TabIndex = 1
         '
         'Label2
@@ -339,21 +339,22 @@ Partial Class dlgExportMovies
         Me.lstSources.FormattingEnabled = True
         Me.lstSources.Location = New System.Drawing.Point(286, 442)
         Me.lstSources.Name = "lstSources"
-        Me.lstSources.Size = New System.Drawing.Size(123, 94)
+        Me.lstSources.Size = New System.Drawing.Size(123, 89)
         Me.lstSources.TabIndex = 9
         Me.lstSources.Visible = False
         '
         'dlgExportMovies
         '
         Me.AcceptButton = Me.Save_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(1035, 550)
         Me.Controls.Add(Me.lstSources)
         Me.Controls.Add(Me.pnlBottomMain)
         Me.Controls.Add(Me.pnlBG)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -369,6 +370,7 @@ Partial Class dlgExportMovies
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlBG.ResumeLayout(False)
         Me.ResumeLayout(False)
+
     End Sub
 
     #End Region 'Methods

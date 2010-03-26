@@ -76,7 +76,7 @@ Partial Class dlgSortFiles
         '
         Me.GroupBox1.Controls.Add(Me.lblStatus)
         Me.GroupBox1.Controls.Add(Me.pbStatus)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(12, 55)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(411, 79)
@@ -118,8 +118,8 @@ Partial Class dlgSortFiles
         '
         'dlgSortFiles
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(435, 169)
         Me.Controls.Add(Me.Label1)
@@ -128,6 +128,7 @@ Partial Class dlgSortFiles
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.txtPath)
         Me.Controls.Add(Me.btnBrowse)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

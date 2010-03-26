@@ -151,13 +151,14 @@ Partial Class dlgBulkOfflineHolder
         'dlgBulkOfflineHolder
         '
         Me.AcceptButton = Me.CLOSE_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(643, 420)
         Me.Controls.Add(Me.dgvCSV)
         Me.Controls.Add(Me.Create_Button)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.CLOSE_Button)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -169,6 +170,7 @@ Partial Class dlgBulkOfflineHolder
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvCSV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+
     End Sub
 
     #End Region 'Methods
