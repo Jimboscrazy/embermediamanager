@@ -129,8 +129,8 @@ Only a handful of settings will be covered in this wizard. You can change these 
   <data name="btnMovieRem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6gAA
-        CuoBUMzvvgAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
         Kfy/bqW7Bd2QG3YGjZd1lf9f1lH6f8PesPf/wZmMIDVgA656WHGd1lH+f1xRGoxPqcv9v2iJMOSyrUHj
         aW0loJwUGJ/SVPx/3kzbFG7ATk4uxgOK0j0HlGX+gzFQ0SE1uf9nLHVXnLM3rDmqrfh/P1AMLq8kvf+A
         rAQ33ACYc3cqy/TuUJL+vxOIdyhI/d8DdMk+LcX/2xUkIWIQuf1LNBVZYHowYmAj0JANQIVgDLR1PdAg
@@ -144,8 +144,8 @@ Only a handful of settings will be covered in this wizard. You can change these 
   <data name="btnMovieAddFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6gAA
-        CuoBUMzvvgAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
         zOsslWLdzMjMJCjDaWoPywdzrfA+15zOy9zV7cw5zXbO2fj13wFHom8e+HI48P9/zv+c/zk8ALz1FJjs
         maqKpI1PEhiTLJ42Pye9iKcttfG0tc5fgsf86thaN+IA92BeKGuWsV7bS3hna+G1v4bX8QY+qgE+ZyN8
         riauP+ZPpTNObPwf4oD5vuxwxvAI7MxDsMYqsKYasObH8Fpk8FqfwQ/7Zp9iwdIFB7VotNtnJU4nFeyf

@@ -112,7 +112,7 @@
   <string id="110">Refreshing Media:</string>
   <string id="111">Unable to load directories. Please check settings.</string>
   <string id="112">Runtime: {0}</string>
-  <string id="113"></string>
+  <string id="113">Now select the default language you would like Ember to look for when scraping TV Show items.</string>
   <string id="114"></string>
   <string id="115"></string>
   <string id="116">Performing Preliminary Tasks (Gathering Data)...</string>

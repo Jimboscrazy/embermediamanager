@@ -22,6 +22,8 @@ Imports System.IO
 
 Public Class dlgWizard
 
+    Private tLangList As New List(Of Containers.TVLanguage)
+
     #Region "Methods"
 
     Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
@@ -156,6 +158,12 @@ Public Class dlgWizard
         Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
         Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
         Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+        End If
     End Sub
 
     Private Sub LoadIntLangs()
@@ -344,6 +352,17 @@ Public Class dlgWizard
         Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
         Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
         Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
+        If tLangList.Count > 0 Then
+            Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Not String.IsNullOrEmpty(tLang) Then
+                Master.eSettings.TVDBLanguage = tLang
+            Else
+                Master.eSettings.TVDBLanguage = "en"
+            End If
+        Else
+            Master.eSettings.TVDBLanguage = "en"
+        End If
+        Master.eSettings.TVDBLanguages = Me.tLangList
     End Sub
 
     Private Sub SetUp()
@@ -383,6 +402,18 @@ Public Class dlgWizard
         Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
         Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
         Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
+        Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
+        Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
+    End Sub
+
+    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+        End If
     End Sub
 
     #End Region 'Methods
