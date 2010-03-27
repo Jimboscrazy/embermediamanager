@@ -210,7 +210,8 @@ Public Class dlgSearchResults
             Dim selNode As New TreeNode
 
             For c = 0 To M.Count - 1
-                TnP.Nodes.Add(New TreeNode() With {.Tag = c, .Text = String.Concat(M(c).Title, If(Not String.IsNullOrEmpty(M(c).Year.ToString), String.Format(" ({0})", M(c).Year), String.Empty))})
+                Dim title As String = Web.HttpUtility.HtmlDecode(M(c).Title)
+                TnP.Nodes.Add(New TreeNode() With {.Tag = c, .Text = String.Concat(title, If(Not String.IsNullOrEmpty(M(c).Year.ToString), String.Format(" ({0})", M(c).Year), String.Empty))})
             Next
             TnP.Expand()
             Me.tvResults.Nodes.Add(TnP)
@@ -229,9 +230,9 @@ Public Class dlgSearchResults
         Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
         Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:")
+        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+        Me.Label3.Text = Master.eLang.GetString(568, "Searching ...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -259,12 +260,13 @@ Public Class dlgSearchResults
             Me.ClearInfo()
             'Me.OK_Button.Enabled = False
             Me.OK_Button.Enabled = True
-            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-                Me.pnlLoading.Visible = True
-                Me.tmrWait.Enabled = True
-            Else
-                Me.pnlLoading.Visible = False
-            End If
+            Me.pnlLoading.Visible = False
+            'If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+            'Me.pnlLoading.Visible = True
+            'Me.tmrWait.Enabled = True
+            'Else
+            'Me.pnlLoading.Visible = False
+            'End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
