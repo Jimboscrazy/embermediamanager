@@ -522,7 +522,7 @@ Public Class frmMainSetup
             e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
         Next
         SlowDown += 1
-        If SlowDown > 8 Then
+        If SlowDown > 5 Then
             PicY -= 1
             SlowDown = 0
         End If
@@ -1370,11 +1370,14 @@ Public Class frmMainSetup
         ShowCredits = Not ShowCredits
         If ShowCredits Then
             Timer1.Enabled = False
-            llAbout.Text = MyLang.GetString(35, "Close")
+            llAbout.Text = MyLang.GetString(35, "Back")
             btnInstall.Tag = btnInstall.Visible
             btnInstall.Visible = False
             btnOptions.Tag = btnOptions.Visible
             btnOptions.Visible = False
+            btnExit.Tag = btnExit.Visible
+            btnExit.Visible = False
+
             LogoStop = False
             PicY = Me.MyBackGround.Height
         Else
@@ -1382,6 +1385,7 @@ Public Class frmMainSetup
             llAbout.Text = MyLang.GetString(36, "About")
             btnInstall.Visible = btnInstall.Tag
             btnOptions.Visible = btnOptions.Tag
+            btnExit.Visible = btnExit.Tag
             LogoStop = True
             Me.Refresh()
         End If
@@ -1396,9 +1400,10 @@ Public Class frmMainSetup
                 If iLogo Is Nothing Then
                     SetupLogo()
                 End If
-                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * 0.735)
+                Dim WaterLine As Double = 0.78
+                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * WaterLine)
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * 0.735), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * 0.265))
+                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * WaterLine), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * (1 - WaterLine)))
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
                 Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
                 Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
