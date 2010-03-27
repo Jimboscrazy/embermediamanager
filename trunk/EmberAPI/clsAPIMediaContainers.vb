@@ -1225,16 +1225,16 @@ Namespace MediaContainers
 
         #Region "Fields"
 
-        Private _actors As New List(Of Person)
-        Private _episodeguideurl As String
-        Private _genre As String
-        Private _id As String
-        Private _mpaa As String
-        Private _plot As String
-        Private _premiered As String
-        Private _rating As String
-        Private _studio As String
         Private _title As String
+        Private _id As String
+        Private _episodeguideurl As String
+        Private _rating As String
+        Private _genre As String
+        Private _mpaa As String
+        Private _premiered As String
+        Private _studio As String
+        Private _plot As String
+        Private _actors As New List(Of Person)
 
         #End Region 'Fields
 
@@ -1248,20 +1248,37 @@ Namespace MediaContainers
 
         #Region "Properties"
 
-        <XmlElement("actor")> _
-        Public Property Actors() As List(Of Person)
+        <XmlElement("title")> _
+        Public Property Title() As String
             Get
-                Return Me._actors
+                Return Me._title
             End Get
-            Set(ByVal Value As List(Of Person))
-                Me._actors = Value
+            Set(ByVal value As String)
+                Me._title = value
             End Set
         End Property
 
-        <XmlIgnore> _
-        Public ReadOnly Property ActorsSpecified() As Boolean
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
             Get
-                Return Me._actors.Count > 0
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("id")> _
+        Public Property ID() As String
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As String)
+                If IsNumeric(value) Then Me._id = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._id)
             End Get
         End Property
 
@@ -1282,6 +1299,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("rating")> _
+        Public Property Rating() As String
+            Get
+                Return Me._rating.Replace(",", ".")
+            End Get
+            Set(ByVal value As String)
+                Me._rating = value.Replace(",", ".")
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
         <XmlElement("genre")> _
         Public Property Genre() As String
             Get
@@ -1296,23 +1330,6 @@ Namespace MediaContainers
         Public ReadOnly Property GenreSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._genre)
-            End Get
-        End Property
-
-        <XmlElement("id")> _
-        Public Property ID() As String
-            Get
-                Return Me._id
-            End Get
-            Set(ByVal value As String)
-                If IsNumeric(value) Then Me._id = value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property IDSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._id)
             End Get
         End Property
 
@@ -1333,6 +1350,40 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("premiered")> _
+        Public Property Premiered() As String
+            Get
+                Return Me._premiered
+            End Get
+            Set(ByVal value As String)
+                Me._premiered = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PremieredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._premiered)
+            End Get
+        End Property
+
+        <XmlElement("studio")> _
+        Public Property Studio() As String
+            Get
+                Return Me._studio
+            End Get
+            Set(ByVal value As String)
+                Me._studio = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StudioSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._studio)
+            End Get
+        End Property
+
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
@@ -1350,75 +1401,24 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("premiered")> _
-        Public Property Premiered() As String
+        <XmlElement("actor")> _
+        Public Property Actors() As List(Of Person)
             Get
-                Return Me._premiered
+                Return Me._actors
             End Get
-            Set(ByVal value As String)
-                Me._premiered = value
+            Set(ByVal Value As List(Of Person))
+                Me._actors = Value
             End Set
         End Property
 
-        <XmlIgnore> _
-        Public ReadOnly Property PremieredSpecified() As Boolean
+        <XmlIgnore()> _
+        Public ReadOnly Property ActorsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._premiered)
+                Return Me._actors.Count > 0
             End Get
         End Property
 
-        <XmlElement("rating")> _
-        Public Property Rating() As String
-            Get
-                Return Me._rating.Replace(",", ".")
-            End Get
-            Set(ByVal value As String)
-                Me._rating = value.Replace(",", ".")
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property RatingSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._rating)
-            End Get
-        End Property
-
-        <XmlElement("studio")> _
-        Public Property Studio() As String
-            Get
-                Return Me._studio
-            End Get
-            Set(ByVal value As String)
-                Me._studio = value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property StudioSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._studio)
-            End Get
-        End Property
-
-        <XmlElement("title")> _
-        Public Property Title() As String
-            Get
-                Return Me._title
-            End Get
-            Set(ByVal value As String)
-                Me._title = value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property TitleSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._title)
-            End Get
-        End Property
-
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property TVDBID() As String
             Get
                 Return Me._id
