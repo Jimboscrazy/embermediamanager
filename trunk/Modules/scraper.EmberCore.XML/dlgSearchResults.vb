@@ -36,7 +36,7 @@ Public Class dlgSearchResults
     Dim UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-
+    Private mList As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
 #End Region 'Fields
 
 #Region "Methods"
@@ -48,7 +48,8 @@ Public Class dlgSearchResults
         '\\
 
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
-        SearchResultsDownloaded(Res)
+        mList = Res
+        SearchResultsDownloaded()
 
         Return MyBase.ShowDialog()
     End Function
@@ -75,20 +76,6 @@ Public Class dlgSearchResults
         e.Result = New Results With {.Result = sHTTP.Image}
     End Sub
 
-    Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-        '//
-        ' Thread finished: display pic if it was able to get one
-        '\\
-
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        Try
-            Me.pbPoster.Image = Res.Result
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Master.tmpMovie.Clear()
 
@@ -99,13 +86,7 @@ Public Class dlgSearchResults
     Private Sub ClearInfo()
         Me.ControlsVisible(False)
         Me.lblTitle.Text = String.Empty
-        Me.lblTagline.Text = String.Empty
         Me.lblYear.Text = String.Empty
-        Me.lblDirector.Text = String.Empty
-        Me.lblGenre.Text = String.Empty
-        Me.txtOutline.Text = String.Empty
-        Me.lblIMDB.Text = String.Empty
-        Me.pbPoster.Image = Nothing
 
         Master.tmpMovie.Clear()
 
@@ -113,18 +94,9 @@ Public Class dlgSearchResults
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
         Me.lblYearHeader.Visible = areVisible
-        Me.lblDirectorHeader.Visible = areVisible
-        Me.lblGenreHeader.Visible = areVisible
-        Me.lblPlotHeader.Visible = areVisible
-        Me.lblIMDBHeader.Visible = areVisible
-        Me.txtOutline.Visible = areVisible
         Me.lblYear.Visible = areVisible
-        Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
-        Me.lblDirector.Visible = areVisible
-        Me.lblGenre.Visible = areVisible
-        Me.lblIMDB.Visible = areVisible
-        Me.pbPoster.Visible = areVisible
+
     End Sub
 
     Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
@@ -164,41 +136,7 @@ Public Class dlgSearchResults
         Me.Close()
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-        '//
-        ' Info downloaded... fill form with data
-        '\\
-
-        Me.pnlLoading.Visible = False
-        Me.OK_Button.Enabled = True
-
-        Try
-            If bSuccess Then
-                Me.ControlsVisible(True)
-                Me.lblTitle.Text = Master.tmpMovie.Title
-                Me.lblTagline.Text = Master.tmpMovie.Tagline
-                Me.lblYear.Text = Master.tmpMovie.Year
-                Me.lblDirector.Text = Master.tmpMovie.Director
-                Me.lblGenre.Text = Master.tmpMovie.Genre
-                Me.txtOutline.Text = Master.tmpMovie.Outline
-                Me.lblIMDB.Text = Master.tmpMovie.IMDBID
-
-                If Not String.IsNullOrEmpty(sPoster) Then
-                    If Me.bwDownloadPic.IsBusy Then
-                        Me.bwDownloadPic.CancelAsync()
-                    End If
-
-                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadPic.WorkerSupportsCancellation = True
-                    Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster})
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub SearchResultsDownloaded(ByVal M As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity))
+    Private Sub SearchResultsDownloaded()
         '//
         ' Process the results that IMDB gave us
         '\\
@@ -206,16 +144,16 @@ Public Class dlgSearchResults
         Try
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
-            Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(297, "Matches ({0})"), M.Count))
+            'Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(297, "Matches ({0})"), mList.Count))
             Dim selNode As New TreeNode
 
-            For c = 0 To M.Count - 1
-                Dim title As String = Web.HttpUtility.HtmlDecode(M(c).Title)
-                TnP.Nodes.Add(New TreeNode() With {.Tag = c, .Text = String.Concat(title, If(Not String.IsNullOrEmpty(M(c).Year.ToString), String.Format(" ({0})", M(c).Year), String.Empty))})
+            For c = 0 To mList.Count - 1
+                Dim title As String = Web.HttpUtility.HtmlDecode(mList(c).Title)
+                Me.tvResults.Nodes.Add(New TreeNode() With {.Tag = c, .Text = String.Concat(title, If(Not String.IsNullOrEmpty(mList(c).Year.ToString), String.Format(" ({0})", mList(c).Year), String.Empty))})
             Next
-            TnP.Expand()
-            Me.tvResults.Nodes.Add(TnP)
-            selNode = TnP.FirstNode
+
+            'Me.tvResults.Nodes.Add(TnP)
+            'selNode = Me.tvResults.Nodes.FirstNode
             Me.pnlLoading.Visible = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -228,10 +166,6 @@ Public Class dlgSearchResults
         Me.Label2.Text = Master.eLang.GetString(285, "View details of each result to find the proper movie.")
         Me.Label1.Text = Master.eLang.GetString(286, "Movie Search Results")
         Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "ID:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Me.Label3.Text = Master.eLang.GetString(568, "Searching ...")
     End Sub
 
@@ -256,18 +190,20 @@ Public Class dlgSearchResults
             SelectIdx = Convert.ToInt32(Me.tvResults.SelectedNode.Tag)
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
-
             Me.ClearInfo()
             'Me.OK_Button.Enabled = False
             Me.OK_Button.Enabled = True
             Me.pnlLoading.Visible = False
+            Dim idx As Integer = Convert.ToInt32(Me.tvResults.SelectedNode.Tag)
+            lblTitle.Text = Web.HttpUtility.HtmlDecode(mList(idx).Title)
+            lblYear.Text = mList(idx).Year.ToString
             'If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
             'Me.pnlLoading.Visible = True
             'Me.tmrWait.Enabled = True
             'Else
             'Me.pnlLoading.Visible = False
             'End If
-
+            ControlsVisible(True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
