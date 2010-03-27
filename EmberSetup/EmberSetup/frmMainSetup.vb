@@ -1289,8 +1289,7 @@ Public Class frmMainSetup
     End Function
 
     Sub InitCredits()
-        CredList.Add(New CredLine With {.Text = "Ember Media Manager v1.0", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
-        'CredList.Add(New CredLine With {.Text = String.Format("Revision: {0}", My.Application.Info.Version.Revision), .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "Ember Media Manager", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = My.Application.Info.Description, .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
@@ -1318,6 +1317,7 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = "Tristan ""sphere"" Fischer"})
         CredList.Add(New CredLine With {.Text = "Bud ""WheresWaldo"" Hammerton"})
         CredList.Add(New CredLine With {.Text = "Wayne ""nitr8"" Humphrey"})
+        CredList.Add(New CredLine With {.Text = "Roberto Lucena"})
         CredList.Add(New CredLine With {.Text = "Brenton McSweyn"})
         CredList.Add(New CredLine With {.Text = "Clay Mitchell"})
         CredList.Add(New CredLine With {.Text = "Adyn Rex"})

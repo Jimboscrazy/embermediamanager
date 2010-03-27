@@ -94,6 +94,7 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = "Tristan ""sphere"" Fischer"})
         CredList.Add(New CredLine With {.Text = "Bud ""WheresWaldo"" Hammerton"})
         CredList.Add(New CredLine With {.Text = "Wayne ""nitr8"" Humphrey"})
+        CredList.Add(New CredLine With {.Text = "Roberto Lucena"})
         CredList.Add(New CredLine With {.Text = "Brenton McSweyn"})
         CredList.Add(New CredLine With {.Text = "Clay Mitchell"})
         CredList.Add(New CredLine With {.Text = "Adyn Rex"})
