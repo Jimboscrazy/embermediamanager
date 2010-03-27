@@ -143,10 +143,6 @@ Public Class Scanner
         End While
     End Sub
 
-    ''' <summary>
-    ''' Check if a directory contains supporting files (nfo, poster)
-    ''' </summary>
-    ''' <param name="sPath">Full path to directory.</param>
     Public Sub GetEpFolderContents(ByRef Episode As EpisodeContainer)
         Dim tmpName As String = String.Empty
         Dim fName As String = String.Empty
@@ -306,8 +302,8 @@ Public Class Scanner
                 End If
 
                 If String.IsNullOrEmpty(Movie.Subs) Then
-                    If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(tmpNameNoStack), "(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) OrElse _
-                                Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(tmpName), "(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) Then
+                    If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(tmpNameNoStack), ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) OrElse _
+                                Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(tmpName), ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) Then
                         Movie.Subs = fFile
                         Continue For
                     End If
@@ -812,7 +808,6 @@ Public Class Scanner
     Public Sub ScanForTVFiles(ByRef tShow As TVShowContainer, ByVal sPath As String)
         Dim di As New DirectoryInfo(sPath)
         Try
-
             For Each lFile As FileInfo In di.GetFiles.Where(Function(f) Not TVPaths.Contains(f.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
                     Not f.Name.ToLower.Contains("-trailer") AndAlso Not f.Name.ToLower.Contains("[trailer") AndAlso Not f.Name.ToLower.Contains("sample") AndAlso _
                     f.Length >= Master.eSettings.SkipLessThan * 1048576).OrderBy(Function(s) s.Name)

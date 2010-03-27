@@ -65,35 +65,6 @@ Partial Class frmMain
         Me.DonateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ErrorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
-        Me.pnlFilter = New System.Windows.Forms.Panel
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.btnIMDBRating = New System.Windows.Forms.Button
-        Me.btnSortTitle = New System.Windows.Forms.Button
-        Me.btnSortDate = New System.Windows.Forms.Button
-        Me.btnClearFilters = New System.Windows.Forms.Button
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.chkFilterTolerance = New System.Windows.Forms.CheckBox
-        Me.chkFilterMissing = New System.Windows.Forms.CheckBox
-        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
-        Me.gbSpecific = New System.Windows.Forms.GroupBox
-        Me.txtFilterSource = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.cbFilterFileSource = New System.Windows.Forms.ComboBox
-        Me.chkFilterLock = New System.Windows.Forms.CheckBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
-        Me.rbFilterOr = New System.Windows.Forms.RadioButton
-        Me.chkFilterNew = New System.Windows.Forms.CheckBox
-        Me.cbFilterYear = New System.Windows.Forms.ComboBox
-        Me.chkFilterMark = New System.Windows.Forms.CheckBox
-        Me.cbFilterYearMod = New System.Windows.Forms.ComboBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.txtFilterGenre = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.btnFilterDown = New System.Windows.Forms.Button
-        Me.btnFilterUp = New System.Windows.Forms.Button
-        Me.lblFilter = New System.Windows.Forms.Label
         Me.pnlFilterGenre = New System.Windows.Forms.Panel
         Me.lblGFilClose = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
@@ -208,6 +179,35 @@ Partial Class frmMain
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.tabTV = New System.Windows.Forms.TabPage
+        Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnIMDBRating = New System.Windows.Forms.Button
+        Me.btnSortTitle = New System.Windows.Forms.Button
+        Me.btnSortDate = New System.Windows.Forms.Button
+        Me.btnClearFilters = New System.Windows.Forms.Button
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkFilterTolerance = New System.Windows.Forms.CheckBox
+        Me.chkFilterMissing = New System.Windows.Forms.CheckBox
+        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
+        Me.gbSpecific = New System.Windows.Forms.GroupBox
+        Me.txtFilterSource = New System.Windows.Forms.TextBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.cbFilterFileSource = New System.Windows.Forms.ComboBox
+        Me.chkFilterLock = New System.Windows.Forms.CheckBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
+        Me.rbFilterOr = New System.Windows.Forms.RadioButton
+        Me.chkFilterNew = New System.Windows.Forms.CheckBox
+        Me.cbFilterYear = New System.Windows.Forms.ComboBox
+        Me.chkFilterMark = New System.Windows.Forms.CheckBox
+        Me.cbFilterYearMod = New System.Windows.Forms.ComboBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.txtFilterGenre = New System.Windows.Forms.TextBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btnFilterDown = New System.Windows.Forms.Button
+        Me.btnFilterUp = New System.Windows.Forms.Button
+        Me.lblFilter = New System.Windows.Forms.Label
         Me.pnlCancel = New System.Windows.Forms.Panel
         Me.pbCanceling = New System.Windows.Forms.ProgressBar
         Me.lblCanceling = New System.Windows.Forms.Label
@@ -499,11 +499,6 @@ Partial Class frmMain
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
-        Me.pnlFilter.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.gbSpecific.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.pnlFilterGenre.SuspendLayout()
         Me.pnlFilterSource.SuspendLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -524,6 +519,11 @@ Partial Class frmMain
         Me.pnlSearch.SuspendLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabsMain.SuspendLayout()
+        Me.pnlFilter.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.gbSpecific.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlAllSeason.SuspendLayout()
         CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -877,360 +877,6 @@ Partial Class frmMain
         Me.scMain.SplitterDistance = 364
         Me.scMain.TabIndex = 7
         Me.scMain.TabStop = False
-        '
-        'pnlFilter
-        '
-        Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilter.Controls.Add(Me.GroupBox1)
-        Me.pnlFilter.Controls.Add(Me.btnClearFilters)
-        Me.pnlFilter.Controls.Add(Me.GroupBox3)
-        Me.pnlFilter.Controls.Add(Me.gbSpecific)
-        Me.pnlFilter.Controls.Add(Me.btnFilterDown)
-        Me.pnlFilter.Controls.Add(Me.btnFilterUp)
-        Me.pnlFilter.Controls.Add(Me.lblFilter)
-        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 508)
-        Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(364, 180)
-        Me.pnlFilter.TabIndex = 12
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.btnIMDBRating)
-        Me.GroupBox1.Controls.Add(Me.btnSortTitle)
-        Me.GroupBox1.Controls.Add(Me.btnSortDate)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 81)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(131, 77)
-        Me.GroupBox1.TabIndex = 2
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Extra Sorting"
-        '
-        'btnIMDBRating
-        '
-        Me.btnIMDBRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnIMDBRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
-        Me.btnIMDBRating.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnIMDBRating.Location = New System.Drawing.Point(7, 53)
-        Me.btnIMDBRating.Name = "btnIMDBRating"
-        Me.btnIMDBRating.Size = New System.Drawing.Size(117, 21)
-        Me.btnIMDBRating.TabIndex = 2
-        Me.btnIMDBRating.Text = "IMDB Rating"
-        Me.btnIMDBRating.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnIMDBRating.UseVisualStyleBackColor = True
-        '
-        'btnSortTitle
-        '
-        Me.btnSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
-        Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
-        Me.btnSortTitle.Name = "btnSortTitle"
-        Me.btnSortTitle.Size = New System.Drawing.Size(117, 21)
-        Me.btnSortTitle.TabIndex = 1
-        Me.btnSortTitle.Text = "Sort Title"
-        Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSortTitle.UseVisualStyleBackColor = True
-        '
-        'btnSortDate
-        '
-        Me.btnSortDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSortDate.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
-        Me.btnSortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
-        Me.btnSortDate.Name = "btnSortDate"
-        Me.btnSortDate.Size = New System.Drawing.Size(117, 21)
-        Me.btnSortDate.TabIndex = 0
-        Me.btnSortDate.Text = "Date Added"
-        Me.btnSortDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSortDate.UseVisualStyleBackColor = True
-        '
-        'btnClearFilters
-        '
-        Me.btnClearFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
-        Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 160)
-        Me.btnClearFilters.Name = "btnClearFilters"
-        Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
-        Me.btnClearFilters.TabIndex = 4
-        Me.btnClearFilters.Text = "Clear Filters"
-        Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnClearFilters.UseVisualStyleBackColor = True
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.chkFilterTolerance)
-        Me.GroupBox3.Controls.Add(Me.chkFilterMissing)
-        Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
-        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(131, 59)
-        Me.GroupBox3.TabIndex = 1
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "General"
-        '
-        'chkFilterTolerance
-        '
-        Me.chkFilterTolerance.AutoSize = True
-        Me.chkFilterTolerance.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 41)
-        Me.chkFilterTolerance.Name = "chkFilterTolerance"
-        Me.chkFilterTolerance.Size = New System.Drawing.Size(112, 17)
-        Me.chkFilterTolerance.TabIndex = 2
-        Me.chkFilterTolerance.Text = "Out of Tolerance"
-        Me.chkFilterTolerance.UseVisualStyleBackColor = True
-        '
-        'chkFilterMissing
-        '
-        Me.chkFilterMissing.AutoSize = True
-        Me.chkFilterMissing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 27)
-        Me.chkFilterMissing.Name = "chkFilterMissing"
-        Me.chkFilterMissing.Size = New System.Drawing.Size(96, 17)
-        Me.chkFilterMissing.TabIndex = 1
-        Me.chkFilterMissing.Text = "Missing Items"
-        Me.chkFilterMissing.UseVisualStyleBackColor = True
-        '
-        'chkFilterDupe
-        '
-        Me.chkFilterDupe.AutoSize = True
-        Me.chkFilterDupe.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 13)
-        Me.chkFilterDupe.Name = "chkFilterDupe"
-        Me.chkFilterDupe.Size = New System.Drawing.Size(80, 17)
-        Me.chkFilterDupe.TabIndex = 0
-        Me.chkFilterDupe.Text = "Duplicates"
-        Me.chkFilterDupe.UseVisualStyleBackColor = True
-        '
-        'gbSpecific
-        '
-        Me.gbSpecific.Controls.Add(Me.txtFilterSource)
-        Me.gbSpecific.Controls.Add(Me.Label6)
-        Me.gbSpecific.Controls.Add(Me.cbFilterFileSource)
-        Me.gbSpecific.Controls.Add(Me.chkFilterLock)
-        Me.gbSpecific.Controls.Add(Me.GroupBox2)
-        Me.gbSpecific.Controls.Add(Me.chkFilterNew)
-        Me.gbSpecific.Controls.Add(Me.cbFilterYear)
-        Me.gbSpecific.Controls.Add(Me.chkFilterMark)
-        Me.gbSpecific.Controls.Add(Me.cbFilterYearMod)
-        Me.gbSpecific.Controls.Add(Me.Label5)
-        Me.gbSpecific.Controls.Add(Me.txtFilterGenre)
-        Me.gbSpecific.Controls.Add(Me.Label2)
-        Me.gbSpecific.Controls.Add(Me.Label3)
-        Me.gbSpecific.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
-        Me.gbSpecific.Name = "gbSpecific"
-        Me.gbSpecific.Size = New System.Drawing.Size(224, 155)
-        Me.gbSpecific.TabIndex = 3
-        Me.gbSpecific.TabStop = False
-        Me.gbSpecific.Text = "Specific"
-        '
-        'txtFilterSource
-        '
-        Me.txtFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilterSource.Location = New System.Drawing.Point(50, 129)
-        Me.txtFilterSource.Name = "txtFilterSource"
-        Me.txtFilterSource.ReadOnly = True
-        Me.txtFilterSource.Size = New System.Drawing.Size(166, 22)
-        Me.txtFilterSource.TabIndex = 8
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label6.Location = New System.Drawing.Point(6, 108)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(66, 13)
-        Me.Label6.TabIndex = 38
-        Me.Label6.Text = "File Source:"
-        '
-        'cbFilterFileSource
-        '
-        Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterFileSource.FormattingEnabled = True
-        Me.cbFilterFileSource.Location = New System.Drawing.Point(77, 105)
-        Me.cbFilterFileSource.Name = "cbFilterFileSource"
-        Me.cbFilterFileSource.Size = New System.Drawing.Size(139, 21)
-        Me.cbFilterFileSource.TabIndex = 7
-        '
-        'chkFilterLock
-        '
-        Me.chkFilterLock.AutoSize = True
-        Me.chkFilterLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFilterLock.Location = New System.Drawing.Point(73, 18)
-        Me.chkFilterLock.Name = "chkFilterLock"
-        Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
-        Me.chkFilterLock.TabIndex = 2
-        Me.chkFilterLock.Text = "Locked"
-        Me.chkFilterLock.UseVisualStyleBackColor = True
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.rbFilterAnd)
-        Me.GroupBox2.Controls.Add(Me.rbFilterOr)
-        Me.GroupBox2.Location = New System.Drawing.Point(140, 10)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(76, 43)
-        Me.GroupBox2.TabIndex = 3
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Modifier"
-        '
-        'rbFilterAnd
-        '
-        Me.rbFilterAnd.AutoSize = True
-        Me.rbFilterAnd.Checked = True
-        Me.rbFilterAnd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
-        Me.rbFilterAnd.Name = "rbFilterAnd"
-        Me.rbFilterAnd.Size = New System.Drawing.Size(46, 17)
-        Me.rbFilterAnd.TabIndex = 0
-        Me.rbFilterAnd.TabStop = True
-        Me.rbFilterAnd.Text = "And"
-        Me.rbFilterAnd.UseVisualStyleBackColor = True
-        '
-        'rbFilterOr
-        '
-        Me.rbFilterOr.AutoSize = True
-        Me.rbFilterOr.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
-        Me.rbFilterOr.Name = "rbFilterOr"
-        Me.rbFilterOr.Size = New System.Drawing.Size(38, 17)
-        Me.rbFilterOr.TabIndex = 1
-        Me.rbFilterOr.Text = "Or"
-        Me.rbFilterOr.UseVisualStyleBackColor = True
-        '
-        'chkFilterNew
-        '
-        Me.chkFilterNew.AutoSize = True
-        Me.chkFilterNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
-        Me.chkFilterNew.Name = "chkFilterNew"
-        Me.chkFilterNew.Size = New System.Drawing.Size(49, 17)
-        Me.chkFilterNew.TabIndex = 0
-        Me.chkFilterNew.Text = "New"
-        Me.chkFilterNew.UseVisualStyleBackColor = True
-        '
-        'cbFilterYear
-        '
-        Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterYear.FormattingEnabled = True
-        Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
-        Me.cbFilterYear.Location = New System.Drawing.Point(141, 81)
-        Me.cbFilterYear.Name = "cbFilterYear"
-        Me.cbFilterYear.Size = New System.Drawing.Size(75, 21)
-        Me.cbFilterYear.TabIndex = 6
-        '
-        'chkFilterMark
-        '
-        Me.chkFilterMark.AutoSize = True
-        Me.chkFilterMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
-        Me.chkFilterMark.Name = "chkFilterMark"
-        Me.chkFilterMark.Size = New System.Drawing.Size(65, 17)
-        Me.chkFilterMark.TabIndex = 1
-        Me.chkFilterMark.Text = "Marked"
-        Me.chkFilterMark.UseVisualStyleBackColor = True
-        '
-        'cbFilterYearMod
-        '
-        Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterYearMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbFilterYearMod.FormattingEnabled = True
-        Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
-        Me.cbFilterYearMod.Location = New System.Drawing.Point(77, 81)
-        Me.cbFilterYearMod.Name = "cbFilterYearMod"
-        Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
-        Me.cbFilterYearMod.TabIndex = 5
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label5.Location = New System.Drawing.Point(6, 83)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(31, 13)
-        Me.Label5.TabIndex = 33
-        Me.Label5.Text = "Year:"
-        '
-        'txtFilterGenre
-        '
-        Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 56)
-        Me.txtFilterGenre.Name = "txtFilterGenre"
-        Me.txtFilterGenre.ReadOnly = True
-        Me.txtFilterGenre.Size = New System.Drawing.Size(166, 22)
-        Me.txtFilterGenre.TabIndex = 4
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(6, 132)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(45, 13)
-        Me.Label2.TabIndex = 29
-        Me.Label2.Text = "Source:"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(6, 58)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(41, 13)
-        Me.Label3.TabIndex = 31
-        Me.Label3.Text = "Genre:"
-        '
-        'btnFilterDown
-        '
-        Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown.Enabled = False
-        Me.btnFilterDown.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFilterDown.Location = New System.Drawing.Point(324, 1)
-        Me.btnFilterDown.Name = "btnFilterDown"
-        Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
-        Me.btnFilterDown.TabIndex = 28
-        Me.btnFilterDown.TabStop = False
-        Me.btnFilterDown.Text = "v"
-        Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown.UseVisualStyleBackColor = False
-        '
-        'btnFilterUp
-        '
-        Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFilterUp.Location = New System.Drawing.Point(292, 1)
-        Me.btnFilterUp.Name = "btnFilterUp"
-        Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
-        Me.btnFilterUp.TabIndex = 27
-        Me.btnFilterUp.TabStop = False
-        Me.btnFilterUp.Text = "^"
-        Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp.UseVisualStyleBackColor = False
-        '
-        'lblFilter
-        '
-        Me.lblFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilter.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilter.Location = New System.Drawing.Point(4, 3)
-        Me.lblFilter.Name = "lblFilter"
-        Me.lblFilter.Size = New System.Drawing.Size(354, 17)
-        Me.lblFilter.TabIndex = 22
-        Me.lblFilter.Text = "Filters"
-        Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlFilterGenre
         '
@@ -2205,6 +1851,360 @@ Partial Class frmMain
         Me.tabTV.TabIndex = 1
         Me.tabTV.Text = "TV Shows"
         Me.tabTV.UseVisualStyleBackColor = True
+        '
+        'pnlFilter
+        '
+        Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.GroupBox1)
+        Me.pnlFilter.Controls.Add(Me.btnClearFilters)
+        Me.pnlFilter.Controls.Add(Me.GroupBox3)
+        Me.pnlFilter.Controls.Add(Me.gbSpecific)
+        Me.pnlFilter.Controls.Add(Me.btnFilterDown)
+        Me.pnlFilter.Controls.Add(Me.btnFilterUp)
+        Me.pnlFilter.Controls.Add(Me.lblFilter)
+        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 508)
+        Me.pnlFilter.Name = "pnlFilter"
+        Me.pnlFilter.Size = New System.Drawing.Size(364, 180)
+        Me.pnlFilter.TabIndex = 12
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnIMDBRating)
+        Me.GroupBox1.Controls.Add(Me.btnSortTitle)
+        Me.GroupBox1.Controls.Add(Me.btnSortDate)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 81)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(131, 77)
+        Me.GroupBox1.TabIndex = 2
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Extra Sorting"
+        '
+        'btnIMDBRating
+        '
+        Me.btnIMDBRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnIMDBRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnIMDBRating.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnIMDBRating.Location = New System.Drawing.Point(7, 53)
+        Me.btnIMDBRating.Name = "btnIMDBRating"
+        Me.btnIMDBRating.Size = New System.Drawing.Size(117, 21)
+        Me.btnIMDBRating.TabIndex = 2
+        Me.btnIMDBRating.Text = "IMDB Rating"
+        Me.btnIMDBRating.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnIMDBRating.UseVisualStyleBackColor = True
+        '
+        'btnSortTitle
+        '
+        Me.btnSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
+        Me.btnSortTitle.Name = "btnSortTitle"
+        Me.btnSortTitle.Size = New System.Drawing.Size(117, 21)
+        Me.btnSortTitle.TabIndex = 1
+        Me.btnSortTitle.Text = "Sort Title"
+        Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortTitle.UseVisualStyleBackColor = True
+        '
+        'btnSortDate
+        '
+        Me.btnSortDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSortDate.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnSortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
+        Me.btnSortDate.Name = "btnSortDate"
+        Me.btnSortDate.Size = New System.Drawing.Size(117, 21)
+        Me.btnSortDate.TabIndex = 0
+        Me.btnSortDate.Text = "Date Added"
+        Me.btnSortDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortDate.UseVisualStyleBackColor = True
+        '
+        'btnClearFilters
+        '
+        Me.btnClearFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
+        Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 160)
+        Me.btnClearFilters.Name = "btnClearFilters"
+        Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
+        Me.btnClearFilters.TabIndex = 4
+        Me.btnClearFilters.Text = "Clear Filters"
+        Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnClearFilters.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.chkFilterTolerance)
+        Me.GroupBox3.Controls.Add(Me.chkFilterMissing)
+        Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
+        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(131, 59)
+        Me.GroupBox3.TabIndex = 1
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "General"
+        '
+        'chkFilterTolerance
+        '
+        Me.chkFilterTolerance.AutoSize = True
+        Me.chkFilterTolerance.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 41)
+        Me.chkFilterTolerance.Name = "chkFilterTolerance"
+        Me.chkFilterTolerance.Size = New System.Drawing.Size(112, 17)
+        Me.chkFilterTolerance.TabIndex = 2
+        Me.chkFilterTolerance.Text = "Out of Tolerance"
+        Me.chkFilterTolerance.UseVisualStyleBackColor = True
+        '
+        'chkFilterMissing
+        '
+        Me.chkFilterMissing.AutoSize = True
+        Me.chkFilterMissing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 27)
+        Me.chkFilterMissing.Name = "chkFilterMissing"
+        Me.chkFilterMissing.Size = New System.Drawing.Size(96, 17)
+        Me.chkFilterMissing.TabIndex = 1
+        Me.chkFilterMissing.Text = "Missing Items"
+        Me.chkFilterMissing.UseVisualStyleBackColor = True
+        '
+        'chkFilterDupe
+        '
+        Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 13)
+        Me.chkFilterDupe.Name = "chkFilterDupe"
+        Me.chkFilterDupe.Size = New System.Drawing.Size(80, 17)
+        Me.chkFilterDupe.TabIndex = 0
+        Me.chkFilterDupe.Text = "Duplicates"
+        Me.chkFilterDupe.UseVisualStyleBackColor = True
+        '
+        'gbSpecific
+        '
+        Me.gbSpecific.Controls.Add(Me.txtFilterSource)
+        Me.gbSpecific.Controls.Add(Me.Label6)
+        Me.gbSpecific.Controls.Add(Me.cbFilterFileSource)
+        Me.gbSpecific.Controls.Add(Me.chkFilterLock)
+        Me.gbSpecific.Controls.Add(Me.GroupBox2)
+        Me.gbSpecific.Controls.Add(Me.chkFilterNew)
+        Me.gbSpecific.Controls.Add(Me.cbFilterYear)
+        Me.gbSpecific.Controls.Add(Me.chkFilterMark)
+        Me.gbSpecific.Controls.Add(Me.cbFilterYearMod)
+        Me.gbSpecific.Controls.Add(Me.Label5)
+        Me.gbSpecific.Controls.Add(Me.txtFilterGenre)
+        Me.gbSpecific.Controls.Add(Me.Label2)
+        Me.gbSpecific.Controls.Add(Me.Label3)
+        Me.gbSpecific.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
+        Me.gbSpecific.Name = "gbSpecific"
+        Me.gbSpecific.Size = New System.Drawing.Size(224, 155)
+        Me.gbSpecific.TabIndex = 3
+        Me.gbSpecific.TabStop = False
+        Me.gbSpecific.Text = "Specific"
+        '
+        'txtFilterSource
+        '
+        Me.txtFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterSource.Location = New System.Drawing.Point(50, 129)
+        Me.txtFilterSource.Name = "txtFilterSource"
+        Me.txtFilterSource.ReadOnly = True
+        Me.txtFilterSource.Size = New System.Drawing.Size(166, 22)
+        Me.txtFilterSource.TabIndex = 8
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label6.Location = New System.Drawing.Point(6, 108)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(66, 13)
+        Me.Label6.TabIndex = 38
+        Me.Label6.Text = "File Source:"
+        '
+        'cbFilterFileSource
+        '
+        Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbFilterFileSource.FormattingEnabled = True
+        Me.cbFilterFileSource.Location = New System.Drawing.Point(77, 105)
+        Me.cbFilterFileSource.Name = "cbFilterFileSource"
+        Me.cbFilterFileSource.Size = New System.Drawing.Size(139, 21)
+        Me.cbFilterFileSource.TabIndex = 7
+        '
+        'chkFilterLock
+        '
+        Me.chkFilterLock.AutoSize = True
+        Me.chkFilterLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFilterLock.Location = New System.Drawing.Point(73, 18)
+        Me.chkFilterLock.Name = "chkFilterLock"
+        Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
+        Me.chkFilterLock.TabIndex = 2
+        Me.chkFilterLock.Text = "Locked"
+        Me.chkFilterLock.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.rbFilterAnd)
+        Me.GroupBox2.Controls.Add(Me.rbFilterOr)
+        Me.GroupBox2.Location = New System.Drawing.Point(140, 10)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(76, 43)
+        Me.GroupBox2.TabIndex = 3
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Modifier"
+        '
+        'rbFilterAnd
+        '
+        Me.rbFilterAnd.AutoSize = True
+        Me.rbFilterAnd.Checked = True
+        Me.rbFilterAnd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
+        Me.rbFilterAnd.Name = "rbFilterAnd"
+        Me.rbFilterAnd.Size = New System.Drawing.Size(46, 17)
+        Me.rbFilterAnd.TabIndex = 0
+        Me.rbFilterAnd.TabStop = True
+        Me.rbFilterAnd.Text = "And"
+        Me.rbFilterAnd.UseVisualStyleBackColor = True
+        '
+        'rbFilterOr
+        '
+        Me.rbFilterOr.AutoSize = True
+        Me.rbFilterOr.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
+        Me.rbFilterOr.Name = "rbFilterOr"
+        Me.rbFilterOr.Size = New System.Drawing.Size(38, 17)
+        Me.rbFilterOr.TabIndex = 1
+        Me.rbFilterOr.Text = "Or"
+        Me.rbFilterOr.UseVisualStyleBackColor = True
+        '
+        'chkFilterNew
+        '
+        Me.chkFilterNew.AutoSize = True
+        Me.chkFilterNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
+        Me.chkFilterNew.Name = "chkFilterNew"
+        Me.chkFilterNew.Size = New System.Drawing.Size(49, 17)
+        Me.chkFilterNew.TabIndex = 0
+        Me.chkFilterNew.Text = "New"
+        Me.chkFilterNew.UseVisualStyleBackColor = True
+        '
+        'cbFilterYear
+        '
+        Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbFilterYear.FormattingEnabled = True
+        Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
+        Me.cbFilterYear.Location = New System.Drawing.Point(141, 81)
+        Me.cbFilterYear.Name = "cbFilterYear"
+        Me.cbFilterYear.Size = New System.Drawing.Size(75, 21)
+        Me.cbFilterYear.TabIndex = 6
+        '
+        'chkFilterMark
+        '
+        Me.chkFilterMark.AutoSize = True
+        Me.chkFilterMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
+        Me.chkFilterMark.Name = "chkFilterMark"
+        Me.chkFilterMark.Size = New System.Drawing.Size(65, 17)
+        Me.chkFilterMark.TabIndex = 1
+        Me.chkFilterMark.Text = "Marked"
+        Me.chkFilterMark.UseVisualStyleBackColor = True
+        '
+        'cbFilterYearMod
+        '
+        Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYearMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbFilterYearMod.FormattingEnabled = True
+        Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(77, 81)
+        Me.cbFilterYearMod.Name = "cbFilterYearMod"
+        Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
+        Me.cbFilterYearMod.TabIndex = 5
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label5.Location = New System.Drawing.Point(6, 83)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(31, 13)
+        Me.Label5.TabIndex = 33
+        Me.Label5.Text = "Year:"
+        '
+        'txtFilterGenre
+        '
+        Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 56)
+        Me.txtFilterGenre.Name = "txtFilterGenre"
+        Me.txtFilterGenre.ReadOnly = True
+        Me.txtFilterGenre.Size = New System.Drawing.Size(166, 22)
+        Me.txtFilterGenre.TabIndex = 4
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label2.Location = New System.Drawing.Point(6, 132)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(45, 13)
+        Me.Label2.TabIndex = 29
+        Me.Label2.Text = "Source:"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label3.Location = New System.Drawing.Point(6, 58)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(41, 13)
+        Me.Label3.TabIndex = 31
+        Me.Label3.Text = "Genre:"
+        '
+        'btnFilterDown
+        '
+        Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterDown.Enabled = False
+        Me.btnFilterDown.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterDown.Location = New System.Drawing.Point(324, 1)
+        Me.btnFilterDown.Name = "btnFilterDown"
+        Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterDown.TabIndex = 28
+        Me.btnFilterDown.TabStop = False
+        Me.btnFilterDown.Text = "v"
+        Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterDown.UseVisualStyleBackColor = False
+        '
+        'btnFilterUp
+        '
+        Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterUp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp.Location = New System.Drawing.Point(292, 1)
+        Me.btnFilterUp.Name = "btnFilterUp"
+        Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterUp.TabIndex = 27
+        Me.btnFilterUp.TabStop = False
+        Me.btnFilterUp.Text = "^"
+        Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterUp.UseVisualStyleBackColor = False
+        '
+        'lblFilter
+        '
+        Me.lblFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilter.Location = New System.Drawing.Point(4, 3)
+        Me.lblFilter.Name = "lblFilter"
+        Me.lblFilter.Size = New System.Drawing.Size(354, 17)
+        Me.lblFilter.TabIndex = 22
+        Me.lblFilter.Text = "Filters"
+        Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlCancel
         '
@@ -4420,14 +4420,6 @@ Partial Class frmMain
         Me.scMain.Panel2.ResumeLayout(False)
         Me.scMain.Panel2.PerformLayout()
         Me.scMain.ResumeLayout(False)
-        Me.pnlFilter.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.gbSpecific.ResumeLayout(False)
-        Me.gbSpecific.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.pnlFilterGenre.ResumeLayout(False)
         Me.pnlFilterGenre.PerformLayout()
         Me.pnlFilterSource.ResumeLayout(False)
@@ -4451,6 +4443,14 @@ Partial Class frmMain
         Me.pnlSearch.PerformLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabsMain.ResumeLayout(False)
+        Me.pnlFilter.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.gbSpecific.ResumeLayout(False)
+        Me.gbSpecific.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlCancel.PerformLayout()
         Me.pnlAllSeason.ResumeLayout(False)
