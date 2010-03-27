@@ -111,6 +111,9 @@ Public Class dlgEditEpisode
         If Not IsNothing(tImage) Then
             Me.Fanart.Image = New Bitmap(tImage)
             Me.pbFanart.Image = tImage
+
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
         End If
     End Sub
 
@@ -120,6 +123,9 @@ Public Class dlgEditEpisode
         If Not IsNothing(tImage) Then
             Me.Poster.Image = New Bitmap(tImage)
             Me.pbPoster.Image = tImage
+
+            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+            Me.lblPosterSize.Visible = True
         End If
     End Sub
 
