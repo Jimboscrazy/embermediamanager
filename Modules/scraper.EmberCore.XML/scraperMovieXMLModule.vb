@@ -219,7 +219,7 @@ Public Class EmberXMLScraperModule
                     If res.Count > 0 Then
                         ' Get first and go
                         lMediaTag = XMLManager.GetDetails(res(0))
-                        MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag))
+                        MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                     End If
 
                 Case Else
@@ -229,50 +229,51 @@ Public Class EmberXMLScraperModule
                         Using dlg As New dlgSearchResults
                             If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
                                 lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
-                                MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag))
+                                MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                             End If
                         End Using
-
                     End If
             End Select
         Catch ex As Exception
         End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-    Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag)
-        'DBMovie.Movie.Actors = lMediaTag.Actors
-
-        If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then DBMovie.Movie.Certification = (lMediaTag.Certifications.FirstOrDefault(Function(y) y.StartsWith(Master.eSettings.CertificationLang)))
-        If Not DBMovie.Movie.Certification Is Nothing AndAlso DBMovie.Movie.Certification.IndexOf("(") >= 0 Then DBMovie.Movie.Certification = DBMovie.Movie.Certification.Substring(0, DBMovie.Movie.Certification.IndexOf("("))
-        DBMovie.Movie.Director = Strings.Join(lMediaTag.Directors.ToArray(), " / ")
-        DBMovie.Movie.Genre = Strings.Join(lMediaTag.Genres.ToArray(), " / ")
-        DBMovie.Movie.MPAA = lMediaTag.MPAA
-        DBMovie.Movie.Plot = lMediaTag.Plot
-        DBMovie.Movie.Outline = lMediaTag.Outline
+    Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal Options As Structures.ScrapeOptions)
+        If Options.bCert Then
+            If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then DBMovie.Movie.Certification = (lMediaTag.Certifications.FirstOrDefault(Function(y) y.StartsWith(Master.eSettings.CertificationLang)))
+            If Not DBMovie.Movie.Certification Is Nothing AndAlso DBMovie.Movie.Certification.IndexOf("(") >= 0 Then DBMovie.Movie.Certification = DBMovie.Movie.Certification.Substring(0, DBMovie.Movie.Certification.IndexOf("("))
+        End If
+        If Options.bDirector Then DBMovie.Movie.Director = Strings.Join(lMediaTag.Directors.ToArray(), " / ")
+        If Options.bGenre Then DBMovie.Movie.Genre = Strings.Join(lMediaTag.Genres.ToArray(), " / ")
+        If Options.bMPAA Then DBMovie.Movie.MPAA = lMediaTag.MPAA
+        If Options.bPlot Then DBMovie.Movie.Plot = lMediaTag.Plot
+        If Options.bOutline Then DBMovie.Movie.Outline = lMediaTag.Outline
         DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
-        DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
-        DBMovie.Movie.Rating = lMediaTag.Rating.ToString
-        DBMovie.Movie.Runtime = lMediaTag.Runtime
+        If Options.bRelease Then DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
+        If Options.bRating Then DBMovie.Movie.Rating = lMediaTag.Rating.ToString
+        If Options.bRuntime Then DBMovie.Movie.Runtime = lMediaTag.Runtime
         'DBMovie.Movie.Sets = lMediaTag.Sets
-        DBMovie.Movie.Studio = lMediaTag.Studio
-        DBMovie.Movie.Tagline = lMediaTag.Tagline
-        DBMovie.Movie.Title = lMediaTag.Title
+        If Options.bStudio Then DBMovie.Movie.Studio = lMediaTag.Studio
+        If Options.bTagline Then DBMovie.Movie.Tagline = lMediaTag.Tagline
+        If Options.bTitle Then DBMovie.Movie.Title = lMediaTag.Title
         For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
             DBMovie.Movie.Thumb.Add(t.Thumb)
         Next
-        DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
+        If Options.bTop250 Then DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
         'DBMovie.Movie.Trailer = lMediaTag.Trailers
-        DBMovie.Movie.Votes = lMediaTag.Votes.ToString
-        DBMovie.Movie.Credits = Strings.Join(lMediaTag.Writers.ToArray, " / ")
-        DBMovie.Movie.Year = lMediaTag.Year.ToString
+        If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString
+        If Options.bWriters Then DBMovie.Movie.Credits = Strings.Join(lMediaTag.Writers.ToArray, " / ")
+        If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
         DBMovie.Movie.ID = lMediaTag.ID
-        For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
-            Dim person As New MediaContainers.Person
-            person.Name = p.Name
-            person.Role = p.Role
-            person.Thumb = p.Thumb.Thumb
-            DBMovie.Movie.Actors.Add(person)
-        Next
+        If Options.bCast Then
+            For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
+                Dim person As New MediaContainers.Person
+                person.Name = p.Name
+                person.Role = p.Role
+                person.Thumb = p.Thumb.Thumb
+                DBMovie.Movie.Actors.Add(person)
+            Next
+        End If
     End Sub
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
@@ -292,6 +293,7 @@ Public Class EmberXMLScraperModule
         _setup.parentRunning = False
     End Sub
     Sub PoupulateForm()
+        If _setup Is Nothing Then Return
         _setup.cbScraper.Items.Clear()
         For Each s As ScraperInfo In XMLManager.AllScrapers
             _setup.cbScraper.Items.Add(s.ScraperName)

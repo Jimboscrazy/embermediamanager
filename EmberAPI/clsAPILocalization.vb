@@ -23,10 +23,11 @@ Imports System.IO.IsolatedStorage
 Imports System.Xml
 Imports System.Xml.Linq
 Imports System.Xml.Serialization
+Imports System.Text
 
 Public Class Localization
 
-    #Region "Fields"
+#Region "Fields"
 
     Private Shared htArrayStrings As New List(Of Locs)
     Private Shared htHelpStrings As New Hashtable
@@ -37,9 +38,9 @@ Public Class Localization
     Private _disabled As String
     Private _none As String
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Constructors"
+#Region "Constructors"
 
     Public Sub New()
         Me.Clear()
@@ -56,9 +57,9 @@ Public Class Localization
         End If
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
-    #Region "Properties"
+#Region "Properties"
 
     Public Property All() As String
         Get
@@ -87,9 +88,9 @@ Public Class Localization
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
@@ -173,7 +174,8 @@ Public Class Localization
     Public Sub LoadHelpStrings(ByVal hPath As String)
         Try
             If File.Exists(hPath) Then
-                Dim LangXML As XDocument = XDocument.Load(hPath)
+                Dim tReader As New StreamReader(hPath, Encoding.UTF8)
+                Dim LangXML As XDocument = XDocument.Load(tReader)
                 Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
                 If xLanguage.Count > 0 Then
                     For i As Integer = 0 To xLanguage.Count - 1
@@ -200,8 +202,7 @@ Public Class Localization
                     Assembly = rAssembly
                 End If
 
-                htStrings = New Hashtable
-                htStrings.Clear()
+
                 If Assembly = "Ember Media Manager" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
                     Assembly = "*EmberAPP"
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
@@ -219,8 +220,11 @@ Public Class Localization
                 If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
 
                 LoadHelpStrings(lhPath)
+                htStrings = New Hashtable
+                htStrings.Clear()
                 If File.Exists(lPath) Then
-                    Dim LangXML As XDocument = XDocument.Load(lPath)
+                    Dim tReader As New StreamReader(lPath, Encoding.UTF8)
+                    Dim LangXML As XDocument = XDocument.Load(tReader)
                     Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
                     If xLanguage.Count > 0 Then
                         For i As Integer = 0 To xLanguage.Count - 1
@@ -253,35 +257,35 @@ Public Class Localization
     End Sub
 
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     ' ************************************************************************************************
     Structure Locs
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim AssenblyName As String
         Dim FileName As String
         Dim htStrings As Hashtable
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Structure _ISOLanguage
 
-        #Region "Fields"
+#Region "Fields"
 
         Public Alpha2Code As String
         Public Alpha3Code As String
         Public Language As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class
