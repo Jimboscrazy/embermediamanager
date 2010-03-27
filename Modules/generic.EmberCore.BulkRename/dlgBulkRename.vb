@@ -303,6 +303,10 @@ Public Class dlgBulkRenamer
         End Try
     End Sub
 
+    Private Sub dgvMoviesList_ColumnHeaderMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMoviesList.ColumnHeaderMouseClick
+        Me.dgvMoviesList.Sort(Me.dgvMoviesList.Columns(e.ColumnIndex), System.ComponentModel.ListSortDirection.Ascending)
+    End Sub
+
     Private Sub dgvMoviesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvMoviesList.ColumnWidthChanged
         If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse Convert.ToBoolean(dgvMoviesList.Tag) Then Return
         Dim sum As Integer = 0
@@ -572,7 +576,6 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class
