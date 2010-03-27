@@ -3496,8 +3496,8 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters)) Then
             Master.eSettings.EpFilterCustom.Clear()
             Master.eSettings.EpFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
+            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*(e[0-9]+)+(\])*")
+            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+(x[0-9]+)+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")

@@ -27,20 +27,20 @@ Namespace MediaContainers
 
         #Region "Fields"
 
-        Private _actors As New List(Of Person)
+        Private _title As String
         Private _aired As String
-        Private _credits As String
-        Private _director As String
-        Private _episode As Integer
-        Private _fanart As Images
-        Private _fileInfo As New MediaInfo.Fileinfo
-        Private _localfile As String
-        Private _plot As String
-        Private _poster As Images
-        Private _posterurl As String
         Private _rating As String
         Private _season As Integer
-        Private _title As String
+        Private _episode As Integer
+        Private _plot As String
+        Private _credits As String
+        Private _director As String
+        Private _actors As New List(Of Person)
+        Private _fileInfo As New MediaInfo.Fileinfo
+        Private _poster As Images
+        Private _posterurl As String
+        Private _localfile As String
+        Private _fanart As Images
 
         #End Region 'Fields
 
@@ -54,20 +54,20 @@ Namespace MediaContainers
 
         #Region "Properties"
 
-        <XmlElement("actor")> _
-        Public Property Actors() As List(Of Person)
+        <XmlElement("title")> _
+        Public Property Title() As String
             Get
-                Return Me._actors
+                Return Me._title
             End Get
-            Set(ByVal Value As List(Of Person))
-                Me._actors = Value
+            Set(ByVal value As String)
+                Me._title = value
             End Set
         End Property
 
-        <XmlIgnore> _
-        Public ReadOnly Property ActorsSpecified() As Boolean
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
             Get
-                Return Me._actors.Count > 0
+                Return Not String.IsNullOrEmpty(Me._title)
             End Get
         End Property
 
@@ -81,10 +81,78 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property AiredSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._aired)
+            End Get
+        End Property
+
+        <XmlElement("rating")> _
+        Public Property Rating() As String
+            Get
+                Return Me._rating.Replace(",", ".")
+            End Get
+            Set(ByVal value As String)
+                Me._rating = value.Replace(",", ".")
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("season")> _
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SeasonSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._season.ToString)
+            End Get
+        End Property
+
+        <XmlElement("episode")> _
+        Public Property Episode() As Integer
+            Get
+                Return Me._episode
+            End Get
+            Set(ByVal value As Integer)
+                Me._episode = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property EpisodeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._episode.ToString)
+            End Get
+        End Property
+
+        <XmlElement("plot")> _
+        Public Property Plot() As String
+            Get
+                Return Me._plot
+            End Get
+            Set(ByVal value As String)
+                Me._plot = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
             End Get
         End Property
 
@@ -98,7 +166,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property CreditsSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._credits)
@@ -115,38 +183,28 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property DirectorSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._director)
             End Get
         End Property
 
-        <XmlElement("episode")> _
-        Public Property Episode() As Integer
+        <XmlElement("actor")> _
+        Public Property Actors() As List(Of Person)
             Get
-                Return Me._episode
+                Return Me._actors
             End Get
-            Set(ByVal value As Integer)
-                Me._episode = value
+            Set(ByVal Value As List(Of Person))
+                Me._actors = Value
             End Set
         End Property
 
         <XmlIgnore> _
-        Public ReadOnly Property EpisodeSpecified() As Boolean
+        Public ReadOnly Property ActorsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._episode.ToString)
+                Return Me._actors.Count > 0
             End Get
-        End Property
-
-        <XmlIgnore> _
-        Public Property Fanart() As Images
-            Get
-                Return Me._fanart
-            End Get
-            Set(ByVal value As Images)
-                Me._fanart = value
-            End Set
         End Property
 
         <XmlElement("fileinfo")> _
@@ -172,34 +230,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlIgnore> _
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        <XmlElement("plot")> _
-        Public Property Plot() As String
-            Get
-                Return Me._plot
-            End Get
-            Set(ByVal value As String)
-                Me._plot = value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property PlotSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._plot)
-            End Get
-        End Property
-
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property Poster() As Images
             Get
                 Return Me._poster
@@ -209,7 +240,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property PosterURL() As String
             Get
                 Return Me._posterurl
@@ -219,55 +250,24 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlElement("rating")> _
-        Public Property Rating() As String
+        <XmlIgnore()> _
+        Public Property LocalFile() As String
             Get
-                Return Me._rating.Replace(",", ".")
+                Return Me._localfile
             End Get
             Set(ByVal value As String)
-                Me._rating = value.Replace(",", ".")
+                Me._localfile = value
             End Set
         End Property
 
-        <XmlIgnore> _
-        Public ReadOnly Property RatingSpecified() As Boolean
+        <XmlIgnore()> _
+        Public Property Fanart() As Images
             Get
-                Return Not String.IsNullOrEmpty(Me._rating)
+                Return Me._fanart
             End Get
-        End Property
-
-        <XmlElement("season")> _
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
+            Set(ByVal value As Images)
+                Me._fanart = value
             End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property SeasonSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._season.ToString)
-            End Get
-        End Property
-
-        <XmlElement("title")> _
-        Public Property Title() As String
-            Get
-                Return Me._title
-            End Get
-            Set(ByVal value As String)
-                Me._title = value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property TitleSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._title)
-            End Get
         End Property
 
         #End Region 'Properties
