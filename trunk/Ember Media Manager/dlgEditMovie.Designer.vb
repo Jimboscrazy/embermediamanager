@@ -880,7 +880,7 @@ Partial Class dlgEditMovie
         Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
         Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblPosterSize.Size = New System.Drawing.Size(105, 23)
         Me.lblPosterSize.TabIndex = 25
         Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
         Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -969,7 +969,7 @@ Partial Class dlgEditMovie
         Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
         Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblFanartSize.Size = New System.Drawing.Size(105, 23)
         Me.lblFanartSize.TabIndex = 27
         Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
         Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
