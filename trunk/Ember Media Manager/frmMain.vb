@@ -484,7 +484,8 @@ Public Class frmMain
 
         If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
-        While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy
+        If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
+        While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwNonScrape.IsBusy
             Application.DoEvents()
         End While
     End Sub
@@ -1277,6 +1278,7 @@ Public Class frmMain
                                     fDeleter.GetItemsToDelete(True, scrapeMovie)
 
                                     Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
+
                                     Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 Catch ex As Exception
                                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
@@ -6265,9 +6267,11 @@ doCancel:
             Case Enums.ScrapeType.SingleScrape
                 Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
         End Select
-        btnCancel.Visible = True
-        lblCanceling.Visible = False
-        pbCanceling.Visible = False
+        Me.btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
+        Me.lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
+        Me.btnCancel.Visible = True
+        Me.lblCanceling.Visible = False
+        Me.pbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
@@ -6312,11 +6316,25 @@ doCancel:
 
     Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
         Me.Cursor = Cursors.WaitCursor
+
+        Select Case sType
+            Case Enums.ScrapeType.CleanFolders
+                Me.btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
+                Me.lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
+                Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
+            Case Enums.ScrapeType.CopyBD
+                Me.btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
+                Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
+                Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
+        End Select
+
         btnCancel.Visible = True
         lblCanceling.Visible = False
         pbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
+        Me.tspbLoading.Value = 0
+        Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
         Me.tspbLoading.Visible = True
         Me.SetControlsEnabled(False, True)
         Me.EnableFilters(False)
