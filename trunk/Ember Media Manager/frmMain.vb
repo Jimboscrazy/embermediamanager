@@ -6411,14 +6411,22 @@ doCancel:
     End Sub
 
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbPoster.DoubleClick
-        '//
-        ' Show the Poster in the Image Viewer
-        '\\
-
         Try
             If Not IsNothing(Me.pbPoster.Image) Then
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(Me.pbPosterCache.Image)
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub pbAllSeason_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbAllSeason.DoubleClick
+        Try
+            If Not IsNothing(Me.pbAllSeason.Image) Then
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbAllSeasonCache.Image)
                 End Using
             End If
         Catch ex As Exception
@@ -8561,4 +8569,7 @@ doCancel:
     #End Region 'Nested Types
 
 
+    Private Sub pbPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbPoster.Click
+
+    End Sub
 End Class
