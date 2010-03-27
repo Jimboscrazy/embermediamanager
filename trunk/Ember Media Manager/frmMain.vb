@@ -8494,7 +8494,8 @@ doCancel:
             MsgBox(Master.eLang.GetString(851, "No Updates at this time"), MsgBoxStyle.OkOnly, "Updates")
         End If
     End Sub
-    Private Sub lblIMDBHeader_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.DoubleClick
+
+    Private Sub lblIMDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.Click
         If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
             If Master.isWindows Then
                 Process.Start(String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text))
@@ -8511,7 +8512,7 @@ doCancel:
     Private Sub lblIMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseEnter
         If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
             lblIMDBHeader.Tag = lblIMDBHeader.ForeColor
-            lblIMDBHeader.ForeColor = Color.Blue
+            lblIMDBHeader.ForeColor = Color.FromArgb(Not lblIMDBHeader.ForeColor.R, Not lblIMDBHeader.ForeColor.G, Not lblIMDBHeader.ForeColor.B)
             Me.Cursor = Cursors.Hand
         End If
     End Sub
@@ -8568,8 +8569,4 @@ doCancel:
 
     #End Region 'Nested Types
 
-
-    Private Sub pbPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbPoster.Click
-
-    End Sub
 End Class
