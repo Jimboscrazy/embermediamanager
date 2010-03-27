@@ -4316,6 +4316,7 @@ doCancel:
             Me.cmnuTrayIconSettings.Enabled = True
             Me.EditToolStripMenuItem.Enabled = True
             Me.cmnuTrayIconUpdateMedia.Enabled = True
+            Me.HelpToolStripMenuItem.Enabled = True
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.tspbLoading.Value = 0
