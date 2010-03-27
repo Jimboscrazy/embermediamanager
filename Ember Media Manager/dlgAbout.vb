@@ -65,7 +65,7 @@ Public NotInheritable Class dlgAbout
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or _
                  ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
 
-        CredList.Add(New CredLine With {.Text = "Ember Media Manager v1.0", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "Ember Media Manager v1.1", .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Format("Revision: {0}", My.Application.Info.Version.Revision), .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = My.Application.Info.Description, .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
