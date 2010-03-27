@@ -812,6 +812,15 @@ Public Class NFO
         End Try
     End Sub
 
+    Public NotInheritable Class Utf8StringWriter
+        Inherits StringWriter
+        Public Overloads Overrides ReadOnly Property Encoding() As Encoding
+            Get
+                Return Encoding.UTF8
+            End Get
+        End Property
+    End Class
+
     Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Structures.DBTV)
         Try
 
@@ -856,7 +865,7 @@ Public Class NFO
                         EpList.Add(tvEpToSave.TVEp)
 
                         For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
-                            Using xmlSW As New StringWriter
+                            Using xmlSW As New Utf8StringWriter
                                 xmlSer.Serialize(xmlSW, tvEp)
                                 If sBuilder.Length > 0 Then
                                     sBuilder.Append(vbNewLine)
