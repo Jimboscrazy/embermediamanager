@@ -72,6 +72,7 @@ Public Class frmMainSetup
     Dim SlowDown As Integer = 0
     Private w As New dlgCommands
     Private RemoteSiteFolder As String = "Updates"
+    Private IsBeta As Boolean = False
 
     Dim ProxyURI As String = ""
     Dim ProxyPort As Integer = 0
@@ -589,7 +590,7 @@ Public Class frmMainSetup
                             Return True
                         End If
                         InstallVersion = EmberVersions.VersionList(EmberVersions.VersionList.Count - 1).Version
-                        If InstallVersion <= CurrentEmberVersion AndAlso Not Force Then
+                        If InstallVersion = CurrentEmberVersion AndAlso Not Force Then
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
                             Me.bwDoInstall.ReportProgress(6, MyLang.GetString(10, "No New Version to Install"))
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
@@ -1083,6 +1084,7 @@ Public Class frmMainSetup
             InitCredits()
             If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
                 RemoteSiteFolder = "UpdatesBeta"
+                IsBeta = True
             End If
             'Me.lblStatus.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint Or ControlStyles.SupportsTransparentBackColor, True)
             Me.lblStatus.BackColor = System.Drawing.Color.Transparent
