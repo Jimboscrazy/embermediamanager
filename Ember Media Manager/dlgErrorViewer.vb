@@ -77,10 +77,12 @@ Public Class dlgErrorViewer
         Dim sPath As String = String.Concat(Functions.AppPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
 
         Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
+        Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine(String.Concat("Platform: ", If(Master.is64Bit, "x64", "x86")))
         For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
             Me.sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.Name, v.Version))
         Next
+        Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
 
         Me.sBuilder.AppendLine(String.Empty)
