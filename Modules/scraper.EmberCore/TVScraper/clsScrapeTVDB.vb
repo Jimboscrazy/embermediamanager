@@ -816,7 +816,7 @@ Public Class Scraper
                 End If
 
                 Try
-                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
+                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes.Where(Function(e) e.TVEp.Season > -1 AndAlso e.TVEp.Episode > -1)
 
                         Try
                             If Me.bwTVDB.CancellationPending Then Return
