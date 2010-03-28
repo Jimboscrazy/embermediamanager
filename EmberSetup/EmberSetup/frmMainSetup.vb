@@ -1209,20 +1209,24 @@ Public Class frmMainSetup
                     LogWrite(ex.StackTrace)
                 End Try
                 LogWrite(String.Format("*** Main: START {0}", Now))
-                If File.Exists(Path.Combine(AppPath, "Ember Media Manager.exe")) Then
-                    emberPath = AppPath()
-                    CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
-                    LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
-                    CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
-                    LogWrite(String.Format("--- Main: Found Ember Platform: {0}", CurrentEmberPlatform))
-                    lblInfo.TextAlign = ContentAlignment.MiddleCenter
-                    lblInfo.Text = String.Format(MyLang.GetString(29, "We have found a EMM Installation in {0}"), vbCrLf)
-                    lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
-                    If Not Force Then
-                        lblInfo.Text += MyLang.GetString(30, "If you want to change this please use [Change Options]")
+                Dim EmberFound As Boolean = False
+                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")).Split(Convert.ToChar("|"))
+                    If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
+                        emberPath = ss
+                        CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
+                        LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
+                        CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
+                        LogWrite(String.Format("--- Main: Found Ember Platform: {0}", CurrentEmberPlatform))
+                        lblInfo.TextAlign = ContentAlignment.MiddleCenter
+                        lblInfo.Text = String.Format(MyLang.GetString(29, "We have found a EMM Installation in {0}"), vbCrLf)
+                        lblInfo.Text += String.Format("{0}{1}{1}", emberPath, vbCrLf)
+                        If Not Force Then
+                            lblInfo.Text += MyLang.GetString(30, "If you want to change this please use [Change Options]")
+                        End If
+                        Exit For
                     End If
-
-                Else
+                Next
+                If Not EmberFound Then
                     If CheckIfWindows() Then
                         emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")
                     Else

@@ -348,6 +348,7 @@ Public Class EmberXMLScraperModule
                                         dcb.Value = ss.Parameter.ToString
                                         dcb.Tag = ss.ID.ToString
                                     Case Else
+                                        Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
                                 End Select
                             End If
                         End If
