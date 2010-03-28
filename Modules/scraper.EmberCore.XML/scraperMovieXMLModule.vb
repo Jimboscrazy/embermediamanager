@@ -226,7 +226,9 @@ Public Class EmberXMLScraperModule
         Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
         If Not s Is Nothing Then
             For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
-                ss.Parameter = AdvancedSettings.GetSetting(String.Concat(scraperFileName, ".", ss.ID.ToString), ss.Default)
+                If Not IsNothing(ss) Then
+                    ss.Parameter = If(Not ss.ID Is Nothing, AdvancedSettings.GetSetting(String.Concat(scraperFileName, ".", ss.ID.ToString), ss.Default), ss.Default)
+                End If
             Next
         End If
     End Sub
@@ -332,7 +334,6 @@ Public Class EmberXMLScraperModule
                     _setup.dgvSettings.Rows.Clear()
                     For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
                         If Not ss.Label Is Nothing Then
-
                             If ss.Values.Count > 0 Then
                                 Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
                                 Dim dcb As DataGridViewComboBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
