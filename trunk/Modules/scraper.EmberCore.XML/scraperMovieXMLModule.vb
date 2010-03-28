@@ -326,9 +326,9 @@ Public Class EmberXMLScraperModule
         Try
             If Not _setup.cbScraper.SelectedItem Is Nothing Then
                 scraperName = _setup.cbScraper.SelectedItem.ToString
-                scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-                If Not s Is Nothing Then
+                If Not IsNothing(s) Then
+                    scraperFileName = s.FileName
                     _setup.dgvSettings.Rows.Clear()
                     For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
                         If Not ss.Label Is Nothing Then
