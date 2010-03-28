@@ -758,8 +758,8 @@ Public Class Scanner
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
                             Not f.Name.ToLower.Contains("-trailer") AndAlso Not f.Name.ToLower.Contains("[trailer") AndAlso _
-                            Not f.Name.ToLower.Contains("sample") AndAlso (Not Convert.ToInt32(Master.eSettings.SkipLessThan) > 0 OrElse (Master.eSettings.SkipStackSizeCheck AndAlso _
-                            StringUtils.IsStacked(f.Name)) OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576)).OrderBy(Function(f) f.FullName)
+                            Not f.Name.ToLower.Contains("sample") AndAlso ((Master.eSettings.SkipStackSizeCheck AndAlso _
+                            StringUtils.IsStacked(f.Name)) OrElse (Not Convert.ToInt32(Master.eSettings.SkipLessThan) > 0 OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso bSingle Then
                         'check if we already have a movie from this folder
