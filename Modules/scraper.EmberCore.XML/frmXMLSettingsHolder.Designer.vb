@@ -23,10 +23,9 @@ Partial Class frmXMLSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.dgvSettings = New System.Windows.Forms.DataGridView
-        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Value = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.btnPopulate = New System.Windows.Forms.Button
@@ -38,6 +37,8 @@ Partial Class frmXMLSettingsHolder
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
         Me.pbPoster = New System.Windows.Forms.PictureBox
+        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Value = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.pnlSettings.SuspendLayout()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
@@ -78,19 +79,6 @@ Partial Class frmXMLSettingsHolder
         Me.dgvSettings.ShowRowErrors = False
         Me.dgvSettings.Size = New System.Drawing.Size(402, 150)
         Me.dgvSettings.TabIndex = 88
-        '
-        'Setting
-        '
-        Me.Setting.FillWeight = 280.0!
-        Me.Setting.HeaderText = "Setting"
-        Me.Setting.Name = "Setting"
-        Me.Setting.ReadOnly = True
-        Me.Setting.Width = 280
-        '
-        'Value
-        '
-        Me.Value.HeaderText = "Value"
-        Me.Value.Name = "Value"
         '
         'pnlLoading
         '
@@ -204,6 +192,21 @@ Partial Class frmXMLSettingsHolder
         Me.pbPoster.TabStop = False
         Me.pbPoster.Visible = False
         '
+        'Setting
+        '
+        Me.Setting.FillWeight = 280.0!
+        Me.Setting.HeaderText = "Setting"
+        Me.Setting.Name = "Setting"
+        Me.Setting.ReadOnly = True
+        Me.Setting.Width = 280
+        '
+        'Value
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Value.DefaultCellStyle = DataGridViewCellStyle1
+        Me.Value.HeaderText = "Value"
+        Me.Value.Name = "Value"
+        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -242,8 +245,8 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents dgvSettings As System.Windows.Forms.DataGridView
+    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents Setting As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Value As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
 
 End Class

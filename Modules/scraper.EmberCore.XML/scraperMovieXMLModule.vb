@@ -344,8 +344,23 @@ Public Class EmberXMLScraperModule
                                 Select Case ss.Type
                                     Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.bool
                                         Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
-                                        Dim dcb As DataGridViewComboBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
-                                        dcb.DataSource = New String() {"true", "false"}
+                                        Dim cCell As New DataGridViewCheckBoxCell()
+                                        _setup.dgvSettings.Rows(i).Cells(1) = cCell
+                                        Dim dcb As DataGridViewCheckBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewCheckBoxCell)
+                                        dcb.Value = If(ss.Parameter.ToString = "true", True, False)
+                                        dcb.Tag = ss.ID.ToString
+                                    Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.text
+                                        Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
+                                        Dim cCell As New DataGridViewTextBoxCell
+                                        _setup.dgvSettings.Rows(i).Cells(1) = cCell
+                                        Dim dcb As DataGridViewTextBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewTextBoxCell)
+                                        dcb.Value = ss.Parameter.ToString
+                                        dcb.Tag = ss.ID.ToString
+                                    Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.int
+                                        Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
+                                        Dim cCell As New DataGridViewTextBoxCell
+                                        _setup.dgvSettings.Rows(i).Cells(1) = cCell
+                                        Dim dcb As DataGridViewTextBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewTextBoxCell)
                                         dcb.Value = ss.Parameter.ToString
                                         dcb.Tag = ss.ID.ToString
                                     Case Else

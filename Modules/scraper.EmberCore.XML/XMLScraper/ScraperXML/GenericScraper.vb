@@ -525,8 +525,8 @@ Namespace XMLScraper
                         WebpageDownloads.Add(New UrlInfo(item))
                     End If
                 Next
-
-                For i As Integer = 0 To WebpageDownloads.Count - 1
+                Dim i As Integer = 0
+                While i <= WebpageDownloads.Count - 1
                     If HttpGet(i) Then
                         Dim stringResults As String = Me._parser.ParseFunction(WebpageDownloads(i).Function)
                         results = ParseStringXML(stringResults)
@@ -546,7 +546,8 @@ Namespace XMLScraper
                             ErrorMessage(ErrorType.FunctionError, WebpageDownloads(i).Function)
                         End If
                     End If
-                Next
+                    i += 1
+                End While
             End Sub
 
             Private Sub ParseCustomSettings(ByVal results As XElement)
