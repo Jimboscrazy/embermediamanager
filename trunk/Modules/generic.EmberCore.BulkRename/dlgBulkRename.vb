@@ -36,7 +36,7 @@ Public Class dlgBulkRenamer
     Private isLoaded As Boolean = False
     Private run_once As Boolean = True
     Private _columnsize(9) As Integer
-
+    Private dHelpTips As dlgHelpTips
     #End Region 'Fields
 
     #Region "Delegates"
@@ -576,6 +576,32 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-#End Region 'Methods
+    Sub LoadHelpTips()
+        If dHelpTips Is Nothing Then
+            dHelpTips = New dlgHelpTips
+        End If
+        Dim s As String = String.Format(Master.eLang.GetString(11, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        dHelpTips.lblTips.Text = s
+        dHelpTips.Width = dHelpTips.lblTips.Width + 5
+        dHelpTips.Height = dHelpTips.lblTips.Height + 30
+        dHelpTips.Top = Me.Top + 10
+        dHelpTips.Left = Me.Right - dHelpTips.Width - 10
+        If dHelpTips.Visible Then
+            dHelpTips.Hide()
+        Else
+            dHelpTips.Show(Me)
+        End If
 
+    End Sub
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        LoadHelpTips()
+    End Sub
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        LoadHelpTips()
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        LoadHelpTips()
+    End Sub
+#End Region 'Methods
 End Class

@@ -118,6 +118,7 @@ Public Class EmberXMLScraperModule
 
     End Function
     Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
+
     End Function
 
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
@@ -213,27 +214,38 @@ Public Class EmberXMLScraperModule
             End If
             Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
 
-            Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
-                    res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                    If res.Count > 0 Then
-                        ' Get first and go
-                        lMediaTag = XMLManager.GetDetails(res(0))
-                        MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                    End If
+            If Master.GlobalScrapeMod.NFO Then
 
-                Case Else
-                    res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                    If res.Count > 0 Then
-                        'Dialog
-                        Using dlg As New dlgSearchResults
-                            If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
-                                lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
-                                MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                            End If
-                        End Using
-                    End If
-            End Select
+                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+                    DBMovie.ClearExtras = True
+                    DBMovie.PosterPath = String.Empty
+                    DBMovie.FanartPath = String.Empty
+                    DBMovie.TrailerPath = String.Empty
+                    DBMovie.ExtraPath = String.Empty
+                    DBMovie.SubPath = String.Empty
+                    DBMovie.NfoPath = String.Empty
+                    DBMovie.Movie.Clear()
+                End If
+                Select Case ScrapeType
+                    Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                        If res.Count > 0 Then
+                            ' Get first and go
+                            lMediaTag = XMLManager.GetDetails(res(0))
+                            MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                        End If
+                    Case Else
+                        res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                        If res.Count > 0 Then
+                            ' search Dialog
+                            Using dlg As New dlgSearchResults
+                                If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                                    lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
+                                    MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                                End If
+                            End Using
+                        End If
+                End Select
+            End If
         Catch ex As Exception
         End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
