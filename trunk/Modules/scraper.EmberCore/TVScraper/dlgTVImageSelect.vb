@@ -487,44 +487,44 @@ Public Class dlgTVImageSelect
                     For Each sEpisode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
                         Try
                             iSeason = sEpisode.TVEp.Season
-
-                            If IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
-                                Scraper.TVDBImages.ShowPoster.Image.FromFile(sEpisode.ShowPosterPath)
-                            End If
-
-                            If Me.bwLoadData.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-
-                            If Master.eSettings.EpisodeFanartEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
-                                Scraper.TVDBImages.ShowFanart.Image.FromFile(sEpisode.ShowFanartPath)
-                                Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.ShowFanartPath
-                            End If
-
-                            If Me.bwLoadData.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-
-                            If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
-                                cSI = New Scraper.TVDBSeasonImage
-                                cSI.Season = iSeason
-                                If Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
-                                    cSI.Poster.FromFile(sEpisode.SeasonPosterPath)
+                            If iSeason > -1 AndAlso sEpisode.TVEp.Episode > -1 Then
+                                If IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
+                                    Scraper.TVDBImages.ShowPoster.Image.FromFile(sEpisode.ShowPosterPath)
                                 End If
-                                If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
-                                    cSI.Fanart.Image.FromFile(sEpisode.SeasonFanartPath)
-                                    cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
+
+                                If Me.bwLoadData.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
                                 End If
-                                Scraper.TVDBImages.SeasonImageList.Add(cSI)
-                            End If
 
-                            If Me.bwLoadData.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
+                                If Master.eSettings.EpisodeFanartEnabled AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
+                                    Scraper.TVDBImages.ShowFanart.Image.FromFile(sEpisode.ShowFanartPath)
+                                    Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.ShowFanartPath
+                                End If
 
+                                If Me.bwLoadData.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+
+                                If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
+                                    cSI = New Scraper.TVDBSeasonImage
+                                    cSI.Season = iSeason
+                                    If Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
+                                        cSI.Poster.FromFile(sEpisode.SeasonPosterPath)
+                                    End If
+                                    If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
+                                        cSI.Fanart.Image.FromFile(sEpisode.SeasonFanartPath)
+                                        cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
+                                    End If
+                                    Scraper.TVDBImages.SeasonImageList.Add(cSI)
+                                End If
+
+                                If Me.bwLoadData.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End If
                             Me.bwLoadData.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception

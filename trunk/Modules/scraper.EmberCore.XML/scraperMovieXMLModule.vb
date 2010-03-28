@@ -196,11 +196,11 @@ Public Class EmberXMLScraperModule
         ScraperEnabled = _setup.cbEnabled.Checked
         If Not _setup.cbScraper.SelectedItem Is Nothing Then
             scraperName = _setup.cbScraper.SelectedItem.ToString
-            scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
-            AdvancedSettings.SetSetting("ScraperName", scraperName)
-            AdvancedSettings.SetSetting("ScraperFileName", scraperFileName)
             Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-            If Not s Is Nothing Then
+            If Not IsNothing(s) Then
+                scraperFileName = s.FileName
+                AdvancedSettings.SetSetting("ScraperName", scraperName)
+                AdvancedSettings.SetSetting("ScraperFileName", scraperFileName)
                 For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
                     If ss.ID IsNot Nothing Then
                         For Each r As DataGridViewRow In _setup.dgvSettings.Rows

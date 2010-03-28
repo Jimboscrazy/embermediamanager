@@ -6531,6 +6531,7 @@ doCancel:
         Dim tmpShowDb As New Structures.DBTV
         Dim tmpEp As New MediaContainers.EpisodeDetails
         Dim SeasonChanged As Boolean = False
+        Dim EpisodeChanged As Boolean = False
         Dim ShowID As Integer = -1
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
@@ -6573,6 +6574,11 @@ doCancel:
                         ShowID = Convert.ToInt32(tmpShowDb.ShowID)
                     End If
 
+                    If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item(2)) = tmpShowDb.TVEp.Episode Then
+                        EpisodeChanged = True
+                        ShowID = Convert.ToInt32(tmpShowDb.ShowID)
+                    End If
+
                     If Me.InvokeRequired Then
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpShowDb.TVEp.Title})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(eContainer.Poster), False, True)})
@@ -6596,7 +6602,7 @@ doCancel:
             End If
 
             If Not BatchMode Then
-                If SeasonChanged AndAlso ShowID > -1 Then
+                If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
                     Master.DB.CleanSeasons(BatchMode)
                     Me.FillSeasons(ShowID)
                 Else
