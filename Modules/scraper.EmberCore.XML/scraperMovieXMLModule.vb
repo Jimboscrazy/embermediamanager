@@ -35,6 +35,7 @@ Public Class EmberXMLScraperModule
     Private _setup As frmXMLSettingsHolder
     Private XMLManager As ScraperManager = Nothing
     Private scraperName As String = String.Empty
+    Private scraperFileName As String = String.Empty
     Private ScrapersLoaded As Boolean = False
     Private lMediaTag As XMLScraper.MediaTags.MediaTag
     Private LastDBMovieID As String = String.Empty
@@ -131,10 +132,14 @@ Public Class EmberXMLScraperModule
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
         scraperName = AdvancedSettings.GetSetting("ScraperName", "NFO Scraper")
+        scraperFileName = AdvancedSettings.GetSetting("ScraperFileName", "")
+        PrepareScraper()
+        XMLManager.LoadScrapers(scraperFileName)
+        LoadScraperSettings()
     End Sub
 
     Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-        PrepareScraper()
+        'PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
         Spanel.Text = Me._Name
@@ -148,7 +153,7 @@ Public Class EmberXMLScraperModule
     End Function
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
-        PrepareScraper()
+        'PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
@@ -158,6 +163,7 @@ Public Class EmberXMLScraperModule
         Else
             _setup.cbScraper.SelectedIndex = _setup.cbScraper.Items.IndexOf(scraperName)
         End If
+        PopulateScraperSettings()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
         Spanel.Text = _Name
         Spanel.Prefix = "XMLMovieInfo_"
@@ -178,6 +184,8 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
+        PopulateScraperSettings()
+        scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -188,7 +196,23 @@ Public Class EmberXMLScraperModule
         ScraperEnabled = _setup.cbEnabled.Checked
         If Not _setup.cbScraper.SelectedItem Is Nothing Then
             scraperName = _setup.cbScraper.SelectedItem.ToString
+            scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
             AdvancedSettings.SetSetting("ScraperName", scraperName)
+            AdvancedSettings.SetSetting("ScraperFileName", scraperFileName)
+            Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
+            If Not s Is Nothing Then
+                For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
+                    If ss.ID IsNot Nothing Then
+                        For Each r As DataGridViewRow In _setup.dgvSettings.Rows
+                            If r.Cells(1).Tag.ToString = ss.ID.ToString Then
+                                AdvancedSettings.SetSetting(String.Concat(scraperFileName, ".", ss.ID.ToString), r.Cells(1).Value.ToString)
+                                ss.Parameter = r.Cells(1).Value.ToString
+                                Exit For
+                            End If
+                        Next
+                    End If
+                Next
+            End If
         End If
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -198,13 +222,21 @@ Public Class EmberXMLScraperModule
             _setup.Dispose()
         End If
     End Sub
-
+    Sub LoadScraperSettings()
+        Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
+        If Not s Is Nothing Then
+            For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
+                ss.Parameter = AdvancedSettings.GetSetting(String.Concat(scraperFileName, ".", ss.ID.ToString), ss.Default)
+            Next
+        End If
+    End Sub
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         Try
-
-            PrepareScraper()
-            If Not ScrapersLoaded Then
-                XMLManager.ReloadScrapers()
+            'PrepareScraper()
+            If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
+                'XMLManager.ReloadScrapers()
+                XMLManager.LoadScrapers(scraperFileName)
+                LoadScraperSettings()
                 PoupulateForm()
                 ScrapersLoaded = True
             End If
@@ -238,9 +270,12 @@ Public Class EmberXMLScraperModule
                         If res.Count > 0 Then
                             ' search Dialog
                             Using dlg As New dlgSearchResults
+                                dlg.XMLManager = XMLManager
                                 If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
                                     lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
                                     MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                                Else
+                                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                                 End If
                             End Using
                         End If
@@ -276,7 +311,7 @@ Public Class EmberXMLScraperModule
         If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString
         If Options.bWriters Then DBMovie.Movie.Credits = Strings.Join(lMediaTag.Writers.ToArray, " / ")
         If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
-        DBMovie.Movie.ID = lMediaTag.ID
+        DBMovie.Movie.ID = If(lMediaTag.ID.StartsWith("tt"), lMediaTag.ID, String.Empty)
         If Options.bCast Then
             For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
                 Dim person As New MediaContainers.Person
@@ -286,6 +321,41 @@ Public Class EmberXMLScraperModule
                 DBMovie.Movie.Actors.Add(person)
             Next
         End If
+    End Sub
+    Sub PopulateScraperSettings()
+        Try
+            If Not _setup.cbScraper.SelectedItem Is Nothing Then
+                scraperName = _setup.cbScraper.SelectedItem.ToString
+                scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
+                Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
+                If Not s Is Nothing Then
+                    _setup.dgvSettings.Rows.Clear()
+                    For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
+                        If Not ss.Label Is Nothing Then
+
+                            If ss.Values.Count > 0 Then
+                                Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
+                                Dim dcb As DataGridViewComboBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                                dcb.DataSource = ss.Values.ToArray
+                                dcb.Value = ss.Parameter.ToString
+                                dcb.Tag = ss.ID.ToString
+                            Else
+                                Select Case ss.Type
+                                    Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.bool
+                                        Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
+                                        Dim dcb As DataGridViewComboBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                                        dcb.DataSource = New String() {"true", "false"}
+                                        dcb.Value = ss.Parameter.ToString
+                                        dcb.Tag = ss.ID.ToString
+                                    Case Else
+                                End Select
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
@@ -304,8 +374,14 @@ Public Class EmberXMLScraperModule
         PoupulateForm()
         _setup.parentRunning = False
     End Sub
+    Delegate Sub DelegateFunction()
     Sub PoupulateForm()
         If _setup Is Nothing Then Return
+        If _setup.InvokeRequired Then
+            _setup.Invoke(New DelegateFunction(AddressOf PoupulateForm))
+            Return
+        End If
+        PopulateScraperSettings()
         _setup.cbScraper.Items.Clear()
         For Each s As ScraperInfo In XMLManager.AllScrapers
             _setup.cbScraper.Items.Add(s.ScraperName)

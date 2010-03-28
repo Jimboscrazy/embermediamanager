@@ -355,7 +355,7 @@ Partial Class dlgIMDBSearchResults
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 424)
+        Me.ClientSize = New System.Drawing.Size(643, 426)
         Me.ControlBox = False
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
