@@ -263,6 +263,9 @@ Partial Class dlgSettings
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.gbMiscTVSourceOpts = New System.Windows.Forms.GroupBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox
+        Me.Label7 = New System.Windows.Forms.Label
         Me.chkTVScanOrderModify = New System.Windows.Forms.CheckBox
         Me.chkTVIgnoreLastScan = New System.Windows.Forms.CheckBox
         Me.chkTVCleanDB = New System.Windows.Forms.CheckBox
@@ -2994,9 +2997,9 @@ Partial Class dlgSettings
         Me.Label21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label21.Location = New System.Drawing.Point(133, 39)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(63, 13)
+        Me.Label21.Size = New System.Drawing.Size(24, 13)
         Me.Label21.TabIndex = 69
-        Me.Label21.Text = "Megabytes"
+        Me.Label21.Text = "MB"
         '
         'txtSkipLessThan
         '
@@ -3012,9 +3015,9 @@ Partial Class dlgSettings
         Me.Label20.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label20.Location = New System.Drawing.Point(4, 19)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(105, 13)
+        Me.Label20.Size = New System.Drawing.Size(122, 13)
         Me.Label20.TabIndex = 67
-        Me.Label20.Text = "Skip files less than:"
+        Me.Label20.Text = "Skip files smaller than:"
         '
         'pnlImages
         '
@@ -3347,6 +3350,9 @@ Partial Class dlgSettings
         '
         'gbMiscTVSourceOpts
         '
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.Label6)
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.txtTVSkipLessThan)
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.Label7)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVScanOrderModify)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVIgnoreLastScan)
         Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVCleanDB)
@@ -3358,11 +3364,39 @@ Partial Class dlgSettings
         Me.gbMiscTVSourceOpts.TabStop = False
         Me.gbMiscTVSourceOpts.Text = "Miscellaneous Options"
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(114, 39)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(24, 13)
+        Me.Label6.TabIndex = 76
+        Me.Label6.Text = "MB"
+        '
+        'txtTVSkipLessThan
+        '
+        Me.txtTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSkipLessThan.Location = New System.Drawing.Point(11, 34)
+        Me.txtTVSkipLessThan.Name = "txtTVSkipLessThan"
+        Me.txtTVSkipLessThan.Size = New System.Drawing.Size(100, 22)
+        Me.txtTVSkipLessThan.TabIndex = 74
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(6, 18)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(122, 13)
+        Me.Label7.TabIndex = 75
+        Me.Label7.Text = "Skip files smaller than:"
+        '
         'chkTVScanOrderModify
         '
         Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(6, 61)
+        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(4, 110)
         Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
         Me.chkTVScanOrderModify.Size = New System.Drawing.Size(142, 43)
         Me.chkTVScanOrderModify.TabIndex = 73
@@ -3374,7 +3408,7 @@ Partial Class dlgSettings
         '
         Me.chkTVIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 19)
+        Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(4, 68)
         Me.chkTVIgnoreLastScan.Name = "chkTVIgnoreLastScan"
         Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(142, 43)
         Me.chkTVIgnoreLastScan.TabIndex = 72
@@ -3386,7 +3420,7 @@ Partial Class dlgSettings
         '
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVCleanDB.Location = New System.Drawing.Point(5, 103)
+        Me.chkTVCleanDB.Location = New System.Drawing.Point(4, 152)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
         Me.chkTVCleanDB.Size = New System.Drawing.Size(142, 43)
         Me.chkTVCleanDB.TabIndex = 71
@@ -7053,6 +7087,7 @@ Partial Class dlgSettings
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
         Me.gbMiscTVSourceOpts.ResumeLayout(False)
+        Me.gbMiscTVSourceOpts.PerformLayout()
         Me.gbTVNaming.ResumeLayout(False)
         Me.gbAllSeasonPoster.ResumeLayout(False)
         Me.gbAllSeasonPoster.PerformLayout()
@@ -7706,4 +7741,7 @@ Partial Class dlgSettings
     Friend WithEvents btnResetShowRegex As System.Windows.Forms.Button
     Friend WithEvents btnRegexDown As System.Windows.Forms.Button
     Friend WithEvents btnRegexUp As System.Windows.Forms.Button
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtTVSkipLessThan As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 End Class

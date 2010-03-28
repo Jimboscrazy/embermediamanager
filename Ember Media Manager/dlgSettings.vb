@@ -2227,6 +2227,7 @@ Public Class dlgSettings
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
             Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
+            Me.txtTVSkipLessThan.Text = Master.eSettings.SkipLessThanEp.ToString
             Me.chkNoSaveImagesToNfo.Checked = Master.eSettings.NoSaveImagesToNfo
             Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
             Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
@@ -3272,6 +3273,7 @@ Public Class dlgSettings
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
             Master.eSettings.SkipLessThan = Convert.ToInt32(Me.txtSkipLessThan.Text)
             Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
+            Master.eSettings.SkipLessThanEp = Convert.ToInt32(Me.txtTVSkipLessThan.Text)
             Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
             If Me.cbTrailerQuality.SelectedValue IsNot Nothing Then
@@ -3658,8 +3660,10 @@ Public Class dlgSettings
         Me.gbMiscTVSourceOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.chkAutoDetectVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
         Me.chkSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
-        Me.Label21.Text = Master.eLang.GetString(539, "Megabytes")
-        Me.Label20.Text = Master.eLang.GetString(540, "Skip files less than:")
+        Me.Label21.Text = Master.eLang.GetString(539, "MB")
+        Me.Label20.Text = Master.eLang.GetString(540, "Skip files smaller than:")
+        Me.Label6.Text = Me.Label21.Text
+        Me.Label7.Text = Me.Label20.Text
         Me.GroupBox23.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.GroupBox24.Text = Master.eLang.GetString(541, "Sizing (Extracted Frames)")
         Me.chkETPadding.Text = Master.eLang.GetString(542, "Padding")
@@ -4371,6 +4375,15 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSkipLessThan.TextChanged
+        Me.SetApplyButton(True)
+        Me.sResult.NeedsUpdate = True
+    End Sub
+
+    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSkipLessThan.TextChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsUpdate = True
     End Sub

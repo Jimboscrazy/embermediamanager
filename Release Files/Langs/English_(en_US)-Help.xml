@@ -132,6 +132,7 @@
 	<string control="Core_chkAutoDetectVTS">If enabled, Ember will attempt to recognize VIDEO_TS folders even if the folder is not named "VIDEO_TS". If disabled, Ember will still handle VIDEO_TS folders if the folder is named "VIDEO_TS". This setting also applies to BDMV folders.</string>
 	<string control="Core_chkSkipStackedSizeCheck">If enabled, Ember will not skip files smaller than the entered "Skip Files Smaller Than" size if they contain stacking markers (such as "CD1" or "DVD2").</string>
 	<string control="Core_txtSkipLessThan">Ember will use the entered size as the minimum size for movie files. Any files smaller than this will be skipped when updating the library.</string>
+	<string control="Core_txtTVSkipLessThan">Ember will use the entered size as the minimum size for episode files. Any files smaller than this will be skipped when updating the library.</string>
 	<string control="Core_cbTrailerQuality">Select the preferred quality of the downloaded trailers.</string>
 	<string control="Core_chkDeleteAllTrailers">If enabled, Ember will delete all existing trailers for the movie before saving the new one.</string>
 	<string control="Core_chkOverwriteTrailer">If enabled, existing trailer files will be overwritten when saving new ones. If disabled, new trailer files will only be saved if one does not already exist.</string>

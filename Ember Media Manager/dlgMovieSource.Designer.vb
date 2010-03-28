@@ -40,6 +40,7 @@ Partial Class dlgMovieSource
         Me.tmrName = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
+        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -48,7 +49,7 @@ Partial Class dlgMovieSource
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(283, 132)
+        Me.OK_Button.Location = New System.Drawing.Point(286, 132)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -58,7 +59,7 @@ Partial Class dlgMovieSource
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(356, 132)
+        Me.Cancel_Button.Location = New System.Drawing.Point(359, 132)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -103,7 +104,7 @@ Partial Class dlgMovieSource
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(397, 100)
+        Me.btnBrowse.Location = New System.Drawing.Point(400, 100)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
         Me.btnBrowse.TabIndex = 5
@@ -118,7 +119,7 @@ Partial Class dlgMovieSource
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(175, 8)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(248, 85)
+        Me.GroupBox1.Size = New System.Drawing.Size(251, 85)
         Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Source Options"
@@ -126,20 +127,23 @@ Partial Class dlgMovieSource
         'chkSingle
         '
         Me.chkSingle.AutoSize = True
+        Me.chkSingle.Checked = True
+        Me.chkSingle.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkSingle.Location = New System.Drawing.Point(6, 39)
         Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(237, 17)
+        Me.chkSingle.Size = New System.Drawing.Size(242, 17)
         Me.chkSingle.TabIndex = 2
-        Me.chkSingle.Text = "Only Detect One Movie From Each Folder"
+        Me.chkSingle.Text = "Only Detect One Movie From Each Folder*"
         Me.chkSingle.UseVisualStyleBackColor = True
         '
         'chkUseFolderName
         '
         Me.chkUseFolderName.AutoSize = True
-        Me.chkUseFolderName.Enabled = False
+        Me.chkUseFolderName.Checked = True
+        Me.chkUseFolderName.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkUseFolderName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkUseFolderName.Location = New System.Drawing.Point(17, 62)
+        Me.chkUseFolderName.Location = New System.Drawing.Point(17, 59)
         Me.chkUseFolderName.Name = "chkUseFolderName"
         Me.chkUseFolderName.Size = New System.Drawing.Size(200, 17)
         Me.chkUseFolderName.TabIndex = 1
@@ -186,13 +190,25 @@ Partial Class dlgMovieSource
         '
         Me.tmrPath.Interval = 250
         '
+        'Label3
+        '
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(5, 136)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(268, 24)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "* This MUST be enabled to use extrathumbs and file naming options like movie.nfo," & _
+            " fanart.jpg, etc."
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'dlgMovieSource
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 164)
+        Me.ClientSize = New System.Drawing.Size(441, 164)
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pbValid)
         Me.Controls.Add(Me.Cancel_Button)
@@ -234,5 +250,6 @@ Partial Class dlgMovieSource
     Friend WithEvents tmrName As System.Windows.Forms.Timer
     Friend WithEvents tmrPathWait As System.Windows.Forms.Timer
     Friend WithEvents tmrPath As System.Windows.Forms.Timer
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 
 End Class
