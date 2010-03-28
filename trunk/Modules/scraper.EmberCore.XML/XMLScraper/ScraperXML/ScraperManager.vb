@@ -202,9 +202,9 @@ Namespace XMLScraper
                 If Directory.Exists(pFolder) Then
                     Dim scraperDir As New DirectoryInfo(pFolder)
 
-                    For Each item As FileInfo In scraperDir.GetFiles("*.xml", SearchOption.AllDirectories).Where(Function(y) Path.GetFileName(y.FullName) = fname)
+                    For Each item As FileInfo In scraperDir.GetFiles("*.xml", SearchOption.AllDirectories)
                         Dim doc As XDocument = XmlUtilities.TryLoadDocument(item.FullName)
-                        If XmlUtilities.IsScraper(doc) Then
+                        If Path.GetFileName(item.FullName) = fname AndAlso XmlUtilities.IsScraper(doc) Then
                             Dim tempInfo As New ScraperInfo()
                             If tempInfo.Load(doc, item.FullName) Then
                                 If Not IsNothing(tempInfo.Settings) Then
