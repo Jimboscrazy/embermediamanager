@@ -50,6 +50,15 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+    End Sub
+
     #End Region 'Methods
 
 End Class

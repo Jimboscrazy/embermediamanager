@@ -92,8 +92,9 @@ Public Class frmMediaSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub frmMediaSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
     End Sub
 
     Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs)
@@ -123,6 +124,7 @@ Public Class frmMediaSettingsHolder
         Me.GroupBox2.Text = Master.eLang.GetString(8, "Supported Sites:")
         Me.GroupBox9.Text = Master.eLang.GetString(9, "Get Images From:")
         Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Support", True)
+        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order", True)
     End Sub
 
     Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged

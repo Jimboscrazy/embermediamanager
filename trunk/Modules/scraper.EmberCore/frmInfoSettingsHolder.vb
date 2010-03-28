@@ -174,7 +174,8 @@ Public Class frmInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub frmInfoSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Public Sub New()
+        InitializeComponent()
         Me.SetUp()
     End Sub
 
@@ -211,6 +212,7 @@ Public Class frmInfoSettingsHolder
         Me.chkYear.Text = Master.eLang.GetString(278, "Year", True)
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title", True)
         Me.chkCertification.Text = Master.eLang.GetString(722, "Certification", True)
+        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order", True)
     End Sub
 
     Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBURL.TextChanged
