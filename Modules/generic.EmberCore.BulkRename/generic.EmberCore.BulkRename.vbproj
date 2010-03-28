@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EAAB0601-6478-44D2-A39C-89B0850D7833}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -132,6 +132,12 @@
     <Compile Include="dlgBulkRename.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgHelpTips.Designer.vb">
+      <DependentUpon>dlgHelpTips.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgHelpTips.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgRenameManual.Designer.vb">
       <DependentUpon>dlgRenameManual.vb</DependentUpon>
     </Compile>
@@ -164,6 +170,10 @@
   <ItemGroup>
     <EmbeddedResource Include="dlgBulkRename.resx">
       <DependentUpon>dlgBulkRename.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgHelpTips.resx">
+      <DependentUpon>dlgHelpTips.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgRenameManual.resx">
