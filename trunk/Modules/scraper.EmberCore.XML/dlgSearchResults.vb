@@ -19,16 +19,18 @@
 ' ################################################################################
 
 Imports System.Text.RegularExpressions
+Imports EmberScraperModule.XMLScraper.ScraperXML
 
 Public Class dlgSearchResults
 
 #Region "Fields"
     Public SelectIdx As Integer = -1
-    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwDownloadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-
+    Public XMLManager As ScraperManager = Nothing
+    Private lMediaTag As XMLScraper.MediaTags.MovieTag ' XMLScraper.MediaTags.MediaTag
     Private sHTTP As New HTTP
     Dim UseOFDBGenre As Boolean
     Dim UseOFDBOutline As Boolean
@@ -47,7 +49,7 @@ Public Class dlgSearchResults
         ' Overload to pass data
         '\\
 
-        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(11, "Search Results - "), sMovieTitle)
         mList = Res
         SearchResultsDownloaded()
 
@@ -58,24 +60,63 @@ Public Class dlgSearchResults
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
             Me.OK_Button.Enabled = False
             Me.ClearInfo()
-            Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+            Me.Label3.Text = Master.eLang.GetString(9, "Searching...")
             Me.pnlLoading.Visible = True
         End If
     End Sub
 
 
-    Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
-        sHTTP.StartDownloadImage(Args.pURL)
-
-        While sHTTP.IsDownloading
-            Application.DoEvents()
-        End While
-
-        e.Result = New Results With {.Result = sHTTP.Image}
+    Private Sub bwDownloadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadInfo.DoWork
+        Try
+            lMediaTag = Nothing
+            Dim idx As Integer = Convert.ToInt32(e.Argument) 'Me.tvResults.SelectedNode.Tag)
+            lMediaTag = DirectCast(XMLManager.GetDetails(mList(idx)), XMLScraper.MediaTags.MovieTag)
+            If Not lMediaTag.Thumbs Is Nothing AndAlso lMediaTag.Thumbs.Count > 0 Then
+                sHTTP.StartDownloadImage(lMediaTag.Thumbs(0).Thumb)
+                While sHTTP.IsDownloading
+                    Application.DoEvents()
+                End While
+                e.Result = New Results With {.Result = sHTTP.Image}
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
+    Private Sub bwDownloadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadInfo.RunWorkerCompleted
+        Me.OK_Button.Enabled = True
+        Me.pnlLoading.Visible = False
+        Try
+            If Not lMediaTag Is Nothing Then
+                'Dim idx As Integer = Convert.ToInt32(Me.tvResults.SelectedNode.Tag)
+                lblTitle.Text = Web.HttpUtility.HtmlDecode(lMediaTag.Title)
+                lblYear.Text = lMediaTag.Year.ToString
+                If Not lMediaTag.Directors Is Nothing Then
+                    lblDirector.Text = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Directors.ToArray(), " / "))
+                Else
+                    lblDirector.Text = String.Empty
+                End If
+                txtOutline.Text = Web.HttpUtility.HtmlDecode(StringUtils.HtmlEncode(lMediaTag.Outline))
+                If Not lMediaTag.Genres Is Nothing Then
+                    lblGenre.Text = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Genres.ToArray(), " / "))
+                Else
+                    lblGenre.Text = String.Empty
+                End If
+                Me.pbPoster.Image = Nothing
+                If Not e.Result Is Nothing Then
+                    Try
+                        Dim iRes As Results = DirectCast(e.Result, Results)
+                        Me.pbPoster.Image = iRes.Result
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                End If
+                ControlsVisible(True)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
+    End Sub
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Master.tmpMovie.Clear()
 
@@ -94,9 +135,18 @@ Public Class dlgSearchResults
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
         Me.lblYearHeader.Visible = areVisible
+        Me.lblDirectorHeader.Visible = areVisible
+        Me.lblGenreHeader.Visible = areVisible
+        Me.lblPlotHeader.Visible = areVisible
+        'Me.lblIMDBHeader.Visible = areVisible
+        Me.txtOutline.Visible = areVisible
         Me.lblYear.Visible = areVisible
+        'Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
-
+        Me.lblDirector.Visible = areVisible
+        Me.lblGenre.Visible = areVisible
+        'Me.lblIMDB.Visible = areVisible
+        Me.pbPoster.Visible = areVisible
     End Sub
 
     Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
@@ -161,19 +211,24 @@ Public Class dlgSearchResults
     End Sub
 
     Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(285, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(286, "Movie Search Results")
-        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
-        Me.Label3.Text = Master.eLang.GetString(568, "Searching ...")
+        Me.OK_Button.Text = Master.eLang.GetString(1, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(2, "Cancel", True)
+        Me.Label2.Text = Master.eLang.GetString(3, "View details of each result to find the proper movie.")
+        Me.Label1.Text = Master.eLang.GetString(4, "Movie Search Results")
+        Me.lblYearHeader.Text = Master.eLang.GetString(5, "Year:", True)
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(6, "Director:", True)
+        Me.lblGenreHeader.Text = Master.eLang.GetString(7, "Genre(s):", True)
+        'Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:", True)
+        Me.lblPlotHeader.Text = Master.eLang.GetString(8, "Plot Outline:", True)
+        Me.Label3.Text = Master.eLang.GetString(9, "Searching ...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         Me.tmrWait.Enabled = False
         Me.tmrLoad.Enabled = False
-
-        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
+        bwDownloadInfo.WorkerReportsProgress = True
+        bwDownloadInfo.RunWorkerAsync(Me.tvResults.SelectedNode.Tag)
+        Me.Label3.Text = Master.eLang.GetString(10, "Downloading details...")
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -191,19 +246,13 @@ Public Class dlgSearchResults
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.ClearInfo()
-            'Me.OK_Button.Enabled = False
-            Me.OK_Button.Enabled = True
-            Me.pnlLoading.Visible = False
-            Dim idx As Integer = Convert.ToInt32(Me.tvResults.SelectedNode.Tag)
-            lblTitle.Text = Web.HttpUtility.HtmlDecode(mList(idx).Title)
-            lblYear.Text = mList(idx).Year.ToString
-            'If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-            'Me.pnlLoading.Visible = True
-            'Me.tmrWait.Enabled = True
-            'Else
-            'Me.pnlLoading.Visible = False
-            'End If
-            ControlsVisible(True)
+            Me.OK_Button.Enabled = False
+            If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+                Me.pnlLoading.Visible = True
+                Me.tmrWait.Enabled = True
+            Else
+                Me.pnlLoading.Visible = False
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -241,5 +290,4 @@ Public Class dlgSearchResults
     End Structure
 
 #End Region 'Nested Types
-
 End Class

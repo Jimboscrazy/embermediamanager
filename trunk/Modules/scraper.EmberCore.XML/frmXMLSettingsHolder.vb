@@ -50,4 +50,11 @@ Public Class frmXMLSettingsHolder
         pnlLoading.Visible = False
 
     End Sub
+
+    Private Sub frmXMLSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    End Sub
+
+    Private Sub dgvSettings_DataError(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvSettings.DataError
+        e.ThrowException = False
+    End Sub
 End Class

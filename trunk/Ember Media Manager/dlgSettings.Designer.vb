@@ -9,10 +9,16 @@ Partial Class dlgSettings
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
-        Finally
+        Catch ex As Exception
+        End Try
+        Try
+            'Finally
             MyBase.Dispose(disposing)
+        Catch ex As Exception
         End Try
     End Sub
+
+    Delegate Sub DelegateSub(ByVal b As Boolean)
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer

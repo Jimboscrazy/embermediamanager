@@ -34,13 +34,18 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
+        Me.dgvSettings = New System.Windows.Forms.DataGridView
+        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Value = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.pnlSettings.SuspendLayout()
         Me.pnlLoading.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.dgvSettings)
         Me.pnlSettings.Controls.Add(Me.pnlLoading)
         Me.pnlSettings.Controls.Add(Me.btnPopulate)
         Me.pnlSettings.Controls.Add(Me.Label1)
@@ -55,7 +60,7 @@ Partial Class frmXMLSettingsHolder
         '
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Location = New System.Drawing.Point(41, 97)
+        Me.pnlLoading.Location = New System.Drawing.Point(235, 51)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
         Me.pnlLoading.TabIndex = 86
@@ -153,6 +158,39 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'dgvSettings
+        '
+        Me.dgvSettings.AllowUserToAddRows = False
+        Me.dgvSettings.AllowUserToDeleteRows = False
+        Me.dgvSettings.AllowUserToResizeColumns = False
+        Me.dgvSettings.AllowUserToResizeRows = False
+        Me.dgvSettings.BackgroundColor = System.Drawing.Color.White
+        Me.dgvSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSettings.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Setting, Me.Value})
+        Me.dgvSettings.Location = New System.Drawing.Point(33, 97)
+        Me.dgvSettings.MultiSelect = False
+        Me.dgvSettings.Name = "dgvSettings"
+        Me.dgvSettings.RowHeadersVisible = False
+        Me.dgvSettings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvSettings.ShowCellErrors = False
+        Me.dgvSettings.ShowCellToolTips = False
+        Me.dgvSettings.ShowRowErrors = False
+        Me.dgvSettings.Size = New System.Drawing.Size(402, 150)
+        Me.dgvSettings.TabIndex = 88
+        '
+        'Setting
+        '
+        Me.Setting.FillWeight = 280.0!
+        Me.Setting.HeaderText = "Setting"
+        Me.Setting.Name = "Setting"
+        Me.Setting.ReadOnly = True
+        Me.Setting.Width = 280
+        '
+        'Value
+        '
+        Me.Value.HeaderText = "Value"
+        Me.Value.Name = "Value"
+        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -174,6 +212,7 @@ Partial Class frmXMLSettingsHolder
         Me.pnlLoading.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -188,5 +227,8 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents btnPopulate As System.Windows.Forms.Button
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents dgvSettings As System.Windows.Forms.DataGridView
+    Friend WithEvents Setting As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Value As System.Windows.Forms.DataGridViewComboBoxColumn
 
 End Class

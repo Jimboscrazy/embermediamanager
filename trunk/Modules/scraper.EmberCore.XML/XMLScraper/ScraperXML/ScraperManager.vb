@@ -195,6 +195,33 @@ Namespace XMLScraper
                 ReloadScrapers()
             End Sub
 
+            Public Sub LoadScrapers(ByVal fname As String)
+                Me._allscrapers = New List(Of ScraperInfo)()
+                Me.Common = New List(Of IncludeInfo)()
+
+                If Directory.Exists(pFolder) Then
+                    Dim scraperDir As New DirectoryInfo(pFolder)
+
+                    For Each item As FileInfo In scraperDir.GetFiles("*.xml", SearchOption.AllDirectories).Where(Function(y) Path.GetFileName(y.FullName) = fname)
+                        Dim doc As XDocument = XmlUtilities.TryLoadDocument(item.FullName)
+                        If XmlUtilities.IsScraper(doc) Then
+                            Dim tempInfo As New ScraperInfo()
+                            If tempInfo.Load(doc, item.FullName) Then
+                                If Not IsNothing(tempInfo.Settings) Then
+                                    tempInfo.ScraperCache = Me.pCache
+                                    Me._allscrapers.Add(tempInfo)
+                                End If
+                            End If
+                        ElseIf XmlUtilities.IsCommonFile(doc) Then
+                            Common.Add(New IncludeInfo(doc, item.FullName))
+                        Else
+                            Continue For
+                        End If
+                    Next
+                End If
+                AllScrapers.Sort()
+            End Sub
+
             Public Sub ReloadScrapers()
                 Me._allscrapers = New List(Of ScraperInfo)()
                 Me.Common = New List(Of IncludeInfo)()
