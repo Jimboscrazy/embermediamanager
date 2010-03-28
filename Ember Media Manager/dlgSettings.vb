@@ -409,6 +409,10 @@ Public Class dlgSettings
         Me.Close()
     End Sub
 
+    Private Sub btnClearRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearRegex.Click
+        Me.ClearRegex()
+    End Sub
+
     Private Sub btnDLTrans_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrans.Click
         Using dTranslationDL As New dlgTranslationDL
             If dTranslationDL.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -1963,7 +1967,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub ClearRegex()
-        Me.btnAddShowRegex.Text = "Add Regex"
+        Me.btnAddShowRegex.Text = Master.eLang.GetString(115, "Add Regex")
         Me.btnAddShowRegex.Tag = String.Empty
         Me.btnAddShowRegex.Enabled = False
         Me.txtSeasonRegex.Text = String.Empty
@@ -1977,7 +1981,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub EditShowRegex(ByVal lItem As ListViewItem)
-        Me.btnAddShowRegex.Text = "Update Regex"
+        Me.btnAddShowRegex.Text = Master.eLang.GetString(124, "Update Regex")
         Me.btnAddShowRegex.Tag = lItem.Text
 
         Me.txtSeasonRegex.Text = lItem.SubItems(1).Text
@@ -3874,6 +3878,7 @@ Public Class dlgSettings
         Me.lblAllSPosterWidth.Text = Me.Label11.Text
         Me.lblAllSPosterHeight.Text = Me.Label12.Text
         Me.lblAllSPosterQ.Text = Me.Label24.Text
+        Me.btnClearRegex.Text = Master.eLang.GetString(124, "Clear")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -4401,11 +4406,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub ValidateRegex()
-        If Me.txtSeasonRegex.Text.Contains("?<season>") AndAlso Me.txtEpRegex.Text.Contains("?<episode>") AndAlso _
-        Me.cboSeasonRetrieve.SelectedIndex > -1 AndAlso Me.cboEpRetrieve.SelectedIndex > -1 Then
-            Me.btnAddShowRegex.Enabled = True
+        If Not String.IsNullOrEmpty(Me.txtSeasonRegex.Text) AndAlso Not String.IsNullOrEmpty(Me.txtEpRegex.Text) Then
+            If Me.cboSeasonRetrieve.SelectedIndex > -1 AndAlso Me.cboEpRetrieve.SelectedIndex > -1 Then
+                Me.btnAddShowRegex.Enabled = True
+            Else
+                Me.btnAddShowRegex.Enabled = False
+            End If
         Else
-            Me.btnAddShowRegex.Enabled = False
+            Me.ClearRegex()
         End If
     End Sub
 

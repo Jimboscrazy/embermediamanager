@@ -34,6 +34,15 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
     End Sub
 
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+    End Sub
+
     #End Region 'Methods
 
 End Class

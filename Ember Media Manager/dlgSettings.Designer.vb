@@ -315,6 +315,7 @@ Partial Class dlgSettings
         Me.btnRegexUp = New System.Windows.Forms.Button
         Me.btnResetShowRegex = New System.Windows.Forms.Button
         Me.gbShowRegex = New System.Windows.Forms.GroupBox
+        Me.btnClearRegex = New System.Windows.Forms.Button
         Me.lblSeasonMatch = New System.Windows.Forms.Label
         Me.btnAddShowRegex = New System.Windows.Forms.Button
         Me.txtSeasonRegex = New System.Windows.Forms.TextBox
@@ -3894,6 +3895,7 @@ Partial Class dlgSettings
         '
         'gbShowRegex
         '
+        Me.gbShowRegex.Controls.Add(Me.btnClearRegex)
         Me.gbShowRegex.Controls.Add(Me.lblSeasonMatch)
         Me.gbShowRegex.Controls.Add(Me.btnAddShowRegex)
         Me.gbShowRegex.Controls.Add(Me.txtSeasonRegex)
@@ -3910,6 +3912,20 @@ Partial Class dlgSettings
         Me.gbShowRegex.TabIndex = 15
         Me.gbShowRegex.TabStop = False
         Me.gbShowRegex.Text = "Show Match Regex"
+        '
+        'btnClearRegex
+        '
+        Me.btnClearRegex.Enabled = False
+        Me.btnClearRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClearRegex.Image = CType(resources.GetObject("btnClearRegex.Image"), System.Drawing.Image)
+        Me.btnClearRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnClearRegex.Location = New System.Drawing.Point(10, 116)
+        Me.btnClearRegex.Name = "btnClearRegex"
+        Me.btnClearRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnClearRegex.TabIndex = 15
+        Me.btnClearRegex.Text = "Clear"
+        Me.btnClearRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnClearRegex.UseVisualStyleBackColor = True
         '
         'lblSeasonMatch
         '
@@ -7750,4 +7766,5 @@ Partial Class dlgSettings
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtTVSkipLessThan As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents btnClearRegex As System.Windows.Forms.Button
 End Class

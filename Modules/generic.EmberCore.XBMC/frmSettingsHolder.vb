@@ -136,8 +136,9 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub frmSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
     End Sub
 
     Private Sub lbXBMCCom_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbXBMCCom.KeyDown
@@ -174,6 +175,7 @@ Public Class frmSettingsHolder
         Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
         Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
         Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected", True)
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
 
     Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click

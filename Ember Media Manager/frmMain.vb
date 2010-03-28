@@ -4366,7 +4366,7 @@ doCancel:
                     If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
                         Me.lstActors.Items.Add(imdbAct.Name.Trim)
                     Else
-                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                        Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
                     End If
                 Next
                 Me.lstActors.SelectedIndex = 0
@@ -4537,7 +4537,7 @@ doCancel:
                     If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
                         Me.lstActors.Items.Add(imdbAct.Name.Trim)
                     Else
-                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                        Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
                     End If
                 Next
                 Me.lstActors.SelectedIndex = 0
@@ -4694,7 +4694,7 @@ doCancel:
                     If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
                         Me.lstActors.Items.Add(imdbAct.Name.Trim)
                     Else
-                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                        Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
                     End If
                 Next
                 Me.lstActors.SelectedIndex = 0
@@ -4837,7 +4837,7 @@ doCancel:
                     If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
                         Me.lstActors.Items.Add(imdbAct.Name.Trim)
                     Else
-                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                        Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
                     End If
                 Next
                 Me.lstActors.SelectedIndex = 0
@@ -7923,14 +7923,14 @@ doCancel:
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .cmnuMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
-                .btnIMDBRating.Text = Master.eLang.GetString(707, "IMDB Rating")
+                .btnIMDBRating.Text = Master.eLang.GetString(400, "Rating")
                 .DonateToolStripMenuItem.Text = Master.eLang.GetString(708, "Donate")
                 .CleanDatabaseToolStripMenuItem.Text = Master.eLang.GetString(709, "Clean Database")
                 .cmnuReloadShow.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMarkShow.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLockShow.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEditShow.Text = Master.eLang.GetString(663, "Edit Show")
-                .cmnuRescrapeShow.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuRescrapeShow.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
                 .cmnuChangeShow.Text = Master.eLang.GetString(767, "Change Show")
                 .RemoveShowToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuRemoveTVShow.Text = Master.eLang.GetString(646, "Remove from Database")
@@ -7939,7 +7939,7 @@ doCancel:
                 .cmnuMarkSeason.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLockSeason.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
-                .cmnuSeasonRescrape.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuSeasonRescrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
                 .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuDeleteSeason.Text = Master.eLang.GetString(771, "Delete Season")
@@ -7947,7 +7947,7 @@ doCancel:
                 .cmnuMarkEp.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLockEp.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEditEpisode.Text = Master.eLang.GetString(656, "Edit Episode")
-                .cmnuRescrapeEp.Text = Master.eLang.GetString(766, "Re-scrape theTVDB")
+                .cmnuRescrapeEp.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
                 .cmnuChangeEp.Text = Master.eLang.GetString(772, "Change Episode")
                 .RemoveEpToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuRemoveTVEp.Text = Master.eLang.GetString(646, "Remove from Database")
@@ -7956,6 +7956,8 @@ doCancel:
                 .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
                 .CheckUpdatesToolStripMenuItem.Text = Master.eLang.GetString(850, "&Check For Updates...")
                 .Label7.Text = Master.eLang.GetString(484, "Loading Settings...")
+                .cmnuRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
+                .ScrapingToolStripMenuItem.Text = Master.eLang.GetString(164, "(Re)Scrape Selected Movies")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")

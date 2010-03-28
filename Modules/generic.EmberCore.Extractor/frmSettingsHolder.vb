@@ -42,12 +42,13 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleEnabledChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub frmSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
     End Sub
 
-
-    Sub SetUp()
+    Private Sub SetUp()
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
 
 #End Region 'Methods
