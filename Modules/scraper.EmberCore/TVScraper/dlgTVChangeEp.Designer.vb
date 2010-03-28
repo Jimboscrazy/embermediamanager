@@ -107,6 +107,7 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(646, 315)
+        Me.ControlBox = False
         Me.Controls.Add(Me.txtPlot)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.pbPreview)
