@@ -113,7 +113,7 @@
   <string id="111">Unable to load directories. Please check settings.</string>
   <string id="112">Runtime: {0}</string>
   <string id="113">Now select the default language you would like Ember to look for when scraping TV Show items.</string>
-  <string id="114"></string>
+  <string id="114">* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.</string>
   <string id="115"></string>
   <string id="116">Performing Preliminary Tasks (Gathering Data)...</string>
   <string id="117">Unknown Movie ({0})</string>
@@ -201,7 +201,7 @@
   <string id="199">Source Name:</string>
   <string id="200">Source Path:</string>
   <string id="201">Source Options</string>
-  <string id="202">Only Detect One Movie From Each Folder</string>
+  <string id="202">Only Detect One Movie From Each Folder*</string>
   <string id="203">Use Folder Name for Initial Listing</string>
   <string id="204">Scan Recursively</string>
   <string id="205">Select the parent folder for your movie folders/files.</string>
@@ -538,8 +538,8 @@
   <string id="536">Miscellaneous Options</string>
   <string id="537">Recognize VIDEO_TS Folders</string>
   <string id="538">Skip Size Check of Stacked Files</string>
-  <string id="539">Megabytes</string>
-  <string id="540">Skip files less than:</string>
+  <string id="539">MB</string>
+  <string id="540">Skip files smaller than:</string>
   <string id="541">Sizing (Extracted Frames)</string>
   <string id="542">Padding</string>
   <string id="543">Width:</string>

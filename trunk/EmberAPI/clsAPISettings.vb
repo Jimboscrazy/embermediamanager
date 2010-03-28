@@ -297,6 +297,7 @@ Public Class Settings
     Private _singlescrapetrailer As Boolean
     Private _skiplessthan As Integer
     Private _skipstacksizecheck As Boolean
+    Private _skiplessthanep As Integer
     Private _sortbeforescan As Boolean
     Private _sortpath As String
     Private _sorttokens As List(Of String)
@@ -2775,6 +2776,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property SkipLessThanEp() As Integer
+        Get
+            Return Me._skiplessthanep
+        End Get
+        Set(ByVal value As Integer)
+            Me._skiplessthanep = value
+        End Set
+    End Property
+
     Public Property SortBeforeScan() As Boolean
         Get
             Return Me._sortbeforescan
@@ -3243,6 +3253,7 @@ Public Class Settings
         Me._persistimagecache = False
         Me._skiplessthan = 0
         Me._skipstacksizecheck = False
+        Me._skiplessthanep = 0
         Me._downloadtrailers = False
         Me._trailerquality = Enums.TrailerQuality.HD1080p
         Me._updatertrailers = False

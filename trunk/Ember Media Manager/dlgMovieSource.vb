@@ -168,7 +168,7 @@ Public Class dlgMovieSource
         Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
         Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
         Me.GroupBox1.Text = Master.eLang.GetString(201, "Source Options")
-        Me.chkSingle.Text = Master.eLang.GetString(202, "Only Detect One Movie From Each Folder")
+        Me.chkSingle.Text = Master.eLang.GetString(202, "Only Detect One Movie From Each Folder*")
         Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
         Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
         Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
