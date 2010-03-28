@@ -970,7 +970,7 @@ Partial Class dlgSettings
         Me.tpStandard.Controls.Add(Me.chkCleanMovieNFOb)
         Me.tpStandard.Location = New System.Drawing.Point(4, 25)
         Me.tpStandard.Name = "tpStandard"
-        Me.tpStandard.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpStandard.Padding = New System.Windows.Forms.Padding(3)
         Me.tpStandard.Size = New System.Drawing.Size(188, 334)
         Me.tpStandard.TabIndex = 0
         Me.tpStandard.Text = "Standard"
@@ -1131,7 +1131,7 @@ Partial Class dlgSettings
         Me.tpExpert.Controls.Add(Me.Label25)
         Me.tpExpert.Location = New System.Drawing.Point(4, 25)
         Me.tpExpert.Name = "tpExpert"
-        Me.tpExpert.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tpExpert.Padding = New System.Windows.Forms.Padding(3)
         Me.tpExpert.Size = New System.Drawing.Size(188, 334)
         Me.tpExpert.TabIndex = 1
         Me.tpExpert.Text = "Expert"
@@ -1597,7 +1597,7 @@ Partial Class dlgSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(6, 17)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(185, 83)
@@ -3311,7 +3311,7 @@ Partial Class dlgSettings
         Me.TabPage3.Controls.Add(Me.gbTVNaming)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage3.Size = New System.Drawing.Size(604, 366)
         Me.TabPage3.TabIndex = 0
         Me.TabPage3.Text = "General"
@@ -3819,7 +3819,7 @@ Partial Class dlgSettings
         Me.TabPage4.Controls.Add(Me.lvShowRegex)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage4.Size = New System.Drawing.Size(604, 366)
         Me.TabPage4.TabIndex = 1
         Me.TabPage4.Text = "Regex"
@@ -4522,7 +4522,7 @@ Partial Class dlgSettings
         Me.TabPage5.Controls.Add(Me.gbShowFanartOpts)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage5.Size = New System.Drawing.Size(601, 371)
         Me.TabPage5.TabIndex = 0
         Me.TabPage5.Text = "TV Show"
@@ -5267,7 +5267,7 @@ Partial Class dlgSettings
         Me.TabPage7.Controls.Add(Me.gbEpFanartOpts)
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage7.Size = New System.Drawing.Size(601, 371)
         Me.TabPage7.TabIndex = 1
         Me.TabPage7.Text = "TV Episode"
@@ -6950,6 +6950,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -6964,12 +6966,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMain)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

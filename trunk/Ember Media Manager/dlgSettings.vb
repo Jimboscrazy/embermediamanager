@@ -3556,7 +3556,7 @@ Public Class dlgSettings
         Me.chkEpProperCase.Text = Me.chkProperCase.Text
         Me.GroupBox12.Text = Me.GroupBox4.Text
         Me.chkShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
-        Me.gbGenreFilter.Text = Master.eLang.GetString(454, "Genre Language Filter:")
+        Me.gbGenreFilter.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
