@@ -302,6 +302,7 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(629, 363)
+        Me.ControlBox = False
         Me.Controls.Add(Me.btnVerify)
         Me.Controls.Add(Me.chkManual)
         Me.Controls.Add(Me.txtTVDBID)

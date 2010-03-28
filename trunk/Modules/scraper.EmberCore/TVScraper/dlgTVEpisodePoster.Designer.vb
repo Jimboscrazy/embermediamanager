@@ -63,6 +63,7 @@ Partial Class dlgTVEpisodePoster
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(435, 315)
+        Me.ControlBox = False
         Me.Controls.Add(Me.pbPoster)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
