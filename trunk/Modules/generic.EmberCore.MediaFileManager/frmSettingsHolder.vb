@@ -113,6 +113,8 @@ Public Class frmSettingsHolder
 
     Private Sub SetUp()
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.Label3.Text = Master.eLang.GetString(232, "Name", True)
+        Me.Label4.Text = Master.eLang.GetString(410, "Path", True)
     End Sub
 
     #End Region 'Methods

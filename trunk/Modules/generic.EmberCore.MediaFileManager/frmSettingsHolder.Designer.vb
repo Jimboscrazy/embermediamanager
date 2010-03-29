@@ -64,34 +64,34 @@ Partial Class frmSettingsHolder
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(10, 296)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(36, 13)
+        Me.Label3.Size = New System.Drawing.Size(45, 13)
         Me.Label3.TabIndex = 7
         Me.Label3.Text = "Name"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(173, 296)
+        Me.Label4.Location = New System.Drawing.Point(190, 296)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(30, 13)
+        Me.Label4.Size = New System.Drawing.Size(47, 13)
         Me.Label4.TabIndex = 8
         Me.Label4.Text = "Path"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(51, 293)
+        Me.TextBox1.Location = New System.Drawing.Point(61, 293)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(120, 22)
         Me.TextBox1.TabIndex = 9
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(202, 293)
+        Me.TextBox2.Location = New System.Drawing.Point(236, 293)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(265, 22)
+        Me.TextBox2.Size = New System.Drawing.Size(229, 22)
         Me.TextBox2.TabIndex = 10
         '
         'Button4
