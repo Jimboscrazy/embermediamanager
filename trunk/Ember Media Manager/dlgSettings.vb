@@ -1984,7 +1984,7 @@ Public Class dlgSettings
         Me.btnAddShowRegex.Text = Master.eLang.GetString(124, "Update Regex")
         Me.btnAddShowRegex.Tag = lItem.Text
 
-        Me.txtSeasonRegex.Text = lItem.SubItems(1).Text
+        Me.txtSeasonRegex.Text = lItem.SubItems(1).Text.ToString
 
         Select Case lItem.SubItems(2).Text
             Case "Folder"
@@ -4413,7 +4413,7 @@ Public Class dlgSettings
                 Me.btnAddShowRegex.Enabled = False
             End If
         Else
-            Me.ClearRegex()
+            'TODO  This not work.. Me.ClearRegex()
         End If
     End Sub
 
