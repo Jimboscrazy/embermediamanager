@@ -189,6 +189,9 @@ Public Class Langs
         Try
             lPath = Path.Combine(frmMainSetup.AppPath, String.Format("Setup.{0}.xml", Language))
             If Not File.Exists(lPath) Then
+                frmMainSetup.GetURLFile("Setup/" & String.Format("Setup.{0}.xml", Language), lPath)
+            End If
+            If Not File.Exists(lPath) Then
                 lPath = String.Empty
             End If
         Catch ex As Exception

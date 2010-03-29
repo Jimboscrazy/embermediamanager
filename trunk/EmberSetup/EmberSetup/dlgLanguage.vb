@@ -13,7 +13,7 @@ Public Class dlgLanguage
     End Sub
 
     Private Sub dlgLanguage_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Text = frmMainSetup.MyLang.GetString(45, "Language Selection")
-        Me.Label1.Text = frmMainSetup.MyLang.GetString(44, "Choose the language for the Setup Process")
+        Me.cbLanguage.Text = frmMainSetup.MyLang.GetString(44, "Choose the language for the Setup Process")
+        Me.Text = frmMainSetup.MyLang.GetString(44, "Language Selection")
     End Sub
 End Class

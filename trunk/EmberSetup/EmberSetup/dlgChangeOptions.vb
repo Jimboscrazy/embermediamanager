@@ -151,7 +151,16 @@ Public Class dlgChangeOptions
             rbX64.Visible = False
         End If
     End Sub
-
+    Sub SetUp()
+        GroupBox1.Text = frmMainSetup.MyLang.GetString(46, "Ember Media Manager Installation Path")
+        lblStatus.Text = frmMainSetup.MyLang.GetString(47, "Searching for possible Ember Media Manager Installations")
+        cbCreateFolder.Text = frmMainSetup.MyLang.GetString(48, "Create EMM folder")
+        cbCreateFolder.Text = frmMainSetup.MyLang.GetString(48, "Create EMM folder")
+        btnFindPaths.Text = frmMainSetup.MyLang.GetString(49, "Find Ember Installations")
+        OK_Button.Text = frmMainSetup.MyLang.GetString(50, "OK")
+        Cancel_Button.Text = frmMainSetup.MyLang.GetString(37, "Cancel")
+        lblInfo.Text = frmMainSetup.MyLang.GetString(51, "Platform")
+    End Sub
     #End Region 'Methods
 
 End Class

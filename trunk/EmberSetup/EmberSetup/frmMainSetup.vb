@@ -1148,6 +1148,7 @@ Public Class frmMainSetup
                     Dim si As Integer = dLang.cbLanguage.Items.IndexOf("English_(en_US)")
                     If si >= 0 Then dLang.cbLanguage.SelectedIndex = si
                     If dLang.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        Language = dLang.cbLanguage.Text
                         MyLang.LoadLanguage(Language)
                     End If
                 End Using

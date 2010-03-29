@@ -116,7 +116,7 @@ Partial Class dlgChangeOptions
         Me.pnlCancel.Controls.Add(Me.btnCancel)
         Me.pnlCancel.Controls.Add(Me.lblStatus)
         Me.pnlCancel.Controls.Add(Me.pbCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(77, 23)
+        Me.pnlCancel.Location = New System.Drawing.Point(74, 48)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(260, 96)
         Me.pnlCancel.TabIndex = 5
@@ -152,13 +152,12 @@ Partial Class dlgChangeOptions
         '
         'cbCreateFolder
         '
-        Me.cbCreateFolder.AutoSize = True
         Me.cbCreateFolder.Checked = True
         Me.cbCreateFolder.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbCreateFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbCreateFolder.Location = New System.Drawing.Point(291, 106)
+        Me.cbCreateFolder.Location = New System.Drawing.Point(269, 106)
         Me.cbCreateFolder.Name = "cbCreateFolder"
-        Me.cbCreateFolder.Size = New System.Drawing.Size(103, 16)
+        Me.cbCreateFolder.Size = New System.Drawing.Size(125, 16)
         Me.cbCreateFolder.TabIndex = 6
         Me.cbCreateFolder.Text = "Create EMM folder"
         Me.cbCreateFolder.UseVisualStyleBackColor = True

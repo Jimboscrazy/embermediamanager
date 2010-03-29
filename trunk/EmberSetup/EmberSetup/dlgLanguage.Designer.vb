@@ -25,20 +25,20 @@ Partial Class dlgLanguage
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.cbLanguage = New System.Windows.Forms.ComboBox
         Me.Label1 = New System.Windows.Forms.Label
+        Me.cbLanguage = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(60, 55)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(104, 63)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -64,33 +64,34 @@ Partial Class dlgLanguage
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
+        'Label1
+        '
+        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(-1, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(363, 21)
+        Me.Label1.TabIndex = 4
+        Me.Label1.Text = "Choose the language for the Setup Process  "
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'cbLanguage
         '
         Me.cbLanguage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.cbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLanguage.FormattingEnabled = True
-        Me.cbLanguage.Location = New System.Drawing.Point(54, 28)
+        Me.cbLanguage.Location = New System.Drawing.Point(96, 33)
         Me.cbLanguage.Name = "cbLanguage"
-        Me.cbLanguage.Size = New System.Drawing.Size(162, 21)
-        Me.cbLanguage.TabIndex = 1
-        '
-        'Label1
-        '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(29, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(222, 16)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Choose the language for the Setup Process"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.cbLanguage.Size = New System.Drawing.Size(164, 21)
+        Me.cbLanguage.TabIndex = 3
         '
         'dlgLanguage
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(275, 88)
+        Me.ClientSize = New System.Drawing.Size(365, 95)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cbLanguage)
         Me.Controls.Add(Me.TableLayoutPanel1)
@@ -99,7 +100,7 @@ Partial Class dlgLanguage
         Me.MinimizeBox = False
         Me.Name = "dlgLanguage"
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Language Selection"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -108,7 +109,7 @@ Partial Class dlgLanguage
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents cbLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cbLanguage As System.Windows.Forms.ComboBox
 
 End Class

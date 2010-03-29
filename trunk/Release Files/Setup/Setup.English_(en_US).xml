@@ -45,5 +45,12 @@
   <string id="43">Setup - Ember Media Manager</string>
   <string id="44">Choose the language for the Setup Process</string>
   <string id="45">Language Selection</string>
+  <string id="46">Ember Media Manager Installation Path</string>
+  <string id="47">Searching for possible Ember Media Manager Installations</string>
+  <string id="48">Create EMM folder</string>
+  <string id="49">Find Ember Installations</string>
+  <string id="50">OK</string>
+  <string id="51">Platform</string>
+
 
 </strings>
