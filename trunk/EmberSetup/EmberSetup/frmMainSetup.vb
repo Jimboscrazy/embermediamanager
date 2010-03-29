@@ -1235,6 +1235,7 @@ Public Class frmMainSetup
                 For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")).Split(Convert.ToChar("|"))
                     If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
                         emberPath = ss
+                        EmberFound = True
                         CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
                         LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
                         CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))

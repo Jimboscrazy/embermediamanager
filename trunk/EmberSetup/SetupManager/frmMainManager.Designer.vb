@@ -100,6 +100,7 @@ Partial Class frmMainManager
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
         Me.Button4 = New System.Windows.Forms.Button
+        Me.Button5 = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -757,7 +758,7 @@ Partial Class frmMainManager
         '
         'btnOriginPath
         '
-        Me.btnOriginPath.Location = New System.Drawing.Point(5, 386)
+        Me.btnOriginPath.Location = New System.Drawing.Point(5, 362)
         Me.btnOriginPath.Name = "btnOriginPath"
         Me.btnOriginPath.Size = New System.Drawing.Size(121, 23)
         Me.btnOriginPath.TabIndex = 4
@@ -775,7 +776,7 @@ Partial Class frmMainManager
         '
         'btnUpdateFrom
         '
-        Me.btnUpdateFrom.Location = New System.Drawing.Point(5, 432)
+        Me.btnUpdateFrom.Location = New System.Drawing.Point(5, 405)
         Me.btnUpdateFrom.Name = "btnUpdateFrom"
         Me.btnUpdateFrom.Size = New System.Drawing.Size(121, 23)
         Me.btnUpdateFrom.TabIndex = 13
@@ -790,17 +791,27 @@ Partial Class frmMainManager
         Me.Button4.TabIndex = 6
         Me.Button4.UseVisualStyleBackColor = True
         '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(5, 432)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(121, 23)
+        Me.Button5.TabIndex = 14
+        Me.Button5.Text = "Update from Beta Site"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'frmMainManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(996, 499)
-        Me.Controls.Add(Me.btnUpdateFrom)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.pnlWork)
         Me.Controls.Add(Me.btnClose)
+        Me.Controls.Add(Me.btnUpdateFrom)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.btnOriginPath)
         Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.btnOriginPath)
         Me.Controls.Add(Me.lstVersions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "frmMainManager"
@@ -902,5 +913,6 @@ Partial Class frmMainManager
     Friend WithEvents ColumnHeader14 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader15 As System.Windows.Forms.ColumnHeader
     Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents Button5 As System.Windows.Forms.Button
 
 End Class

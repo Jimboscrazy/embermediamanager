@@ -1518,4 +1518,35 @@ Public Class frmMainManager
             End If
         End If
     End Sub
+
+    Private Sub Button5_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Dim ftp As New FTPClass
+        Dim dlg As New Uploading
+        Try
+
+            dlg.TopMost = True
+            dlg.Show()
+            dlg.Label1.Text = "Connecting to Server"
+            Application.DoEvents()
+            ftp.setRemoteHost(TextBox3.Text)
+            ftp.setRemoteUser(TextBox1.Text)
+            ftp.setRemotePass(TextBox2.Text)
+            ftp.setRemotePath("/public_html/UpdatesBeta")
+            ftp.login()
+            dlg.Label1.Text = "Download Files: WhatsNew.txt"
+            Application.DoEvents()
+            ftp.download("WhatsNew.txt", String.Concat("Site", Path.DirectorySeparatorChar, "WhatsNew.txt"))
+            dlg.Label1.Text = "Download Files: versionlist.xml"
+            Application.DoEvents()
+            ftp.download("versionlist.xml", String.Concat("Site", Path.DirectorySeparatorChar, "versionlist.xml"))
+            dlg.Label1.Text = "Download Files: versions.xml"
+            Application.DoEvents()
+            ftp.download("versions.xml", String.Concat("Site", Path.DirectorySeparatorChar, "versions.xml"))
+            ftp.close()
+            dlg.Close()
+        Catch ex As Exception
+            dlg.Close()
+        End Try
+        LoadAll()
+    End Sub
 End Class
