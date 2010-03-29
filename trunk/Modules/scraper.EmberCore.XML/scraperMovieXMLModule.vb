@@ -186,7 +186,8 @@ Public Class EmberXMLScraperModule
 
     Private Sub Handle_ModuleSettingsChanged()
         PopulateScraperSettings()
-        scraperFileName = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString).FileName
+        Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString)
+        If Not IsNothing(s) Then scraperFileName = s.FileName
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
