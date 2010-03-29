@@ -408,7 +408,7 @@ Public Class frmMainManager
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         If AddCommand Then
-            Dim i As ListViewItem = lstCommands.Items.Add(DirectCast(cbType.SelectedItem, ListViewItem))
+            Dim i As ListViewItem = lstCommands.Items.Add(DirectCast(cbType.SelectedItem, String))
             i.Selected = True
             i.SubItems.Add("")
         End If
@@ -1021,7 +1021,7 @@ Public Class frmMainManager
             For Each t As InstallCommand In _cmds.Command
                 i = New ListViewItem
                 i = lstCommands.Items.Add(t.CommandType)
-                i.SubItems.Add(t.CommandDescription)
+                i.SubItems.Add(t.CommandExecute)
                 i.Tag = t.CommandExecute
             Next
         End If
@@ -1505,7 +1505,9 @@ Public Class frmMainManager
         Dim fd As New OpenFileDialog
         MsgBox("Please choose a diff File", MsgBoxStyle.Critical, AcceptButton)
         If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
-
+            If File.Exists(fd.FileName) Then
+                txtCommand.Text = File.ReadAllText(fd.FileName)
+            End If
         End If
     End Sub
 End Class

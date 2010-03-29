@@ -784,7 +784,7 @@ Partial Class frmMainManager
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(817, 53)
+        Me.Button4.Location = New System.Drawing.Point(814, 50)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(18, 23)
         Me.Button4.TabIndex = 6
