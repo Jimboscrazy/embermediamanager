@@ -369,7 +369,7 @@ Public Class frmMainManager
         _files.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "version_{0}.xml"), v.Version)))
         Dim _cmds As New InstallCommands
         _cmds.Command = New List(Of InstallCommand)
-        If Not File.Exists(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml")))) Then
+        If Not File.Exists(SetupSettings.DbPath) OrElse Not File.Exists(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml")))) Then
             'For Each s As String In DefaultStrings.Tables
             '_cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = s})
             'Next
@@ -377,34 +377,42 @@ Public Class frmMainManager
             MsgBox("Please choose a Media Database", MsgBoxStyle.Critical, AcceptButton)
             If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 If File.Exists(fd.FileName) Then
-                    Dim lSQLcn As New SQLite.SQLiteConnection()
-                    lSQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", fd.FileName)
-                    lSQLcn.Open()
-                    Using SQLcommand As SQLite.SQLiteCommand = lSQLcn.CreateCommand
-                        SQLcommand.CommandText = "select type, sql from sqlite_master;"
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            While SQLreader.Read
-                                If Not DBNull.Value.Equals(SQLreader("sql")) Then
-                                    Dim cmd As String = SQLreader("sql").ToString
-                                    Dim t As String = SQLreader("type").ToString
-                                    If t = "index" OrElse t = "table" Then
-                                        _cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = cmd})
-                                    End If
-
-                                End If
-                            End While
-                        End Using
-                    End Using
+                    CreateCommandBase(fd.FileName)
                 End If
             End If
-            _cmds.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml"))))
-            _cmds.Command.Clear()
+
+            SetupSettings.DbPath = (fd.FileName)
+            SetupSettings.Save(Path.Combine(AppPath, "settings.xml"))
+        Else
+            CreateCommandBase(SetupSettings.DbPath)
         End If
         GetModulesVersions()
         '_cmds.Save(Path.Combine(AppPath, String.Format("site\commands_{0}.xml", v.Version)))
         pnlWork.Visible = False
         LoadVersions()
     End Sub
+    Sub CreateCommandBase(ByVal fname As String)
+        Dim lSQLcn As New SQLite.SQLiteConnection()
+        lSQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", fname)
+        lSQLcn.Open()
+        Using SQLcommand As SQLite.SQLiteCommand = lSQLcn.CreateCommand
+            SQLcommand.CommandText = "select type, sql from sqlite_master;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("sql")) Then
+                        Dim cmd As String = SQLreader("sql").ToString
+                        Dim t As String = SQLreader("type").ToString
+                        If (t = "index" OrElse t = "table") AndAlso Not cmd.Contains("CREATE TABLE sqlite_sequence") Then
+                            _cmds.Command.Add(New InstallCommand With {.CommandType = "DB", .CommandExecute = cmd})
+                        End If
+                    End If
+                End While
+            End Using
+        End Using
+        _cmds.Save(Path.Combine(AppPath, String.Format(String.Concat("site", Path.DirectorySeparatorChar, "commands_base.xml"))))
+        _cmds.Command.Clear()
+    End Sub
+
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         If AddCommand Then
