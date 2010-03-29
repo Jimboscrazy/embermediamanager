@@ -949,11 +949,11 @@ Public Class Database
         Return _TVDB
     End Function
 
-    Public Sub PatchDatabase()
+    Public Sub PatchDatabase(ByVal fname As String)
         Dim xmlSer As XmlSerializer
         Dim _cmds As New InstallCommands
         xmlSer = New XmlSerializer(GetType(InstallCommands))
-        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
             _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
             For Each _cmd As InstallCommand In _cmds.Command
                 If _cmd.CommandType = "DB" Then
@@ -971,11 +971,15 @@ Public Class Database
     Public Sub CheckDatabase()
         If Not File.Exists(Path.Combine(Functions.AppPath, "Media.emm")) Then
             Dim lhttp As New HTTP
-            lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/commands_base.xml", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates")), Path.Combine(Functions.AppPath, "UpdateTasks.xml"), False, "other")
+            lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/commands_base.xml", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates")), Path.Combine(Functions.AppPath, "InstallTasks.xml"), False, "other")
         End If
         Master.DB.Connect()
+        If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
+            Master.DB.PatchDatabase("InstallTasks.xml")
+            File.Delete(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+        End If
         If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
-            Master.DB.PatchDatabase()
+            Master.DB.PatchDatabase("UpdateTasks.xml")
             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
         End If
 

@@ -807,7 +807,7 @@ Public Class frmMainSetup
                                                         File.Delete(String.Format("{0}.old", dpath))
                                                     End If
                                                 Catch ex As Exception
-                                                    LogWrite(String.Format("--- Main: Locked File on Delete: {0}", String.Format("{0}.old", dpath)))
+                                                    LogWrite(String.Format("--- Main: Locked File on Delete After Move: {0}", String.Format("{0}.old", dpath)))
                                                     'Ignore this , Possible locked by Assembly Load
                                                     'File is locked, but installation will succedd
                                                 End Try
@@ -910,6 +910,7 @@ Public Class frmMainSetup
 
                 Try
                     If String.IsNullOrEmpty(CurrentEmberVersion) Then
+                        UpdateTasks.Command.Clear()
                         If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml"))) Then
                             Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Base")))
                             xmlSer = New XmlSerializer(GetType(InstallCommands))
@@ -924,8 +925,10 @@ Public Class frmMainSetup
                                     HaveCommands = True
                                 End If
                             Next
+                            If HaveCommands Then UpdateTasks.Save(Path.Combine(Path.GetDirectoryName(emberPath), "InstallTasks.xml"))
                         End If
-                    else
+                    Else
+                        UpdateTasks.Command.Clear()
                         For Each f As FileInfo In fis
                             If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
                                 Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Version: {0}"), f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
@@ -943,10 +946,10 @@ Public Class frmMainSetup
                                 Next
                             End If
                         Next
+                        If HaveCommands Then UpdateTasks.Save(Path.Combine(Path.GetDirectoryName(emberPath), "UpdateTasks.xml"))
                     End If
                 Catch ex As Exception
                 End Try
-                If HaveCommands Then UpdateTasks.Save(Path.Combine(Path.GetDirectoryName(emberPath), "UpdateTasks.xml"))
                 System.Threading.Thread.Sleep(1000)
                 Me.bwDoInstall.ReportProgress(0, New Object() {80, ""})
                 If bwDoInstall.CancellationPending Then Return False
