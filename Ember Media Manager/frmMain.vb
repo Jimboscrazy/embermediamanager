@@ -327,7 +327,7 @@ Public Class frmMain
                 SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
-                    If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(50) = SQLreader("SortTitle").ToString
+                    If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(46) = SQLreader("SortTitle").ToString
                 End Using
             End Using
         Catch ex As Exception
@@ -649,11 +649,11 @@ Public Class frmMain
             If Me.btnSortTitle.Tag.ToString = "DESC" Then
                 Me.btnSortTitle.Tag = "ASC"
                 Me.btnSortTitle.Image = My.Resources.desc
-                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(46), ComponentModel.ListSortDirection.Descending)
             Else
                 Me.btnSortTitle.Tag = "DESC"
                 Me.btnSortTitle.Image = My.Resources.asc
-                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
+                Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(46), ComponentModel.ListSortDirection.Ascending)
             End If
         End If
     End Sub
@@ -2943,7 +2943,7 @@ doCancel:
                 If Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(47, e.RowIndex).Value) Then
+                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(43, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.MistyRose
                     e.CellStyle.SelectionBackColor = Color.DarkMagenta
                 Else
@@ -4019,11 +4019,11 @@ doCancel:
                             LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
-                            drvRow.Cells(47).Value = LevFail
+                            drvRow.Cells(43).Value = LevFail
                             parID.Value = drvRow.Cells(0).Value
                         Else
                             parOutOfTolerance.Value = False
-                            drvRow.Cells(47).Value = False
+                            drvRow.Cells(43).Value = False
                             parID.Value = drvRow.Cells(0).Value
                         End If
                         SQLcommand.ExecuteNonQuery()
@@ -6297,7 +6297,7 @@ doCancel:
                 Case Enums.MovieScraperEventType.ThumbsItem
                     dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow.Item(50) = DirectCast(Parameter, String)
+                    dScrapeRow.Item(46) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ListTitle
                     dScrapeRow.Item(3) = DirectCast(Parameter, String)
             End Select
@@ -6705,7 +6705,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
                     Else
                         DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
@@ -6718,7 +6718,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(9) = If(String.IsNullOrEmpty(mContainer.Extra), False, True)
                         DirectCast(dRow(0), DataRow).Item(10) = False
                         DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
-                        DirectCast(dRow(0), DataRow).Item(50) = tmpMovieDb.Movie.SortTitle
+                        DirectCast(dRow(0), DataRow).Item(46) = tmpMovieDb.Movie.SortTitle
                         DirectCast(dRow(0), DataRow).Item(26) = tmpMovieDb.Movie.Genre
                     End If
                 End If
