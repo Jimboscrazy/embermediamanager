@@ -100,5 +100,9 @@
 	<string id="98">Staffel {0} Fanart</string>
 	<string id="99">Bilderwahl TV-Serien</string>
 	<string id="100">Aktuelles Bild:</string>
+	<string id="101">Poster laden</string>
+	<string id="102">Fanart laden</string>
+	<string id="103">Diese Einstellungen sind Modulspezifisch{0}Schau auch in die Globale Konfiguration!</string>
+
 </strings>
 <!-- Rev1932 please mail sphere@dersphere.de if you find errors or have suggestions-->
