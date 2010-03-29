@@ -23,7 +23,7 @@ Partial Class frmXMLSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.dgvSettings = New System.Windows.Forms.DataGridView
         Me.pnlLoading = New System.Windows.Forms.Panel
@@ -190,7 +190,6 @@ Partial Class frmXMLSettingsHolder
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbPoster.TabIndex = 89
         Me.pbPoster.TabStop = False
-        Me.pbPoster.Visible = False
         '
         'Setting
         '
@@ -202,8 +201,8 @@ Partial Class frmXMLSettingsHolder
         '
         'Value
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Value.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Value.DefaultCellStyle = DataGridViewCellStyle3
         Me.Value.HeaderText = "Value"
         Me.Value.Name = "Value"
         '

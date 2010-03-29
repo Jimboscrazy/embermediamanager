@@ -106,7 +106,7 @@ Public Class InstallCommands
 
     <XmlArray("Commands")> _
     <XmlArrayItem("Command")> _
-    Public Command As List(Of InstallCommand)
+    Public Command As New List(Of InstallCommand)
 
     #End Region 'Fields
 

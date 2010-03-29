@@ -57,4 +57,8 @@ Public Class frmXMLSettingsHolder
     Private Sub dgvSettings_DataError(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvSettings.DataError
         e.ThrowException = False
     End Sub
+
+    Private Sub pbPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbPoster.Click
+
+    End Sub
 End Class

@@ -892,7 +892,7 @@ Public Class frmMainSetup
                 LogWrite(String.Format("--- Main: Installing Version {0}", InstallVersion))
                 System.Threading.Thread.Sleep(3000)
                 If bwDoInstall.CancellationPending Then Return False
-                pnlProgress.Visible = False
+                ' pnlProgress.Visible = False
                 Me.bwDoInstall.ReportProgress(5, MyLang.GetString(25, "Building Update Tasks"))
                 LogWrite(String.Format("*** Main: Commands START"))
                 'Dim cmds As New Commands(emberPath)
@@ -907,23 +907,45 @@ Public Class frmMainSetup
                 Dim fis As FileInfo() = di.GetFiles
                 Array.Sort(fis, New Comparer)
                 Dim HaveCommands As Boolean = False
-                For Each f As FileInfo In fis
-                    If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
-                        Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Version: {0}"), f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
-                        xmlSer = New XmlSerializer(GetType(InstallCommands))
-                        Using xmlSW As New StreamReader(f.FullName)
-                            _cmds = xmlSer.Deserialize(xmlSW)
-                        End Using
-                        LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
-                        For Each s As InstallCommand In _cmds.Command
-                            If s.CommandType = "DB" Then
-                                LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
-                                UpdateTasks.Command.Add(s)
-                                HaveCommands = True
+
+                Try
+                    If String.IsNullOrEmpty(CurrentEmberVersion) Then
+                        If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml"))) Then
+                            Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Base")))
+                            xmlSer = New XmlSerializer(GetType(InstallCommands))
+                            Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml")))
+                                _cmds = xmlSer.Deserialize(xmlSW)
+                            End Using
+                            LogWrite(String.Format("*** Execute DB File: {0}", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml"))))
+                            For Each s As InstallCommand In _cmds.Command
+                                If s.CommandType = "DB" Then
+                                    LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                    UpdateTasks.Command.Add(s)
+                                    HaveCommands = True
+                                End If
+                            Next
+                        End If
+                    else
+                        For Each f As FileInfo In fis
+                            If f.Name.StartsWith("commands_") AndAlso f.Extension = ".xml" AndAlso Not f.Name = "commands_base.xml" Then
+                                Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Version: {0}"), f.Name.Replace("commands_", String.Empty).Replace(".xml", String.Empty)))
+                                xmlSer = New XmlSerializer(GetType(InstallCommands))
+                                Using xmlSW As New StreamReader(f.FullName)
+                                    _cmds = xmlSer.Deserialize(xmlSW)
+                                End Using
+                                LogWrite(String.Format("*** Execute DB File: {0}", f.Name))
+                                For Each s As InstallCommand In _cmds.Command
+                                    If s.CommandType = "DB" Then
+                                        LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
+                                        UpdateTasks.Command.Add(s)
+                                        HaveCommands = True
+                                    End If
+                                Next
                             End If
                         Next
                     End If
-                Next
+                Catch ex As Exception
+                End Try
                 If HaveCommands Then UpdateTasks.Save(Path.Combine(Path.GetDirectoryName(emberPath), "UpdateTasks.xml"))
                 System.Threading.Thread.Sleep(1000)
                 Me.bwDoInstall.ReportProgress(0, New Object() {80, ""})
@@ -935,7 +957,7 @@ Public Class frmMainSetup
                 LogWrite(ex.StackTrace)
             End Try
 
-        '###################################################################################
+            '###################################################################################
             Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
             If Not CheckIfWindows() Then
                 'Mono Can't run Movie Exporter.. Until Commands are working this will solve the issue
@@ -946,10 +968,10 @@ Public Class frmMainSetup
             LogWrite(String.Format("*** Main: Installation Finished with Success"))
             Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
 
-        '###################################################################################
+            '###################################################################################
         Else
             Me.bwDoInstall.ReportProgress(2, MyLang.GetString(27, "No Installation Path Found")) '  Error
-        'No Instalation Path, This never should happen
+            'No Instalation Path, This never should happen
         End If
         Return True
     End Function
@@ -1105,7 +1127,7 @@ Public Class frmMainSetup
                         emberPath = AppPath()
                         'NoArgs = False
                         If Args.Count - 1 > i Then
-                            CurrentEmberVersion = Convert.ToInt32(Args(i + 1))
+                            CurrentEmberVersion = Convert.ToInt32(Args(i + 1)).ToString
                         End If
                         If Args.Count - 1 > i + 2 Then
                             Me.Top = Convert.ToInt32(Args(i + 2))
