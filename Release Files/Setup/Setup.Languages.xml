@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfLanguageList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LanguageList>
     <Name>English (en/US)</Name>
@@ -7,5 +7,9 @@
   <LanguageList>
     <Name>Français (fr/FR)</Name>
     <Filename>Francais_(fr_FR)</Filename>
+  </LanguageList>
+  <LanguageList>
+    <Name>German (de/DE)</Name>
+    <Filename>German_(de_DE)</Filename>
   </LanguageList>
 </ArrayOfLanguageList>
