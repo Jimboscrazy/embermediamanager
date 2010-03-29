@@ -227,6 +227,17 @@ Public Class APIXML
                     Case Regex.IsMatch(sourceCheck, "sd[-\s]?tv")
                         Return "sdtv"
                 End Select
+                Dim mySources As New List(Of Hashtable)
+                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+                If Not mySources Is Nothing Then
+                    For Each i In mySources
+                        For Each k In i.Keys
+                            If Regex.IsMatch(sourceCheck, k.ToString) Then
+                                Return i.Item(k).ToString
+                            End If
+                        Next
+                    Next
+                End If
             End If
 
         Catch ex As Exception

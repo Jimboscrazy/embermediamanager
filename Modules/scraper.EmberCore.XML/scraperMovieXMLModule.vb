@@ -39,7 +39,7 @@ Public Class EmberXMLScraperModule
     Private scraperFileName As String = String.Empty
     Private ScrapersLoaded As Boolean = False
     Private lMediaTag As XMLScraper.MediaTags.MediaTag
-    Private LastDBMovieID As String = String.Empty
+    Private LastDBMovieID As Long = -1
     Friend WithEvents bwPopulate As New System.ComponentModel.BackgroundWorker
 
 #End Region 'Fields
@@ -236,6 +236,7 @@ Public Class EmberXMLScraperModule
     End Sub
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         Try
+            LastDBMovieID = -1
             'PrepareScraper()
             If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
                 'XMLManager.ReloadScrapers()
@@ -286,6 +287,8 @@ Public Class EmberXMLScraperModule
                                     Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                                 End If
                             End Using
+                        Else
+                            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                         End If
                 End Select
             End If
@@ -294,6 +297,7 @@ Public Class EmberXMLScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal Options As Structures.ScrapeOptions)
+        LastDBMovieID = DBMovie.ID
         If Options.bCert Then
             If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then DBMovie.Movie.Certification = (lMediaTag.Certifications.FirstOrDefault(Function(y) y.StartsWith(Master.eSettings.CertificationLang)))
             If Not DBMovie.Movie.Certification Is Nothing AndAlso DBMovie.Movie.Certification.IndexOf("(") >= 0 Then DBMovie.Movie.Certification = DBMovie.Movie.Certification.Substring(0, DBMovie.Movie.Certification.IndexOf("("))
