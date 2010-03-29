@@ -122,7 +122,7 @@ Public Class OfflineHolderModule
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Me._Name
+        SPanel.Text = Master.eLang.GetString(0, "Offline Media Manager")
         SPanel.Prefix = "Offline_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)

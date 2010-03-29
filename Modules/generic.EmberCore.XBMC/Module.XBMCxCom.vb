@@ -99,7 +99,7 @@ Public Class XBMCxCom
         _setup.XComs = _MySettings.XComs
         _setup.LoadXComs()
         SPanel.Name = Me._name
-        SPanel.Text = Me._name
+        SPanel.Text = Master.eLang.GetString(0, "XBMC Controller")
         SPanel.Prefix = "XBMCCom_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
