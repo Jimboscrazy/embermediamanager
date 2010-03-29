@@ -61,4 +61,11 @@ Public Class frmXMLSettingsHolder
     Private Sub pbPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbPoster.Click
 
     End Sub
+    Sub SetUp()
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+    End Sub
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
 End Class
