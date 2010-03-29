@@ -1,5 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <string>English_(en_US)</string>
-  <string>Francais_(fr_FR)</string>
-</ArrayOfString>
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLanguageList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LanguageList>
+    <Name>English (en/US)</Name>
+    <Filename>English_(en_US)</Filename>
+  </LanguageList>
+  <LanguageList>
+    <Name>Français (fr/FR)</Name>
+    <Filename>Francais_(fr_FR)</Filename>
+  </LanguageList>
+</ArrayOfLanguageList>

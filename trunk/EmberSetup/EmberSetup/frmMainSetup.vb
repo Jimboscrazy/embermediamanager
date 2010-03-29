@@ -1145,13 +1145,17 @@ Public Class frmMainSetup
 
             MyLang.GetFromSite()
             MyLang.Load()
-            If MyLang.Languages.Count > 1 Then
+            If MyLang.lLanguages.Count > 1 Then
                 Using dLang As New dlgLanguage
-                    dLang.cbLanguage.Items.AddRange(MyLang.Languages.ToArray)
-                    Dim si As Integer = dLang.cbLanguage.Items.IndexOf("English_(en_US)")
+
+                    For Each l As Langs.LanguageList In MyLang.lLanguages
+                        dLang.cbLanguage.Items.Add(l.Name)
+                    Next
+                    Dim si As Integer = dLang.cbLanguage.Items.IndexOf("English (en/US)")
                     If si >= 0 Then dLang.cbLanguage.SelectedIndex = si
                     If dLang.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                        Language = dLang.cbLanguage.Text
+                        Language = MyLang.lLanguages.FirstOrDefault(Function(y) y.Name = dLang.cbLanguage.Text).Filename
+                        'Language = dLang.cbLanguage.Text
                         MyLang.LoadLanguage(Language)
                     End If
                 End Using
