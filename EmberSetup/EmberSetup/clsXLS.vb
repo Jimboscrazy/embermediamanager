@@ -170,7 +170,8 @@ End Class
 
 Public Class Langs
     Private Shared htStrings As New Hashtable
-    Public Languages As New List(Of String)
+
+    Public lLanguages As New List(Of LanguageList)
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Try
             If IsNothing(htStrings) Then
@@ -232,9 +233,9 @@ Public Class Langs
     End Sub
     Public Sub Save()
         Try
-            Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+            Dim xmlSer As New XmlSerializer(GetType(List(Of LanguageList)))
             Using xmlSW As New StreamWriter(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
-                xmlSer.Serialize(xmlSW, Languages)
+                xmlSer.Serialize(xmlSW, lLanguages)
             End Using
 
         Catch ex As Exception
@@ -243,9 +244,9 @@ Public Class Langs
     Public Sub Load()
         Try
             If File.Exists(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml")) Then
-                Dim xmlSer As New XmlSerializer(GetType(List(Of String)))
+                Dim xmlSer As New XmlSerializer(GetType(List(Of LanguageList)))
                 Using xmlSW As New StreamReader(Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
-                    Languages = xmlSer.Deserialize(xmlSW)
+                    lLanguages = xmlSer.Deserialize(xmlSW)
                 End Using
             End If
         Catch ex As Exception
@@ -254,4 +255,8 @@ Public Class Langs
     Public Sub GetFromSite()
         frmMainSetup.GetURLFile("Setup/Setup.Languages.xml", Path.Combine(frmMainSetup.AppPath, "Setup.Languages.xml"))
     End Sub
+    Public Class LanguageList
+        Public Name As String
+        Public Filename As String
+    End Class
 End Class
