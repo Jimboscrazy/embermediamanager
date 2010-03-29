@@ -60,7 +60,7 @@ Public Class frmSettingsHolder
         Me.gbRenamerPatterns.Text = Master.eLang.GetString(23, "Default Renaming Patterns")
         Me.lblFilePattern.Text = Master.eLang.GetString(24, "Files Pattern")
         Me.lblFolderPattern.Text = Master.eLang.GetString(25, "Folders Pattern")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
 
     Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
@@ -69,6 +69,11 @@ Public Class frmSettingsHolder
 
     Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
     End Sub
 
     #End Region 'Methods
