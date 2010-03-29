@@ -45,6 +45,7 @@ Partial Class dlgSearchResults
         Me.pbPoster = New System.Windows.Forms.PictureBox
         Me.lblGenreHeader = New System.Windows.Forms.Label
         Me.lblGenre = New System.Windows.Forms.Label
+        Me.lblTagline = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
@@ -93,7 +94,7 @@ Partial Class dlgSearchResults
         '
         Me.lblYear.AutoSize = True
         Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblYear.Location = New System.Drawing.Point(362, 90)
+        Me.lblYear.Location = New System.Drawing.Point(362, 112)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(31, 13)
         Me.lblYear.TabIndex = 6
@@ -151,7 +152,7 @@ Partial Class dlgSearchResults
         '
         Me.lblYearHeader.AutoSize = True
         Me.lblYearHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblYearHeader.Location = New System.Drawing.Point(300, 90)
+        Me.lblYearHeader.Location = New System.Drawing.Point(300, 112)
         Me.lblYearHeader.Name = "lblYearHeader"
         Me.lblYearHeader.Size = New System.Drawing.Size(33, 13)
         Me.lblYearHeader.TabIndex = 61
@@ -179,7 +180,7 @@ Partial Class dlgSearchResults
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(365, 223)
+        Me.pnlLoading.Location = New System.Drawing.Point(365, 201)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 68
@@ -218,7 +219,7 @@ Partial Class dlgSearchResults
         '
         Me.lblDirectorHeader.AutoSize = True
         Me.lblDirectorHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(300, 110)
+        Me.lblDirectorHeader.Location = New System.Drawing.Point(300, 130)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
         Me.lblDirectorHeader.Size = New System.Drawing.Size(51, 13)
         Me.lblDirectorHeader.TabIndex = 71
@@ -228,7 +229,7 @@ Partial Class dlgSearchResults
         'lblDirector
         '
         Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(362, 110)
+        Me.lblDirector.Location = New System.Drawing.Point(362, 130)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(269, 16)
         Me.lblDirector.TabIndex = 70
@@ -248,7 +249,7 @@ Partial Class dlgSearchResults
         '
         'pbPoster
         '
-        Me.pbPoster.Location = New System.Drawing.Point(527, 122)
+        Me.pbPoster.Location = New System.Drawing.Point(527, 151)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(110, 130)
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -260,7 +261,7 @@ Partial Class dlgSearchResults
         '
         Me.lblGenreHeader.AutoSize = True
         Me.lblGenreHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenreHeader.Location = New System.Drawing.Point(301, 127)
+        Me.lblGenreHeader.Location = New System.Drawing.Point(301, 152)
         Me.lblGenreHeader.Name = "lblGenreHeader"
         Me.lblGenreHeader.Size = New System.Drawing.Size(54, 13)
         Me.lblGenreHeader.TabIndex = 75
@@ -270,12 +271,22 @@ Partial Class dlgSearchResults
         'lblGenre
         '
         Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(363, 127)
+        Me.lblGenre.Location = New System.Drawing.Point(363, 152)
         Me.lblGenre.Name = "lblGenre"
-        Me.lblGenre.Size = New System.Drawing.Size(142, 52)
+        Me.lblGenre.Size = New System.Drawing.Size(142, 46)
         Me.lblGenre.TabIndex = 74
         Me.lblGenre.Text = "Genre"
         Me.lblGenre.Visible = False
+        '
+        'lblTagline
+        '
+        Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTagline.Location = New System.Drawing.Point(300, 90)
+        Me.lblTagline.Name = "lblTagline"
+        Me.lblTagline.Size = New System.Drawing.Size(340, 22)
+        Me.lblTagline.TabIndex = 76
+        Me.lblTagline.Text = "Tagline"
+        Me.lblTagline.Visible = False
         '
         'dlgSearchResults
         '
@@ -285,6 +296,7 @@ Partial Class dlgSearchResults
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(643, 426)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblTagline)
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblGenre)
         Me.Controls.Add(Me.pnlLoading)
@@ -344,5 +356,6 @@ Partial Class dlgSearchResults
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenre As System.Windows.Forms.Label
+    Friend WithEvents lblTagline As System.Windows.Forms.Label
 
 End Class

@@ -110,6 +110,7 @@ Public Class dlgSearchResults
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 End If
+                lblTagline.Text = Web.HttpUtility.HtmlDecode(lMediaTag.Tagline)
                 ControlsVisible(True)
             End If
         Catch ex As Exception
@@ -141,7 +142,7 @@ Public Class dlgSearchResults
         'Me.lblIMDBHeader.Visible = areVisible
         Me.txtOutline.Visible = areVisible
         Me.lblYear.Visible = areVisible
-        'Me.lblTagline.Visible = areVisible
+        Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
         Me.lblDirector.Visible = areVisible
         Me.lblGenre.Visible = areVisible

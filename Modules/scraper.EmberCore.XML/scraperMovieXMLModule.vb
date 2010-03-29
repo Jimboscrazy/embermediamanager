@@ -22,6 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports EmberScraperModule.XMLScraper.ScraperXML
 Imports System.Reflection
+Imports System.Drawing
 Imports System.Drawing.Imaging
 
 Public Class EmberXMLScraperModule
@@ -331,6 +332,7 @@ Public Class EmberXMLScraperModule
                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
                 If Not IsNothing(s) Then
                     scraperFileName = s.FileName
+                    _setup.pbPoster.Load(s.ScraperThumb)
                     _setup.dgvSettings.Rows.Clear()
                     For Each ss As XMLScraper.ScraperLib.ScraperSetting In s.Settings.Where(Function(u) Not u.Hidden)
                         If Not ss.Label Is Nothing Then
