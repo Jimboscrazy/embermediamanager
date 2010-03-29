@@ -138,7 +138,7 @@ Public Class EmberNativeTVScraperModule
     Public Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Me._Name
+        SPanel.Text = Master.eLang.GetString(0, "Ember Native TV Scrapers")
         SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
@@ -151,7 +151,7 @@ Public Class EmberNativeTVScraperModule
     Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Me._Name
+        SPanel.Text = Master.eLang.GetString(0, "Ember Native TV Scrapers")
         SPanel.Prefix = "NativeTV_"
         SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)

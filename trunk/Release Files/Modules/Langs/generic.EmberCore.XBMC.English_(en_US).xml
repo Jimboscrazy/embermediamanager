@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<string id="0">XBMC Controller</string>
 	<string id="1">The name you are attempting to use for this XBMC installation is already in use. Please choose another.</string>
 	<string id="2">Each name must be unique</string>
 	<string id="3">You must enter a port for this XBMC installation.</string>

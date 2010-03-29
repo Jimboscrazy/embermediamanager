@@ -266,7 +266,7 @@ Public Class FileManagerExternalModule
             _setup.ListView1.Items.Add(li)
         Next
         SPanel.Name = Me._Name
-        SPanel.Text = Me._Name
+        SPanel.Text = Master.eLang.GetString(0, "Media File Manager")
         SPanel.Prefix = "FileManager_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)

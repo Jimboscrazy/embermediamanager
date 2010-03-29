@@ -128,7 +128,7 @@ Public Class MovieExporterModule
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Me._Name
+        SPanel.Text = Master.eLang.GetString(0, "Movie List Exporter")
         SPanel.Prefix = "Exporter_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)

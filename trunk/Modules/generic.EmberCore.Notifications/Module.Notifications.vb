@@ -87,7 +87,7 @@ Public Class NotificationsModule
         Me._setup.chkOnMovieScraped.Checked = eSettings.OnMovieScraped
         Me._setup.chkOnNewEp.Checked = eSettings.OnNewEp
         SPanel.Name = Me._name
-        SPanel.Text = Me._name
+        SPanel.Text = Master.eLang.GetString(0, "Notifications")
         SPanel.Prefix = "Notify_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)

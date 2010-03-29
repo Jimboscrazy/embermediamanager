@@ -34,6 +34,7 @@ Partial Class frmSettingsHolder
         Me.chkGenericModule = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -42,6 +43,7 @@ Partial Class frmSettingsHolder
         'pnlSettings
         '
         Me.pnlSettings.BackColor = System.Drawing.Color.White
+        Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlSettings.Controls.Add(Me.chkBulkRenamer)
         Me.pnlSettings.Controls.Add(Me.chkGenericModule)
@@ -62,7 +64,7 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatterns.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbRenamerPatterns.Location = New System.Drawing.Point(21, 54)
         Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
-        Me.gbRenamerPatterns.Size = New System.Drawing.Size(194, 176)
+        Me.gbRenamerPatterns.Size = New System.Drawing.Size(197, 191)
         Me.gbRenamerPatterns.TabIndex = 85
         Me.gbRenamerPatterns.TabStop = False
         Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
@@ -71,7 +73,7 @@ Partial Class frmSettingsHolder
         '
         Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
+        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 146)
         Me.chkRenameSingle.Name = "chkRenameSingle"
         Me.chkRenameSingle.Size = New System.Drawing.Size(176, 30)
         Me.chkRenameSingle.TabIndex = 74
@@ -83,7 +85,7 @@ Partial Class frmSettingsHolder
         '
         Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameMulti.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
+        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 108)
         Me.chkRenameMulti.Name = "chkRenameMulti"
         Me.chkRenameMulti.Size = New System.Drawing.Size(179, 30)
         Me.chkRenameMulti.TabIndex = 73
@@ -167,6 +169,15 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label1.Location = New System.Drawing.Point(224, 54)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(372, 263)
+        Me.Label1.TabIndex = 75
+        Me.Label1.Text = "Label1"
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -197,4 +208,5 @@ Partial Class frmSettingsHolder
     Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
     Friend WithEvents txtFilePattern As System.Windows.Forms.TextBox
     Friend WithEvents txtFolderPattern As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class

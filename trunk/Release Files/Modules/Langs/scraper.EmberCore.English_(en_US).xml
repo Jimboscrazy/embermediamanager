@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<string id="0">Ember Native TV Scrapers</string>
 	<string id="1">Use OFDB Genre</string>
 	<string id="2">Use OFDB Plot</string>
 	<string id="3">Use OFDB Outline</string>
@@ -103,4 +104,5 @@
 	<string id="101">Get Posters</string>
 	<string id="102">Get Fanart</string>
 	<string id="103">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
+	<string id="104">Ember Native Movie Scrapers</string>
 </strings>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<string id="0">Renamer</string>
 	<string id="1">Renaming...</string>
 	<string id="2">Bulk Renamer</string>
 	<string id="3">Rename movies and files</string>
@@ -31,4 +32,6 @@
 	<string id="29">Manual</string>
 	<string id="30">New Path</string>
 	<string id="31">New File Name</string>
+	<string id="32">Enable Generic Rename Module</string>
+	<string id="33">Enable Bulk Renamer Tool</string>
 </strings>

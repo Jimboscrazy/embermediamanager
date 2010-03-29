@@ -57,6 +57,11 @@ Public Class frmSettingsHolder
 
     Private Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.chkOnError.Text = Master.eLang.GetString(1, "On Error")
+        Me.chkOnNewMovie.Text = Master.eLang.GetString(2, "On New Movie Added")
+        Me.chkOnMovieScraped.Text = Master.eLang.GetString(3, "On Movie Scraped")
+        Me.chkOnNewEp.Text = Master.eLang.GetString(4, "On New Episode Added")
+
     End Sub
 
     #End Region 'Methods

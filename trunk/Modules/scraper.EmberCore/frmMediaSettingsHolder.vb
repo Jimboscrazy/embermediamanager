@@ -127,7 +127,7 @@ Public Class frmMediaSettingsHolder
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order", True)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
         Me.chkScrapePoster.Text = Master.eLang.GetString(101, "Get Posters")
-        Me.chkScrapeFanart.Text = Master.eLang.GetString(101, "Get Fanart")
+        Me.chkScrapeFanart.Text = Master.eLang.GetString(102, "Get Fanart")
         Me.Label1.Text = String.Format(Master.eLang.GetString(103, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 

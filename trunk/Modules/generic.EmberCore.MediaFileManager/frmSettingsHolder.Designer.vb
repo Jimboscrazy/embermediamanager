@@ -73,9 +73,9 @@ Partial Class frmSettingsHolder
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(190, 296)
+        Me.Label4.Location = New System.Drawing.Point(175, 296)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(47, 13)
+        Me.Label4.Size = New System.Drawing.Size(65, 13)
         Me.Label4.TabIndex = 8
         Me.Label4.Text = "Path"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -84,19 +84,19 @@ Partial Class frmSettingsHolder
         '
         Me.TextBox1.Location = New System.Drawing.Point(61, 293)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(120, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(108, 22)
         Me.TextBox1.TabIndex = 9
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(236, 293)
+        Me.TextBox2.Location = New System.Drawing.Point(246, 293)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(229, 22)
+        Me.TextBox2.Size = New System.Drawing.Size(222, 22)
         Me.TextBox2.TabIndex = 10
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(470, 295)
+        Me.Button4.Location = New System.Drawing.Point(473, 295)
         Me.Button4.Margin = New System.Windows.Forms.Padding(0)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(24, 20)

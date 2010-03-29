@@ -61,6 +61,9 @@ Public Class frmSettingsHolder
         Me.lblFilePattern.Text = Master.eLang.GetString(24, "Files Pattern")
         Me.lblFolderPattern.Text = Master.eLang.GetString(25, "Folders Pattern")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.chkGenericModule.Text = Master.eLang.GetString(32, "Enable Generic Rename Module")
+        Me.chkBulkRenamer.Text = Master.eLang.GetString(33, "Enable Bulk Renamer Tool")
+        Me.Label1.Text = String.Format(Master.eLang.GetString(11, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
     End Sub
 
     Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged

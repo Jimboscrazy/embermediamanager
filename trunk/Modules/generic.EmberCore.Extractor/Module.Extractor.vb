@@ -96,7 +96,7 @@ Public Class FrameExtrator
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled
         SPanel.Name = Me._name
-        SPanel.Text = Me._name
+        SPanel.Text = Master.eLang.GetString(0, "Frame Extractor")
         SPanel.Prefix = "Extrator_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
