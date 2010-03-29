@@ -959,7 +959,10 @@ Public Class Database
                 If _cmd.CommandType = "DB" Then
                     Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcn.CreateCommand
                         SQLcommand.CommandText = _cmd.CommandExecute
-                        SQLcommand.ExecuteNonQuery()
+                        Try
+                            SQLcommand.ExecuteNonQuery()
+                        Catch ex As Exception
+                        End Try
                     End Using
                 End If
             Next
