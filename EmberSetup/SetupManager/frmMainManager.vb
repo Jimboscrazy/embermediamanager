@@ -376,9 +376,9 @@ Public Class frmMainManager
             Dim fd As New OpenFileDialog
             MsgBox("Please choose a Media Database", MsgBoxStyle.Critical, AcceptButton)
             If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                If File.Exists(Path.Combine(CurrentEmberPath, "Media.emm")) Then
+                If File.Exists(fd.FileName) Then
                     Dim lSQLcn As New SQLite.SQLiteConnection()
-                    lSQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(CurrentEmberPath, "Media.emm"))
+                    lSQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", fd.FileName)
                     lSQLcn.Open()
                     Using SQLcommand As SQLite.SQLiteCommand = lSQLcn.CreateCommand
                         SQLcommand.CommandText = "select type, sql from sqlite_master;"
@@ -1499,5 +1499,13 @@ Public Class frmMainManager
         End Try
         dlg.Close()
 
+    End Sub
+
+    Private Sub Button4_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Dim fd As New OpenFileDialog
+        MsgBox("Please choose a diff File", MsgBoxStyle.Critical, AcceptButton)
+        If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+
+        End If
     End Sub
 End Class
