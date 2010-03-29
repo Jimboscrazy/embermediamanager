@@ -143,7 +143,7 @@ Public Class EmberXMLScraperModule
         'PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         Spanel.Name = String.Concat(Me._Name, "PostScraper")
-        Spanel.Text = Me._Name
+        Spanel.Text = Master.eLang.GetString(0, "'Ember XML Movie Scrapers")
         Spanel.Prefix = "XMLMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
@@ -166,7 +166,7 @@ Public Class EmberXMLScraperModule
         End If
         PopulateScraperSettings()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
-        Spanel.Text = _Name
+        Spanel.Text = Master.eLang.GetString(0, "'Ember XML Movie Scrapers")
         Spanel.Prefix = "XMLMovieInfo_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieData"
@@ -275,6 +275,10 @@ Public Class EmberXMLScraperModule
                             ' search Dialog
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
+                                Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
+                                If Not IsNothing(s) Then
+                                    dlg.pbScraperLogo.Load(s.ScraperThumb)
+                                End If
                                 If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
                                     lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
                                     MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
@@ -310,6 +314,10 @@ Public Class EmberXMLScraperModule
         For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
             DBMovie.Movie.Thumb.Add(t.Thumb)
         Next
+        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Fanart.Thumbs
+            DBMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
+        Next
+
         If Options.bTop250 Then DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
         'DBMovie.Movie.Trailer = lMediaTag.Trailers
         If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString

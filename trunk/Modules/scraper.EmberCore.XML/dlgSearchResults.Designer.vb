@@ -46,10 +46,12 @@ Partial Class dlgSearchResults
         Me.lblGenreHeader = New System.Windows.Forms.Label
         Me.lblGenre = New System.Windows.Forms.Label
         Me.lblTagline = New System.Windows.Forms.Label
+        Me.pbScraperLogo = New System.Windows.Forms.PictureBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -105,6 +107,7 @@ Partial Class dlgSearchResults
         Me.pnlTop.BackColor = System.Drawing.Color.LightSteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlTop.Controls.Add(Me.Label2)
+        Me.pnlTop.Controls.Add(Me.pbScraperLogo)
         Me.pnlTop.Controls.Add(Me.Label1)
         Me.pnlTop.Controls.Add(Me.PictureBox1)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -288,6 +291,16 @@ Partial Class dlgSearchResults
         Me.lblTagline.Text = "Tagline"
         Me.lblTagline.Visible = False
         '
+        'pbScraperLogo
+        '
+        Me.pbScraperLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbScraperLogo.Location = New System.Drawing.Point(461, 8)
+        Me.pbScraperLogo.Name = "pbScraperLogo"
+        Me.pbScraperLogo.Size = New System.Drawing.Size(178, 50)
+        Me.pbScraperLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbScraperLogo.TabIndex = 90
+        Me.pbScraperLogo.TabStop = False
+        '
         'dlgSearchResults
         '
         Me.AcceptButton = Me.OK_Button
@@ -296,10 +309,10 @@ Partial Class dlgSearchResults
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(643, 426)
         Me.ControlBox = False
+        Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.lblTagline)
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblGenre)
-        Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.pbPoster)
         Me.Controls.Add(Me.lblPlotHeader)
         Me.Controls.Add(Me.lblDirectorHeader)
@@ -330,6 +343,7 @@ Partial Class dlgSearchResults
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -357,5 +371,6 @@ Partial Class dlgSearchResults
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
+    Friend WithEvents pbScraperLogo As System.Windows.Forms.PictureBox
 
 End Class
