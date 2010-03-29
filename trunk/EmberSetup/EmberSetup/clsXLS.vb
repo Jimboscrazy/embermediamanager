@@ -21,6 +21,7 @@
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports System.Web
 
 Public Class FileOfList
 
@@ -189,7 +190,7 @@ Public Class Langs
         Try
             lPath = Path.Combine(frmMainSetup.AppPath, String.Format("Setup.{0}.xml", Language))
             If Not File.Exists(lPath) Then
-                frmMainSetup.GetURLFile("Setup/" & String.Format("Setup.{0}.xml", Language), lPath)
+                frmMainSetup.GetURLFile("Setup/" & String.Format("Setup.{0}.xml", System.Web.HttpUtility.HtmlEncode(Language)), lPath)
             End If
             If Not File.Exists(lPath) Then
                 lPath = String.Empty
