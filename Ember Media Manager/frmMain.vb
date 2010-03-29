@@ -5278,7 +5278,7 @@ doCancel:
                 Next
                 APIXML.CacheXMLs()
                 fLoading.SetStage("Loading database...")
-                Master.DB.Connect(False, False)
+                Master.DB.Connect()
                 If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
                     Master.DB.PatchDatabase()
                     File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
@@ -5450,7 +5450,7 @@ doCancel:
                     Application.DoEvents()
                     fLoading.SetStage("Loading database...")
                     If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                        Master.DB.Connect(False, False)
+                        Master.DB.Connect()
                         If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
                             Master.DB.PatchDatabase()
                             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
@@ -5458,7 +5458,7 @@ doCancel:
                         Me.FillList(0)
                         Me.Visible = True
                     Else
-                        Master.DB.Connect(True, False)
+                        Master.DB.Connect()
                         If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
                             Master.DB.PatchDatabase()
                             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))

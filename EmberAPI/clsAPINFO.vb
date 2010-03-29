@@ -528,6 +528,7 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                         xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
+                        xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
                     End Using
                 Else
                     If Not String.IsNullOrEmpty(sPath) Then
@@ -539,6 +540,7 @@ Public Class NFO
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                                    xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
                                     xmlMov.IMDBID = sReturn.IMDBID
                                 End Using
                             End If
@@ -564,6 +566,7 @@ Public Class NFO
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                                xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
                                 xmlMov.IMDBID = sReturn.IMDBID
                             End Using
                         End If
@@ -639,6 +642,7 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
+                        xmlShow.Genre = Strings.Join(xmlShow.LGenre.ToArray, " / ")
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
