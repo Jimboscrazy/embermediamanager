@@ -2,9 +2,6 @@
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Commands>
     <Command Type="DB">
-      <Execute>CREATE TABLE sqlite_sequence(name,seq)</Execute>
-    </Command>
-    <Command Type="DB">
       <Execute>CREATE TABLE Sets(SetName TEXT NOT NULL PRIMARY KEY)</Execute>
     </Command>
 	<Command Type="DB">
