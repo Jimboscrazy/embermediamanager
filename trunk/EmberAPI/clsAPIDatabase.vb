@@ -968,6 +968,18 @@ Public Class Database
             Next
         End Using
     End Sub
+    Public Sub CheckDatabase()
+        If Not File.Exists(Path.Combine(Functions.AppPath, "Media.emm")) Then
+            Dim lhttp As New HTTP
+            lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/commands_base.xml", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates")), Path.Combine(Functions.AppPath, "UpdateTasks.xml"), False, "other")
+        End If
+        Master.DB.Connect()
+        If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
+            Master.DB.PatchDatabase()
+            File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+        End If
+
+    End Sub
 
     ''' <summary>
     ''' Saves all information from a Structures.DBMovie object to the database
