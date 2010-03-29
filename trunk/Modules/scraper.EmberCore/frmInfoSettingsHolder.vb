@@ -213,6 +213,8 @@ Public Class frmInfoSettingsHolder
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title", True)
         Me.chkCertification.Text = Master.eLang.GetString(722, "Certification", True)
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order", True)
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.Label1.Text = String.Format(Master.eLang.GetString(103, "These settings are specific to this module.{0}Please refer to the global settings for more options.", True), vbCrLf)
     End Sub
 
     Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBURL.TextChanged
