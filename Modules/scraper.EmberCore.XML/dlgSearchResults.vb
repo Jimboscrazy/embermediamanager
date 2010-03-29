@@ -49,7 +49,7 @@ Public Class dlgSearchResults
         ' Overload to pass data
         '\\
 
-        Me.Text = String.Concat(Master.eLang.GetString(11, "Search Results - "), sMovieTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(7, "Search Results - "), sMovieTitle)
         mList = Res
         SearchResultsDownloaded()
 
@@ -60,7 +60,7 @@ Public Class dlgSearchResults
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
             Me.OK_Button.Enabled = False
             Me.ClearInfo()
-            Me.Label3.Text = Master.eLang.GetString(9, "Searching...")
+            Me.Label3.Text = Master.eLang.GetString(5, "Searching...")
             Me.pnlLoading.Visible = True
         End If
     End Sub
@@ -212,16 +212,16 @@ Public Class dlgSearchResults
     End Sub
 
     Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(1, "OK", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(2, "Cancel", True)
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(1, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(3, "View details of each result to find the proper movie.")
         Me.Label1.Text = Master.eLang.GetString(4, "Movie Search Results")
-        Me.lblYearHeader.Text = Master.eLang.GetString(5, "Year:", True)
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(6, "Director:", True)
-        Me.lblGenreHeader.Text = Master.eLang.GetString(7, "Genre(s):", True)
+        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:", True)
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:", True)
+        Me.lblGenreHeader.Text = Master.eLang.GetString(2, "Genre(s):")
         'Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:", True)
-        Me.lblPlotHeader.Text = Master.eLang.GetString(8, "Plot Outline:", True)
-        Me.Label3.Text = Master.eLang.GetString(9, "Searching ...")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:", True)
+        Me.Label3.Text = Master.eLang.GetString(5, "Searching ...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -229,7 +229,7 @@ Public Class dlgSearchResults
         Me.tmrLoad.Enabled = False
         bwDownloadInfo.WorkerReportsProgress = True
         bwDownloadInfo.RunWorkerAsync(Me.tvResults.SelectedNode.Tag)
-        Me.Label3.Text = Master.eLang.GetString(10, "Downloading details...")
+        Me.Label3.Text = Master.eLang.GetString(6, "Downloading details...")
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
