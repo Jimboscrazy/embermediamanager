@@ -745,6 +745,8 @@ Namespace IMDB
         Public Sub SearchMovieAsync(ByVal sMovie As String)
             Try
                 If Not bwIMDB.IsBusy Then
+                    bwIMDB.WorkerReportsProgress = False
+                    bwIMDB.WorkerSupportsCancellation = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovie})
                 End If
             Catch ex As Exception

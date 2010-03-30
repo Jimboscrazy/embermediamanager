@@ -1233,7 +1233,6 @@ Public Class frmMain
                 If Me.dgvMediaList.CurrentCell Is Me.dgvMediaList.SelectedRows(0).Cells(3) Then
                     Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
-
             End If
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
