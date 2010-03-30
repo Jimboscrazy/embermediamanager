@@ -3878,7 +3878,7 @@ Public Class dlgSettings
         Me.lblAllSPosterWidth.Text = Me.Label11.Text
         Me.lblAllSPosterHeight.Text = Me.Label12.Text
         Me.lblAllSPosterQ.Text = Me.Label24.Text
-        Me.btnClearRegex.Text = Master.eLang.GetString(124, "Clear")
+        Me.btnClearRegex.Text = Master.eLang.GetString(123, "Clear")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -4412,8 +4412,6 @@ Public Class dlgSettings
             Else
                 Me.btnAddShowRegex.Enabled = False
             End If
-        Else
-            'TODO  This not work.. Me.ClearRegex()
         End If
     End Sub
 
