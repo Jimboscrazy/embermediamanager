@@ -74,6 +74,7 @@ Public Class dlgIMDBSearchResults
             Me.Label3.Text = Master.eLang.GetString(11, "Searching IMDB...")
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
+            IMDB.CancelAsync()
             IMDB.IMDBURL = IMDBURL
             IMDB.SearchMovieAsync(Me.txtSearch.Text)
         End If
