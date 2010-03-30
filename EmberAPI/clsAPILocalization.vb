@@ -174,7 +174,7 @@ Public Class Localization
     Public Sub LoadHelpStrings(ByVal hPath As String)
         Try
             If File.Exists(hPath) Then
-                Dim tReader As New StreamReader(hPath, Encoding.UTF8)
+                Dim tReader As New StreamReader(hPath, Encoding.UTF8, False)
                 Dim LangXML As XDocument = XDocument.Load(tReader)
                 Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
                 If xLanguage.Count > 0 Then

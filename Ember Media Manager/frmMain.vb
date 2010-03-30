@@ -5277,7 +5277,9 @@ doCancel:
                 Next
                 APIXML.CacheXMLs()
                 fLoading.SetStage("Loading database...")
-                Master.DB.CheckDatabase()
+                If Master.DB.CheckDatabase() Then
+                    Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                End If
 
                 If clExport = True Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CL_MovieExporter, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
@@ -5445,11 +5447,15 @@ doCancel:
                     Application.DoEvents()
                     fLoading.SetStage("Loading database...")
                     If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                        Master.DB.CheckDatabase()
+                        If Master.DB.CheckDatabase() Then
+                            Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                        End If
                         Me.FillList(0)
                         Me.Visible = True
                     Else
-                        Master.DB.CheckDatabase()
+                        If Master.DB.CheckDatabase() Then
+                            Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                        End If
                         If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                             Application.DoEvents()
                             Me.SetUp(False) 'just in case user changed languages
