@@ -99,9 +99,9 @@ Partial Class dlgLanguage
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgLanguage"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Language Selection"
+        Me.TopMost = True
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
