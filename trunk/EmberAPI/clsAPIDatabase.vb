@@ -962,13 +962,18 @@ Public Class Database
                         Try
                             SQLcommand.ExecuteNonQuery()
                         Catch ex As Exception
+                            Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
+                            log.WriteLine(String.Format("--- Error: {0}", ex.Message))
+                            log.WriteLine(ex.StackTrace)
+                            log.Close()
                         End Try
                     End Using
                 End If
             Next
         End Using
     End Sub
-    Public Sub CheckDatabase()
+    Public Function CheckDatabase() As Boolean
+        Dim needUpdate As Boolean = False
         If Not File.Exists(Path.Combine(Functions.AppPath, "Media.emm")) Then
             Dim lhttp As New HTTP
             lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/commands_base.xml", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates")), Path.Combine(Functions.AppPath, "InstallTasks.xml"), False, "other")
@@ -977,13 +982,15 @@ Public Class Database
         If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
             Master.DB.PatchDatabase("InstallTasks.xml")
             File.Delete(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            needUpdate = True
         End If
         If File.Exists(Path.Combine(Functions.AppPath, "UpdateTasks.xml")) Then
             Master.DB.PatchDatabase("UpdateTasks.xml")
             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
+            needUpdate = True
         End If
-
-    End Sub
+        Return needUpdate
+    End Function
 
     ''' <summary>
     ''' Saves all information from a Structures.DBMovie object to the database
