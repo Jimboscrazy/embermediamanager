@@ -1781,6 +1781,7 @@ doCancel:
 
             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
         End If
+
         Me.SetControlsEnabled(True)
     End Sub
 
@@ -6260,12 +6261,16 @@ doCancel:
             Case Enums.ScrapeType.SingleScrape
                 Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
         End Select
-        Me.btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
-        Me.lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
-        Me.btnCancel.Visible = True
-        Me.lblCanceling.Visible = False
-        Me.pbCanceling.Visible = False
-        Me.pnlCancel.Visible = True
+
+        If Not sType = Enums.ScrapeType.SingleScrape Then
+            Me.btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
+            Me.lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
+            Me.btnCancel.Visible = True
+            Me.lblCanceling.Visible = False
+            Me.pbCanceling.Visible = False
+            Me.pnlCancel.Visible = True
+        End If
+
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
         Application.DoEvents()
@@ -6615,6 +6620,13 @@ doCancel:
         Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
 
+        Dim hasPoster As Boolean = False
+        Dim hasFanart As Boolean = False
+        Dim hasNfo As Boolean = False
+        Dim hasTrailer As Boolean = False
+        Dim hasSub As Boolean = False
+        Dim hasExtra As Boolean = False
+
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
@@ -6681,6 +6693,13 @@ doCancel:
                 tmpMovieDb.SubPath = mContainer.Subs
                 tmpMovieDb.ExtraPath = mContainer.Extra
 
+                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
+                hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
+                hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
+                hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
+                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
+                hasExtra = Not String.IsNullOrEmpty(mContainer.Extra)
+
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
                 If Not IsNothing(dRow(0)) Then
@@ -6690,12 +6709,12 @@ doCancel:
                     If Me.InvokeRequired Then
                         Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasNfo})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, hasTrailer})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSub})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasExtra})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 46, tmpMovieDb.Movie.SortTitle})
@@ -6703,12 +6722,12 @@ doCancel:
                     Else
                         DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
                         DirectCast(dRow(0), DataRow).Item(3) = tmpMovieDb.ListTitle
-                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(mContainer.Poster), False, True)
-                        DirectCast(dRow(0), DataRow).Item(5) = If(String.IsNullOrEmpty(mContainer.Fanart), False, True)
-                        DirectCast(dRow(0), DataRow).Item(6) = If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)
-                        DirectCast(dRow(0), DataRow).Item(7) = If(String.IsNullOrEmpty(mContainer.Trailer), False, True)
-                        DirectCast(dRow(0), DataRow).Item(8) = If(String.IsNullOrEmpty(mContainer.Subs), False, True)
-                        DirectCast(dRow(0), DataRow).Item(9) = If(String.IsNullOrEmpty(mContainer.Extra), False, True)
+                        DirectCast(dRow(0), DataRow).Item(4) = hasPoster
+                        DirectCast(dRow(0), DataRow).Item(5) = hasFanart
+                        DirectCast(dRow(0), DataRow).Item(6) = hasNfo
+                        DirectCast(dRow(0), DataRow).Item(7) = hasTrailer
+                        DirectCast(dRow(0), DataRow).Item(8) = hasSub
+                        DirectCast(dRow(0), DataRow).Item(9) = hasExtra
                         DirectCast(dRow(0), DataRow).Item(10) = False
                         DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
                         DirectCast(dRow(0), DataRow).Item(46) = tmpMovieDb.Movie.SortTitle
@@ -6724,7 +6743,26 @@ doCancel:
 
             If Not BatchMode Then
                 Me.DoTitleCheck()
-                Me.LoadInfo(Convert.ToInt32(ID), tmpMovieDb.Filename, True, False)
+                If Not Me.chkFilterNew.Checked AndAlso (Not Me.chkFilterMissing.Checked OrElse _
+                ((Not Master.eSettings.MissingFilterPoster OrElse (Master.eSettings.MissingFilterPoster AndAlso Not hasPoster)) AndAlso _
+                 (Not Master.eSettings.MissingFilterFanart OrElse (Master.eSettings.MissingFilterFanart AndAlso Not hasFanart)) AndAlso _
+                 (Not Master.eSettings.MissingFilterNFO OrElse (Master.eSettings.MissingFilterNFO AndAlso Not hasNfo)) AndAlso _
+                 (Not Master.eSettings.MissingFilterTrailer OrElse (Master.eSettings.MissingFilterTrailer AndAlso Not hasTrailer)) AndAlso _
+                 (Not Master.eSettings.MissingFilterSubs OrElse (Master.eSettings.MissingFilterSubs AndAlso Not hasSub)) AndAlso _
+                 (Not Master.eSettings.MissingFilterExtras OrElse (Master.eSettings.MissingFilterExtras AndAlso Not hasExtra)))) Then
+                    Me.LoadInfo(Convert.ToInt32(ID), tmpMovieDb.Filename, True, False)
+                Else
+                    Me.ClearInfo()
+                    Me.prevRow = -2
+                    Me.currRow = -1
+                    Me.dgvMediaList.ClearSelection()
+                    Me.dgvMediaList.CurrentCell = Nothing
+
+                    If Me.dgvMediaList.RowCount > 0 Then
+                        Me.dgvMediaList.Rows(0).Cells(3).Selected = True
+                        Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
+                    End If
+                End If
             End If
 
         Catch ex As Exception
@@ -7028,10 +7066,12 @@ doCancel:
 
                 Me.ClearInfo()
 
-                If FilterArray.Count > 0 Then
-                    'reset prevrow
-                    Me.prevRow = -1
+                Me.prevRow = -2
+                Me.currRow = -1
+                Me.dgvMediaList.ClearSelection()
+                Me.dgvMediaList.CurrentCell = Nothing
 
+                If FilterArray.Count > 0 Then
                     Dim FilterString As String = String.Empty
 
                     If rbFilterAnd.Checked Then
@@ -7045,7 +7085,11 @@ doCancel:
                     bsMedia.RemoveFilter()
                 End If
 
-                If doFill Then Me.FillList(0)
+                If doFill Then
+                    Me.FillList(0)
+                Else
+                    Me.dgvMediaList.Focus()
+                End If
             End If
 
         Catch ex As Exception
