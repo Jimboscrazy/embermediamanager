@@ -311,8 +311,10 @@ Partial Class dlgEditSeason
         '
         'dlgEditSeason
         '
+        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)

@@ -98,6 +98,7 @@ Partial Class dlgBulkRenamer
         'Close_Button
         '
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Close_Button.Location = New System.Drawing.Point(898, 445)
         Me.Close_Button.Name = "Close_Button"
@@ -386,9 +387,10 @@ Partial Class dlgBulkRenamer
         '
         'dlgBulkRenamer
         '
-        Me.AcceptButton = Me.Close_Button
+        Me.AcceptButton = Me.Rename_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(992, 472)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)

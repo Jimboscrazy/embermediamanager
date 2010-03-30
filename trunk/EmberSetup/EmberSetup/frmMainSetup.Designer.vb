@@ -52,6 +52,7 @@ Partial Class frmMainSetup
         'btnExit
         '
         Me.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExit.Location = New System.Drawing.Point(205, 258)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(91, 23)
@@ -132,6 +133,7 @@ Partial Class frmMainSetup
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(505, 325)
         Me.ControlBox = False
         Me.Controls.Add(Me.llAbout)
