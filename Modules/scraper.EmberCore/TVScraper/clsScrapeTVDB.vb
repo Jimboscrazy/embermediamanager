@@ -351,7 +351,7 @@ Public Class Scraper
                                         End If
                                     ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
                                         If Not IsNothing(Episode.Element("absolute_number")) AndAlso Not String.IsNullOrEmpty(Episode.Element("absolute_number").Value.ToString) Then
-                                            If xdEps.Descendants("Episode").Where(Function(e) IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString)).Count = 0 Then
+                                            If xdEps.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
                                                 tOrdering = Enums.Ordering.Absolute
                                             End If
                                         End If
@@ -1104,7 +1104,7 @@ Public Class Scraper
                                         tOrdering = Enums.Ordering.DVD
                                     End If
                                 ElseIf sInfo.Ordering = Enums.Ordering.Absolute Then
-                                    If xdShow.Descendants("Episode").Where(Function(e) IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString)).Count = 0 Then
+                                    If xdShow.Descendants("Episode").Where(Function(e) Convert.ToInt32(e.Element("SeasonNumber").Value) > 0 AndAlso (IsNothing(e.Element("absolute_number")) OrElse String.IsNullOrEmpty(e.Element("absolute_number").Value.ToString))).Count = 0 Then
                                         tOrdering = Enums.Ordering.Absolute
                                     End If
                                 End If
