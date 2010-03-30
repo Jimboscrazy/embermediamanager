@@ -150,9 +150,10 @@ Partial Class dlgBulkOfflineHolder
         '
         'dlgBulkOfflineHolder
         '
-        Me.AcceptButton = Me.CLOSE_Button
+        Me.AcceptButton = Me.Create_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.CLOSE_Button
         Me.ClientSize = New System.Drawing.Size(643, 420)
         Me.Controls.Add(Me.dgvCSV)
         Me.Controls.Add(Me.Create_Button)

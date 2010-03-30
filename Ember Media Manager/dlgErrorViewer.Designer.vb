@@ -34,6 +34,7 @@ Partial Class dlgErrorViewer
         '
         'OK_Button
         '
+        Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.OK_Button.Location = New System.Drawing.Point(797, 381)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -106,6 +107,7 @@ Partial Class dlgErrorViewer
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.OK_Button
         Me.ClientSize = New System.Drawing.Size(870, 409)
         Me.Controls.Add(Me.llblURL)
         Me.Controls.Add(Me.lblInfo)

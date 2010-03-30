@@ -36,6 +36,7 @@ Partial Class dlgOrigPaths
         'OK_Button
         '
         Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.OK_Button.Location = New System.Drawing.Point(505, 241)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -105,6 +106,7 @@ Partial Class dlgOrigPaths
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.OK_Button
         Me.ClientSize = New System.Drawing.Size(772, 276)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)

@@ -300,9 +300,10 @@ Partial Class dlgEditEpisode
         '
         'btnManual
         '
-        Me.btnManual.Location = New System.Drawing.Point(755, 423)
+        Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnManual.Location = New System.Drawing.Point(738, 423)
         Me.btnManual.Name = "btnManual"
-        Me.btnManual.Size = New System.Drawing.Size(75, 23)
+        Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 20
         Me.btnManual.Text = "Manual Edit"
         Me.btnManual.UseVisualStyleBackColor = True
@@ -704,8 +705,10 @@ Partial Class dlgEditEpisode
         '
         'dlgEditEpisode
         '
+        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)

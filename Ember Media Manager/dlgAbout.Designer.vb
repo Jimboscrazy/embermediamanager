@@ -194,8 +194,10 @@ Partial Class dlgAbout
         '
         'dlgAbout
         '
+        Me.AcceptButton = Me.OKButton
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.OKButton
         Me.ClientSize = New System.Drawing.Size(435, 370)
         Me.Controls.Add(Me.picDisplay)
         Me.Controls.Add(Me.Panel1)

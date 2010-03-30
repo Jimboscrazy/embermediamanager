@@ -31,6 +31,7 @@ Partial Class dlgVersions
         '
         'OK_Button
         '
+        Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.OK_Button.Location = New System.Drawing.Point(350, 289)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -74,6 +75,7 @@ Partial Class dlgVersions
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.OK_Button
         Me.ClientSize = New System.Drawing.Size(418, 314)
         Me.Controls.Add(Me.btnCopy)
         Me.Controls.Add(Me.lstVersions)

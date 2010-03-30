@@ -500,9 +500,10 @@ Partial Class dlgOfflineHolder
         '
         'dlgOfflineHolder
         '
-        Me.AcceptButton = Me.CLOSE_Button
+        Me.AcceptButton = Me.Create_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.CLOSE_Button
         Me.ClientSize = New System.Drawing.Size(727, 540)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)

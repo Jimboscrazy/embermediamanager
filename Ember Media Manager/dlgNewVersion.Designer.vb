@@ -111,7 +111,7 @@ Partial Class dlgNewVersion
         '
         Me.btnUpgrade.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnUpgrade.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnUpgrade.Location = New System.Drawing.Point(374, 390)
+        Me.btnUpgrade.Location = New System.Drawing.Point(386, 390)
         Me.btnUpgrade.Name = "btnUpgrade"
         Me.btnUpgrade.Size = New System.Drawing.Size(67, 23)
         Me.btnUpgrade.TabIndex = 14
@@ -134,7 +134,7 @@ Partial Class dlgNewVersion
         'btnNo
         '
         Me.btnNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnNo.Location = New System.Drawing.Point(199, 123)
+        Me.btnNo.Location = New System.Drawing.Point(201, 123)
         Me.btnNo.Name = "btnNo"
         Me.btnNo.Size = New System.Drawing.Size(58, 22)
         Me.btnNo.TabIndex = 3
@@ -144,7 +144,7 @@ Partial Class dlgNewVersion
         '
         'btnYes
         '
-        Me.btnYes.Location = New System.Drawing.Point(135, 123)
+        Me.btnYes.Location = New System.Drawing.Point(137, 123)
         Me.btnYes.Name = "btnYes"
         Me.btnYes.Size = New System.Drawing.Size(58, 22)
         Me.btnYes.TabIndex = 2
@@ -183,6 +183,7 @@ Partial Class dlgNewVersion
         '
         'dlgNewVersion
         '
+        Me.AcceptButton = Me.btnUpgrade
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button

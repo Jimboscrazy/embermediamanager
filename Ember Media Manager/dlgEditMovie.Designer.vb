@@ -539,9 +539,9 @@ Partial Class dlgEditMovie
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(753, 424)
+        Me.btnManual.Location = New System.Drawing.Point(738, 423)
         Me.btnManual.Name = "btnManual"
-        Me.btnManual.Size = New System.Drawing.Size(75, 23)
+        Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 20
         Me.btnManual.Text = "Manual Edit"
         Me.btnManual.UseVisualStyleBackColor = True
