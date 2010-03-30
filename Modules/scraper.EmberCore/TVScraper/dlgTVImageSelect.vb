@@ -487,7 +487,7 @@ Public Class dlgTVImageSelect
                     For Each sEpisode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
                         Try
                             iSeason = sEpisode.TVEp.Season
-                            If iSeason > -1 AndAlso sEpisode.TVEp.Episode > -1 Then
+                            If iSeason > -1 Then
                                 If IsNothing(Scraper.TVDBImages.ShowPoster.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
                                     Scraper.TVDBImages.ShowPoster.Image.FromFile(sEpisode.ShowPosterPath)
                                 End If
