@@ -36,7 +36,7 @@ Public Class dlgSettings
     Private sResult As New Structures.SettingsResult
     Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
-
+    Public Event LoadEnd()
     #End Region 'Fields
 
     #Region "Methods"
@@ -2460,7 +2460,7 @@ Public Class dlgSettings
             Me.sResult.DidCancel = False
             Me.didApply = False
             Me.NoUpdate = False
-
+            RaiseEvent LoadEnd()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

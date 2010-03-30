@@ -7526,10 +7526,15 @@ doCancel:
     Private Sub SetStatus(ByVal sText As String)
         Me.tslStatus.Text = sText.Replace("&", "&&")
     End Sub
-
+    Sub HideLoadingSettings()
+        If Not Me.pnlLoadingSettings.InvokeRequired Then
+            Me.pnlLoadingSettings.Visible = False
+        End If
+    End Sub
     Sub SettingsShow(ByVal dlg As dlgSettings)
+        AddHandler dlg.LoadEnd, AddressOf HideLoadingSettings
         Dim dresult As Structures.SettingsResult = dlg.ShowDialog()
-
+        RemoveHandler dlg.LoadEnd, AddressOf HideLoadingSettings
         Me.SettingsToolStripMenuItem.Enabled = True
         Me.pnlLoadingSettings.Visible = False
         Me.cmnuTrayIconSettings.Enabled = True
