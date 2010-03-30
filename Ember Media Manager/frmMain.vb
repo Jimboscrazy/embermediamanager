@@ -6698,7 +6698,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 46, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
                     Else
                         DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
