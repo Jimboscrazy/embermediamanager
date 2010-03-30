@@ -44,9 +44,10 @@ Public Class dlgIMDBSearchResults
     #Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal sMovieTitle As String) As Windows.Forms.DialogResult
-        '//
-        ' Overload to pass data
-        '\\
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Interval = 250
+        Me.tmrLoad.Enabled = False
+        Me.tmrLoad.Interval = 100
 
         Me.Text = String.Concat(Master.eLang.GetString(10, "Search Results - "), sMovieTitle)
         chkManual.Enabled = False
@@ -57,9 +58,10 @@ Public Class dlgIMDBSearchResults
     End Function
 
     Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
-        '//
-        ' Overload to pass data
-        '\\
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Interval = 250
+        Me.tmrLoad.Enabled = False
+        Me.tmrLoad.Interval = 100
 
         Me.Text = String.Concat(Master.eLang.GetString(10, "Search Results - "), sMovieTitle)
         SearchResultsDownloaded(Res)
@@ -171,11 +173,6 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 250
-
         Me.SetUp()
         IMDB.IMDBURL = IMDBURL
         IMDB.UseOFDBTitle = UseOFDBTitle
@@ -344,9 +341,9 @@ Public Class dlgIMDBSearchResults
         Me.Label3.Text = Master.eLang.GetString(25, "Searching IMDB...")
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        Me.tmrWait.Enabled = False
-        Me.tmrLoad.Enabled = False
+    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+        Me.tmrWait.Stop()
+        Me.tmrLoad.Stop()
 
         Me.Label3.Text = Master.eLang.GetString(26, "Downloading details...")
 
@@ -357,23 +354,26 @@ Public Class dlgIMDBSearchResults
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         If Not Me._prevnode = Me._currnode Then
             Me._prevnode = Me._currnode
-            Me.tmrLoad.Enabled = True
+            Me.tmrWait.Stop()
+            Me.tmrLoad.Start()
         Else
-            Me.tmrLoad.Enabled = False
+            Me.tmrLoad.Stop()
+            Me.tmrWait.Stop()
         End If
     End Sub
 
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
-            Me.tmrWait.Enabled = False
-            Me.tmrLoad.Enabled = False
+            Me.tmrWait.Stop()
+            Me.tmrLoad.Stop()
 
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
 
             If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+                Me._currnode = Me.tvResults.SelectedNode.Index
                 Me.pnlLoading.Visible = True
-                Me.tmrWait.Enabled = True
+                Me.tmrWait.Start()
             Else
                 Me.pnlLoading.Visible = False
             End If
