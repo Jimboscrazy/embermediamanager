@@ -816,7 +816,7 @@ Public Class Scraper
                 End If
 
                 Try
-                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes.Where(Function(e) e.TVEp.Season > -1 AndAlso e.TVEp.Episode > -1)
+                    For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
                         Try
                             If Me.bwTVDB.CancellationPending Then Return
@@ -835,44 +835,45 @@ Public Class Scraper
 
                             If Me.bwTVDB.CancellationPending Then Return
 
-                            If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
-
-                            If Me.bwTVDB.CancellationPending Then Return
-
-                            If Master.eSettings.EpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsEpFanart(Episode)
-
-                            If Me.bwTVDB.CancellationPending Then Return
-
-                            Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
-                            If cSea.Count > 0 Then
-                                If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
+                            If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 Then
+                                If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
-                                If Master.eSettings.SeasonFanartEnabled Then
-                                    If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
-                                        cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
-                                        Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
-                                    ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
-                                        cSea(0).Fanart.Image.Clear()
-                                        cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
-                                        If Not IsNothing(cSea(0).Fanart.Image.Image) Then
-                                            Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
-                                            cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
+                                If Master.eSettings.EpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsEpFanart(Episode)
+
+                                If Me.bwTVDB.CancellationPending Then Return
+
+                                Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
+                                If cSea.Count > 0 Then
+                                    If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
+
+                                    If Me.bwTVDB.CancellationPending Then Return
+
+                                    If Master.eSettings.SeasonFanartEnabled Then
+                                        If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
+                                            cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
                                             Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                                        ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
+                                            cSea(0).Fanart.Image.Clear()
+                                            cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
+                                            If Not IsNothing(cSea(0).Fanart.Image.Image) Then
+                                                Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
+                                                cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
+                                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                                            End If
                                         End If
                                     End If
                                 End If
+
+                                If Me.bwTVDB.CancellationPending Then Return
+
+                                If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Episode)
+
+                                Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
+
+                                If Me.bwTVDB.CancellationPending Then Return
                             End If
-
-                            If Me.bwTVDB.CancellationPending Then Return
-
-                            If Master.eSettings.ScanTVMediaInfo Then MediaInfo.UpdateTVMediaInfo(Episode)
-
-                            Master.DB.SaveTVEpToDB(Episode, False, True, True, True)
-
-                            If Me.bwTVDB.CancellationPending Then Return
-
                             Me.bwTVDB.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
