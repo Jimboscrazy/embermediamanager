@@ -1291,7 +1291,7 @@ Public Class frmMain
                                     iCount += 1
 
                                     If Me.bwNonScrape.CancellationPending Then GoTo doCancel
-                                    sPath = drvRow.Item(40).ToString
+                                    sPath = drvRow.Item(36).ToString
                                     If Not String.IsNullOrEmpty(sPath) Then
                                         If FileUtils.Common.isVideoTS(sPath) Then
                                             If Master.eSettings.VideoTSParent Then
