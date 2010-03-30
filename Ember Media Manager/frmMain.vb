@@ -6092,9 +6092,9 @@ doCancel:
 
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
+                    Dim AllowFA As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                    If tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
+                    If ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
                         Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                         Application.DoEvents()
                         Dim pResults As New Containers.ImgResult
@@ -6122,7 +6122,7 @@ doCancel:
                     tmpImages = Nothing
                 End If
 
-                If Master.eSettings.SingleScrapeTrailer Then
+                If Master.eSettings.SingleScrapeTrailer AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer) Then
                     Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
                     Application.DoEvents()
                     Dim tURL As String = ModulesManager.Instance.ScraperDownloadTrailer(Master.currMovie)
@@ -6207,6 +6207,10 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
+            Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
+            Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
+            Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
+
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
 
@@ -6221,11 +6225,11 @@ doCancel:
                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
-                        If Not ((Master.GlobalScrapeMod.Poster AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
-                                (Master.GlobalScrapeMod.Fanart AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+                        If Not ((Master.GlobalScrapeMod.Poster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
                                 (Master.GlobalScrapeMod.NFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                (Master.GlobalScrapeMod.Trailer AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
-                                (Master.GlobalScrapeMod.Extra AndAlso Not Convert.ToBoolean(drvRow.Item(9)))) Then
+                                (Master.GlobalScrapeMod.Trailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
+                                (Master.GlobalScrapeMod.Extra AndAlso (Master.eSettings.AutoET OrElse Master.eSettings.AutoThumbs > 0) AndAlso Not Convert.ToBoolean(drvRow.Item(9)))) Then
                             Continue For
                         End If
                 End Select
@@ -7446,16 +7450,17 @@ doCancel:
                 Me.mnuFilterAskMI.Enabled = .ScanMediaInfo
                 Me.mnuFilterAutoMI.Enabled = .ScanMediaInfo
 
-                Me.mnuAllAutoTrailer.Enabled = .DownloadTrailers
-                Me.mnuAllAskTrailer.Enabled = .DownloadTrailers
-                Me.mnuMissAutoTrailer.Enabled = .DownloadTrailers
-                Me.mnuMissAskTrailer.Enabled = .DownloadTrailers
-                Me.mnuNewAutoTrailer.Enabled = .DownloadTrailers
-                Me.mnuNewAskTrailer.Enabled = .DownloadTrailers
-                Me.mnuMarkAutoTrailer.Enabled = .DownloadTrailers
-                Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
-                Me.mnuFilterAutoTrailer.Enabled = .DownloadTrailers
-                Me.mnuFilterAskTrailer.Enabled = .DownloadTrailers
+                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
+                Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
+                Me.mnuAllAskTrailer.Enabled = TrailerAllowed
+                Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
+                Me.mnuMissAskTrailer.Enabled = TrailerAllowed
+                Me.mnuNewAutoTrailer.Enabled = TrailerAllowed
+                Me.mnuNewAskTrailer.Enabled = TrailerAllowed
+                Me.mnuMarkAutoTrailer.Enabled = TrailerAllowed
+                Me.mnuMarkAskTrailer.Enabled = TrailerAllowed
+                Me.mnuFilterAutoTrailer.Enabled = TrailerAllowed
+                Me.mnuFilterAskTrailer.Enabled = TrailerAllowed
 
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")

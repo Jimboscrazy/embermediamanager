@@ -312,7 +312,7 @@ Public Class EmberNativeScraperModule
 
         Trailer.IMDBURL = MySettings.IMDBURL
         Dim doSave As Boolean = False
-        If Master.GlobalScrapeMod.Poster Then
+        If Master.GlobalScrapeMod.Poster AndAlso (MySettings.UseIMPA OrElse MySettings.UseMPDB OrElse MySettings.UseTMDB) Then
             Poster.Clear()
             If Poster.IsAllowedToDownload(DBMovie, Enums.ImageType.Posters) Then
                 pResults = New Containers.ImgResult
@@ -344,7 +344,7 @@ Public Class EmberNativeScraperModule
             End If
         End If
         Dim didEts As Boolean
-        If Master.GlobalScrapeMod.Fanart Then
+        If Master.GlobalScrapeMod.Fanart AndAlso MySettings.UseTMDB Then
             Fanart.Clear()
             If Fanart.IsAllowedToDownload(DBMovie, Enums.ImageType.Fanart) Then
                 fResults = New Containers.ImgResult
@@ -377,7 +377,7 @@ Public Class EmberNativeScraperModule
                 End If
             End If
         End If
-        If Master.GlobalScrapeMod.Trailer Then
+        If Master.GlobalScrapeMod.Trailer AndAlso MySettings.DownloadTrailers Then
             tURL = Trailer.DownloadSingleTrailer(DBMovie.Filename, DBMovie.Movie.IMDBID, DBMovie.isSingle, DBMovie.Movie.Trailer)
             If Not String.IsNullOrEmpty(tURL) Then
                 If tURL.Substring(0, 7) = "http://" Then
