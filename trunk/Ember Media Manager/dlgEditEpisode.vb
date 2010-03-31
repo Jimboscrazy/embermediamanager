@@ -253,7 +253,7 @@ Public Class dlgEditEpisode
             Me.TabControl1.TabPages.Remove(TabPage3)
         End If
         Dim params As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVFrameExtrator, params, True)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVFrameExtrator, params, Nothing, True)
         pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
         Me.FillInfo()
     End Sub

@@ -88,19 +88,19 @@ Public Class BulkRenamerModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
-                Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
+                Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                 If Not String.IsNullOrEmpty(tDBMovie.Movie.Title) AndAlso MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then
                     FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
                 End If
             Case Enums.ModuleEventType.RenameMovie
                 If MySettings.AutoRenameSingle AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern) Then
-                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_params(0), EmberAPI.Structures.DBMovie)
-                    Dim BatchMode As Boolean = DirectCast(_params(1), Boolean)
-                    Dim ToNFO As Boolean = DirectCast(_params(2), Boolean)
-                    Dim ShowErrors As Boolean = DirectCast(_params(3), Boolean)
+                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
+                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
+                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
+                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
                     FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, BatchMode, ToNFO, ShowErrors)
                 End If
             Case Enums.ModuleEventType.RenameMovieManual

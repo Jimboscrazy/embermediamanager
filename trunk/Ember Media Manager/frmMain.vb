@@ -1185,7 +1185,7 @@ Public Class frmMain
 
                         If bwMovieScraper.CancellationPending Then Exit For
                         ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {DBScrapeMovie}))
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
 
                         If Master.GlobalScrapeMod.Extra Then
                             'If Master.eSettings.AutoET AndAlso Not didEts.BoolProperty Then
@@ -1196,7 +1196,7 @@ Public Class frmMain
                             If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
                                 'Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
                                 Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
                                 Dim ETasFA As String = DirectCast(params(3), String)
                                 If Not String.IsNullOrEmpty(ETasFA) Then
                                     MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
@@ -1913,7 +1913,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
                         Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
@@ -2857,7 +2857,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
                         Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
@@ -3001,7 +3001,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
                             Me.SetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
@@ -6136,7 +6136,7 @@ doCancel:
                     Application.DoEvents()
                     'ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                     Dim params As New List(Of Object)(New Object() {Master.currMovie, Master.eSettings.AutoThumbs, True, ""})
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, True)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
                     Dim ETasFA As String = DirectCast(params(3), String)
                     If Not String.IsNullOrEmpty(ETasFA) Then
                         Master.currMovie.ExtraPath = "TRUE"
@@ -6157,7 +6157,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, New List(Of Object)(New Object() {Master.currMovie}))
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
                             Me.SetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
@@ -6225,11 +6225,11 @@ doCancel:
                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
-                        If Not ((Master.GlobalScrapeMod.Poster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
-                                (Master.GlobalScrapeMod.Fanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
-                                (Master.GlobalScrapeMod.NFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                (Master.GlobalScrapeMod.Trailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
-                                (Master.GlobalScrapeMod.Extra AndAlso (Master.eSettings.AutoET OrElse Master.eSettings.AutoThumbs > 0) AndAlso Not Convert.ToBoolean(drvRow.Item(9)))) Then
+                        If Not ((Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MissingFilterPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MissingFilterFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MissingFilterNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
+                                (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MissingFilterTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
+                                (Master.GlobalScrapeMod.Extra AndAlso Master.eSettings.MissingFilterExtras AndAlso (Master.eSettings.AutoET OrElse Master.eSettings.AutoThumbs > 0) AndAlso Not Convert.ToBoolean(drvRow.Item(9)))) Then
                             Continue For
                         End If
                 End Select

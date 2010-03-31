@@ -207,7 +207,7 @@ Public Class dlgOfflineHolder
         End If
         Try
             ' ##** FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {tMovie, False}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False}), tMovie)
         Catch ex As Exception
         End Try
 
