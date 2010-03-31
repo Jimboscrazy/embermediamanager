@@ -103,11 +103,11 @@ Public Class MovieExporterModule
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = "Export Movie List"
+        MyMenu.Text = Master.eLang.GetString(15, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = "Export Movie List"
+        MyTrayMenu.Text = Master.eLang.GetString(15, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
     End Sub
