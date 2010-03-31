@@ -6756,7 +6756,10 @@ doCancel:
 
             If Not BatchMode Then
                 Me.DoTitleCheck()
-                If Not Me.chkFilterNew.Checked AndAlso (Not Me.chkFilterMissing.Checked OrElse _
+                If Not Me.chkFilterNew.Checked AndAlso _
+                (Not Me.chkFilterMark.Checked OrElse tmpMovieDb.IsMark) AndAlso _
+                (Not Me.chkFilterLock.Checked OrElse tmpMovieDb.IsLock) AndAlso _
+                (Not Me.chkFilterMissing.Checked OrElse _
                 ((Not Master.eSettings.MissingFilterPoster OrElse (Master.eSettings.MissingFilterPoster AndAlso Not hasPoster)) AndAlso _
                  (Not Master.eSettings.MissingFilterFanart OrElse (Master.eSettings.MissingFilterFanart AndAlso Not hasFanart)) AndAlso _
                  (Not Master.eSettings.MissingFilterNFO OrElse (Master.eSettings.MissingFilterNFO AndAlso Not hasNfo)) AndAlso _
