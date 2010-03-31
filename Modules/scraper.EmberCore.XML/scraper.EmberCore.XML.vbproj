@@ -138,6 +138,12 @@
     <Compile Include="dlgSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmXMLMediaSettingsHolder.Designer.vb">
+      <DependentUpon>frmXMLMediaSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmXMLMediaSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="XMLScraper\MediaTags\AlbumTag.vb" />
     <Compile Include="XMLScraper\MediaTags\ArtistTag.vb" />
     <Compile Include="XMLScraper\MediaTags\Fanart.vb" />
@@ -197,6 +203,10 @@
   <ItemGroup>
     <EmbeddedResource Include="dlgSearchResults.resx">
       <DependentUpon>dlgSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmXMLMediaSettingsHolder.resx">
+      <DependentUpon>frmXMLMediaSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmXMLSettingsHolder.resx">
