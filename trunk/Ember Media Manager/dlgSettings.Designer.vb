@@ -3915,7 +3915,6 @@ Partial Class dlgSettings
         '
         'btnClearRegex
         '
-        Me.btnClearRegex.Enabled = False
         Me.btnClearRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnClearRegex.Image = CType(resources.GetObject("btnClearRegex.Image"), System.Drawing.Image)
         Me.btnClearRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7006,8 +7005,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
