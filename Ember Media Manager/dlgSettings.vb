@@ -2503,6 +2503,12 @@ Public Class dlgSettings
                     t.SelectedImageIndex = If(State, 9, 10)
                     Me.pbCurrent.Image = Me.ilSettings.Images(If(State, 9, 10))
                 End If
+
+                For Each s As ModulesManager._externalScraperModuleClass In (ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.ScraperOrderChanged()
+                    s.ProcessorModule.PostScraperOrderChanged()
+                Next
+
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try

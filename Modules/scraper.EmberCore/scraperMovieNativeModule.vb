@@ -29,7 +29,8 @@ Imports EmberAPI
 Public Class EmberNativeScraperModule
     Implements Interfaces.EmberMovieScraperModule
 
-    #Region "Fields"
+
+#Region "Fields"
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -49,9 +50,9 @@ Public Class EmberNativeScraperModule
     Private _setup As frmInfoSettingsHolder
     Private _setupPost As frmMediaSettingsHolder
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Events"
+#Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
 
@@ -62,9 +63,9 @@ Public Class EmberNativeScraperModule
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
+#Region "Properties"
 
     ReadOnly Property IsPostScraper() As Boolean Implements Interfaces.EmberMovieScraperModule.IsPostScraper
         Get
@@ -108,9 +109,9 @@ Public Class EmberNativeScraperModule
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
         Select Case cap
             Case Enums.PostScraperCapabilities.Fanart
@@ -194,7 +195,6 @@ Public Class EmberNativeScraperModule
         AddHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
         Return Spanel
     End Function
-
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmInfoSettingsHolder
@@ -247,7 +247,6 @@ Public Class EmberNativeScraperModule
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-
     Sub LoadSettings()
         ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
         ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)
@@ -619,14 +618,21 @@ Public Class EmberNativeScraperModule
         End If
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+    Public Sub PostScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperOrderChanged
+        _setup.orderChanged()
+    End Sub
 
-    #End Region 'Methods
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperOrderChanged
+        _setupPost.orderChanged()
+    End Sub
 
-    #Region "Nested Types"
+#End Region 'Methods
+
+#Region "Nested Types"
 
     Structure _MySettings
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim DownloadTrailers As Boolean
         Dim IMDBURL As String
@@ -639,10 +645,10 @@ Public Class EmberNativeScraperModule
         Dim UseIMPA As Boolean
         Dim UseMPDB As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

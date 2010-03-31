@@ -27,7 +27,6 @@ Imports System.Drawing.Imaging
 
 Public Class EmberXMLScraperModule
     Implements Interfaces.EmberMovieScraperModule
-
 #Region "Fields"
 
     Private _Name As String = "Ember XML Movie Scrapers"
@@ -43,6 +42,7 @@ Public Class EmberXMLScraperModule
     Friend WithEvents bwPopulate As New System.ComponentModel.BackgroundWorker
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared _AssemblyName As String
 #End Region 'Fields
 
 #Region "Events"
@@ -195,6 +195,7 @@ Public Class EmberXMLScraperModule
     End Function
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
+        _AssemblyName = sAssemblyName
         scraperName = AdvancedSettings.GetSetting("ScraperName", "NFO Scraper")
         scraperFileName = AdvancedSettings.GetSetting("ScraperFileName", "")
         PrepareScraper()
@@ -213,14 +214,19 @@ Public Class EmberXMLScraperModule
         Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
         Spanel.Panel = New Panel 'Me._setupPost.pnlSettings
+
+        'AddHandler PostScraperOrderChanged, AddressOf Handle_SetupPostScraperOrderChanged
         Return Spanel
     End Function
-
+    Sub Handle_SetupPostScraperOrderChanged()
+        '_setupPost.orderChanged()
+    End Sub
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         'PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.orderChanged()
         If _setup.cbScraper.Items.Count = 0 Then
             _setup.cbScraper.Items.Add(scraperName)
             _setup.cbScraper.SelectedIndex = 0
@@ -239,8 +245,10 @@ Public Class EmberXMLScraperModule
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler _setup.PopulateScrapers, AddressOf PopulateSettings
-        Return Spanel
+
+        Return SPanel
     End Function
+
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled = state
@@ -507,7 +515,13 @@ Public Class EmberXMLScraperModule
 
         End If
     End Sub
+    Public Sub PostScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperOrderChanged
+    End Sub
 
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperOrderChanged
+        _setup.orderChanged()
+    End Sub
 #End Region 'Methods
+
 
 End Class
