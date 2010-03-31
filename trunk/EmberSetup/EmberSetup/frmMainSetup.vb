@@ -210,6 +210,52 @@ Public Class frmMainSetup
         Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(fpath, "Ember Media Manager.exe"))
         Return myBuildInfo.ProductPrivatePart
     End Function
+
+    Public Function DownloadTextData(ByVal URL As String) As String
+        Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
+        Dim wrRequest As HttpWebRequest
+        Try
+            wrRequest = DirectCast(WebRequest.Create(String.Format("http://www.embermm.com/{0}/{1}", RemoteSiteFolder, URL)), HttpWebRequest)
+            wrRequest.Timeout = 20000
+            wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+
+            If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(ProxyUserName) Then
+                    wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                wrRequest.Proxy = wProxy
+            End If
+
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+                Select Case True
+                    'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
+                    Case wrResponse.ContentType.ToLower.Contains("application/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                        cEncoding = System.Text.Encoding.UTF8
+                    Case Else
+                        cEncoding = System.Text.Encoding.GetEncoding(28591)
+                End Select
+                Using Ms As Stream = wrResponse.GetResponseStream
+                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    Else
+                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+        End Try
+
+        Return sResponse
+    End Function
+
+
     Public Function GetURLDataBin(ByVal URL As String, ByVal FName As String, _
         Optional ByRef UserName As String = "", _
         Optional ByRef Password As String = "") As Boolean
@@ -232,7 +278,7 @@ Public Class frmMainSetup
             If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
                 wProxy.BypassProxyOnLocal = True
-                If Not String.IsNullOrEmpty(UserName) Then
+                If Not String.IsNullOrEmpty(ProxyUserName) Then
                     wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
@@ -1244,9 +1290,9 @@ Public Class frmMainSetup
                     If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
                         emberPath = ss
                         EmberFound = True
-                        CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
+                        CurrentEmberVersion = GetEmberVersion(emberPath)
                         LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
-                        CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
+                        CurrentEmberPlatform = GetEmberPlatform(emberPath)
                         LogWrite(String.Format("--- Main: Found Ember Platform: {0}", CurrentEmberPlatform))
                         lblInfo.TextAlign = ContentAlignment.MiddleCenter
                         lblInfo.Text = String.Format(MyLang.GetString(29, "We have found a EMM Installation in {0}"), vbCrLf)
@@ -1282,6 +1328,10 @@ Public Class frmMainSetup
                 LogoStop = False
                 llAbout.Visible = False
             End If
+            Dim SiteReady As String = DownloadTextData("status.php")
+            If Not SiteReady = "OK" Then
+
+            End If
         Catch ex As Exception
             LogWrite(String.Format("+++ Main: ERROR ON LOAD ... EXIT"))
             LogWrite(ex.Message)
@@ -1289,6 +1339,10 @@ Public Class frmMainSetup
             Me.Close()
         End Try
     End Sub
+
+    Function CheckSite() As Boolean
+
+    End Function
 
     Function GetFromList(ByVal l As FilesList, ByVal f As FileOfList) As FileOfList
         Try
