@@ -912,7 +912,7 @@ Public Class frmMainSetup
                     If String.IsNullOrEmpty(CurrentEmberVersion) Then
                         UpdateTasks.Command.Clear()
                         If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml"))) Then
-                            Me.bwDoInstall.ReportProgress(5, String.Format(MyLang.GetString(26, "Executing Commands for Base")))
+                            Me.bwDoInstall.ReportProgress(5, MyLang.GetString(26, "Executing Commands for Base"))
                             xmlSer = New XmlSerializer(GetType(InstallCommands))
                             Using xmlSW As New StreamReader(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml")))
                                 _cmds = xmlSer.Deserialize(xmlSW)
