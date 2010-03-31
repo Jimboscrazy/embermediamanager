@@ -955,24 +955,24 @@ Public Class Database
         xmlSer = New XmlSerializer(GetType(InstallCommands))
         Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
             _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            SQLtransaction = Me.SQLcn.BeginTransaction
-            For Each _cmd As InstallCommand In _cmds.Command
-                If _cmd.CommandType = "DB" Then
-                    Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcn.CreateCommand
-                        SQLcommand.CommandText = _cmd.CommandExecute
-                        Try
-                            SQLcommand.ExecuteNonQuery()
-                        Catch ex As Exception
-                            Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
-                            log.WriteLine(String.Format("--- Error: {0}", ex.Message))
-                            log.WriteLine(ex.StackTrace)
-                            log.Close()
-                        End Try
-                    End Using
-                End If
-            Next
-            SQLtransaction.Commit()
+            Using SQLtransaction As SQLite.SQLiteTransaction  = Me.SQLcn.BeginTransaction
+                For Each _cmd As InstallCommand In _cmds.Command
+                    If _cmd.CommandType = "DB" Then
+                        Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcn.CreateCommand
+                            SQLcommand.CommandText = _cmd.CommandExecute
+                            Try
+                                SQLcommand.ExecuteNonQuery()
+                            Catch ex As Exception
+                                Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
+                                log.WriteLine(String.Format("--- Error: {0}", ex.Message))
+                                log.WriteLine(ex.StackTrace)
+                                log.Close()
+                            End Try
+                        End Using
+                    End If
+                Next
+                SQLtransaction.Commit()
+            End Using
         End Using
     End Sub
     Public Function CheckDatabase() As Boolean
