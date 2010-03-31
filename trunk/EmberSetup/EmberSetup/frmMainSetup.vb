@@ -39,6 +39,7 @@ Public Class frmMainSetup
 
     Public CurrentEmberPlatform As String
     Public CurrentEmberVersion As String
+    Public ExeCurrentEmberVersion As String
     Public DEBUG As Boolean = False 'So I can Debug without a Web Server
     Public DoInstall As Boolean = True
     Public emberAllFounds As New List(Of String)
@@ -609,6 +610,7 @@ Public Class frmMainSetup
                     Me.bwDoInstall.ReportProgress(0, New Object() {2, MyLang.GetString(7, "Downloading Version List")})
                     LogWrite(String.Format("--- Main: Downloading Version List ({0})", Now))
                     CurrentEmberVersion = GetEmberVersion(Path.GetDirectoryName(emberPath))
+                    ExeCurrentEmberVersion = CurrentEmberVersion
                     If CurrentEmberPlatform = String.Empty Then
                         CurrentEmberPlatform = GetEmberPlatform(Path.GetDirectoryName(emberPath))
                     End If
@@ -667,7 +669,8 @@ Public Class frmMainSetup
                             Next
                         End If
                         Me.bwDoInstall.ReportProgress(5, "")
-                        '###################################################################################                        If bwDoInstall.CancellationPending Then Return False
+                        '###################################################################################
+                        If bwDoInstall.CancellationPending Then Return False
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
                         LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
                         getfile = String.Format("version_{0}.xml", InstallVersion)
@@ -955,7 +958,7 @@ Public Class frmMainSetup
                 Dim HaveCommands As Boolean = False
 
                 Try
-                    If String.IsNullOrEmpty(CurrentEmberVersion) Then
+                    If String.IsNullOrEmpty(ExeCurrentEmberVersion) Then
                         UpdateTasks.Command.Clear()
                         If File.Exists(Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "commands_base.xml"))) Then
                             Me.bwDoInstall.ReportProgress(5, MyLang.GetString(26, "Executing Commands for Base"))
@@ -1177,6 +1180,7 @@ Public Class frmMainSetup
                         'NoArgs = False
                         If Args.Count - 1 > i Then
                             CurrentEmberVersion = Convert.ToInt32(Args(i + 1)).ToString
+                            ExeCurrentEmberVersion = CurrentEmberVersion
                         End If
                         If Args.Count - 1 > i + 2 Then
                             Me.Top = Convert.ToInt32(Args(i + 2))

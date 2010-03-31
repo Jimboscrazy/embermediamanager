@@ -73,6 +73,10 @@ Public Class Interfaces
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
+        Sub ScraperOrderChanged()
+
+        Sub PostScraperOrderChanged()
+
 #End Region 'Events
 
 #Region "Properties"

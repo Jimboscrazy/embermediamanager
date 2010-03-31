@@ -9,13 +9,13 @@ Imports EmberAPI
 Public Class EmberExtrasScraperModule
     Implements Interfaces.EmberMovieScraperModule
 
-    #Region "Fields"
+#Region "Fields"
 
     Private _Name As String = "Ember Extras Scraper"
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Events"
+#Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
 
@@ -25,9 +25,9 @@ Public Class EmberExtrasScraperModule
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
+#Region "Properties"
 
     Public ReadOnly Property IsPostScraper() As Boolean Implements Interfaces.EmberMovieScraperModule.IsPostScraper
         Get
@@ -71,9 +71,9 @@ Public Class EmberExtrasScraperModule
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
 
     End Function
@@ -108,7 +108,14 @@ Public Class EmberExtrasScraperModule
 
     Public Function SelectImageOfType(ByRef DBMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
     End Function
+    Public Sub PostScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperOrderChanged
 
-    #End Region 'Methods
+    End Sub
+
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperOrderChanged
+
+    End Sub
+#End Region 'Methods
+
 
 End Class
