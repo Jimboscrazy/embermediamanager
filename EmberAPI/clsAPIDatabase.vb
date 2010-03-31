@@ -955,6 +955,8 @@ Public Class Database
         xmlSer = New XmlSerializer(GetType(InstallCommands))
         Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
             _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = Me.SQLcn.BeginTransaction
             For Each _cmd As InstallCommand In _cmds.Command
                 If _cmd.CommandType = "DB" Then
                     Using SQLcommand As SQLite.SQLiteCommand = Me.SQLcn.CreateCommand
@@ -970,6 +972,7 @@ Public Class Database
                     End Using
                 End If
             Next
+            SQLtransaction.Commit()
         End Using
     End Sub
     Public Function CheckDatabase() As Boolean

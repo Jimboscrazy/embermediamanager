@@ -41,7 +41,8 @@ Public Class EmberXMLScraperModule
     Private lMediaTag As XMLScraper.MediaTags.MediaTag
     Private LastDBMovieID As Long = -1
     Friend WithEvents bwPopulate As New System.ComponentModel.BackgroundWorker
-
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigOptions As New Structures.ScrapeOptions
 #End Region 'Fields
 
 #Region "Events"
@@ -110,17 +111,79 @@ Public Class EmberXMLScraperModule
 
 #Region "Methods"
     Sub Enabled()
-        'PrepareScraper()
     End Sub
-
     Sub Disabled()
-
     End Sub
+
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
-
+        Select Case cap
+            Case Enums.PostScraperCapabilities.Fanart
+                'If MySettings.UseTMDB Then Return True
+            Case Enums.PostScraperCapabilities.Poster
+                'If MySettings.UseIMPA OrElse MySettings.UseMPDB OrElse MySettings.UseTMDB Then Return True
+            Case Enums.PostScraperCapabilities.Trailer
+                'If MySettings.DownloadTrailers Then Return True
+        End Select
+        Return False
     End Function
-    Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
 
+
+    Sub LoadSettings()
+        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)
+        ConfigOptions.bMPAA = AdvancedSettings.GetBooleanSetting("DoMPAA", True)
+        ConfigOptions.bRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True)
+        ConfigOptions.bRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True)
+        ConfigOptions.bRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        ConfigOptions.bVotes = AdvancedSettings.GetBooleanSetting("DoVotes", True)
+        ConfigOptions.bStudio = AdvancedSettings.GetBooleanSetting("DoStudio", True)
+        ConfigOptions.bTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bCast = AdvancedSettings.GetBooleanSetting("DoCast", True)
+        ConfigOptions.bDirector = AdvancedSettings.GetBooleanSetting("DoDirector", True)
+        ConfigOptions.bWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True)
+        ConfigOptions.bProducers = AdvancedSettings.GetBooleanSetting("DoProducers", True)
+        ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigOptions.bTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
+        ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
+
+        ConfigScrapeModifier.DoSearch = True
+        ConfigScrapeModifier.Meta = True
+        ConfigScrapeModifier.NFO = True
+        ConfigScrapeModifier.Extra = True
+
+        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
+        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+    End Sub
+
+
+    Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
+        Dim saveModifier As Structures.ScrapeModifier = Master.GlobalScrapeMod
+        LoadSettings()
+        Master.GlobalScrapeMod = Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
+        If Master.GlobalScrapeMod.Poster Then
+
+        End If
+        If Master.GlobalScrapeMod.Fanart Then
+
+        End If
+        If Master.GlobalScrapeMod.Trailer Then
+
+        End If
+        If Master.GlobalScrapeMod.Extra Then
+
+        End If
+        Master.GlobalScrapeMod = saveModifier
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
@@ -237,12 +300,9 @@ Public Class EmberXMLScraperModule
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         Try
             LastDBMovieID = -1
-            'PrepareScraper()
             If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
-                'XMLManager.ReloadScrapers()
                 XMLManager.LoadScrapers(scraperFileName)
                 LoadScraperSettings()
-                PoupulateForm()
                 ScrapersLoaded = True
             End If
             If scraperName = String.Empty Then
@@ -271,7 +331,11 @@ Public Class EmberXMLScraperModule
                             MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                         End If
                     Case Else
-                        res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                        Dim tmpTitle As String = DBMovie.Movie.Title
+                        If String.IsNullOrEmpty(tmpTitle) Then
+                            tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                        End If
+                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                         If res.Count > 0 Then
                             ' search Dialog
                             Using dlg As New dlgSearchResults
@@ -307,7 +371,6 @@ Public Class EmberXMLScraperModule
         If Options.bMPAA Then DBMovie.Movie.MPAA = lMediaTag.MPAA
         If Options.bPlot Then DBMovie.Movie.Plot = lMediaTag.Plot
         If Options.bOutline Then DBMovie.Movie.Outline = lMediaTag.Outline
-        DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
         If Options.bRelease Then DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
         If Options.bRating Then DBMovie.Movie.Rating = lMediaTag.Rating.ToString
         If Options.bRuntime Then DBMovie.Movie.Runtime = lMediaTag.Runtime
@@ -315,18 +378,11 @@ Public Class EmberXMLScraperModule
         If Options.bStudio Then DBMovie.Movie.Studio = lMediaTag.Studio
         If Options.bTagline Then DBMovie.Movie.Tagline = lMediaTag.Tagline
         If Options.bTitle Then DBMovie.Movie.Title = lMediaTag.Title
-        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
-            DBMovie.Movie.Thumb.Add(t.Thumb)
-        Next
-        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Fanart.Thumbs
-            DBMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
-        Next
-
         If Options.bTop250 Then DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
-        'DBMovie.Movie.Trailer = lMediaTag.Trailers
         If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString
         If Options.bWriters Then DBMovie.Movie.Credits = Strings.Join(lMediaTag.Writers.ToArray, " / ")
         If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
+        DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
         DBMovie.Movie.ID = If(lMediaTag.ID.StartsWith("tt"), lMediaTag.ID, String.Empty)
         If Options.bCast Then
             For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
@@ -337,6 +393,18 @@ Public Class EmberXMLScraperModule
                 DBMovie.Movie.Actors.Add(person)
             Next
         End If
+        ' For testing
+        PostMapFields(DBMovie, lMediaTag, Options)
+    End Sub
+    Sub PostMapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal Options As Structures.ScrapeOptions)
+        If DBMovie.ID <> LastDBMovieID Then Return
+        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
+            DBMovie.Movie.Thumb.Add(t.Thumb)
+        Next
+        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Fanart.Thumbs
+            DBMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
+        Next
+        'DBMovie.Movie.Trailer = lMediaTag.Trailers
     End Sub
     Sub PopulateScraperSettings()
         Try
