@@ -3028,6 +3028,9 @@ doCancel:
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
+
+                Me.mnuMediaList.Enabled = False
+
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
@@ -3082,7 +3085,7 @@ doCancel:
                         cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.mnuMediaList.Enabled = False
+                            Me.prevRow = -1
                             Me.dgvMediaList.CurrentCell = Nothing
                             Me.dgvMediaList.ClearSelection()
                             Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
@@ -3343,6 +3346,9 @@ doCancel:
             Dim hasMissing As Boolean = False
 
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
+
+                Me.mnuEpisodes.Enabled = False
+
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
@@ -3395,7 +3401,6 @@ doCancel:
                         cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
 
                         If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 2 Then
-                            Me.mnuEpisodes.Enabled = False
                             Me.prevEpRow = -1
                             Me.currList = 2
                             Me.dgvTVEpisodes.CurrentCell = Nothing
@@ -3627,6 +3632,9 @@ doCancel:
     Private Sub dgvTVSeasons_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVSeasons.MouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVSeasons.RowCount > 0 Then
+
+                Me.mnuSeasons.Enabled = False
+
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVSeasons.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
@@ -3675,7 +3683,6 @@ doCancel:
                         Me.cmnuSeasonChangeImages.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item(2, dgvHTI.RowIndex).Value) >= 0
 
                         If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
-                            Me.mnuSeasons.Enabled = False
                             Me.prevSeasonRow = -1
                             Me.currList = 1
                             Me.dgvTVSeasons.CurrentCell = Nothing
@@ -3890,6 +3897,9 @@ doCancel:
     Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
+
+                Me.mnuShows.Enabled = False
+
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
@@ -3944,7 +3954,6 @@ doCancel:
                         Me.cmnuLockShow.Text = If(Convert.ToBoolean(Me.dgvTVShows.Item(10, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 0 Then
-                            Me.mnuShows.Enabled = False
                             Me.prevShowRow = -1
                             Me.currList = 0
                             Me.dgvTVShows.CurrentCell = Nothing
