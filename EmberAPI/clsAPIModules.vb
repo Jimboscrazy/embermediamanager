@@ -352,10 +352,10 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal RunOnlyOne As Boolean = False) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False) As Boolean
         Dim ret As Interfaces.ModuleResult
         For Each _externalGenericModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
-            ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params)
+            ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
             If ret.breakChain OrElse RunOnlyOne Then Exit For
         Next
         Return ret.Cancelled
