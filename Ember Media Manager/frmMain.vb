@@ -8479,6 +8479,7 @@ doCancel:
                         End Using
                         Me.tspbLoading.Visible = False
                         Me.tslLoading.Visible = False
+                        Me.SetControlsEnabled(True)
                 End Select
 
             Case Enums.TVScraperEventType.Progress
