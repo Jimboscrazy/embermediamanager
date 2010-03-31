@@ -597,27 +597,7 @@ Public Class frmMainSetup
                             Return True
                         End If
                         Me.bwDoInstall.ReportProgress(5, "")
-                        '###################################################################################
-                        If bwDoInstall.CancellationPending Then Return False
-                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
-                        LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
-                        Dim getFile As String = String.Format("version_{0}.xml", InstallVersion)
-                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
-                            ' Cant get Version # ... Abort
-                            LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
-                            CurrentEmberVersion = String.Empty
-                            Me.bwDoInstall.ReportProgress(2, Nothing) '  Error
-                            Return True
-                        End If
-                        If Not CurrentEmberVersion = String.Empty Then
-                            getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
-                            If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
-                                ' Cant get Current Version  ... Special Situation, Will Force Full Installation
-                                LogWrite(String.Format("--- Main: No Version File for: {0}", CurrentEmberVersion))
-                                CurrentEmberVersion = String.Empty
-                            End If
-                        End If
-                        Me.bwDoInstall.ReportProgress(5, "")
+                        Dim getFile As String
                         '###################################################################################
                         If bwDoInstall.CancellationPending Then Return False
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(12, "Downloading Update Script Files")})
@@ -639,6 +619,26 @@ Public Class frmMainSetup
                                 End If
                                 If bwDoInstall.CancellationPending Then Return False
                             Next
+                        End If
+                        Me.bwDoInstall.ReportProgress(5, "")
+                        '###################################################################################                        If bwDoInstall.CancellationPending Then Return False
+                        Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
+                        LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
+                        getfile = String.Format("version_{0}.xml", InstallVersion)
+                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
+                            ' Cant get Version # ... Abort
+                            LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
+                            CurrentEmberVersion = String.Empty
+                            Me.bwDoInstall.ReportProgress(2, Nothing) '  Error
+                            Return True
+                        End If
+                        If Not CurrentEmberVersion = String.Empty Then
+                            getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
+                            If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
+                                ' Cant get Current Version  ... Special Situation, Will Force Full Installation
+                                LogWrite(String.Format("--- Main: No Version File for: {0}", CurrentEmberVersion))
+                                CurrentEmberVersion = String.Empty
+                            End If
                         End If
                         Me.bwDoInstall.ReportProgress(5, "")
                         '###################################################################################
