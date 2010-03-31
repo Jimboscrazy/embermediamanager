@@ -7336,7 +7336,7 @@ doCancel:
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
         Me.EditToolStripMenuItem.Enabled = isEnabled
-        Me.ToolsToolStripMenuItem.Enabled = isEnabled
+        Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
         Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
@@ -7352,7 +7352,7 @@ doCancel:
         Me.scTV.IsSplitterFixed = Not isEnabled
         Me.SplitContainer2.IsSplitterFixed = Not isEnabled
         Me.HelpToolStripMenuItem.Enabled = isEnabled
-        Me.cmnuTrayIconTools.Enabled = isEnabled
+        Me.cmnuTrayIconTools.Enabled = Me.ToolsToolStripMenuItem.Enabled
         Me.cmnuTrayIconScrapeMedia.Enabled = Me.tsbAutoPilot.Enabled
         Me.cmnuTrayIconUpdateMedia.Enabled = isEnabled
         Me.cmnuTrayIconMediaCenters.Enabled = isEnabled
