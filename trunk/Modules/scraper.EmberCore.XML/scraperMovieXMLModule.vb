@@ -169,20 +169,64 @@ Public Class EmberXMLScraperModule
 
     Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
         Dim saveModifier As Structures.ScrapeModifier = Master.GlobalScrapeMod
-        LoadSettings()
-        Master.GlobalScrapeMod = Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
-        If Master.GlobalScrapeMod.Poster Then
+        Dim Poster As New Images
+        Dim Fanart As New Images
+        Try
 
-        End If
-        If Master.GlobalScrapeMod.Fanart Then
+            LoadSettings()
+            If DBMovie.ID <> LastDBMovieID Then
+                Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+                res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                If res.Count > 0 Then
+                    ' Get first and go
+                    lMediaTag = XMLManager.GetDetails(res(0))
+                Else
+                    Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = False}
+                End If
+            End If
+            Dim mediaTag As XMLScraper.MediaTags.MovieTag = DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag)
+            Master.GlobalScrapeMod = Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
+            If Master.GlobalScrapeMod.Poster Then
+                DBMovie.Movie.Thumb.Clear()
+                For Each t As XMLScraper.MediaTags.Thumbnail In mediaTag.Thumbs
+                    DBMovie.Movie.Thumb.Add(t.Thumb)
+                Next
+                If DBMovie.Movie.Thumb.Count > 0 Then
+                    If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
+                        'dlg to select
+                    Else
+                        Poster.Clear()
+                        Poster.FromWeb(DBMovie.Movie.Thumb(0))
+                        DBMovie.PosterPath = Poster.SaveAsPoster(DBMovie)
+                        RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True)
+                    End If
+                End If
+            End If
+            If Master.GlobalScrapeMod.Fanart Then
+                DBMovie.Movie.Fanart.Thumb.Clear()
+                For Each t As XMLScraper.MediaTags.Thumbnail In mediaTag.Fanart.Thumbs
+                    Dim url As String = t.Url
+                    DBMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
+                Next
+                If DBMovie.Movie.Fanart.Thumb.Count > 0 Then
+                    If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
+                    Else
+                        Fanart.Clear()
+                        Fanart.FromWeb(DBMovie.Movie.Fanart.Thumb(0).Text)
+                        DBMovie.FanartPath = Fanart.SaveAsPoster(DBMovie)
+                        RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
+                    End If
+                End If
 
-        End If
-        If Master.GlobalScrapeMod.Trailer Then
+            End If
+            If Master.GlobalScrapeMod.Trailer Then
 
-        End If
-        If Master.GlobalScrapeMod.Extra Then
+            End If
+            If Master.GlobalScrapeMod.Extra Then
 
-        End If
+            End If
+        Catch ex As Exception
+        End Try
         Master.GlobalScrapeMod = saveModifier
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -229,7 +273,6 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
-        'PrepareScraper()
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
@@ -338,18 +381,19 @@ Public Class EmberXMLScraperModule
                     DBMovie.NfoPath = String.Empty
                     DBMovie.Movie.Clear()
                 End If
+                Dim tmpTitle As String = DBMovie.Movie.Title
+                If String.IsNullOrEmpty(tmpTitle) Then
+                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                End If
                 Select Case ScrapeType
                     Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                         If res.Count > 0 Then
                             ' Get first and go
                             lMediaTag = XMLManager.GetDetails(res(0))
                             MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                         End If
                     Case Else
-                        Dim tmpTitle As String = DBMovie.Movie.Title
-                        If String.IsNullOrEmpty(tmpTitle) Then
-                            tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
-                        End If
                         res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                         If res.Count > 1 Then
                             ' search Dialog
@@ -417,19 +461,9 @@ Public Class EmberXMLScraperModule
                 DBMovie.Movie.Actors.Add(person)
             Next
         End If
-        ' For testing
-        PostMapFields(DBMovie, lMediaTag, Options)
+
     End Sub
-    Sub PostMapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal Options As Structures.ScrapeOptions)
-        If DBMovie.ID <> LastDBMovieID Then Return
-        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Thumbs
-            DBMovie.Movie.Thumb.Add(t.Thumb)
-        Next
-        For Each t As XMLScraper.MediaTags.Thumbnail In lMediaTag.Fanart.Thumbs
-            DBMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
-        Next
-        'DBMovie.Movie.Trailer = lMediaTag.Trailers
-    End Sub
+
     Sub PopulateScraperSettings()
         Try
             If Not _setup.cbScraper.SelectedItem Is Nothing Then

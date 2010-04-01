@@ -51,6 +51,5 @@
   <string id="49">Find Ember Installations</string>
   <string id="50">OK</string>
   <string id="51">Platform</string>
-
-
+  <string id="52">A new version is currently being uploaded. {0}Please try again in a few moments.</string>
 </strings>
