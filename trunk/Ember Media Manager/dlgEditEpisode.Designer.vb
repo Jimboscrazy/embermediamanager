@@ -206,7 +206,7 @@ Partial Class dlgEditEpisode
         Me.btnActorDown.Location = New System.Drawing.Point(328, 423)
         Me.btnActorDown.Name = "btnActorDown"
         Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorDown.TabIndex = 116
+        Me.btnActorDown.TabIndex = 11
         Me.btnActorDown.UseVisualStyleBackColor = True
         '
         'btnActorUp
@@ -215,7 +215,7 @@ Partial Class dlgEditEpisode
         Me.btnActorUp.Location = New System.Drawing.Point(304, 423)
         Me.btnActorUp.Name = "btnActorUp"
         Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnActorUp.TabIndex = 115
+        Me.btnActorUp.TabIndex = 10
         Me.btnActorUp.UseVisualStyleBackColor = True
         '
         'txtAired
@@ -224,7 +224,7 @@ Partial Class dlgEditEpisode
         Me.txtAired.Location = New System.Drawing.Point(111, 67)
         Me.txtAired.Name = "txtAired"
         Me.txtAired.Size = New System.Drawing.Size(88, 22)
-        Me.txtAired.TabIndex = 114
+        Me.txtAired.TabIndex = 3
         '
         'txtEpisode
         '
@@ -232,7 +232,7 @@ Partial Class dlgEditEpisode
         Me.txtEpisode.Location = New System.Drawing.Point(59, 67)
         Me.txtEpisode.Name = "txtEpisode"
         Me.txtEpisode.Size = New System.Drawing.Size(46, 22)
-        Me.txtEpisode.TabIndex = 111
+        Me.txtEpisode.TabIndex = 2
         '
         'lblEpisode
         '
@@ -250,7 +250,7 @@ Partial Class dlgEditEpisode
         Me.txtSeason.Location = New System.Drawing.Point(7, 67)
         Me.txtSeason.Name = "txtSeason"
         Me.txtSeason.Size = New System.Drawing.Size(46, 22)
-        Me.txtSeason.TabIndex = 110
+        Me.txtSeason.TabIndex = 1
         '
         'lblSeason
         '
@@ -278,7 +278,7 @@ Partial Class dlgEditEpisode
         Me.txtCredits.Location = New System.Drawing.Point(217, 155)
         Me.txtCredits.Name = "txtCredits"
         Me.txtCredits.Size = New System.Drawing.Size(408, 22)
-        Me.txtCredits.TabIndex = 15
+        Me.txtCredits.TabIndex = 6
         '
         'btnEditActor
         '
@@ -286,7 +286,7 @@ Partial Class dlgEditEpisode
         Me.btnEditActor.Location = New System.Drawing.Point(35, 423)
         Me.btnEditActor.Name = "btnEditActor"
         Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditActor.TabIndex = 13
+        Me.btnEditActor.TabIndex = 9
         Me.btnEditActor.UseVisualStyleBackColor = True
         '
         'btnAddActor
@@ -295,7 +295,7 @@ Partial Class dlgEditEpisode
         Me.btnAddActor.Location = New System.Drawing.Point(6, 423)
         Me.btnAddActor.Name = "btnAddActor"
         Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddActor.TabIndex = 12
+        Me.btnAddActor.TabIndex = 8
         Me.btnAddActor.UseVisualStyleBackColor = True
         '
         'btnManual
@@ -304,7 +304,7 @@ Partial Class dlgEditEpisode
         Me.btnManual.Location = New System.Drawing.Point(738, 423)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
-        Me.btnManual.TabIndex = 20
+        Me.btnManual.TabIndex = 13
         Me.btnManual.Text = "Manual Edit"
         Me.btnManual.UseVisualStyleBackColor = True
         '
@@ -314,7 +314,7 @@ Partial Class dlgEditEpisode
         Me.btnRemove.Location = New System.Drawing.Point(602, 423)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemove.TabIndex = 14
+        Me.btnRemove.TabIndex = 12
         Me.btnRemove.UseVisualStyleBackColor = True
         '
         'lblActors
@@ -335,7 +335,7 @@ Partial Class dlgEditEpisode
         Me.lvActors.Location = New System.Drawing.Point(7, 204)
         Me.lvActors.Name = "lvActors"
         Me.lvActors.Size = New System.Drawing.Size(618, 213)
-        Me.lvActors.TabIndex = 11
+        Me.lvActors.TabIndex = 7
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
         '
@@ -370,7 +370,7 @@ Partial Class dlgEditEpisode
         Me.txtDirector.Location = New System.Drawing.Point(7, 155)
         Me.txtDirector.Name = "txtDirector"
         Me.txtDirector.Size = New System.Drawing.Size(192, 22)
-        Me.txtDirector.TabIndex = 7
+        Me.txtDirector.TabIndex = 4
         '
         'lblPlot
         '
@@ -390,7 +390,7 @@ Partial Class dlgEditEpisode
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.Size = New System.Drawing.Size(611, 108)
-        Me.txtPlot.TabIndex = 10
+        Me.txtPlot.TabIndex = 5
         '
         'pbStar5
         '
@@ -692,7 +692,7 @@ Partial Class dlgEditEpisode
         Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 62
+        Me.Cancel_Button.TabIndex = 15
         Me.Cancel_Button.Text = "Cancel"
         '
         'OK_Button
@@ -700,7 +700,7 @@ Partial Class dlgEditEpisode
         Me.OK_Button.Location = New System.Drawing.Point(708, 553)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 61
+        Me.OK_Button.TabIndex = 14
         Me.OK_Button.Text = "OK"
         '
         'dlgEditEpisode
