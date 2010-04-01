@@ -214,7 +214,7 @@ Public Class EmberXMLScraperModule
                     Else
                         Fanart.Clear()
                         Fanart.FromWeb(DBMovie.Movie.Fanart.Thumb(0).Text)
-                        DBMovie.FanartPath = Fanart.SaveAsPoster(DBMovie)
+                        DBMovie.FanartPath = Fanart.SaveAsFanart(DBMovie)
                         RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                     End If
                 End If
@@ -490,28 +490,39 @@ Public Class EmberXMLScraperModule
                                         _setup.dgvSettings.Rows(i).Cells(1) = cCell
                                         Dim dcb As DataGridViewCheckBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewCheckBoxCell)
                                         dcb.Value = If(ss.Parameter.ToString = "true", True, False)
-                                        dcb.Tag = ss.ID.ToString
+                                        cCell.Tag = ss.ID.ToString
                                     Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.text
                                         Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
                                         Dim cCell As New DataGridViewTextBoxCell
                                         _setup.dgvSettings.Rows(i).Cells(1) = cCell
                                         Dim dcb As DataGridViewTextBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewTextBoxCell)
                                         dcb.Value = ss.Parameter.ToString
-                                        dcb.Tag = ss.ID.ToString
+                                        cCell.Tag = ss.ID.ToString
                                     Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.int
                                         Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
                                         Dim cCell As New DataGridViewTextBoxCell
                                         _setup.dgvSettings.Rows(i).Cells(1) = cCell
                                         Dim dcb As DataGridViewTextBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewTextBoxCell)
                                         dcb.Value = ss.Parameter.ToString
-                                        dcb.Tag = ss.ID.ToString
+                                        cCell.Tag = ss.ID.ToString
                                     Case Else
                                         Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
+                                        _setup.dgvSettings.Rows(i).Cells(1).Tag = ss.ID.ToString
                                 End Select
+                                AddHandler _setup.dgvSettings.CellContentClick, AddressOf XMLScraperSettingClick
                             End If
                         End If
                     Next
                 End If
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+    Sub XMLScraperSettingClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs)
+        Try
+            If Not _setup.dgvSettings.Rows(e.RowIndex).Cells(e.ColumnIndex).Tag Is Nothing Then
+                Dim tag As String = _setup.dgvSettings.Rows(e.RowIndex).Cells(e.ColumnIndex).Tag.ToString
+                RaiseEvent ModuleSettingsChanged()
             End If
         Catch ex As Exception
         End Try
