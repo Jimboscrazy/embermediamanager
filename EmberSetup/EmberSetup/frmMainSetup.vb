@@ -1355,10 +1355,10 @@ Public Class frmMainSetup
 
     Sub CheckIsSiteReady()
         Dim SiteReady As String = DownloadTextData("status.php")
-        If SiteReady = "OK" Then
-            isSiteReady = True
-        Else
+        If SiteReady = "BUSY" Then
             isSiteReady = False
+        Else
+            isSiteReady = True
         End If
     End Sub
 
