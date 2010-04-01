@@ -549,7 +549,7 @@ Public Class frmMainManager
             Application.DoEvents()
             ftp.chdir("..")
             For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
-                dlg.Label2.Text = s
+                dlg.Label2.Text = Path.GetFileName(s)
                 Application.DoEvents()
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
@@ -1515,7 +1515,7 @@ Public Class frmMainManager
             Application.DoEvents()
             ftp.chdir("..")
             For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
-                dlg.Label2.Text = s
+                dlg.Label2.Text = Path.GetFileName(s)
                 Application.DoEvents()
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
