@@ -877,7 +877,7 @@ Public Class dlgTVImageSelect
 
             Dim TnS As TreeNode
             If Me._type = Enums.TVImageType.All Then
-                For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList
+                For Each cSeason As Scraper.TVDBSeasonImage In Scraper.TVDBImages.SeasonImageList.OrderBy(Function(s) s.Season)
                     Try
                         TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}", True), cSeason.Season), 3, 3)
                         TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(95, "Season Posters"), .Tag = String.Concat("p", cSeason.Season.ToString), .ImageIndex = 0, .SelectedImageIndex = 0})
