@@ -116,7 +116,21 @@ Public Class Scanner
                     End Try
                 Next
 
-                If retSeason.Count > 0 Then Return retSeason
+                If retSeason.Count > 0 Then
+                    'clean entries
+
+                    'first check if we have at least one "real" season with "real" episodes
+                    If retSeason.Where(Function(s) s.Season >= 0 AndAlso s.Episodes.Where(Function(e) e >= 0).Count > 0).Count > 0 Then
+                        'there is at least one season, so lets clean out all the unknown seasons or seasons with unknown episodes
+                        For i As Integer = retSeason.Count - 1 To 0 Step -1
+                            'remove any unknown season or seasons where all episodes are unknown
+                            If retSeason(i).Season < 0 OrElse retSeason(i).Episodes.Where(Function(e) e < 0).Count = retSeason(i).Episodes.Count Then retSeason.Remove(retSeason(i))
+                        Next
+                    End If
+
+                    'if we still have something left, lets use it
+                    If retSeason.Count > 0 Then Return retSeason
+                End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Continue For
@@ -938,12 +952,12 @@ Public Class Scanner
 
                         If Master.eSettings.TVScanOrderModify Then
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                             Catch
                             End Try
                         Else
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
+                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
                             Catch
                             End Try
                         End If

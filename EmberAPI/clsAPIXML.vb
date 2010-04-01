@@ -216,7 +216,7 @@ Public Class APIXML
             Else
                 sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
                 Select Case True
-                    Case Regex.IsMatch(sourceCheck, "(b[dr][-\s]?|blu[-\s]?ray)")
+                    Case Regex.IsMatch(sourceCheck, "(b[dr][-\s]?rip|blu[-\s]?ray)")
                         Return "bluray"
                     Case Regex.IsMatch(sourceCheck, "hd[-\s]?dvd")
                         Return "hddvd"

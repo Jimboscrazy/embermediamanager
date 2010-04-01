@@ -174,6 +174,7 @@ Namespace IMDB
 
                 Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
                 If Options.bTitle Then
+                    Dim oldOTitle As String = IMDBMovie.OriginalTitle
                     IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
                     If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
                         If Not String.IsNullOrEmpty(ofdbTitle) Then
@@ -185,7 +186,9 @@ Namespace IMDB
                                 IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
                             End If
                         End If
-                        IMDBMovie.SortTitle = ""
+                        If String.IsNullOrEmpty(oldOTitle) OrElse Not oldOTitle = IMDBMovie.OriginalTitle Then
+                            IMDBMovie.SortTitle = String.Empty
+                        End If
                     End If
                 End If
 
@@ -473,7 +476,7 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-            mPlot:
+mPlot:
                 'Get the full Plot
                 If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
                     If Not String.IsNullOrEmpty(ofdbPlot) Then
