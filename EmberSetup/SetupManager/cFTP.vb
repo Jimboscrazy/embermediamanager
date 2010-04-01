@@ -195,15 +195,20 @@ Public Class FTPClass
         End If
         sendCommand("RETR " & remFileName)
         If Not (retValue = 150 OrElse retValue = 125) Then
-            Throw New IOException(reply.Substring(4))
+            Return
+            'Throw New IOException(reply.Substring(4))
         End If
-        While True
-            bytes = cSocket.Receive(buffer, buffer.Length, 0)
-            output.Write(buffer, 0, bytes)
-            If bytes <= 0 Then
-                Exit While
-            End If
-        End While
+
+        Try
+            While True
+                bytes = cSocket.Receive(buffer, buffer.Length, 0)
+                output.Write(buffer, 0, bytes)
+                If bytes <= 0 Then
+                    Exit While
+                End If
+            End While
+        Catch ex As Exception
+        End Try
         output.Close()
         If cSocket.Connected Then
             cSocket.Close()
@@ -211,7 +216,8 @@ Public Class FTPClass
         Console.WriteLine("")
         readReply()
         If Not (retValue = 226 OrElse retValue = 250) Then
-            Throw New IOException(reply.Substring(4))
+            Return
+            'Throw New IOException(reply.Substring(4))
         End If
     End Sub
 

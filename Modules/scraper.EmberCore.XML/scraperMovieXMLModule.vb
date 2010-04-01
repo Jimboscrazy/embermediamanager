@@ -117,6 +117,7 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
+        Return True
         Select Case cap
             Case Enums.PostScraperCapabilities.Fanart
                 'If MySettings.UseTMDB Then Return True

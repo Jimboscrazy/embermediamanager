@@ -452,7 +452,12 @@ Public Class frmMainManager
             ftp.setRemotePass(TextBox2.Text)
             ftp.setRemotePath("/public_html/Updates/logs")
             ftp.login()
-            Dim dirLogs = ftp.getFileList("")
+            Dim dirLogs As String() = Nothing
+            Try
+                dirLogs = ftp.getFileList("")
+            Catch ex As Exception
+            End Try
+
             If Not Directory.Exists(Path.Combine(AppPath, "logs")) Then
                 Directory.CreateDirectory(Path.Combine(AppPath, "logs"))
             End If
@@ -460,7 +465,12 @@ Public Class frmMainManager
             Application.DoEvents()
             For Each s As String In dirLogs
                 If s = "." OrElse s = ".." OrElse s = "" Then Continue For
-                ftp.download(s, String.Concat("logs", Path.DirectorySeparatorChar, s))
+                Try
+                    dlg.Label2.Text = s
+                    Application.DoEvents()
+                    ftp.download(s, String.Concat("logs", Path.DirectorySeparatorChar, s))
+                Catch ex As Exception
+                End Try
                 'ftp.download("download.log", "download.log")
             Next
             ftp.close()
@@ -539,6 +549,8 @@ Public Class frmMainManager
             Application.DoEvents()
             ftp.chdir("..")
             For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
+                dlg.Label2.Text = s
+                Application.DoEvents()
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
             Next
@@ -1503,6 +1515,8 @@ Public Class frmMainManager
             Application.DoEvents()
             ftp.chdir("..")
             For Each s In Directory.GetFiles(Path.Combine(AppPath, "Site"))
+                dlg.Label2.Text = s
+                Application.DoEvents()
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
             Next
