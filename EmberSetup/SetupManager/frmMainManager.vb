@@ -490,7 +490,9 @@ Public Class frmMainManager
             'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
             'ftp.cmdPasv2Port()
             Application.DoEvents()
-
+            File.WriteAllText(Path.Combine(AppPath, "locked.flg"), "Lock")
+            ftp.upload(Path.Combine(AppPath, "locked.flg"))
+            File.Delete(Path.Combine(AppPath, "locked.flg"))
             dirRoot = ftp.getFileList("")
             If Not dirRoot.Contains("Files") Then
                 ftp.mkdir("Files")
@@ -540,6 +542,7 @@ Public Class frmMainManager
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
             Next
+            ftp.deleteRemoteFile(Path.Combine(AppPath, "locked.flg"))
             ftp.close()
         Catch ex As Exception
             File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)
@@ -1451,7 +1454,9 @@ Public Class frmMainManager
             'ftp.IdVerify(TextBox1.Text, TextBox2.Text)
             'ftp.cmdPasv2Port()
             Application.DoEvents()
-
+            File.WriteAllText(Path.Combine(AppPath, "locked.flg"), "Lock")
+            ftp.upload(Path.Combine(AppPath, "locked.flg"))
+            File.Delete(Path.Combine(AppPath, "locked.flg"))
             dirRoot = ftp.getFileList("")
             If Not dirRoot.Contains("Files") Then
                 ftp.mkdir("Files")
@@ -1501,6 +1506,7 @@ Public Class frmMainManager
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
             Next
+            ftp.deleteRemoteFile("locked.flg")
             ftp.close()
         Catch ex As Exception
             File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)

@@ -37,6 +37,7 @@ Public Class frmMainSetup
 
     Public Shared EmberVersions As New UpgradeList
 
+    Public isSiteReady As Boolean = True
     Public CurrentEmberPlatform As String
     Public CurrentEmberVersion As String
     Public ExeCurrentEmberVersion As String
@@ -324,6 +325,10 @@ Public Class frmMainSetup
 
     Public Function GetURLFile(ByVal url As String, ByVal localfile As String)
         Try
+            If Not isSiteReady Then
+                CheckIsSiteReady()
+                If Not isSiteReady Then Return False
+            End If
             LogWrite(String.Format("--- GetURL: URL={2}/{0}  File={1}", url, localfile, RemoteSiteFolder))
             If Not DEBUG Then
                 Return GetURLDataBin(String.Concat(String.Format("http://www.embermm.com/{0}/", RemoteSiteFolder), url), localfile)
@@ -626,9 +631,16 @@ Public Class frmMainSetup
                     End If
                     If Not GetURLFile("versionlist.xml", Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, "versionlist.xml"))) Then
                         ' Cant get Version List ... Abort
-                        LogWrite(String.Format("*** Main: No Versions List, SITE DOWN? ABORT"))
-                        Me.bwDoInstall.ReportProgress(2, String.Format(MyLang.GetString(9, "Ember Download Site is Not Available.{0}Please try again later."), vbCrLf)) '  Error
-                        Return True
+                        If Not isSiteReady Then
+                            Me.bwDoInstall.ReportProgress(0, New Object() {2, MyLang.GetString(34, "Welcome to Ember Media Manager Installation")})
+                            LogWrite(String.Format("*** Main: No Versions List, SITE IN MAINTENANCE ABORT"))
+                            Me.bwDoInstall.ReportProgress(2, String.Format(MyLang.GetString(52, "A new version is currently being uploaded. {0}Please try again in a few moments."), vbCrLf)) '  Error
+                            Return True
+                        Else
+                            LogWrite(String.Format("*** Main: No Versions List, SITE DOWN? ABORT"))
+                            Me.bwDoInstall.ReportProgress(2, String.Format(MyLang.GetString(9, "Ember Download Site is Not Available.{0}Please try again later."), vbCrLf)) '  Error
+                            Return True
+                        End If
                     Else
                         LoadVersions()
                         EmberVersions.VersionList.Sort()
@@ -673,7 +685,7 @@ Public Class frmMainSetup
                         If bwDoInstall.CancellationPending Then Return False
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
                         LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
-                        getfile = String.Format("version_{0}.xml", InstallVersion)
+                        getFile = String.Format("version_{0}.xml", InstallVersion)
                         If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
                             ' Cant get Version # ... Abort
                             LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
@@ -1332,10 +1344,7 @@ Public Class frmMainSetup
                 LogoStop = False
                 llAbout.Visible = False
             End If
-            Dim SiteReady As String = DownloadTextData("status.php")
-            If Not SiteReady = "OK" Then
-
-            End If
+            CheckIsSiteReady()
         Catch ex As Exception
             LogWrite(String.Format("+++ Main: ERROR ON LOAD ... EXIT"))
             LogWrite(ex.Message)
@@ -1344,9 +1353,14 @@ Public Class frmMainSetup
         End Try
     End Sub
 
-    Function CheckSite() As Boolean
-
-    End Function
+    Sub CheckIsSiteReady()
+        Dim SiteReady As String = DownloadTextData("status.php")
+        If SiteReady = "OK" Then
+            isSiteReady = True
+        Else
+            isSiteReady = False
+        End If
+    End Sub
 
     Function GetFromList(ByVal l As FilesList, ByVal f As FileOfList) As FileOfList
         Try
