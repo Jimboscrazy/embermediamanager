@@ -31,11 +31,6 @@ Public Class frmXMLMediaSettingsHolder
     Private Sub cbScraper_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
-
-    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
-
-    End Sub
-
     Private Sub frmXMLSettingsHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
     End Sub
 

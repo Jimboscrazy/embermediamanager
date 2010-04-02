@@ -39,6 +39,7 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
+        Me.lblLanguage = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
@@ -49,6 +50,7 @@ Partial Class frmXMLSettingsHolder
         'pnlSettings
         '
         Me.pnlSettings.Controls.Add(Me.pnlLoading)
+        Me.pnlSettings.Controls.Add(Me.lblLanguage)
         Me.pnlSettings.Controls.Add(Me.pbPoster)
         Me.pnlSettings.Controls.Add(Me.dgvSettings)
         Me.pnlSettings.Controls.Add(Me.btnPopulate)
@@ -62,7 +64,7 @@ Partial Class frmXMLSettingsHolder
         '
         'pbPoster
         '
-        Me.pbPoster.Location = New System.Drawing.Point(257, 41)
+        Me.pbPoster.Location = New System.Drawing.Point(257, 36)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(178, 50)
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -73,7 +75,7 @@ Partial Class frmXMLSettingsHolder
         '
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Location = New System.Drawing.Point(217, 31)
+        Me.pnlLoading.Location = New System.Drawing.Point(135, 102)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
         Me.pnlLoading.TabIndex = 86
@@ -99,7 +101,7 @@ Partial Class frmXMLSettingsHolder
         Me.dgvSettings.BackgroundColor = System.Drawing.Color.White
         Me.dgvSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSettings.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Setting, Me.Value})
-        Me.dgvSettings.Location = New System.Drawing.Point(33, 97)
+        Me.dgvSettings.Location = New System.Drawing.Point(33, 106)
         Me.dgvSettings.MultiSelect = False
         Me.dgvSettings.Name = "dgvSettings"
         Me.dgvSettings.RowHeadersVisible = False
@@ -127,7 +129,7 @@ Partial Class frmXMLSettingsHolder
         '
         'btnPopulate
         '
-        Me.btnPopulate.Location = New System.Drawing.Point(86, 68)
+        Me.btnPopulate.Location = New System.Drawing.Point(86, 73)
         Me.btnPopulate.Name = "btnPopulate"
         Me.btnPopulate.Size = New System.Drawing.Size(129, 23)
         Me.btnPopulate.TabIndex = 85
@@ -206,6 +208,15 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'lblLanguage
+        '
+        Me.lblLanguage.Location = New System.Drawing.Point(258, 88)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(177, 15)
+        Me.lblLanguage.TabIndex = 90
+        Me.lblLanguage.Text = "Language"
+        Me.lblLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -247,5 +258,6 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents Setting As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Value As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents lblLanguage As System.Windows.Forms.Label
 
 End Class
