@@ -2635,7 +2635,9 @@ Public Class dlgSettings
         Dim items As New Dictionary(Of String, Enums.TrailerQuality)
         items.Add("1080p", Enums.TrailerQuality.HD1080p)
         items.Add("720p", Enums.TrailerQuality.HD720p)
-        items.Add("Standard", Enums.TrailerQuality.Standard)
+        items.Add("SQ (MP4)", Enums.TrailerQuality.SQMP4)
+        items.Add("HQ (FLV)", Enums.TrailerQuality.HQFLV)
+        items.Add("SQ (FLV)", Enums.TrailerQuality.SQFLV)
         Me.cbTrailerQuality.DataSource = items.ToList
         Me.cbTrailerQuality.DisplayMember = "Key"
         Me.cbTrailerQuality.ValueMember = "Value"

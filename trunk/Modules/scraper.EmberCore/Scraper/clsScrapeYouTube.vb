@@ -116,25 +116,6 @@ Namespace YouTube
             End Try
         End Sub
 
-        Private Function GetSWFArgs(ByVal HTML As String) As Dictionary(Of String, String)
-            Dim result As New Dictionary(Of String, String)
-            Dim args As String()
-            Dim ArgsPattern As String = "'SWF_ARGS':\s*{([^}]*?)}"
-            Dim KeyValuesPattern As String = """(.*?)"": ""(.*?)"""
-
-            If Regex.IsMatch(HTML, ArgsPattern) Then
-                args = Regex.Match(HTML, ArgsPattern).Groups(1).Value.ToString.Split(Convert.ToChar(","))
-                For Each argString As String In args
-                    If Regex.IsMatch(argString, KeyValuesPattern) Then
-                        Dim itemMatch As Match = Regex.Match(argString, KeyValuesPattern)
-                        result.Add(itemMatch.Groups(1).Value, itemMatch.Groups(2).Value)
-                    End If
-                Next
-            End If
-
-            Return result
-        End Function
-
         Private Function GetVideoTitle(ByVal HTML As String) As String
             Dim result As String = ""
             Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
@@ -161,53 +142,50 @@ Namespace YouTube
                 If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
                 If bwYT.CancellationPending Then Return DownloadLinks
 
-                Dim Args As Dictionary(Of String, String) = GetSWFArgs(Html)
-                If Args.Count > 0 Then
+                Dim VideoTitle As String = GetVideoTitle(Html)
+                VideoTitle = Regex.Replace(VideoTitle, "['?\\:*<>]*", "")
 
-                    Dim VideoTitle As String = GetVideoTitle(Html)
-                    VideoTitle = Regex.Replace(VideoTitle, "['?\\:*<>]*", "")
+                Dim fmtMatch As Match = Regex.Match(Html, "fmt_url_map=(.*?)&csi_page_type=", RegexOptions.IgnoreCase)
+                If fmtMatch.Success Then
+                    Dim FormatMap As String = fmtMatch.Groups(1).Value
 
-                    If Args.ContainsKey("fmt_url_map") Then
-                        Dim FormatMap As String = Args("fmt_url_map")
+                    Dim Formats As String() = Web.HttpUtility.UrlDecode(FormatMap).Split(Convert.ToChar(","))
+                    For Each fmt As String In Formats
+                        Dim FormatElements As String() = fmt.Split(Convert.ToChar("|"))
 
-                        Dim Formats As String() = Web.HttpUtility.UrlDecode(FormatMap).Split(Convert.ToChar(","))
-                        For Each fmt As String In Formats
-                            Dim FormatElements As String() = fmt.Split(Convert.ToChar("|"))
+                        Dim Link As New VideoLinkItem
 
-                            Dim Link As New VideoLinkItem
-                            Select Case FormatElements(0).Trim
-                                Case "22"
-                                    Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
-                                    Link.Description = "720p"
-                                    Link.FormatQuality = Enums.TrailerQuality.HD720p
-                                Case "37"
-                                    Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
-                                    Link.Description = "1080p"
-                                    Link.FormatQuality = Enums.TrailerQuality.HD1080p
-                            End Select
+                        Select Case FormatElements(0).Trim
+                            Case "18"
+                                Link.Description = "SQ (MP4)"
+                                Link.FormatQuality = Enums.TrailerQuality.SQMP4
+                            Case "22"
+                                Link.Description = "720p"
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "34"
+                                Link.Description = "SQ (FLV)"
+                                Link.FormatQuality = Enums.TrailerQuality.SQFLV
+                            Case "35"
+                                Link.Description = "HQ (FLV)"
+                                Link.FormatQuality = Enums.TrailerQuality.HQFLV
+                            Case "37"
+                                Link.Description = "1080p"
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
+                            Case Else
+                                Continue For
+                        End Select
 
-                            If bwYT.CancellationPending Then Return DownloadLinks
+                        Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
 
-                            If Link.URL <> "" AndAlso sHTTP.IsValidURL(Link.URL) Then
-                                DownloadLinks.Add(Link)
-                            End If
+                        If bwYT.CancellationPending Then Return DownloadLinks
 
-                            If bwYT.CancellationPending Then Return DownloadLinks
-
-                        Next
-
-                        If Args.ContainsKey("video_id") AndAlso Args.ContainsKey("t") Then
-                            'add standard link
-                            Dim VideoId As String = Args("video_id")
-                            Dim VideoHash As String = Args("t")
-                            Dim StdLink As New VideoLinkItem
-                            StdLink.URL = "http://www.youtube.com/get_video?fmt=18&video_id=" & VideoId & "&t=" & VideoHash
-                            StdLink.Description = "Standard"
-                            StdLink.FormatQuality = Enums.TrailerQuality.Standard
-                            DownloadLinks.Add(StdLink)
+                        If Link.URL <> "" AndAlso sHTTP.IsValidURL(Link.URL) Then
+                            DownloadLinks.Add(Link)
                         End If
 
-                    End If
+                        If bwYT.CancellationPending Then Return DownloadLinks
+
+                    Next
                 End If
 
                 Return DownloadLinks
