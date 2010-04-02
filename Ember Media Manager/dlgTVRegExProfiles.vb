@@ -74,6 +74,4 @@ Public Class dlgTVRegExProfiles
         Public Description As String
         Public ShowRegex As New List(Of Settings.TVShowRegEx)
     End Class
-
-
 End Class
