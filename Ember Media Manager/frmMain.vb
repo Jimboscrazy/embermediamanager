@@ -4019,7 +4019,7 @@ doCancel:
                             ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                             Else
-                                If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
+                                If Convert.ToBoolean(drvRow.Cells(42).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
                                     pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
                                 Else
                                     pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
