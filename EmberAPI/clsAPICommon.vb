@@ -380,7 +380,9 @@ Public Class Enums
     Public Enum TrailerQuality As Integer
         HD1080p = 0
         HD720p = 1
-        Standard = 99
+        SQMP4 = 2
+        HQFLV = 3
+        SQFLV = 4
     End Enum
 
     Public Enum TVImageType As Integer
