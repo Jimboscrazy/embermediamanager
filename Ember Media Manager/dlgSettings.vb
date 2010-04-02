@@ -691,6 +691,16 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnGetTVProfiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTVProfiles.Click
+        Using dd As New dlgTVRegExProfiles
+            If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                Me.ShowRegex.Clear()
+                Me.ShowRegex.AddRange(dd.ShowRegex)
+                Me.LoadShowRegex()
+                Me.SetApplyButton(True)
+            End If
+        End Using
+    End Sub
     Private Sub btnResetShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetShowRegex.Click
         If MsgBox(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowRegex, True)
@@ -699,6 +709,7 @@ Public Class dlgSettings
             Me.LoadShowRegex()
             Me.SetApplyButton(True)
         End If
+
     End Sub
 
     Private Sub btnRemMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemMovieExt.Click

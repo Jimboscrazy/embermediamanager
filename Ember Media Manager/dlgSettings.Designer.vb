@@ -592,6 +592,7 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
+        Me.btnGetTVProfiles = New System.Windows.Forms.Button
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -3851,6 +3852,7 @@ Partial Class dlgSettings
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.btnGetTVProfiles)
         Me.TabPage4.Controls.Add(Me.btnRegexDown)
         Me.TabPage4.Controls.Add(Me.btnRegexUp)
         Me.TabPage4.Controls.Add(Me.btnResetShowRegex)
@@ -6998,6 +7000,15 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
+        'btnGetTVProfiles
+        '
+        Me.btnGetTVProfiles.Image = CType(resources.GetObject("btnGetTVProfiles.Image"), System.Drawing.Image)
+        Me.btnGetTVProfiles.Location = New System.Drawing.Point(550, 3)
+        Me.btnGetTVProfiles.Name = "btnGetTVProfiles"
+        Me.btnGetTVProfiles.Size = New System.Drawing.Size(23, 23)
+        Me.btnGetTVProfiles.TabIndex = 19
+        Me.btnGetTVProfiles.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7766,4 +7777,5 @@ Partial Class dlgSettings
     Friend WithEvents txtTVSkipLessThan As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents btnClearRegex As System.Windows.Forms.Button
+    Friend WithEvents btnGetTVProfiles As System.Windows.Forms.Button
 End Class
