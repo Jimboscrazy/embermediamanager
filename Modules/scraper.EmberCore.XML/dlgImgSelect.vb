@@ -463,7 +463,7 @@ Public Class dlgImgSelect
                     Directory.CreateDirectory(CachePath)
                 End If
 
-                Me.lblDL2.Text = Master.eLang.GetString(32, "Retrieving data from ...")
+                Me.lblDL2.Text = Master.eLang.GetString(32, "Retrieving images ...")
                 Me.lblDL2Status.Text = String.Empty
                 Me.pbDL2.Maximum = 3
                 Me.pnlDLStatus.Visible = True
