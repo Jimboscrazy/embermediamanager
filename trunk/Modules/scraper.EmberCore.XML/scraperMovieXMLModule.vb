@@ -168,13 +168,12 @@ Public Class EmberXMLScraperModule
         Dim Poster As New Images
         Dim Fanart As New Images
         Try
-
             LoadSettings()
             If DBMovie.ID <> LastDBMovieID Then
                 Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
                 res = XMLManager.GetResults(scraperName, DBMovie.Movie.Title, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                 If res.Count > 0 Then
-                    ' Get first and go
+                    ' Get first and go ... scraper is not a XML scraper ... mixed scrapers
                     lMediaTag = XMLManager.GetDetails(res(0))
                 Else
                     Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = False}
