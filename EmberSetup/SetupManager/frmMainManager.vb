@@ -554,7 +554,7 @@ Public Class frmMainManager
                 ftp.upload(s)
                 ftp.chmod("644", Path.GetFileName(s))
             Next
-            ftp.deleteRemoteFile(Path.Combine(AppPath, "locked.flg"))
+            ftp.deleteRemoteFile("locked.flg")
             ftp.close()
         Catch ex As Exception
             File.AppendAllText(Path.Combine(AppPath, "errors.log"), ex.Message)

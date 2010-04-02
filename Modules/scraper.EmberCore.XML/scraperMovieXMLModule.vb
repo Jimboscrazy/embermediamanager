@@ -190,7 +190,11 @@ Public Class EmberXMLScraperModule
                 Next
                 If DBMovie.Movie.Thumb.Count > 0 Then
                     If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
-                        'dlg to select
+                        Using dlgSelect As New dlgImgSelect
+                            Dim pResults As Containers.ImgResult
+                            pResults = dlgSelect.ShowDialog(DBMovie, Enums.ImageType.Posters, True)
+                            DBMovie.PosterPath = pResults.ImagePath
+                        End Using
                     Else
                         Poster.Clear()
                         Poster.FromWeb(DBMovie.Movie.Thumb(0))
@@ -207,12 +211,18 @@ Public Class EmberXMLScraperModule
                 Next
                 If DBMovie.Movie.Fanart.Thumb.Count > 0 Then
                     If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
+                        Using dlgSelect As New dlgImgSelect
+                            Dim pResults As Containers.ImgResult
+                            pResults = dlgSelect.ShowDialog(DBMovie, Enums.ImageType.Fanart, True)
+                            DBMovie.FanartPath = pResults.ImagePath
+                        End Using
                     Else
                         Fanart.Clear()
                         Fanart.FromWeb(DBMovie.Movie.Fanart.Thumb(0).Text)
                         DBMovie.FanartPath = Fanart.SaveAsFanart(DBMovie)
                         RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                     End If
+
                 End If
 
             End If
@@ -392,7 +402,7 @@ Public Class EmberXMLScraperModule
                         End If
                     Case Else
                         res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                        If res.Count > 1 Then
+                        If res.Count > 1 OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
                             ' search Dialog
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
@@ -623,7 +633,7 @@ Public Class EmberXMLScraperModule
             If Not Directory.Exists(cPath) Then
                 Directory.CreateDirectory(cPath)
             End If
-            XMLManager = New ScraperManager(tPath, cPath)
+            XMLManager = New ScraperManager(tPath, String.Concat(cPath, Path.DirectorySeparatorChar))
         End If
     End Sub
     Public Sub PostScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperOrderChanged
