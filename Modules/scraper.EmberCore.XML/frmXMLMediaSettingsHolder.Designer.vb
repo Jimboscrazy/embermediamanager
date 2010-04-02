@@ -29,12 +29,14 @@ Partial Class frmXMLMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
+        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
         Me.pnlSettings.Name = "pnlSettings"
@@ -95,6 +97,15 @@ Partial Class frmXMLMediaSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(39, 52)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(519, 20)
+        Me.Label1.TabIndex = 83
+        Me.Label1.Text = "Label1"
+        '
         'frmXMLMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -122,5 +133,6 @@ Partial Class frmXMLMediaSettingsHolder
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class

@@ -40,6 +40,7 @@ Public Class frmXMLSettingsHolder
         parentRunning = True
         btnPopulate.Enabled = False
         cbScraper.Enabled = False
+        dgvSettings.Enabled = False
         pnlLoading.Visible = True
         RaiseEvent PopulateScrapers()
         While parentRunning
@@ -47,6 +48,7 @@ Public Class frmXMLSettingsHolder
         End While
         btnPopulate.Enabled = True
         cbScraper.Enabled = True
+        dgvSettings.Enabled = True
         pnlLoading.Visible = False
 
     End Sub
