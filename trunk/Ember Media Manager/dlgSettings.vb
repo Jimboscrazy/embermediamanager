@@ -2473,15 +2473,16 @@ Public Class dlgSettings
     Private Sub Handle_ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
         Dim tSetPan As New Containers.SettingsPanel
         Dim oSetPan As New Containers.SettingsPanel
-
+        Me.SuspendLayout()
         tSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = Name)
 
         If Not IsNothing(tSetPan) Then
             tSetPan.ImageIndex = If(State, 9, 10)
 
             Try
-                Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-                If Not IsNothing(t) Then
+
+                If Not IsNothing(tvSettings.Nodes.Find(Name, True)(0)) Then
+                    Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
                     If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
                     If Not diffOrder = 0 Then
                         Dim p As TreeNode = t.Parent
@@ -2513,7 +2514,7 @@ Public Class dlgSettings
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
-
+        Me.ResumeLayout()
         Me.SetApplyButton(True)
     End Sub
 

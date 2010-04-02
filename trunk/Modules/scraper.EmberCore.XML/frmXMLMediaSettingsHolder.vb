@@ -41,6 +41,7 @@ Public Class frmXMLMediaSettingsHolder
 
     Sub SetUp()
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.Label1.Text = String.Concat(Master.eLang.GetString(8, "Use the Settings in"), " ", Master.eLang.GetString(556, "Scrapers - Data", True))
     End Sub
     Public Sub New()
         InitializeComponent()

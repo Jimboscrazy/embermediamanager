@@ -49,12 +49,8 @@ Public Class EmberXMLScraperModule
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule.ModuleSettingsChanged
-
-    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
-
     Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.PostScraperSetupChanged
-
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule.ScraperSetupChanged
 
 #End Region 'Events
@@ -489,7 +485,7 @@ Public Class EmberXMLScraperModule
                                         Dim cCell As New DataGridViewCheckBoxCell()
                                         _setup.dgvSettings.Rows(i).Cells(1) = cCell
                                         Dim dcb As DataGridViewCheckBoxCell = DirectCast(_setup.dgvSettings.Rows(i).Cells(1), DataGridViewCheckBoxCell)
-                                        dcb.Value = If(ss.Parameter.ToString = "true", True, False)
+                                        dcb.Value = If(ss.Parameter.ToString.ToLower = "true", True, False)
                                         cCell.Tag = ss.ID.ToString
                                     Case XMLScraper.ScraperLib.ScraperSetting.ScraperSettingType.text
                                         Dim i As Integer = _setup.dgvSettings.Rows.Add(ss.Label.ToString)
@@ -521,7 +517,6 @@ Public Class EmberXMLScraperModule
     Sub XMLScraperSettingClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs)
         Try
             If Not _setup.dgvSettings.Rows(e.RowIndex).Cells(e.ColumnIndex).Tag Is Nothing Then
-                Dim tag As String = _setup.dgvSettings.Rows(e.RowIndex).Cells(e.ColumnIndex).Tag.ToString
                 RaiseEvent ModuleSettingsChanged()
             End If
         Catch ex As Exception
@@ -529,6 +524,57 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function SelectImageOfType(ByRef mMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.SelectImageOfType
+
+        Dim Poster As New Images
+        Dim Fanart As New Images
+        Try
+
+            LoadSettings()
+            If mMovie.ID <> LastDBMovieID Then
+                Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+                res = XMLManager.GetResults(scraperName, mMovie.Movie.Title, mMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                If res.Count > 0 Then
+                    ' Get first and go
+                    lMediaTag = XMLManager.GetDetails(res(0))
+                Else
+                    Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = False}
+                End If
+            End If
+            Dim mediaTag As XMLScraper.MediaTags.MovieTag = DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag)
+            Master.GlobalScrapeMod = Functions.ScrapeModifierAndAlso(Master.GlobalScrapeMod, ConfigScrapeModifier)
+            If Master.GlobalScrapeMod.Poster AndAlso _DLType = Enums.ImageType.Posters Then
+                mMovie.Movie.Thumb.Clear()
+                For Each t As XMLScraper.MediaTags.Thumbnail In mediaTag.Thumbs
+                    mMovie.Movie.Thumb.Add(t.Thumb)
+                Next
+                If mMovie.Movie.Thumb.Count > 0 Then
+                    'Poster.Clear()
+                    'Poster.FromWeb(mMovie.Movie.Thumb(0))
+                    Using dlgSelect As New dlgImgSelect
+                        pResults = dlgSelect.ShowDialog(mMovie, Enums.ImageType.Posters, True)
+                    End Using
+                    'pResults.Posters = mMovie.Movie.Thumb
+                    'pResults.ImagePath = Poster.SaveAsPoster(mMovie)
+                End If
+            End If
+            If Master.GlobalScrapeMod.Fanart AndAlso _DLType = Enums.ImageType.Fanart Then
+                mMovie.Movie.Fanart.Thumb.Clear()
+                For Each t As XMLScraper.MediaTags.Thumbnail In mediaTag.Fanart.Thumbs
+                    Dim url As String = t.Url
+                    mMovie.Movie.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = t.Preview, .Text = t.Url})
+                Next
+                If mMovie.Movie.Fanart.Thumb.Count > 0 Then
+                    'Fanart.Clear()
+                    'Fanart.FromWeb(mMovie.Movie.Fanart.Thumb(0).Text)
+                    Using dlgSelect As New dlgImgSelect
+                        pResults = dlgSelect.ShowDialog(mMovie, Enums.ImageType.Fanart, True)
+                    End Using
+                    'pResults.Fanart.Thumb = mMovie.Movie.Fanart.Thumb
+                    'pResults.ImagePath = Fanart.SaveAsFanart(mMovie)
+                End If
+            End If
+        Catch ex As Exception
+        End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -537,11 +583,13 @@ Public Class EmberXMLScraperModule
         bwPopulate.RunWorkerAsync()
     End Sub
     Private Sub bwPopulate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPopulate.DoWork
-        XMLManager.ReloadScrapers()
+        XMLManager.ReloadScrapers(XMLScraper.ScraperLib.ScraperContent.movies)
         ScrapersLoaded = True
     End Sub
     Private Sub bwPopulate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPopulate.RunWorkerCompleted
         PoupulateForm()
+        LoadScraperSettings()
+        PopulateScraperSettings()
         _setup.parentRunning = False
     End Sub
     Delegate Sub DelegateFunction()

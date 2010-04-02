@@ -22,7 +22,7 @@ Partial Class frmXMLSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.pbPoster = New System.Windows.Forms.PictureBox
@@ -48,8 +48,8 @@ Partial Class frmXMLSettingsHolder
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.pbPoster)
         Me.pnlSettings.Controls.Add(Me.pnlLoading)
+        Me.pnlSettings.Controls.Add(Me.pbPoster)
         Me.pnlSettings.Controls.Add(Me.dgvSettings)
         Me.pnlSettings.Controls.Add(Me.btnPopulate)
         Me.pnlSettings.Controls.Add(Me.Label1)
@@ -73,7 +73,7 @@ Partial Class frmXMLSettingsHolder
         '
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Location = New System.Drawing.Point(135, 111)
+        Me.pnlLoading.Location = New System.Drawing.Point(217, 31)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 40)
         Me.pnlLoading.TabIndex = 86
@@ -120,8 +120,8 @@ Partial Class frmXMLSettingsHolder
         '
         'Value
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Value.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Value.DefaultCellStyle = DataGridViewCellStyle1
         Me.Value.HeaderText = "Value"
         Me.Value.Name = "Value"
         '

@@ -222,7 +222,7 @@ Namespace XMLScraper
                 AllScrapers.Sort()
             End Sub
 
-            Public Sub ReloadScrapers()
+            Public Sub ReloadScrapers(Optional ByVal content As Integer = -1)
                 Me._allscrapers = New List(Of ScraperInfo)()
                 Me.Common = New List(Of IncludeInfo)()
 
@@ -236,7 +236,10 @@ Namespace XMLScraper
                             If tempInfo.Load(doc, item.FullName) Then
                                 If Not IsNothing(tempInfo.Settings) Then
                                     tempInfo.ScraperCache = Me.pCache
-                                    Me._allscrapers.Add(tempInfo)
+                                    If content = -1 OrElse content = tempInfo.ScraperContent Then
+                                        Me._allscrapers.Add(tempInfo)
+                                    End If
+
                                 End If
                             End If
                         ElseIf XmlUtilities.IsCommonFile(doc) Then
