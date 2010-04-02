@@ -60,6 +60,11 @@ Public Class dlgTVRegExProfiles
         End If
     End Function
     Sub SetUp()
+        Me.Text = Master.eLang.GetString(819, "TV RegEx Profiles")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        lstProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
+        Me.Label1.Text = Master.eLang.GetString(821, "Description")
     End Sub
     Class TVShowRegExProfiles
         Public Profiles As New List(Of TVShowRegExProfile)
