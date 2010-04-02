@@ -201,12 +201,15 @@ Public Class DVD
             If IFOFiles.Count > 1 Then
                 'find the one with the longest duration
                 For Each fFile As String In IFOFiles
-                    ParsedIFOFile = fctParseIFO_VSTFile(fFile)
-                    currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
-                    If currDuration > currLongest Then
-                        currLongest = currDuration
-                        tIFOFile = ParsedIFOFile
-                    End If
+                    Try
+                        ParsedIFOFile = fctParseIFO_VSTFile(fFile)
+                        currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
+                        If currDuration > currLongest Then
+                            currLongest = currDuration
+                            tIFOFile = ParsedIFOFile
+                        End If
+                    Catch
+                    End Try
                 Next
 
                 ParsedIFOFile = tIFOFile

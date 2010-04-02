@@ -28,9 +28,8 @@ Public Class StringUtils
     #Region "Methods"
 
     Public Shared Function AlphaNumericOnly(ByVal KeyChar As Char, Optional ByVal AllowSpecial As Boolean = False) As Boolean
-        Dim test As Integer = Asc(KeyChar)
         If Char.IsLetterOrDigit(KeyChar) OrElse (AllowSpecial AndAlso (Char.IsControl(KeyChar) OrElse _
-        Char.IsWhiteSpace(KeyChar) OrElse Asc(KeyChar) = 45 OrElse Asc(KeyChar) = 46 OrElse Asc(KeyChar) = 58)) Then
+        Char.IsWhiteSpace(KeyChar) OrElse Asc(KeyChar) = 44 OrElse Asc(KeyChar) = 45 OrElse Asc(KeyChar) = 46 OrElse Asc(KeyChar) = 58)) Then
             Return False
         Else
             Return True

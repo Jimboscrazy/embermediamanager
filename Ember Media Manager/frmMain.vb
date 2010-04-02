@@ -272,6 +272,7 @@ Public Class frmMain
 
                 .txtMetaData.Text = String.Empty
                 .pnlTop.Visible = False
+                .tslStatus.Text = String.Empty
 
                 Application.DoEvents()
             End With
@@ -6632,6 +6633,7 @@ doCancel:
         Dim tmpMovie As New MediaContainers.Movie
         Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
+        Dim selRow As DataRow = Nothing
 
         Dim hasPoster As Boolean = False
         Dim hasFanart As Boolean = False
@@ -6716,8 +6718,9 @@ doCancel:
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
                 If Not IsNothing(dRow(0)) Then
-                    tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
-                    tmpMovieDb.IsLock = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(14))
+                    selrow = DirectCast(dRow(0), DataRow)
+                    tmpMovieDb.IsMark = Convert.ToBoolean(selRow.Item(11))
+                    tmpMovieDb.IsLock = Convert.ToBoolean(selRow.Item(14))
 
                     If Me.InvokeRequired Then
                         Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
@@ -6733,18 +6736,18 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 46, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
                     Else
-                        DirectCast(dRow(0), DataRow).Item(1) = tmpMovieDb.Filename
-                        DirectCast(dRow(0), DataRow).Item(3) = tmpMovieDb.ListTitle
-                        DirectCast(dRow(0), DataRow).Item(4) = hasPoster
-                        DirectCast(dRow(0), DataRow).Item(5) = hasFanart
-                        DirectCast(dRow(0), DataRow).Item(6) = hasNfo
-                        DirectCast(dRow(0), DataRow).Item(7) = hasTrailer
-                        DirectCast(dRow(0), DataRow).Item(8) = hasSub
-                        DirectCast(dRow(0), DataRow).Item(9) = hasExtra
-                        DirectCast(dRow(0), DataRow).Item(10) = False
-                        DirectCast(dRow(0), DataRow).Item(15) = tmpMovieDb.Movie.Title
-                        DirectCast(dRow(0), DataRow).Item(46) = tmpMovieDb.Movie.SortTitle
-                        DirectCast(dRow(0), DataRow).Item(26) = tmpMovieDb.Movie.Genre
+                        selRow.Item(1) = tmpMovieDb.Filename
+                        selRow.Item(3) = tmpMovieDb.ListTitle
+                        selRow.Item(4) = hasPoster
+                        selRow.Item(5) = hasFanart
+                        selRow.Item(6) = hasNfo
+                        selRow.Item(7) = hasTrailer
+                        selRow.Item(8) = hasSub
+                        selRow.Item(9) = hasExtra
+                        selRow.Item(10) = False
+                        selRow.Item(15) = tmpMovieDb.Movie.Title
+                        selRow.Item(46) = tmpMovieDb.Movie.SortTitle
+                        selRow.Item(26) = tmpMovieDb.Movie.Genre
                     End If
                 End If
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
@@ -6756,28 +6759,23 @@ doCancel:
 
             If Not BatchMode Then
                 Me.DoTitleCheck()
-                If Not Me.chkFilterNew.Checked AndAlso _
-                (Not Me.chkFilterMark.Checked OrElse tmpMovieDb.IsMark) AndAlso _
-                (Not Me.chkFilterLock.Checked OrElse tmpMovieDb.IsLock) AndAlso _
-                (Not Me.chkFilterMissing.Checked OrElse _
-                ((Not Master.eSettings.MissingFilterPoster OrElse (Master.eSettings.MissingFilterPoster AndAlso Not hasPoster)) AndAlso _
-                 (Not Master.eSettings.MissingFilterFanart OrElse (Master.eSettings.MissingFilterFanart AndAlso Not hasFanart)) AndAlso _
-                 (Not Master.eSettings.MissingFilterNFO OrElse (Master.eSettings.MissingFilterNFO AndAlso Not hasNfo)) AndAlso _
-                 (Not Master.eSettings.MissingFilterTrailer OrElse (Master.eSettings.MissingFilterTrailer AndAlso Not hasTrailer)) AndAlso _
-                 (Not Master.eSettings.MissingFilterSubs OrElse (Master.eSettings.MissingFilterSubs AndAlso Not hasSub)) AndAlso _
-                 (Not Master.eSettings.MissingFilterExtras OrElse (Master.eSettings.MissingFilterExtras AndAlso Not hasExtra)))) Then
-                    Me.LoadInfo(Convert.ToInt32(ID), tmpMovieDb.Filename, True, False)
-                Else
-                    Me.ClearInfo()
-                    Me.prevRow = -2
-                    Me.currRow = -1
-                    Me.dgvMediaList.ClearSelection()
-                    Me.dgvMediaList.CurrentCell = Nothing
 
-                    If Me.dgvMediaList.RowCount > 0 Then
-                        Me.dgvMediaList.Rows(0).Cells(3).Selected = True
-                        Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
-                    End If
+                Dim selI As Integer = 0
+
+                If Me.dgvMediaList.SelectedRows.Count > 0 Then selI = Me.dgvMediaList.SelectedRows(0).Index
+
+                Me.dgvMediaList.ClearSelection()
+                Me.dgvMediaList.CurrentCell = Nothing
+
+                If Me.dgvMediaList.RowCount - 1 < selI Then selI = Me.dgvMediaList.RowCount
+
+                Me.ClearInfo()
+                Me.prevRow = -2
+                Me.currRow = -1
+
+                If Me.dgvMediaList.RowCount > 0 Then
+                    Me.dgvMediaList.Rows(selI).Cells(3).Selected = True
+                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(selI).Cells(3)
                 End If
             End If
 
@@ -6968,9 +6966,11 @@ doCancel:
             Dim doFill As Boolean = False
             Dim tFill As Boolean = False
 
+            Dim doBatch As Boolean = Not Me.dgvMediaList.SelectedRows.Count = 1
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    tFill = Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True)
+                    tFill = Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), doBatch)
                     If tFill Then doFill = True
                 Next
                 SQLtransaction.Commit()
