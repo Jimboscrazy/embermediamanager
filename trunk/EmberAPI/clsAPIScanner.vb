@@ -308,8 +308,10 @@ Public Class Scanner
                 If String.IsNullOrEmpty(Movie.Nfo) Then
                     If (Movie.isSingle AndAlso Master.eSettings.MovieNFO AndAlso fFile.ToLower = Path.Combine(parPath, "movie.nfo")) _
                     OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
-                    (((Master.eSettings.MovieNameNFO OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo")) _
-                    OrElse ((Master.eSettings.MovieNameNFO OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".nfo")))) Then
+                    (((Master.eSettings.MovieNameNFO OrElse isYAMJ) AndAlso (fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
+                                                                             fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
+                                                                             fFile.ToLower = "video_ts.nfo" OrElse _
+                                                                             fFile.ToLower = "index.nfo")))) Then
                         Movie.Nfo = fFile
                         Continue For
                     End If
