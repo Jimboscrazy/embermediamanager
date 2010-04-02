@@ -312,7 +312,7 @@ Public Class dlgIMDBSearchResults
                         Me.tvResults.Nodes.Add(TnP)
                         selNode = TnP.FirstNode
                     End If
-
+                    Me._prevnode = -2
                     Me.tvResults.SelectedNode = selNode
                     Me.tvResults.Focus()
                 Else
@@ -344,7 +344,7 @@ Public Class dlgIMDBSearchResults
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
         Me.tmrWait.Stop()
         Me.tmrLoad.Stop()
-
+        Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(26, "Downloading details...")
 
         IMDB.IMDBURL = IMDBURL
@@ -361,7 +361,6 @@ Public Class dlgIMDBSearchResults
             Me.tmrWait.Stop()
         End If
     End Sub
-
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
             Me.tmrWait.Stop()
@@ -427,5 +426,4 @@ Public Class dlgIMDBSearchResults
     End Structure
 
     #End Region 'Nested Types
-
 End Class

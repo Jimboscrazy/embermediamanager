@@ -113,7 +113,6 @@ Public Class EmberXMLScraperModule
     End Sub
 
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
-        Return True
         Select Case cap
             Case Enums.PostScraperCapabilities.Fanart
                 'If MySettings.UseTMDB Then Return True
@@ -122,7 +121,7 @@ Public Class EmberXMLScraperModule
             Case Enums.PostScraperCapabilities.Trailer
                 'If MySettings.DownloadTrailers Then Return True
         End Select
-        Return False
+        Return True
     End Function
 
 
@@ -222,12 +221,17 @@ Public Class EmberXMLScraperModule
                         DBMovie.FanartPath = Fanart.SaveAsFanart(DBMovie)
                         RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                     End If
-
                 End If
-
             End If
             If Master.GlobalScrapeMod.Trailer Then
-
+                If DBMovie.Movie.Trailer.Count > 0 Then
+                    If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
+                        ' TODO
+                    Else
+                        DBMovie.Movie.Trailer = mediaTag.Trailers(0)
+                        RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                    End If
+                End If
             End If
             If Master.GlobalScrapeMod.Extra Then
 
@@ -403,7 +407,6 @@ Public Class EmberXMLScraperModule
                     Case Else
                         res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                         If res.Count > 1 OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                            ' search Dialog
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
