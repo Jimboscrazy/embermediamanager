@@ -193,6 +193,12 @@
     <Compile Include="dlgImgView.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgTVRegExProfiles.Designer.vb">
+      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTVRegExProfiles.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgTVSource.Designer.vb">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
     </Compile>
@@ -355,6 +361,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgView.resx">
       <DependentUpon>dlgImgView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgTVRegExProfiles.resx">
+      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVSource.resx">
