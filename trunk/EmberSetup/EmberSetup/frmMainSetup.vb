@@ -1377,24 +1377,21 @@ Public Class frmMainSetup
     End Function
 
     Function GetHash(ByVal fname As String)
-        Dim md5Hasher As New SHA1CryptoServiceProvider() 'As MD5
-        'md5Hasher = MD5.Create()
-        ' Convert the input string to a byte array and compute the hash.
-        Dim fileReader As Byte()
-        fileReader = My.Computer.FileSystem.ReadAllBytes(fname)
-        Dim data As Byte() = md5Hasher.ComputeHash(fileReader)
-        ' Create a new Stringbuilder to collect the bytes
-        ' and create a string.
-        Dim sBuilder As New StringBuilder()
-        ' Loop through each byte of the hashed data
-        ' and format each one as a hexadecimal string.
-        Dim i As Integer
-        For i = 0 To data.Length - 1
-            sBuilder.Append(data(i).ToString("x2"))
-        Next i
-        md5Hasher.Clear()
-        ' Return the hexadecimal string.
-        Return sBuilder.ToString()
+        Using reader As New FileStream(fname, FileMode.Open, FileAccess.Read)
+            Dim KeyValue As Byte() = (New System.Text.UnicodeEncoding).GetBytes("HashingKey")
+            Using HMA As New HMACSHA1(KeyValue, True)
+
+                Dim hash() As Byte = HMA.ComputeHash(reader)
+
+                Dim sb As New StringBuilder(hash.Length * 2)
+
+                For i As Integer = 0 To hash.Length - 1
+                    sb.Append(hash(i).ToString("X2"))
+                Next
+
+                Return sb.ToString().ToLower
+            End Using
+        End Using
     End Function
 
     Sub InitCredits()
