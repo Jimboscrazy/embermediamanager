@@ -272,7 +272,7 @@ Public Class frmMain
 
                 .txtMetaData.Text = String.Empty
                 .pnlTop.Visible = False
-                .tslStatus.Text = String.Empty
+                '.tslStatus.Text = String.Empty
 
                 Application.DoEvents()
             End With
@@ -4664,7 +4664,7 @@ doCancel:
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
             Next
-
+            'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -8429,7 +8429,7 @@ doCancel:
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
-                Me.tslStatus.Visible = False
+                'Me.tslStatus.Visible = False
 
                 Me.SetControlsEnabled(True)
 
