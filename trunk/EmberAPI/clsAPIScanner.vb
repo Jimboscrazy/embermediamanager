@@ -777,7 +777,7 @@ Public Class Scanner
                 Else
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
-                            Not Not Regex.IsMatch(f.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.SkipStackSizeCheck AndAlso _
+                             Not Regex.IsMatch(f.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.SkipStackSizeCheck AndAlso _
                             StringUtils.IsStacked(f.Name)) OrElse (Not Convert.ToInt32(Master.eSettings.SkipLessThan) > 0 OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso bSingle Then
