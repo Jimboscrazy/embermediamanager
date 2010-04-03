@@ -3354,6 +3354,9 @@ doCancel:
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
                     If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+
+                        Me.mnuEpisodes.Enabled = True
+
                         For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                             If Convert.ToBoolean(sRow.Cells(22).Value) Then
                                 hasMissing = True
@@ -3371,7 +3374,6 @@ doCancel:
 
                             Me.ShowEpisodeMenuItems(True)
 
-                            Me.mnuEpisodes.Enabled = True
                             Me.ToolStripSeparator9.Visible = False
                             Me.cmnuEditEpisode.Visible = False
                             Me.ToolStripSeparator10.Visible = False
@@ -3412,12 +3414,7 @@ doCancel:
                             Me.mnuEpisodes.Enabled = True
                         End If
 
-                        For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                            If Convert.ToBoolean(sRow.Cells(22).Value) Then
-                                hasMissing = True
-                                Exit For
-                            End If
-                        Next
+                        If Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, dgvHTI.RowIndex).Value) Then hasMissing = True
 
                         If hasMissing Then
                             Me.ShowEpisodeMenuItems(False)
