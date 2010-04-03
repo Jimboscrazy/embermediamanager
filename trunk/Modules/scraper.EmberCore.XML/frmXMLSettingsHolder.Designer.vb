@@ -25,9 +25,10 @@ Partial Class frmXMLSettingsHolder
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
-        Me.pbPoster = New System.Windows.Forms.PictureBox
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
+        Me.lblLanguage = New System.Windows.Forms.Label
+        Me.pbPoster = New System.Windows.Forms.PictureBox
         Me.dgvSettings = New System.Windows.Forms.DataGridView
         Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Value = New System.Windows.Forms.DataGridViewComboBoxColumn
@@ -39,10 +40,9 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
-        Me.lblLanguage = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -61,15 +61,6 @@ Partial Class frmXMLSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
-        '
-        'pbPoster
-        '
-        Me.pbPoster.Location = New System.Drawing.Point(257, 36)
-        Me.pbPoster.Name = "pbPoster"
-        Me.pbPoster.Size = New System.Drawing.Size(178, 50)
-        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbPoster.TabIndex = 89
-        Me.pbPoster.TabStop = False
         '
         'pnlLoading
         '
@@ -92,6 +83,24 @@ Partial Class frmXMLSettingsHolder
         Me.Label3.TabIndex = 0
         Me.Label3.Text = "Loading Please Wait"
         '
+        'lblLanguage
+        '
+        Me.lblLanguage.Location = New System.Drawing.Point(258, 88)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(177, 15)
+        Me.lblLanguage.TabIndex = 90
+        Me.lblLanguage.Text = "Language"
+        Me.lblLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'pbPoster
+        '
+        Me.pbPoster.Location = New System.Drawing.Point(257, 36)
+        Me.pbPoster.Name = "pbPoster"
+        Me.pbPoster.Size = New System.Drawing.Size(178, 50)
+        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbPoster.TabIndex = 89
+        Me.pbPoster.TabStop = False
+        '
         'dgvSettings
         '
         Me.dgvSettings.AllowUserToAddRows = False
@@ -105,6 +114,7 @@ Partial Class frmXMLSettingsHolder
         Me.dgvSettings.MultiSelect = False
         Me.dgvSettings.Name = "dgvSettings"
         Me.dgvSettings.RowHeadersVisible = False
+        Me.dgvSettings.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgvSettings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
         Me.dgvSettings.ShowCellErrors = False
         Me.dgvSettings.ShowCellToolTips = False
@@ -208,15 +218,6 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
-        'lblLanguage
-        '
-        Me.lblLanguage.Location = New System.Drawing.Point(258, 88)
-        Me.lblLanguage.Name = "lblLanguage"
-        Me.lblLanguage.Size = New System.Drawing.Size(177, 15)
-        Me.lblLanguage.TabIndex = 90
-        Me.lblLanguage.Text = "Language"
-        Me.lblLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -234,9 +235,9 @@ Partial Class frmXMLSettingsHolder
         Me.Text = "Setup"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()

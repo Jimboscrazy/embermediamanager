@@ -223,7 +223,7 @@ Public Class EmberXMLScraperModule
                 End If
             End If
             If Master.GlobalScrapeMod.Trailer Then
-                If DBMovie.Movie.Trailer.Count > 0 Then
+                If mediaTag.Trailers.Count > 0 Then
                     If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
                         ' TODO
                     Else

@@ -174,7 +174,7 @@ Public Class frmSettingsHolder
         Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
         Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
         Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
-        Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected", True)
+        Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
 
