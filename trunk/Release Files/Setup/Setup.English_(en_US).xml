@@ -52,4 +52,5 @@
   <string id="50">OK</string>
   <string id="51">Platform</string>
   <string id="52">A new version is currently being uploaded. {0}Please try again in a few moments.</string>
+  <string id="53">Executing Commands for Base</string>
 </strings>
