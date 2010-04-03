@@ -1239,11 +1239,14 @@ Public Class Scanner
                                     Else
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
                                             tmpTVDB.TVEp = ModulesManager.Instance.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i, tmpTVDB.ShowLanguage, tmpTVDB.Ordering, Master.DefaultTVOptions)
-                                            toNfo = True
 
-                                            'if we had info for it (based on title) and mediainfo scanning is enabled
-                                            If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) AndAlso Master.eSettings.ScanTVMediaInfo Then
-                                                MediaInfo.UpdateTVMediaInfo(tmpTVDB)
+                                            If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
+                                                toNfo = True
+
+                                                'if we had info for it (based on title) and mediainfo scanning is enabled
+                                                If Master.eSettings.ScanTVMediaInfo Then
+                                                    MediaInfo.UpdateTVMediaInfo(tmpTVDB)
+                                                End If
                                             End If
 
                                             If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
@@ -1264,7 +1267,7 @@ Public Class Scanner
                                         Else
                                             tmpTVDB.TVEp = New MediaContainers.EpisodeDetails
                                         End If
-                                    End If
+                                        End If
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
