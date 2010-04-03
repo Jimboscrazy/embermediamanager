@@ -203,7 +203,7 @@ Public Class Scraper
                                 End If
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                     While SQLReader.Read
-                                        If Not Convert.ToBoolean(SQLReader("Lock")) Then tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
+                                        tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
                                     End While
                                 End Using
                             End Using
@@ -835,7 +835,7 @@ Public Class Scraper
 
                             If Me.bwTVDB.CancellationPending Then Return
 
-                            If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 Then
+                            If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
                                 If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
 
                                 If Me.bwTVDB.CancellationPending Then Return
