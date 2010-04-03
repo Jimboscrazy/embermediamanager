@@ -616,8 +616,14 @@ Public Class Scanner
 
             If Not String.IsNullOrEmpty(mContainer.Nfo) Then
                 tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Nfo, mContainer.isSingle)
+                If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
+                    MediaInfo.UpdateMediaInfo(tmpMovieDB)
+                End If
             Else
                 tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Filename, mContainer.isSingle)
+                If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
+                    MediaInfo.UpdateMediaInfo(tmpMovieDB)
+                End If
             End If
 
             If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
@@ -1230,10 +1236,18 @@ Public Class Scanner
 
                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
                                         tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
+                                        If Not tmpTVDB.TVEp.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) AndAlso Master.eSettings.ScanTVMediaInfo Then
+                                            MediaInfo.UpdateTVMediaInfo(tmpTVDB)
+                                        End If
                                     Else
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
                                             tmpTVDB.TVEp = ModulesManager.Instance.GetSingleEpisode(Convert.ToInt32(tmpTVDB.ShowID), tmpTVDB.TVShow.ID, sSeasons.Season, i, tmpTVDB.ShowLanguage, tmpTVDB.Ordering, Master.DefaultTVOptions)
                                             toNfo = True
+
+                                            'if we had info for it (based on title) and mediainfo scanning is enabled
+                                            If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) AndAlso Master.eSettings.ScanTVMediaInfo Then
+                                                MediaInfo.UpdateTVMediaInfo(tmpTVDB)
+                                            End If
 
                                             If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
                                                 If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
