@@ -272,6 +272,27 @@ Public Class dlgSettings
         Next
     End Sub
 
+    Sub RemoveScraperPanels()
+        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
+            RemoveHandler s.ProcessorModule.PostScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+            RemoveHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+    End Sub
+
     Private Sub btnAddEpFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddEpFilter.Click
         If Not String.IsNullOrEmpty(Me.txtEpFilter.Text) Then
             Me.lstEpFilters.Items.Add(Me.txtEpFilter.Text)
@@ -406,6 +427,7 @@ Public Class dlgSettings
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         If Not didApply Then sResult.DidCancel = True
+        RemoveScraperPanels()
         Me.Close()
     End Sub
 
@@ -602,6 +624,7 @@ Public Class dlgSettings
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         NoUpdate = True
         Me.SaveSettings(False)
+        RemoveScraperPanels()
         Me.Close()
     End Sub
 
@@ -1986,7 +2009,6 @@ Public Class dlgSettings
         Me.txtEpRegex.Text = String.Empty
         Me.cboEpRetrieve.SelectedIndex = -1
     End Sub
-
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
@@ -2491,10 +2513,9 @@ Public Class dlgSettings
             tSetPan.ImageIndex = If(State, 9, 10)
 
             Try
-
+                'If tvSettings.Nodes.Count > 0 AndAlso tvSettings.Nodes(0).TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
                 If Not IsNothing(tvSettings.Nodes.Find(Name, True)(0)) Then
                     Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-                    If t.TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
                     If Not diffOrder = 0 Then
                         Dim p As TreeNode = t.Parent
                         Dim i As Integer = t.Index
