@@ -175,6 +175,7 @@ Public Class XBMCxCom
             tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconMediaCenters"), ToolStripMenuItem)
             tSettingsHolder.Dispose()
             MyMenu.DropDownItems.Clear()
+            MyTrayMenu.DropDownItems.Clear()
             If _MySettings.XComs.Count > 0 Then
                 Dim tMenu As New System.Windows.Forms.ToolStripMenuItem With {.Text = Master.eLang.GetString(649, "Update All", True), .Tag = Nothing}
                 AddHandler tMenu.Click, AddressOf xCom_Click
