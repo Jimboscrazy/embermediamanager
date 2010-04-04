@@ -30,7 +30,6 @@ Partial Class dlgTrailer
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbStatus = New System.Windows.Forms.ProgressBar
-        Me.btnGetTrailers = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.txtManual = New System.Windows.Forms.TextBox
@@ -65,7 +64,6 @@ Partial Class dlgTrailer
         '
         'lbTrailers
         '
-        Me.lbTrailers.Enabled = False
         Me.lbTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbTrailers.FormattingEnabled = True
         Me.lbTrailers.HorizontalScrollbar = True
@@ -77,7 +75,6 @@ Partial Class dlgTrailer
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.pnlStatus)
-        Me.GroupBox1.Controls.Add(Me.btnGetTrailers)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.lbTrailers)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -120,19 +117,6 @@ Partial Class dlgTrailer
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 0
         '
-        'btnGetTrailers
-        '
-        Me.btnGetTrailers.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnGetTrailers.Image = CType(resources.GetObject("btnGetTrailers.Image"), System.Drawing.Image)
-        Me.btnGetTrailers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnGetTrailers.Location = New System.Drawing.Point(120, 82)
-        Me.btnGetTrailers.Name = "btnGetTrailers"
-        Me.btnGetTrailers.Size = New System.Drawing.Size(184, 23)
-        Me.btnGetTrailers.TabIndex = 71
-        Me.btnGetTrailers.Text = "Download Trailer List"
-        Me.btnGetTrailers.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnGetTrailers.UseVisualStyleBackColor = True
-        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.btnBrowse)
@@ -174,12 +158,12 @@ Partial Class dlgTrailer
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Local Trailer:"
         '
-        'txtYouTube
+        'txtDirectLink
         '
         Me.txtDirectLink.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtDirectLink.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDirectLink.Location = New System.Drawing.Point(9, 28)
-        Me.txtDirectLink.Name = "txtYouTube"
+        Me.txtDirectLink.Name = "txtDirectLink"
         Me.txtDirectLink.Size = New System.Drawing.Size(392, 22)
         Me.txtDirectLink.TabIndex = 1
         '
@@ -260,6 +244,5 @@ Partial Class dlgTrailer
     Friend WithEvents txtManual As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents btnGetTrailers As System.Windows.Forms.Button
 
 End Class

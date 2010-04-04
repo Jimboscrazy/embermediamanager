@@ -380,7 +380,9 @@ Public Class EmberXMLScraperModule
             If Master.GlobalScrapeMod.Trailer Then
                 If mediaTag.Trailers.Count > 0 Then
                     If ScrapeType = Enums.ScrapeType.FullAsk OrElse ScrapeType = Enums.ScrapeType.NewAsk OrElse ScrapeType = Enums.ScrapeType.MarkAsk OrElse ScrapeType = Enums.ScrapeType.UpdateAsk Then
-                        ' TODO
+                        Using dTrailer As New dlgTrailer
+                            DBMovie.Movie.Trailer = dTrailer.ShowDialog(DBMovie.Filename, mediaTag.Trailers)
+                        End Using
                     Else
                         DBMovie.Movie.Trailer = mediaTag.Trailers(0)
                         RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)

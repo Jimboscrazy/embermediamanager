@@ -25,24 +25,20 @@ Public Class dlgTrailer
 
     #Region "Fields"
 
-    Public IMDBURL As String
+    Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
 
-    Friend  WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
-    Friend  WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
-
-    'Private cTrailer As New Trailers
-    'Private imdbID As String = String.Empty
     Private prePath As String = String.Empty
     Private sPath As String = String.Empty
-    Private tArray As New List(Of String)
     Private tURL As String = String.Empty
 
     #End Region 'Fields
 
     #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal _sPath As String) As String
+    Public Overloads Function ShowDialog(ByVal _sPath As String, ByVal _trailerlist As List(Of String)) As String
         Me.sPath = _sPath
+
+        Me.lbTrailers.Items.AddRange(_trailerlist.ToArray)
 
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return Me.tURL
@@ -50,11 +46,6 @@ Public Class dlgTrailer
             Return String.Empty
         End If
     End Function
-
-    Protected Overrides Sub Finalize()
-        'cTrailer = Nothing
-        MyBase.Finalize()
-    End Sub
 
     Private Sub BeginDownload(ByVal CloseDialog As Boolean)
         Dim didCancel As Boolean = False
@@ -140,21 +131,6 @@ Public Class dlgTrailer
         End Try
     End Sub
 
-    Private Sub btnGetTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTrailers.Click
-        Me.OK_Button.Enabled = False
-        Me.btnSetNfo.Enabled = False
-        Me.btnPlayTrailer.Enabled = False
-        Me.lbTrailers.Enabled = False
-        Me.txtDirectLink.Enabled = False
-        Me.txtManual.Enabled = False
-        Me.btnBrowse.Enabled = False
-        Me.pnlStatus.Visible = True
-
-        Me.bwCompileList = New System.ComponentModel.BackgroundWorker
-        Me.bwCompileList.WorkerSupportsCancellation = True
-        Me.bwCompileList.RunWorkerAsync()
-    End Sub
-
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
             Me.BeginDownload(False)
@@ -219,47 +195,29 @@ Public Class dlgTrailer
 
     End Sub
 
-    Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
-        Try
-            'tArray = cTrailer.GetTrailers(Me.imdbID, False)
-
-            If Me.bwCompileList.CancellationPending Then
-                e.Cancel = True
-            End If
-        Catch
-        End Try
-    End Sub
-
-    Private Sub bwCompileList_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCompileList.RunWorkerCompleted
-        If Not e.Cancelled Then
-            If Me.tArray.Count > 0 Then
-                For Each tTrail As String In Me.tArray
-                    Me.lbTrailers.Items.Add(tTrail)
-                Next
-
-                Me.btnGetTrailers.Visible = False
-            Else
-                Me.btnGetTrailers.Enabled = False
-            End If
-
-        End If
-
-        Me.pnlStatus.Visible = False
-        Me.lbTrailers.Enabled = True
-        Me.txtDirectLink.Enabled = True
-        Me.txtManual.Enabled = True
-        Me.btnBrowse.Enabled = True
-        Me.SetEnabled(False)
-    End Sub
-
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-
-            If Args.bType Then
-                'Me.tURL = cTrailer.DownloadTrailer(Me.sPath, Args.Parameter)
-            Else
-                'Me.prePath = cTrailer.DownloadTrailer(Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), Args.Parameter)
+            If Not String.IsNullOrEmpty(Args.Parameter) Then
+                Dim WebPage As New HTTP
+                If Args.bType Then
+                    Me.tURL = WebPage.DownloadFile(Args.Parameter, Me.sPath, True, "trailer")
+                    If Not String.IsNullOrEmpty(Me.tURL) Then
+                        'delete any other trailer if enabled in settings and download successful
+                        If Master.eSettings.DeleteAllTrailers Then
+                            Me.DeleteTrailers(Me.sPath, Me.tURL)
+                        End If
+                    End If
+                Else
+                    Me.prePath = WebPage.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True, "trailer")
+                    If Not String.IsNullOrEmpty(Me.prePath) Then
+                        'delete any other trailer if enabled in settings and download successful
+                        If Master.eSettings.DeleteAllTrailers Then
+                            Me.DeleteTrailers(Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), Me.prePath)
+                        End If
+                    End If
+                End If
+                WebPage = Nothing
             End If
 
         Catch
@@ -293,13 +251,28 @@ Public Class dlgTrailer
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        'Me.cTrailer.Cancel()
+    Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
+        Dim parPath As String = Directory.GetParent(sPath).FullName
+        Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+        For Each t As String In Master.eSettings.ValidExts
+            If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpName, "-trailer", t))
+            ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpName, "[trailer]", t))
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
+            End If
+        Next
+    End Sub
 
-        If Me.bwCompileList.IsBusy Then Me.bwCompileList.CancelAsync()
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+
         If Me.bwDownloadTrailer.IsBusy Then Me.bwDownloadTrailer.CancelAsync()
 
-        While Me.bwCompileList.IsBusy OrElse Me.bwDownloadTrailer.IsBusy
+        While Me.bwDownloadTrailer.IsBusy
             Application.DoEvents()
         End While
 
@@ -309,8 +282,6 @@ Public Class dlgTrailer
 
     Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
-        'cTrailer.IMDBURL = IMDBURL
-        'AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -335,10 +306,15 @@ Public Class dlgTrailer
             Me.prePath = String.Empty
         End If
 
-        If StringUtils.isValidURL(Me.txtDirectLink.Text) OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
-            Me.OK_Button.Enabled = True
+        Dim halfAllow As Boolean = StringUtils.isValidURL(Me.txtDirectLink.Text) OrElse Me.txtManual.Text.Length > 0
+        If halfAllow OrElse Me.lbTrailers.SelectedItems.Count > 0 Then
+
+            If halfAllow OrElse Not Me.lbTrailers.SelectedItems(0).ToString.StartsWith("rtmp") Then
+                Me.OK_Button.Enabled = True
+                Me.btnPlayTrailer.Enabled = True
+            End If
+
             Me.btnSetNfo.Enabled = True
-            Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
                 Me.OK_Button.Text = Master.eLang.GetString(61, "Copy")
                 Me.btnSetNfo.Text = Master.eLang.GetString(60, "Move")
@@ -362,7 +338,6 @@ Public Class dlgTrailer
         Me.GroupBox1.Text = Master.eLang.GetString(65, "Select Trailer to Download")
         Me.GroupBox2.Text = Master.eLang.GetString(66, "Manual Trailer Entry")
         Me.Label1.Text = Master.eLang.GetString(67, "Direct Link:")
-        Me.lblStatus.Text = Master.eLang.GetString(68, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(69, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(63, "Set To Nfo")
         Me.Label2.Text = Master.eLang.GetString(70, "Local Trailer:")
