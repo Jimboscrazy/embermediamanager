@@ -27,6 +27,7 @@ Imports System.Drawing.Imaging
 
 Public Class EmberXMLScraperModule
     Implements Interfaces.EmberMovieScraperModule
+
 #Region "Fields"
 
     Private _Name As String = "Ember XML Movie Scrapers"
@@ -107,9 +108,18 @@ Public Class EmberXMLScraperModule
 #End Region 'Properties
 
 #Region "Methods"
+    Delegate Sub DelegateFunction()
     Sub Enabled()
     End Sub
     Sub Disabled()
+    End Sub
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
+        _AssemblyName = sAssemblyName
+        scraperName = AdvancedSettings.GetSetting("ScraperName", "NFO Scraper")
+        scraperFileName = AdvancedSettings.GetSetting("ScraperFileName", "")
+        PrepareScraper()
+        XMLManager.LoadScrapers(scraperFileName)
+        LoadScraperSettings()
     End Sub
 
     Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule.QueryPostScraperCapabilities
@@ -123,7 +133,6 @@ Public Class EmberXMLScraperModule
         End Select
         Return True
     End Function
-
 
     Sub LoadSettings()
         ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
@@ -150,7 +159,7 @@ Public Class EmberXMLScraperModule
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
-        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", False)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
@@ -162,6 +171,152 @@ Public Class EmberXMLScraperModule
         ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
+    Sub SaveSettings()
+        AdvancedSettings.SetBooleanSetting("DoFullCast", ConfigOptions.bFullCast)
+        AdvancedSettings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
+        AdvancedSettings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
+        AdvancedSettings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
+        AdvancedSettings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
+        AdvancedSettings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
+        AdvancedSettings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
+        AdvancedSettings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
+        AdvancedSettings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
+        AdvancedSettings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
+        AdvancedSettings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
+        AdvancedSettings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
+        AdvancedSettings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
+        AdvancedSettings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
+        AdvancedSettings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
+        AdvancedSettings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
+        AdvancedSettings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
+        AdvancedSettings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
+        AdvancedSettings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
+        AdvancedSettings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
+        AdvancedSettings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
+        AdvancedSettings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+        AdvancedSettings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
+        AdvancedSettings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
+
+        AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+        AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+    End Sub
+
+    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.GetMovieStudio
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
+        Try
+            LoadSettings()
+            LastDBMovieID = -1
+            If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
+                XMLManager.LoadScrapers(scraperFileName)
+                LoadScraperSettings()
+                ScrapersLoaded = True
+            End If
+            If scraperName = String.Empty Then
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No XML Scraper Defined {0}."), vbNewLine), Nothing}))
+                Return New Interfaces.ModuleResult With {.breakChain = False}
+            End If
+            Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+
+            If Master.GlobalScrapeMod.NFO Then
+
+                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+                    DBMovie.ClearExtras = True
+                    DBMovie.PosterPath = String.Empty
+                    DBMovie.FanartPath = String.Empty
+                    DBMovie.TrailerPath = String.Empty
+                    DBMovie.ExtraPath = String.Empty
+                    DBMovie.SubPath = String.Empty
+                    DBMovie.NfoPath = String.Empty
+                    DBMovie.Movie.Clear()
+                End If
+                Dim tmpTitle As String = DBMovie.Movie.Title
+                If String.IsNullOrEmpty(tmpTitle) Then
+                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                End If
+                Select Case ScrapeType
+                    Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                        If res.Count > 0 Then
+                            ' Get first and go
+                            lMediaTag = XMLManager.GetDetails(res(0))
+                            MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                        End If
+                    Case Else
+                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+                        If res.Count > 1 OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
+                            Using dlg As New dlgSearchResults
+                                dlg.XMLManager = XMLManager
+                                Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
+                                If Not IsNothing(s) Then
+                                    dlg.pbScraperLogo.Load(s.ScraperThumb)
+                                End If
+                                If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                                    lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
+                                    MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                                Else
+                                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                                End If
+                            End Using
+                        ElseIf res.Count = 1 Then
+                            lMediaTag = XMLManager.GetDetails(res(0))
+                            MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                        Else
+                            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+        End Try
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+    Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal gOptions As Structures.ScrapeOptions)
+        Dim Options As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(gOptions, ConfigOptions)
+        Options = Functions.ScrapeOptionsAndAlso(Options, Functions.LocksToOptions())
+        LastDBMovieID = DBMovie.ID
+        If Options.bCert Then
+            If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then DBMovie.Movie.Certification = (lMediaTag.Certifications.FirstOrDefault(Function(y) y.StartsWith(Master.eSettings.CertificationLang)))
+            If Not DBMovie.Movie.Certification Is Nothing AndAlso DBMovie.Movie.Certification.IndexOf("(") >= 0 Then DBMovie.Movie.Certification = Web.HttpUtility.HtmlDecode(DBMovie.Movie.Certification.Substring(0, DBMovie.Movie.Certification.IndexOf("(")))
+        End If
+        If Options.bDirector Then DBMovie.Movie.Director = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Directors.ToArray(), " / "))
+        If Options.bGenre AndAlso Not Master.eSettings.LockGenre Then DBMovie.Movie.Genre = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Genres.ToArray(), " / "))
+        If Options.bMPAA Then DBMovie.Movie.MPAA = Web.HttpUtility.HtmlDecode(lMediaTag.MPAA)
+        If Options.bPlot Then
+            If Not String.IsNullOrEmpty(lMediaTag.Plot) Then
+                DBMovie.Movie.Plot = Web.HttpUtility.HtmlDecode(lMediaTag.Plot)
+            ElseIf Master.eSettings.OutlineForPlot Then
+                DBMovie.Movie.Plot = Web.HttpUtility.HtmlDecode(lMediaTag.Outline)
+            End If
+        End If
+        If Options.bOutline AndAlso Not Master.eSettings.LockOutline Then DBMovie.Movie.Outline = Web.HttpUtility.HtmlDecode(lMediaTag.Outline)
+        If Options.bRelease Then DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
+        If Options.bRating AndAlso Not Master.eSettings.LockRating Then DBMovie.Movie.Rating = Web.HttpUtility.HtmlDecode(lMediaTag.Rating.ToString)
+        If Options.bRuntime Then DBMovie.Movie.Runtime = lMediaTag.Runtime
+        'DBMovie.Movie.Sets = lMediaTag.Sets
+        If Options.bStudio AndAlso Not Master.eSettings.LockStudio Then DBMovie.Movie.Studio = Web.HttpUtility.HtmlDecode(lMediaTag.Studio)
+        If Options.bTagline AndAlso Not Master.eSettings.LockTagline Then DBMovie.Movie.Tagline = Web.HttpUtility.HtmlDecode(lMediaTag.Tagline)
+        If Options.bTitle AndAlso Not Master.eSettings.LockTitle Then DBMovie.Movie.Title = lMediaTag.Title
+        If Options.bTop250 Then DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
+        If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString
+        If Options.bWriters Then DBMovie.Movie.Credits = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Writers.ToArray, " / "))
+        If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
+        DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
+        DBMovie.Movie.ID = If(lMediaTag.ID.StartsWith("tt"), lMediaTag.ID.Replace("tt", ""), lMediaTag.ID) 'String.Empty)
+        If Options.bCast Then
+            DBMovie.Movie.Actors.Clear()
+            For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
+                Dim person As New MediaContainers.Person
+                person.Name = Web.HttpUtility.HtmlDecode(p.Name)
+                person.Role = p.Role
+                person.Thumb = p.Thumb.Thumb
+                DBMovie.Movie.Actors.Add(person)
+            Next
+        End If
+    End Sub
 
     Public Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.PostScraper
         Dim saveModifier As Structures.ScrapeModifier = Master.GlobalScrapeMod
@@ -241,52 +396,38 @@ Public Class EmberXMLScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.GetMovieStudio
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule.Init
-        _AssemblyName = sAssemblyName
-        scraperName = AdvancedSettings.GetSetting("ScraperName", "NFO Scraper")
-        scraperFileName = AdvancedSettings.GetSetting("ScraperFileName", "")
-        PrepareScraper()
-        XMLManager.LoadScrapers(scraperFileName)
-        LoadScraperSettings()
-    End Sub
-
-    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
-        'PrepareScraper()
-        Dim Spanel As New Containers.SettingsPanel
-        _postsetup = New frmXMLMediaSettingsHolder
-        _postsetup.cbEnabled.Checked = _PostScraperEnabled
-        _postsetup.orderChanged()
-        Spanel.Name = String.Concat(Me._Name, "PostScraper")
-        Spanel.Text = Master.eLang.GetString(0, "'Ember XML Movie Scrapers")
-        Spanel.Prefix = "XMLMovieMedia_"
-        Spanel.Order = 110
-        Spanel.Parent = "pnlMovieMedia"
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
-        Spanel.Panel = _postsetup.pnlSettings
-        AddHandler _postsetup.SetupScraperChanged, AddressOf Handle_SetupPostScraperChanged
-        'AddHandler _postsetup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        'AddHandler _postsetup.PopulateScrapers, AddressOf PopulateSettings
-        Return Spanel
-    End Function
-    Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        PostScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
-    End Sub
-
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmXMLSettingsHolder
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.orderChanged()
+        LoadSettings()
+        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkYear.Checked = ConfigOptions.bYear
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        _setup.chkRelease.Checked = ConfigOptions.bRelease
+        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        _setup.chkRating.Checked = ConfigOptions.bRating
+        _setup.chkVotes.Checked = ConfigOptions.bVotes
+        _setup.chkStudio.Checked = ConfigOptions.bStudio
+        _setup.chkTagline.Checked = ConfigOptions.bTagline
+        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.chkCast.Checked = ConfigOptions.bCast
+        _setup.chkDirector.Checked = ConfigOptions.bDirector
+        _setup.chkWriters.Checked = ConfigOptions.bWriters
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
+        _setup.chkTop250.Checked = ConfigOptions.bTop250
+        _setup.chkCertification.Checked = ConfigOptions.bCert
+        _setup.chkFullCast.Checked = ConfigOptions.bFullCast
+
+        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
+        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        _setup.chkMusicBy.Checked = ConfigOptions.bMusicBy
+        _setup.chkProducers.Checked = ConfigOptions.bProducers
+
         If _setup.cbScraper.Items.Count = 0 Then
             _setup.cbScraper.Items.Add(scraperName)
             _setup.cbScraper.SelectedIndex = 0
@@ -309,7 +450,6 @@ Public Class EmberXMLScraperModule
         Return Spanel
     End Function
 
-
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
@@ -320,6 +460,30 @@ Public Class EmberXMLScraperModule
         Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = _setup.cbScraper.SelectedItem.ToString)
         If Not IsNothing(s) Then scraperFileName = s.FileName
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule.InjectSetupPostScraper
+        Dim Spanel As New Containers.SettingsPanel
+        _postsetup = New frmXMLMediaSettingsHolder
+        _postsetup.cbEnabled.Checked = _PostScraperEnabled
+        _postsetup.orderChanged()
+        Spanel.Name = String.Concat(Me._Name, "PostScraper")
+        Spanel.Text = Master.eLang.GetString(0, "'Ember XML Movie Scrapers")
+        Spanel.Prefix = "XMLMovieMedia_"
+        Spanel.Order = 110
+        Spanel.Parent = "pnlMovieMedia"
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
+        Spanel.Panel = _postsetup.pnlSettings
+        AddHandler _postsetup.SetupScraperChanged, AddressOf Handle_SetupPostScraperChanged
+        'AddHandler _postsetup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        'AddHandler _postsetup.PopulateScrapers, AddressOf PopulateSettings
+        Return Spanel
+    End Function
+
+    Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        PostScraperEnabled = state
+        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
     End Sub
 
     Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
@@ -347,6 +511,30 @@ Public Class EmberXMLScraperModule
                 Next
             End If
         End If
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bYear = _setup.chkYear.Checked
+        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bRelease = _setup.chkRelease.Checked
+        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
+        ConfigOptions.bRating = _setup.chkRating.Checked
+        ConfigOptions.bVotes = _setup.chkVotes.Checked
+        ConfigOptions.bStudio = _setup.chkStudio.Checked
+        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bOutline = _setup.chkOutline.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
+        ConfigOptions.bCast = _setup.chkCast.Checked
+        ConfigOptions.bDirector = _setup.chkDirector.Checked
+        ConfigOptions.bWriters = _setup.chkWriters.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bTop250 = _setup.chkTop250.Checked
+        ConfigOptions.bCert = _setup.chkCertification.Checked
+        ' Bellow Not used in XBMC XML Scrapers ?????
+        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
+        ConfigOptions.bMusicBy = _setup.chkMusicBy.Checked
+        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
+        ConfigOptions.bProducers = _setup.chkProducers.Checked
+        ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
+        SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -355,6 +543,7 @@ Public Class EmberXMLScraperModule
             _setup.Dispose()
         End If
     End Sub
+
     Sub LoadScraperSettings()
         Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
         If Not s Is Nothing Then
@@ -364,114 +553,6 @@ Public Class EmberXMLScraperModule
                 End If
             Next
         End If
-    End Sub
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
-        Try
-            LastDBMovieID = -1
-            If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
-                XMLManager.LoadScrapers(scraperFileName)
-                LoadScraperSettings()
-                ScrapersLoaded = True
-            End If
-            If scraperName = String.Empty Then
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(998, "XML Scraper"), String.Format(Master.eLang.GetString(998, "No XML Scraper Defined {0}."), vbNewLine), Nothing}))
-                Return New Interfaces.ModuleResult With {.breakChain = False}
-            End If
-            Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
-
-            If Master.GlobalScrapeMod.NFO Then
-
-                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
-                    DBMovie.ClearExtras = True
-                    DBMovie.PosterPath = String.Empty
-                    DBMovie.FanartPath = String.Empty
-                    DBMovie.TrailerPath = String.Empty
-                    DBMovie.ExtraPath = String.Empty
-                    DBMovie.SubPath = String.Empty
-                    DBMovie.NfoPath = String.Empty
-                    DBMovie.Movie.Clear()
-                End If
-                Dim tmpTitle As String = DBMovie.Movie.Title
-                If String.IsNullOrEmpty(tmpTitle) Then
-                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
-                End If
-                Select Case ScrapeType
-                    Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
-                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                        If res.Count > 0 Then
-                            ' Get first and go
-                            lMediaTag = XMLManager.GetDetails(res(0))
-                            MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                        End If
-                    Case Else
-                        res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                        If res.Count > 1 OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                            Using dlg As New dlgSearchResults
-                                dlg.XMLManager = XMLManager
-                                Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-                                If Not IsNothing(s) Then
-                                    dlg.pbScraperLogo.Load(s.ScraperThumb)
-                                End If
-                                If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
-                                    lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
-                                    MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                                Else
-                                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                                End If
-                            End Using
-                        ElseIf res.Count = 1 Then
-                            lMediaTag = XMLManager.GetDetails(res(0))
-                            MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                        Else
-                            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-        End Try
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-    Sub MapFields(ByRef DBMovie As Structures.DBMovie, ByVal lMediaTag As XMLScraper.MediaTags.MovieTag, ByVal Options As Structures.ScrapeOptions)
-        LastDBMovieID = DBMovie.ID
-        If Options.bCert Then
-            If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then DBMovie.Movie.Certification = (lMediaTag.Certifications.FirstOrDefault(Function(y) y.StartsWith(Master.eSettings.CertificationLang)))
-            If Not DBMovie.Movie.Certification Is Nothing AndAlso DBMovie.Movie.Certification.IndexOf("(") >= 0 Then DBMovie.Movie.Certification = Web.HttpUtility.HtmlDecode(DBMovie.Movie.Certification.Substring(0, DBMovie.Movie.Certification.IndexOf("(")))
-        End If
-        If Options.bDirector Then DBMovie.Movie.Director = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Directors.ToArray(), " / "))
-        If Options.bGenre AndAlso Not Master.eSettings.LockGenre Then DBMovie.Movie.Genre = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Genres.ToArray(), " / "))
-        If Options.bMPAA Then DBMovie.Movie.MPAA = Web.HttpUtility.HtmlDecode(lMediaTag.MPAA)
-        If Options.bPlot AndAlso Not Master.eSettings.LockPlot Then
-            If Not String.IsNullOrEmpty(lMediaTag.Plot) Then
-                DBMovie.Movie.Plot = Web.HttpUtility.HtmlDecode(lMediaTag.Plot)
-            ElseIf Master.eSettings.OutlineForPlot Then
-                DBMovie.Movie.Plot = Web.HttpUtility.HtmlDecode(lMediaTag.Outline)
-            End If
-        End If
-        If Options.bOutline AndAlso Not Master.eSettings.LockOutline Then DBMovie.Movie.Outline = Web.HttpUtility.HtmlDecode(lMediaTag.Outline)
-        If Options.bRelease Then DBMovie.Movie.ReleaseDate = lMediaTag.Premiered
-        If Options.bRating AndAlso Not Master.eSettings.LockRating Then DBMovie.Movie.Rating = Web.HttpUtility.HtmlDecode(lMediaTag.Rating.ToString)
-        If Options.bRuntime Then DBMovie.Movie.Runtime = lMediaTag.Runtime
-        'DBMovie.Movie.Sets = lMediaTag.Sets
-        If Options.bStudio AndAlso Not Master.eSettings.LockStudio Then DBMovie.Movie.Studio = Web.HttpUtility.HtmlDecode(lMediaTag.Studio)
-        If Options.bTagline AndAlso Not Master.eSettings.LockTagline Then DBMovie.Movie.Tagline = Web.HttpUtility.HtmlDecode(lMediaTag.Tagline)
-        If Options.bTitle AndAlso Not Master.eSettings.LockTitle Then DBMovie.Movie.Title = lMediaTag.Title
-        If Options.bTop250 Then DBMovie.Movie.Top250 = lMediaTag.Top250.ToString
-        If Options.bVotes Then DBMovie.Movie.Votes = lMediaTag.Votes.ToString
-        If Options.bWriters Then DBMovie.Movie.Credits = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Writers.ToArray, " / "))
-        If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
-        DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
-        DBMovie.Movie.ID = If(lMediaTag.ID.StartsWith("tt"), lMediaTag.ID.Replace("tt", ""), lMediaTag.ID) 'String.Empty)
-        If Options.bCast Then
-            DBMovie.Movie.Actors.Clear()
-            For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
-                Dim person As New MediaContainers.Person
-                person.Name = Web.HttpUtility.HtmlDecode(p.Name)
-                person.Role = p.Role
-                person.Thumb = p.Thumb.Thumb
-                DBMovie.Movie.Actors.Add(person)
-            Next
-        End If
-
     End Sub
 
     Sub PopulateScraperSettings()
@@ -529,6 +610,7 @@ Public Class EmberXMLScraperModule
         Catch ex As Exception
         End Try
     End Sub
+
     Sub XMLScraperSettingClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs)
         Try
             If Not _setup.dgvSettings.Rows(e.RowIndex).Cells(e.ColumnIndex).Tag Is Nothing Then
@@ -593,6 +675,11 @@ Public Class EmberXMLScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+
     Sub PopulateSettings()
         bwPopulate.WorkerReportsProgress = True
         bwPopulate.RunWorkerAsync()
@@ -607,7 +694,7 @@ Public Class EmberXMLScraperModule
         PopulateScraperSettings()
         _setup.parentRunning = False
     End Sub
-    Delegate Sub DelegateFunction()
+
     Sub PoupulateForm()
         If _setup Is Nothing Then Return
         If _setup.InvokeRequired Then
@@ -642,7 +729,6 @@ Public Class EmberXMLScraperModule
     Public Sub PostScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.PostScraperOrderChanged
         _postsetup.orderChanged()
     End Sub
-
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule.ScraperOrderChanged
         _setup.orderChanged()
     End Sub

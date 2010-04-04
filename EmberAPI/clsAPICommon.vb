@@ -494,6 +494,37 @@ Public Class Functions
         Return Math.Floor(diff.TotalSeconds)
     End Function
 
+    Public Shared Function LocksToOptions() As Structures.ScrapeOptions
+        Dim options As New Structures.ScrapeOptions
+        With options
+            .bCast = True
+            .bDirector = True
+            .bGenre = True
+            .bMPAA = True
+            .bCert = True
+            .bMusicBy = True
+            .bOtherCrew = True
+            .bOutline = Not Master.eSettings.LockOutline
+            .bPlot = Not Master.eSettings.LockPlot
+            .bProducers = True
+            .bRating = Not Master.eSettings.LockRating
+            .bRelease = True
+            .bRuntime = True
+            .bStudio = Not Master.eSettings.LockStudio
+            .bTagline = Not Master.eSettings.LockTagline
+            .bTitle = Not Master.eSettings.LockTitle
+            .bTrailer = Not Master.eSettings.LockTrailer
+            .bVotes = True
+            .bWriters = True
+            .bYear = True
+            .bTop250 = True
+            .bFullCrew = True
+            .bFullCast = True
+        End With
+        Return options
+    End Function
+
+
     Public Shared Sub CreateDefaultOptions()
         With Master.DefaultOptions
             .bCast = Master.eSettings.FieldCast
