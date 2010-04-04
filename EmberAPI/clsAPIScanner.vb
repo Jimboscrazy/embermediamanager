@@ -310,8 +310,8 @@ Public Class Scanner
                     OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                     (((Master.eSettings.MovieNameNFO OrElse isYAMJ) AndAlso (fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
                                                                              fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
-                                                                             fFile.ToLower = "video_ts.nfo" OrElse _
-                                                                             fFile.ToLower = "index.nfo")))) Then
+                                                                             fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
+                                                                             fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
                         Movie.Nfo = fFile
                         Continue For
                     End If
