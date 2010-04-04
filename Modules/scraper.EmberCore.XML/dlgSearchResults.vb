@@ -213,7 +213,7 @@ Public Class dlgSearchResults
 
     Private Sub SetUp()
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(1, "Cancel")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
         Me.Label2.Text = Master.eLang.GetString(3, "View details of each result to find the proper movie.")
         Me.Label1.Text = Master.eLang.GetString(4, "Movie Search Results")
         Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:", True)

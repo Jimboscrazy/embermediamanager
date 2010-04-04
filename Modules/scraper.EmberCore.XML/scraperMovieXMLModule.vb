@@ -45,6 +45,10 @@ Public Class EmberXMLScraperModule
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared _AssemblyName As String
+    Friend WithEvents bwGetTralier As New System.ComponentModel.BackgroundWorker
+    Private Structure Arguments
+        Dim DBMovie As Structures.DBMovie
+    End Structure
 #End Region 'Fields
 
 #Region "Events"
@@ -678,9 +682,56 @@ Public Class EmberXMLScraperModule
     End Function
 
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
+        Try
+            LoadSettings()
+            If DBMovie.ID <> LastDBMovieID Then
+                Dim dlg As New dlgPleaseWait
+                dlg.Show()
+                Try
+                    If Not bwGetTralier.IsBusy Then
+                        Me.bwGetTralier.RunWorkerAsync(New Arguments With {.DBMovie = DBMovie})
+                    End If
+                    While bwGetTralier.IsBusy
+                        If dlg.DialogResult = DialogResult.Cancel Then
+                            bwGetTralier.CancelAsync()
+                            Exit While
+                        End If
+                        Application.DoEvents()
+                    End While
+                Catch ex As Exception
+                End Try
+                dlg.Close()
+                dlg = Nothing
+            End If
+            If lMediaTag Is Nothing Then
+                Return New Interfaces.ModuleResult With {.breakChain = False, .BoolProperty = False}
+            Else
+                Dim mediaTag As XMLScraper.MediaTags.MovieTag = DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag)
+                Using dTrailer As New dlgTrailer
+                    sURL = dTrailer.ShowDialog(DBMovie.Filename, mediaTag.Trailers)
+                End Using
+            End If
+        Catch ex As Exception
+        End Try
+
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Private Sub bwGetTralier_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwGetTralier.DoWork
+        Try
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Dim res As New List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+            res = XMLManager.GetResults(scraperName, Args.DBMovie.Movie.Title, Args.DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
+            If res.Count > 0 Then
+                ' Get first and go ... scraper is not a XML scraper ... mixed scrapers
+                lMediaTag = XMLManager.GetDetails(res(0))
+            Else
+                lMediaTag = Nothing
+            End If
+        Catch ex As Exception
+            lMediaTag = Nothing
+        End Try
+    End Sub
 
     Sub PopulateSettings()
         bwPopulate.WorkerReportsProgress = True
