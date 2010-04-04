@@ -535,11 +535,11 @@ Public Class dlgOfflineHolder
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
             tMovie.Movie.Title = txtMovieName.Text
-            Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType.NFO, True, False)
+            'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+            Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            If ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.FullAsk, Master.DefaultOptions) Then
+            If Not ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
                 Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
                 Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
                 Dim fResults As New Containers.ImgResult
