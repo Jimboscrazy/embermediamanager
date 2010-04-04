@@ -221,8 +221,6 @@ Public Class EmberNativeScraperModule
         _setup.chkCrew.Checked = ConfigOptions.bOtherCrew
         _setup.chkTop250.Checked = ConfigOptions.bTop250
         _setup.chkCertification.Checked = ConfigOptions.bCert
-        _setup.chkFullCast.Checked = ConfigOptions.bFullCast
-        _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
         _setup.chkOFDBTitle.Checked = MySettings.UseOFDBTitle
         _setup.chkOFDBOutline.Checked = MySettings.UseOFDBOutline
         _setup.chkOFDBPlot.Checked = MySettings.UseOFDBPlot
@@ -500,7 +498,7 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
         ConfigOptions.bCert = _setup.chkCertification.Checked
-
+        ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
