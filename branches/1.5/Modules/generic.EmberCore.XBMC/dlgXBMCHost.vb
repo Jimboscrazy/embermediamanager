@@ -23,42 +23,39 @@ Public Class dlgXBMCHost
         If Not String.IsNullOrEmpty(txtName.Text) Then
 
             'have to iterate the list instead of using .comtains so we can convert each to lower case
-            If xCom Is Nothing Then
-                For i As Integer = 0 To XComs.Count - 1
-                    If XComs(i).Name.ToLower = Me.txtName.Text.ToLower Then
-                        MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
-                        txtName.Focus()
-                        Exit Sub
-                    End If
-                Next
-            End If
 
+            For i As Integer = 0 To XComs.Count - 1
+                If XComs(i).Name.ToLower = Me.txtName.Text.ToLower AndAlso Not XComs(i) Is xCom Then
+                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
+                    txtName.Focus()
+                    Exit Sub
+                End If
+            Next
             If Not String.IsNullOrEmpty(txtIP.Text) Then
                 If Not String.IsNullOrEmpty(txtPort.Text) Then
-                    If Not xCom Is Nothing Then
-                        Me.xCom.Name = Me.txtName.Text
-                        Me.xCom.IP = Me.txtIP.Text
-                        Me.xCom.Port = Me.txtPort.Text
-                        Me.xCom.Username = Me.txtUsername.Text
-                        Me.xCom.Password = Me.txtPassword.Text
-                        Me.xCom.Paths = Paths
-                        Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
-                        Me.xCom.RealTime = chkRealTime.Checked
-                    Else
-                        XComs.Add(New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text, .Paths = Paths, .RemotePathSeparator = RemotePathSeparator, .RealTime = chkRealTime.Checked})
-                    End If
-
+                    Me.xCom.Name = Me.txtName.Text
+                    Me.xCom.IP = Me.txtIP.Text
+                    Me.xCom.Port = Me.txtPort.Text
+                    Me.xCom.Username = Me.txtUsername.Text
+                    Me.xCom.Password = Me.txtPassword.Text
+                    Me.xCom.Paths = Paths
+                    Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+                    Me.xCom.RealTime = chkRealTime.Checked
+                    'XComs.Add(xCom)
                 Else
                     MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
                     txtPort.Focus()
+                    Return
                 End If
             Else
                 MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
                 txtIP.Focus()
+                Return
             End If
         Else
             MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
             txtName.Focus()
+            Return
         End If
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -114,10 +111,13 @@ Public Class dlgXBMCHost
                     dcb.DataSource = l.ToArray
                     dcb.Value = xCom.Paths(sPath).ToString
                 Next
-
             Catch ex As Exception
             End Try
+        Else
+            xCom = New XBMCxCom.XBMCCom
+            XComs.Add(xCom)
         End If
+
         dgvSources.Enabled = True
     End Sub
 

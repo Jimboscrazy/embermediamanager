@@ -181,6 +181,7 @@ Public Class XBMCxCom
                     End If
                 Next
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
 
