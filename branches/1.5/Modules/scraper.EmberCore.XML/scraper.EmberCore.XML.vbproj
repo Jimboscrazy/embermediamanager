@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E567C031-1F7B-4637-9B3A-806988DE50CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EmberScraperModule</RootNamespace>
+    <AssemblyName>scraper.EmberCore.XML</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Ember Media Manager\bin\x86\Release\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Ember Media Manager\bin\x64\Debug\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <Optimize>true</Optimize>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineTrace>false</DefineTrace>
+    <OutputPath>..\..\Ember Media Manager\bin\x64\Release\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>None</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <Optimize>true</Optimize>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>false</DefineTrace>
+    <OutputPath>..\..\Ember Media Manager\bin\x86\Release\Modules\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>
+    </NoWarn>
+    <DebugType>None</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Ember Media Manager\bin\x64\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Ember Media Manager\bin\x64\Debug\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="EmberAPI" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Web" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dlgImgSelect.Designer.vb">
+      <DependentUpon>dlgImgSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgImgSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgPleaseWait.Designer.vb">
+      <DependentUpon>dlgPleaseWait.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgPleaseWait.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgSearchResults.Designer.vb">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgSearchResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgTrailer.Designer.vb">
+      <DependentUpon>dlgTrailer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTrailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmXMLMediaSettingsHolder.Designer.vb">
+      <DependentUpon>frmXMLMediaSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmXMLMediaSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XMLScraper\MediaTags\AlbumTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\ArtistTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\Fanart.vb" />
+    <Compile Include="XMLScraper\MediaTags\MediaTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\MovieTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\MusicVideoTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\PersonInfo.vb" />
+    <Compile Include="frmXMLSettingsHolder.Designer.vb">
+      <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmXMLSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="scraperMovieXMLModule.vb" />
+    <Compile Include="XMLScraper\MediaTags\Thumbnail.vb" />
+    <Compile Include="XMLScraper\MediaTags\TVEpisodeTag.vb" />
+    <Compile Include="XMLScraper\MediaTags\TVShow.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Enumerators.vb" />
+    <Compile Include="XMLScraper\ScraperLib\FunctionInformation.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Include.vb" />
+    <Compile Include="XMLScraper\ScraperLib\IncludeManager.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Scraper.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScrapeResultsEntity.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperEvaluation.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperExpression.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperFunction.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperFunctionContainer.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperNode.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperRegExp.vb" />
+    <Compile Include="XMLScraper\ScraperLib\ScraperSettings.vb" />
+    <Compile Include="XMLScraper\ScraperLib\Tester.vb" />
+    <Compile Include="XMLScraper\ScraperXML\Delegates.vb" />
+    <Compile Include="XMLScraper\ScraperXML\GenericScraper.vb" />
+    <Compile Include="XMLScraper\ScraperXML\IncludeInfo.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperInfo.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperManager.vb" />
+    <Compile Include="XMLScraper\ScraperXML\ScraperParser.vb" />
+    <Compile Include="XMLScraper\Utilities\Extensions.vb" />
+    <Compile Include="XMLScraper\Utilities\UrlInfo.vb" />
+    <Compile Include="XMLScraper\Utilities\Util.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="dlgImgSelect.resx">
+      <DependentUpon>dlgImgSelect.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgPleaseWait.resx">
+      <DependentUpon>dlgPleaseWait.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgSearchResults.resx">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgTrailer.resx">
+      <DependentUpon>dlgTrailer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmXMLMediaSettingsHolder.resx">
+      <DependentUpon>frmXMLMediaSettingsHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmXMLSettingsHolder.resx">
+      <DependentUpon>frmXMLSettingsHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
+      <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
+      <Name>EmberAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>rem SVN Revision -&gt; Version Number
+
+echo %25ProgramFiles%25  | find /i "(x86)"
+if errorlevel  1 (
+set ToolExec="$(SolutionDir)SubWCRev.exe"
+) else (
+set ToolExec="$(SolutionDir)SubWCRev64.exe"
+)
+%25ToolExec%25 "$(ProjectDir)." "$(ProjectDir)My Project\AssemblyInfo.temp" "$(ProjectDir)My Project\AssemblyInfo.vb"</PreBuildEvent>
+  </PropertyGroup>
+</Project>
