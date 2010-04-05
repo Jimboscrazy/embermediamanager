@@ -73,7 +73,7 @@ Public Class XBMCxCom
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType)
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieSync})
         End Get
     End Property
 
@@ -111,8 +111,82 @@ Public Class XBMCxCom
     End Function
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-    End Function
+        If mType = Enums.ModuleEventType.MovieSync Then
+            Dim files As List(Of String()) = Nothing
+            Dim str As String
+            Dim eSource As String = String.Empty
+            Try
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+                eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = DBMovie.Source).Path
+                For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
+                    Dim remoteSource As String = s.Paths(eSource).ToString
+                    If Not eSource.EndsWith(Path.DirectorySeparatorChar) Then eSource = String.Concat(eSource, Path.DirectorySeparatorChar)
+                    Dim remoteFullFilename As String = DBMovie.Filename.Replace(eSource, remoteSource)
+                    remoteFullFilename = remoteFullFilename.Replace(Path.DirectorySeparatorChar, s.RemotePathSeparator)
+                    Dim i As Integer = remoteFullFilename.LastIndexOf(s.RemotePathSeparator) + 1
+                    Dim RemotePath As String = remoteFullFilename.Substring(0, i)
+                    Dim RemoteFilename As String = remoteFullFilename.Substring(i)
+                    str = String.Format("command=queryvideodatabase(select movie.*,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
+                    files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
+                    If files.Count = 1 AndAlso files(0).Count >= 26 Then
+                        Dim id As String = files(0)(0)
+                        Dim ret As String
+                        Dim cmd As String
+                        ' separated update so uri don't get too long
+                        cmd = String.Concat("update movie set ", _
+                            String.Format("c01 =""{0}"" ", StringEscape(DBMovie.Movie.Plot)), _
+                            String.Format(" Where idMovie ={0}", id.ToString))
+                        str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("Exec Done") Then
+                            str = "error"
+                        End If
+                        cmd = String.Concat("update movie set ", _
+                        String.Format("c00=""{0}"",", StringEscape(DBMovie.Movie.Title)), _
+                        String.Format("c02=""{0}"",", StringEscape(DBMovie.Movie.Outline)), _
+                        String.Format("c03=""{0}"",", StringEscape(DBMovie.Movie.Tagline)), _
+                        String.Format("c04=""{0}"",", StringEscape(DBMovie.Movie.Votes)), _
+                        String.Format("c05=""{0}"",", StringEscape(DBMovie.Movie.Rating)), _
+                        String.Format("c07=""{0}"",", StringEscape(DBMovie.Movie.Year)), _
+                        String.Format("c09=""{0}"",", StringEscape(DBMovie.Movie.IMDBID)), _
+                        String.Format("c11=""{0}"",", StringEscape(DBMovie.Movie.Runtime)), _
+                        String.Format("c12=""{0}"",", StringEscape(DBMovie.Movie.MPAA)), _
+                        String.Format("c14=""{0}"",", StringEscape(DBMovie.Movie.Genre)), _
+                        String.Format("c15=""{0}"",", StringEscape(DBMovie.Movie.Director)), _
+                        String.Format("c16=""{0}"",", StringEscape(DBMovie.Movie.OriginalTitle)), _
+                        String.Format("c18=""{0}""", StringEscape(DBMovie.Movie.Studio)), _
+                        String.Format(" Where idMovie ={0}", id.ToString))
+                        str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("Exec Done") Then
+                            str = "error"
+                        End If
+                        Dim hash As String = XBMCHash(remoteFullFilename)
+                        Dim imagefile As String = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
+                        Dim thumbpath As String = String.Format("special://profile/Thumbnails/Video/{0}/{1}", hash.Substring(0, 1), String.Concat(hash, ".tbn"))
+                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("OK") Then
+                            str = "error"
+                        End If
+                        imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
+                        thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
+                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("OK") Then
+                            str = "error"
+                        End If
 
+                    End If
+                Next
+            Catch ex As Exception
+            End Try
+        End If
+
+    End Function
+    Function StringEscape(ByVal str As String) As String
+        Return str.Replace("""", """""").Replace(";", ";;")
+    End Function
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
         Me.Enabled = _setup.cbEnabled.Checked
@@ -236,6 +310,33 @@ Public Class XBMCxCom
             rec.Add(tt)
         Next
         Return rec
+    End Function
+
+    Public Function XBMCHash(ByVal input As String) As String
+        Dim chars As Char() = input.ToCharArray()
+        Dim index As Integer = 0
+        While index < chars.Length
+            If Convert.ToSByte(chars(index)) <= 127 Then
+                chars(index) = System.[Char].ToLowerInvariant(chars(index))
+            End If
+            System.Math.Max(System.Threading.Interlocked.Increment(index), index - 1)
+        End While
+        input = New String(chars)
+        Dim m_crc As UInteger = 4294967295
+        Dim bytes As Byte() = System.Text.Encoding.UTF8.GetBytes(input)
+        For Each myByte As Byte In bytes
+            m_crc = m_crc Xor (System.Convert.ToUInt32(myByte) << 24)
+            Dim i As Integer = 0
+            While i < 8
+                If (System.Convert.ToUInt32(m_crc) And System.Convert.ToUInt32(2147483648)) = (2147483648) Then
+                    m_crc = (m_crc << 1) Xor System.Convert.ToUInt32(&H4C11DB7)
+                Else
+                    m_crc <<= 1
+                End If
+                System.Math.Max(System.Threading.Interlocked.Increment(i), i - 1)
+            End While
+        Next
+        Return [String].Format("{0:x8}", m_crc)
     End Function
 
 #End Region 'Methods

@@ -43,6 +43,7 @@ Public Class dlgXBMCHost
                         Me.xCom.Password = Me.txtPassword.Text
                         Me.xCom.Paths = Paths
                         Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+                        Me.xCom.RealTime = chkRealTime.Checked
                     Else
                         XComs.Add(New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text, .Paths = Paths, .RemotePathSeparator = RemotePathSeparator, .RealTime = chkRealTime.Checked})
                     End If
