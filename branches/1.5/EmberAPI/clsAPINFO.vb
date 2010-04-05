@@ -868,9 +868,12 @@ Public Class NFO
 
                         EpList.Add(tvEpToSave.TVEp)
 
+                        Dim NS As New XmlSerializerNamespaces
+                        NS.Add(String.Empty, String.Empty)
+
                         For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
                             Using xmlSW As New Utf8StringWriter
-                                xmlSer.Serialize(xmlSW, tvEp)
+                                xmlSer.Serialize(xmlSW, tvEp, NS)
                                 If sBuilder.Length > 0 Then
                                     sBuilder.Append(vbNewLine)
                                     xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(vbNewLine) + 1)
