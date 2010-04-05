@@ -225,6 +225,22 @@ Public Class XBMCxCom
         End If
     End Sub
 
+    Public Shared Function SendCmd(ByVal xCom As XBMCCom, ByVal str As String) As String
+        Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
+        Wr.Timeout = 2500
+        Dim Sr As String
+        If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+            Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+        End If
+        Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
+            Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+        End Using
+        Wr = Nothing
+        If Sr.StartsWith("<html>") Then Sr = Sr.Remove(0, 6)
+        If Sr.EndsWith("</html>") Then Sr = Sr.Remove(Sr.Length - 7, 7)
+        Return Sr
+    End Function
+
     #End Region 'Methods
 
     #Region "Nested Types"

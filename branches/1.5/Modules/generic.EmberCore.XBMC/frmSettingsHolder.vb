@@ -46,90 +46,32 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
-        If Not String.IsNullOrEmpty(txtName.Text) Then
 
-            'have to iterate the list instead of using .comtains so we can convert each to lower case
-            For i As Integer = 0 To lbXBMCCom.Items.Count - 1
-                If lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
-                    txtName.Focus()
-                    Exit Sub
-                End If
-            Next
 
-            If Not String.IsNullOrEmpty(txtIP.Text) Then
-                If Not String.IsNullOrEmpty(txtPort.Text) Then
-                    XComs.Add(New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
-                    Me.LoadXComs()
-
-                    Me.txtName.Text = String.Empty
-                    Me.txtIP.Text = String.Empty
-                    Me.txtPort.Text = String.Empty
-                    Me.txtUsername.Text = String.Empty
-                    Me.txtPassword.Text = String.Empty
-
-                    Me.btnEditCom.Enabled = False
-                    RaiseEvent ModuleSettingsChanged()
-                Else
-                    MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
-                    txtPort.Focus()
-                End If
-            Else
-                MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
-                txtIP.Focus()
+        Using dlg As New dlgXBMCHost
+            dlg.XComs = XComs
+            If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                XComs = dlg.XComs
+                RaiseEvent ModuleSettingsChanged()
+                Me.LoadXComs()
             End If
-        Else
-            MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
-            txtName.Focus()
-        End If
+        End Using
+
+
     End Sub
 
     Private Sub btnEditCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCom.Click
         Dim iSel As Integer = Me.lbXBMCCom.SelectedIndex
 
-        If Not String.IsNullOrEmpty(txtName.Text) Then
-
-            For i As Integer = 0 To lbXBMCCom.Items.Count - 1
-                If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
-                    txtName.Focus()
-                    Exit Sub
-                End If
-            Next
-
-            If Not String.IsNullOrEmpty(txtIP.Text) Then
-                If Not String.IsNullOrEmpty(txtPort.Text) Then
-
-                    Me.XComs.Item(iSel).Name = Me.txtName.Text
-                    Me.XComs.Item(iSel).IP = Me.txtIP.Text
-                    Me.XComs.Item(iSel).Port = Me.txtPort.Text
-                    Me.XComs.Item(iSel).Username = Me.txtUsername.Text
-                    Me.XComs.Item(iSel).Password = Me.txtPassword.Text
-
-                    btnEditCom.Enabled = False
-
-                    Me.txtName.Text = String.Empty
-                    Me.txtIP.Text = String.Empty
-                    Me.txtPort.Text = String.Empty
-                    Me.txtUsername.Text = String.Empty
-                    Me.txtPassword.Text = String.Empty
-                    Me.LoadXComs()
-                    'Me.SetApplyButton(True)
-                    RaiseEvent ModuleSettingsChanged()
-                Else
-                    MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
-                    txtPort.Focus()
-                End If
-            Else
-                MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
-                txtIP.Focus()
+        Using dlg As New dlgXBMCHost
+            dlg.XComs = XComs
+            dlg.hostid = Me.lbXBMCCom.SelectedItem.ToString
+            If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                XComs = dlg.XComs
+                RaiseEvent ModuleSettingsChanged()
+                Me.LoadXComs()
             End If
-
-        Else
-            MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
-            txtName.Focus()
-        End If
-
+        End Using
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
@@ -146,15 +88,14 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub lbXBMCCom_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbXBMCCom.SelectedIndexChanged
-        Dim iSel As Integer = Me.lbXBMCCom.SelectedIndex
-
-        Me.txtName.Text = Me.XComs.Item(iSel).Name
-        Me.txtIP.Text = Me.XComs.Item(iSel).IP
-        Me.txtPort.Text = Me.XComs.Item(iSel).Port
-        Me.txtUsername.Text = Me.XComs.Item(iSel).Username
-        Me.txtPassword.Text = Me.XComs.Item(iSel).Password
-
-        btnEditCom.Enabled = True
+        Try
+            If Me.lbXBMCCom.SelectedItems.Count > 0 Then
+                btnEditCom.Enabled = True
+            Else
+                btnEditCom.Enabled = False
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub RemoveXCom()
@@ -167,13 +108,13 @@ Public Class frmSettingsHolder
 
     Sub SetUp()
         Me.GroupBox11.Text = Master.eLang.GetString(9, "XBMC Communication")
-        Me.btnEditCom.Text = Master.eLang.GetString(10, "Commit Edit")
-        Me.Label16.Text = Master.eLang.GetString(11, "Name:")
+        Me.btnEditCom.Text = Master.eLang.GetString(10, "Edit")
+        'Me.Label16.Text = Master.eLang.GetString(11, "Name:")
         Me.btnAddCom.Text = Master.eLang.GetString(12, "Add New")
-        Me.Label13.Text = Master.eLang.GetString(425, "Username:", True)
-        Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
-        Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
-        Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
+        'Me.Label13.Text = Master.eLang.GetString(425, "Username:", True)
+        'Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
+        'Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
+        'Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
         Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
