@@ -886,6 +886,16 @@ Public Class Structures
 
     End Structure
 
+    Public Structure MovieSource
+        Dim id As String
+        Dim Name As String
+        Dim Path As String
+        Dim Recursive As Boolean
+        Dim UseFolderName As Boolean
+        Dim IsSingle As Boolean
+    End Structure
+
+
     Public Structure DBMovie
 
         #Region "Fields"

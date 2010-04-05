@@ -36,11 +36,15 @@ Partial Class dlgXBMCHost
         Me.txtPort = New System.Windows.Forms.TextBox
         Me.txtIP = New System.Windows.Forms.TextBox
         Me.btnPopulate = New System.Windows.Forms.Button
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView
+        Me.dgvSources = New System.Windows.Forms.DataGridView
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Column2 = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.pnlLoading = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlLoading.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -181,24 +185,24 @@ Partial Class dlgXBMCHost
         Me.btnPopulate.TabIndex = 23
         Me.btnPopulate.Text = "Populate Sources"
         '
-        'DataGridView1
+        'dgvSources
         '
-        Me.DataGridView1.AllowUserToAddRows = False
-        Me.DataGridView1.AllowUserToDeleteRows = False
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2})
-        Me.DataGridView1.Enabled = False
-        Me.DataGridView1.Location = New System.Drawing.Point(12, 134)
-        Me.DataGridView1.MultiSelect = False
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.RowHeadersVisible = False
-        Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.ShowCellErrors = False
-        Me.DataGridView1.ShowCellToolTips = False
-        Me.DataGridView1.ShowEditingIcon = False
-        Me.DataGridView1.ShowRowErrors = False
-        Me.DataGridView1.Size = New System.Drawing.Size(440, 150)
-        Me.DataGridView1.TabIndex = 24
+        Me.dgvSources.AllowUserToAddRows = False
+        Me.dgvSources.AllowUserToDeleteRows = False
+        Me.dgvSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2})
+        Me.dgvSources.Enabled = False
+        Me.dgvSources.Location = New System.Drawing.Point(12, 134)
+        Me.dgvSources.MultiSelect = False
+        Me.dgvSources.Name = "dgvSources"
+        Me.dgvSources.RowHeadersVisible = False
+        Me.dgvSources.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvSources.ShowCellErrors = False
+        Me.dgvSources.ShowCellToolTips = False
+        Me.dgvSources.ShowEditingIcon = False
+        Me.dgvSources.ShowRowErrors = False
+        Me.dgvSources.Size = New System.Drawing.Size(440, 150)
+        Me.dgvSources.TabIndex = 24
         '
         'Column1
         '
@@ -215,6 +219,37 @@ Partial Class dlgXBMCHost
         Me.Column2.HeaderText = "XBMC Source"
         Me.Column2.Name = "Column2"
         '
+        'pnlLoading
+        '
+        Me.pnlLoading.BackColor = System.Drawing.Color.White
+        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLoading.Controls.Add(Me.Label3)
+        Me.pnlLoading.Controls.Add(Me.ProgressBar1)
+        Me.pnlLoading.Location = New System.Drawing.Point(126, 122)
+        Me.pnlLoading.Name = "pnlLoading"
+        Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
+        Me.pnlLoading.TabIndex = 69
+        Me.pnlLoading.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(3, 5)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(67, 13)
+        Me.Label3.TabIndex = 1
+        Me.Label3.Text = "Searching ..."
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 0
+        '
         'dlgXBMCHost
         '
         Me.AcceptButton = Me.OK_Button
@@ -222,7 +257,8 @@ Partial Class dlgXBMCHost
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(467, 319)
-        Me.Controls.Add(Me.DataGridView1)
+        Me.Controls.Add(Me.pnlLoading)
+        Me.Controls.Add(Me.dgvSources)
         Me.Controls.Add(Me.btnPopulate)
         Me.Controls.Add(Me.txtName)
         Me.Controls.Add(Me.Label16)
@@ -243,7 +279,9 @@ Partial Class dlgXBMCHost
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "XBMC Host"
         Me.TableLayoutPanel1.ResumeLayout(False)
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLoading.ResumeLayout(False)
+        Me.pnlLoading.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -262,8 +300,11 @@ Partial Class dlgXBMCHost
     Friend WithEvents txtPort As System.Windows.Forms.TextBox
     Friend WithEvents txtIP As System.Windows.Forms.TextBox
     Friend WithEvents btnPopulate As System.Windows.Forms.Button
-    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvSources As System.Windows.Forms.DataGridView
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents pnlLoading As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 
 End Class

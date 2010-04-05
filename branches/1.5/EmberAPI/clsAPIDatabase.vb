@@ -1742,6 +1742,41 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Sub LoadMovieSourcesFromDB()
+        Master.MovieSources.Clear()
+
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim msource As New Structures.MovieSource
+                    msource.id = SQLreader("ID").ToString
+                    msource.Name = SQLreader("Name").ToString
+                    msource.Path = SQLreader("Path").ToString
+                    msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
+                    msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
+                    msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                    Master.MovieSources.Add(msource)
+                End While
+            End Using
+        End Using
+    End Sub
+
+    Public Function GetMoviePathsBySource(Optional ByVal source As String = "") As List(Of String)
+        Dim Paths As New List(Of String)
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = String.Format("SELECT MoviePath, Source FROM Movies {0};", If(source = String.Empty, String.Empty, String.Format("INNER JOIN Sources ON Movies.Source=Sources.Name Where Sources.Path=""{0}""", source)))
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Paths.Add(SQLreader("MoviePath").ToString)
+                End While
+            End Using
+        End Using
+        Return Paths
+    End Function
+
+
     '''''''''''''''''''''''''''''''''''''''''''
     Sub ConnectJobLog()
         Dim NewDB As Boolean = False

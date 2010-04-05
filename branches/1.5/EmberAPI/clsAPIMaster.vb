@@ -41,7 +41,7 @@ Public Class Master
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared tmpMovie As New MediaContainers.Movie
-
+    Public Shared MovieSources As New List(Of Structures.MovieSource)
     #End Region 'Fields
 
 End Class

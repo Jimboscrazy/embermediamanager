@@ -772,14 +772,10 @@ Public Class dlgExportMovies
 
         Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title", True), Master.eLang.GetString(278, "Year", True), Master.eLang.GetString(2, "Video Flag"), Master.eLang.GetString(3, "Audio Flag"), Master.eLang.GetString(1, "Source Folder")})
         lstSources.Items.Clear()
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLNewcommand.CommandText = String.Concat("SELECT * FROM Sources;")
-            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                While SQLReader.Read
-                    lstSources.Items.Add(SQLReader("Name"))
-                End While
-            End Using
-        End Using
+        For Each s As Structures.MovieSource In Master.MovieSources
+            lstSources.Items.Add(s.Name)
+        Next
+
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged

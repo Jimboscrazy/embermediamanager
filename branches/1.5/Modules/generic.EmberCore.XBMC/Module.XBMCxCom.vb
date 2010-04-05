@@ -226,22 +226,40 @@ Public Class XBMCxCom
     End Sub
 
     Public Shared Function SendCmd(ByVal xCom As XBMCCom, ByVal str As String) As String
-        Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
-        Wr.Timeout = 2500
-        Dim Sr As String
-        If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-            Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-        End If
-        Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-            Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-        End Using
-        Wr = Nothing
-        If Sr.StartsWith("<html>") Then Sr = Sr.Remove(0, 6)
-        If Sr.EndsWith("</html>") Then Sr = Sr.Remove(Sr.Length - 7, 7)
+        Dim Wr As HttpWebRequest
+        Dim Sr As String = String.Empty
+        Try
+            Wr = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
+            Wr.Timeout = 10000
+            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+            End If
+            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
+                Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+            End Using
+            Wr = Nothing
+            'If Sr.StartsWith("<html>") Then Sr = Sr.Remove(0, 6)
+            'If Sr.EndsWith("</html>") Then Sr = Sr.Remove(Sr.Length - 7, 7)
+            Sr = Sr.Replace("<html>", String.Empty).Replace("</html>", String.Empty)
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.OkOnly)
+        End Try
         Return Sr
     End Function
 
-    #End Region 'Methods
+    Public Shared Function SplitResponse(ByVal sr As String) As List(Of String())
+        Dim rec As New List(Of String())
+        Dim trec() As String = Nothing
+        sr = sr.Replace("<record>", "")
+        trec = sr.Split(New String() {"</record>"}, StringSplitOptions.RemoveEmptyEntries)
+        For Each t As String In trec
+            Dim tt As String() = t.Replace("<field>", "").Split(New String() {"</field>"}, StringSplitOptions.None)
+            rec.Add(tt)
+        Next
+        Return rec
+    End Function
+
+#End Region 'Methods
 
     #Region "Nested Types"
 

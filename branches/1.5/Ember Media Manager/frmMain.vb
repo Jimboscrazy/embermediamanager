@@ -5474,7 +5474,7 @@ doCancel:
                             Me.Visible = True
                         End If
                     End If
-
+                    Master.DB.LoadMovieSourcesFromDB()
                     fLoading.SetStage("Setting menus...")
                     Me.SetMenus(True)
                     Functions.GetListOfSources()

@@ -104,17 +104,15 @@ Public Class dlgMovieSource
         Me.SetUp()
         Try
             If Me._id >= 0 Then
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = String.Concat("SELECT * FROM Sources WHERE ID = ", Me._id, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        Me.txtSourceName.Text = SQLreader("Name").ToString
-                        Me.txtSourcePath.Text = SQLreader("Path").ToString
-                        Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
-                        Me.chkSingle.Checked = Convert.ToBoolean(SQLreader("Single"))
-                        Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
-                        Me.autoName = False
-                    End Using
-                End Using
+                Dim s As Structures.MovieSource = Master.MovieSources.FirstOrDefault(Function(y) y.id = Me._id.ToString)
+                If Not s.id Is Nothing Then
+                    Me.txtSourceName.Text = s.Name
+                    Me.txtSourcePath.Text = s.Path
+                    Me.chkScanRecursive.Checked = s.Recursive
+                    Me.chkSingle.Checked = s.IsSingle
+                    Me.chkUseFolderName.Checked = s.UseFolderName
+                    Me.autoName = False
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
