@@ -173,23 +173,25 @@ Public Class AdvancedSettings
             Dim elemp As XmlElement = xdoc.CreateElement("ComplexSettings")
             For Each i As ComplexSettingItem In _ComplexAdvancedSettings
                 For Each o As Hashtable In i.TableItem
-                    Dim elem As XmlElement = xdoc.CreateElement("Table")
-                    Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
-                    attr.Value = i.Section
-                    elem.Attributes.SetNamedItem(attr)
-                    Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                    attr2.Value = i.Name
-                    elem.Attributes.SetNamedItem(attr2)
-                    For Each ti In o.Keys
-                        Dim elemi As XmlElement = xdoc.CreateElement("Item")
-                        Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                        attr3.Value = ti.ToString
-                        elemi.InnerText = o.Item(ti.ToString).ToString
-                        elemi.Attributes.SetNamedItem(attr3)
-                        elem.AppendChild(elemi)
-                    Next
-                    elemp.AppendChild(elem)
-                    count += 1
+                    If Not o Is Nothing Then
+                        Dim elem As XmlElement = xdoc.CreateElement("Table")
+                        Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                        attr.Value = i.Section
+                        elem.Attributes.SetNamedItem(attr)
+                        Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                        attr2.Value = i.Name
+                        elem.Attributes.SetNamedItem(attr2)
+                        For Each ti In o.Keys
+                            Dim elemi As XmlElement = xdoc.CreateElement("Item")
+                            Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                            attr3.Value = ti.ToString
+                            elemi.InnerText = o.Item(ti.ToString).ToString
+                            elemi.Attributes.SetNamedItem(attr3)
+                            elem.AppendChild(elemi)
+                        Next
+                        elemp.AppendChild(elem)
+                        count += 1
+                    End If
                 Next
             Next
             xdoc.DocumentElement.AppendChild(elemp)

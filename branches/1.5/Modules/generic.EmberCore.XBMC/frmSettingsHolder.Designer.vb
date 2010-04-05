@@ -31,6 +31,7 @@ Partial Class frmSettingsHolder
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.btnAddCom = New System.Windows.Forms.Button
+        Me.chkRealTime = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -67,6 +68,7 @@ Partial Class frmSettingsHolder
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.chkRealTime)
         Me.GroupBox11.Controls.Add(Me.btnEditCom)
         Me.GroupBox11.Controls.Add(Me.btnRemoveCom)
         Me.GroupBox11.Controls.Add(Me.lbXBMCCom)
@@ -129,6 +131,16 @@ Partial Class frmSettingsHolder
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
         '
+        'chkRealTime
+        '
+        Me.chkRealTime.AutoSize = True
+        Me.chkRealTime.Location = New System.Drawing.Point(319, 15)
+        Me.chkRealTime.Name = "chkRealTime"
+        Me.chkRealTime.Size = New System.Drawing.Size(203, 17)
+        Me.chkRealTime.TabIndex = 9
+        Me.chkRealTime.Text = "Enable Real Time synchronization "
+        Me.chkRealTime.UseVisualStyleBackColor = True
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -149,6 +161,7 @@ Partial Class frmSettingsHolder
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -160,5 +173,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnRemoveCom As System.Windows.Forms.Button
     Friend WithEvents lbXBMCCom As System.Windows.Forms.ListBox
     Friend WithEvents btnAddCom As System.Windows.Forms.Button
+    Friend WithEvents chkRealTime As System.Windows.Forms.CheckBox
 
 End Class

@@ -9,6 +9,7 @@ Public Class dlgXBMCHost
     Dim xc As New XBMCxCom.XBMCCom
     Dim XBMCSources As New List(Of String)
     Dim RemotePathSeparator As String = String.Empty
+    Dim Paths As New Hashtable
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Structure EmberSource
         Dim Path As String
@@ -40,8 +41,10 @@ Public Class dlgXBMCHost
                         Me.xCom.Port = Me.txtPort.Text
                         Me.xCom.Username = Me.txtUsername.Text
                         Me.xCom.Password = Me.txtPassword.Text
+                        Me.xCom.Paths = Paths
+                        Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
                     Else
-                        XComs.Add(New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
+                        XComs.Add(New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text, .Paths = Paths, .RemotePathSeparator = RemotePathSeparator, .RealTime = chkRealTime.Checked})
                     End If
 
                 Else
@@ -81,12 +84,40 @@ Public Class dlgXBMCHost
         Setup()
         xCom = XComs.FirstOrDefault(Function(y) y.Name = hostid)
         If Not xCom Is Nothing Then
-            Me.txtName.Text = xCom.Name
-            Me.txtIP.Text = xCom.IP
-            Me.txtPort.Text = xCom.Port
-            Me.txtUsername.Text = xCom.Username
-            Me.txtPassword.Text = xCom.Password
+            Try
+                Me.txtName.Text = xCom.Name
+                Me.txtIP.Text = xCom.IP
+                Me.txtPort.Text = xCom.Port
+                Me.txtUsername.Text = xCom.Username
+                Me.txtPassword.Text = xCom.Password
+                If xCom.RemotePathSeparator = Path.DirectorySeparatorChar Then
+                    Me.rbWindows.Checked = True
+                Else
+                    Me.rbLinux.Checked = True
+                End If
+                RemotePathSeparator = xCom.RemotePathSeparator
+                chkRealTime.Checked = xCom.RealTime
+                dgvSources.Rows.Clear()
+                For Each s As Structures.MovieSource In Master.MovieSources
+                    Dim sPath As String = s.Path
+                    Dim i As Integer = dgvSources.Rows.Add(sPath)
+                    Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                    'Dim l(xCom.Paths.Values.Count - 1) As String
+                    'xCom.Paths.Values.CopyTo(l, 0)
+                    Dim l As New List(Of String)
+                    l.Add("") 'Empty Entrie for combo
+                    For Each sp As Object In xCom.Paths.Values
+                        If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
+                    Next
+
+                    dcb.DataSource = l.ToArray
+                    dcb.Value = xCom.Paths(sPath).ToString
+                Next
+
+            Catch ex As Exception
+            End Try
         End If
+        dgvSources.Enabled = True
     End Sub
 
     Public Shared Function XBMCGetSources(ByVal xc As XBMCxCom.XBMCCom) As List(Of String)
@@ -126,9 +157,11 @@ Public Class dlgXBMCHost
         txtPassword.Enabled = False
         txtPort.Enabled = False
         txtUsername.Enabled = False
+        dgvSources.Enabled = False
         EmberSources.Clear()
-        RemotePathSeparator = "/"
-        xc = New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text}
+        Paths.Clear()
+
+        xc = New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text, .RealTime = chkRealTime.Checked}
         bwLoadInfo.RunWorkerAsync()
         While bwLoadInfo.IsBusy
             Application.DoEvents()
@@ -145,12 +178,14 @@ Public Class dlgXBMCHost
                     ' If it match > 90% of the movies
                     If Convert.ToInt32(es.XBMCSource(getMaxSourceCount(es.XBMCSource))) > es.ElemCounts * 0.9 Then
                         dcb.Value = getMaxSourceCount(es.XBMCSource)
+                        Paths.Add(es.Path, dcb.Value)
+                    Else
+                        Paths.Add(es.Path, "")
                     End If
-
                 Next
             Catch ex As Exception
             End Try
-            dgvSources.Enabled = True
+
         End If
         pnlLoading.Visible = False
         btnPopulate.Enabled = True
@@ -161,6 +196,7 @@ Public Class dlgXBMCHost
         txtPassword.Enabled = True
         txtPort.Enabled = True
         txtUsername.Enabled = True
+        dgvSources.Enabled = True
 
     End Sub
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -214,4 +250,11 @@ Public Class dlgXBMCHost
         Return mypath
     End Function
 
+    Private Sub rbLinux_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLinux.CheckedChanged
+        Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+    End Sub
+
+    Private Sub rbWindows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbWindows.CheckedChanged
+        Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+    End Sub
 End Class

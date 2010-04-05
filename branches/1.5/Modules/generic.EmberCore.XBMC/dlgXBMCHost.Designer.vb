@@ -42,9 +42,14 @@ Partial Class dlgXBMCHost
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.chkRealTime = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.rbLinux = New System.Windows.Forms.RadioButton
+        Me.rbWindows = New System.Windows.Forms.RadioButton
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -206,16 +211,17 @@ Partial Class dlgXBMCHost
         '
         'Column1
         '
-        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Column1.FillWeight = 200.0!
+        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column1.FillWeight = 150.0!
         Me.Column1.HeaderText = "Ember Source"
         Me.Column1.Name = "Column1"
         Me.Column1.ReadOnly = True
+        Me.Column1.Width = 150
         '
         'Column2
         '
         Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Column2.FillWeight = 200.0!
+        Me.Column2.FillWeight = 96.96582!
         Me.Column2.HeaderText = "XBMC Source"
         Me.Column2.Name = "Column2"
         '
@@ -225,7 +231,7 @@ Partial Class dlgXBMCHost
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(126, 122)
+        Me.pnlLoading.Location = New System.Drawing.Point(142, 119)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 69
@@ -250,6 +256,53 @@ Partial Class dlgXBMCHost
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBar1.TabIndex = 0
         '
+        'chkRealTime
+        '
+        Me.chkRealTime.AutoSize = True
+        Me.chkRealTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkRealTime.Location = New System.Drawing.Point(303, 8)
+        Me.chkRealTime.Name = "chkRealTime"
+        Me.chkRealTime.Size = New System.Drawing.Size(162, 17)
+        Me.chkRealTime.TabIndex = 70
+        Me.chkRealTime.Text = "Real Time synchronization "
+        Me.chkRealTime.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.rbLinux)
+        Me.GroupBox1.Controls.Add(Me.rbWindows)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(306, 34)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(146, 65)
+        Me.GroupBox1.TabIndex = 71
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "XBMC Host OS"
+        '
+        'rbLinux
+        '
+        Me.rbLinux.AutoSize = True
+        Me.rbLinux.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbLinux.Location = New System.Drawing.Point(14, 40)
+        Me.rbLinux.Name = "rbLinux"
+        Me.rbLinux.Size = New System.Drawing.Size(101, 17)
+        Me.rbLinux.TabIndex = 1
+        Me.rbLinux.Text = "Linux/MacOS X"
+        Me.rbLinux.UseVisualStyleBackColor = True
+        '
+        'rbWindows
+        '
+        Me.rbWindows.AutoSize = True
+        Me.rbWindows.Checked = True
+        Me.rbWindows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbWindows.Location = New System.Drawing.Point(14, 17)
+        Me.rbWindows.Name = "rbWindows"
+        Me.rbWindows.Size = New System.Drawing.Size(74, 17)
+        Me.rbWindows.TabIndex = 0
+        Me.rbWindows.TabStop = True
+        Me.rbWindows.Text = "Windows"
+        Me.rbWindows.UseVisualStyleBackColor = True
+        '
         'dlgXBMCHost
         '
         Me.AcceptButton = Me.OK_Button
@@ -257,6 +310,8 @@ Partial Class dlgXBMCHost
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(467, 319)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.chkRealTime)
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.dgvSources)
         Me.Controls.Add(Me.btnPopulate)
@@ -282,6 +337,8 @@ Partial Class dlgXBMCHost
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -301,10 +358,14 @@ Partial Class dlgXBMCHost
     Friend WithEvents txtIP As System.Windows.Forms.TextBox
     Friend WithEvents btnPopulate As System.Windows.Forms.Button
     Friend WithEvents dgvSources As System.Windows.Forms.DataGridView
-    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents chkRealTime As System.Windows.Forms.CheckBox
+    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbLinux As System.Windows.Forms.RadioButton
+    Friend WithEvents rbWindows As System.Windows.Forms.RadioButton
 
 End Class

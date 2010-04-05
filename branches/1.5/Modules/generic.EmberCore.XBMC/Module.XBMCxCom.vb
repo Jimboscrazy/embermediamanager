@@ -139,28 +139,6 @@ Public Class XBMCxCom
         Catch ex As Exception
         End Try
     End Sub
-
-    Private Sub DoXCom(ByVal xCom As XBMCCom)
-        Try
-            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
-            Wr.Timeout = 2500
-
-            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-            End If
-
-            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-                If Not Sr.Contains("OK") Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-                End If
-            End Using
-            Wr = Nothing
-        Catch
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-        End Try
-    End Sub
-
     Sub Enable()
         Try
             _MySettings = MySettings.Load
@@ -215,13 +193,14 @@ Public Class XBMCxCom
         If tMenu.Tag Is Nothing Then
             Try
                 For Each tCom As XBMCCom In _MySettings.XComs
-                    Me.DoXCom(tCom)
+                    SendCmd(tCom, "command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)")
                 Next
             Catch
             End Try
         Else
             Dim xCom As XBMCCom = DirectCast(tMenu.Tag, XBMCCom)
-            DoXCom(xCom)
+            SendCmd(xCom, "command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)")
+
         End If
     End Sub
 
@@ -272,7 +251,9 @@ Public Class XBMCxCom
         Private _xbmcpassword As String
         Private _xbmcport As String
         Private _xbmcusername As String
-
+        Private _paths As Hashtable
+        Private _RemotePathSeparator As String
+        Private _realtime As Boolean
         #End Region 'Fields
 
         #Region "Constructors"
@@ -284,6 +265,30 @@ Public Class XBMCxCom
         #End Region 'Constructors
 
         #Region "Properties"
+        Public Property Paths() As Hashtable
+            Get
+                Return Me._paths
+            End Get
+            Set(ByVal value As Hashtable)
+                Me._paths = value
+            End Set
+        End Property
+        Public Property RemotePathSeparator() As String
+            Get
+                Return Me._RemotePathSeparator
+            End Get
+            Set(ByVal value As String)
+                Me._RemotePathSeparator = value
+            End Set
+        End Property
+        Public Property RealTime() As Boolean
+            Get
+                Return Me._realtime
+            End Get
+            Set(ByVal value As Boolean)
+                Me._realtime = value
+            End Set
+        End Property
 
         Public Property IP() As String
             Get
@@ -338,9 +343,9 @@ Public Class XBMCxCom
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._xbmcname = String.Empty
@@ -350,7 +355,7 @@ Public Class XBMCxCom
             Me._xbmcpassword = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
@@ -385,8 +390,17 @@ Public Class XBMCxCom
                                     t.Username = i.Item("Username").ToString
                                 Case "Password"
                                     t.Password = i.Item("Password").ToString
+                                Case "RemotePathSeparator"
+                                    t.RemotePathSeparator = i.Item("RemotePathSeparator").ToString
+                                Case "RealTime"
+                                    t.RealTime = Convert.ToBoolean(i.Item("RealTime").ToString)
                             End Select
                         Next
+                        Dim AsettPath As New List(Of Hashtable)
+                        AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
+                        If Not AsettPath Is Nothing AndAlso AsettPath.Count = 1 Then
+                            t.Paths = AsettPath(0)
+                        End If
                         tmp.XComs.Add(t)
                     Next
                 End If
@@ -418,10 +432,19 @@ Public Class XBMCxCom
                     h.Add("Port", t.Port)
                     h.Add("Username", t.Username)
                     h.Add("Password", t.Password)
+                    h.Add("RemotePathSeparator", t.RemotePathSeparator)
+                    h.Add("RealTime", t.RealTime.ToString)
                     Asett.Add(h)
+                    If Not t.Paths Is Nothing AndAlso t.Paths.Count > 0 Then
+                        Dim AsettPath As New List(Of Hashtable)
+                        AsettPath.Add(t.Paths)
+                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
+                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", t.Name), AsettPath)
+                    End If
                 Next
                 AdvancedSettings.ClearComplexSetting("XBMCHosts")
                 AdvancedSettings.SetComplexSetting("XBMCHosts", Asett)
+
 
                 'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
                 'Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
