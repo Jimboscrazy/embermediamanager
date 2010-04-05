@@ -35,7 +35,8 @@ Public Class XBMCxCom
     Private _MySettings As New MySettings
     Private _name As String = "XBMC Controller"
     Private _setup As frmSettingsHolder
-
+    Friend WithEvents bwRunUpdate As New System.ComponentModel.BackgroundWorker
+    Private RunQueue As New Queue(Of Structures.DBMovie)
     #End Region 'Fields
 
     #Region "Events"
@@ -109,14 +110,14 @@ Public Class XBMCxCom
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-        If mType = Enums.ModuleEventType.MovieSync Then
-            Dim files As List(Of String()) = Nothing
-            Dim str As String
-            Dim eSource As String = String.Empty
-            Try
-                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+    Private Sub bwRunUpdate_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRunUpdate.DoWork
+        Dim files As List(Of String()) = Nothing
+        Dim str As String
+        Dim eSource As String = String.Empty
+        Try
+            Dim DBMovie As Structures.DBMovie '= DirectCast(e.Argument, Structures.DBMovie)
+            While RunQueue.Count > 0
+                DBMovie = RunQueue.Dequeue
                 eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = DBMovie.Source).Path
                 For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
                     Dim remoteSource As String = s.Paths(eSource).ToString
@@ -126,14 +127,16 @@ Public Class XBMCxCom
                     Dim i As Integer = remoteFullFilename.LastIndexOf(s.RemotePathSeparator) + 1
                     Dim RemotePath As String = remoteFullFilename.Substring(0, i)
                     Dim RemoteFilename As String = remoteFullFilename.Substring(i)
+                    Dim ret As String
+                    Dim cmd As String
+                    str = String.Format("command=ExecBuiltIn(Notification(EmberMM -Updating Movie,{0}))", DBMovie.Movie.Title)
+                    ret = SendCmd(s, str)
                     str = String.Format("command=queryvideodatabase(select movie.*,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
                     files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
                     If files.Count = 1 AndAlso files(0).Count >= 26 Then
                         Dim id As String = files(0)(0)
-                        Dim ret As String
-                        Dim cmd As String
-                        str = String.Format("command=ExecBuiltIn(Notification(EmberMM,Updating {0}))", DBMovie.Movie.Title)
-                        ret = SendCmd(s, str)
+
+
                         ' separated update so uri don't get too long
                         cmd = String.Concat("update movie set ", _
                             String.Format("c01 =""{0}"" ", StringEscape(DBMovie.Movie.Plot)), _
@@ -141,7 +144,7 @@ Public Class XBMCxCom
                         str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
                         ret = SendCmd(s, str)
                         If Not ret.Contains("Exec Done") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Info - Plot", "Error")
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Info - Plot", cmd, "Error")
                         End If
                         cmd = String.Concat("update movie set ", _
                         String.Format("c00=""{0}"",", StringEscape(DBMovie.Movie.Title)), _
@@ -161,7 +164,7 @@ Public Class XBMCxCom
                         str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
                         ret = SendCmd(s, str)
                         If Not ret.Contains("Exec Done") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Info", "Error")
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Info", cmd, "Error")
                         End If
                         Dim hash As String = XBMCHash(remoteFullFilename)
                         Dim imagefile As String = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
@@ -169,20 +172,29 @@ Public Class XBMCxCom
                         str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
                         ret = SendCmd(s, str)
                         If Not ret.Contains("OK") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Poster", "Error")
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Poster", str, "Error")
                         End If
                         imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
                         thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
                         str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
                         ret = SendCmd(s, str)
                         If Not ret.Contains("OK") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Fanart", "Error")
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Fanart", str, "Error")
                         End If
                     End If
                 Next
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
+            End While
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+        If mType = Enums.ModuleEventType.MovieSync Then
+            Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+            RunQueue.Enqueue(DBMovie)
+            If Not bwRunUpdate.IsBusy Then
+                bwRunUpdate.RunWorkerAsync()
+            End If
         End If
 
     End Function
@@ -293,8 +305,6 @@ Public Class XBMCxCom
                 Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
             End Using
             Wr = Nothing
-            'If Sr.StartsWith("<html>") Then Sr = Sr.Remove(0, 6)
-            'If Sr.EndsWith("</html>") Then Sr = Sr.Remove(Sr.Length - 7, 7)
             Sr = Sr.Replace("<html>", String.Empty).Replace("</html>", String.Empty)
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.OkOnly)

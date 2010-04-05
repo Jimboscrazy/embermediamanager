@@ -109,12 +109,7 @@ Public Class frmSettingsHolder
     Sub SetUp()
         Me.GroupBox11.Text = Master.eLang.GetString(9, "XBMC Communication")
         Me.btnEditCom.Text = Master.eLang.GetString(10, "Edit")
-        'Me.Label16.Text = Master.eLang.GetString(11, "Name:")
         Me.btnAddCom.Text = Master.eLang.GetString(12, "Add New")
-        'Me.Label13.Text = Master.eLang.GetString(425, "Username:", True)
-        'Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
-        'Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
-        'Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
         Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
     End Sub
