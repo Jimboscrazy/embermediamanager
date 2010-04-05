@@ -132,6 +132,8 @@ Public Class XBMCxCom
                         Dim id As String = files(0)(0)
                         Dim ret As String
                         Dim cmd As String
+                        str = String.Format("command=ExecBuiltIn(Notification(EmberMM,Updating {0}))", DBMovie.Movie.Title)
+                        ret = SendCmd(s, str)
                         ' separated update so uri don't get too long
                         cmd = String.Concat("update movie set ", _
                             String.Format("c01 =""{0}"" ", StringEscape(DBMovie.Movie.Plot)), _
@@ -139,7 +141,7 @@ Public Class XBMCxCom
                         str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
                         ret = SendCmd(s, str)
                         If Not ret.Contains("Exec Done") Then
-                            str = "error"
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Info - Plot", "Error")
                         End If
                         cmd = String.Concat("update movie set ", _
                         String.Format("c00=""{0}"",", StringEscape(DBMovie.Movie.Title)), _
@@ -159,7 +161,7 @@ Public Class XBMCxCom
                         str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
                         ret = SendCmd(s, str)
                         If Not ret.Contains("Exec Done") Then
-                            str = "error"
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Info", "Error")
                         End If
                         Dim hash As String = XBMCHash(remoteFullFilename)
                         Dim imagefile As String = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
@@ -167,16 +169,15 @@ Public Class XBMCxCom
                         str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
                         ret = SendCmd(s, str)
                         If Not ret.Contains("OK") Then
-                            str = "error"
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Poster", "Error")
                         End If
                         imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
                         thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
                         str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
                         ret = SendCmd(s, str)
                         If Not ret.Contains("OK") Then
-                            str = "error"
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC", "Fanart", "Error")
                         End If
-
                     End If
                 Next
             Catch ex As Exception
@@ -505,16 +506,6 @@ Public Class XBMCxCom
                         tmp.XComs.Add(t)
                     Next
                 End If
-                'Dim tmp As New MySettings
-                'Try
-                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                'If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
-                ' Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                'tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
-                'strmReader.Close()
-                'Else
-                'tmp = New MySettings
-                'End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 tmp = New MySettings
@@ -545,12 +536,6 @@ Public Class XBMCxCom
                 Next
                 AdvancedSettings.ClearComplexSetting("XBMCHosts")
                 AdvancedSettings.SetComplexSetting("XBMCHosts", Asett)
-
-
-                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                'Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                'xmlSerial.Serialize(xmlWriter, tmp)
-                'xmlWriter.Close()
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
