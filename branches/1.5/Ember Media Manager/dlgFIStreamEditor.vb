@@ -63,7 +63,7 @@ Public Class dlgFIStreamEditor
                 cbAudioCodec.Items.AddRange((From aCo In APIXML.lFlags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
                 Dim xShortLang = Localization.ISOLangGetLanguagesList.ToArray
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
-                cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})
+                cbAudioChannels.Items.AddRange(New String() {"8", "7", "6", "2", "1"})
                 If Not movie Is Nothing Then
                     cbAudioCodec.Text = movie.StreamDetails.Audio(idx).Codec
                     cbAudioLanguage.Text = movie.StreamDetails.Audio(idx).LongLanguage
