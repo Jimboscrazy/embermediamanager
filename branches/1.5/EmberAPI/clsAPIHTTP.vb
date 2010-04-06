@@ -131,24 +131,32 @@ Public Class HTTP
     Public Function MakePostField(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
     End Function
+    Public Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
+    End Function
 
     Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
         Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
         Dim Boundary As String = String.Format("--{0}", Idboundary)
-        Dim postData As String = String.Empty
+        Dim postDataBytes As New List(Of Byte())
         Me.Clear()
 
         Try
             For Each s() As String In postDataList
-                postData = String.Concat(postData, MakePostField(Boundary, s(0), s(1)))
+                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostField(Boundary, s(0), s(1)))))
+                If s.Count = 3 AndAlso s(2) = "file" Then
+                    postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
+                    postDataBytes.Add(File.ReadAllBytes(s(1)))
+                    postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
+                End If
             Next
-            postData = String.Concat(postData, Boundary, vbCrLf)
+            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
+
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = 20000
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
                 wProxy.BypassProxyOnLocal = True
@@ -160,20 +168,20 @@ Public Class HTTP
                 Me.wrRequest.Proxy = wProxy
             End If
             Me.wrRequest.Method = "POST"
-            Dim encoding As New ASCIIEncoding()
-            Dim byte1 As Byte() = encoding.GetBytes(postData)
-            ' Set the content type of the data being posted.
-            ' Me.wrRequest.ContentType = "application/x-www-form-urlencoded"
             Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
-            ' Set the content length of the string being posted.
-            Me.wrRequest.ContentLength = byte1.Length
+            Dim size As Integer = 0
+            For i As Integer = 0 To postDataBytes.Count - 1
+                size += postDataBytes(i).Length
+            Next
+            Me.wrRequest.ContentLength = size
             Dim newStream As Stream = Me.wrRequest.GetRequestStream()
-            newStream.Write(byte1, 0, byte1.Length)
+            For i As Integer = 0 To postDataBytes.Count - 1
+                newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
+            Next
             newStream.Close()
 
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
-                    'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
                     Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                         cEncoding = System.Text.Encoding.UTF8
                     Case Else
