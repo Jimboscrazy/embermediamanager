@@ -68,10 +68,11 @@
         Dim postData As New List(Of String())
         postData.Add((New String() {"username", Me.txtUsername.Text}))
         postData.Add((New String() {"password", Me.txtPassword.Text}))
-
+        postData.Add((New String() {"func", "login"}))
         'Me.SessionID = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?func=login&username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
-        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php?func=login", String.Format("username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
-        If Not String.IsNullOrEmpty(Me.SessionID) Then
+        'Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php?func=login", String.Format("username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
+        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+        If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
             Me.pnlStatus.Visible = False
             Me.tsCategories.Enabled = True
             Master.eSettings.Username = Me.txtUsername.Text
@@ -87,9 +88,14 @@
 
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
         Dim aoXML As String = String.Empty
-        Dim postdata As String = String.Format("username={0}&password={1}", Master.eSettings.Username, Master.eSettings.Password)
+        'Dim postdata As String = String.Format("username={0}&password={1}", Master.eSettings.Username, Master.eSettings.Password)
         Dim sHTTP As New HTTP
-        aoXML = sHTTP.PostDownloadData(String.Format("http://www.embermm.com/addons/addons.php?type={0}&func=fetch", e.Argument.ToString), postdata)
+        Dim postData As New List(Of String())
+        postData.Add((New String() {"username", Me.txtUsername.Text}))
+        postData.Add((New String() {"password", Me.txtPassword.Text}))
+        postData.Add((New String() {"type", e.Argument.ToString}))
+        postData.Add((New String() {"func", "fetch"}))
+        aoXML = sHTTP.PostDownloadData(String.Format("http://www.embermm.com/addons/addons.php", e.Argument.ToString), postData)
 
         If Not String.IsNullOrEmpty(aoXML) Then
             Dim xdAddons As XDocument = XDocument.Parse(aoXML)

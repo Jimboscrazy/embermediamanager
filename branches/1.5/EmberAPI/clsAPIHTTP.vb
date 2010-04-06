@@ -128,14 +128,23 @@ Public Class HTTP
 
         Return sResponse
     End Function
+    Public Function MakePostField(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
+    End Function
 
-    Public Function PostDownloadData(ByVal URL As String, ByVal postData As String) As String
+    Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
-        Dim Boundary As String = String.Format("{0}9876543210123", String.Empty.PadLeft(40, "-"c))
+        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
+        Dim Boundary As String = String.Format("--{0}", Idboundary)
+        Dim postData As String = String.Empty
         Me.Clear()
 
         Try
+            For Each s() As String In postDataList
+                postData = String.Concat(postData, MakePostField(Boundary, s(0), s(1)))
+            Next
+            postData = String.Concat(postData, Boundary, vbCrLf)
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = 20000
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
@@ -154,7 +163,8 @@ Public Class HTTP
             Dim encoding As New ASCIIEncoding()
             Dim byte1 As Byte() = encoding.GetBytes(postData)
             ' Set the content type of the data being posted.
-            Me.wrRequest.ContentType = "application/x-www-form-urlencoded"
+            ' Me.wrRequest.ContentType = "application/x-www-form-urlencoded"
+            Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
             ' Set the content length of the string being posted.
             Me.wrRequest.ContentLength = byte1.Length
             Dim newStream As Stream = Me.wrRequest.GetRequestStream()
