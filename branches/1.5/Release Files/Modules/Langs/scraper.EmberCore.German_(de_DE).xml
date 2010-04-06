@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<string id="0">Ember Native Serien Scraper</string>
 	<string id="1">OFDB Genre benutzen</string>
 	<string id="2">OFDB Handlung benutzen</string>
 	<string id="3">OFDB Kurzbeschr. benutzen</string>
@@ -103,6 +104,6 @@
 	<string id="101">Poster laden</string>
 	<string id="102">Fanart laden</string>
 	<string id="103">Diese Einstellungen sind Modulspezifisch{0}Schau auch in die Globale Konfiguration!</string>
-
+	<string id="104">Ember Native Film Scraper</string>
 </strings>
 <!-- Rev1932 please mail sphere@dersphere.de if you find errors or have suggestions-->

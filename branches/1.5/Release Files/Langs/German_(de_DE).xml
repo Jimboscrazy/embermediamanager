@@ -229,7 +229,7 @@
 	<string id="227">Trailer URL:</string>
 	<string id="228">Regie:</string>
 	<string id="229">Beschreibung der MPAA Einstufung:</string>
-	<string id="230">Manuell</string>
+	<string id="230">Edit NFO</string>
 	<string id="231">Schauspieler:</string>
 	<string id="232">Name</string>
 	<string id="233">Rolle</string>
@@ -349,7 +349,7 @@
 	<string id="347"></string>
 	<string id="348"></string>
 	<string id="349"></string>
-	<string id="350"></string>  
+	<string id="350">DVD</string>  
 	<string id="351">Ungültig</string>
 	<string id="352"></string>
 	<string id="353"></string>
@@ -416,7 +416,7 @@
 	<string id="414">Zuerst solltest du Ember Media Manager mitteilen wo sich deine Filme befinden. Erzeuge eine neue Quelle und trage dort das Quellverzeichnis ein. Du kannst soviele Quellen anlegen wie du möchtest.</string>
 	<string id="415">Du startest entweder Ember zum ersten mal oder hast ein Upgrade auf eine neue Version durchgeführt. Da sind ein paar Dinge die Ember noch von dir wissen muss. {0}Dieser Assistent wird dich durch die Einstellungen begleiten um sich deinen Wünschen und Gegebenheiten anzupassen.{0}{0}In diesem Assistent werden nur die wichtigsten Einstellungen angeboten, du kannst diese und andere Einstellungen jederzeit im "Einstellungen..." Dialog unter dem "Bearbeiten" Menupunkt verändern.</string>
 	<string id="416">Jetzt, wo Ember Media Manager weiß, WO er nach den Dateien schauen muss, brauchen wir ihm nur noch sagen, WONACH er suchen soll. Bitte wähle  eine Kombination aus Dateitypen nach denen Ember Media Manger suchen und in welchen er speichern soll. Du kannst in jeder Sektion natürlich mehrere auswählen.</string>
-	<string id="417">Einige Optionen, die dich noch interessieren könnten:{0}{0}Benutzerdefinierte Filter - Wenn deine Dateinamen oder Verzeichnisse Tags wie "DVDRip", BluRay", "x264", etc. beinhalten, du diese aber beim lesen herausfiltern möchtest, kannst du Benutzerdefinierte Reguläre-Ausdrücke (RegExp) verwenden.{0}{0}Bilder - Diese Sektion erlaubt die Wahl, welche Webseiten zum "scrapen" verwendet werden, sowie was deine bevorzugte Bildgröße ist.{0}{0}Sperren - In dieser Sektion wird es dir ermöglicht bestimmte Informationen zu sperren, was bedeutet, dass diese Informationen - selbst beim re-scrapen - nicht automatisch verändert werden. Dies ist besonders hilfreich, wenn du den Titel, Inhalt oder die Kurzbeschreibung manuell editiert hast.</string>
+	<string id="417">Einige Optionen, die dich noch interessieren könnten:{0}{0}Benutzerdefinierte Filter - Wenn deine Dateinamen oder Verzeichnisse Tags wie "DVDRip", BluRay", "x264", etc. beinhalten, du diese aber beim lesen herausfiltern möchtest, kannst du Benutzerdefinierte Reguläre-Ausdrücke (RegExp) verwenden.{0}{0}Bilder - Diese Sektion erlaubt die Wahl, welche Webseiten zum "scrapen" verwendet werden, sowie was deine bevorzugte Bildgröße ist.{0}{0}Sperren - In dieser Sektion wird es dir ermöglicht bestimmte Informationen zu sperren, was bedeutet, dass diese Informationen - selbst beim re-scrapen - nicht automatisch verändert werden. Dies ist besonders hilfreich, wenn du den Titel, die Handlung oder die Kurzbeschreibung manuell editiert hast.</string>
 	<string id="418">Bist du sicher, dass du die gewählte Quelle entfernen möchtest? Dies wird alle Filme der gewählten Quelle aus der Datenbank entfernen</string>
 	<string id="419">Metadaten sind für diesen Film nicht verfügbar.</string>
 	<string id="420">Einstellungen</string>
@@ -782,10 +782,10 @@
 	<string id="780"></string>
 	<string id="781"></string>
 	<string id="782"></string>
-	<string id="783">Inhalt:</string>
+	<string id="783">Handlung:</string>
 	<string id="784"></string>
 	<string id="785"></string>
-	<string id="786"></string>
+	<string id="786">Alle-Staffeln Poster</string>
 	<string id="787"></string>
 	<string id="788"></string>
 	<string id="789"></string>
@@ -818,9 +818,9 @@
 	<string id="816">Ein Fehler ist aufgetreten</string>
 	<string id="817">Neuen Film hinzugefügt</string>
 	<string id="818">Neue Episode hinzugefügt</string>
-	<string id="819"></string>
-	<string id="820"></string>
-	<string id="821"></string>
+	<string id="819">TV RegEx Profile</string>
+	<string id="820">RegEx Profile</string>
+	<string id="821">Beschreibung</string>
 	<string id="822"></string>
 	<string id="823"></string>
 	<string id="824"></string>
@@ -852,4 +852,4 @@
 	<string id="850">Su&amp;che nach Updates</string>
 	<string id="851">Kein Update vorhanden</string>
 </strings>
-<!-- Rev1932 please mail sphere@dersphere.de if you find errors or have suggestions-->
+<!-- Rev2006 -->
