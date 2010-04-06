@@ -18,6 +18,7 @@ Public Class AddonItem
         End Get
         Set(ByVal value As String)
             Me._addonname = value
+            Me.lblName.Text = value
         End Set
     End Property
 
@@ -27,6 +28,7 @@ Public Class AddonItem
         End Get
         Set(ByVal value As String)
             Me._author = value
+            Me.lblAuthor.Text = value
         End Set
     End Property
 
@@ -36,6 +38,7 @@ Public Class AddonItem
         End Get
         Set(ByVal value As String)
             Me._summary = value
+            Me.lblSummary.Text = value
         End Set
     End Property
 
@@ -45,6 +48,7 @@ Public Class AddonItem
         End Get
         Set(ByVal value As Image)
             Me._screenshot = value
+            Me.pbScreenShot.Image = value
         End Set
     End Property
 
@@ -54,6 +58,7 @@ Public Class AddonItem
         End Get
         Set(ByVal value As String)
             Me._version = value
+            Me.lblVersionNumber.Text = value
         End Set
     End Property
 

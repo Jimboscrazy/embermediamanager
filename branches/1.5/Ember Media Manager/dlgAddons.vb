@@ -44,6 +44,7 @@
         Me.pnlStatus.Visible = True
 
         Me.bwDownload = New System.ComponentModel.BackgroundWorker
+        Me.bwDownload.WorkerReportsProgress = True
         Me.bwDownload.RunWorkerAsync(e.ClickedItem.Text)
 
     End Sub
@@ -83,7 +84,7 @@
         Dim aoXML As String = String.Empty
 
         Dim sHTTP As New HTTP
-        aoXML = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?PHPSESSID={0}&type={1}", Me.SessionID, e.Argument.ToString))
+        aoXML = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?type={0}", e.Argument.ToString))
 
         If Not String.IsNullOrEmpty(aoXML) Then
             Dim xdAddons As XDocument = XDocument.Parse(aoXML)
@@ -93,6 +94,7 @@
             For Each xAddon In xdAddons.Descendants("entry")
                 If AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
                     ReDim Preserve Me.AddonItem(iIndex)
+                    Me.AddonItem(iIndex) = New AddonItem
                     Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
                     Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
                     Me.AddonItem(iIndex).Version = xAddon.Element("AddonVersion").Value
@@ -104,13 +106,16 @@
                     'Me.AddonItem(iIndex).ScreenShot = sHTTP.Image
 
                     Dim fList As New Generic.SortedList(Of String, String)
-                    For Each fFile As XElement In xAddon.Element("files").Descendants("file")
+                    For Each fFile As XElement In xAddon.Descendants("file")
                         fList.Add(fFile.Element("Filename").Value, fFile.Element("Description").Value)
                     Next
                     Me.AddonItem(iIndex).FileList = fList
 
                     Me.AddonItem(iIndex).Left = 0
                     Me.AddonItem(iIndex).Top = tTop
+
+                    Me.bwDownload.ReportProgress(0, Me.AddonItem(iIndex))
+
                     tTop += 105
                     iIndex += 1
                 End If
@@ -125,16 +130,20 @@
         Dim MinAllowed As Boolean = False
         Dim MaxAllowed As Boolean = False
 
-        If String.IsNullOrEmpty(MinVersion) OrElse NumUtils.ConvertToSingle(MinVersion) >= Master.MajorVersion Then
+        If String.IsNullOrEmpty(MinVersion) OrElse NumUtils.ConvertToSingle(MinVersion) <= Master.MajorVersion Then
             MinAllowed = True
         End If
 
-        If String.IsNullOrEmpty(MaxVersion) OrElse NumUtils.ConvertToSingle(MaxVersion) <= Master.MajorVersion Then
+        If String.IsNullOrEmpty(MaxVersion) OrElse NumUtils.ConvertToSingle(MaxVersion) >= Master.MajorVersion Then
             MaxAllowed = True
         End If
 
         Return MinAllowed AndAlso MaxAllowed
     End Function
+
+    Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged
+        Me.pnlList.Controls.Add(DirectCast(e.UserState, AddonItem))
+    End Sub
 
     Private Sub bwDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownload.RunWorkerCompleted
         Me.tsCategories.Enabled = True
