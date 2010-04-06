@@ -132,7 +132,7 @@ Public Class HTTP
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
     End Function
     Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
-        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
     End Function
 
     Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
