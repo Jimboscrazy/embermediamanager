@@ -31,7 +31,28 @@
             Using dNewAddon As New dlgAddEditAddon
                 Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
                 If Not IsNothing(tAddon) Then
-                    'do upload
+                    Dim sHTTP As New HTTP
+                    Dim postData As New List(Of String())
+                    postData.Add((New String() {"username", Me.txtUsername.Text}))
+                    postData.Add((New String() {"password", Me.txtPassword.Text}))
+                    postData.Add((New String() {"func", "add"}))
+                    postData.Add((New String() {"id", tAddon.ID.ToString}))
+                    postData.Add((New String() {"Name", tAddon.Name}))
+                    postData.Add((New String() {"Description", tAddon.Description}))
+                    postData.Add((New String() {"Category", tAddon.Category}))
+                    postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
+                    postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
+                    postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
+                    postData.Add((New String() {"screenshot", "here !KEEP or empty to delete or somehting else to upload"}))
+                    If False Then ' where condition to send or not image
+                        postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
+                    End If
+                    Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                    If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
+
+                    End If
+                    postData = Nothing
+                    sHTTP = Nothing
                 End If
             End Using
         Else

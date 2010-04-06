@@ -64,7 +64,7 @@ Public Class dlgAddEditAddon
     End Sub
 
     Private Sub Version_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtVersion.KeyPress, txtMinEVersion.KeyPress, txtMaxEVersion.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) OrElse e.KeyChar = "-" OrElse Regex.Matches(Me.txtVersion.Text, "\.").Count > 1
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) OrElse (e.KeyChar = "." AndAlso Regex.Matches(DirectCast(sender, TextBox).Text, "\.").Count = 1)
     End Sub
 
     Private Function ValidateEntry() As Boolean
@@ -145,10 +145,10 @@ Public Class dlgAddEditAddon
     Private Sub btnAddFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFile.Click
         Using dNewFile As New dlgAddonFile
             Dim KVP As KeyValuePair(Of String, String) = dNewFile.ShowDialog(String.Empty, String.Empty)
-            If Not IsNothing(KVP) Then
+            If Not IsNothing(KVP.Key) Then
                 If IsNothing(lvFiles.FindItemWithText(KVP.Key)) Then
                     Dim lvItem As ListViewItem = lvFiles.Items.Add(KVP.Key)
-                    lvItem.SubItems(1).Text = KVP.Value
+                    lvItem.SubItems.Add(KVP.Value)
                 End If
             End If
         End Using
@@ -163,7 +163,7 @@ Public Class dlgAddEditAddon
             Dim lvItem As ListViewItem = lvFiles.SelectedItems(0)
             Using dEditFile As New dlgAddonFile
                 Dim KVP As KeyValuePair(Of String, String) = dEditFile.ShowDialog(lvItem.Text, lvItem.SubItems(1).Text)
-                If Not IsNothing(KVP) Then
+                If Not IsNothing(KVP.Key) Then
                     lvItem.Text = KVP.Key
                     lvItem.SubItems(1).Text = KVP.Value
                 End If

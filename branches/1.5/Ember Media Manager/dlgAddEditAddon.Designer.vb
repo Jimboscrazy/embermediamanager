@@ -92,6 +92,7 @@ Partial Class dlgAddEditAddon
         'lvFiles
         '
         Me.lvFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colFile, Me.colDescription})
+        Me.lvFiles.FullRowSelect = True
         Me.lvFiles.Location = New System.Drawing.Point(6, 122)
         Me.lvFiles.Name = "lvFiles"
         Me.lvFiles.Size = New System.Drawing.Size(652, 155)
@@ -138,7 +139,7 @@ Partial Class dlgAddEditAddon
         '
         'lblMinEVersion
         '
-        Me.lblMinEVersion.Location = New System.Drawing.Point(426, 43)
+        Me.lblMinEVersion.Location = New System.Drawing.Point(426, 42)
         Me.lblMinEVersion.Name = "lblMinEVersion"
         Me.lblMinEVersion.Size = New System.Drawing.Size(126, 13)
         Me.lblMinEVersion.TabIndex = 11
@@ -147,7 +148,7 @@ Partial Class dlgAddEditAddon
         '
         'txtMinEVersion
         '
-        Me.txtMinEVersion.Location = New System.Drawing.Point(558, 40)
+        Me.txtMinEVersion.Location = New System.Drawing.Point(558, 39)
         Me.txtMinEVersion.Name = "txtMinEVersion"
         Me.txtMinEVersion.Size = New System.Drawing.Size(100, 22)
         Me.txtMinEVersion.TabIndex = 10

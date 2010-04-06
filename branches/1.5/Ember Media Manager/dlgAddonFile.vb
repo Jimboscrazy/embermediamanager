@@ -3,6 +3,9 @@
 Public Class dlgAddonFile
 
     Public Overloads Function ShowDialog(ByVal sPath As String, ByVal sDescription As String) As KeyValuePair(Of String, String)
+        Me.txtPath.Text = sPath
+        Me.txtDescription.Text = sDescription
+
         If MyBase.ShowDialog = Windows.Forms.DialogResult.OK Then
             Return New KeyValuePair(Of String, String)(Me.txtPath.Text, Me.txtDescription.Text)
         Else
@@ -22,4 +25,15 @@ Public Class dlgAddonFile
         Me.Close()
     End Sub
 
+    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+        Try
+            Using ofdFile As New OpenFileDialog
+                If ofdFile.ShowDialog() = DialogResult.OK Then
+                    Me.txtPath.Text = ofdFile.FileName
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class
