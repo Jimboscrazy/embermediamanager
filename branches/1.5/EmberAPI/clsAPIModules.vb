@@ -125,12 +125,12 @@ Public Class ModulesManager
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
     ''' </summary>
-    Public Sub loadModules()
+    Public Sub loadModules(Optional ByVal modulefile As String = "*.dll")
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
-            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
                 Try
                     'Load the assembly
                     assembly = System.Reflection.Assembly.LoadFile(file)
@@ -186,7 +186,7 @@ Public Class ModulesManager
     ''' <summary>
     ''' Load all Scraper Modules and field in externalScrapersModules List
     ''' </summary>
-    Public Sub loadScrapersModules()
+    Public Sub loadScrapersModules(Optional ByVal modulefile As String = "*.dll")
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
         Dim ScraperFound As Boolean = False
@@ -194,7 +194,7 @@ Public Class ModulesManager
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
             'For each .dll file in the module directory
-            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
                 Try
                     assembly = System.Reflection.Assembly.LoadFile(file)
                     'Loop through each of the assemeblies type

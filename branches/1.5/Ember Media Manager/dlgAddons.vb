@@ -1,4 +1,6 @@
-﻿Public Class dlgAddons
+﻿Imports System.Text.RegularExpressions
+
+Public Class dlgAddons
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
 
     Private SessionID As String = String.Empty
@@ -26,6 +28,17 @@
         End If
     End Sub
 
+    Function GetStatus(ByVal status As String) As String
+        Dim regStat As Match = Regex.Match(status, "\<status\>(?<status>.*?)\<\/status\>", RegexOptions.IgnoreCase)
+        If regStat.Success Then
+            Dim tStatus As String = regStat.Groups("status").Value
+            If Not String.IsNullOrEmpty(tStatus) Then
+                Return tStatus
+            End If
+        End If
+        Return String.Empty
+    End Function
+
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
         If e.ClickedItem.Text = "Create New" Then
             Using dNewAddon As New dlgAddEditAddon
@@ -36,23 +49,37 @@
                     postData.Add((New String() {"username", Me.txtUsername.Text}))
                     postData.Add((New String() {"password", Me.txtPassword.Text}))
                     postData.Add((New String() {"func", "add"}))
-                    postData.Add((New String() {"id", tAddon.ID.ToString}))
+                    postData.Add((New String() {"id", If(tAddon.ID > 0, tAddon.ID.ToString, "")}))
                     postData.Add((New String() {"Name", tAddon.Name}))
                     postData.Add((New String() {"Description", tAddon.Description}))
                     postData.Add((New String() {"Category", tAddon.Category}))
                     postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
                     postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
                     postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
-                    postData.Add((New String() {"screenshot", "here !KEEP or empty to delete or somehting else to upload"}))
-                    If False Then ' where condition to send or not image
+                    postData.Add((New String() {"screenshot", tAddon.ScreenShotPath}))
+                    If Not tAddon.ScreenShotPath = "!KEEP" Then
                         postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
                     End If
                     Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-                    If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
 
+                    If IsNumeric(GetStatus(Me.SessionID)) Then
+                        tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
+                        For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
+                            postData.Clear()
+                            postData.Add((New String() {"username", Me.txtUsername.Text}))
+                            postData.Add((New String() {"password", Me.txtPassword.Text}))
+                            postData.Add((New String() {"func", "addfile"}))
+                            postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
+                            postData.Add((New String() {"Description", f.Value}))
+                            postData.Add((New String() {f.Key, f.Key, "file"}))
+                            Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                            If IsNumeric(GetStatus(Me.SessionID)) Then
+                                'ok
+                            End If
+                        Next
+                    Else
+                        'error
                     End If
-                    postData = Nothing
-                    sHTTP = Nothing
                 End If
             End Using
         Else
@@ -205,5 +232,4 @@
             Next
         End If
     End Sub
-
 End Class

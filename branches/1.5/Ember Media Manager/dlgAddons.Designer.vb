@@ -44,12 +44,12 @@ Partial Class dlgAddons
         Me.tsbTemplates = New System.Windows.Forms.ToolStripButton
         Me.tsbModules = New System.Windows.Forms.ToolStripButton
         Me.tsbOther = New System.Windows.Forms.ToolStripButton
+        Me.tslSpacer = New System.Windows.Forms.ToolStripLabel
+        Me.tsbNew = New System.Windows.Forms.ToolStripButton
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.pbCurrent = New System.Windows.Forms.PictureBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.lblCurrent = New System.Windows.Forms.Label
-        Me.tslSpacer = New System.Windows.Forms.ToolStripLabel
-        Me.tsbNew = New System.Windows.Forms.ToolStripButton
         Me.pnlStatus.SuspendLayout()
         Me.pnlLogin.SuspendLayout()
         Me.Panel4.SuspendLayout()
@@ -263,6 +263,21 @@ Partial Class dlgAddons
         Me.tsbOther.Text = "Other"
         Me.tsbOther.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
+        'tslSpacer
+        '
+        Me.tslSpacer.Name = "tslSpacer"
+        Me.tslSpacer.Size = New System.Drawing.Size(148, 51)
+        Me.tslSpacer.Text = "                                               "
+        '
+        'tsbNew
+        '
+        Me.tsbNew.Image = CType(resources.GetObject("tsbNew.Image"), System.Drawing.Image)
+        Me.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNew.Name = "tsbNew"
+        Me.tsbNew.Size = New System.Drawing.Size(72, 51)
+        Me.tsbNew.Text = "Create New"
+        Me.tsbNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        '
         'pnlCurrent
         '
         Me.pnlCurrent.BackColor = System.Drawing.Color.SteelBlue
@@ -299,21 +314,6 @@ Partial Class dlgAddons
         Me.lblCurrent.Name = "lblCurrent"
         Me.lblCurrent.Size = New System.Drawing.Size(179, 25)
         Me.lblCurrent.TabIndex = 63
-        '
-        'tslSpacer
-        '
-        Me.tslSpacer.Name = "tslSpacer"
-        Me.tslSpacer.Size = New System.Drawing.Size(148, 51)
-        Me.tslSpacer.Text = "                                               "
-        '
-        'tsbNew
-        '
-        Me.tsbNew.Image = CType(resources.GetObject("tsbNew.Image"), System.Drawing.Image)
-        Me.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbNew.Name = "tsbNew"
-        Me.tsbNew.Size = New System.Drawing.Size(72, 51)
-        Me.tsbNew.Text = "Create New"
-        Me.tsbNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'dlgAddons
         '
