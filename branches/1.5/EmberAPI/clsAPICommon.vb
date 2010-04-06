@@ -253,6 +253,137 @@ Public Class Containers
 
     End Class
 
+    Public Class Addon
+        Private _id As Integer
+        Private _name As String
+        Private _author As String
+        Private _description As String
+        Private _category As String
+        Private _version As Single
+        Private _mineversion As Single
+        Private _maxeversion As Single
+        Private _screenshotpath As String
+        Private _screenshotimage As Image
+        Private _files As Generic.SortedList(Of String, String)
+
+        Public Property ID() As Integer
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Integer)
+                Me._id = value
+            End Set
+        End Property
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public Property Author() As String
+            Get
+                Return Me._author
+            End Get
+            Set(ByVal value As String)
+                Me._author = value
+            End Set
+        End Property
+
+        Public Property Description() As String
+            Get
+                Return Me._description
+            End Get
+            Set(ByVal value As String)
+                Me._description = value
+            End Set
+        End Property
+
+        Public Property Category() As String
+            Get
+                Return Me._category
+            End Get
+            Set(ByVal value As String)
+                Me._category = value
+            End Set
+        End Property
+
+        Public Property Version() As Single
+            Get
+                Return Me._version
+            End Get
+            Set(ByVal value As Single)
+                Me._version = value
+            End Set
+        End Property
+
+        Public Property MinEVersion() As Single
+            Get
+                Return Me._mineversion
+            End Get
+            Set(ByVal value As Single)
+                Me._mineversion = value
+            End Set
+        End Property
+
+        Public Property MaxEVersion() As Single
+            Get
+                Return Me._maxeversion
+            End Get
+            Set(ByVal value As Single)
+                Me._maxeversion = value
+            End Set
+        End Property
+
+        Public Property ScreenShotPath() As String
+            Get
+                Return Me._screenshotpath
+            End Get
+            Set(ByVal value As String)
+                Me._screenshotpath = value
+            End Set
+        End Property
+
+        Public Property ScreenShotImage() As Image
+            Get
+                Return Me._screenshotimage
+            End Get
+            Set(ByVal value As Image)
+                Me._screenshotimage = value
+            End Set
+        End Property
+
+        Public Property Files() As Generic.SortedList(Of String, String)
+            Get
+                Return Me._files
+            End Get
+            Set(ByVal value As Generic.SortedList(Of String, String))
+                Me._files = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._id = -1
+            Me._name = String.Empty
+            Me._author = String.Empty
+            Me._description = String.Empty
+            Me._category = String.Empty
+            Me._version = -1
+            Me._mineversion = -1
+            Me._maxeversion = -1
+            Me._screenshotpath = String.Empty
+            Me._screenshotimage = Nothing
+            Me._files = New Generic.SortedList(Of String, String)
+        End Sub
+    End Class
+
     #End Region 'Nested Types
 
 End Class

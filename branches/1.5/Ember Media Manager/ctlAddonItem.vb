@@ -11,8 +11,11 @@ Public Class AddonItem
     Private _addonname As String
     Private _author As String
     Private _summary As String
+    Private _category As String
     Private _screenshot As Image
-    Private _version As String
+    Private _version As Single
+    Private _mineversion As Single
+    Private _maxeversion As Single
     Private _filelist As Generic.SortedList(Of String, String)
     Private _owned As Boolean
 
@@ -55,6 +58,15 @@ Public Class AddonItem
         End Set
     End Property
 
+    Public Property Category() As String
+        Get
+            Return Me._category
+        End Get
+        Set(ByVal value As String)
+            Me._category = value
+        End Set
+    End Property
+
     Public Property ScreenShot() As Image
         Get
             Return Me._screenshot
@@ -65,13 +77,31 @@ Public Class AddonItem
         End Set
     End Property
 
-    Public Property Version() As String
+    Public Property Version() As Single
         Get
             Return Me._version
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Single)
             Me._version = value
-            Me.lblVersionNumber.Text = value
+            Me.lblVersionNumber.Text = value.ToString
+        End Set
+    End Property
+
+    Public Property MinEVersion() As Single
+        Get
+            Return Me._mineversion
+        End Get
+        Set(ByVal value As Single)
+            Me._mineversion = value
+        End Set
+    End Property
+
+    Public Property MaxEVersion() As Single
+        Get
+            Return Me._maxeversion
+        End Get
+        Set(ByVal value As Single)
+            Me._maxeversion = value
         End Set
     End Property
 
@@ -107,7 +137,10 @@ Public Class AddonItem
         Me._addonname = String.Empty
         Me._author = String.Empty
         Me._summary = String.Empty
-        Me._version = String.Empty
+        Me._category = String.Empty
+        Me._version = -1
+        Me._mineversion = -1
+        Me._maxeversion = -1
         Me._screenshot = Nothing
         Me._owned = False
         Me._filelist = New Generic.SortedList(Of String, String)
@@ -166,6 +199,27 @@ Public Class AddonItem
         Using dDelAddon As New dlgDeleteAddon
             If dDelAddon.ShowDialog(Me._id) = DialogResult.OK Then
                 RaiseEvent NeedsRefresh()
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit.Click
+        Dim tAddon As New Containers.Addon
+        tAddon.ID = Me._id
+        tAddon.Name = Me._addonname
+        tAddon.Author = Me._author
+        tAddon.Description = Me._summary
+        tAddon.Version = Me._version
+        tAddon.MinEVersion = Me._mineversion
+        tAddon.MaxEVersion = Me._maxeversion
+        tAddon.Category = Me._category
+        tAddon.Files = Me._filelist
+        tAddon.ScreenShotImage = Me._screenshot
+
+        Using dEditAddon As New dlgAddEditAddon
+            Dim eAddon As Containers.Addon = dEditAddon.ShowDialog(tAddon)
+            If Not IsNothing(eAddon) Then
+                ''do upload
             End If
         End Using
     End Sub

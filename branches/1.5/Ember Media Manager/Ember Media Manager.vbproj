@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -173,6 +173,12 @@
       <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgAddEditAddon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgAddonFile.Designer.vb">
+      <DependentUpon>dlgAddonFile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddonFile.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgAddonFiles.Designer.vb">
@@ -374,6 +380,9 @@
     <EmbeddedResource Include="dlgAddEditAddon.resx">
       <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddonFile.resx">
+      <DependentUpon>dlgAddonFile.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgAddonFiles.resx">
       <DependentUpon>dlgAddonFiles.vb</DependentUpon>

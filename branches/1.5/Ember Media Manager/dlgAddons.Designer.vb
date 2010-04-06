@@ -48,6 +48,8 @@ Partial Class dlgAddons
         Me.pbCurrent = New System.Windows.Forms.PictureBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.lblCurrent = New System.Windows.Forms.Label
+        Me.tslSpacer = New System.Windows.Forms.ToolStripLabel
+        Me.tsbNew = New System.Windows.Forms.ToolStripButton
         Me.pnlStatus.SuspendLayout()
         Me.pnlLogin.SuspendLayout()
         Me.Panel4.SuspendLayout()
@@ -209,7 +211,7 @@ Partial Class dlgAddons
         Me.tsCategories.Enabled = False
         Me.tsCategories.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsCategories.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.tsCategories.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbTranslations, Me.tsbThemes, Me.tsbTemplates, Me.tsbModules, Me.tsbOther})
+        Me.tsCategories.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbTranslations, Me.tsbThemes, Me.tsbTemplates, Me.tsbModules, Me.tsbOther, Me.tslSpacer, Me.tsbNew})
         Me.tsCategories.Location = New System.Drawing.Point(0, 0)
         Me.tsCategories.Name = "tsCategories"
         Me.tsCategories.Size = New System.Drawing.Size(513, 54)
@@ -298,6 +300,21 @@ Partial Class dlgAddons
         Me.lblCurrent.Size = New System.Drawing.Size(179, 25)
         Me.lblCurrent.TabIndex = 63
         '
+        'tslSpacer
+        '
+        Me.tslSpacer.Name = "tslSpacer"
+        Me.tslSpacer.Size = New System.Drawing.Size(148, 51)
+        Me.tslSpacer.Text = "                                               "
+        '
+        'tsbNew
+        '
+        Me.tsbNew.Image = CType(resources.GetObject("tsbNew.Image"), System.Drawing.Image)
+        Me.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNew.Name = "tsbNew"
+        Me.tsbNew.Size = New System.Drawing.Size(72, 51)
+        Me.tsbNew.Text = "Create New"
+        Me.tsbNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        '
         'dlgAddons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -358,5 +375,7 @@ Partial Class dlgAddons
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents tslSpacer As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents tsbNew As System.Windows.Forms.ToolStripButton
 
 End Class

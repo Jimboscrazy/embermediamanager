@@ -27,11 +27,20 @@
     End Sub
 
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
-        If Not Me.currType = e.ClickedItem.Text Then
-            Me.currType = e.ClickedItem.Text
-            Me.pbCurrent.Image = e.ClickedItem.Image
-            Me.lblCurrent.Text = e.ClickedItem.Text
-            Me.LoadItems(e.ClickedItem.Text)
+        If e.ClickedItem.Text = "Create New" Then
+            Using dNewAddon As New dlgAddEditAddon
+                Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
+                If Not IsNothing(tAddon) Then
+                    'do upload
+                End If
+            End Using
+        Else
+            If Not Me.currType = e.ClickedItem.Text Then
+                Me.currType = e.ClickedItem.Text
+                Me.pbCurrent.Image = e.ClickedItem.Image
+                Me.lblCurrent.Text = e.ClickedItem.Text
+                Me.LoadItems(e.ClickedItem.Text)
+            End If
         End If
     End Sub
 
@@ -69,7 +78,6 @@
         postData.Add((New String() {"username", Me.txtUsername.Text}))
         postData.Add((New String() {"password", Me.txtPassword.Text}))
         postData.Add((New String() {"func", "login"}))
-        'Me.SessionID = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?func=login&username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
         Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
         If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
             Me.pnlStatus.Visible = False
@@ -87,14 +95,13 @@
 
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
         Dim aoXML As String = String.Empty
-        'Dim postdata As String = String.Format("username={0}&password={1}", Master.eSettings.Username, Master.eSettings.Password)
         Dim sHTTP As New HTTP
         Dim postData As New List(Of String())
         postData.Add((New String() {"username", Me.txtUsername.Text}))
         postData.Add((New String() {"password", Me.txtPassword.Text}))
         postData.Add((New String() {"type", e.Argument.ToString}))
         postData.Add((New String() {"func", "fetch"}))
-        aoXML = sHTTP.PostDownloadData(String.Format("http://www.embermm.com/addons/addons.php", e.Argument.ToString), postData)
+        aoXML = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
 
         If Not String.IsNullOrEmpty(aoXML) Then
             Dim xdAddons As XDocument = XDocument.Parse(aoXML)
@@ -108,9 +115,11 @@
                     Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
                     Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
                     Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
-                    Me.AddonItem(iIndex).Version = xAddon.Element("AddonVersion").Value
+                    Me.AddonItem(iIndex).Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
+                    Me.AddonItem(iIndex).MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
+                    Me.AddonItem(iIndex).MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
                     Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
-                    'sHTTP.StartDownloadImage(xAddon.Element("Screenshot").Value)
+                    Me.AddonItem(iIndex).Category = e.Argument.ToString
                     sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
                     While sHTTP.IsDownloading
                         Application.DoEvents()
