@@ -169,6 +169,12 @@
     <Compile Include="ctlAddonItem.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="dlgAddEditAddon.Designer.vb">
+      <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddEditAddon.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgAddonFiles.Designer.vb">
       <DependentUpon>dlgAddonFiles.vb</DependentUpon>
     </Compile>
@@ -179,6 +185,12 @@
       <DependentUpon>dlgAddons.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgAddons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgDeleteAddon.Designer.vb">
+      <DependentUpon>dlgDeleteAddon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgDeleteAddon.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgEditSeason.Designer.vb">
@@ -358,11 +370,17 @@
     <EmbeddedResource Include="ctlAddonItem.resx">
       <DependentUpon>ctlAddonItem.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddEditAddon.resx">
+      <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgAddonFiles.resx">
       <DependentUpon>dlgAddonFiles.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgAddons.resx">
       <DependentUpon>dlgAddons.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgDeleteAddon.resx">
+      <DependentUpon>dlgDeleteAddon.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditSeason.resx">
       <DependentUpon>dlgEditSeason.vb</DependentUpon>

@@ -3,14 +3,27 @@
 Public Class AddonItem
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
 
+    Public Event NeedsRefresh()
+
     Private _enabled As Boolean = True
 
+    Private _id As Integer
     Private _addonname As String
     Private _author As String
     Private _summary As String
     Private _screenshot As Image
     Private _version As String
     Private _filelist As Generic.SortedList(Of String, String)
+    Private _owned As Boolean
+
+    Public Property ID() As Integer
+        Get
+            Return Me._id
+        End Get
+        Set(ByVal value As Integer)
+            Me._id = value
+        End Set
+    End Property
 
     Public Property AddonName() As String
         Get
@@ -71,17 +84,32 @@ Public Class AddonItem
         End Set
     End Property
 
+    Public Property Owned() As Boolean
+        Get
+            Return Me._owned
+        End Get
+        Set(ByVal value As Boolean)
+            Me._owned = value
+            If value Then
+                Me.btnDelete.Visible = True
+                Me.btnEdit.Visible = True
+            End If
+        End Set
+    End Property
+
     Public Sub New()
         InitializeComponent()
         Me.Clear()
     End Sub
 
     Public Sub Clear()
+        Me._id = -1
         Me._addonname = String.Empty
         Me._author = String.Empty
         Me._summary = String.Empty
         Me._version = String.Empty
         Me._screenshot = Nothing
+        Me._owned = False
         Me._filelist = New Generic.SortedList(Of String, String)
     End Sub
 
@@ -132,5 +160,13 @@ Public Class AddonItem
 
     Private Sub AddonItem_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseClick
         If e.Button = Windows.Forms.MouseButtons.Right Then Me.ContextMenuStrip = If(Not Me._enabled, Nothing, Me.cMenu)
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Using dDelAddon As New dlgDeleteAddon
+            If dDelAddon.ShowDialog(Me._id) = DialogResult.OK Then
+                RaiseEvent NeedsRefresh()
+            End If
+        End Using
     End Sub
 End Class

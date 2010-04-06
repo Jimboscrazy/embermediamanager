@@ -2,6 +2,7 @@
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
 
     Private SessionID As String = String.Empty
+    Private currType As String = String.Empty
 
     Private AddonItem() As AddonItem
 
@@ -26,27 +27,28 @@
     End Sub
 
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
+        If Not Me.currType = e.ClickedItem.Text Then
+            Me.currType = e.ClickedItem.Text
+            Me.pbCurrent.Image = e.ClickedItem.Image
+            Me.lblCurrent.Text = e.ClickedItem.Text
+            Me.LoadItems(e.ClickedItem.Text)
+        End If
+    End Sub
+
+    Public Sub LoadItems(ByVal sType As String)
         Me.ClearList()
 
-        Me.pbCurrent.Image = e.ClickedItem.Image
-        Me.lblCurrent.Text = e.ClickedItem.Text
-
-        Select Case e.ClickedItem.Text
-            Case "Translations"
-            Case "Themes"
-            Case "Templates"
-            Case "Modules"
-            Case "Other"
-        End Select
-
         Me.tsCategories.Enabled = False
-        Me.lblStatus.Text = String.Format("Fetching ""{0}"" Addons...", e.ClickedItem.Text)
+        Me.lblStatus.Text = String.Format("Fetching ""{0}"" Addons...", sType)
         Me.pnlStatus.Visible = True
 
         Me.bwDownload = New System.ComponentModel.BackgroundWorker
         Me.bwDownload.WorkerReportsProgress = True
-        Me.bwDownload.RunWorkerAsync(e.ClickedItem.Text)
+        Me.bwDownload.RunWorkerAsync(sType)
+    End Sub
 
+    Public Sub RefreshItems()
+        Me.LoadItems(Me.currType)
     End Sub
 
     Private Sub btnLogin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLogin.Click
@@ -64,7 +66,7 @@
 
         Application.DoEvents()
 
-        Me.SessionID = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
+        Me.SessionID = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?func=login&username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
 
         If Not String.IsNullOrEmpty(Me.SessionID) Then
             Me.pnlStatus.Visible = False
@@ -84,7 +86,7 @@
         Dim aoXML As String = String.Empty
 
         Dim sHTTP As New HTTP
-        aoXML = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?type={0}", e.Argument.ToString))
+        aoXML = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?type={0}&func=fetch", e.Argument.ToString))
 
         If Not String.IsNullOrEmpty(aoXML) Then
             Dim xdAddons As XDocument = XDocument.Parse(aoXML)
@@ -95,6 +97,7 @@
                 If AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
                     ReDim Preserve Me.AddonItem(iIndex)
                     Me.AddonItem(iIndex) = New AddonItem
+                    Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
                     Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
                     Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
                     Me.AddonItem(iIndex).Version = xAddon.Element("AddonVersion").Value
@@ -142,7 +145,10 @@
     End Function
 
     Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged
-        Me.pnlList.Controls.Add(DirectCast(e.UserState, AddonItem))
+        Dim tAOI As AddonItem = DirectCast(e.UserState, AddonItem)
+        AddHandler tAOI.NeedsRefresh, AddressOf Me.RefreshItems
+        tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
+        Me.pnlList.Controls.Add(tAOI)
     End Sub
 
     Private Sub bwDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownload.RunWorkerCompleted
@@ -153,7 +159,10 @@
     Private Sub ClearList()
         If Me.pnlList.Controls.Count > 0 Then
             For i As Integer = UBound(Me.AddonItem) To 0 Step -1
-                If Not IsNothing(Me.AddonItem(i)) Then Me.pnlList.Controls.Remove(Me.AddonItem(i))
+                If Not IsNothing(Me.AddonItem(i)) Then
+                    RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
+                    Me.pnlList.Controls.Remove(Me.AddonItem(i))
+                End If
             Next
         End If
     End Sub
