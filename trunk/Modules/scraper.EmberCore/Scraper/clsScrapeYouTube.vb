@@ -251,7 +251,7 @@ Namespace YouTube
         #Region "Methods"
 
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
-            MyBase.Add(Link.FormatQuality, Link)
+            If Not MyBase.ContainsKey(Link.FormatQuality) Then MyBase.Add(Link.FormatQuality, Link)
         End Sub
 
         #End Region 'Methods
