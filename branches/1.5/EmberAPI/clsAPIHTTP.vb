@@ -20,10 +20,11 @@
 
 Imports System.IO
 Imports System.IO.Compression
+Imports System.Text
 
 Public Class HTTP
 
-    #Region "Fields"
+#Region "Fields"
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -31,10 +32,9 @@ Public Class HTTP
     Private _image As Image
     Private _responseuri As String
     Private _URL As String = String.Empty
+#End Region 'Fields
 
-    #End Region 'Fields
-
-    #Region "Constructors"
+#Region "Constructors"
 
     Public Sub New()
         Me.Clear()
@@ -45,16 +45,15 @@ Public Class HTTP
         MyBase.Finalize()
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
-    #Region "Events"
+#Region "Events"
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
-
+#Region "Properties"
     Public ReadOnly Property Image() As Image
         Get
             Return Me._image
@@ -70,9 +69,9 @@ Public Class HTTP
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Sub Cancel()
         Me._cancel = True
@@ -84,7 +83,6 @@ Public Class HTTP
         Me._image = Nothing
         Me._cancel = False
     End Sub
-
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
@@ -92,7 +90,6 @@ Public Class HTTP
         Me.Clear()
 
         Try
-
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = 20000
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
@@ -107,6 +104,62 @@ Public Class HTTP
                 End If
                 Me.wrRequest.Proxy = wProxy
             End If
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                Select Case True
+                    'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                        cEncoding = System.Text.Encoding.UTF8
+                    Case Else
+                        cEncoding = System.Text.Encoding.GetEncoding(28591)
+                End Select
+                Using Ms As Stream = wrResponse.GetResponseStream
+                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    Else
+                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                    End If
+                End Using
+                Me._responseuri = wrResponse.ResponseUri.ToString
+            End Using
+        Catch ex As Exception
+        End Try
+
+        Return sResponse
+    End Function
+
+    Public Function PostDownloadData(ByVal URL As String, ByVal postData As String) As String
+        Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
+        Dim Boundary As String = String.Format("{0}9876543210123", String.Empty.PadLeft(40, "-"c))
+        Me.Clear()
+
+        Try
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    wProxy.Credentials = Master.eSettings.ProxyCreds
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                Me.wrRequest.Proxy = wProxy
+            End If
+            Me.wrRequest.Method = "POST"
+            Dim encoding As New ASCIIEncoding()
+            Dim byte1 As Byte() = encoding.GetBytes(postData)
+            ' Set the content type of the data being posted.
+            Me.wrRequest.ContentType = "application/x-www-form-urlencoded"
+            ' Set the content length of the string being posted.
+            Me.wrRequest.ContentLength = byte1.Length
+            Dim newStream As Stream = Me.wrRequest.GetRequestStream()
+            newStream.Write(byte1, 0, byte1.Length)
+            newStream.Close()
 
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
@@ -323,5 +376,5 @@ Public Class HTTP
         Me.dThread.Start()
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 End Class
