@@ -70,7 +70,6 @@
         postData.Add((New String() {"password", Me.txtPassword.Text}))
         postData.Add((New String() {"func", "login"}))
         'Me.SessionID = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?func=login&username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
-        'Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php?func=login", String.Format("username={0}&password={1}", Me.txtUsername.Text, Me.txtPassword.Text))
         Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
         If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
             Me.pnlStatus.Visible = False
@@ -112,10 +111,11 @@
                     Me.AddonItem(iIndex).Version = xAddon.Element("AddonVersion").Value
                     Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
                     'sHTTP.StartDownloadImage(xAddon.Element("Screenshot").Value)
-                    'While sHTTP.IsDownloading
-                    '    Application.DoEvents()
-                    'End While
-                    'Me.AddonItem(iIndex).ScreenShot = sHTTP.Image
+                    sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
+                    While sHTTP.IsDownloading
+                        Application.DoEvents()
+                    End While
+                    Me.AddonItem(iIndex).ScreenShot = sHTTP.Image
 
                     Dim fList As New Generic.SortedList(Of String, String)
                     For Each fFile As XElement In xAddon.Descendants("file")
