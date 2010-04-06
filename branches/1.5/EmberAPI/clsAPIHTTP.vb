@@ -128,10 +128,10 @@ Public Class HTTP
 
         Return sResponse
     End Function
-    Public Function MakePostField(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
+    Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
     End Function
-    Public Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
+    Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
     End Function
 
@@ -145,11 +145,14 @@ Public Class HTTP
 
         Try
             For Each s() As String In postDataList
-                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostField(Boundary, s(0), s(1)))))
-                If s.Count = 3 AndAlso s(2) = "file" Then
-                    postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
-                    postDataBytes.Add(File.ReadAllBytes(s(1)))
-                    postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
+                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
+                If s.Count = 3 Then
+                    Select Case s(2)
+                        Case "file"  'array in list is {filename,filepath,"file"}
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
+                            postDataBytes.Add(File.ReadAllBytes(s(1)))
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
+                    End Select
                 End If
             Next
             postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
