@@ -111,7 +111,7 @@ Public Class HTTP
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
                     'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
-                    Case wrResponse.ContentType.ToLower.Contains("application/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                         cEncoding = System.Text.Encoding.UTF8
                     Case Else
                         cEncoding = System.Text.Encoding.GetEncoding(28591)
@@ -163,18 +163,6 @@ Public Class HTTP
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
                     Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("flv")
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-                    Case Type = "translation"
-                        outFile = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
-                    Case Type = "template"
-                        Dim basePath As String = Path.Combine(Functions.AppPath, "Langs")
-                        Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(Convert.ToChar("/"))
-                        For i As Integer = 0 To folders.Count - 2
-                            If Not Directory.Exists(Path.Combine(basePath, folders(i))) Then Directory.CreateDirectory(Path.Combine(basePath, folders(i)))
-                            basePath = Path.Combine(basePath, folders(i))
-                        Next
-                        outFile = Path.Combine(basePath, URL.Substring(URL.LastIndexOf("/") + 1))
-                    Case Type = "movietheme"
-                        outFile = String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
                     Case Type = "other"
                         outFile = LocalFile
                 End Select

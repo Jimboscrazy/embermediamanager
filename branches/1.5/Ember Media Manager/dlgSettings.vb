@@ -436,8 +436,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnDLTrans_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrans.Click
-        Using dTranslationDL As New dlgTranslationDL
-            If dTranslationDL.ShowDialog = Windows.Forms.DialogResult.OK Then
+        Using dAddons As New dlgAddons
+            If dAddons.ShowDialog = Windows.Forms.DialogResult.OK Then
                 Me.LoadIntLangs()
                 Me.cbIntLang.SelectedItem = Master.eSettings.Language
 

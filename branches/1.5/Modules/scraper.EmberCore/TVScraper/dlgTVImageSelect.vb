@@ -635,7 +635,7 @@ Public Class dlgTVImageSelect
             Me.pbCurrent.Image = Nothing
 
             If Me.pnlImages.Controls.Count > 0 Then
-                For i = UBound(Me.pnlImage) To 0 Step -1
+                For i As Integer = UBound(Me.pnlImage) To 0 Step -1
                     If Not IsNothing(Me.pnlImage(i)) Then
                         If Not IsNothing(Me.lblImage(i)) AndAlso Me.pnlImage(i).Contains(Me.lblImage(i)) Then Me.pnlImage(i).Controls.Remove(Me.lblImage(i))
                         If Not IsNothing(Me.pbImage(i)) AndAlso Me.pnlImage(i).Contains(Me.pbImage(i)) Then Me.pnlImage(i).Controls.Remove(Me.pbImage(i))
