@@ -12,10 +12,16 @@ Public Class dlgDeleteAddon
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Dim sHTTP As New HTTP
-        Dim Result As String = sHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?func=delete&id={0}&username={1}&password={2}", Me._id, Me.txtUsername.Text, Me.txtPassword.Text))
+        Dim postData As New List(Of String())
+        postData.Add((New String() {"username", Me.txtUsername.Text}))
+        postData.Add((New String() {"password", Me.txtPassword.Text}))
+        postData.Add((New String() {"id", Me._id.ToString}))
+        postData.Add((New String() {"func", "delete"}))
+
+        Dim Result As String = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
         sHTTP = Nothing
 
-        If String.IsNullOrEmpty(Result) Then
+        If String.IsNullOrEmpty(Result) AndAlso Result.Contains("OK") Then
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If
