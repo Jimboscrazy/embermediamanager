@@ -263,13 +263,13 @@
   <string control="Core_chkScraperShowPremiered">Das Scrapen von TV-Serien Premiereterminen einschalten.</string>
   <string control="Core_chkScraperShowEGU">Das Scrapen von EpisodenGuide URLs einschalten.</string>
   <string control="Core_chkScraperShowMPAA">Das Scrapen von MPAA-Informationen einschalten.</string>
-  <string control="Core_chkScraperShowPlot">Das Scrapen von TV-Serien Inhaltsangaben (=Plot) einschalten.</string>
+  <string control="Core_chkScraperShowPlot">Das Scrapen von TV-Serien Handlung (=Plot) einschalten.</string>
   <string control="Core_chkScraperShowGenre">Das Scrapen von TV-Serien Genres einschalten.</string>
   <string control="Core_chkScraperShowTitle">Das Scrapen von TV-Serien Titeln einschalten.</string>
   <string control="Core_chkScraperEpActors">Das Scrapen von Episoden Schauspielern einschalten.</string>
   <string control="Core_chkScraperEpCredits">Das Scrapen von Episoden Credits einschalten.</string>
   <string control="Core_chkScraperEpDirector">Das Scrapen von Episoden Regisseuren einschalten.</string>
-  <string control="Core_chkScraperEpPlot">Das Scrapen von Episoden Inhaltsangaben (=Plot) einschalten.</string>
+  <string control="Core_chkScraperEpPlot">Das Scrapen von Episoden Handlungen (=Plot) einschalten.</string>
   <string control="Core_chkScraperEpRating">Das Scrapen von Episoden Bewertungen einschalten.</string>
   <string control="Core_chkScraperEpAired">Das Scrapen von Episoden Austrahlungsterminen einschalten.</string>
   <string control="Core_chkScraperEpTitle">Das Scrapen von Episoden Titeln einschalten.</string>
@@ -277,8 +277,8 @@
   <string control="Core_chkScraperEpSeason">Das Scrapen von Staffel Nummern einschalten.</string>
   <string control="Core_chkEpLockTitle">Wenn aktiviert wird Der Episoden Titel nur verändert wenn keiner gespeichert ist.</string>
   <string control="Core_chkEpLockRating">Wenn aktiviert wird die Episoden Bewertung nur verändert wenn keine gespeichert ist.</string>
-  <string control="Core_chkEpLockPlot">Wenn aktiviert wird die Episoden Inhaltsangabe nur verändert wenn keine gespeichert ist.</string>
-  <string control="Core_chkShowLockPlot">Wenn aktiviert wird die Serien Inhaltsangabe nur verändert wenn keine gespeichert ist.</string>
+  <string control="Core_chkEpLockPlot">Wenn aktiviert wird die Episoden Handlung nur verändert wenn keine gespeichert ist.</string>
+  <string control="Core_chkShowLockPlot">Wenn aktiviert wird die Serien Handlung nur verändert wenn keine gespeichert ist.</string>
   <string control="Core_chkShowLockGenre">Wenn aktiviert werden die Serien Genres nur verändert wenn keine gespeichert sind.</string>
   <string control="Core_chkShowLockStudio">Wenn aktiviert wird das Studio nur verändert wenn keines gespeichert ist.</string>
   <string control="Core_chkShowLockRating">Wenn aktiviert wird die Serienbewertung nur verändert wenn keine gespeichert ist.</string>
@@ -305,8 +305,8 @@
   <string control="Core_chkWriters">Das Scrapen von Autoren einschalten.</string>
   <string control="Core_chkStudio">Das Scrapen von Studios einschalten.</string>
   <string control="Core_chkRuntime">Das Scrapen von Spielzeiten (=Duration) einschalten.</string>
-  <string control="Core_chkPlot">Das Scrapen von Inhaltsangaben (=Plot, Inhalt) einschalten.</string>
-  <string control="Core_chkOutline">Das Scrapen von Kurzbeschreibungen (=Outline) einschalten.</string>
+  <string control="Core_chkPlot">Das Scrapen von Handlung (=Plot, Inhalt) einschalten.</string>
+  <string control="Core_chkOutline">Das Scrapen von Handlung (=Outline) einschalten.</string>
   <string control="Core_chkGenre">Das Scrapen von Genres einschalten.</string>
   <string control="Core_chkDirector">Das Scrapen von Regisseuren einschalten.</string>
   <string control="Core_chkTagline">Das Scrapen von Taglines einschalten.</string>
@@ -329,7 +329,7 @@
   <string control="Core_chkScanMediaInfo">Wenn aktiviert werden Metadaten aus den Dateien gescannt.</string>
   <string control="Core_chkUseMIDuration">Benutze die Spielzeit aus den Metadaten als Filmlänge.</string>
   <string control="Core_chkLockOutline">Wenn aktiviert wird die Kurzbeschreibung nur verändert wenn sie leer ist.</string>
-  <string control="Core_chkLockPlot">Wenn aktiviert wird der Inhalt nur verändert wenn er leer ist.</string>
+  <string control="Core_chkLockPlot">Wenn aktiviert wird dir Handlung nur verändert wenn sie leer ist.</string>
   <string control="Core_chkLockTrailer">Wenn aktiviert wird der Trailer nicht verändert sofern einer zugewiesen ist.</string>
   <string control="Core_chkLockGenre">Wenn aktiviert werden das Genre nicht verändert sofern mindestens eins zugewiesen ist.</string>
   <string control="Core_chkLockRealStudio">Wenn aktiviert wird das Studio nicht verändert sofern eines vorhanden ist.</string>
@@ -338,7 +338,7 @@
   <string control="Core_chkLockTitle">Wenn aktiviert wird der Titel nicht verändert sofern er nicht leer ist.</string>
   <string control="Core_cbForce">Wähle die Region die benutzt werden soll im Titel in der eigenen Sprache zu erhalten.</string>
   <string control="Core_chkForceTitle">Wenn aktiviert wird Ember nach Filmtiteln in der gewählten Sprache suchen. Dies ist Hilfreich um Titel in der eigenen Sprache bei Fremdsprachigen Filmen zu erhalten.</string>
-  <string control="Core_chkOutlineForPlot">Wenn aktiviert wird die Kurzbeschreibung (Outline) als Inhalt (Plot) benutzt sofern kein Inhalt verfügbar ist.</string>
+  <string control="Core_chkOutlineForPlot">Wenn aktiviert wird die Kurzbeschreibung (Outline) als Handlung (Plot) benutzt sofern keine Handlung verfügbar ist.</string>
   <string control="Core_chkCastWithImg">Wenn aktiviert werden nur Schauspieler geladen für die ein Bild existiert.</string>
   <string control="Core_chkUseCertForMPAA">Wenn aktiviert wird die Altersfreigabe statt der MPAA Bewertung gespeichert.</string>
   <string control="Core_chkFullCast">Wenn aktiviert werden alle Schauspieler statt nur die wichtigsten geladen.</string>
@@ -357,4 +357,4 @@
   <string control="Core_btnResetValidExts">Dies wird die Liste der gültigen Erweiterungen wieder auf den Standard zurücksetzen. WARNUNG: Dies WIRD jegliche eigene Änderung löschen.</string>
   <string control="Core_ResetShowRegex">Dies wird die Serien RegEx wieder auf den Standard zurücksetzen. WARNUNG: Dies WIRD jegliche eigene Änderung löschen.</string>
 </strings>
-<!-- Rev1921 please mail sphere@dersphere.de if you find errors or have suggestions-->
+<!-- Rev2006-->
