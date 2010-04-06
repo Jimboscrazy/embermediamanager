@@ -1211,6 +1211,7 @@ Public Class frmMain
                         End If
 
                         Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                         bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                         bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                     Else
@@ -2864,6 +2865,7 @@ doCancel:
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -3008,6 +3010,7 @@ doCancel:
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
                             End If
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -6170,6 +6173,7 @@ doCancel:
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
                             End If
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Master.currMovie.ClearExtras = False
                             Functions.SetScraperMod(Enums.ModType.All, True, True)

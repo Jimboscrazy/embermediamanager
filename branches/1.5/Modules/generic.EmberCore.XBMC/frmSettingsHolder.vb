@@ -46,8 +46,6 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
-
-
         Using dlg As New dlgXBMCHost
             dlg.XComs = XComs
             If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -56,8 +54,6 @@ Public Class frmSettingsHolder
                 Me.LoadXComs()
             End If
         End Using
-
-
     End Sub
 
     Private Sub btnEditCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCom.Click
@@ -81,6 +77,7 @@ Public Class frmSettingsHolder
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
+        chkRealTime.Checked = AdvancedSettings.GetBooleanSetting("XBMCSync", False)
     End Sub
 
     Private Sub lbXBMCCom_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbXBMCCom.KeyDown
@@ -112,12 +109,18 @@ Public Class frmSettingsHolder
         Me.btnAddCom.Text = Master.eLang.GetString(12, "Add New")
         Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.chkRealTime.Text = Master.eLang.GetString(20, "Enable Real Time synchronization")
     End Sub
 
     Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click
         RemoveXCom()
     End Sub
+    Private Sub chkRealTime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRealTime.CheckedChanged
+        AdvancedSettings.SetBooleanSetting("XBMCSync", chkRealTime.Checked)
+    End Sub
+
     #End Region 'Methods
+
 
 
 End Class

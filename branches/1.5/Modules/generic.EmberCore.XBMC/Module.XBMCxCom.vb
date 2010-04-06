@@ -189,7 +189,7 @@ Public Class XBMCxCom
         End Try
     End Sub
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-        If mType = Enums.ModuleEventType.MovieSync Then
+        If mType = Enums.ModuleEventType.MovieSync AndAlso AdvancedSettings.GetBooleanSetting("XBMCSync", False) Then
             Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
             RunQueue.Enqueue(DBMovie)
             If Not bwRunUpdate.IsBusy Then

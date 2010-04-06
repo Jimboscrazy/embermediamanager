@@ -96,8 +96,6 @@ Public Class dlgXBMCHost
                     Dim sPath As String = s.Path
                     Dim i As Integer = dgvSources.Rows.Add(sPath)
                     Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
-                    'Dim l(xCom.Paths.Values.Count - 1) As String
-                    'xCom.Paths.Values.CopyTo(l, 0)
                     Dim l As New List(Of String)
                     l.Add("") 'Empty Entrie for combo
                     For Each sp As Object In xCom.Paths.Values

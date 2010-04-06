@@ -27,11 +27,11 @@ Partial Class frmSettingsHolder
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.chkRealTime = New System.Windows.Forms.CheckBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.btnAddCom = New System.Windows.Forms.Button
-        Me.chkRealTime = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -80,6 +80,16 @@ Partial Class frmSettingsHolder
         Me.GroupBox11.TabIndex = 83
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
+        '
+        'chkRealTime
+        '
+        Me.chkRealTime.AutoSize = True
+        Me.chkRealTime.Location = New System.Drawing.Point(319, 15)
+        Me.chkRealTime.Name = "chkRealTime"
+        Me.chkRealTime.Size = New System.Drawing.Size(203, 17)
+        Me.chkRealTime.TabIndex = 9
+        Me.chkRealTime.Text = "Enable Real Time synchronization "
+        Me.chkRealTime.UseVisualStyleBackColor = True
         '
         'btnEditCom
         '
@@ -130,16 +140,6 @@ Partial Class frmSettingsHolder
         Me.btnAddCom.Text = "Add New"
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
-        '
-        'chkRealTime
-        '
-        Me.chkRealTime.AutoSize = True
-        Me.chkRealTime.Location = New System.Drawing.Point(319, 15)
-        Me.chkRealTime.Name = "chkRealTime"
-        Me.chkRealTime.Size = New System.Drawing.Size(203, 17)
-        Me.chkRealTime.TabIndex = 9
-        Me.chkRealTime.Text = "Enable Real Time synchronization "
-        Me.chkRealTime.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '

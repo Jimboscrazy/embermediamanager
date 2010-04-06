@@ -20,4 +20,5 @@
 	<string id="17">There was a problem communicating with {0}{1}.</string>
 	<string id="18">XBMC</string>
 	<string id="19">XBMC Controller</string>
+	<string id="20">Enable Real Time synchronization</string>
 </strings>
