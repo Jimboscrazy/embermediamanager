@@ -19,7 +19,7 @@ Public Class dlgAddEditAddon
 
             Dim lvItem As New ListViewItem
             For Each _file As KeyValuePair(Of String, String) In Addon.Files
-                lvItem = lvFiles.Items.Add(_file.Key)
+                lvItem = lvFiles.Items.Add(Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)))
                 lvItem.SubItems.Add(_file.Value)
             Next
         Else

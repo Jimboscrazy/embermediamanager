@@ -29,7 +29,11 @@ Public Class dlgAddonFile
         Try
             Using ofdFile As New OpenFileDialog
                 If ofdFile.ShowDialog() = DialogResult.OK Then
-                    Me.txtPath.Text = ofdFile.FileName
+                    If ofdFile.FileName.StartsWith(Functions.AppPath) Then
+                        Me.txtPath.Text = ofdFile.FileName
+                    Else
+                        MsgBox("Addon files must be within the current Ember installation directory.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Invalid File")
+                    End If
                 End If
             End Using
         Catch ex As Exception
