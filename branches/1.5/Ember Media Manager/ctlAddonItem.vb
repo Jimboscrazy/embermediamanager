@@ -168,7 +168,7 @@ Public Class AddonItem
         Dim sHTTP As New HTTP
 
         For Each _file As KeyValuePair(Of String, String) In Me._filelist
-            sHTTP.DownloadFile(String.Format("http://www.embermm.com/Addons/Files/{0}/{1}", Me._addonname.Replace(" ", "_"), _file.Key), Path.Combine(Master.TempPath, _file.Key), False, "other")
+            sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/files/{0}/{1}", Me._addonname.Replace(" ", "_"), _file.Key), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
             Me.bwDownload.ReportProgress(1)
         Next
 
