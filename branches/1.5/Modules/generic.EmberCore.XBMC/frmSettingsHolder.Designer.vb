@@ -32,6 +32,8 @@ Partial Class frmSettingsHolder
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.btnAddCom = New System.Windows.Forms.Button
+        Me.chkPlayCount = New System.Windows.Forms.CheckBox
+        Me.cbPlayCountHost = New System.Windows.Forms.ComboBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -71,6 +73,8 @@ Partial Class frmSettingsHolder
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.cbPlayCountHost)
+        Me.GroupBox11.Controls.Add(Me.chkPlayCount)
         Me.GroupBox11.Controls.Add(Me.chkRealTime)
         Me.GroupBox11.Controls.Add(Me.btnEditCom)
         Me.GroupBox11.Controls.Add(Me.btnRemoveCom)
@@ -145,6 +149,26 @@ Partial Class frmSettingsHolder
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
         '
+        'chkPlayCount
+        '
+        Me.chkPlayCount.AutoSize = True
+        Me.chkPlayCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlayCount.Location = New System.Drawing.Point(319, 38)
+        Me.chkPlayCount.Name = "chkPlayCount"
+        Me.chkPlayCount.Size = New System.Drawing.Size(152, 17)
+        Me.chkPlayCount.TabIndex = 10
+        Me.chkPlayCount.Text = "Retrieve PlayCount from:"
+        Me.chkPlayCount.UseVisualStyleBackColor = True
+        '
+        'cbPlayCountHost
+        '
+        Me.cbPlayCountHost.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPlayCountHost.FormattingEnabled = True
+        Me.cbPlayCountHost.Location = New System.Drawing.Point(337, 61)
+        Me.cbPlayCountHost.Name = "cbPlayCountHost"
+        Me.cbPlayCountHost.Size = New System.Drawing.Size(121, 21)
+        Me.cbPlayCountHost.TabIndex = 11
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -178,5 +202,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents lbXBMCCom As System.Windows.Forms.ListBox
     Friend WithEvents btnAddCom As System.Windows.Forms.Button
     Friend WithEvents chkRealTime As System.Windows.Forms.CheckBox
+    Friend WithEvents cbPlayCountHost As System.Windows.Forms.ComboBox
+    Friend WithEvents chkPlayCount As System.Windows.Forms.CheckBox
 
 End Class

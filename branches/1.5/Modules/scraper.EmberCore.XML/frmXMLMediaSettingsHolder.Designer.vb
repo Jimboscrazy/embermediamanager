@@ -24,12 +24,12 @@ Partial Class frmXMLMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label1 = New System.Windows.Forms.Label
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -42,6 +42,15 @@ Partial Class frmXMLMediaSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
+        '
+        'Label1
+        '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(39, 52)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(519, 20)
+        Me.Label1.TabIndex = 83
+        Me.Label1.Text = "Use the Settings in Scrapers - Data"
         '
         'Panel1
         '
@@ -96,15 +105,6 @@ Partial Class frmXMLMediaSettingsHolder
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(39, 52)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(519, 20)
-        Me.Label1.TabIndex = 83
-        Me.Label1.Text = "Label1"
         '
         'frmXMLMediaSettingsHolder
         '

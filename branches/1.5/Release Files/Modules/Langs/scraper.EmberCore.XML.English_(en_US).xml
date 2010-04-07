@@ -11,5 +11,5 @@
 	<string id="8">Configure this Scraper Settings in</string>
 	<string id="9">Loading Please Wait</string>
 	<string id="10">Scraper Fields - Scraper specific</string>
-	<string id="11"></string>
+	<string id="11">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
 </strings>

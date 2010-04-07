@@ -74,7 +74,7 @@ Public Class XBMCxCom
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieSync})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieSync, Enums.ModuleEventType.BeforeEditMovie, Enums.ModuleEventType.ShowMovie, Enums.ModuleEventType.ShowTVShow})
         End Get
     End Property
 
@@ -111,6 +111,40 @@ Public Class XBMCxCom
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
+
+    Private Function GetPlayCount(ByRef DBMovie As Structures.DBMovie, ByVal s As XBMCxCom.XBMCCom) As Integer
+        If s Is Nothing Then Return 0
+        Dim files As List(Of String()) = Nothing
+        Dim str As String
+        Dim eSource As String = String.Empty
+        Try
+            Dim source As String = DBMovie.Source
+            eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = source).Path
+            'For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
+            Dim remoteSource As String = s.Paths(eSource).ToString
+            If Not eSource.EndsWith(Path.DirectorySeparatorChar) Then eSource = String.Concat(eSource, Path.DirectorySeparatorChar)
+            Dim remoteFullFilename As String = DBMovie.Filename.Replace(eSource, remoteSource)
+            remoteFullFilename = remoteFullFilename.Replace(Path.DirectorySeparatorChar, s.RemotePathSeparator)
+            Dim i As Integer = remoteFullFilename.LastIndexOf(s.RemotePathSeparator) + 1
+            Dim RemotePath As String = remoteFullFilename.Substring(0, i)
+            Dim RemoteFilename As String = remoteFullFilename.Substring(i)
+            'Dim ret As String
+            'Dim cmd As String
+            str = String.Format("command=queryvideodatabase(select idFile,playCount from files inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
+            files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
+            If files.Count = 1 AndAlso files(0).Count >= 2 Then
+                Dim id As String = files(0)(0)
+                If IsNumeric(files(0)(1)) Then
+                    Return Convert.ToInt32(files(0)(1))
+                End If
+            End If
+            'Next
+        Catch ex As Exception
+        End Try
+        Return 0
+    End Function
+
+
     Private Sub bwRunUpdate_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRunUpdate.DoWork
         Dim files As List(Of String()) = Nothing
         Dim str As String
@@ -130,18 +164,28 @@ Public Class XBMCxCom
                     Dim RemoteFilename As String = remoteFullFilename.Substring(i)
                     Dim ret As String
                     Dim cmd As String
-                    str = String.Format("command=ExecBuiltIn(Notification(EmberMM -Updating Movie,{0}))", DBMovie.Movie.Title)
+                    str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
                     ret = SendCmd(s, str)
-                    str = String.Format("command=queryvideodatabase(select movie.*,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
+                    str = String.Format("command=queryvideodatabase(select movie.idMovie,files.idFile,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
                     files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
-                    If files.Count = 1 AndAlso files(0).Count >= 26 Then
+                    If files.Count = 1 AndAlso files(0).Count >= 6 Then
                         Dim id As String = files(0)(0)
-
+                        Dim idfile As String = files(0)(1)
+                        If AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False) AndAlso s.Name = AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", "") Then
+                            cmd = String.Concat("update files set ", _
+                                String.Format("playCount =""{0}"" ", StringEscape(If(IsNumeric(DBMovie.Movie.PlayCount), DBMovie.Movie.PlayCount, "0"))), _
+                                String.Format(" Where idFile ={0}", idfile))
+                            str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                            ret = SendCmd(s, str)
+                            If Not ret.Contains("Exec Done") Then
+                                Master.eLog.WriteToErrorLog("Unable to Update XBMC PlayCount", cmd, "Error")
+                            End If
+                        End If
 
                         ' separated update so uri don't get too long
                         cmd = String.Concat("update movie set ", _
                             String.Format("c01 =""{0}"" ", StringEscape(DBMovie.Movie.Plot)), _
-                            String.Format(" Where idMovie ={0}", id.ToString))
+                            String.Format(" Where idMovie ={0}", id))
                         str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
                         ret = SendCmd(s, str)
                         If Not ret.Contains("Exec Done") Then
@@ -190,24 +234,36 @@ Public Class XBMCxCom
         End Try
     End Sub
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-        If mType = Enums.ModuleEventType.MovieSync AndAlso AdvancedSettings.GetBooleanSetting("XBMCSync", False) Then
-            Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
-            RunQueue.Enqueue(DBMovie)
-            If Not bwRunUpdate.IsBusy Then
-                bwRunUpdate.RunWorkerAsync()
-            End If
-        End If
+        Select Case True
+            Case mType = Enums.ModuleEventType.MovieSync AndAlso AdvancedSettings.GetBooleanSetting("XBMCSync", False)
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+                RunQueue.Enqueue(DBMovie)
+                If Not bwRunUpdate.IsBusy Then
+                    bwRunUpdate.RunWorkerAsync()
+                End If
+            Case mType = Enums.ModuleEventType.BeforeEditMovie AndAlso AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False)
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+                Dim c As Integer = GetPlayCount(DBMovie, _MySettings.XComs.FirstOrDefault(Function(y) y.Name = AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", "")))
+                If IsNumeric(DBMovie.Movie.PlayCount) Then
+                    DBMovie.Movie.PlayCount = Math.Max(Convert.ToInt32(DBMovie.Movie.PlayCount), c).ToString
+                Else
+                    DBMovie.Movie.PlayCount = c.ToString
+                End If
+            Case mType = Enums.ModuleEventType.ShowMovie
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+        End Select
 
     End Function
     Function StringEscape(ByVal str As String) As String
         Return str.Replace("""", """""").Replace(";", ";;")
     End Function
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-        'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
         Me.Enabled = _setup.cbEnabled.Checked
         _MySettings.XComs = _setup.XComs
         MySettings.Save(_MySettings)
-
+        AdvancedSettings.SetSetting("XBMCSyncPlayCountHost", _setup.cbPlayCountHost.SelectedItem.ToString)
+        AdvancedSettings.SetBooleanSetting("XBMCSyncPlayCount", _setup.chkPlayCount.Checked)
+        AdvancedSettings.SetBooleanSetting("XBMCSync", _setup.chkRealTime.Checked)
         If Me._enabled Then
             Me.Disable()
             Me.Enable()
@@ -273,7 +329,7 @@ Public Class XBMCxCom
     End Sub
 
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
+        RaiseEvent ModuleEnabledChanged(Me._name, state, difforder)
     End Sub
 
     Private Sub xCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -282,13 +338,13 @@ Public Class XBMCxCom
         If tMenu.Tag Is Nothing Then
             Try
                 For Each tCom As XBMCCom In _MySettings.XComs
-                    SendCmd(tCom, "command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)")
+                    SendCmd(tCom, "command=ExecBuiltIn(XBMC.updatelibrary(video))")
                 Next
             Catch
             End Try
         Else
             Dim xCom As XBMCCom = DirectCast(tMenu.Tag, XBMCCom)
-            SendCmd(xCom, "command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)")
+            SendCmd(xCom, "command=ExecBuiltIn(XBMC.updatelibrary(video))")
 
         End If
     End Sub
@@ -354,11 +410,11 @@ Public Class XBMCxCom
 
 #End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class XBMCCom
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _xbmcip As String
         Private _xbmcname As String
@@ -368,17 +424,17 @@ Public Class XBMCxCom
         Private _paths As Hashtable
         Private _RemotePathSeparator As String
         Private _realtime As Boolean
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
         Public Property Paths() As Hashtable
             Get
                 Return Me._paths
@@ -475,13 +531,13 @@ Public Class XBMCxCom
 
     Class MySettings
 
-        #Region "Fields"
+#Region "Fields"
 
         Public XComs As New List(Of XBMCxCom.XBMCCom)
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Shared Function Load() As MySettings
             Dim tmp As New MySettings
@@ -553,10 +609,10 @@ Public Class XBMCxCom
             End Try
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

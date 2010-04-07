@@ -40,9 +40,12 @@ Public Class frmSettingsHolder
 
     Public Sub LoadXComs()
         Me.lbXBMCCom.Items.Clear()
+        Me.cbPlayCountHost.Items.Clear()
         For Each x As XBMCxCom.XBMCCom In Me.XComs
             Me.lbXBMCCom.Items.Add(x.Name)
+            Me.cbPlayCountHost.Items.Add(x.Name)
         Next
+        Me.cbPlayCountHost.SelectedIndex = Me.cbPlayCountHost.FindStringExact(AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", ""))
     End Sub
 
     Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
@@ -78,6 +81,7 @@ Public Class frmSettingsHolder
         InitializeComponent()
         Me.SetUp()
         chkRealTime.Checked = AdvancedSettings.GetBooleanSetting("XBMCSync", False)
+        chkPlayCount.Checked = AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False)
     End Sub
 
     Private Sub lbXBMCCom_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbXBMCCom.KeyDown
@@ -116,10 +120,18 @@ Public Class frmSettingsHolder
         RemoveXCom()
     End Sub
     Private Sub chkRealTime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRealTime.CheckedChanged
-        AdvancedSettings.SetBooleanSetting("XBMCSync", chkRealTime.Checked)
+        RaiseEvent ModuleSettingsChanged()
     End Sub
-
+    Private Sub chkPlayCount_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlayCount.CheckedChanged
+        cbPlayCountHost.Enabled = chkPlayCount.Checked
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub cbPlayCountHost_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbPlayCountHost.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
     #End Region 'Methods
+
+
 
 
 

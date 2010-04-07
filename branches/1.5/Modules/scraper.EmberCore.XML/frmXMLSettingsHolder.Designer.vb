@@ -22,7 +22,7 @@ Partial Class frmXMLSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmXMLSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.gbOptions = New System.Windows.Forms.GroupBox
@@ -64,16 +64,21 @@ Partial Class frmXMLSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.btnUp = New System.Windows.Forms.Button
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.pnlSettings.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.pnlLoading.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.Label4)
+        Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.gbOptions)
         Me.pnlSettings.Controls.Add(Me.pnlLoading)
         Me.pnlSettings.Controls.Add(Me.lblLanguage)
@@ -114,7 +119,7 @@ Partial Class frmXMLSettingsHolder
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(10, 264)
+        Me.gbOptions.Location = New System.Drawing.Point(10, 240)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(591, 111)
         Me.gbOptions.TabIndex = 91
@@ -447,8 +452,8 @@ Partial Class frmXMLSettingsHolder
         '
         'Value
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Value.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Value.DefaultCellStyle = DataGridViewCellStyle1
         Me.Value.HeaderText = "Value"
         Me.Value.Name = "Value"
         '
@@ -533,6 +538,30 @@ Partial Class frmXMLSettingsHolder
         Me.btnUp.TabIndex = 82
         Me.btnUp.UseVisualStyleBackColor = True
         '
+        'Label4
+        '
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.Blue
+        Me.Label4.Location = New System.Drawing.Point(37, 354)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(225, 31)
+        Me.Label4.TabIndex = 99
+        Me.Label4.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+            "for more options."
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 352)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 98
+        Me.PictureBox1.TabStop = False
+        '
         'frmXMLSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -558,6 +587,7 @@ Partial Class frmXMLSettingsHolder
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -601,5 +631,7 @@ Partial Class frmXMLSettingsHolder
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class

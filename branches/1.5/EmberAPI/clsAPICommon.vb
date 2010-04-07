@@ -502,6 +502,9 @@ Public Class Enums
         RandomFrameExtrator = 7
         CL_MovieExporter = 8            ' Command Line Exporter
         MovieSync = 9
+        ShowMovie = 10                  ' Called after displaying Movie
+        ShowTVShow = 11                 ' Called after displaying TVShow
+        BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
     End Enum
 
     Public Enum MovieScraperEventType As Integer
