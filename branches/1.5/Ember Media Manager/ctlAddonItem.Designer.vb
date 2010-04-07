@@ -30,7 +30,7 @@ Partial Class AddonItem
         Me.lblAuthor = New System.Windows.Forms.Label
         Me.btnDownload = New System.Windows.Forms.Button
         Me.lblVersion = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.lblInstalled = New System.Windows.Forms.Label
         Me.lblVersionNumber = New System.Windows.Forms.Label
         Me.lblInstalledNumber = New System.Windows.Forms.Label
         Me.btnEdit = New System.Windows.Forms.Button
@@ -40,6 +40,7 @@ Partial Class AddonItem
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbStatus = New System.Windows.Forms.ProgressBar
+        Me.btnUninstall = New System.Windows.Forms.Button
         CType(Me.pbScreenShot, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cMenu.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
@@ -47,6 +48,7 @@ Partial Class AddonItem
         '
         'pbScreenShot
         '
+        Me.pbScreenShot.BackColor = System.Drawing.Color.Transparent
         Me.pbScreenShot.Location = New System.Drawing.Point(5, 5)
         Me.pbScreenShot.Name = "pbScreenShot"
         Me.pbScreenShot.Size = New System.Drawing.Size(133, 95)
@@ -56,6 +58,7 @@ Partial Class AddonItem
         '
         'lblName
         '
+        Me.lblName.BackColor = System.Drawing.Color.Transparent
         Me.lblName.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblName.Location = New System.Drawing.Point(144, 5)
         Me.lblName.Name = "lblName"
@@ -65,14 +68,16 @@ Partial Class AddonItem
         '
         'lblSummary
         '
+        Me.lblSummary.BackColor = System.Drawing.Color.Transparent
         Me.lblSummary.Location = New System.Drawing.Point(144, 50)
         Me.lblSummary.Name = "lblSummary"
-        Me.lblSummary.Size = New System.Drawing.Size(318, 50)
+        Me.lblSummary.Size = New System.Drawing.Size(296, 50)
         Me.lblSummary.TabIndex = 2
         Me.lblSummary.Text = "Summary"
         '
         'lblAuthor
         '
+        Me.lblAuthor.BackColor = System.Drawing.Color.Transparent
         Me.lblAuthor.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAuthor.Location = New System.Drawing.Point(145, 28)
         Me.lblAuthor.Name = "lblAuthor"
@@ -91,6 +96,7 @@ Partial Class AddonItem
         '
         'lblVersion
         '
+        Me.lblVersion.BackColor = System.Drawing.Color.Transparent
         Me.lblVersion.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVersion.Location = New System.Drawing.Point(413, 5)
         Me.lblVersion.Name = "lblVersion"
@@ -99,18 +105,21 @@ Partial Class AddonItem
         Me.lblVersion.Text = "Version:"
         Me.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'Label1
+        'lblInstalled
         '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(413, 18)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(37, 13)
-        Me.Label1.TabIndex = 6
-        Me.Label1.Text = "Installed:"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblInstalled.BackColor = System.Drawing.Color.Transparent
+        Me.lblInstalled.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInstalled.Location = New System.Drawing.Point(413, 18)
+        Me.lblInstalled.Name = "lblInstalled"
+        Me.lblInstalled.Size = New System.Drawing.Size(37, 13)
+        Me.lblInstalled.TabIndex = 6
+        Me.lblInstalled.Text = "Installed:"
+        Me.lblInstalled.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblInstalled.Visible = False
         '
         'lblVersionNumber
         '
+        Me.lblVersionNumber.BackColor = System.Drawing.Color.Transparent
         Me.lblVersionNumber.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVersionNumber.Location = New System.Drawing.Point(451, 5)
         Me.lblVersionNumber.Name = "lblVersionNumber"
@@ -120,17 +129,19 @@ Partial Class AddonItem
         '
         'lblInstalledNumber
         '
+        Me.lblInstalledNumber.BackColor = System.Drawing.Color.Transparent
         Me.lblInstalledNumber.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblInstalledNumber.Location = New System.Drawing.Point(451, 18)
         Me.lblInstalledNumber.Name = "lblInstalledNumber"
         Me.lblInstalledNumber.Size = New System.Drawing.Size(41, 13)
         Me.lblInstalledNumber.TabIndex = 9
         Me.lblInstalledNumber.Text = "10.10.1000"
+        Me.lblInstalledNumber.Visible = False
         '
         'btnEdit
         '
         Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
-        Me.btnEdit.Location = New System.Drawing.Point(468, 55)
+        Me.btnEdit.Location = New System.Drawing.Point(468, 53)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Size = New System.Drawing.Size(24, 23)
         Me.btnEdit.TabIndex = 10
@@ -140,7 +151,7 @@ Partial Class AddonItem
         'btnDelete
         '
         Me.btnDelete.Image = CType(resources.GetObject("btnDelete.Image"), System.Drawing.Image)
-        Me.btnDelete.Location = New System.Drawing.Point(468, 32)
+        Me.btnDelete.Location = New System.Drawing.Point(444, 53)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(24, 23)
         Me.btnDelete.TabIndex = 11
@@ -190,19 +201,32 @@ Partial Class AddonItem
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.pbStatus.TabIndex = 6
         '
+        'btnUninstall
+        '
+        Me.btnUninstall.Image = CType(resources.GetObject("btnUninstall.Image"), System.Drawing.Image)
+        Me.btnUninstall.Location = New System.Drawing.Point(444, 78)
+        Me.btnUninstall.Name = "btnUninstall"
+        Me.btnUninstall.Size = New System.Drawing.Size(24, 23)
+        Me.btnUninstall.TabIndex = 13
+        Me.btnUninstall.UseVisualStyleBackColor = True
+        Me.btnUninstall.Visible = False
+        '
         'AddonItem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
+        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.ContextMenuStrip = Me.cMenu
+        Me.Controls.Add(Me.btnUninstall)
         Me.Controls.Add(Me.pnlStatus)
+        Me.Controls.Add(Me.lblInstalledNumber)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnEdit)
-        Me.Controls.Add(Me.lblInstalledNumber)
         Me.Controls.Add(Me.lblVersionNumber)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblInstalled)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.btnDownload)
         Me.Controls.Add(Me.lblAuthor)
@@ -225,7 +249,7 @@ Partial Class AddonItem
     Friend WithEvents lblAuthor As System.Windows.Forms.Label
     Friend WithEvents btnDownload As System.Windows.Forms.Button
     Friend WithEvents lblVersion As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblInstalled As System.Windows.Forms.Label
     Friend WithEvents lblVersionNumber As System.Windows.Forms.Label
     Friend WithEvents lblInstalledNumber As System.Windows.Forms.Label
     Friend WithEvents btnEdit As System.Windows.Forms.Button
@@ -235,5 +259,6 @@ Partial Class AddonItem
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents btnUninstall As System.Windows.Forms.Button
 
 End Class

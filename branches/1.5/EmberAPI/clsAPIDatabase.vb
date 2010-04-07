@@ -1778,7 +1778,7 @@ Public Class Database
 
 
     '''''''''''''''''''''''''''''''''''''''''''
-    Sub ConnectJobLog()
+    Private Sub ConnectJobLog()
         Dim NewDB As Boolean = False
         'create database if it doesn't exist
         If Not File.Exists(Path.Combine(Functions.AppPath, "JobLogs.emm")) Then
@@ -1813,7 +1813,7 @@ Public Class Database
         End If
     End Sub
 
-    Sub CloseJobLog()
+    Private Sub CloseJobLog()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcnJobLog.CreateCommand
                 SQLcommand.CommandText = "VACUUM;"
@@ -1822,6 +1822,64 @@ Public Class Database
             Master.DB.SQLcnJobLog.Close()
         Catch ex As Exception
         End Try
+    End Sub
+
+    Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
+        Try
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
+                Dim tSing As Single = 0
+                If Single.TryParse(SQLCommand.ExecuteScalar.ToString, tSing) Then
+                    Return tSing
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return 0
+    End Function
+
+    Public Sub UninstallAddon(ByVal AddonID As Integer)
+        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+            SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                While SQLReader.Read
+                    File.Delete(SQLReader("FilePath").ToString)
+                End While
+            End Using
+            SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
+            SQLCommand.ExecuteNonQuery()
+            SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+            SQLCommand.ExecuteNonQuery()
+        End Using
+    End Sub
+
+    Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
+        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+            SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
+                    "AddonID, Version) VALUES (?,?);")
+            Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
+            Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
+
+            parAddonID.Value = Addon.ID
+            parVersion.Value = Addon.Version.ToString
+
+            SQLCommand.ExecuteNonQuery()
+
+            SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
+            SQLCommand.ExecuteNonQuery()
+
+            Using SQLFileCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
+                Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
+                Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
+                parFileAddonID.Value = Addon.ID
+                For Each fFile As KeyValuePair(Of String, String) In Addon.Files
+                    parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
+                    SQLFileCommand.ExecuteNonQuery()
+                Next
+            End Using
+        End Using
     End Sub
 
 #End Region 'Methods

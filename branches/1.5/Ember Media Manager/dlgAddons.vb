@@ -234,6 +234,7 @@ Public Class dlgAddons
         AddHandler tAOI.NeedsRefresh, AddressOf Me.RefreshItems
         AddHandler tAOI.SendEdit, AddressOf Me.DoUpload
         tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
+        tAOI.Installed = Master.DB.IsAddonInstalled(tAOI.ID)
         Me.pnlList.Controls.Add(tAOI)
     End Sub
 

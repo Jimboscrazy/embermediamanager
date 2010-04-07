@@ -19,6 +19,7 @@ Public Class AddonItem
     Private _maxeversion As Single
     Private _filelist As Generic.SortedList(Of String, String)
     Private _owned As Boolean
+    Private _installed As Single
 
     Public Property ID() As Integer
         Get
@@ -128,6 +129,25 @@ Public Class AddonItem
         End Set
     End Property
 
+    Public Property Installed() As Single
+        Get
+            Return Me._installed
+        End Get
+        Set(ByVal value As Single)
+            Me._installed = value
+            If value > 0 Then
+                Me.lblInstalledNumber.Text = value.ToString
+                Me.lblInstalledNumber.Visible = True
+                Me.lblInstalled.Visible = True
+                Me.btnUninstall.Visible = True
+            Else
+                Me.lblInstalledNumber.Visible = False
+                Me.lblInstalled.Visible = False
+                Me.btnUninstall.Visible = False
+            End If
+        End Set
+    End Property
+
     Public Sub New()
         InitializeComponent()
         Me.Clear()
@@ -144,6 +164,7 @@ Public Class AddonItem
         Me._maxeversion = -1
         Me._screenshot = Nothing
         Me._owned = False
+        Me._installed = 0
         Me._filelist = New Generic.SortedList(Of String, String)
     End Sub
 
@@ -166,6 +187,8 @@ Public Class AddonItem
     End Sub
 
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
+        If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
+
         Dim sHTTP As New HTTP
 
         For Each _file As KeyValuePair(Of String, String) In Me._filelist
@@ -174,6 +197,8 @@ Public Class AddonItem
         Next
 
         sHTTP = Nothing
+
+        Master.DB.SaveAddonToDB(New Containers.Addon With {.ID = Me._id, .Version = Me._version, .Files = Me._filelist})
     End Sub
 
     Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged
@@ -183,6 +208,7 @@ Public Class AddonItem
     Private Sub bwDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownload.RunWorkerCompleted
         Me.pnlStatus.Visible = False
         Me.ControlsEnabled(True)
+        Me.Installed = Me._version
     End Sub
 
     Private Sub ControlsEnabled(ByVal isEnabled As Boolean)
@@ -223,5 +249,10 @@ Public Class AddonItem
                 RaiseEvent SendEdit(eAddon)
             End If
         End Using
+    End Sub
+
+    Private Sub btnUninstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUninstall.Click
+        Master.DB.UninstallAddon(Me._id)
+        Me.Installed = 0
     End Sub
 End Class
