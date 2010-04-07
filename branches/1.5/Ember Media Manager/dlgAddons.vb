@@ -45,7 +45,7 @@ Public Class dlgAddons
         postData.Add((New String() {"username", Me.txtUsername.Text}))
         postData.Add((New String() {"password", Me.txtPassword.Text}))
         postData.Add((New String() {"func", "add"}))
-        postData.Add((New String() {"id", If(tAddon.ID > 0, tAddon.ID.ToString, "")}))
+        postData.Add((New String() {"id", If(tAddon.ID > -1, tAddon.ID.ToString, String.Empty)}))
         postData.Add((New String() {"Name", tAddon.Name}))
         postData.Add((New String() {"Description", tAddon.Description}))
         postData.Add((New String() {"Category", tAddon.Category}))
@@ -59,7 +59,7 @@ Public Class dlgAddons
         Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
 
         If IsNumeric(GetStatus(Me.SessionID)) Then
-            tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
+            If Not tAddon.ID > -1 Then tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
             For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
                 postData.Clear()
                 postData.Add((New String() {"username", Me.txtUsername.Text}))
@@ -81,7 +81,7 @@ Public Class dlgAddons
                 postData.Add((New String() {"password", Me.txtPassword.Text}))
                 postData.Add((New String() {"func", "deletefile"}))
                 postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
-                postData.Add((New String() {"Filename", f.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
+                postData.Add((New String() {"filename", f.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
                 Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
                 If IsNumeric(GetStatus(Me.SessionID)) Then
                     'ok

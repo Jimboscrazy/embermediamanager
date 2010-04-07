@@ -71,11 +71,11 @@ Public Class dlgAddEditAddon
     Private Function ValidateEntry() As Boolean
         Return Not String.IsNullOrEmpty(Me.txtName.Text) AndAlso Not String.IsNullOrEmpty(Me.txtDescription.Text) AndAlso _
         (Not String.IsNullOrEmpty(Me.txtVersion.Text) AndAlso Convert.ToSingle(Me.txtVersion.Text) > 0) AndAlso _
-        ValidateFiles() AndAlso ValidateSS(Me.txtScreenShotPath.Text)
+        Me.lvFiles.Items.Count > 0 AndAlso ValidateFiles() AndAlso ValidateSS(Me.txtScreenShotPath.Text)
     End Function
 
     Private Function ValidateFiles() As Boolean
-        For Each lvItem As ListViewItem In lvFiles.Items
+        For Each lvItem As ListViewItem In Me.lvFiles.Items
             If Not File.Exists(lvItem.Text) Then Return False
         Next
         Return True
