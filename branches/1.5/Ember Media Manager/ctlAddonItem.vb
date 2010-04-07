@@ -4,6 +4,7 @@ Public Class AddonItem
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
 
     Public Event NeedsRefresh()
+    Public Event SendEdit(ByVal tAddon As Containers.Addon, ByVal sFunc As String)
 
     Private _enabled As Boolean = True
 
@@ -168,7 +169,7 @@ Public Class AddonItem
         Dim sHTTP As New HTTP
 
         For Each _file As KeyValuePair(Of String, String) In Me._filelist
-            sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/files/{0}/{1}", Me._addonname.Replace(" ", "_"), _file.Key), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
+            sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", _file.Key, Me._id), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
             Me.bwDownload.ReportProgress(1)
         Next
 
@@ -219,7 +220,8 @@ Public Class AddonItem
         Using dEditAddon As New dlgAddEditAddon
             Dim eAddon As Containers.Addon = dEditAddon.ShowDialog(tAddon)
             If Not IsNothing(eAddon) Then
-                ''do upload
+                eAddon.ID = Me._id
+                RaiseEvent SendEdit(eAddon, "edit")
             End If
         End Using
     End Sub

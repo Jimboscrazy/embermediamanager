@@ -179,7 +179,7 @@ Partial Class AddonItem
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(310, 13)
         Me.lblStatus.TabIndex = 7
-        Me.lblStatus.Text = "lblStatus"
+        Me.lblStatus.Text = "Downloading Files..."
         '
         'pbStatus
         '

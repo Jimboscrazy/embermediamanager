@@ -39,47 +39,52 @@ Public Class dlgAddons
         Return String.Empty
     End Function
 
+    Private Sub DoUpload(ByVal tAddon As Containers.Addon, ByVal sFunc As String)
+        Dim sHTTP As New HTTP
+        Dim postData As New List(Of String())
+        postData.Add((New String() {"username", Me.txtUsername.Text}))
+        postData.Add((New String() {"password", Me.txtPassword.Text}))
+        postData.Add((New String() {"func", sFunc}))
+        postData.Add((New String() {"id", If(tAddon.ID > 0, tAddon.ID.ToString, "")}))
+        postData.Add((New String() {"Name", tAddon.Name}))
+        postData.Add((New String() {"Description", tAddon.Description}))
+        postData.Add((New String() {"Category", tAddon.Category}))
+        postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
+        postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
+        postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
+        postData.Add((New String() {"screenshot", tAddon.ScreenShotPath}))
+        If Not tAddon.ScreenShotPath = "!KEEP!" Then
+            postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
+        End If
+        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+
+        If IsNumeric(GetStatus(Me.SessionID)) Then
+            tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
+            For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
+                postData.Clear()
+                postData.Add((New String() {"username", Me.txtUsername.Text}))
+                postData.Add((New String() {"password", Me.txtPassword.Text}))
+                postData.Add((New String() {"func", "addfile"}))
+                postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
+                postData.Add((New String() {"Description", f.Value}))
+                postData.Add((New String() {"Filename", f.Key.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
+                postData.Add((New String() {System.IO.Path.GetFileName(f.Key), f.Key, "file"}))
+                Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                If IsNumeric(GetStatus(Me.SessionID)) Then
+                    'ok
+                End If
+            Next
+        Else
+            'error
+        End If
+    End Sub
+
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
         If e.ClickedItem.Text = "Create New" Then
             Using dNewAddon As New dlgAddEditAddon
                 Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
                 If Not IsNothing(tAddon) Then
-                    Dim sHTTP As New HTTP
-                    Dim postData As New List(Of String())
-                    postData.Add((New String() {"username", Me.txtUsername.Text}))
-                    postData.Add((New String() {"password", Me.txtPassword.Text}))
-                    postData.Add((New String() {"func", "add"}))
-                    postData.Add((New String() {"id", If(tAddon.ID > 0, tAddon.ID.ToString, "")}))
-                    postData.Add((New String() {"Name", tAddon.Name}))
-                    postData.Add((New String() {"Description", tAddon.Description}))
-                    postData.Add((New String() {"Category", tAddon.Category}))
-                    postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
-                    postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
-                    postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
-                    postData.Add((New String() {"screenshot", tAddon.ScreenShotPath}))
-                    If Not tAddon.ScreenShotPath = "!KEEP" Then
-                        postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
-                    End If
-                    Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-
-                    If IsNumeric(GetStatus(Me.SessionID)) Then
-                        tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
-                        For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
-                            postData.Clear()
-                            postData.Add((New String() {"username", Me.txtUsername.Text}))
-                            postData.Add((New String() {"password", Me.txtPassword.Text}))
-                            postData.Add((New String() {"func", "addfile"}))
-                            postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
-                            postData.Add((New String() {"Description", f.Value}))
-                            postData.Add((New String() {f.Key, f.Key, "file"}))
-                            Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-                            If IsNumeric(GetStatus(Me.SessionID)) Then
-                                'ok
-                            End If
-                        Next
-                    Else
-                        'error
-                    End If
+                    Me.DoUpload(tAddon, "add")
                 End If
             End Using
         Else
@@ -213,6 +218,7 @@ Public Class dlgAddons
     Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged
         Dim tAOI As AddonItem = DirectCast(e.UserState, AddonItem)
         AddHandler tAOI.NeedsRefresh, AddressOf Me.RefreshItems
+        AddHandler tAOI.SendEdit, AddressOf Me.DoUpload
         tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
         Me.pnlList.Controls.Add(tAOI)
     End Sub
@@ -227,6 +233,7 @@ Public Class dlgAddons
             For i As Integer = UBound(Me.AddonItem) To 0 Step -1
                 If Not IsNothing(Me.AddonItem(i)) Then
                     RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
+                    RemoveHandler Me.AddonItem(i).SendEdit, AddressOf Me.DoUpload
                     Me.pnlList.Controls.Remove(Me.AddonItem(i))
                 End If
             Next

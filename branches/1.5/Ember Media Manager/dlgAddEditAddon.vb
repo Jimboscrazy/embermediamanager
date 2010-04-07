@@ -16,6 +16,7 @@ Public Class dlgAddEditAddon
             Me.txtMaxEVersion.Text = Addon.MaxEVersion.ToString
             Me.cboCategory.Text = Addon.Category
             Me.pbScreenShot.Image = Addon.ScreenShotImage
+            Me._imagecache = Addon.ScreenShotImage
 
             Dim lvItem As New ListViewItem
             For Each _file As KeyValuePair(Of String, String) In Addon.Files
@@ -77,6 +78,7 @@ Public Class dlgAddEditAddon
         For Each lvItem As ListViewItem In lvFiles.Items
             If Not File.Exists(lvItem.Text) Then Return False
         Next
+        Return True
     End Function
 
     Private Function ValidateSS(ByVal ssPath As String) As Boolean
