@@ -4329,7 +4329,7 @@ doCancel:
             End If
 
             If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
-                Me.SetControlsEnabled(False)
+                Me.SetControlsEnabled(False, False, False)
                 Me.SetStatus(String.Empty)
                 Me.ClearInfo()
             End If
@@ -7358,9 +7358,20 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
+        'Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+        For Each i As Object In Me.ToolsToolStripMenuItem.DropDownItems
+            If TypeOf i Is ToolStripMenuItem Then
+                Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
+                If o.Tag Is Nothing Then
+                    o.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+                ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
+                    Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso ((Me.dgvMediaList.RowCount > 0 OrElse tagmenu.IfNoMovies) OrElse (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow))
+                End If
+            End If
+        Next
         Me.EditToolStripMenuItem.Enabled = isEnabled
-        Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
         Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
@@ -7433,7 +7444,7 @@ doCancel:
                 .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
                 .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
                 (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                    Me.CleanFoldersToolStripMenuItem.Enabled = True
+                    Me.CleanFoldersToolStripMenuItem.Enabled = True AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
                 Else
                     Me.CleanFoldersToolStripMenuItem.Enabled = False
                 End If

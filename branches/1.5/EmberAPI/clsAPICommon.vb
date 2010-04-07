@@ -1265,7 +1265,10 @@ Public Class Structures
 
     End Structure
 
-
+    Public Structure ModulesMenus
+        Dim IfNoMovies As Boolean
+        Dim IfNoTVShow As Boolean
+    End Structure
 
 #End Region 'Nested Types
 

@@ -268,7 +268,7 @@ Public Class HTTP
                 End If
 
             End Using
-        Catch
+        Catch ex As Exception
         End Try
 
         Return outFile

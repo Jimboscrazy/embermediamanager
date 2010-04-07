@@ -172,6 +172,7 @@ Public Class frmMainManager
         ModulesVersions.Modules.Clear()
         Dim o As New FileOfList
         Dim m As String = String.Empty
+        Dim v As String = String.Empty
         Using SQLcommandEmberFiles As SQLite.SQLiteCommand = MasterDB.SQLcn.CreateCommand
             SQLcommandEmberFiles.CommandText = String.Concat("Select * FROM EmberFiles;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommandEmberFiles.ExecuteReader()
@@ -183,31 +184,39 @@ Public Class frmMainManager
                         If Not DBNull.Value.Equals(SQLreader("Hash")) Then o.Hash = SQLreader("Hash").ToString
                         If Not DBNull.Value.Equals(SQLreader("Platform")) Then o.Platform = SQLreader("Platform").ToString
                         If (SQLreader("EmberPath").ToString = "\Modules" AndAlso Path.GetExtension(SQLreader("Filename").ToString) = ".dll") Then
-                            Dim v As String = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
-                            ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = SQLreader("Filename").ToString, .Platform = SQLreader("Platform").ToString})
-                            If SQLreader("Platform").ToString = "x86" Then
-                                lstModulesx86.Items.Add((New ListViewItem(SQLreader("Filename").ToString))).SubItems.Add(v)
-                            Else
-                                lstModulesx64.Items.Add((New ListViewItem(SQLreader("Filename").ToString))).SubItems.Add(v)
+                            If File.Exists(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)) Then
+                                v = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
+                                ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = SQLreader("Filename").ToString, .Platform = SQLreader("Platform").ToString})
+                                If SQLreader("Platform").ToString = "x86" Then
+                                    lstModulesx86.Items.Add((New ListViewItem(SQLreader("Filename").ToString))).SubItems.Add(v)
+                                Else
+                                    lstModulesx64.Items.Add((New ListViewItem(SQLreader("Filename").ToString))).SubItems.Add(v)
+                                End If
                             End If
                         End If
-                        If SQLreader("Filename").ToString.ToLower = "ember media manager.exe" Then
-                            Dim v As String = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
 
-                            ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPP", .Platform = SQLreader("Platform").ToString})
-                            If SQLreader("Platform").ToString = "x86" Then
-                                lstModulesx86.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
-                            Else
-                                lstModulesx64.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
+                        If SQLreader("Filename").ToString.ToLower = "ember media manager.exe" Then
+
+                            If File.Exists(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)) Then
+                                v = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
+                                ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPP", .Platform = SQLreader("Platform").ToString})
+                                If SQLreader("Platform").ToString = "x86" Then
+                                    lstModulesx86.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
+                                Else
+                                    lstModulesx64.Items.Add((New ListViewItem("*EmberAPP"))).SubItems.Add(v)
+                                End If
                             End If
                         End If
                         If SQLreader("Filename").ToString.ToLower = "emberapi.dll" Then
-                            Dim v As String = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
-                            ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPI", .Platform = SQLreader("Platform").ToString})
-                            If SQLreader("Platform").ToString = "x86" Then
-                                lstModulesx86.Items.Add((New ListViewItem("*EmberAPI"))).SubItems.Add(v)
-                            Else
-                                lstModulesx64.Items.Add((New ListViewItem("*EmberAPI"))).SubItems.Add(v)
+                            v = String.Empty
+                            If File.Exists(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)) Then
+                                v = FileVersionInfo.GetVersionInfo(Path.Combine(SQLreader("OrigPath").ToString, SQLreader("Filename").ToString)).ProductPrivatePart.ToString
+                                ModulesVersions.Modules.Add(New _Module With {.Version = v, .Name = "*EmberAPI", .Platform = SQLreader("Platform").ToString})
+                                If SQLreader("Platform").ToString = "x86" Then
+                                    lstModulesx86.Items.Add((New ListViewItem("*EmberAPI"))).SubItems.Add(v)
+                                Else
+                                    lstModulesx64.Items.Add((New ListViewItem("*EmberAPI"))).SubItems.Add(v)
+                                End If
                             End If
                         End If
                     End If
