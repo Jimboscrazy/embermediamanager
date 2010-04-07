@@ -42,6 +42,7 @@ Partial Class frmSettingsHolder
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Panel1.Controls.Add(Me.cbEnabled)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(617, 25)
@@ -50,6 +51,7 @@ Partial Class frmSettingsHolder
         'cbEnabled
         '
         Me.cbEnabled.AutoSize = True
+        Me.cbEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbEnabled.Location = New System.Drawing.Point(10, 5)
         Me.cbEnabled.Name = "cbEnabled"
         Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
@@ -61,6 +63,7 @@ Partial Class frmSettingsHolder
         '
         Me.pnlSettings.Controls.Add(Me.GroupBox11)
         Me.pnlSettings.Controls.Add(Me.Panel1)
+        Me.pnlSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
@@ -73,7 +76,7 @@ Partial Class frmSettingsHolder
         Me.GroupBox11.Controls.Add(Me.btnRemoveCom)
         Me.GroupBox11.Controls.Add(Me.lbXBMCCom)
         Me.GroupBox11.Controls.Add(Me.btnAddCom)
-        Me.GroupBox11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox11.Location = New System.Drawing.Point(3, 28)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(611, 299)
@@ -84,9 +87,10 @@ Partial Class frmSettingsHolder
         'chkRealTime
         '
         Me.chkRealTime.AutoSize = True
+        Me.chkRealTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRealTime.Location = New System.Drawing.Point(319, 15)
         Me.chkRealTime.Name = "chkRealTime"
-        Me.chkRealTime.Size = New System.Drawing.Size(203, 17)
+        Me.chkRealTime.Size = New System.Drawing.Size(200, 17)
         Me.chkRealTime.TabIndex = 9
         Me.chkRealTime.Text = "Enable Real Time synchronization "
         Me.chkRealTime.UseVisualStyleBackColor = True
@@ -94,7 +98,7 @@ Partial Class frmSettingsHolder
         'btnEditCom
         '
         Me.btnEditCom.Enabled = False
-        Me.btnEditCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnEditCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnEditCom.Image = CType(resources.GetObject("btnEditCom.Image"), System.Drawing.Image)
         Me.btnEditCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnEditCom.Location = New System.Drawing.Point(199, 182)
@@ -107,7 +111,7 @@ Partial Class frmSettingsHolder
         '
         'btnRemoveCom
         '
-        Me.btnRemoveCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveCom.Image = CType(resources.GetObject("btnRemoveCom.Image"), System.Drawing.Image)
         Me.btnRemoveCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnRemoveCom.Location = New System.Drawing.Point(106, 182)
@@ -120,7 +124,7 @@ Partial Class frmSettingsHolder
         '
         'lbXBMCCom
         '
-        Me.lbXBMCCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbXBMCCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbXBMCCom.FormattingEnabled = True
         Me.lbXBMCCom.Location = New System.Drawing.Point(13, 15)
         Me.lbXBMCCom.Name = "lbXBMCCom"
@@ -130,7 +134,7 @@ Partial Class frmSettingsHolder
         '
         'btnAddCom
         '
-        Me.btnAddCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnAddCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddCom.Image = CType(resources.GetObject("btnAddCom.Image"), System.Drawing.Image)
         Me.btnAddCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnAddCom.Location = New System.Drawing.Point(13, 182)

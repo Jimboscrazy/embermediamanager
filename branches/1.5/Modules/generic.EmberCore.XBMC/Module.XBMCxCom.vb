@@ -94,6 +94,7 @@ Public Class XBMCxCom
     End Sub
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        _MySettings = MySettings.Load
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled

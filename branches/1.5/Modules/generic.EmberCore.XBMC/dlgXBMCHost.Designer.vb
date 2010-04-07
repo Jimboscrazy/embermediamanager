@@ -231,7 +231,7 @@ Partial Class dlgXBMCHost
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(142, 119)
+        Me.pnlLoading.Location = New System.Drawing.Point(137, 123)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 69
@@ -239,11 +239,10 @@ Partial Class dlgXBMCHost
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(3, 5)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(70, 13)
+        Me.Label3.Size = New System.Drawing.Size(192, 15)
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "Searching ..."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -338,7 +337,6 @@ Partial Class dlgXBMCHost
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
-        Me.pnlLoading.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)

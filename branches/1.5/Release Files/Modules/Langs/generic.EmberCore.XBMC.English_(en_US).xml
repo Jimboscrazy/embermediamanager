@@ -21,4 +21,13 @@
 	<string id="18">XBMC</string>
 	<string id="19">XBMC Controller</string>
 	<string id="20">Enable Real Time synchronization</string>
+	<string id="21">Real Time synchronization</string>
+	<string id="22">Searching ...</string>
+	<string id="23">Populate Sources</string>
+	<string id="24">Ember Source</string>
+	<string id="25">XBMC Source</string>
+	<string id="26">XBMC Host OS</string>
+	<string id="27">Windows</string>
+	<string id="28">Linux/MacOS X</string>
+	<string id="29">XBMC Host</string>
 </strings>

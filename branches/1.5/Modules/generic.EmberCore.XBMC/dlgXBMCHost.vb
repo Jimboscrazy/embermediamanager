@@ -67,11 +67,22 @@ Public Class dlgXBMCHost
         Me.Close()
     End Sub
     Sub Setup()
+        Me.Text = Master.eLang.GetString(29, "XBMC Host")
         Me.Label16.Text = Master.eLang.GetString(11, "Name:")
         Me.Label13.Text = Master.eLang.GetString(425, "Username:", True)
         Me.Label14.Text = Master.eLang.GetString(426, "Password:", True)
         Me.Label7.Text = Master.eLang.GetString(13, "XBMC IP:")
         Me.Label6.Text = Master.eLang.GetString(14, "XBMC Port:")
+        Me.chkRealTime.Text = Master.eLang.GetString(21, "Real Time synchronization")
+        Me.Label3.Text = Master.eLang.GetString(22, "Searching ...")
+        Me.btnPopulate.Text = Master.eLang.GetString(23, "Populate Sources")
+        Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(24, "Ember Source")
+        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(25, "XBMC Source")
+        Me.GroupBox1.Text = Master.eLang.GetString(26, "XBMC Host OS")
+        Me.rbWindows.Text = Master.eLang.GetString(27, "Windows")
+        Me.rbLinux.Text = Master.eLang.GetString(27, "Linux/MacOS X")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
     End Sub
 
     Private Sub dlgXBMCHost_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

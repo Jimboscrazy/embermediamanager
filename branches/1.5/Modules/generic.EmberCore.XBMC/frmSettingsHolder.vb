@@ -97,7 +97,7 @@ Public Class frmSettingsHolder
 
     Private Sub RemoveXCom()
         If Me.lbXBMCCom.SelectedItems.Count > 0 Then
-            Me.XComs.RemoveAt(Me.lbXBMCCom.SelectedIndex)
+            Me.XComs.Remove(Me.XComs.FirstOrDefault(Function(y) y.Name = Me.lbXBMCCom.SelectedItem.ToString))
             LoadXComs()
             RaiseEvent ModuleSettingsChanged()
         End If
