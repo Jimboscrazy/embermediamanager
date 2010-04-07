@@ -39,12 +39,12 @@ Public Class dlgAddons
         Return String.Empty
     End Function
 
-    Private Sub DoUpload(ByVal tAddon As Containers.Addon, ByVal sFunc As String)
+    Private Sub DoUpload(ByVal tAddon As Containers.Addon)
         Dim sHTTP As New HTTP
         Dim postData As New List(Of String())
         postData.Add((New String() {"username", Me.txtUsername.Text}))
         postData.Add((New String() {"password", Me.txtPassword.Text}))
-        postData.Add((New String() {"func", sFunc}))
+        postData.Add((New String() {"func", "add"}))
         postData.Add((New String() {"id", If(tAddon.ID > 0, tAddon.ID.ToString, "")}))
         postData.Add((New String() {"Name", tAddon.Name}))
         postData.Add((New String() {"Description", tAddon.Description}))
@@ -74,9 +74,24 @@ Public Class dlgAddons
                     'ok
                 End If
             Next
+
+            For Each f As String In tAddon.DeleteFiles
+                postData.Clear()
+                postData.Add((New String() {"username", Me.txtUsername.Text}))
+                postData.Add((New String() {"password", Me.txtPassword.Text}))
+                postData.Add((New String() {"func", "deletefile"}))
+                postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
+                postData.Add((New String() {"Filename", f.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
+                Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                If IsNumeric(GetStatus(Me.SessionID)) Then
+                    'ok
+                End If
+            Next
         Else
             'error
         End If
+
+        If Me.currType = tAddon.Category Then Me.RefreshItems()
     End Sub
 
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
@@ -84,7 +99,7 @@ Public Class dlgAddons
             Using dNewAddon As New dlgAddEditAddon
                 Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
                 If Not IsNothing(tAddon) Then
-                    Me.DoUpload(tAddon, "add")
+                    Me.DoUpload(tAddon)
                 End If
             End Using
         Else

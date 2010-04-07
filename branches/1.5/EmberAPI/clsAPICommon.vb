@@ -265,6 +265,7 @@ Public Class Containers
         Private _screenshotpath As String
         Private _screenshotimage As Image
         Private _files As Generic.SortedList(Of String, String)
+        Private _deletefiles As List(Of String)
 
         Public Property ID() As Integer
             Get
@@ -365,6 +366,15 @@ Public Class Containers
             End Set
         End Property
 
+        Public Property DeleteFiles() As List(Of String)
+            Get
+                Return Me._deletefiles
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._deletefiles = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -381,6 +391,7 @@ Public Class Containers
             Me._screenshotpath = String.Empty
             Me._screenshotimage = Nothing
             Me._files = New Generic.SortedList(Of String, String)
+            Me._deletefiles = New List(Of String)
         End Sub
     End Class
 

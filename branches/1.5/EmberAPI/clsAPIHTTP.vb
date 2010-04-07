@@ -241,7 +241,7 @@ Public Class HTTP
                         outFile = LocalFile
                 End Select
 
-                If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then
+                If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
                     If File.Exists(outFile) Then File.Delete(outFile)
 

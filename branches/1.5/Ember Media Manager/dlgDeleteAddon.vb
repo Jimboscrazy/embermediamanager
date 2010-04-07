@@ -1,4 +1,4 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Text.RegularExpressions
 
 Public Class dlgDeleteAddon
 
@@ -8,6 +8,17 @@ Public Class dlgDeleteAddon
         Me._id = ID
 
         Return MyBase.ShowDialog
+    End Function
+
+    Function GetStatus(ByVal status As String) As String
+        Dim regStat As Match = Regex.Match(status, "\<status\>(?<status>.*?)\<\/status\>", RegexOptions.IgnoreCase)
+        If regStat.Success Then
+            Dim tStatus As String = regStat.Groups("status").Value
+            If Not String.IsNullOrEmpty(tStatus) Then
+                Return tStatus
+            End If
+        End If
+        Return String.Empty
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -21,7 +32,7 @@ Public Class dlgDeleteAddon
         Dim Result As String = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
         sHTTP = Nothing
 
-        If String.IsNullOrEmpty(Result) AndAlso Result.Contains("OK") Then
+        If Not String.IsNullOrEmpty(Result) AndAlso Me.GetStatus(Result) = "OK" Then
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If

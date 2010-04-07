@@ -134,6 +134,7 @@ Public Class dlgAddEditAddon
         Try
             If Me.lvFiles.Items.Count > 0 Then
                 While Me.lvFiles.SelectedItems.Count > 0
+                    Me._addon.DeleteFiles.Add(Me.lvFiles.SelectedItems(0).Text)
                     Me.lvFiles.Items.Remove(Me.lvFiles.SelectedItems(0))
                 End While
             End If

@@ -63,7 +63,7 @@ Partial Class dlgAddons
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(451, 418)
+        Me.Cancel_Button.Location = New System.Drawing.Point(454, 418)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -76,7 +76,7 @@ Partial Class dlgAddons
         Me.pnlList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlList.Location = New System.Drawing.Point(5, 90)
         Me.pnlList.Name = "pnlList"
-        Me.pnlList.Size = New System.Drawing.Size(513, 322)
+        Me.pnlList.Size = New System.Drawing.Size(516, 322)
         Me.pnlList.TabIndex = 1
         '
         'pnlStatus
@@ -202,7 +202,7 @@ Partial Class dlgAddons
         Me.Panel1.Controls.Add(Me.tsCategories)
         Me.Panel1.Location = New System.Drawing.Point(5, 10)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(513, 54)
+        Me.Panel1.Size = New System.Drawing.Size(516, 54)
         Me.Panel1.TabIndex = 2
         '
         'tsCategories
@@ -214,7 +214,7 @@ Partial Class dlgAddons
         Me.tsCategories.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbTranslations, Me.tsbThemes, Me.tsbTemplates, Me.tsbModules, Me.tsbOther, Me.tslSpacer, Me.tsbNew})
         Me.tsCategories.Location = New System.Drawing.Point(0, 0)
         Me.tsCategories.Name = "tsCategories"
-        Me.tsCategories.Size = New System.Drawing.Size(513, 54)
+        Me.tsCategories.Size = New System.Drawing.Size(516, 54)
         Me.tsCategories.TabIndex = 0
         '
         'tsbTranslations
@@ -283,7 +283,7 @@ Partial Class dlgAddons
         Me.pnlCurrent.BackColor = System.Drawing.Color.SteelBlue
         Me.pnlCurrent.Location = New System.Drawing.Point(214, 65)
         Me.pnlCurrent.Name = "pnlCurrent"
-        Me.pnlCurrent.Size = New System.Drawing.Size(304, 25)
+        Me.pnlCurrent.Size = New System.Drawing.Size(307, 25)
         Me.pnlCurrent.TabIndex = 66
         '
         'pbCurrent
@@ -320,7 +320,7 @@ Partial Class dlgAddons
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(524, 446)
+        Me.ClientSize = New System.Drawing.Size(527, 446)
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.pnlLogin)
