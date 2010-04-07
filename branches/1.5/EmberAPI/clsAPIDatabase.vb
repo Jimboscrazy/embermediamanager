@@ -951,12 +951,12 @@ Public Class Database
 
     Public Sub PatchDatabase(ByVal fname As String)
         Dim xmlSer As XmlSerializer
-        Dim _cmds As New InstallCommands
-        xmlSer = New XmlSerializer(GetType(InstallCommands))
+        Dim _cmds As New Containers.InstallCommands
+        xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
         Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
-            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
+            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.SQLcn.BeginTransaction
-                For Each _cmd As InstallCommand In _cmds.Command
+                For Each _cmd As Containers.InstallCommand In _cmds.Command
                     If _cmd.CommandType = "DB" Then
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                             SQLcommand.CommandText = _cmd.CommandExecute
@@ -1827,45 +1827,6 @@ Public Class Database
 #End Region 'Methods
 
 #Region "Nested Types"
-
-    Public Class InstallCommand
-
-#Region "Fields"
-
-        <XmlElement("Description")> _
-        Public CommandDescription As String
-        <XmlElement("Execute")> _
-        Public CommandExecute As String
-        <XmlAttribute("Type")> _
-        Public CommandType As String
-
-#End Region 'Fields
-
-    End Class
-
-    <XmlRoot("CommandFile")> _
-    Public Class InstallCommands
-
-#Region "Fields"
-
-        <XmlArray("Commands")> _
-        <XmlArrayItem("Command")> _
-        Public Command As List(Of InstallCommand)
-
-#End Region 'Fields
-
-#Region "Methods"
-
-        Public Sub Save(ByVal fpath As String)
-            Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
-            Using xmlSW As New StreamWriter(fpath)
-                xmlSer.Serialize(xmlSW, Me)
-            End Using
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Private Class SourceHolder
 

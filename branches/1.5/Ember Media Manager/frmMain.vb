@@ -173,6 +173,20 @@ Public Class frmMain
 
     #Region "Methods"
 
+    Public Sub InstallNewFiles(ByVal fname As String)
+        Dim xmlSer As XmlSerializer
+        Dim _cmds As New Containers.InstallCommands
+        xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
+        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
+            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
+            For Each _cmd As Containers.InstallCommand In _cmds.Command
+                If _cmd.CommandType = "FILE" Then
+                    ' Install new files here
+                End If
+            Next
+        End Using
+    End Sub
+
     Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
 
         Try
@@ -5102,8 +5116,11 @@ doCancel:
                 Me.ClearCache()
             End If
         Catch ex As Exception
-            'Application exit can not be used without the close of the form... this is reported somewher in MS
-            'Application.Exit()
+            ' If we got here, then some of the above not run. Application.Exit can not be used. 
+            ' If any BackgroundWorker still running will raise exception 
+            ' "Collection was modified; enumeration operation may not execute."
+            ' Because Exit will dispose object that are in use by BackgroundWorkers
+            ' Application.Exit()
         End Try
     End Sub
 
@@ -5120,6 +5137,12 @@ doCancel:
         End If
         fLoading.Show(Me)
         Application.DoEvents()
+
+        ' Run InstallTask to see if any pending file needs to install
+        ' Do this before loading modules/themes/etc
+        If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
+            InstallNewFiles("InstallTasks.xml")
+        End If
 
         fLoading.SetStage("Basic setup...")
 
@@ -5182,7 +5205,6 @@ doCancel:
         SetStyle(ControlStyles.DoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         SetStyle(ControlStyles.UserPaint, True)
-        'old place of log stuff
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
@@ -7673,6 +7695,9 @@ doCancel:
             End If
 
             Me.SetMenus(True)
+            If dresult.NeedsRestart Then
+                Application.Restart()
+            End If
         Else
             Me.SetMenus(False)
             Me.SetControlsEnabled(True)
