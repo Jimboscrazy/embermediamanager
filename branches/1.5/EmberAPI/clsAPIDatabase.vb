@@ -1840,46 +1840,58 @@ Public Class Database
     End Function
 
     Public Sub UninstallAddon(ByVal AddonID As Integer)
-        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-            SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
-            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                While SQLReader.Read
-                    File.Delete(SQLReader("FilePath").ToString)
-                End While
+        Try
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                    While SQLReader.Read
+                        Try
+                            File.Delete(SQLReader("FilePath").ToString)
+                        Catch
+                            'add to commands for restart
+                        End Try
+                    End While
+                End Using
+                SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
+                SQLCommand.ExecuteNonQuery()
+                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                SQLCommand.ExecuteNonQuery()
             End Using
-            SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
-            SQLCommand.ExecuteNonQuery()
-            SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
-            SQLCommand.ExecuteNonQuery()
-        End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
-        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-            SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
-                    "AddonID, Version) VALUES (?,?);")
-            Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
-            Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
+        Try
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
+                        "AddonID, Version) VALUES (?,?);")
+                Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
+                Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
 
-            parAddonID.Value = Addon.ID
-            parVersion.Value = Addon.Version.ToString
+                parAddonID.Value = Addon.ID
+                parVersion.Value = Addon.Version.ToString
 
-            SQLCommand.ExecuteNonQuery()
+                SQLCommand.ExecuteNonQuery()
 
-            SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
-            SQLCommand.ExecuteNonQuery()
+                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
+                SQLCommand.ExecuteNonQuery()
 
-            Using SQLFileCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
-                Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
-                Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
-                parFileAddonID.Value = Addon.ID
-                For Each fFile As KeyValuePair(Of String, String) In Addon.Files
-                    parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
-                    SQLFileCommand.ExecuteNonQuery()
-                Next
+                Using SQLFileCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                    SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
+                    Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
+                    Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
+                    parFileAddonID.Value = Addon.ID
+                    For Each fFile As KeyValuePair(Of String, String) In Addon.Files
+                        parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
+                        SQLFileCommand.ExecuteNonQuery()
+                    Next
+                End Using
             End Using
-        End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
 #End Region 'Methods

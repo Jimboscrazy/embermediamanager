@@ -6,8 +6,11 @@ Public Class dlgAddonFiles
 
         Dim lvItem As New ListViewItem
         For Each _file As KeyValuePair(Of String, String) In FileList
-            lvItem = lvFiles.Items.Add(_file.Key)
-            lvItem.SubItems.Add(_file.Value)
+            Try
+                lvItem = lvFiles.Items.Add(_file.Key)
+                lvItem.SubItems.Add(_file.Value)
+            Catch
+            End Try
         Next
 
         Return MyBase.ShowDialog

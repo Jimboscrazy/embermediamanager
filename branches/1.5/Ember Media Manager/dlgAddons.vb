@@ -29,66 +29,85 @@ Public Class dlgAddons
     End Sub
 
     Function GetStatus(ByVal status As String) As String
-        Dim regStat As Match = Regex.Match(status, "\<status\>(?<status>.*?)\<\/status\>", RegexOptions.IgnoreCase)
-        If regStat.Success Then
-            Dim tStatus As String = regStat.Groups("status").Value
-            If Not String.IsNullOrEmpty(tStatus) Then
-                Return tStatus
+        Try
+            Dim regStat As Match = Regex.Match(status, "\<status\>(?<status>.*?)\<\/status\>", RegexOptions.IgnoreCase)
+            If regStat.Success Then
+                Dim tStatus As String = regStat.Groups("status").Value
+                If Not String.IsNullOrEmpty(tStatus) Then
+                    Return tStatus
+                End If
             End If
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return String.Empty
     End Function
 
     Private Sub DoUpload(ByVal tAddon As Containers.Addon)
         Dim sHTTP As New HTTP
-        Dim postData As New List(Of String())
-        postData.Add((New String() {"username", Me.txtUsername.Text}))
-        postData.Add((New String() {"password", Me.txtPassword.Text}))
-        postData.Add((New String() {"func", "add"}))
-        postData.Add((New String() {"id", If(tAddon.ID > -1, tAddon.ID.ToString, String.Empty)}))
-        postData.Add((New String() {"Name", tAddon.Name}))
-        postData.Add((New String() {"Description", tAddon.Description}))
-        postData.Add((New String() {"Category", tAddon.Category}))
-        postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
-        postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
-        postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
-        postData.Add((New String() {"screenshot", tAddon.ScreenShotPath}))
-        If Not tAddon.ScreenShotPath = "!KEEP!" Then
-            postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
-        End If
-        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
 
-        If IsNumeric(GetStatus(Me.SessionID)) Then
-            If Not tAddon.ID > -1 Then tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
-            For Each f As String In tAddon.DeleteFiles
-                postData.Clear()
-                postData.Add((New String() {"username", Me.txtUsername.Text}))
-                postData.Add((New String() {"password", Me.txtPassword.Text}))
-                postData.Add((New String() {"func", "deletefile"}))
-                postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
-                postData.Add((New String() {"filename", f.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
-                Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-                If IsNumeric(GetStatus(Me.SessionID)) Then
-                    'ok
-                End If
-            Next
-            For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
-                postData.Clear()
-                postData.Add((New String() {"username", Me.txtUsername.Text}))
-                postData.Add((New String() {"password", Me.txtPassword.Text}))
-                postData.Add((New String() {"func", "addfile"}))
-                postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
-                postData.Add((New String() {"Description", f.Value}))
-                postData.Add((New String() {"Filename", f.Key.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
-                postData.Add((New String() {System.IO.Path.GetFileName(f.Key), f.Key, "file"}))
-                Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-                If IsNumeric(GetStatus(Me.SessionID)) Then
-                    'ok
-                End If
-            Next
-        Else
-            'error
-        End If
+        Try
+            Dim postData As New List(Of String())
+            postData.Add((New String() {"username", Me.txtUsername.Text}))
+            postData.Add((New String() {"password", Me.txtPassword.Text}))
+            postData.Add((New String() {"func", "add"}))
+            postData.Add((New String() {"id", If(tAddon.ID > -1, tAddon.ID.ToString, String.Empty)}))
+            postData.Add((New String() {"Name", tAddon.Name}))
+            postData.Add((New String() {"Description", tAddon.Description}))
+            postData.Add((New String() {"Category", tAddon.Category}))
+            postData.Add((New String() {"AddonVersion", tAddon.Version.ToString}))
+            postData.Add((New String() {"EmberVersion_Min", tAddon.MinEVersion.ToString}))
+            postData.Add((New String() {"EmberVersion_Max", tAddon.MaxEVersion.ToString}))
+            postData.Add((New String() {"screenshot", tAddon.ScreenShotPath}))
+            If Not tAddon.ScreenShotPath = "!KEEP!" Then
+                postData.Add((New String() {tAddon.ScreenShotPath, tAddon.ScreenShotPath, "file"}))
+            End If
+            Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+
+            If IsNumeric(GetStatus(Me.SessionID)) Then
+                If Not tAddon.ID > -1 Then tAddon.ID = Convert.ToInt32(GetStatus(Me.SessionID))
+                For Each f As String In tAddon.DeleteFiles
+                    Try
+                        postData.Clear()
+                        postData.Add((New String() {"username", Me.txtUsername.Text}))
+                        postData.Add((New String() {"password", Me.txtPassword.Text}))
+                        postData.Add((New String() {"func", "deletefile"}))
+                        postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
+                        postData.Add((New String() {"filename", f.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
+                        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                        If IsNumeric(GetStatus(Me.SessionID)) Then
+                            'ok
+                        End If
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+                For Each f As Generic.KeyValuePair(Of String, String) In tAddon.Files
+                    Try
+                        postData.Clear()
+                        postData.Add((New String() {"username", Me.txtUsername.Text}))
+                        postData.Add((New String() {"password", Me.txtPassword.Text}))
+                        postData.Add((New String() {"func", "addfile"}))
+                        postData.Add((New String() {"addon_id", tAddon.ID.ToString}))
+                        postData.Add((New String() {"Description", f.Value}))
+                        postData.Add((New String() {"Filename", f.Key.Substring(Functions.AppPath.Length).Replace(System.IO.Path.DirectorySeparatorChar, "/")}))
+                        postData.Add((New String() {System.IO.Path.GetFileName(f.Key), f.Key, "file"}))
+                        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+                        If IsNumeric(GetStatus(Me.SessionID)) Then
+                            'ok
+                        End If
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            Else
+                'error
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        sHTTP = Nothing
 
         If Me.currType = tAddon.Category Then Me.RefreshItems()
     End Sub
@@ -134,29 +153,33 @@ Public Class dlgAddons
     Private Sub Login()
         Dim sHTTP As New HTTP
 
-        Me.SessionID = String.Empty
+        Try
+            Me.SessionID = String.Empty
 
-        Me.pnlLogin.Visible = False
-        Me.lblStatus.Text = "Logging in..."
-        Me.pnlStatus.Visible = True
+            Me.pnlLogin.Visible = False
+            Me.lblStatus.Text = "Logging in..."
+            Me.pnlStatus.Visible = True
 
-        Application.DoEvents()
-        Dim postData As New List(Of String())
-        postData.Add((New String() {"username", Me.txtUsername.Text}))
-        postData.Add((New String() {"password", Me.txtPassword.Text}))
-        postData.Add((New String() {"func", "login"}))
-        Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
-        If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
-            Me.pnlStatus.Visible = False
-            Me.tsCategories.Enabled = True
-            Master.eSettings.Username = Me.txtUsername.Text
-            Master.eSettings.Password = Me.txtPassword.Text
-            Master.eSettings.Save()
-        Else
-            Me.pnlStatus.Visible = False
-            Me.pnlLogin.Visible = True
-        End If
+            Application.DoEvents()
+            Dim postData As New List(Of String())
+            postData.Add((New String() {"username", Me.txtUsername.Text}))
+            postData.Add((New String() {"password", Me.txtPassword.Text}))
+            postData.Add((New String() {"func", "login"}))
+            Me.SessionID = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
+            If Not String.IsNullOrEmpty(Me.SessionID) AndAlso Me.SessionID.Contains("OK") Then
+                Me.pnlStatus.Visible = False
+                Me.tsCategories.Enabled = True
+                Master.eSettings.Username = Me.txtUsername.Text
+                Master.eSettings.Password = Me.txtPassword.Text
+                Master.eSettings.Save()
+            Else
+                Me.pnlStatus.Visible = False
+                Me.pnlLogin.Visible = True
+            End If
 
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         sHTTP = Nothing
     End Sub
 
@@ -164,52 +187,62 @@ Public Class dlgAddons
         Dim aoXML As String = String.Empty
         Dim sHTTP As New HTTP
         Dim postData As New List(Of String())
-        postData.Add((New String() {"username", Me.txtUsername.Text}))
-        postData.Add((New String() {"password", Me.txtPassword.Text}))
-        postData.Add((New String() {"type", e.Argument.ToString}))
-        postData.Add((New String() {"func", "fetch"}))
-        aoXML = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
 
-        If Not String.IsNullOrEmpty(aoXML) Then
-            Dim xdAddons As XDocument = XDocument.Parse(aoXML)
-            Dim tTop As Integer = 0
-            Dim iIndex As Integer = 0
+        Try
+            postData.Add((New String() {"username", Me.txtUsername.Text}))
+            postData.Add((New String() {"password", Me.txtPassword.Text}))
+            postData.Add((New String() {"type", e.Argument.ToString}))
+            postData.Add((New String() {"func", "fetch"}))
+            aoXML = sHTTP.PostDownloadData("http://www.embermm.com/addons/addons.php", postData)
 
-            For Each xAddon In xdAddons.Descendants("entry")
-                If AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
-                    ReDim Preserve Me.AddonItem(iIndex)
-                    Me.AddonItem(iIndex) = New AddonItem
-                    Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
-                    Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
-                    Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
-                    Me.AddonItem(iIndex).Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
-                    Me.AddonItem(iIndex).MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
-                    Me.AddonItem(iIndex).MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
-                    Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
-                    Me.AddonItem(iIndex).Category = e.Argument.ToString
-                    sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
-                    While sHTTP.IsDownloading
-                        Application.DoEvents()
-                    End While
-                    Me.AddonItem(iIndex).ScreenShot = sHTTP.Image
+            If Not String.IsNullOrEmpty(aoXML) Then
+                Dim xdAddons As XDocument = XDocument.Parse(aoXML)
+                Dim tTop As Integer = 0
+                Dim iIndex As Integer = 0
 
-                    Dim fList As New Generic.SortedList(Of String, String)
-                    For Each fFile As XElement In xAddon.Descendants("file")
-                        fList.Add(fFile.Element("Filename").Value, fFile.Element("Description").Value)
-                    Next
-                    Me.AddonItem(iIndex).FileList = fList
+                For Each xAddon In xdAddons.Descendants("entry")
+                    Try
+                        If AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
+                            ReDim Preserve Me.AddonItem(iIndex)
+                            Me.AddonItem(iIndex) = New AddonItem
+                            Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
+                            Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
+                            Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
+                            Me.AddonItem(iIndex).Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
+                            Me.AddonItem(iIndex).MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
+                            Me.AddonItem(iIndex).MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
+                            Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
+                            Me.AddonItem(iIndex).Category = e.Argument.ToString
+                            sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
+                            While sHTTP.IsDownloading
+                                Application.DoEvents()
+                            End While
+                            Me.AddonItem(iIndex).ScreenShot = sHTTP.Image
 
-                    Me.AddonItem(iIndex).Left = 0
-                    Me.AddonItem(iIndex).Top = tTop
+                            Dim fList As New Generic.SortedList(Of String, String)
+                            For Each fFile As XElement In xAddon.Descendants("file")
+                                fList.Add(fFile.Element("Filename").Value, fFile.Element("Description").Value)
+                            Next
+                            Me.AddonItem(iIndex).FileList = fList
 
-                    Me.bwDownload.ReportProgress(0, Me.AddonItem(iIndex))
+                            Me.AddonItem(iIndex).Left = 0
+                            Me.AddonItem(iIndex).Top = tTop
 
-                    tTop += 105
-                    iIndex += 1
-                End If
-            Next
-        End If
+                            Me.bwDownload.ReportProgress(0, Me.AddonItem(iIndex))
 
+                            tTop += 105
+                            iIndex += 1
+                        End If
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        postData = Nothing
         sHTTP = Nothing
 
     End Sub
@@ -246,11 +279,15 @@ Public Class dlgAddons
     Private Sub ClearList()
         If Me.pnlList.Controls.Count > 0 Then
             For i As Integer = UBound(Me.AddonItem) To 0 Step -1
-                If Not IsNothing(Me.AddonItem(i)) Then
-                    RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
-                    RemoveHandler Me.AddonItem(i).SendEdit, AddressOf Me.DoUpload
-                    Me.pnlList.Controls.Remove(Me.AddonItem(i))
-                End If
+                Try
+                    If Not IsNothing(Me.AddonItem(i)) Then
+                        RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
+                        RemoveHandler Me.AddonItem(i).SendEdit, AddressOf Me.DoUpload
+                        Me.pnlList.Controls.Remove(Me.AddonItem(i))
+                    End If
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
             Next
         End If
     End Sub

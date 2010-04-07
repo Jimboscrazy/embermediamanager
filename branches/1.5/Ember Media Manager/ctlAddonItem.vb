@@ -187,18 +187,26 @@ Public Class AddonItem
     End Sub
 
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
-        If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
+        Try
+            If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
 
-        Dim sHTTP As New HTTP
+            Dim sHTTP As New HTTP
 
-        For Each _file As KeyValuePair(Of String, String) In Me._filelist
-            sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
-            Me.bwDownload.ReportProgress(1)
-        Next
+            For Each _file As KeyValuePair(Of String, String) In Me._filelist
+                Try
+                    sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
+                    Me.bwDownload.ReportProgress(1)
+                Catch
+                    'add to commands for restart
+                End Try
+            Next
 
-        sHTTP = Nothing
+            sHTTP = Nothing
 
-        Master.DB.SaveAddonToDB(New Containers.Addon With {.ID = Me._id, .Version = Me._version, .Files = Me._filelist})
+            Master.DB.SaveAddonToDB(New Containers.Addon With {.ID = Me._id, .Version = Me._version, .Files = Me._filelist})
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged

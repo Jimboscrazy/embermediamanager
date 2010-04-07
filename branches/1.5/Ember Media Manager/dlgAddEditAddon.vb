@@ -152,15 +152,19 @@ Public Class dlgAddEditAddon
     End Sub
 
     Private Sub btnAddFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFile.Click
-        Using dNewFile As New dlgAddonFile
-            Dim KVP As KeyValuePair(Of String, String) = dNewFile.ShowDialog(String.Empty, String.Empty)
-            If Not IsNothing(KVP.Key) Then
-                If IsNothing(lvFiles.FindItemWithText(KVP.Key)) Then
-                    Dim lvItem As ListViewItem = lvFiles.Items.Add(KVP.Key)
-                    lvItem.SubItems.Add(KVP.Value)
+        Try
+            Using dNewFile As New dlgAddonFile
+                Dim KVP As KeyValuePair(Of String, String) = dNewFile.ShowDialog(String.Empty, String.Empty)
+                If Not IsNothing(KVP.Key) Then
+                    If IsNothing(lvFiles.FindItemWithText(KVP.Key)) Then
+                        Dim lvItem As ListViewItem = lvFiles.Items.Add(KVP.Key)
+                        lvItem.SubItems.Add(KVP.Value)
+                    End If
                 End If
-            End If
-        End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnEditFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditFile.Click
@@ -168,15 +172,19 @@ Public Class dlgAddEditAddon
     End Sub
 
     Private Sub EditFile()
-        If lvFiles.SelectedItems.Count > 0 Then
-            Dim lvItem As ListViewItem = lvFiles.SelectedItems(0)
-            Using dEditFile As New dlgAddonFile
-                Dim KVP As KeyValuePair(Of String, String) = dEditFile.ShowDialog(lvItem.Text, lvItem.SubItems(1).Text)
-                If Not IsNothing(KVP.Key) Then
-                    lvItem.Text = KVP.Key
-                    lvItem.SubItems(1).Text = KVP.Value
-                End If
-            End Using
-        End If
+        Try
+            If lvFiles.SelectedItems.Count > 0 Then
+                Dim lvItem As ListViewItem = lvFiles.SelectedItems(0)
+                Using dEditFile As New dlgAddonFile
+                    Dim KVP As KeyValuePair(Of String, String) = dEditFile.ShowDialog(lvItem.Text, lvItem.SubItems(1).Text)
+                    If Not IsNothing(KVP.Key) Then
+                        lvItem.Text = KVP.Key
+                        lvItem.SubItems(1).Text = KVP.Value
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 End Class
