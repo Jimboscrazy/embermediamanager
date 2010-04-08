@@ -244,6 +244,9 @@ Public Class AdvancedSettings
         SetSetting("AudioFormatConvert:wma2", "wmav2")
         SetSetting("AudioFormatConvert:a_dts", "dca")
         SetSetting("AudioFormatConvert:dts", "dca")
+
+        SetSetting("VideoFormatConvert:divx 5", "dx50")
+        SetSetting("VideoFormatConvert:mpeg-4 video", "mpeg4")
         _DoNotSave = False
     End Sub
 
