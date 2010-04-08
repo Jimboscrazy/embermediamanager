@@ -191,16 +191,27 @@ Public Class AddonItem
             If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
 
             Dim sHTTP As New HTTP
+            Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine("temp", Functions.ConvertToUnixTimestamp(Now).ToString))
+            Dim finalFile As String = String.Empty
+            Dim NeedRestart As Boolean = False
+            Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
 
             For Each _file As KeyValuePair(Of String, String) In Me._filelist
                 Try
-                    sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)), False, "other")
+                    finalFile = Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar))
+                    sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), tempFile, False, "other")
                     Me.bwDownload.ReportProgress(1)
-                Catch
-                    'add to commands for restart
+                    Try
+                        File.Move(tempFile, finalFile)
+                    Catch
+                        _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Move", .CommandExecute = String.Concat(tempFile, "|", finalFile)})
+                        NeedRestart = True
+                    End Try
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
-
+            If NeedRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
             sHTTP = Nothing
 
             Master.DB.SaveAddonToDB(New Containers.Addon With {.ID = Me._id, .Version = Me._version, .Files = Me._filelist})

@@ -1854,6 +1854,8 @@ Public Class Database
 
     Public Sub UninstallAddon(ByVal AddonID As Integer)
         Try
+            Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            Dim needRestart As Boolean = False
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                 SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
@@ -1861,9 +1863,11 @@ Public Class Database
                         Try
                             File.Delete(SQLReader("FilePath").ToString)
                         Catch
-                            'add to commands for restart
+                            _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Delete", .CommandExecute = SQLReader("FilePath").ToString})
+                            needRestart = True
                         End Try
                     End While
+                    If needRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
                 End Using
                 SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
                 SQLCommand.ExecuteNonQuery()

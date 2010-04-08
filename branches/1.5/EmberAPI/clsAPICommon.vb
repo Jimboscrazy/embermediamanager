@@ -46,7 +46,14 @@ Public Class InstallCommands
                 xmlSer.Serialize(xmlSW, Me)
             End Using
         End Sub
-
+        Public Shared Function Load(ByVal fpath As String) As Containers.InstallCommands
+            Dim xmlSer As XmlSerializer
+            Dim _cmds As New Containers.InstallCommands
+            xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
+            Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
+                Return DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
+            End Using
+        End Function
 #End Region 'Methods
 
     End Class

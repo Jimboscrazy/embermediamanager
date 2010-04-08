@@ -174,17 +174,18 @@ Public Class frmMain
     #Region "Methods"
 
     Public Sub InstallNewFiles(ByVal fname As String)
-        Dim xmlSer As XmlSerializer
-        Dim _cmds As New Containers.InstallCommands
-        xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
-        Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
-            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
-            For Each _cmd As Containers.InstallCommand In _cmds.Command
-                If _cmd.CommandType = "FILE" Then
-                    ' Install new files here
-                End If
-            Next
-        End Using
+        Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
+        For Each _cmd As Containers.InstallCommand In _cmds.Command
+            Select Case _cmd.CommandType
+                Case "FILE.Move"
+                    Dim s() As String = _cmd.CommandExecute.Split("|"c)
+                    If s.Count >= 2 Then
+                        File.Move(s(0), s(1))
+                    End If
+                Case "FILE.Delete"
+                    File.Delete(_cmd.CommandExecute)
+            End Select
+        Next
     End Sub
 
     Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
