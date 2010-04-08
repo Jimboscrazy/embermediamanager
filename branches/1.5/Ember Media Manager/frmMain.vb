@@ -1929,7 +1929,6 @@ doCancel:
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Me.SetControlsEnabled(False)
 
@@ -2493,7 +2492,6 @@ doCancel:
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-        Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
         Using dEditMeta As New dlgFileInfo
             Select Case dEditMeta.ShowDialog(False)
                 Case Windows.Forms.DialogResult.OK
@@ -2854,7 +2852,6 @@ doCancel:
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
         If Me.dgvMediaList.SelectedRows.Count > 0 Then
             If Me.dgvMediaList.RowCount > 0 Then
-                Me.tmpTitle = Me.dgvMediaList.SelectedRows(0).Cells(15).Value.ToString
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
@@ -2876,7 +2873,6 @@ doCancel:
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -3021,7 +3017,6 @@ doCancel:
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
                 Me.SetStatus(Master.currMovie.Filename)
-                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -3060,8 +3055,6 @@ doCancel:
 
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-
-                    Me.tmpTitle = Me.dgvMediaList.Item(15, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -5349,7 +5342,14 @@ doCancel:
                         Try
                             If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                                 Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-                                Me.tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                                Dim tmpTitle As String = String.Empty
+                                If FileUtils.Common.isVideoTS(MoviePath) Then
+                                    tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
+                                ElseIf FileUtils.Common.isBDRip(MoviePath) Then
+                                    tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
+                                Else
+                                    tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                                End If
                                 If Master.currMovie.Movie Is Nothing Then
                                     Master.currMovie.Movie = New MediaContainers.Movie
                                     Master.currMovie.Movie.Title = tmpTitle
@@ -6189,7 +6189,6 @@ doCancel:
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
                 Application.DoEvents()
@@ -7280,7 +7279,6 @@ doCancel:
 
     Private Sub SelectRow(ByVal iRow As Integer)
         Try
-            Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)

@@ -548,7 +548,13 @@ Public Class EmberNativeScraperModule
                     dSearch.IMDBURL = MySettings.IMDBURL
                     Dim tmpTitle As String = DBMovie.Movie.Title
                     If String.IsNullOrEmpty(tmpTitle) Then
-                        tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                        If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+                        ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                        Else
+                            tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                        End If
                     End If
 
                     If dSearch.ShowDialog(tmpTitle) = Windows.Forms.DialogResult.OK Then
