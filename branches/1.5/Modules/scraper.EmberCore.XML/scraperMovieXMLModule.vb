@@ -240,7 +240,13 @@ Public Class EmberXMLScraperModule
                 End If
                 Dim tmpTitle As String = DBMovie.Movie.Title
                 If String.IsNullOrEmpty(tmpTitle) Then
-                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                    If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+                    ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                    Else
+                        tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                    End If
                 End If
                 Select Case ScrapeType
                     Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
