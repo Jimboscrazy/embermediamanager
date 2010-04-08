@@ -37,6 +37,7 @@ Public Class XBMCxCom
     Private _setup As frmSettingsHolder
     Friend WithEvents bwRunUpdate As New System.ComponentModel.BackgroundWorker
     Private RunQueue As New Queue(Of Structures.DBMovie)
+    Private _httpTimeOut As Integer = 10000
     #End Region 'Fields
 
     #Region "Events"
@@ -150,6 +151,7 @@ Public Class XBMCxCom
         Dim str As String
         Dim eSource As String = String.Empty
         Try
+            _httpTimeOut = Convert.ToInt32(AdvancedSettings.GetSetting("HTTPTimeOut", "10000"))
             Dim DBMovie As Structures.DBMovie '= DirectCast(e.Argument, Structures.DBMovie)
             While RunQueue.Count > 0
                 DBMovie = RunQueue.Dequeue

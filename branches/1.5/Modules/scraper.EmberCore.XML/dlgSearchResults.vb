@@ -86,6 +86,7 @@ Public Class dlgSearchResults
     End Sub
     Private Sub bwDownloadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadInfo.RunWorkerCompleted
         Me.OK_Button.Enabled = True
+        tvResults.Enabled = True
         Me.pnlLoading.Visible = False
         Try
             If Not lMediaTag Is Nothing Then
@@ -229,6 +230,7 @@ Public Class dlgSearchResults
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         Me.tmrWait.Enabled = False
         Me.tmrLoad.Enabled = False
+        tvResults.Enabled = False
         bwDownloadInfo.WorkerReportsProgress = True
         bwDownloadInfo.RunWorkerAsync(Me.tvResults.SelectedNode.Tag)
         Me.Label3.Text = Master.eLang.GetString(6, "Downloading details...")
