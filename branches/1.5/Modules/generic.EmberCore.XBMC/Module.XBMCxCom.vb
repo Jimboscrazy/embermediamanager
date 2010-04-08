@@ -261,7 +261,7 @@ Public Class XBMCxCom
         Me.Enabled = _setup.cbEnabled.Checked
         _MySettings.XComs = _setup.XComs
         MySettings.Save(_MySettings)
-        AdvancedSettings.SetSetting("XBMCSyncPlayCountHost", _setup.cbPlayCountHost.SelectedItem.ToString)
+        If _setup.cbPlayCountHost.SelectedIndex >= 0 Then AdvancedSettings.SetSetting("XBMCSyncPlayCountHost", _setup.cbPlayCountHost.SelectedItem.ToString)
         AdvancedSettings.SetBooleanSetting("XBMCSyncPlayCount", _setup.chkPlayCount.Checked)
         AdvancedSettings.SetBooleanSetting("XBMCSync", _setup.chkRealTime.Checked)
         If Me._enabled Then
