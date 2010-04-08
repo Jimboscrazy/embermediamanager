@@ -7375,6 +7375,16 @@ doCancel:
                 End If
             End If
         Next
+        With Master.eSettings
+            If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
+            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
+            (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
+                Me.CleanFoldersToolStripMenuItem.Enabled = True AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+            Else
+                Me.CleanFoldersToolStripMenuItem.Enabled = False
+            End If
+        End With
         Me.EditToolStripMenuItem.Enabled = isEnabled
         Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
