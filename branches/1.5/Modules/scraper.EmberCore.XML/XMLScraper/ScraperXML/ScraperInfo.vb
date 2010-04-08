@@ -12,7 +12,6 @@ Namespace XMLScraper
             Implements IComparable(Of ScraperInfo)
 
 #Region "Fields"
-
             Private _adultcontent As Boolean
             Private _filename As String
             Private _hassecondarysearch As Boolean
@@ -43,7 +42,7 @@ Namespace XMLScraper
                     Return Me._adultcontent
                 End Get
                 Set(ByVal value As Boolean)
-                    Me._adultcontent = Value
+                    Me._adultcontent = value
                 End Set
             End Property
 
@@ -52,7 +51,7 @@ Namespace XMLScraper
                     Return Me._filename
                 End Get
                 Private Set(ByVal value As String)
-                    Me._filename = Value
+                    Me._filename = value
                 End Set
             End Property
 
@@ -61,7 +60,7 @@ Namespace XMLScraper
                     Return Me._hassecondarysearch
                 End Get
                 Private Set(ByVal value As Boolean)
-                    Me._hassecondarysearch = Value
+                    Me._hassecondarysearch = value
                 End Set
             End Property
 
@@ -79,7 +78,7 @@ Namespace XMLScraper
                     Return Me._scraperdate
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperdate = Value
+                    Me._scraperdate = value
                 End Set
             End Property
 
@@ -88,7 +87,7 @@ Namespace XMLScraper
                     Return Me._scraperframework
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperframework = Value
+                    Me._scraperframework = value
                 End Set
             End Property
 
@@ -97,7 +96,7 @@ Namespace XMLScraper
                     Return Me._scraperlanguage
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperlanguage = Value
+                    Me._scraperlanguage = value
                 End Set
             End Property
 
@@ -106,7 +105,7 @@ Namespace XMLScraper
                     Return Me._scrapername
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scrapername = Value
+                    Me._scrapername = value
                 End Set
             End Property
 
@@ -142,7 +141,7 @@ Namespace XMLScraper
                     Return Me._scrapercache
                 End Get
                 Set(ByVal value As String)
-                    Me._scrapercache = Value
+                    Me._scrapercache = value
                 End Set
             End Property
 
@@ -192,7 +191,6 @@ Namespace XMLScraper
                 tempscraper.Load(doc)
 
                 Me._filename = Path.GetFileName(xmlPath)
-
                 Me._scrapername = doc.Root.Attribute("name").Value
                 Me._scrapercontent = CType([Enum].Parse(GetType(ScraperContent), doc.Root.Attribute("content").Value), ScraperContent)
 

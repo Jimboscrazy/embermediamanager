@@ -178,6 +178,7 @@ Namespace XMLScraper
                 Dim tempList As New List(Of ScrapeResultsEntity)
 
                 Dim scraper As ScraperInfo = Me._allscrapers.Find(Function(n) [String].Compare(n.ScraperName, scraperName, StringComparison.OrdinalIgnoreCase) = 0)
+
                 If Not IsNothing(scraper) Then
                     tempList = Search(scraper, primary, secondary, resultsType)
                 Else

@@ -48,7 +48,7 @@ Public Class DVD
         mAudioModes.Add("3", "mp2")
         mAudioModes.Add("4", "wav")
         mAudioModes.Add("5", String.Empty)
-        mAudioModes.Add("6", "dca")
+        mAudioModes.Add("6", "dts")
         mAudioModes.Add("7", String.Empty)
 
         mVideoCodingMode.Add("0", "mpeg1")

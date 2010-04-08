@@ -338,25 +338,17 @@ Public Class MediaInfo
 
     Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
-
             Select Case sFormat.ToLower
-                Case "ac-3", "a_ac3"
-                    Return "ac3"
-                Case "wma2"
-                    Return "wmav2"
                 Case "dts", "a_dts"
                     Select Case sProfile.ToUpper
                         Case "MA"   'master audio
-                            Return "dtsma"
+                            sFormat = "dtsma"
                         Case "HRA"   'high resolution
-                            Return "dtshr"
-                        Case Else
-                            Return "dca"
+                            sFormat = "dtshr"
                     End Select
-
-                Case Else
-                    Return sFormat.ToLower
             End Select
+            Return AdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat), sFormat).ToLower
+            'Return sFormat
         Else
             Return String.Empty
         End If
