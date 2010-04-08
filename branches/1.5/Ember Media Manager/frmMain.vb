@@ -176,15 +176,18 @@ Public Class frmMain
     Public Sub InstallNewFiles(ByVal fname As String)
         Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
         For Each _cmd As Containers.InstallCommand In _cmds.Command
-            Select Case _cmd.CommandType
-                Case "FILE.Move"
-                    Dim s() As String = _cmd.CommandExecute.Split("|"c)
-                    If s.Count >= 2 Then
-                        File.Move(s(0), s(1))
-                    End If
-                Case "FILE.Delete"
-                    File.Delete(_cmd.CommandExecute)
-            End Select
+            Try
+                Select Case _cmd.CommandType
+                    Case "FILE.Move"
+                        Dim s() As String = _cmd.CommandExecute.Split("|"c)
+                        If s.Count >= 2 Then
+                            File.Move(s(0), s(1))
+                        End If
+                    Case "FILE.Delete"
+                        File.Delete(_cmd.CommandExecute)
+                End Select
+            Catch ex As Exception
+            End Try
         Next
     End Sub
 

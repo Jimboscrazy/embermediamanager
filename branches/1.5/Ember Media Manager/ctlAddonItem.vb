@@ -201,10 +201,13 @@ Public Class AddonItem
             If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
 
             Dim sHTTP As New HTTP
-            Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine("temp", Functions.ConvertToUnixTimestamp(Now).ToString))
+            Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), Functions.ConvertToUnixTimestamp(Now).ToString))
             Dim finalFile As String = String.Empty
             Dim NeedRestart As Boolean = False
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            If Not Directory.Exists(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons"))) Then
+                Directory.CreateDirectory(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons")))
+            End If
 
             For Each _file As KeyValuePair(Of String, String) In Me._filelist
                 Try
