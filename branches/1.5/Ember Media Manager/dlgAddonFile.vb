@@ -40,4 +40,17 @@ Public Class dlgAddonFile
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Sub dlgAddonFile_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(272, "Addon File")
+        Me.lblFile.Text = String.Concat(Master.eLang.GetString(444, "File"), ":")
+        Me.lblDescription.Text = Master.eLang.GetString(172, "Description:")
+
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+    End Sub
 End Class

@@ -23,12 +23,32 @@ Public Class dlgAddons
         Me.txtUsername.Text = Master.eSettings.Username
         Me.txtPassword.Text = Master.eSettings.Password
 
+        Me.SetUp()
+
         If Not String.IsNullOrEmpty(Me.txtUsername.Text) AndAlso Not String.IsNullOrEmpty(txtPassword.Text) Then
             Me.Login()
         End If
     End Sub
 
-    Function GetStatus(ByVal status As String) As String
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(285, "Addons")
+
+        Me.lblLogin.Text = Master.eLang.GetString(287, "Login to Addons Server")
+        Me.lblUsername.Text = Master.eLang.GetString(425, "Username:")
+        Me.lblPassword.Text = Master.eLang.GetString(426, "Password")
+
+        Me.btnLogin.Text = Master.eLang.GetString(286, "Login")
+        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+
+        Me.tsbTranslations.Text = Master.eLang.GetString(290, "Translations")
+        Me.tsbThemes.Text = Master.eLang.GetString(629, "Themes")
+        Me.tsbTemplates.Text = Master.eLang.GetString(291, "Templates")
+        Me.tsbModules.Text = Master.eLang.GetString(802, "Modules")
+        Me.tsbOther.Text = Master.eLang.GetString(293, "Other")
+        Me.tsbNew.Text = Master.eLang.GetString(294, "Create New")
+    End Sub
+
+    Private Function GetStatus(ByVal status As String) As String
         Try
             Dim regStat As Match = Regex.Match(status, "\<status\>(?<status>.*?)\<\/status\>", RegexOptions.IgnoreCase)
             If regStat.Success Then
@@ -44,6 +64,7 @@ Public Class dlgAddons
     End Function
 
     Private Sub DoUpload(ByVal tAddon As Containers.Addon)
+        Me.ControlsEnabled(False)
         Dim sHTTP As New HTTP
 
         Try
@@ -113,7 +134,7 @@ Public Class dlgAddons
     End Sub
 
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
-        If e.ClickedItem.Text = "Create New" Then
+        If e.ClickedItem.Tag.ToString = "Create New" Then
             Using dNewAddon As New dlgAddEditAddon
                 Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
                 If Not IsNothing(tAddon) Then
@@ -121,11 +142,11 @@ Public Class dlgAddons
                 End If
             End Using
         Else
-            If Not Me.currType = e.ClickedItem.Text Then
-                Me.currType = e.ClickedItem.Text
+            If Not Me.currType = e.ClickedItem.Tag.ToString Then
+                Me.currType = e.ClickedItem.Tag.ToString
                 Me.pbCurrent.Image = e.ClickedItem.Image
                 Me.lblCurrent.Text = e.ClickedItem.Text
-                Me.LoadItems(e.ClickedItem.Text)
+                Me.LoadItems(e.ClickedItem.Tag.ToString)
             End If
         End If
     End Sub
@@ -133,8 +154,9 @@ Public Class dlgAddons
     Public Sub LoadItems(ByVal sType As String)
         Me.ClearList()
 
-        Me.tsCategories.Enabled = False
-        Me.lblStatus.Text = String.Format("Fetching ""{0}"" Addons...", sType)
+        Me.ControlsEnabled(False)
+
+        Me.lblStatus.Text = String.Format(Master.eLang.GetString(288, "Fetching ""{0}"" Addons..."), sType)
         Me.pnlStatus.Visible = True
 
         Me.bwDownload = New System.ComponentModel.BackgroundWorker
@@ -157,7 +179,7 @@ Public Class dlgAddons
             Me.SessionID = String.Empty
 
             Me.pnlLogin.Visible = False
-            Me.lblStatus.Text = "Logging in..."
+            Me.lblStatus.Text = Master.eLang.GetString(289, "Logging in...")
             Me.pnlStatus.Visible = True
 
             Application.DoEvents()
@@ -266,14 +288,15 @@ Public Class dlgAddons
         Dim tAOI As AddonItem = DirectCast(e.UserState, AddonItem)
         AddHandler tAOI.NeedsRefresh, AddressOf Me.RefreshItems
         AddHandler tAOI.SendEdit, AddressOf Me.DoUpload
+        AddHandler tAOI.IsDownloading, AddressOf Me.IsDownloading
         tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
         tAOI.Installed = Master.DB.IsAddonInstalled(tAOI.ID)
         Me.pnlList.Controls.Add(tAOI)
     End Sub
 
     Private Sub bwDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownload.RunWorkerCompleted
-        Me.tsCategories.Enabled = True
         Me.pnlStatus.Visible = False
+        Me.ControlsEnabled(True)
     End Sub
 
     Private Sub ClearList()
@@ -283,6 +306,7 @@ Public Class dlgAddons
                     If Not IsNothing(Me.AddonItem(i)) Then
                         RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
                         RemoveHandler Me.AddonItem(i).SendEdit, AddressOf Me.DoUpload
+                        RemoveHandler Me.AddonItem(i).IsDownloading, AddressOf Me.IsDownloading
                         Me.pnlList.Controls.Remove(Me.AddonItem(i))
                     End If
                 Catch ex As Exception
@@ -290,5 +314,15 @@ Public Class dlgAddons
                 End Try
             Next
         End If
+    End Sub
+
+    Private Sub IsDownloading(ByVal Bool As Boolean)
+        Me.ControlsEnabled(Not Bool)
+    End Sub
+
+    Private Sub ControlsEnabled(ByVal isEnabled As Boolean)
+        Me.pnlList.Enabled = isEnabled
+        Me.tsCategories.Enabled = isEnabled
+        Me.Cancel_Button.Enabled = isEnabled
     End Sub
 End Class

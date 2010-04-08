@@ -8,13 +8,13 @@ Public Class dlgAddEditAddon
 
     Public Overloads Function ShowDialog(ByVal Addon As Containers.Addon) As Containers.Addon
         If Not Addon.ID = -1 Then
-            Me.Text = String.Concat("Edit Addon - ", Addon.Name)
+            Me.Text = String.Concat(Master.eLang.GetString(279, "Edit Addon - "), Addon.Name)
             Me.txtName.Text = Addon.Name
             Me.txtDescription.Text = Addon.Description
             Me.txtVersion.Text = Addon.Version.ToString
             Me.txtMinEVersion.Text = Addon.MinEVersion.ToString
             Me.txtMaxEVersion.Text = Addon.MaxEVersion.ToString
-            Me.cboCategory.Text = Addon.Category
+            Me.cboCategory.SelectedIndex = Me.GetIndexFromCategory(Addon.Category)
             Me.pbScreenShot.Image = Addon.ScreenShotImage
             Me._imagecache = Addon.ScreenShotImage
 
@@ -24,7 +24,7 @@ Public Class dlgAddEditAddon
                 lvItem.SubItems.Add(_file.Value)
             Next
         Else
-            Me.Text = "New Addon"
+            Me.Text = Master.eLang.GetString(277, "New Addon")
         End If
 
         If MyBase.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -42,7 +42,7 @@ Public Class dlgAddEditAddon
             Me._addon.Version = NumUtils.ConvertToSingle(Me.txtVersion.Text)
             Me._addon.MinEVersion = NumUtils.ConvertToSingle(Me.txtMinEVersion.Text)
             Me._addon.MaxEVersion = NumUtils.ConvertToSingle(Me.txtMaxEVersion.Text)
-            Me._addon.Category = Me.cboCategory.Text
+            Me._addon.Category = Me.GetCategoryFromIndex(Me.cboCategory.SelectedIndex)
 
             If String.IsNullOrEmpty(Me.txtScreenShotPath.Text) Then
                 Me._addon.ScreenShotPath = "!KEEP!"
@@ -71,7 +71,8 @@ Public Class dlgAddEditAddon
     Private Function ValidateEntry() As Boolean
         Return Not String.IsNullOrEmpty(Me.txtName.Text) AndAlso Not String.IsNullOrEmpty(Me.txtDescription.Text) AndAlso _
         (Not String.IsNullOrEmpty(Me.txtVersion.Text) AndAlso Convert.ToSingle(Me.txtVersion.Text) > 0) AndAlso _
-        Me.lvFiles.Items.Count > 0 AndAlso ValidateFiles() AndAlso ValidateSS(Me.txtScreenShotPath.Text)
+        Me.lvFiles.Items.Count > 0 AndAlso ValidateFiles() AndAlso ValidateSS(Me.txtScreenShotPath.Text) AndAlso _
+        Me.cboCategory.SelectedIndex > -1
     End Function
 
     Private Function ValidateFiles() As Boolean
@@ -187,4 +188,62 @@ Public Class dlgAddEditAddon
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Sub dlgAddEditAddon_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Setup()
+    End Sub
+
+    Private Sub Setup()
+        Me.lblName.Text = Master.eLang.GetString(171, "Name:")
+        Me.lblDescription.Text = Master.eLang.GetString(172, "Description:")
+        Me.lblVersion.Text = Master.eLang.GetString(173, "Addon Version:")
+        Me.lblMinEVersion.Text = Master.eLang.GetString(178, "Min. Ember Version:")
+        Me.lblMaxEVersion.Text = Master.eLang.GetString(257, "Max. Ember Version:")
+        Me.lblCategory.Text = Master.eLang.GetString(258, "Category")
+        Me.lblSSPath.Text = Master.eLang.GetString(259, "Path To New Screen Shot Image:")
+        Me.lblPreview.Text = Master.eLang.GetString(260, "Current Screen Shot:")
+        Me.lblSSInfo.Text = Master.eLang.GetString(261, "Screen Shot image must be a JPEG, equal to or less than 150 KB in size, and equal to or less than 133x95 in dimension.")
+
+        Me.lvFiles.Columns(0).Text = Master.eLang.GetString(444, "File")
+        Me.lvFiles.Columns(1).Text = Master.eLang.GetString(821, "Description")
+
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+
+        Me.cboCategory.Items.AddRange(New String() {Master.eLang.GetString(290, "Translations"), Master.eLang.GetString(629, "Themes"), Master.eLang.GetString(291, "Templates"), Master.eLang.GetString(802, "Modules"), Master.eLang.GetString(293, "Other")})
+    End Sub
+
+    Private Function GetCategoryFromIndex(ByVal iIndex As Integer) As String
+        Select Case iIndex
+            Case 0
+                Return "Translations"
+            Case 1
+                Return "Themes"
+            Case 2
+                Return "Templates"
+            Case 3
+                Return "Modules"
+            Case 4
+                Return "Other"
+            Case Else
+                Return String.Empty
+        End Select
+    End Function
+
+    Private Function GetIndexFromCategory(ByVal sCat As String) As Integer
+        Select Case sCat
+            Case "Translations"
+                Return 0
+            Case "Themes"
+                Return 1
+            Case "Templates"
+                Return 2
+            Case "Modules"
+                Return 3
+            Case "Other"
+                Return 4
+            Case Else
+                Return -1
+        End Select
+    End Function
 End Class

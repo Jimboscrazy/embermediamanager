@@ -22,6 +22,7 @@ Partial Class dlgAddonFiles
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgAddonFiles))
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.lvFiles = New System.Windows.Forms.ListView
         Me.colFile = New System.Windows.Forms.ColumnHeader
@@ -67,12 +68,13 @@ Partial Class dlgAddonFiles
         Me.Controls.Add(Me.Cancel_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgAddonFiles"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "dlgAddonFiles"
+        Me.Text = "Addon Files"
         Me.ResumeLayout(False)
 
     End Sub

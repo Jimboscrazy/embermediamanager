@@ -20,4 +20,16 @@ Public Class dlgAddonFiles
         Me.Close()
     End Sub
 
+    Private Sub dlgAddonFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(280, "Addon Files")
+
+        Me.lvFiles.Columns(0).Text = Master.eLang.GetString(444, "File")
+        Me.lvFiles.Columns(1).Text = Master.eLang.GetString(821, "Description")
+
+        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+    End Sub
 End Class

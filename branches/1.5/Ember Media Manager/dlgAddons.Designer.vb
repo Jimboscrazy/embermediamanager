@@ -223,6 +223,7 @@ Partial Class dlgAddons
         Me.tsbTranslations.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbTranslations.Name = "tsbTranslations"
         Me.tsbTranslations.Size = New System.Drawing.Size(75, 51)
+        Me.tsbTranslations.Tag = "Translations"
         Me.tsbTranslations.Text = "Translations"
         Me.tsbTranslations.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.tsbTranslations.ToolTipText = "Translations"
@@ -233,6 +234,7 @@ Partial Class dlgAddons
         Me.tsbThemes.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbThemes.Name = "tsbThemes"
         Me.tsbThemes.Size = New System.Drawing.Size(53, 51)
+        Me.tsbThemes.Tag = "Themes"
         Me.tsbThemes.Text = "Themes"
         Me.tsbThemes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
@@ -242,6 +244,7 @@ Partial Class dlgAddons
         Me.tsbTemplates.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbTemplates.Name = "tsbTemplates"
         Me.tsbTemplates.Size = New System.Drawing.Size(66, 51)
+        Me.tsbTemplates.Tag = "Templates"
         Me.tsbTemplates.Text = "Templates"
         Me.tsbTemplates.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
@@ -251,6 +254,7 @@ Partial Class dlgAddons
         Me.tsbModules.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbModules.Name = "tsbModules"
         Me.tsbModules.Size = New System.Drawing.Size(57, 51)
+        Me.tsbModules.Tag = "Modules"
         Me.tsbModules.Text = "Modules"
         Me.tsbModules.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
@@ -260,6 +264,7 @@ Partial Class dlgAddons
         Me.tsbOther.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbOther.Name = "tsbOther"
         Me.tsbOther.Size = New System.Drawing.Size(41, 51)
+        Me.tsbOther.Tag = "Other"
         Me.tsbOther.Text = "Other"
         Me.tsbOther.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
@@ -275,6 +280,7 @@ Partial Class dlgAddons
         Me.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNew.Name = "tsbNew"
         Me.tsbNew.Size = New System.Drawing.Size(72, 51)
+        Me.tsbNew.Tag = "Create New"
         Me.tsbNew.Text = "Create New"
         Me.tsbNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '

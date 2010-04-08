@@ -5,6 +5,7 @@ Public Class AddonItem
 
     Public Event NeedsRefresh()
     Public Event SendEdit(ByVal tAddon As Containers.Addon)
+    Public Event IsDownloading(ByVal Bool As Boolean)
 
     Private _enabled As Boolean = True
 
@@ -151,6 +152,7 @@ Public Class AddonItem
     Public Sub New()
         InitializeComponent()
         Me.Clear()
+        Me.SetUp()
     End Sub
 
     Public Sub Clear()
@@ -168,6 +170,12 @@ Public Class AddonItem
         Me._filelist = New Generic.SortedList(Of String, String)
     End Sub
 
+    Private Sub SetUp()
+        Me.lblVersion.Text = Master.eLang.GetString(262, "Version:")
+        Me.lblInstalled.Text = Master.eLang.GetString(263, "Installed:")
+        Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading Files...")
+    End Sub
+
     Private Sub ViewFileListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewFileListToolStripMenuItem.Click
         Using dFileList As New dlgAddonFiles
             dFileList.ShowDialog(Me._filelist)
@@ -175,6 +183,8 @@ Public Class AddonItem
     End Sub
 
     Private Sub btnDownload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDownload.Click
+        RaiseEvent IsDownloading(True)
+
         Me.ControlsEnabled(False)
 
         Me.pbStatus.Maximum = Me._filelist.Count
@@ -228,6 +238,7 @@ Public Class AddonItem
         Me.pnlStatus.Visible = False
         Me.ControlsEnabled(True)
         Me.Installed = Me._version
+        RaiseEvent IsDownloading(False)
     End Sub
 
     Private Sub ControlsEnabled(ByVal isEnabled As Boolean)
