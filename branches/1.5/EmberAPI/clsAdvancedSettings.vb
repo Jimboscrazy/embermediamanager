@@ -239,11 +239,11 @@ Public Class AdvancedSettings
 
     Private Shared Sub SetDefaults()
         _DoNotSave = True
-        SetBooleanSetting("Renamer.UseDTSInAudioChannel", True)
         SetSetting("AudioFormatConvert:ac-3", "ac3")
         SetSetting("AudioFormatConvert:a_ac3", "ac3")
         SetSetting("AudioFormatConvert:wma2", "wmav2")
-        SetSetting("AudioFormatConvert:a_dts", "dts")
+        SetSetting("AudioFormatConvert:a_dts", "dca")
+        SetSetting("AudioFormatConvert:dts", "dca")
         _DoNotSave = False
     End Sub
 

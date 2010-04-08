@@ -233,7 +233,6 @@
       <DependentUpon>dlglRestart.vb</DependentUpon>
     </Compile>
     <Compile Include="dlglRestart.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVRegExProfiles.Designer.vb">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
