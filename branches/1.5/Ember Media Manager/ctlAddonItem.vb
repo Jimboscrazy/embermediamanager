@@ -282,7 +282,9 @@ Public Class AddonItem
     End Sub
 
     Private Sub btnUninstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUninstall.Click
+        RaiseEvent IsDownloading(True)
         Master.DB.UninstallAddon(Me._id)
         Me.Installed = 0
+        RaiseEvent IsDownloading(False)
     End Sub
 End Class

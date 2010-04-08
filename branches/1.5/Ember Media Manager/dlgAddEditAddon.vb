@@ -7,22 +7,28 @@ Public Class dlgAddEditAddon
     Dim _addon As New Containers.Addon
 
     Public Overloads Function ShowDialog(ByVal Addon As Containers.Addon) As Containers.Addon
-        If Not Addon.ID = -1 Then
-            Me.Text = String.Concat(Master.eLang.GetString(279, "Edit Addon - "), Addon.Name)
-            Me.txtName.Text = Addon.Name
-            Me.txtDescription.Text = Addon.Description
-            Me.txtVersion.Text = Addon.Version.ToString
-            Me.txtMinEVersion.Text = Addon.MinEVersion.ToString
-            Me.txtMaxEVersion.Text = Addon.MaxEVersion.ToString
-            Me.cboCategory.SelectedIndex = Me.GetIndexFromCategory(Addon.Category)
-            Me.pbScreenShot.Image = Addon.ScreenShotImage
-            Me._imagecache = Addon.ScreenShotImage
+        Me.Setup()
 
-            Dim lvItem As New ListViewItem
-            For Each _file As KeyValuePair(Of String, String) In Addon.Files
-                lvItem = lvFiles.Items.Add(Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)))
-                lvItem.SubItems.Add(_file.Value)
-            Next
+        If Not Addon.ID = -1 Then
+            Try
+                Me.Text = String.Concat(Master.eLang.GetString(279, "Edit Addon - "), Addon.Name)
+                Me.txtName.Text = Addon.Name
+                Me.txtDescription.Text = Addon.Description
+                Me.txtVersion.Text = Addon.Version.ToString
+                Me.txtMinEVersion.Text = Addon.MinEVersion.ToString
+                Me.txtMaxEVersion.Text = Addon.MaxEVersion.ToString
+                Me.cboCategory.SelectedIndex = Me.GetIndexFromCategory(Addon.Category)
+                Me.pbScreenShot.Image = Addon.ScreenShotImage
+                Me._imagecache = Addon.ScreenShotImage
+
+                Dim lvItem As New ListViewItem
+                For Each _file As KeyValuePair(Of String, String) In Addon.Files
+                    lvItem = lvFiles.Items.Add(Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar)))
+                    lvItem.SubItems.Add(_file.Value)
+                Next
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
         Else
             Me.Text = Master.eLang.GetString(277, "New Addon")
         End If
@@ -35,28 +41,32 @@ Public Class dlgAddEditAddon
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        If ValidateEntry() Then
+        Try
+            If ValidateEntry() Then
 
-            Me._addon.Name = Me.txtName.Text
-            Me._addon.Description = Me.txtDescription.Text
-            Me._addon.Version = NumUtils.ConvertToSingle(Me.txtVersion.Text)
-            Me._addon.MinEVersion = NumUtils.ConvertToSingle(Me.txtMinEVersion.Text)
-            Me._addon.MaxEVersion = NumUtils.ConvertToSingle(Me.txtMaxEVersion.Text)
-            Me._addon.Category = Me.GetCategoryFromIndex(Me.cboCategory.SelectedIndex)
+                Me._addon.Name = Me.txtName.Text
+                Me._addon.Description = Me.txtDescription.Text
+                Me._addon.Version = NumUtils.ConvertToSingle(Me.txtVersion.Text)
+                Me._addon.MinEVersion = NumUtils.ConvertToSingle(Me.txtMinEVersion.Text)
+                Me._addon.MaxEVersion = NumUtils.ConvertToSingle(Me.txtMaxEVersion.Text)
+                Me._addon.Category = Me.GetCategoryFromIndex(Me.cboCategory.SelectedIndex)
 
-            If String.IsNullOrEmpty(Me.txtScreenShotPath.Text) Then
-                Me._addon.ScreenShotPath = "!KEEP!"
-            Else
-                Me._addon.ScreenShotPath = Me.txtScreenShotPath.Text
+                If String.IsNullOrEmpty(Me.txtScreenShotPath.Text) Then
+                    Me._addon.ScreenShotPath = "!KEEP!"
+                Else
+                    Me._addon.ScreenShotPath = Me.txtScreenShotPath.Text
+                End If
+
+                For Each lvItem As ListViewItem In lvFiles.Items
+                    Me._addon.Files.Add(lvItem.Text, lvItem.SubItems(1).Text)
+                Next
+
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
             End If
-
-            For Each lvItem As ListViewItem In lvFiles.Items
-                Me._addon.Files.Add(lvItem.Text, lvItem.SubItems(1).Text)
-            Next
-
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -187,10 +197,6 @@ Public Class dlgAddEditAddon
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub dlgAddEditAddon_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Setup()
     End Sub
 
     Private Sub Setup()
