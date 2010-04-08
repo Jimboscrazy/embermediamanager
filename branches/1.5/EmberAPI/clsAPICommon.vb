@@ -34,7 +34,7 @@ Public Class InstallCommands
 
         <XmlArray("Commands")> _
         <XmlArrayItem("Command")> _
-        Public Command As List(Of InstallCommand)
+        Public Command As New List(Of InstallCommand)
 
 #End Region 'Fields
 
@@ -46,10 +46,10 @@ Public Class InstallCommands
                 xmlSer.Serialize(xmlSW, Me)
             End Using
         End Sub
+
         Public Shared Function Load(ByVal fpath As String) As Containers.InstallCommands
             If Not File.Exists(fpath) Then Return New Containers.InstallCommands
             Dim xmlSer As XmlSerializer
-            Dim _cmds As New Containers.InstallCommands
             xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
             Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
                 Return DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
