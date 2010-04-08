@@ -100,7 +100,7 @@ Namespace XMLScraper
                 Me._scrapername = nameOfScraper
                 Me._totalitemstoprocess = totalToProcess
                 Me._currentitemprocessing = currentlyProcessing
-                Dim TrueProgress As Double = Me._currentitemprocessing * (100.0 / Convert.ToDouble(Me._totalitemstoprocess))
+                Dim TrueProgress As Single = Me._currentitemprocessing * (100 / NumUtils.ConvertToSingle(Me._totalitemstoprocess.ToString))
                 Me._progresspercentage = Convert.ToInt32(Math.Truncate(TrueProgress))
             End Sub
 

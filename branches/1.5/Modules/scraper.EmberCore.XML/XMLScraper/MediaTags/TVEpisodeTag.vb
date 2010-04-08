@@ -80,12 +80,12 @@ Namespace XMLScraper
                 End Set
             End Property
 
-            Public Property Rating() As Double
+            Public Property Rating() As Single
                 Get
-                    Return Convert.ToDouble(UserProperties("rating"))
+                    Return NumUtils.ConvertToSingle(UserProperties("rating"))
                 End Get
-                Set(ByVal value As Double)
-                    UserProperties("rating") = Value.ToString("#0.0")
+                Set(ByVal value As Single)
+                    UserProperties("rating") = value.ToString("#0.0")
                 End Set
             End Property
 
@@ -183,7 +183,7 @@ Namespace XMLScraper
 
                 If Not IsNothing(element.Element("rating")) Then
                     If Not String.IsNullOrEmpty(element.Element("rating").Value) Then
-                        Rating = Convert.ToDouble(element.Element("rating").Value)
+                        Rating = NumUtils.ConvertToSingle(element.Element("rating").Value)
                     End If
                 End If
 

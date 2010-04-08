@@ -27,7 +27,7 @@ Namespace XMLScraper
             Private m_GetSettingsFunction As ScraperFunction
             Private m_ScraperDate As DateTime
             Private m_ScraperEncoding As String
-            Private m_ScraperFramework As Double
+            Private m_ScraperFramework As Single
             Private m_ScraperIncludes As List(Of String)
             Private m_ScraperLanguage As String
             Private m_ScraperThumb As String
@@ -181,12 +181,12 @@ Namespace XMLScraper
                 End Set
             End Property
 
-            Public Property ScraperFramework() As Double
+            Public Property ScraperFramework() As Single
                 Get
                     Return m_ScraperFramework
                 End Get
-                Set(ByVal value As Double)
-                    m_ScraperFramework = Value
+                Set(ByVal value As Single)
+                    m_ScraperFramework = value
                 End Set
             End Property
 
@@ -251,7 +251,7 @@ Namespace XMLScraper
 
                 If Not IsNothing(element.Attribute("framework")) Then
                     If String.IsNullOrEmpty(element.Attribute("framework").Value) <> True Then
-                        ScraperFramework = Double.Parse(element.Attribute("framework").Value)
+                        ScraperFramework = NumUtils.ConvertToSingle(element.Attribute("framework").Value)
                     End If
                 End If
 

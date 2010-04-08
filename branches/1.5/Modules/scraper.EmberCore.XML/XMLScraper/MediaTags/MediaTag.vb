@@ -140,13 +140,13 @@ Namespace XMLScraper
 
             Public MustOverride Sub Deserialize(ByVal xmlElement As XElement)
 
-            Friend Function ProcessRating(ByVal ratingElement As XElement) As Double
+            Friend Function ProcessRating(ByVal ratingElement As XElement) As Single
                 If Not IsNothing(ratingElement) Then
                     If Not IsNothing(ratingElement.Attribute("max")) Then
-                        Dim scale As Double = 10.0 / Convert.ToDouble(ratingElement.Attribute("max").Value)
-                        Return scale * Convert.ToDouble(ratingElement.Value)
+                        Dim scale As Single = 10 / NumUtils.ConvertToSingle(ratingElement.Attribute("max").Value)
+                        Return scale * NumUtils.ConvertToSingle(ratingElement.Value)
                     Else
-                        Return Convert.ToDouble(ratingElement.Value)
+                        Return NumUtils.ConvertToSingle(ratingElement.Value)
                     End If
                 End If
 

@@ -140,11 +140,11 @@ Namespace XMLScraper
                 End Set
             End Property
 
-            Public Property Rating() As Double
+            Public Property Rating() As Single
                 Get
-                    Return Convert.ToDouble(MyBase.UserProperties("rating"))
+                    Return NumUtils.ConvertToSingle(MyBase.UserProperties("rating"))
                 End Get
-                Set(ByVal value As Double)
+                Set(ByVal value As Single)
                     MyBase.UserProperties("rating") = value.ToString("#0.0")
                 End Set
             End Property
