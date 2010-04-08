@@ -256,7 +256,7 @@ Public Class EmberXMLScraperModule
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-                                If Not IsNothing(s) Then
+                                If Not IsNothing(s) AndAlso File.Exists(s.ScraperThumb) Then
                                     dlg.pbScraperLogo.Load(s.ScraperThumb)
                                 End If
                                 If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then

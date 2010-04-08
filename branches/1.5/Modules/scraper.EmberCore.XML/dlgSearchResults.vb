@@ -20,6 +20,8 @@
 
 Imports System.Text.RegularExpressions
 Imports EmberScraperModule.XMLScraper.ScraperXML
+Imports System.IO
+Imports System.Text
 
 Public Class dlgSearchResults
 
@@ -199,7 +201,8 @@ Public Class dlgSearchResults
             Dim selNode As New TreeNode
 
             For c = 0 To mList.Count - 1
-                Dim title As String = Web.HttpUtility.HtmlDecode(mList(c).Title)
+                Dim title As String = New StreamReader(Web.HttpUtility.HtmlDecode(mList(c).Title), Encoding.UTF8, False).ToString
+                'Dim title As String = Web.HttpUtility.HtmlDecode(mList(c).Title)
                 Me.tvResults.Nodes.Add(New TreeNode() With {.Tag = c, .Text = String.Concat(title, If(Not String.IsNullOrEmpty(mList(c).Year.ToString), String.Format(" ({0})", mList(c).Year), String.Empty))})
             Next
 

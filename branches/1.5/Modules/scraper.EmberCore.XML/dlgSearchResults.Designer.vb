@@ -30,6 +30,7 @@ Partial Class dlgSearchResults
         Me.lblYear = New System.Windows.Forms.Label
         Me.pnlTop = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
+        Me.pbScraperLogo = New System.Windows.Forms.PictureBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblYearHeader = New System.Windows.Forms.Label
@@ -46,19 +47,18 @@ Partial Class dlgSearchResults
         Me.lblGenreHeader = New System.Windows.Forms.Label
         Me.lblGenre = New System.Windows.Forms.Label
         Me.lblTagline = New System.Windows.Forms.Label
-        Me.pbScraperLogo = New System.Windows.Forms.PictureBox
         Me.pnlTop.SuspendLayout()
+        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(497, 400)
+        Me.OK_Button.Location = New System.Drawing.Point(497, 396)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 22)
         Me.OK_Button.TabIndex = 4
@@ -68,7 +68,7 @@ Partial Class dlgSearchResults
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(570, 400)
+        Me.Cancel_Button.Location = New System.Drawing.Point(570, 396)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 22)
         Me.Cancel_Button.TabIndex = 5
@@ -127,6 +127,16 @@ Partial Class dlgSearchResults
         Me.Label2.Size = New System.Drawing.Size(276, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "View details of each result to find the proper movie."
+        '
+        'pbScraperLogo
+        '
+        Me.pbScraperLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbScraperLogo.Location = New System.Drawing.Point(461, 8)
+        Me.pbScraperLogo.Name = "pbScraperLogo"
+        Me.pbScraperLogo.Size = New System.Drawing.Size(178, 50)
+        Me.pbScraperLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbScraperLogo.TabIndex = 90
+        Me.pbScraperLogo.TabStop = False
         '
         'Label1
         '
@@ -211,7 +221,7 @@ Partial Class dlgSearchResults
         '
         Me.lblPlotHeader.AutoSize = True
         Me.lblPlotHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlotHeader.Location = New System.Drawing.Point(297, 280)
+        Me.lblPlotHeader.Location = New System.Drawing.Point(297, 278)
         Me.lblPlotHeader.Name = "lblPlotHeader"
         Me.lblPlotHeader.Size = New System.Drawing.Size(83, 13)
         Me.lblPlotHeader.TabIndex = 72
@@ -242,7 +252,7 @@ Partial Class dlgSearchResults
         'txtOutline
         '
         Me.txtOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOutline.Location = New System.Drawing.Point(300, 296)
+        Me.txtOutline.Location = New System.Drawing.Point(300, 294)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.Size = New System.Drawing.Size(337, 100)
@@ -291,23 +301,13 @@ Partial Class dlgSearchResults
         Me.lblTagline.Text = "Tagline"
         Me.lblTagline.Visible = False
         '
-        'pbScraperLogo
-        '
-        Me.pbScraperLogo.BackColor = System.Drawing.Color.Transparent
-        Me.pbScraperLogo.Location = New System.Drawing.Point(461, 8)
-        Me.pbScraperLogo.Name = "pbScraperLogo"
-        Me.pbScraperLogo.Size = New System.Drawing.Size(178, 50)
-        Me.pbScraperLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbScraperLogo.TabIndex = 90
-        Me.pbScraperLogo.TabStop = False
-        '
         'dlgSearchResults
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 426)
+        Me.ClientSize = New System.Drawing.Size(643, 420)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.lblTagline)
@@ -339,11 +339,11 @@ Partial Class dlgSearchResults
         Me.Text = "Search Results"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
+        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbScraperLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
