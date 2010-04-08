@@ -74,7 +74,7 @@ Public Class Database
 
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                         If source = String.Empty Then
-                            SQLcommand.CommandText = "SELECT MoviePath, Id, Source, Type FROM movies{ ORDER BY MoviePath DESC;"
+                            SQLcommand.CommandText = "SELECT MoviePath, Id, Source, Type FROM movies ORDER BY MoviePath DESC;"
                         Else
                             SQLcommand.CommandText = String.Format("SELECT MoviePath, Id, Source, Type FROM movies WHERE Source = ""{0}"" ORDER BY MoviePath DESC;", source)
                         End If
