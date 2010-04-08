@@ -1431,8 +1431,8 @@ doCancel:
                 End If
             Next
 
-            If Not cbFilterFileSource.Text = Master.eLang.All Then
-                Me.FilterArray.Add(String.Format("FileSource = '{0}'", cbFilterFileSource.Text))
+            If Not cbFilterFileSource.Text = Master.eLang.All Then 
+                Me.FilterArray.Add(String.Format("FileSource = '{0}'", If(cbFilterFileSource.Text = Master.eLang.None, String.Empty, cbFilterFileSource.Text)))
             End If
 
             Me.RunFilter()
@@ -7616,6 +7616,7 @@ doCancel:
                     cbFilterFileSource.Items.Clear()
                     cbFilterFileSource.Items.Add(Master.eLang.All)
                     cbFilterFileSource.Items.AddRange(APIXML.SourceList.ToArray)
+                    cbFilterFileSource.Items.Add(Master.eLang.None)
                     cbFilterFileSource.SelectedIndex = 0
                     AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
