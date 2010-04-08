@@ -1841,9 +1841,12 @@ Public Class Database
         Try
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                 SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
-                Dim tSing As Single = 0
-                If Single.TryParse(SQLCommand.ExecuteScalar.ToString, tSing) Then
-                    Return tSing
+                Dim tES As Object = SQLCommand.ExecuteScalar
+                If Not IsNothing(tES) Then
+                    Dim tSing As Single = 0
+                    If Single.TryParse(tES.ToString, tSing) Then
+                        Return tSing
+                    End If
                 End If
             End Using
         Catch ex As Exception
