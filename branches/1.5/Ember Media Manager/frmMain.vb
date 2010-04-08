@@ -1696,7 +1696,7 @@ doCancel:
     Private Sub ClearCache()
         If Directory.Exists(Master.TempPath) Then
             Dim dInfo As New DirectoryInfo(Master.TempPath)
-            For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows")
+            For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows" AndAlso Not d.Name.ToLower = "addons")
                 FileUtils.Delete.DeleteDirectory(dDir.FullName)
             Next
 

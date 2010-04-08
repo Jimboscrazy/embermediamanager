@@ -1,4 +1,24 @@
-﻿Imports System.Text.RegularExpressions
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports System.Text.RegularExpressions
 
 Public Class dlgDeleteAddon
 
@@ -43,4 +63,19 @@ Public Class dlgDeleteAddon
         Me.Close()
     End Sub
 
+    Private Sub dlgDeleteAddon_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(295, "Delete Addon")
+
+        Me.lblConfirm.Text = Master.eLang.GetString(296, "In order to continue with deletion, you need to confirm you are the owner of the Addon.")
+        Me.lblLogin.Text = Master.eLang.GetString(297, "Confirm Ownership")
+        Me.lblUsername.Text = Master.eLang.GetString(425, "Username:")
+        Me.lblPassword.Text = Master.eLang.GetString(426, "Password:")
+
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+    End Sub
 End Class

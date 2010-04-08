@@ -26,13 +26,13 @@ Partial Class dlgDeleteAddon
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.Panel4 = New System.Windows.Forms.Panel
+        Me.lblConfirm = New System.Windows.Forms.Label
         Me.txtPassword = New System.Windows.Forms.TextBox
         Me.txtUsername = New System.Windows.Forms.TextBox
         Me.lblPassword = New System.Windows.Forms.Label
         Me.lblUsername = New System.Windows.Forms.Label
         Me.lblLogin = New System.Windows.Forms.Label
         Me.pbLogin = New System.Windows.Forms.PictureBox
-        Me.lblConfirm = New System.Windows.Forms.Label
         Me.Panel4.SuspendLayout()
         CType(Me.pbLogin, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -68,6 +68,16 @@ Partial Class dlgDeleteAddon
         Me.Panel4.Name = "Panel4"
         Me.Panel4.Size = New System.Drawing.Size(300, 143)
         Me.Panel4.TabIndex = 2
+        '
+        'lblConfirm
+        '
+        Me.lblConfirm.Location = New System.Drawing.Point(10, 40)
+        Me.lblConfirm.Name = "lblConfirm"
+        Me.lblConfirm.Size = New System.Drawing.Size(281, 34)
+        Me.lblConfirm.TabIndex = 6
+        Me.lblConfirm.Text = "In order to continue with deletion, you need to confirm you are the owner of the " & _
+            "Addon."
+        Me.lblConfirm.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'txtPassword
         '
@@ -123,16 +133,6 @@ Partial Class dlgDeleteAddon
         Me.pbLogin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbLogin.TabIndex = 0
         Me.pbLogin.TabStop = False
-        '
-        'lblConfirm
-        '
-        Me.lblConfirm.Location = New System.Drawing.Point(10, 40)
-        Me.lblConfirm.Name = "lblConfirm"
-        Me.lblConfirm.Size = New System.Drawing.Size(281, 34)
-        Me.lblConfirm.TabIndex = 6
-        Me.lblConfirm.Text = "In order to continue with deletion, you need to confirm you are the owner of the " & _
-            "Addon."
-        Me.lblConfirm.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'dlgDeleteAddon
         '

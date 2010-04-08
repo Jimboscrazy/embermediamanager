@@ -294,9 +294,9 @@
   <string id="292">Invalid Entry</string>
   <string id="293">Other</string>
   <string id="294">Create New</string>
-  <string id="295"></string>
-  <string id="296"></string>
-  <string id="297"></string>
+  <string id="295">Delete Addon</string>
+  <string id="296">In order to continue with deletion, you need to confirm you are the owner of the Addon.</string>
+  <string id="297">Confirm Ownership</string>
   <string id="298"></string>
   <string id="299"></string>
   <string id="300"></string>
