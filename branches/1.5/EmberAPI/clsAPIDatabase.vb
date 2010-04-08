@@ -117,7 +117,7 @@ Public Class Database
                         If String.IsNullOrEmpty(source) Then
                             SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                         Else
-                            SQLcommand.CommandText = String.Format("select TVEpPath from TVEpPaths inner join TVEps on TVEpPaths.id = TVEps.TVEpPathID Where TVEps.source =""{0}"";", source)
+                            SQLcommand.CommandText = String.Format("SELECT TVEpPath FROM TVEpPaths INNER JOIN TVEps ON TVEpPaths.ID = TVEps.TVEpPathID WHERE TVEps.Source =""{0}"";", source)
                         End If
 
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -127,9 +127,14 @@ Public Class Database
                                 End If
                             End While
                         End Using
+                        'tvshows with no more real episodes
+                        SQLcommand.CommandText = "DELETE FROM TVShows WHERE NOT EXISTS (SELECT TVEps.TVShowID FROM TVEps WHERE TVEps.TVShowID = TVShows.ID AND TVEps.Missing = 0)"
+                        SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID NOT IN (SELECT ID FROM TVShows);")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DELETE FROM TVEps WHERE TVShowID NOT IN (SELECT ID FROM TVShows);"
                         SQLcommand.ExecuteNonQuery()
                         'orphaned paths
                         SQLcommand.CommandText = "DELETE FROM TVEpPaths WHERE NOT EXISTS (SELECT TVEps.TVEpPathID FROM TVEps WHERE TVEps.TVEpPathID = TVEpPaths.ID AND TVEps.Missing = 0)"
