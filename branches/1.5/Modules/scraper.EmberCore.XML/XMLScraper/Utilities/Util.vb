@@ -102,8 +102,13 @@ Namespace XMLScraper
                             End Using
                         End Using
                     Else
+                        Dim pageencdoding As Encoding = Nothing
                         If Not String.IsNullOrEmpty(objResponse.ContentEncoding) Then
-                            Dim pageencdoding As Encoding = Encoding.GetEncoding(objResponse.ContentEncoding)
+                            pageencdoding = Encoding.GetEncoding(objResponse.ContentEncoding)
+                        ElseIf Not String.IsNullOrEmpty(objResponse.CharacterSet) Then
+                            pageencdoding = Encoding.GetEncoding(objResponse.CharacterSet)
+                        End If
+                        If Not pageencdoding Is Nothing Then
                             Using sr As StreamReader = New System.IO.StreamReader(objResponse.GetResponseStream(), pageencdoding)
                                 strReturn = sr.ReadToEnd()
                             End Using
@@ -111,7 +116,6 @@ Namespace XMLScraper
                             Using sr As StreamReader = New System.IO.StreamReader(objResponse.GetResponseStream())
                                 strReturn = sr.ReadToEnd()
                             End Using
-
                         End If
                     End If
                 End Using
