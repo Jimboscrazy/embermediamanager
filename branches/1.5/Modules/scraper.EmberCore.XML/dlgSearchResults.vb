@@ -230,7 +230,6 @@ Public Class dlgSearchResults
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
         Me.tmrWait.Enabled = False
         Me.tmrLoad.Enabled = False
-        tvResults.Enabled = False
         bwDownloadInfo.WorkerReportsProgress = True
         bwDownloadInfo.RunWorkerAsync(Me.tvResults.SelectedNode.Tag)
         Me.Label3.Text = Master.eLang.GetString(6, "Downloading details...")
@@ -253,6 +252,7 @@ Public Class dlgSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
             If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+                tvResults.Enabled = False
                 Me.pnlLoading.Visible = True
                 Me.tmrWait.Enabled = True
             Else
