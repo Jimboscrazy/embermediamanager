@@ -108,6 +108,7 @@ Partial Class dlgDeleteConfirm
         Me.Controls.Add(Me.lblNodeSelected)
         Me.Controls.Add(Me.tvwFiles)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgDeleteConfirm"

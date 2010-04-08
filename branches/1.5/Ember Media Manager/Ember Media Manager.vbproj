@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -229,10 +229,10 @@
     <Compile Include="dlgImgView.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlglRestart.Designer.vb">
-      <DependentUpon>dlglRestart.vb</DependentUpon>
+    <Compile Include="dlgRestart.Designer.vb">
+      <DependentUpon>dlgRestart.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlglRestart.vb">
+    <Compile Include="dlgRestart.vb">
     </Compile>
     <Compile Include="dlgTVRegExProfiles.Designer.vb">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
@@ -422,9 +422,8 @@
       <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlglRestart.resx">
-      <DependentUpon>dlglRestart.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="dlgRestart.resx">
+      <DependentUpon>dlgRestart.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>

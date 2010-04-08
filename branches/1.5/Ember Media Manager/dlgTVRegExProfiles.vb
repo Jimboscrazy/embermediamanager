@@ -64,7 +64,7 @@ Public Class dlgTVRegExProfiles
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         lstProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
-        Me.Label1.Text = Master.eLang.GetString(821, "Description")
+        Me.Label1.Text = Master.eLang.GetString(172, "Description:")
     End Sub
     Class TVShowRegExProfiles
         Public Profiles As New List(Of TVShowRegExProfile)

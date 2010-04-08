@@ -46,10 +46,12 @@ Partial Class dlgXBMCHost
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.rbLinux = New System.Windows.Forms.RadioButton
         Me.rbWindows = New System.Windows.Forms.RadioButton
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -61,7 +63,7 @@ Partial Class dlgXBMCHost
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
         Me.TableLayoutPanel1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(309, 289)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(315, 293)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -92,7 +94,7 @@ Partial Class dlgXBMCHost
         'txtName
         '
         Me.txtName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtName.Location = New System.Drawing.Point(70, 5)
+        Me.txtName.Location = New System.Drawing.Point(70, 2)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(227, 22)
         Me.txtName.TabIndex = 13
@@ -100,17 +102,17 @@ Partial Class dlgXBMCHost
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(26, 9)
+        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(26, 6)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(39, 13)
+        Me.Label16.Size = New System.Drawing.Size(41, 13)
         Me.Label16.TabIndex = 22
         Me.Label16.Text = "Name:"
         '
         'txtPassword
         '
         Me.txtPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPassword.Location = New System.Drawing.Point(227, 63)
+        Me.txtPassword.Location = New System.Drawing.Point(227, 60)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(70, 22)
         Me.txtPassword.TabIndex = 18
@@ -119,7 +121,7 @@ Partial Class dlgXBMCHost
         'txtUsername
         '
         Me.txtUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUsername.Location = New System.Drawing.Point(70, 61)
+        Me.txtUsername.Location = New System.Drawing.Point(70, 58)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(70, 22)
         Me.txtUsername.TabIndex = 16
@@ -127,47 +129,47 @@ Partial Class dlgXBMCHost
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(4, 66)
+        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(4, 63)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(61, 13)
+        Me.Label13.Size = New System.Drawing.Size(62, 13)
         Me.Label13.TabIndex = 21
         Me.Label13.Text = "Username:"
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(167, 68)
+        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(167, 65)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(59, 13)
+        Me.Label14.Size = New System.Drawing.Size(60, 13)
         Me.Label14.TabIndex = 20
         Me.Label14.Text = "Password:"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(15, 38)
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(15, 35)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(52, 13)
+        Me.Label7.Size = New System.Drawing.Size(55, 13)
         Me.Label7.TabIndex = 19
         Me.Label7.Text = "XBMC IP:"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(182, 38)
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(182, 35)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(64, 13)
+        Me.Label6.Size = New System.Drawing.Size(67, 13)
         Me.Label6.TabIndex = 17
         Me.Label6.Text = "XBMC Port:"
         '
         'txtPort
         '
         Me.txtPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPort.Location = New System.Drawing.Point(246, 33)
+        Me.txtPort.Location = New System.Drawing.Point(246, 30)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(51, 22)
         Me.txtPort.TabIndex = 15
@@ -175,7 +177,7 @@ Partial Class dlgXBMCHost
         'txtIP
         '
         Me.txtIP.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIP.Location = New System.Drawing.Point(70, 33)
+        Me.txtIP.Location = New System.Drawing.Point(70, 30)
         Me.txtIP.Name = "txtIP"
         Me.txtIP.Size = New System.Drawing.Size(103, 22)
         Me.txtIP.TabIndex = 14
@@ -184,11 +186,12 @@ Partial Class dlgXBMCHost
         '
         Me.btnPopulate.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnPopulate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPopulate.Location = New System.Drawing.Point(12, 105)
+        Me.btnPopulate.Location = New System.Drawing.Point(12, 102)
         Me.btnPopulate.Name = "btnPopulate"
         Me.btnPopulate.Size = New System.Drawing.Size(108, 23)
         Me.btnPopulate.TabIndex = 23
         Me.btnPopulate.Text = "Populate Sources"
+        Me.btnPopulate.UseVisualStyleBackColor = True
         '
         'dgvSources
         '
@@ -197,7 +200,7 @@ Partial Class dlgXBMCHost
         Me.dgvSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2})
         Me.dgvSources.Enabled = False
-        Me.dgvSources.Location = New System.Drawing.Point(12, 134)
+        Me.dgvSources.Location = New System.Drawing.Point(12, 131)
         Me.dgvSources.MultiSelect = False
         Me.dgvSources.Name = "dgvSources"
         Me.dgvSources.RowHeadersVisible = False
@@ -231,7 +234,7 @@ Partial Class dlgXBMCHost
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(137, 123)
+        Me.pnlLoading.Location = New System.Drawing.Point(137, 120)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 69
@@ -260,7 +263,7 @@ Partial Class dlgXBMCHost
         '
         Me.chkRealTime.AutoSize = True
         Me.chkRealTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRealTime.Location = New System.Drawing.Point(303, 8)
+        Me.chkRealTime.Location = New System.Drawing.Point(303, 5)
         Me.chkRealTime.Name = "chkRealTime"
         Me.chkRealTime.Size = New System.Drawing.Size(162, 17)
         Me.chkRealTime.TabIndex = 70
@@ -272,7 +275,7 @@ Partial Class dlgXBMCHost
         Me.GroupBox1.Controls.Add(Me.rbLinux)
         Me.GroupBox1.Controls.Add(Me.rbWindows)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(306, 34)
+        Me.GroupBox1.Location = New System.Drawing.Point(306, 31)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(146, 65)
         Me.GroupBox1.TabIndex = 71
@@ -303,28 +306,37 @@ Partial Class dlgXBMCHost
         Me.rbWindows.Text = "Windows"
         Me.rbWindows.UseVisualStyleBackColor = True
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Controls.Add(Me.chkRealTime)
+        Me.Panel1.Controls.Add(Me.pnlLoading)
+        Me.Panel1.Controls.Add(Me.dgvSources)
+        Me.Panel1.Controls.Add(Me.btnPopulate)
+        Me.Panel1.Controls.Add(Me.txtName)
+        Me.Panel1.Controls.Add(Me.Label16)
+        Me.Panel1.Controls.Add(Me.txtPassword)
+        Me.Panel1.Controls.Add(Me.txtUsername)
+        Me.Panel1.Controls.Add(Me.Label13)
+        Me.Panel1.Controls.Add(Me.Label14)
+        Me.Panel1.Controls.Add(Me.Label7)
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.txtPort)
+        Me.Panel1.Controls.Add(Me.txtIP)
+        Me.Panel1.Location = New System.Drawing.Point(3, 4)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(467, 289)
+        Me.Panel1.TabIndex = 72
+        '
         'dlgXBMCHost
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(467, 319)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.chkRealTime)
-        Me.Controls.Add(Me.pnlLoading)
-        Me.Controls.Add(Me.dgvSources)
-        Me.Controls.Add(Me.btnPopulate)
-        Me.Controls.Add(Me.txtName)
-        Me.Controls.Add(Me.Label16)
-        Me.Controls.Add(Me.txtPassword)
-        Me.Controls.Add(Me.txtUsername)
-        Me.Controls.Add(Me.Label13)
-        Me.Controls.Add(Me.Label14)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.txtPort)
-        Me.Controls.Add(Me.txtIP)
+        Me.ClientSize = New System.Drawing.Size(473, 323)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -339,8 +351,9 @@ Partial Class dlgXBMCHost
         Me.pnlLoading.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
@@ -367,5 +380,6 @@ Partial Class dlgXBMCHost
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents rbLinux As System.Windows.Forms.RadioButton
     Friend WithEvents rbWindows As System.Windows.Forms.RadioButton
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

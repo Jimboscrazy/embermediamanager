@@ -297,9 +297,9 @@
   <string id="295">Delete Addon</string>
   <string id="296">In order to continue with deletion, you need to confirm you are the owner of the Addon.</string>
   <string id="297">Confirm Ownership</string>
-  <string id="298"></string>
-  <string id="299"></string>
-  <string id="300"></string>
+  <string id="298">Restart Ember Media Manager?</string>
+  <string id="299">Recent changes require a restart of Ember Media Manager to complete.\n\nWould you like to restart Ember Media Manager now?</string>
+  <string id="300">Yes</string>
   <string id="301"></string>
   <string id="302"></string>
   <string id="303"></string>

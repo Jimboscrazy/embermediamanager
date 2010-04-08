@@ -7725,7 +7725,7 @@ doCancel:
 
             Me.SetMenus(True)
             If dresult.NeedsRestart Then
-                Using dRestart As New dlglRestart
+                Using dRestart As New dlgRestart
                     If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Application.Restart()
                     End If

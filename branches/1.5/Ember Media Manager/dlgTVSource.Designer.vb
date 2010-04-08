@@ -36,14 +36,16 @@ Partial Class dlgTVSource
         Me.tmrName = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
+        Me.Panel1 = New System.Windows.Forms.Panel
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(283, 105)
+        Me.OK_Button.Location = New System.Drawing.Point(283, 109)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -53,7 +55,7 @@ Partial Class dlgTVSource
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(356, 105)
+        Me.Cancel_Button.Location = New System.Drawing.Point(356, 109)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -62,7 +64,7 @@ Partial Class dlgTVSource
         'txtSourceName
         '
         Me.txtSourceName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSourceName.Location = New System.Drawing.Point(15, 29)
+        Me.txtSourceName.Location = New System.Drawing.Point(11, 25)
         Me.txtSourceName.Name = "txtSourceName"
         Me.txtSourceName.Size = New System.Drawing.Size(130, 22)
         Me.txtSourceName.TabIndex = 1
@@ -71,7 +73,7 @@ Partial Class dlgTVSource
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(13, 14)
+        Me.Label1.Location = New System.Drawing.Point(9, 10)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(79, 13)
         Me.Label1.TabIndex = 2
@@ -81,7 +83,7 @@ Partial Class dlgTVSource
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(13, 59)
+        Me.Label2.Location = New System.Drawing.Point(9, 55)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(72, 13)
         Me.Label2.TabIndex = 4
@@ -90,7 +92,7 @@ Partial Class dlgTVSource
         'txtSourcePath
         '
         Me.txtSourcePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSourcePath.Location = New System.Drawing.Point(15, 74)
+        Me.txtSourcePath.Location = New System.Drawing.Point(11, 70)
         Me.txtSourcePath.Name = "txtSourcePath"
         Me.txtSourcePath.Size = New System.Drawing.Size(376, 22)
         Me.txtSourcePath.TabIndex = 3
@@ -98,7 +100,7 @@ Partial Class dlgTVSource
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(397, 73)
+        Me.btnBrowse.Location = New System.Drawing.Point(393, 69)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
         Me.btnBrowse.TabIndex = 5
@@ -108,7 +110,7 @@ Partial Class dlgTVSource
         'pbValid
         '
         Me.pbValid.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.pbValid.Location = New System.Drawing.Point(151, 31)
+        Me.pbValid.Location = New System.Drawing.Point(147, 27)
         Me.pbValid.Name = "pbValid"
         Me.pbValid.Size = New System.Drawing.Size(16, 16)
         Me.pbValid.TabIndex = 7
@@ -134,6 +136,20 @@ Partial Class dlgTVSource
         '
         Me.tmrPath.Interval = 250
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.pbValid)
+        Me.Panel1.Controls.Add(Me.btnBrowse)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.txtSourcePath)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.txtSourceName)
+        Me.Panel1.Location = New System.Drawing.Point(4, 4)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(427, 101)
+        Me.Panel1.TabIndex = 8
+        '
         'dlgTVSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -141,14 +157,9 @@ Partial Class dlgTVSource
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(435, 136)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.pbValid)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.btnBrowse)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txtSourcePath)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txtSourceName)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -158,8 +169,9 @@ Partial Class dlgTVSource
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Source"
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -175,5 +187,6 @@ Partial Class dlgTVSource
     Friend WithEvents tmrName As System.Windows.Forms.Timer
     Friend WithEvents tmrPathWait As System.Windows.Forms.Timer
     Friend WithEvents tmrPath As System.Windows.Forms.Timer
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

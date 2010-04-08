@@ -30,11 +30,13 @@ Partial Class dlgAddonFile
         Me.txtDescription = New System.Windows.Forms.TextBox
         Me.lblDescription = New System.Windows.Forms.Label
         Me.lblFile = New System.Windows.Forms.Label
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
-        Me.OK_Button.Location = New System.Drawing.Point(289, 85)
+        Me.OK_Button.Location = New System.Drawing.Point(289, 89)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -43,7 +45,7 @@ Partial Class dlgAddonFile
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(362, 85)
+        Me.Cancel_Button.Location = New System.Drawing.Point(362, 89)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -51,7 +53,7 @@ Partial Class dlgAddonFile
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(405, 11)
+        Me.btnBrowse.Location = New System.Drawing.Point(402, 7)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(24, 23)
         Me.btnBrowse.TabIndex = 20
@@ -60,14 +62,14 @@ Partial Class dlgAddonFile
         '
         'txtPath
         '
-        Me.txtPath.Location = New System.Drawing.Point(104, 12)
+        Me.txtPath.Location = New System.Drawing.Point(101, 8)
         Me.txtPath.Name = "txtPath"
         Me.txtPath.Size = New System.Drawing.Size(298, 22)
         Me.txtPath.TabIndex = 19
         '
         'txtDescription
         '
-        Me.txtDescription.Location = New System.Drawing.Point(104, 37)
+        Me.txtDescription.Location = New System.Drawing.Point(101, 33)
         Me.txtDescription.MaxLength = 150
         Me.txtDescription.Multiline = True
         Me.txtDescription.Name = "txtDescription"
@@ -76,7 +78,8 @@ Partial Class dlgAddonFile
         '
         'lblDescription
         '
-        Me.lblDescription.Location = New System.Drawing.Point(12, 37)
+        Me.lblDescription.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDescription.Location = New System.Drawing.Point(9, 33)
         Me.lblDescription.Name = "lblDescription"
         Me.lblDescription.Size = New System.Drawing.Size(86, 13)
         Me.lblDescription.TabIndex = 22
@@ -85,12 +88,26 @@ Partial Class dlgAddonFile
         '
         'lblFile
         '
-        Me.lblFile.Location = New System.Drawing.Point(12, 16)
+        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFile.Location = New System.Drawing.Point(9, 12)
         Me.lblFile.Name = "lblFile"
         Me.lblFile.Size = New System.Drawing.Size(86, 13)
         Me.lblFile.TabIndex = 23
         Me.lblFile.Text = "File:"
         Me.lblFile.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.lblFile)
+        Me.Panel1.Controls.Add(Me.lblDescription)
+        Me.Panel1.Controls.Add(Me.txtDescription)
+        Me.Panel1.Controls.Add(Me.btnBrowse)
+        Me.Panel1.Controls.Add(Me.txtPath)
+        Me.Panel1.Location = New System.Drawing.Point(3, 4)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(429, 81)
+        Me.Panel1.TabIndex = 24
         '
         'dlgAddonFile
         '
@@ -98,12 +115,8 @@ Partial Class dlgAddonFile
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 114)
-        Me.Controls.Add(Me.lblFile)
-        Me.Controls.Add(Me.lblDescription)
-        Me.Controls.Add(Me.txtDescription)
-        Me.Controls.Add(Me.btnBrowse)
-        Me.Controls.Add(Me.txtPath)
+        Me.ClientSize = New System.Drawing.Size(435, 117)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -115,8 +128,9 @@ Partial Class dlgAddonFile
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Addon File"
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -126,5 +140,6 @@ Partial Class dlgAddonFile
     Friend WithEvents txtDescription As System.Windows.Forms.TextBox
     Friend WithEvents lblDescription As System.Windows.Forms.Label
     Friend WithEvents lblFile As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

@@ -107,12 +107,14 @@ Partial Class dlgOfflineHolder
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.tbTagLine = New System.Windows.Forms.TrackBar
         Me.tmrNameWait = New System.Windows.Forms.Timer(Me.components)
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'CLOSE_Button
@@ -120,7 +122,7 @@ Partial Class dlgOfflineHolder
         Me.CLOSE_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.CLOSE_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.CLOSE_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.CLOSE_Button.Location = New System.Drawing.Point(621, 514)
+        Me.CLOSE_Button.Location = New System.Drawing.Point(649, 518)
         Me.CLOSE_Button.Name = "CLOSE_Button"
         Me.CLOSE_Button.Size = New System.Drawing.Size(80, 23)
         Me.CLOSE_Button.TabIndex = 0
@@ -136,7 +138,7 @@ Partial Class dlgOfflineHolder
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(727, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(734, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -179,7 +181,7 @@ Partial Class dlgOfflineHolder
         Me.cbSources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbSources.FormattingEnabled = True
-        Me.cbSources.Location = New System.Drawing.Point(9, 87)
+        Me.cbSources.Location = New System.Drawing.Point(9, 19)
         Me.cbSources.Name = "cbSources"
         Me.cbSources.Size = New System.Drawing.Size(313, 21)
         Me.cbSources.TabIndex = 59
@@ -188,7 +190,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblSources.AutoSize = True
         Me.lblSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSources.Location = New System.Drawing.Point(7, 72)
+        Me.lblSources.Location = New System.Drawing.Point(7, 4)
         Me.lblSources.Name = "lblSources"
         Me.lblSources.Size = New System.Drawing.Size(84, 13)
         Me.lblSources.TabIndex = 60
@@ -197,7 +199,7 @@ Partial Class dlgOfflineHolder
         'txtMovieName
         '
         Me.txtMovieName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMovieName.Location = New System.Drawing.Point(9, 133)
+        Me.txtMovieName.Location = New System.Drawing.Point(9, 65)
         Me.txtMovieName.Name = "txtMovieName"
         Me.txtMovieName.Size = New System.Drawing.Size(313, 22)
         Me.txtMovieName.TabIndex = 61
@@ -206,7 +208,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblMovie.AutoSize = True
         Me.lblMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMovie.Location = New System.Drawing.Point(7, 118)
+        Me.lblMovie.Location = New System.Drawing.Point(7, 50)
         Me.lblMovie.Name = "lblMovie"
         Me.lblMovie.Size = New System.Drawing.Size(183, 13)
         Me.lblMovie.TabIndex = 62
@@ -214,22 +216,26 @@ Partial Class dlgOfflineHolder
         '
         'GetIMDB_Button
         '
+        Me.GetIMDB_Button.BackColor = System.Drawing.SystemColors.Control
         Me.GetIMDB_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GetIMDB_Button.Location = New System.Drawing.Point(9, 158)
+        Me.GetIMDB_Button.Location = New System.Drawing.Point(9, 90)
         Me.GetIMDB_Button.Name = "GetIMDB_Button"
         Me.GetIMDB_Button.Size = New System.Drawing.Size(80, 21)
         Me.GetIMDB_Button.TabIndex = 63
         Me.GetIMDB_Button.Text = "Search IMDB"
+        Me.GetIMDB_Button.UseVisualStyleBackColor = True
         '
         'Bulk_Button
         '
+        Me.Bulk_Button.BackColor = System.Drawing.SystemColors.Control
         Me.Bulk_Button.Enabled = False
         Me.Bulk_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Bulk_Button.Location = New System.Drawing.Point(95, 158)
+        Me.Bulk_Button.Location = New System.Drawing.Point(95, 90)
         Me.Bulk_Button.Name = "Bulk_Button"
         Me.Bulk_Button.Size = New System.Drawing.Size(80, 21)
         Me.Bulk_Button.TabIndex = 64
         Me.Bulk_Button.Text = "Bulk Creator"
+        Me.Bulk_Button.UseVisualStyleBackColor = True
         Me.Bulk_Button.Visible = False
         '
         'pbProgress
@@ -271,7 +277,7 @@ Partial Class dlgOfflineHolder
         Me.Create_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Create_Button.Enabled = False
         Me.Create_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Create_Button.Location = New System.Drawing.Point(535, 514)
+        Me.Create_Button.Location = New System.Drawing.Point(563, 518)
         Me.Create_Button.Name = "Create_Button"
         Me.Create_Button.Size = New System.Drawing.Size(80, 23)
         Me.Create_Button.TabIndex = 67
@@ -279,6 +285,7 @@ Partial Class dlgOfflineHolder
         '
         'chkUseFanart
         '
+        Me.chkUseFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseFanart.Enabled = False
         Me.chkUseFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkUseFanart.Location = New System.Drawing.Point(9, 364)
@@ -356,7 +363,7 @@ Partial Class dlgOfflineHolder
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.pbPreview)
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(332, 71)
+        Me.GroupBox1.Location = New System.Drawing.Point(332, 3)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(371, 437)
         Me.GroupBox1.TabIndex = 74
@@ -475,7 +482,7 @@ Partial Class dlgOfflineHolder
         Me.GroupBox2.Controls.Add(Me.pbProgress)
         Me.GroupBox2.Controls.Add(Me.lvStatus)
         Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(9, 229)
+        Me.GroupBox2.Location = New System.Drawing.Point(9, 161)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(313, 279)
         Me.GroupBox2.TabIndex = 75
@@ -484,7 +491,7 @@ Partial Class dlgOfflineHolder
         '
         'tbTagLine
         '
-        Me.tbTagLine.Location = New System.Drawing.Point(680, 81)
+        Me.tbTagLine.Location = New System.Drawing.Point(680, 13)
         Me.tbTagLine.Maximum = 576
         Me.tbTagLine.Name = "tbTagLine"
         Me.tbTagLine.Orientation = System.Windows.Forms.Orientation.Vertical
@@ -498,23 +505,32 @@ Partial Class dlgOfflineHolder
         '
         Me.tmrNameWait.Interval = 250
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.GroupBox2)
+        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Controls.Add(Me.Bulk_Button)
+        Me.Panel1.Controls.Add(Me.GetIMDB_Button)
+        Me.Panel1.Controls.Add(Me.lblMovie)
+        Me.Panel1.Controls.Add(Me.txtMovieName)
+        Me.Panel1.Controls.Add(Me.lblSources)
+        Me.Panel1.Controls.Add(Me.cbSources)
+        Me.Panel1.Controls.Add(Me.tbTagLine)
+        Me.Panel1.Location = New System.Drawing.Point(4, 68)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(726, 446)
+        Me.Panel1.TabIndex = 77
+        '
         'dlgOfflineHolder
         '
         Me.AcceptButton = Me.Create_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.CLOSE_Button
-        Me.ClientSize = New System.Drawing.Size(727, 540)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
+        Me.ClientSize = New System.Drawing.Size(734, 545)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Create_Button)
-        Me.Controls.Add(Me.Bulk_Button)
-        Me.Controls.Add(Me.GetIMDB_Button)
-        Me.Controls.Add(Me.lblMovie)
-        Me.Controls.Add(Me.txtMovieName)
-        Me.Controls.Add(Me.lblSources)
-        Me.Controls.Add(Me.cbSources)
-        Me.Controls.Add(Me.tbTagLine)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.CLOSE_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -533,10 +549,12 @@ Partial Class dlgOfflineHolder
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
     #End Region 'Methods
 

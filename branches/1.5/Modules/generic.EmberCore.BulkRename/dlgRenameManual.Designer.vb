@@ -35,9 +35,11 @@ Partial Class dlgRenameManual
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlStatus.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -48,7 +50,7 @@ Partial Class dlgRenameManual
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(261, 96)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(271, 100)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -81,7 +83,7 @@ Partial Class dlgRenameManual
         '
         Me.txtFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFolder.Location = New System.Drawing.Point(89, 42)
+        Me.txtFolder.Location = New System.Drawing.Point(93, 39)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(318, 22)
         Me.txtFolder.TabIndex = 1
@@ -89,7 +91,7 @@ Partial Class dlgRenameManual
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(6, 43)
+        Me.Label1.Location = New System.Drawing.Point(6, 40)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 19)
         Me.Label1.TabIndex = 2
@@ -99,7 +101,7 @@ Partial Class dlgRenameManual
         'Label2
         '
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(6, 69)
+        Me.Label2.Location = New System.Drawing.Point(6, 66)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(77, 19)
         Me.Label2.TabIndex = 4
@@ -110,7 +112,7 @@ Partial Class dlgRenameManual
         '
         Me.txtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFile.Location = New System.Drawing.Point(89, 68)
+        Me.txtFile.Location = New System.Drawing.Point(93, 65)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(318, 22)
         Me.txtFile.TabIndex = 3
@@ -118,7 +120,7 @@ Partial Class dlgRenameManual
         'lblTitle
         '
         Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTitle.Location = New System.Drawing.Point(6, 12)
+        Me.lblTitle.Location = New System.Drawing.Point(6, 9)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(77, 19)
         Me.lblTitle.TabIndex = 6
@@ -129,7 +131,7 @@ Partial Class dlgRenameManual
         '
         Me.txtTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTitle.Location = New System.Drawing.Point(89, 11)
+        Me.txtTitle.Location = New System.Drawing.Point(93, 8)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.ReadOnly = True
         Me.txtTitle.Size = New System.Drawing.Size(318, 22)
@@ -138,7 +140,7 @@ Partial Class dlgRenameManual
         'PictureBox1
         '
         Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PictureBox1.Location = New System.Drawing.Point(8, 36)
+        Me.PictureBox1.Location = New System.Drawing.Point(7, 33)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(399, 1)
         Me.PictureBox1.TabIndex = 7
@@ -150,7 +152,7 @@ Partial Class dlgRenameManual
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.Label3)
         Me.pnlStatus.Controls.Add(Me.ProgressBar1)
-        Me.pnlStatus.Location = New System.Drawing.Point(47, 36)
+        Me.pnlStatus.Location = New System.Drawing.Point(47, 33)
         Me.pnlStatus.Name = "pnlStatus"
         Me.pnlStatus.Size = New System.Drawing.Size(321, 59)
         Me.pnlStatus.TabIndex = 10
@@ -174,21 +176,30 @@ Partial Class dlgRenameManual
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBar1.TabIndex = 6
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.pnlStatus)
+        Me.Panel1.Controls.Add(Me.PictureBox1)
+        Me.Panel1.Controls.Add(Me.lblTitle)
+        Me.Panel1.Controls.Add(Me.txtTitle)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.txtFile)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.txtFolder)
+        Me.Panel1.Location = New System.Drawing.Point(4, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(415, 96)
+        Me.Panel1.TabIndex = 11
+        '
         'dlgRenameManual
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(414, 131)
-        Me.Controls.Add(Me.pnlStatus)
-        Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.lblTitle)
-        Me.Controls.Add(Me.txtTitle)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txtFile)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txtFolder)
+        Me.ClientSize = New System.Drawing.Size(424, 131)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -201,8 +212,9 @@ Partial Class dlgRenameManual
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlStatus.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
@@ -218,5 +230,6 @@ Partial Class dlgRenameManual
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class
