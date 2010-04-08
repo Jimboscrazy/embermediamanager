@@ -611,8 +611,8 @@ Public Class Enums
         Week = 0
         BiWeekly = 1
         Month = 2
-        Always = 3
-        Never = 4
+        Never = 3
+        Always = 4
     End Enum
 
 #End Region 'Enumerations
