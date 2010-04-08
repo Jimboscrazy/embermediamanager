@@ -446,6 +446,9 @@ Public Class dlgSettings
                 Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
                 Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             End If
+            If dAddons.NeedsRestart Then
+                sResult.NeedsRestart = True
+            End If
         End Using
     End Sub
 

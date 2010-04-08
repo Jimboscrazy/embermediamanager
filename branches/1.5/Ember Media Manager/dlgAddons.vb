@@ -21,6 +21,8 @@
 Imports System.Text.RegularExpressions
 
 Public Class dlgAddons
+    Public NeedsRestart As Boolean = False
+
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
 
     Private SessionID As String = String.Empty
@@ -309,6 +311,7 @@ Public Class dlgAddons
         AddHandler tAOI.NeedsRefresh, AddressOf Me.RefreshItems
         AddHandler tAOI.SendEdit, AddressOf Me.DoUpload
         AddHandler tAOI.IsDownloading, AddressOf Me.IsDownloading
+        AddHandler tAOI.NeedsRestart, AddressOf Me.HandleNeedsRestart
         tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
         tAOI.Installed = Master.DB.IsAddonInstalled(tAOI.ID)
         Me.pnlList.Controls.Add(tAOI)
@@ -327,6 +330,7 @@ Public Class dlgAddons
                         RemoveHandler Me.AddonItem(i).NeedsRefresh, AddressOf Me.RefreshItems
                         RemoveHandler Me.AddonItem(i).SendEdit, AddressOf Me.DoUpload
                         RemoveHandler Me.AddonItem(i).IsDownloading, AddressOf Me.IsDownloading
+                        RemoveHandler Me.AddonItem(i).NeedsRestart, AddressOf Me.HandleNeedsRestart
                         Me.pnlList.Controls.Remove(Me.AddonItem(i))
                     End If
                 Catch ex As Exception
@@ -335,7 +339,9 @@ Public Class dlgAddons
             Next
         End If
     End Sub
-
+    Private Sub HandleNeedsRestart()
+        NeedsRestart = True
+    End Sub
     Private Sub IsDownloading(ByVal Bool As Boolean)
         Me.ControlsEnabled(Not Bool)
     End Sub

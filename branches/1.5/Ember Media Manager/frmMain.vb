@@ -187,6 +187,10 @@ Public Class frmMain
                         File.Delete(_cmd.CommandExecute)
                 End Select
             Catch ex As Exception
+                Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
+                log.WriteLine(String.Format("--- Error: {0}", ex.Message))
+                log.WriteLine(ex.StackTrace)
+                log.Close()
             End Try
         Next
     End Sub
@@ -7721,7 +7725,11 @@ doCancel:
 
             Me.SetMenus(True)
             If dresult.NeedsRestart Then
-                Application.Restart()
+                Using dRestart As New dlglRestart
+                    If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Application.Restart()
+                    End If
+                End Using
             End If
         Else
             Me.SetMenus(False)

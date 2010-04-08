@@ -1855,10 +1855,10 @@ Public Class Database
         Return 0
     End Function
 
-    Public Sub UninstallAddon(ByVal AddonID As Integer)
+    Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
+        Dim needRestart As Boolean = False
         Try
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
-            Dim needRestart As Boolean = False
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                 SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
@@ -1880,7 +1880,8 @@ Public Class Database
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
+        Return Not needRestart
+    End Function
 
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
         Try

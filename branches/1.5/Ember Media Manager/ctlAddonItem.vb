@@ -26,6 +26,7 @@ Public Class AddonItem
     Public Event NeedsRefresh()
     Public Event SendEdit(ByVal tAddon As Containers.Addon)
     Public Event IsDownloading(ByVal Bool As Boolean)
+    Public Event NeedsRestart()
 
     Private _enabled As Boolean = True
 
@@ -41,6 +42,7 @@ Public Class AddonItem
     Private _filelist As Generic.SortedList(Of String, String)
     Private _owned As Boolean
     Private _installed As Single
+
 
     Public Property ID() As Integer
         Get
@@ -218,12 +220,13 @@ Public Class AddonItem
 
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
         Try
+            Dim _needRestart As Boolean = False
             If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
 
             Dim sHTTP As New HTTP
             Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), Functions.ConvertToUnixTimestamp(Now).ToString))
             Dim finalFile As String = String.Empty
-            Dim NeedRestart As Boolean = False
+
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
             If Not Directory.Exists(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons"))) Then
                 Directory.CreateDirectory(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons")))
@@ -238,13 +241,17 @@ Public Class AddonItem
                         File.Move(tempFile, finalFile)
                     Catch
                         _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Move", .CommandExecute = String.Concat(tempFile, "|", finalFile)})
-                        NeedRestart = True
+                        _needRestart = True
                     End Try
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
-            If NeedRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            If _needRestart Then
+                _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+                RaiseEvent NeedsRestart()
+            End If
+
             sHTTP = Nothing
 
             Master.DB.SaveAddonToDB(New Containers.Addon With {.ID = Me._id, .Version = Me._version, .Files = Me._filelist})
