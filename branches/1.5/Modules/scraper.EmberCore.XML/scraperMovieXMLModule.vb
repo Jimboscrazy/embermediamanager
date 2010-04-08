@@ -213,6 +213,7 @@ Public Class EmberXMLScraperModule
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         Try
+            lMediaTag = Nothing
             LoadSettings()
             LastDBMovieID = -1
             If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
@@ -228,7 +229,9 @@ Public Class EmberXMLScraperModule
 
             If Master.GlobalScrapeMod.NFO Then
 
-                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch AndAlso _
+                    ModulesManager.Instance.externalScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+
                     DBMovie.ClearExtras = True
                     DBMovie.PosterPath = String.Empty
                     DBMovie.FanartPath = String.Empty

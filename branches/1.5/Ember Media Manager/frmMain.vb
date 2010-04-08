@@ -6121,7 +6121,7 @@ doCancel:
 
     Private Sub MovieInfoDownloaded()
         Try
-            If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+            If Not String.IsNullOrEmpty(Master.tmpMovie.Title) Then
                 Master.currMovie.Movie = Master.tmpMovie
                 If Master.eSettings.ScanMediaInfo Then
                     Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
