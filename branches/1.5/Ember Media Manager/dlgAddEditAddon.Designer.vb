@@ -183,6 +183,7 @@ Partial Class dlgAddEditAddon
         '
         'cboCategory
         '
+        Me.cboCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboCategory.FormattingEnabled = True
         Me.cboCategory.Location = New System.Drawing.Point(558, 95)
         Me.cboCategory.Name = "cboCategory"
