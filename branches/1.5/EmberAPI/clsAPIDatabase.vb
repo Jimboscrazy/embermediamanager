@@ -44,10 +44,11 @@ Public Class Database
     ''' <summary>
     ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
     ''' </summary>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean)
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean, Optional ByVal sourceMovie As String = "", Optional ByVal sourceTV As String = "")
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
+        Dim sourceSQL = String.Empty
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.SQLcn.BeginTransaction
                 If CleanMovies Then
@@ -60,7 +61,8 @@ Public Class Database
                     Dim tSource As SourceHolder
 
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
+                        sourceSQL = If(sourceMovie = String.Empty, String.Empty, String.Concat(" WHERE Name=""", sourceMovie, """"))
+                        SQLcommand.CommandText = String.Format("SELECT Path, Name, Recursive, Single FROM sources{0};", sourceSQL)
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
                                 SourceList.Add(New SourceHolder With {.Name = SQLreader("Name").ToString, .Path = SQLreader("Path").ToString, .Recursive = Convert.ToBoolean(SQLreader("Recursive")), .isSingle = Convert.ToBoolean(SQLreader("Single"))})
@@ -69,7 +71,8 @@ Public Class Database
                     End Using
 
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT MoviePath, Id, Source, Type FROM movies ORDER BY MoviePath DESC;"
+                        sourceSQL = If(sourceMovie = String.Empty, String.Empty, String.Concat(" WHERE Source=""", sourceMovie, """"))
+                        SQLcommand.CommandText = String.Format("SELECT MoviePath, Id, Source, Type FROM movies{0} ORDER BY MoviePath DESC;", sourceSQL)
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
@@ -106,7 +109,12 @@ Public Class Database
 
                 If CleanTV Then
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        If String.IsNullOrEmpty(sourceTV) Then
+                            SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        Else
+                            SQLcommand.CommandText = String.Format("select TVEpPath from TVEpPaths inner join TVEps on TVEpPaths.id = TVEps.TVEpPathID Where TVEps.source =""{0}"";", sourceTV)
+                        End If
+
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
