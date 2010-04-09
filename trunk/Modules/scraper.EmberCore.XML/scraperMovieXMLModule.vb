@@ -259,7 +259,7 @@ Public Class EmberXMLScraperModule
                         End If
                     Case Else
                         res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
-                        If res.Count > 1 OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
+                        If res.Count > 1 Then  'OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
