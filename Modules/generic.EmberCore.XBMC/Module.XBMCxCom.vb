@@ -38,6 +38,7 @@ Public Class XBMCxCom
     Friend WithEvents bwRunUpdate As New System.ComponentModel.BackgroundWorker
     Private RunQueue As New Queue(Of Structures.DBMovie)
     Private _httpTimeOut As Integer = 10000
+    Private _sendNotification As Boolean = False
     #End Region 'Fields
 
     #Region "Events"
@@ -154,6 +155,7 @@ Public Class XBMCxCom
         Dim str As String
         Dim eSource As String = String.Empty
         Try
+            _sendNotification = AdvancedSettings.GetBooleanSetting("XBMCNotifications", False)
             _httpTimeOut = Convert.ToInt32(AdvancedSettings.GetSetting("HTTPTimeOut", "10000"))
             Dim DBMovie As Structures.DBMovie '= DirectCast(e.Argument, Structures.DBMovie)
             While RunQueue.Count > 0
@@ -169,8 +171,10 @@ Public Class XBMCxCom
                     Dim RemoteFilename As String = remoteFullFilename.Substring(i)
                     Dim ret As String
                     Dim cmd As String
-                    str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
-                    ret = SendCmd(s, str)
+                    If _sendNotification Then
+                        str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
+                        ret = SendCmd(s, str)
+                    End If
                     str = String.Format("command=queryvideodatabase(select movie.idMovie,files.idFile,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
                     files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
                     If files.Count = 1 AndAlso files(0).Count >= 6 Then
