@@ -28,6 +28,7 @@ Public Class dlgSearchResults
 #Region "Fields"
     Public SelectIdx As Integer = -1
     Friend WithEvents bwDownloadInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwSearchInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
@@ -41,18 +42,20 @@ Public Class dlgSearchResults
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
     Private mList As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
+    Private _scrapername As String
 #End Region 'Fields
 
 #Region "Methods"
 
 
-    Public Overloads Function ShowDialog(ByVal Res As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity), ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity), ByVal sMovieTitle As String, ByVal scrapername As String) As Windows.Forms.DialogResult
         '//
         ' Overload to pass data
         '\\
 
         Me.Text = String.Concat(Master.eLang.GetString(7, "Search Results - "), sMovieTitle)
         mList = Res
+        _scrapername = scrapername
         SearchResultsDownloaded()
 
         Return MyBase.ShowDialog()
@@ -64,10 +67,18 @@ Public Class dlgSearchResults
             Me.ClearInfo()
             Me.Label3.Text = Master.eLang.GetString(5, "Searching...")
             Me.pnlLoading.Visible = True
+            Me.txtSearch.Enabled = False
+            Me.btnSearch.Enabled = False
+            Me.tvResults.Enabled = False
+            bwSearchInfo.RunWorkerAsync(txtSearch.Text)
         End If
     End Sub
-
-
+    Private Sub bwSearchInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSearchInfo.DoWork
+        mList = XMLManager.GetResults(_scrapername, e.Argument.ToString, String.Empty, XMLScraper.ScraperLib.MediaType.movie)
+    End Sub
+    Private Sub bwSearchInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwSearchInfo.RunWorkerCompleted
+        SearchResultsDownloaded()
+    End Sub
     Private Sub bwDownloadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadInfo.DoWork
         Try
             lMediaTag = Nothing
@@ -86,7 +97,9 @@ Public Class dlgSearchResults
     End Sub
     Private Sub bwDownloadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadInfo.RunWorkerCompleted
         Me.OK_Button.Enabled = True
-        tvResults.Enabled = True
+        Me.txtSearch.Enabled = True
+        Me.btnSearch.Enabled = True
+        Me.tvResults.Enabled = True
         Me.pnlLoading.Visible = False
         Try
             If Not lMediaTag Is Nothing Then
@@ -209,6 +222,9 @@ Public Class dlgSearchResults
             'Me.tvResults.Nodes.Add(TnP)
             'selNode = Me.tvResults.Nodes.FirstNode
             Me.pnlLoading.Visible = False
+            Me.txtSearch.Enabled = True
+            Me.btnSearch.Enabled = True
+            Me.tvResults.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -252,11 +268,16 @@ Public Class dlgSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
             If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-                tvResults.Enabled = False
+                Me.txtSearch.Enabled = False
+                Me.btnSearch.Enabled = False
+                Me.tvResults.Enabled = False
                 Me.pnlLoading.Visible = True
                 Me.tmrWait.Enabled = True
             Else
                 Me.pnlLoading.Visible = False
+                Me.txtSearch.Enabled = True
+                Me.btnSearch.Enabled = True
+                Me.tvResults.Enabled = True
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

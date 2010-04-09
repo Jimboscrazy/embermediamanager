@@ -268,7 +268,7 @@ Public Class EmberXMLScraperModule
                                 If Not IsNothing(s) AndAlso File.Exists(s.ScraperThumb) Then
                                     dlg.pbScraperLogo.Load(s.ScraperThumb)
                                 End If
-                                If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then
+                                If dlg.ShowDialog(res, DBMovie.Movie.Title, scraperName) = Windows.Forms.DialogResult.OK Then
                                     lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
                                     MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                                 Else
