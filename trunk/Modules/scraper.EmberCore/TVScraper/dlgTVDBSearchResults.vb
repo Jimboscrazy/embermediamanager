@@ -36,7 +36,7 @@ Public Class dlgTVDBSearchResults
 
     Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
         Me.sInfo = _sInfo
-        Me.Text = String.Concat(Master.eLang.GetString(10, "Search Results - "), sInfo.ShowTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(85, "TV Search Results"), " - ", sInfo.ShowTitle)
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
@@ -46,7 +46,7 @@ Public Class dlgTVDBSearchResults
         Me.sInfo = _sinfo
         Me._skipdownload = SkipDownload
 
-        Me.Text = String.Concat(Master.eLang.GetString(10, "Search Results - "), sInfo.ShowTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(85, "TV Search Results"), " - ", sInfo.ShowTitle)
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -295,8 +295,7 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(85, "TV Search Results")
-        Me.Label1.Text = Me.Text
+        Me.Label1.Text = Master.eLang.GetString(85, "TV Search Results")
         Me.Label2.Text = Master.eLang.GetString(86, "View details of each result to find the proper TV show.")
         Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:", True)
         Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:", True)

@@ -370,6 +370,9 @@ Public Class Scanner
         Dim lFiles As New List(Of String)
         Dim fName As String = String.Empty
 
+        TVDB.SeasonPosterPath = String.Empty
+        TVDB.SeasonFanartPath = String.Empty
+
         Try
             If Functions.IsSeasonDirectory(Directory.GetParent(TVDB.Filename).FullName) Then
                 SeasonPath = Directory.GetParent(Directory.GetParent(TVDB.Filename).FullName).FullName
@@ -1284,7 +1287,7 @@ Public Class Scanner
                                         tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")))
                                     End If
 
-                                    If String.IsNullOrEmpty(tmpTVDB.SeasonPosterPath) OrElse String.IsNullOrEmpty(tmpTVDB.SeasonFanartPath) Then Me.GetSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
+                                    Me.GetSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
 
                                     'Do the Save
                                     Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
