@@ -168,6 +168,7 @@ Partial Class dlgTVSource
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Source"
+        Me.TopMost = True
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()

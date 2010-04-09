@@ -238,6 +238,7 @@ Partial Class dlgMovieSource
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Movie Source"
+        Me.TopMost = True
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
