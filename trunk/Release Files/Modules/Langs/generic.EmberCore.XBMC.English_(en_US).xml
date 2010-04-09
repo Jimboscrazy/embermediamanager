@@ -12,7 +12,7 @@
 	<string id="9">XBMC Communication</string>
 	<string id="10">Edit</string>
 	<string id="11">Name:</string>
-	<string id="12">Add New</string>
+	<string id="12">Add</string>
 	<string id="13">XBMC IP:</string>
 	<string id="14">XBMC Port:</string>
 	<string id="15">Remove Selected</string>
@@ -30,4 +30,5 @@
 	<string id="27">Windows</string>
 	<string id="28">Linux/MacOS X</string>
 	<string id="29">XBMC Host</string>
+	<string id="30">Send Notifications</string>
 </strings>
