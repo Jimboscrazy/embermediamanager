@@ -357,22 +357,13 @@ Public Class MediaInfo
     Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
             Dim tFormat As String = sFormat.ToLower
-            Select Case True
-                Case tFormat.Contains("divx 3")
-                    tFormat = "div3"
-                Case tFormat.Contains("lmp4"), tFormat.Contains("svq3"), tFormat.Contains("x264"), tFormat.Contains("avc"), tFormat.Contains("h264")
-                    tFormat = "h264"
-                Case tFormat.Contains("flv"), tFormat.Contains("swf")
-                    tFormat = "flv"
-                Case tFormat.Contains("3iv")
-                    tFormat = "3ivx"
-                Case tFormat = "mpeg video"
-                    If sModifier.ToLower = "version 2" Then
-                        tFormat = "mpeg2"
-                    Else
-                        tFormat = "mpeg"
-                    End If
-            End Select
+            If tFormat = "mpeg video" Then
+                If sModifier.ToLower = "version 2" Then
+                    tFormat = "mpeg2"
+                Else
+                    tFormat = "mpeg"
+                End If
+            End If
             Return AdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
         Else
             Return String.Empty

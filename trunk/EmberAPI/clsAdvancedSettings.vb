@@ -247,6 +247,17 @@ Public Class AdvancedSettings
 
         SetSetting("VideoFormatConvert:divx 5", "dx50")
         SetSetting("VideoFormatConvert:mpeg-4 video", "mpeg4")
+        SetSetting("VideoFormatConvert:divx 3", "div3")
+        SetSetting("VideoFormatConvert:lmp4", "h264")
+        SetSetting("VideoFormatConvert:svq3", "h264")
+        SetSetting("VideoFormatConvert:x264", "h264")
+        SetSetting("VideoFormatConvert:avc", "h264")
+        SetSetting("VideoFormatConvert:swf", "flv")
+        SetSetting("VideoFormatConvert:3iv0", "3ivx")
+        SetSetting("VideoFormatConvert:3iv1", "3ivx")
+        SetSetting("VideoFormatConvert:3iv2", "3ivx")
+        SetSetting("VideoFormatConvert:3ivd", "3ivx")
+
         _DoNotSave = False
     End Sub
 
