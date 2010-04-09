@@ -318,7 +318,7 @@ Public Class EmberXMLScraperModule
         If Options.bWriters Then DBMovie.Movie.Credits = Web.HttpUtility.HtmlDecode(Strings.Join(lMediaTag.Writers.ToArray, " / "))
         If Options.bYear Then DBMovie.Movie.Year = lMediaTag.Year.ToString
         DBMovie.Movie.PlayCount = lMediaTag.PlayCount.ToString
-        DBMovie.Movie.ID = If(lMediaTag.ID.StartsWith("tt"), lMediaTag.ID.Replace("tt", ""), lMediaTag.ID) 'String.Empty)
+        DBMovie.Movie.ID = If(String.IsNullOrEmpty(lMediaTag.ID), DBMovie.Movie.ID, lMediaTag.ID)
         If Options.bCast Then
             DBMovie.Movie.Actors.Clear()
             For Each p As XMLScraper.MediaTags.PersonTag In lMediaTag.Actors
