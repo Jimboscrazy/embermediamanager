@@ -162,8 +162,6 @@ Public Class EmberXMLScraperModule
         ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
-        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", False)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
