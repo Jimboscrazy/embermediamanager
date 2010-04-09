@@ -311,6 +311,7 @@ Partial Class dlgSettings
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.btnGetTVProfiles = New System.Windows.Forms.Button
         Me.btnRegexDown = New System.Windows.Forms.Button
         Me.btnRegexUp = New System.Windows.Forms.Button
         Me.btnResetShowRegex = New System.Windows.Forms.Button
@@ -592,7 +593,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.btnGetTVProfiles = New System.Windows.Forms.Button
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -3868,6 +3868,15 @@ Partial Class dlgSettings
         Me.TabPage4.Text = "Regex"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'btnGetTVProfiles
+        '
+        Me.btnGetTVProfiles.Image = CType(resources.GetObject("btnGetTVProfiles.Image"), System.Drawing.Image)
+        Me.btnGetTVProfiles.Location = New System.Drawing.Point(550, 3)
+        Me.btnGetTVProfiles.Name = "btnGetTVProfiles"
+        Me.btnGetTVProfiles.Size = New System.Drawing.Size(23, 23)
+        Me.btnGetTVProfiles.TabIndex = 19
+        Me.btnGetTVProfiles.UseVisualStyleBackColor = True
+        '
         'btnRegexDown
         '
         Me.btnRegexDown.Image = CType(resources.GetObject("btnRegexDown.Image"), System.Drawing.Image)
@@ -7000,15 +7009,6 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
-        'btnGetTVProfiles
-        '
-        Me.btnGetTVProfiles.Image = CType(resources.GetObject("btnGetTVProfiles.Image"), System.Drawing.Image)
-        Me.btnGetTVProfiles.Location = New System.Drawing.Point(550, 3)
-        Me.btnGetTVProfiles.Name = "btnGetTVProfiles"
-        Me.btnGetTVProfiles.Size = New System.Drawing.Size(23, 23)
-        Me.btnGetTVProfiles.TabIndex = 19
-        Me.btnGetTVProfiles.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7016,9 +7016,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7028,8 +7025,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlScraper)
@@ -7037,6 +7032,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog

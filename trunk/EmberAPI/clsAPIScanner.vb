@@ -1130,7 +1130,7 @@ Public Class Scanner
 
             Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.CleanDB, Master.eSettings.TVCleanDB)
+            Master.DB.Clean(Master.eSettings.CleanDB AndAlso Args.Scan.Movies, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Cancel = True

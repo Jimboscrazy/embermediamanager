@@ -20,6 +20,8 @@
 
 Imports System.Text.RegularExpressions
 Imports EmberScraperModule.XMLScraper.ScraperXML
+Imports System.IO
+Imports System.Text
 
 Public Class dlgSearchResults
 
@@ -84,6 +86,7 @@ Public Class dlgSearchResults
     End Sub
     Private Sub bwDownloadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadInfo.RunWorkerCompleted
         Me.OK_Button.Enabled = True
+        tvResults.Enabled = True
         Me.pnlLoading.Visible = False
         Try
             If Not lMediaTag Is Nothing Then
@@ -249,6 +252,7 @@ Public Class dlgSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
             If Not IsNothing(Me.tvResults.SelectedNode.Tag) AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+                tvResults.Enabled = False
                 Me.pnlLoading.Visible = True
                 Me.tmrWait.Enabled = True
             Else

@@ -1389,8 +1389,6 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-
-
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub

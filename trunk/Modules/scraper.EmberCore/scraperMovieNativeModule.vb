@@ -528,7 +528,9 @@ Public Class EmberNativeScraperModule
             End If
         End If
 
-        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
+            AndAlso ModulesManager.Instance.externalScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+
             DBMovie.ClearExtras = True
             DBMovie.PosterPath = String.Empty
             DBMovie.FanartPath = String.Empty
@@ -548,7 +550,13 @@ Public Class EmberNativeScraperModule
                     dSearch.IMDBURL = MySettings.IMDBURL
                     Dim tmpTitle As String = DBMovie.Movie.Title
                     If String.IsNullOrEmpty(tmpTitle) Then
-                        tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                        If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+                        ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                            tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                        Else
+                            tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                        End If
                     End If
 
                     If dSearch.ShowDialog(tmpTitle) = Windows.Forms.DialogResult.OK Then

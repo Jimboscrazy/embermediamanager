@@ -36,9 +36,11 @@ Partial Class dlgAddEditActor
         Me.pbActors = New System.Windows.Forms.PictureBox
         Me.btnVerify = New System.Windows.Forms.Button
         Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -49,7 +51,7 @@ Partial Class dlgAddEditActor
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(220, 173)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(220, 217)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -80,7 +82,7 @@ Partial Class dlgAddEditActor
         'txtName
         '
         Me.txtName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtName.Location = New System.Drawing.Point(12, 24)
+        Me.txtName.Location = New System.Drawing.Point(10, 22)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(174, 22)
         Me.txtName.TabIndex = 0
@@ -88,7 +90,7 @@ Partial Class dlgAddEditActor
         'txtRole
         '
         Me.txtRole.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtRole.Location = New System.Drawing.Point(192, 24)
+        Me.txtRole.Location = New System.Drawing.Point(190, 22)
         Me.txtRole.Name = "txtRole"
         Me.txtRole.Size = New System.Drawing.Size(174, 22)
         Me.txtRole.TabIndex = 1
@@ -96,7 +98,7 @@ Partial Class dlgAddEditActor
         'txtThumb
         '
         Me.txtThumb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtThumb.Location = New System.Drawing.Point(12, 67)
+        Me.txtThumb.Location = New System.Drawing.Point(10, 65)
         Me.txtThumb.Name = "txtThumb"
         Me.txtThumb.Size = New System.Drawing.Size(354, 22)
         Me.txtThumb.TabIndex = 2
@@ -105,7 +107,7 @@ Partial Class dlgAddEditActor
         '
         Me.lblName.AutoSize = True
         Me.lblName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblName.Location = New System.Drawing.Point(10, 9)
+        Me.lblName.Location = New System.Drawing.Point(8, 7)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(72, 13)
         Me.lblName.TabIndex = 4
@@ -115,7 +117,7 @@ Partial Class dlgAddEditActor
         '
         Me.lblRole.AutoSize = True
         Me.lblRole.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRole.Location = New System.Drawing.Point(192, 10)
+        Me.lblRole.Location = New System.Drawing.Point(190, 8)
         Me.lblRole.Name = "lblRole"
         Me.lblRole.Size = New System.Drawing.Size(64, 13)
         Me.lblRole.TabIndex = 5
@@ -125,7 +127,7 @@ Partial Class dlgAddEditActor
         '
         Me.lblThumb.AutoSize = True
         Me.lblThumb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblThumb.Location = New System.Drawing.Point(10, 52)
+        Me.lblThumb.Location = New System.Drawing.Point(8, 50)
         Me.lblThumb.Name = "lblThumb"
         Me.lblThumb.Size = New System.Drawing.Size(110, 13)
         Me.lblThumb.TabIndex = 6
@@ -134,7 +136,7 @@ Partial Class dlgAddEditActor
         'pbActLoad
         '
         Me.pbActLoad.Image = CType(resources.GetObject("pbActLoad.Image"), System.Drawing.Image)
-        Me.pbActLoad.Location = New System.Drawing.Point(153, 128)
+        Me.pbActLoad.Location = New System.Drawing.Point(168, 126)
         Me.pbActLoad.Name = "pbActLoad"
         Me.pbActLoad.Size = New System.Drawing.Size(41, 39)
         Me.pbActLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -145,7 +147,7 @@ Partial Class dlgAddEditActor
         'pbActors
         '
         Me.pbActors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbActors.Location = New System.Drawing.Point(132, 95)
+        Me.pbActors.Location = New System.Drawing.Point(147, 93)
         Me.pbActors.Name = "pbActors"
         Me.pbActors.Size = New System.Drawing.Size(81, 106)
         Me.pbActors.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -155,7 +157,7 @@ Partial Class dlgAddEditActor
         'btnVerify
         '
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(12, 94)
+        Me.btnVerify.Location = New System.Drawing.Point(11, 176)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(114, 23)
         Me.btnVerify.TabIndex = 3
@@ -165,37 +167,48 @@ Partial Class dlgAddEditActor
         'bwDownloadPic
         '
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.btnVerify)
+        Me.Panel1.Controls.Add(Me.pbActLoad)
+        Me.Panel1.Controls.Add(Me.pbActors)
+        Me.Panel1.Controls.Add(Me.lblThumb)
+        Me.Panel1.Controls.Add(Me.lblRole)
+        Me.Panel1.Controls.Add(Me.lblName)
+        Me.Panel1.Controls.Add(Me.txtThumb)
+        Me.Panel1.Controls.Add(Me.txtRole)
+        Me.Panel1.Controls.Add(Me.txtName)
+        Me.Panel1.Location = New System.Drawing.Point(2, 2)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(374, 209)
+        Me.Panel1.TabIndex = 30
+        '
         'dlgAddEditActor
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(378, 206)
+        Me.ClientSize = New System.Drawing.Size(378, 250)
         Me.ControlBox = False
-        Me.Controls.Add(Me.btnVerify)
-        Me.Controls.Add(Me.pbActLoad)
-        Me.Controls.Add(Me.pbActors)
-        Me.Controls.Add(Me.lblThumb)
-        Me.Controls.Add(Me.lblRole)
-        Me.Controls.Add(Me.lblName)
-        Me.Controls.Add(Me.txtThumb)
-        Me.Controls.Add(Me.txtRole)
-        Me.Controls.Add(Me.txtName)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgAddEditActor"
+        Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "New Actor"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
@@ -211,5 +224,6 @@ Partial Class dlgAddEditActor
     Friend WithEvents pbActors As System.Windows.Forms.PictureBox
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents bwDownloadPic As System.ComponentModel.BackgroundWorker
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

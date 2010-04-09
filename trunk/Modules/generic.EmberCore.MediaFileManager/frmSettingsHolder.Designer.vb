@@ -103,6 +103,7 @@ Partial Class frmSettingsHolder
         Me.Button4.TabIndex = 11
         Me.Button4.Text = "..."
         Me.Button4.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'btnRemoveSet
         '

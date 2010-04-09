@@ -118,19 +118,21 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
         Me.gbUpdateType.SuspendLayout()
         Me.gbUpdateItems.SuspendLayout()
         Me.gbOptions.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.OK_Button.Location = New System.Drawing.Point(481, 330)
+        Me.OK_Button.Location = New System.Drawing.Point(489, 333)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -146,7 +148,7 @@ Partial Class dlgUpdateMedia
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(570, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(576, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -204,7 +206,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_Missing)
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
         Me.gbUpdateModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
+        Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 2)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
         Me.gbUpdateModifier.Size = New System.Drawing.Size(275, 68)
         Me.gbUpdateModifier.TabIndex = 60
@@ -251,7 +253,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Ask)
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
         Me.gbUpdateType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbUpdateType.Location = New System.Drawing.Point(6, 147)
+        Me.gbUpdateType.Location = New System.Drawing.Point(6, 79)
         Me.gbUpdateType.Name = "gbUpdateType"
         Me.gbUpdateType.Size = New System.Drawing.Size(275, 75)
         Me.gbUpdateType.TabIndex = 61
@@ -292,7 +294,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Controls.Add(Me.chkNFOMod)
         Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
         Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
+        Me.gbUpdateItems.Location = New System.Drawing.Point(6, 160)
         Me.gbUpdateItems.Name = "gbUpdateItems"
         Me.gbUpdateItems.Size = New System.Drawing.Size(275, 96)
         Me.gbUpdateItems.TabIndex = 62
@@ -400,7 +402,7 @@ Partial Class dlgUpdateMedia
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Update_Button.Enabled = False
-        Me.Update_Button.Location = New System.Drawing.Point(393, 330)
+        Me.Update_Button.Location = New System.Drawing.Point(401, 333)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 63
@@ -430,7 +432,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(287, 70)
+        Me.gbOptions.Location = New System.Drawing.Point(287, 2)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(274, 254)
         Me.gbOptions.TabIndex = 66
@@ -710,18 +712,27 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.gbOptions)
+        Me.Panel1.Controls.Add(Me.gbUpdateItems)
+        Me.Panel1.Controls.Add(Me.gbUpdateType)
+        Me.Panel1.Controls.Add(Me.gbUpdateModifier)
+        Me.Panel1.Location = New System.Drawing.Point(4, 68)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(568, 262)
+        Me.Panel1.TabIndex = 67
+        '
         'dlgUpdateMedia
         '
         Me.AcceptButton = Me.Update_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.OK_Button
-        Me.ClientSize = New System.Drawing.Size(570, 358)
-        Me.Controls.Add(Me.gbOptions)
+        Me.ClientSize = New System.Drawing.Size(576, 358)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Update_Button)
-        Me.Controls.Add(Me.gbUpdateItems)
-        Me.Controls.Add(Me.gbUpdateType)
-        Me.Controls.Add(Me.gbUpdateModifier)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -742,9 +753,11 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.PerformLayout()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
     #End Region 'Methods
 

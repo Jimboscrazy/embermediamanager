@@ -231,7 +231,7 @@ Partial Class dlgSetsManager
         '
         'pnlCancel
         '
-        Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
+        Me.pnlCancel.BackColor = System.Drawing.Color.White
         Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlCancel.Controls.Add(Me.pbCompile)
         Me.pnlCancel.Controls.Add(Me.lblCompiling)
@@ -347,7 +347,7 @@ Partial Class dlgSetsManager
         '
         'pnlSaving
         '
-        Me.pnlSaving.BackColor = System.Drawing.Color.LightGray
+        Me.pnlSaving.BackColor = System.Drawing.Color.White
         Me.pnlSaving.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSaving.Controls.Add(Me.Label3)
         Me.pnlSaving.Controls.Add(Me.ProgressBar1)

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -163,6 +163,42 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsTheming.vb" />
+    <Compile Include="ctlAddonItem.Designer.vb">
+      <DependentUpon>ctlAddonItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ctlAddonItem.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="dlgAddEditAddon.Designer.vb">
+      <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddEditAddon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgAddonFile.Designer.vb">
+      <DependentUpon>dlgAddonFile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddonFile.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgAddonFiles.Designer.vb">
+      <DependentUpon>dlgAddonFiles.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddonFiles.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgAddons.Designer.vb">
+      <DependentUpon>dlgAddons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgAddons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgDeleteAddon.Designer.vb">
+      <DependentUpon>dlgDeleteAddon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgDeleteAddon.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgEditSeason.Designer.vb">
       <DependentUpon>dlgEditSeason.vb</DependentUpon>
     </Compile>
@@ -191,6 +227,12 @@
       <DependentUpon>dlgImgView.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgImgView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgRestart.Designer.vb">
+      <DependentUpon>dlgRestart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgRestart.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVRegExProfiles.Designer.vb">
@@ -265,12 +307,6 @@
     <Compile Include="dlgStudioSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTranslationDL.Designer.vb">
-      <DependentUpon>dlgTranslationDL.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgTranslationDL.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgUpdateMedia.designer.vb">
       <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
     </Compile>
@@ -343,6 +379,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ctlAddonItem.resx">
+      <DependentUpon>ctlAddonItem.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddEditAddon.resx">
+      <DependentUpon>dlgAddEditAddon.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddonFile.resx">
+      <DependentUpon>dlgAddonFile.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddonFiles.resx">
+      <DependentUpon>dlgAddonFiles.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgAddons.resx">
+      <DependentUpon>dlgAddons.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgDeleteAddon.resx">
+      <DependentUpon>dlgDeleteAddon.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgEditSeason.resx">
       <DependentUpon>dlgEditSeason.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -362,6 +422,9 @@
     <EmbeddedResource Include="dlgImgView.resx">
       <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgRestart.resx">
+      <DependentUpon>dlgRestart.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
@@ -409,10 +472,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgStudioSelect.resx">
       <DependentUpon>dlgStudioSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgTranslationDL.resx">
-      <DependentUpon>dlgTranslationDL.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgUpdateMedia.resx">

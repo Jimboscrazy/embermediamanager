@@ -29,15 +29,17 @@ Partial Class dlgTrailerFormat
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbStatus = New System.Windows.Forms.ProgressBar
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.GroupBox1.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(84, 115)
+        Me.OK_Button.Location = New System.Drawing.Point(84, 117)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -47,7 +49,7 @@ Partial Class dlgTrailerFormat
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(154, 115)
+        Me.Cancel_Button.Location = New System.Drawing.Point(154, 117)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -66,8 +68,8 @@ Partial Class dlgTrailerFormat
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.lstFormats)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(55, 6)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(53, 2)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(114, 100)
         Me.GroupBox1.TabIndex = 4
@@ -80,7 +82,7 @@ Partial Class dlgTrailerFormat
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.lblStatus)
         Me.pnlStatus.Controls.Add(Me.pbStatus)
-        Me.pnlStatus.Location = New System.Drawing.Point(12, 33)
+        Me.pnlStatus.Location = New System.Drawing.Point(10, 29)
         Me.pnlStatus.Name = "pnlStatus"
         Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
         Me.pnlStatus.TabIndex = 70
@@ -105,17 +107,26 @@ Partial Class dlgTrailerFormat
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 0
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.pnlStatus)
+        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Location = New System.Drawing.Point(2, 4)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(220, 111)
+        Me.Panel1.TabIndex = 71
+        '
         'dlgTrailerFormat
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(224, 140)
-        Me.Controls.Add(Me.pnlStatus)
+        Me.ClientSize = New System.Drawing.Size(224, 143)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -128,6 +139,7 @@ Partial Class dlgTrailerFormat
         Me.GroupBox1.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -138,5 +150,6 @@ Partial Class dlgTrailerFormat
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

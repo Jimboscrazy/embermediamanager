@@ -1633,7 +1633,7 @@ Partial Class frmMain
         '
         Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.cmnuChangeEp, Me.ToolStripSeparator12, Me.cmnuEpOpenFolder, Me.ToolStripSeparator28, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(245, 254)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(245, 232)
         '
         'cmnuEpTitle
         '

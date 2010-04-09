@@ -47,6 +47,7 @@ Partial Class frmMovieExtractor
         '
         'pnlExtrator
         '
+        Me.pnlExtrator.BackColor = System.Drawing.Color.White
         Me.pnlExtrator.Controls.Add(Me.GroupBox1)
         Me.pnlExtrator.Controls.Add(Me.btnFrameSave)
         Me.pnlExtrator.Controls.Add(Me.pnlFrameProgress)

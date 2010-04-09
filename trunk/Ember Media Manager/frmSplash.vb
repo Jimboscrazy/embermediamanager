@@ -47,7 +47,7 @@ Public NotInheritable Class frmSplash
     Private Sub frmSplash_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.PictureBox1.Location = New Point(4, 4)
         Me.PictureBox1.Size = New Size(Me.Width - 10, Me.Height - 10)
-        Version.Text = String.Format("Version 1.1.{0}", My.Application.Info.Version.Revision)
+        Version.Text = String.Format("Version {0}.{1}", Master.MajorVersion.ToString, My.Application.Info.Version.Revision)
     End Sub
 
     #End Region 'Methods

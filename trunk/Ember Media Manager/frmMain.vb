@@ -173,6 +173,28 @@ Public Class frmMain
 
     #Region "Methods"
 
+    Public Sub InstallNewFiles(ByVal fname As String)
+        Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
+        For Each _cmd As Containers.InstallCommand In _cmds.Command
+            Try
+                Select Case _cmd.CommandType
+                    Case "FILE.Move"
+                        Dim s() As String = _cmd.CommandExecute.Split("|"c)
+                        If s.Count >= 2 Then
+                            File.Move(s(0), s(1))
+                        End If
+                    Case "FILE.Delete"
+                        File.Delete(_cmd.CommandExecute)
+                End Select
+            Catch ex As Exception
+                Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
+                log.WriteLine(String.Format("--- Error: {0}", ex.Message))
+                log.WriteLine(ex.StackTrace)
+                log.Close()
+            End Try
+        Next
+    End Sub
+
     Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
 
         Try
@@ -1211,6 +1233,7 @@ Public Class frmMain
                         End If
 
                         Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                         bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                         bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                     Else
@@ -1408,8 +1431,8 @@ doCancel:
                 End If
             Next
 
-            If Not cbFilterFileSource.Text = Master.eLang.All Then
-                Me.FilterArray.Add(String.Format("FileSource = '{0}'", cbFilterFileSource.Text))
+            If Not cbFilterFileSource.Text = Master.eLang.All Then 
+                Me.FilterArray.Add(String.Format("FileSource = '{0}'", If(cbFilterFileSource.Text = Master.eLang.None, String.Empty, cbFilterFileSource.Text)))
             End If
 
             Me.RunFilter()
@@ -1677,7 +1700,7 @@ doCancel:
     Private Sub ClearCache()
         If Directory.Exists(Master.TempPath) Then
             Dim dInfo As New DirectoryInfo(Master.TempPath)
-            For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows")
+            For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows" AndAlso Not d.Name.ToLower = "addons")
                 FileUtils.Delete.DeleteDirectory(dDir.FullName)
             Next
 
@@ -1906,7 +1929,6 @@ doCancel:
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Me.SetControlsEnabled(False)
 
@@ -1921,6 +1943,7 @@ doCancel:
                         Else
                             Me.SetControlsEnabled(True)
                         End If
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -2469,7 +2492,6 @@ doCancel:
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-        Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
         Using dEditMeta As New dlgFileInfo
             Select Case dEditMeta.ShowDialog(False)
                 Case Windows.Forms.DialogResult.OK
@@ -2830,7 +2852,6 @@ doCancel:
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
         If Me.dgvMediaList.SelectedRows.Count > 0 Then
             If Me.dgvMediaList.RowCount > 0 Then
-                Me.tmpTitle = Me.dgvMediaList.SelectedRows(0).Cells(15).Value.ToString
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
                     Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
@@ -2852,7 +2873,6 @@ doCancel:
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -2863,6 +2883,7 @@ doCancel:
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -2996,7 +3017,6 @@ doCancel:
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
                 Me.SetStatus(Master.currMovie.Filename)
-                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -3007,6 +3027,7 @@ doCancel:
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
                             End If
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -3034,8 +3055,6 @@ doCancel:
 
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-
-                    Me.tmpTitle = Me.dgvMediaList.Item(15, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -4311,7 +4330,7 @@ doCancel:
             End If
 
             If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
-                Me.SetControlsEnabled(False)
+                Me.SetControlsEnabled(False, False, False)
                 Me.SetStatus(String.Empty)
                 Me.ClearInfo()
             End If
@@ -5098,8 +5117,11 @@ doCancel:
                 Me.ClearCache()
             End If
         Catch ex As Exception
-            'Application exit can not be used without the close of the form... this is reported somewher in MS
-            'Application.Exit()
+            ' If we got here, then some of the above not run. Application.Exit can not be used. 
+            ' If any BackgroundWorker still running will raise exception 
+            ' "Collection was modified; enumeration operation may not execute."
+            ' Because Exit will dispose object that are in use by BackgroundWorkers
+            ' Application.Exit()
         End Try
     End Sub
 
@@ -5116,6 +5138,12 @@ doCancel:
         End If
         fLoading.Show(Me)
         Application.DoEvents()
+
+        ' Run InstallTask to see if any pending file needs to install
+        ' Do this before loading modules/themes/etc
+        If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
+            InstallNewFiles("InstallTasks.xml")
+        End If
 
         fLoading.SetStage("Basic setup...")
 
@@ -5178,7 +5206,6 @@ doCancel:
         SetStyle(ControlStyles.DoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         SetStyle(ControlStyles.UserPaint, True)
-        'old place of log stuff
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
@@ -5315,7 +5342,14 @@ doCancel:
                         Try
                             If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                                 Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-                                Me.tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                                Dim tmpTitle As String = String.Empty
+                                If FileUtils.Common.isVideoTS(MoviePath) Then
+                                    tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
+                                ElseIf FileUtils.Common.isBDRip(MoviePath) Then
+                                    tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
+                                Else
+                                    tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                                End If
                                 If Master.currMovie.Movie Is Nothing Then
                                     Master.currMovie.Movie = New MediaContainers.Movie
                                     Master.currMovie.Movie.Title = tmpTitle
@@ -5474,7 +5508,7 @@ doCancel:
                             Me.Visible = True
                         End If
                     End If
-
+                    Master.DB.LoadMovieSourcesFromDB()
                     fLoading.SetStage("Setting menus...")
                     Me.SetMenus(True)
                     Functions.GetListOfSources()
@@ -6087,7 +6121,7 @@ doCancel:
 
     Private Sub MovieInfoDownloaded()
         Try
-            If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+            If Not String.IsNullOrEmpty(Master.tmpMovie.Title) Then
                 Master.currMovie.Movie = Master.tmpMovie
                 If Master.eSettings.ScanMediaInfo Then
                     Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
@@ -6155,7 +6189,6 @@ doCancel:
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
                 Application.DoEvents()
@@ -6169,6 +6202,7 @@ doCancel:
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(0)
                             End If
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Master.currMovie.ClearExtras = False
                             Functions.SetScraperMod(Enums.ModType.All, True, True)
@@ -7245,7 +7279,6 @@ doCancel:
 
     Private Sub SelectRow(ByVal iRow As Integer)
         Try
-            Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)
@@ -7331,9 +7364,30 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
+        'Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+        For Each i As Object In Me.ToolsToolStripMenuItem.DropDownItems
+            If TypeOf i Is ToolStripMenuItem Then
+                Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
+                If o.Tag Is Nothing Then
+                    o.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+                ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
+                    Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso ((Me.dgvMediaList.RowCount > 0 OrElse tagmenu.IfNoMovies) OrElse (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow))
+                End If
+            End If
+        Next
+        With Master.eSettings
+            If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
+            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
+            (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
+                Me.CleanFoldersToolStripMenuItem.Enabled = True AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+            Else
+                Me.CleanFoldersToolStripMenuItem.Enabled = False
+            End If
+        End With
         Me.EditToolStripMenuItem.Enabled = isEnabled
-        Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
         Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
@@ -7406,7 +7460,7 @@ doCancel:
                 .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
                 .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
                 (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                    Me.CleanFoldersToolStripMenuItem.Enabled = True
+                    Me.CleanFoldersToolStripMenuItem.Enabled = True AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
                 Else
                     Me.CleanFoldersToolStripMenuItem.Enabled = False
                 End If
@@ -7560,6 +7614,7 @@ doCancel:
                     cbFilterFileSource.Items.Clear()
                     cbFilterFileSource.Items.Add(Master.eLang.All)
                     cbFilterFileSource.Items.AddRange(APIXML.SourceList.ToArray)
+                    cbFilterFileSource.Items.Add(Master.eLang.None)
                     cbFilterFileSource.SelectedIndex = 0
                     AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
@@ -7668,6 +7723,13 @@ doCancel:
             End If
 
             Me.SetMenus(True)
+            If dresult.NeedsRestart Then
+                Using dRestart As New dlgRestart
+                    If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Application.Restart()
+                    End If
+                End Using
+            End If
         Else
             Me.SetMenus(False)
             Me.SetControlsEnabled(True)

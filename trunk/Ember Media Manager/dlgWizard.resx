@@ -206,4 +206,28 @@ Locks - This section allows you to "lock" certain information so it does not get
   <data name="Label11.Text" xml:space="preserve">
     <value>And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
   </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA
+        AAD///8A////AP///wD///8A////AOLi4muBgYHTZmdp3n1+f7bExMRa////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////ANra2ns4OTv/MjQ3/zs+Q/8zNjv/S1FZ/5yfo7b8/f0D////AP//
+        /wD///8A////AP///wD///8A////AP///wBiY2PzNDY5/5mir//P3vb/qrvU/zg+Rv9JT1j/xNDZo///
+        /wD///8A////AP///wD///8A////AP///wD8/PwaPD5B/zg7QP+Omqv/iJar/4CPpv9seIn/XGRv/2mC
+        k+rY5/BP////AP///wD///8A////AP///wD///8A+/z9E0RGSvMvMjb/XWd3/2Nuf/9VXmr/NTk//zY5
+        Pv9ZgJnngrbax////wD///8A////AP///wD///8A////AOfz/FdmbnTqR01W/11nd/+Sorn/f4qb/zQ4
+        Pf8zNTj6Tqbh80mk4fr///8A////AP///wD///8A////AP///wDl8/xeqs7m+kZLUPpMU13/QkdN/zo+
+        Q/8wMjX/XISg1xah/v9jvPm7////AP///wD///8A////AP///wD///8A8vn9MrDd/P+x1vDueYqW415n
+        bdN3eHmj0tLSOkap9uNqvvq28Pj9F////wD///8A////AP///wD///8A////AP///wDB5f7CldP9/4XL
+        +v92wfX/y+f5Y////wBVpvDP/P39A////wD///8A////AP///wD///8A////AP///wD///8A+fv9CqHX
+        /a5Suf7/Q7L9/1K0+ON4xPiusNH0cv///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD8/f0DRLP+3i6p/e4HmPv/AY70/87l+Uf///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A/Pz9B8Lk/Ff///8AbrXymwB04/+qzfNe////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AI+364MSZ9T3vNPyT////wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wBwoOOuirHol/b4/Ar///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wDV4/Y6ytz0R+jv+iP///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A3ej3R////wD///8A////AP///wD///8A////AP//
+        /wD///8A/H8AAPgfAADwDwAA8A8AAPAHAADwBwAA8AcAAPBPAADw3wAA+D8AAPw/AAD/PwAA/z8AAP8/
+        AAD//wAA//8AAA==
+</value>
+  </data>
 </root>

@@ -38,7 +38,7 @@ Partial Class frmSplash
         Me.Version.Name = "Version"
         Me.Version.Size = New System.Drawing.Size(83, 11)
         Me.Version.TabIndex = 2
-        Me.Version.Text = "Version 1.1.XXXX"
+        Me.Version.Text = "Version X.X.XXXX"
         Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'PictureBox1
@@ -90,6 +90,7 @@ Partial Class frmSplash
         Me.Name = "frmSplash"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.TopMost = True
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

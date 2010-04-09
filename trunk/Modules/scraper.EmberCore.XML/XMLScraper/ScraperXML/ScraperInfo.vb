@@ -1,3 +1,25 @@
+' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+'Originally created by Lawrence "nicezia" Winston (http://sourceforge.net/projects/scraperxml/)
+'Converted to VB.NET and modified for use with Ember Media Manager
+
 Imports System.IO
 Imports System.Xml.Linq
 
@@ -12,7 +34,6 @@ Namespace XMLScraper
             Implements IComparable(Of ScraperInfo)
 
 #Region "Fields"
-
             Private _adultcontent As Boolean
             Private _filename As String
             Private _hassecondarysearch As Boolean
@@ -43,7 +64,7 @@ Namespace XMLScraper
                     Return Me._adultcontent
                 End Get
                 Set(ByVal value As Boolean)
-                    Me._adultcontent = Value
+                    Me._adultcontent = value
                 End Set
             End Property
 
@@ -52,7 +73,7 @@ Namespace XMLScraper
                     Return Me._filename
                 End Get
                 Private Set(ByVal value As String)
-                    Me._filename = Value
+                    Me._filename = value
                 End Set
             End Property
 
@@ -61,7 +82,7 @@ Namespace XMLScraper
                     Return Me._hassecondarysearch
                 End Get
                 Private Set(ByVal value As Boolean)
-                    Me._hassecondarysearch = Value
+                    Me._hassecondarysearch = value
                 End Set
             End Property
 
@@ -79,7 +100,7 @@ Namespace XMLScraper
                     Return Me._scraperdate
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperdate = Value
+                    Me._scraperdate = value
                 End Set
             End Property
 
@@ -88,7 +109,7 @@ Namespace XMLScraper
                     Return Me._scraperframework
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperframework = Value
+                    Me._scraperframework = value
                 End Set
             End Property
 
@@ -97,7 +118,7 @@ Namespace XMLScraper
                     Return Me._scraperlanguage
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scraperlanguage = Value
+                    Me._scraperlanguage = value
                 End Set
             End Property
 
@@ -106,7 +127,7 @@ Namespace XMLScraper
                     Return Me._scrapername
                 End Get
                 Private Set(ByVal value As String)
-                    Me._scrapername = Value
+                    Me._scrapername = value
                 End Set
             End Property
 
@@ -142,7 +163,7 @@ Namespace XMLScraper
                     Return Me._scrapercache
                 End Get
                 Set(ByVal value As String)
-                    Me._scrapercache = Value
+                    Me._scrapercache = value
                 End Set
             End Property
 
@@ -192,7 +213,6 @@ Namespace XMLScraper
                 tempscraper.Load(doc)
 
                 Me._filename = Path.GetFileName(xmlPath)
-
                 Me._scrapername = doc.Root.Attribute("name").Value
                 Me._scrapercontent = CType([Enum].Parse(GetType(ScraperContent), doc.Root.Attribute("content").Value), ScraperContent)
 
