@@ -100,7 +100,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
-
+                    strCond = ApplyPattern(strCond, "E", f.SortTitle)
                     strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRASMBL]))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
@@ -126,6 +126,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
+            pattern = ApplyPattern(pattern, "E", f.SortTitle)
             nextC = pattern.IndexOf("$X")
             If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                 strCond = pattern.Substring(nextC + 2, 1)
@@ -201,7 +202,7 @@ Public Class FileFolderRenamer
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Year = _tmpMovie.Movie.Year
         MovieFile.IsSingle = _tmpMovie.isSingle
-
+        MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -742,6 +743,7 @@ Public Class FileFolderRenamer
         Private _resolution As String
         Private _title As String
         Private _year As String
+        Private _sorttitle As String
 
         #End Region 'Fields
 
@@ -935,7 +937,14 @@ Public Class FileFolderRenamer
                 Me._title = value.Trim
             End Set
         End Property
-
+        Public Property SortTitle() As String
+            Get
+                Return Me._sorttitle
+            End Get
+            Set(ByVal value As String)
+                Me._sorttitle = value.Trim
+            End Set
+        End Property
         Public Property Year() As String
             Get
                 Return Me._year
