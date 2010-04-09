@@ -38,7 +38,7 @@ Partial Class frmSplash
         Me.Version.Name = "Version"
         Me.Version.Size = New System.Drawing.Size(83, 11)
         Me.Version.TabIndex = 2
-        Me.Version.Text = "Version 1.1.XXXX"
+        Me.Version.Text = "Version X.X.XXXX"
         Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'PictureBox1
