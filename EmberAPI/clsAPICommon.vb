@@ -20,30 +20,81 @@
 
 Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Xml.Serialization
 
 Public Class Containers
 
-    #Region "Nested Types"
+#Region "Nested Types"
+
+
+    <XmlRoot("CommandFile")> _
+Public Class InstallCommands
+
+#Region "Fields"
+
+        <XmlArray("Commands")> _
+        <XmlArrayItem("Command")> _
+        Public Command As New List(Of InstallCommand)
+
+#End Region 'Fields
+
+#Region "Methods"
+
+        Public Sub Save(ByVal fpath As String)
+            Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
+            Using xmlSW As New StreamWriter(fpath)
+                xmlSer.Serialize(xmlSW, Me)
+            End Using
+        End Sub
+
+        Public Shared Function Load(ByVal fpath As String) As Containers.InstallCommands
+            If Not File.Exists(fpath) Then Return New Containers.InstallCommands
+            Dim xmlSer As XmlSerializer
+            xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
+            Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
+                Return DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
+            End Using
+        End Function
+#End Region 'Methods
+
+    End Class
+
+    Public Class InstallCommand
+
+#Region "Fields"
+
+        <XmlElement("Description")> _
+        Public CommandDescription As String
+        <XmlElement("Execute")> _
+        Public CommandExecute As String
+        <XmlAttribute("Type")> _
+        Public CommandType As String
+
+#End Region 'Fields
+
+    End Class
+
+
 
     Public Class ImgResult
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim _fanart As New MediaContainers.Fanart
         Dim _imagepath As String
         Dim _posters As New List(Of String)
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property Fanart() As MediaContainers.Fanart
             Get
@@ -72,9 +123,9 @@ Public Class Containers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             _imagepath = String.Empty
@@ -82,13 +133,13 @@ Public Class Containers
             _fanart.Clear()
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class SettingsPanel
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim _imageindex As Integer
         Dim _name As String
@@ -99,17 +150,17 @@ Public Class Containers
         Dim _text As String
         Dim _type As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property ImageIndex() As Integer
             Get
@@ -138,7 +189,7 @@ Public Class Containers
             End Set
         End Property
 
-        <System.Xml.Serialization.XmlIgnore> _
+        <System.Xml.Serialization.XmlIgnore()> _
         Public Property Panel() As Panel
             Get
                 Return Me._panel
@@ -184,9 +235,9 @@ Public Class Containers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._name = String.Empty
@@ -199,28 +250,28 @@ Public Class Containers
             Me._parent = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class TVLanguage
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _longlang As String
         Private _shortlang As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property LongLang() As String
             Get
@@ -240,26 +291,168 @@ Public Class Containers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._longlang = String.Empty
             Me._shortlang = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+    Public Class Addon
+        Private _id As Integer
+        Private _name As String
+        Private _author As String
+        Private _description As String
+        Private _category As String
+        Private _version As Single
+        Private _mineversion As Single
+        Private _maxeversion As Single
+        Private _screenshotpath As String
+        Private _screenshotimage As Image
+        Private _files As Generic.SortedList(Of String, String)
+        Private _deletefiles As List(Of String)
+
+        Public Property ID() As Integer
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Integer)
+                Me._id = value
+            End Set
+        End Property
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public Property Author() As String
+            Get
+                Return Me._author
+            End Get
+            Set(ByVal value As String)
+                Me._author = value
+            End Set
+        End Property
+
+        Public Property Description() As String
+            Get
+                Return Me._description
+            End Get
+            Set(ByVal value As String)
+                Me._description = value
+            End Set
+        End Property
+
+        Public Property Category() As String
+            Get
+                Return Me._category
+            End Get
+            Set(ByVal value As String)
+                Me._category = value
+            End Set
+        End Property
+
+        Public Property Version() As Single
+            Get
+                Return Me._version
+            End Get
+            Set(ByVal value As Single)
+                Me._version = value
+            End Set
+        End Property
+
+        Public Property MinEVersion() As Single
+            Get
+                Return Me._mineversion
+            End Get
+            Set(ByVal value As Single)
+                Me._mineversion = value
+            End Set
+        End Property
+
+        Public Property MaxEVersion() As Single
+            Get
+                Return Me._maxeversion
+            End Get
+            Set(ByVal value As Single)
+                Me._maxeversion = value
+            End Set
+        End Property
+
+        Public Property ScreenShotPath() As String
+            Get
+                Return Me._screenshotpath
+            End Get
+            Set(ByVal value As String)
+                Me._screenshotpath = value
+            End Set
+        End Property
+
+        Public Property ScreenShotImage() As Image
+            Get
+                Return Me._screenshotimage
+            End Get
+            Set(ByVal value As Image)
+                Me._screenshotimage = value
+            End Set
+        End Property
+
+        Public Property Files() As Generic.SortedList(Of String, String)
+            Get
+                Return Me._files
+            End Get
+            Set(ByVal value As Generic.SortedList(Of String, String))
+                Me._files = value
+            End Set
+        End Property
+
+        Public Property DeleteFiles() As List(Of String)
+            Get
+                Return Me._deletefiles
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._deletefiles = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._id = -1
+            Me._name = String.Empty
+            Me._author = String.Empty
+            Me._description = String.Empty
+            Me._category = String.Empty
+            Me._version = -1
+            Me._mineversion = -1
+            Me._maxeversion = -1
+            Me._screenshotpath = String.Empty
+            Me._screenshotimage = Nothing
+            Me._files = New Generic.SortedList(Of String, String)
+            Me._deletefiles = New List(Of String)
+        End Sub
+    End Class
+
+#End Region 'Nested Types
 
 End Class
 
 Public Class Enums
 
-    #Region "Enumerations"
+#Region "Enumerations"
 
     Public Enum DefaultType As Integer
         All = 0
@@ -316,6 +509,10 @@ Public Class Enums
         TVFrameExtrator = 6
         RandomFrameExtrator = 7
         CL_MovieExporter = 8            ' Command Line Exporter
+        MovieSync = 9
+        ShowMovie = 10                  ' Called after displaying Movie
+        ShowTVShow = 11                 ' Called after displaying TVShow
+        BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
     End Enum
 
     Public Enum MovieScraperEventType As Integer
@@ -414,8 +611,8 @@ Public Class Enums
         Week = 0
         BiWeekly = 1
         Month = 2
-        Always = 3
-        Never = 4
+        Never = 3
+        Always = 4
     End Enum
 
 #End Region 'Enumerations
@@ -424,7 +621,7 @@ End Class
 
 Public Class Functions
 
-    #Region "Methods"
+#Region "Methods"
 
     ''' <summary>
     ''' Force of habit
@@ -866,29 +1063,39 @@ Public Class Functions
         End Try
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class
 
 Public Class Structures
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Structure CustomUpdaterStruct
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim Canceled As Boolean
         Dim Options As ScrapeOptions
         Dim ScrapeType As Enums.ScrapeType
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
+    Public Structure MovieSource
+        Dim id As String
+        Dim Name As String
+        Dim Path As String
+        Dim Recursive As Boolean
+        Dim UseFolderName As Boolean
+        Dim IsSingle As Boolean
+    End Structure
+
+
     Public Structure DBMovie
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim ClearExtras As Boolean
         Dim DateAdd As Long
@@ -911,13 +1118,13 @@ Public Class Structures
         Dim TrailerPath As String
         Dim UseFolder As Boolean
         Dim JobLog As MediaLog
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure DBTV
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim EpFanartPath As String
         Dim EpID As Long
@@ -945,24 +1152,24 @@ Public Class Structures
         Dim TVShow As MediaContainers.TVShow
         Dim Ordering As Enums.Ordering
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure Scans
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim Movies As Boolean
         Dim TV As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure ScrapeInfo
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim CurrentImage As Image
         Dim Ordering As Enums.Ordering
@@ -976,13 +1183,13 @@ Public Class Structures
         Dim TVDBID As String
         Dim WithCurrent As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure ScrapeModifier
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim DoSearch As Boolean
         Dim Extra As Boolean
@@ -992,13 +1199,13 @@ Public Class Structures
         Dim Poster As Boolean
         Dim Trailer As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure ScrapeOptions
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim bCast As Boolean
         Dim bCert As Boolean
@@ -1026,25 +1233,25 @@ Public Class Structures
         Dim bWriters As Boolean
         Dim bYear As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
     Public Structure SettingsResult
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim DidCancel As Boolean
         Dim NeedsRefresh As Boolean
         Dim NeedsUpdate As Boolean
-
-        #End Region 'Fields
+        Dim NeedsRestart As Boolean
+#End Region 'Fields
 
     End Structure
 
     Public Structure TVScrapeOptions
 
-        #Region "Fields"
+#Region "Fields"
 
         Dim bEpActors As Boolean
         Dim bEpAired As Boolean
@@ -1065,10 +1272,15 @@ Public Class Structures
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
 
-        #End Region 'Fields
+#End Region 'Fields
 
     End Structure
 
-    #End Region 'Nested Types
+    Public Structure ModulesMenus
+        Dim IfNoMovies As Boolean
+        Dim IfNoTVShow As Boolean
+    End Structure
+
+#End Region 'Nested Types
 
 End Class

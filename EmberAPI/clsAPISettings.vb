@@ -330,6 +330,8 @@ Public Class Settings
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
     Private _yamjsetscompatible As Boolean
+    Private _username As String
+    Private _password As String
 
     #End Region 'Fields
 
@@ -3091,6 +3093,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property Username() As String
+        Get
+            Return Me._username
+        End Get
+        Set(ByVal value As String)
+            Me._username = value
+        End Set
+    End Property
+
+    Public Property Password() As String
+        Get
+            Return Me._password
+        End Get
+        Set(ByVal value As String)
+            Me._password = value
+        End Set
+    End Property
+
     #End Region 'Properties
 
     #Region "Methods"
@@ -3406,6 +3426,8 @@ Public Class Settings
         Me._marknewepisodes = False
         Me._orderdefault = Enums.Ordering.Standard
         Me._onlyvalueforcert = False
+        Me._username = String.Empty
+        Me._password = String.Empty
     End Sub
 
     Public Function EpisodeFanartEnabled() As Boolean

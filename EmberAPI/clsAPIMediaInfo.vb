@@ -338,25 +338,17 @@ Public Class MediaInfo
 
     Private Function ConvertAFormat(ByVal sFormat As String, Optional ByVal sProfile As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
-
             Select Case sFormat.ToLower
-                Case "ac-3", "a_ac3"
-                    Return "ac3"
-                Case "wma2"
-                    Return "wmav2"
                 Case "dts", "a_dts"
                     Select Case sProfile.ToUpper
                         Case "MA"   'master audio
-                            Return "dtsma"
+                            sFormat = "dtsma"
                         Case "HRA"   'high resolution
-                            Return "dtshr"
-                        Case Else
-                            Return "dca"
+                            sFormat = "dtshr"
                     End Select
-
-                Case Else
-                    Return sFormat.ToLower
             End Select
+            Return AdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
+            'Return sFormat
         Else
             Return String.Empty
         End If
@@ -366,27 +358,22 @@ Public Class MediaInfo
         If Not String.IsNullOrEmpty(sFormat) Then
             Dim tFormat As String = sFormat.ToLower
             Select Case True
-                Case tFormat = "divx 5"
-                    Return "dx50"
                 Case tFormat.Contains("divx 3")
-                    Return "div3"
+                    tFormat = "div3"
                 Case tFormat.Contains("lmp4"), tFormat.Contains("svq3"), tFormat.Contains("x264"), tFormat.Contains("avc"), tFormat.Contains("h264")
-                    Return "h264"
+                    tFormat = "h264"
                 Case tFormat.Contains("flv"), tFormat.Contains("swf")
-                    Return "flv"
+                    tFormat = "flv"
                 Case tFormat.Contains("3iv")
-                    Return "3ivx"
+                    tFormat = "3ivx"
                 Case tFormat = "mpeg video"
                     If sModifier.ToLower = "version 2" Then
-                        Return "mpeg2"
+                        tFormat = "mpeg2"
                     Else
-                        Return "mpeg"
+                        tFormat = "mpeg"
                     End If
-                Case tFormat = "mpeg-4 video"
-                    Return "mpeg4"
-                Case Else
-                    Return tFormat
             End Select
+            Return AdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
         Else
             Return String.Empty
         End If

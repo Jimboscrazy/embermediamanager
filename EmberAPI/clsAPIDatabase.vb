@@ -44,7 +44,7 @@ Public Class Database
     ''' <summary>
     ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
     ''' </summary>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean)
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -60,7 +60,11 @@ Public Class Database
                     Dim tSource As SourceHolder
 
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
+                        If source = String.Empty Then
+                            SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
+                        Else
+                            SQLcommand.CommandText = String.Format("SELECT Path, Name, Recursive, Single FROM sources WHERE Name="" {0}""", source)
+                        End If
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
                                 SourceList.Add(New SourceHolder With {.Name = SQLreader("Name").ToString, .Path = SQLreader("Path").ToString, .Recursive = Convert.ToBoolean(SQLreader("Recursive")), .isSingle = Convert.ToBoolean(SQLreader("Single"))})
@@ -69,7 +73,11 @@ Public Class Database
                     End Using
 
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT MoviePath, Id, Source, Type FROM movies ORDER BY MoviePath DESC;"
+                        If source = String.Empty Then
+                            SQLcommand.CommandText = "SELECT MoviePath, Id, Source, Type FROM movies ORDER BY MoviePath DESC;"
+                        Else
+                            SQLcommand.CommandText = String.Format("SELECT MoviePath, Id, Source, Type FROM movies WHERE Source = ""{0}"" ORDER BY MoviePath DESC;", source)
+                        End If
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
@@ -106,7 +114,12 @@ Public Class Database
 
                 If CleanTV Then
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        If String.IsNullOrEmpty(source) Then
+                            SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        Else
+                            SQLcommand.CommandText = String.Format("SELECT TVEpPath FROM TVEpPaths INNER JOIN TVEps ON TVEpPaths.ID = TVEps.TVEpPathID WHERE TVEps.Source =""{0}"";", source)
+                        End If
+
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
@@ -114,9 +127,14 @@ Public Class Database
                                 End If
                             End While
                         End Using
+                        'tvshows with no more real episodes
+                        SQLcommand.CommandText = "DELETE FROM TVShows WHERE NOT EXISTS (SELECT TVEps.TVShowID FROM TVEps WHERE TVEps.TVShowID = TVShows.ID AND TVEps.Missing = 0)"
+                        SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID NOT IN (SELECT ID FROM TVShows);")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DELETE FROM TVEps WHERE TVShowID NOT IN (SELECT ID FROM TVShows);"
                         SQLcommand.ExecuteNonQuery()
                         'orphaned paths
                         SQLcommand.CommandText = "DELETE FROM TVEpPaths WHERE NOT EXISTS (SELECT TVEps.TVEpPathID FROM TVEps WHERE TVEps.TVEpPathID = TVEpPaths.ID AND TVEps.Missing = 0)"
@@ -951,12 +969,12 @@ Public Class Database
 
     Public Sub PatchDatabase(ByVal fname As String)
         Dim xmlSer As XmlSerializer
-        Dim _cmds As New InstallCommands
-        xmlSer = New XmlSerializer(GetType(InstallCommands))
+        Dim _cmds As New Containers.InstallCommands
+        xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
         Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
-            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
+            _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.SQLcn.BeginTransaction
-                For Each _cmd As InstallCommand In _cmds.Command
+                For Each _cmd As Containers.InstallCommand In _cmds.Command
                     If _cmd.CommandType = "DB" Then
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                             SQLcommand.CommandText = _cmd.CommandExecute
@@ -1742,8 +1760,43 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Sub LoadMovieSourcesFromDB()
+        Master.MovieSources.Clear()
+
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim msource As New Structures.MovieSource
+                    msource.id = SQLreader("ID").ToString
+                    msource.Name = SQLreader("Name").ToString
+                    msource.Path = SQLreader("Path").ToString
+                    msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
+                    msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
+                    msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                    Master.MovieSources.Add(msource)
+                End While
+            End Using
+        End Using
+    End Sub
+
+    Public Function GetMoviePathsBySource(Optional ByVal source As String = "") As List(Of String)
+        Dim Paths As New List(Of String)
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = String.Format("SELECT MoviePath, Source FROM Movies {0};", If(source = String.Empty, String.Empty, String.Format("INNER JOIN Sources ON Movies.Source=Sources.Name Where Sources.Path=""{0}""", source)))
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Paths.Add(SQLreader("MoviePath").ToString)
+                End While
+            End Using
+        End Using
+        Return Paths
+    End Function
+
+
     '''''''''''''''''''''''''''''''''''''''''''
-    Sub ConnectJobLog()
+    Private Sub ConnectJobLog()
         Dim NewDB As Boolean = False
         'create database if it doesn't exist
         If Not File.Exists(Path.Combine(Functions.AppPath, "JobLogs.emm")) Then
@@ -1778,7 +1831,7 @@ Public Class Database
         End If
     End Sub
 
-    Sub CloseJobLog()
+    Private Sub CloseJobLog()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcnJobLog.CreateCommand
                 SQLcommand.CommandText = "VACUUM;"
@@ -1789,48 +1842,87 @@ Public Class Database
         End Try
     End Sub
 
+    Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
+        Try
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
+                Dim tES As Object = SQLCommand.ExecuteScalar
+                If Not IsNothing(tES) Then
+                    Dim tSing As Single = 0
+                    If Single.TryParse(tES.ToString, tSing) Then
+                        Return tSing
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return 0
+    End Function
+
+    Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
+        Dim needRestart As Boolean = False
+        Try
+            Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                    While SQLReader.Read
+                        Try
+                            File.Delete(SQLReader("FilePath").ToString)
+                        Catch
+                            _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Delete", .CommandExecute = SQLReader("FilePath").ToString})
+                            needRestart = True
+                        End Try
+                    End While
+                    If needRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+                End Using
+                SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
+                SQLCommand.ExecuteNonQuery()
+                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                SQLCommand.ExecuteNonQuery()
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return Not needRestart
+    End Function
+
+    Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
+        Try
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
+                        "AddonID, Version) VALUES (?,?);")
+                Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
+                Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
+
+                parAddonID.Value = Addon.ID
+                parVersion.Value = Addon.Version.ToString
+
+                SQLCommand.ExecuteNonQuery()
+
+                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
+                SQLCommand.ExecuteNonQuery()
+
+                Using SQLFileCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                    SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
+                    Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
+                    Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
+                    parFileAddonID.Value = Addon.ID
+                    For Each fFile As KeyValuePair(Of String, String) In Addon.Files
+                        parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
+                        SQLFileCommand.ExecuteNonQuery()
+                    Next
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"
-
-    Public Class InstallCommand
-
-#Region "Fields"
-
-        <XmlElement("Description")> _
-        Public CommandDescription As String
-        <XmlElement("Execute")> _
-        Public CommandExecute As String
-        <XmlAttribute("Type")> _
-        Public CommandType As String
-
-#End Region 'Fields
-
-    End Class
-
-    <XmlRoot("CommandFile")> _
-    Public Class InstallCommands
-
-#Region "Fields"
-
-        <XmlArray("Commands")> _
-        <XmlArrayItem("Command")> _
-        Public Command As List(Of InstallCommand)
-
-#End Region 'Fields
-
-#Region "Methods"
-
-        Public Sub Save(ByVal fpath As String)
-            Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
-            Using xmlSW As New StreamWriter(fpath)
-                xmlSer.Serialize(xmlSW, Me)
-            End Using
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Private Class SourceHolder
 

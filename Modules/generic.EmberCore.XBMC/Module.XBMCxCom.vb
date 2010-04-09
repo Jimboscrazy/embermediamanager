@@ -35,7 +35,9 @@ Public Class XBMCxCom
     Private _MySettings As New MySettings
     Private _name As String = "XBMC Controller"
     Private _setup As frmSettingsHolder
-
+    Friend WithEvents bwRunUpdate As New System.ComponentModel.BackgroundWorker
+    Private RunQueue As New Queue(Of Structures.DBMovie)
+    Private _httpTimeOut As Integer = 10000
     #End Region 'Fields
 
     #Region "Events"
@@ -73,7 +75,7 @@ Public Class XBMCxCom
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType)
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MovieSync, Enums.ModuleEventType.BeforeEditMovie, Enums.ModuleEventType.ShowMovie, Enums.ModuleEventType.ShowTVShow})
         End Get
     End Property
 
@@ -93,6 +95,7 @@ Public Class XBMCxCom
     End Sub
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
+        _MySettings = MySettings.Load
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled
@@ -110,15 +113,159 @@ Public Class XBMCxCom
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+    Private Function GetPlayCount(ByRef DBMovie As Structures.DBMovie, ByVal s As XBMCxCom.XBMCCom) As Integer
+        If s Is Nothing Then Return 0
+        Dim files As List(Of String()) = Nothing
+        Dim str As String
+        Dim eSource As String = String.Empty
+        Try
+            Dim source As String = DBMovie.Source
+            eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = source).Path
+            'For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
+            Dim remoteSource As String = s.Paths(eSource).ToString
+            If Not eSource.EndsWith(Path.DirectorySeparatorChar) Then eSource = String.Concat(eSource, Path.DirectorySeparatorChar)
+            Dim remoteFullFilename As String = DBMovie.Filename.Replace(eSource, remoteSource)
+            remoteFullFilename = remoteFullFilename.Replace(Path.DirectorySeparatorChar, s.RemotePathSeparator)
+            Dim i As Integer = remoteFullFilename.LastIndexOf(s.RemotePathSeparator) + 1
+            Dim RemotePath As String = remoteFullFilename.Substring(0, i)
+            Dim RemoteFilename As String = remoteFullFilename.Substring(i)
+            'Dim ret As String
+            'Dim cmd As String
+            str = String.Format("command=queryvideodatabase(select idFile,playCount from files inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
+            files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
+            If files.Count = 1 AndAlso files(0).Count >= 2 Then
+                Dim id As String = files(0)(0)
+                If IsNumeric(files(0)(1)) Then
+                    Return Convert.ToInt32(files(0)(1))
+                End If
+            End If
+            'Next
+        Catch ex As Exception
+        End Try
+        Return 0
     End Function
 
+
+    Private Sub bwRunUpdate_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRunUpdate.DoWork
+        Dim files As List(Of String()) = Nothing
+        Dim str As String
+        Dim eSource As String = String.Empty
+        Try
+            _httpTimeOut = Convert.ToInt32(AdvancedSettings.GetSetting("HTTPTimeOut", "10000"))
+            Dim DBMovie As Structures.DBMovie '= DirectCast(e.Argument, Structures.DBMovie)
+            While RunQueue.Count > 0
+                DBMovie = RunQueue.Dequeue
+                eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = DBMovie.Source).Path
+                For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
+                    Dim remoteSource As String = s.Paths(eSource).ToString
+                    If Not eSource.EndsWith(Path.DirectorySeparatorChar) Then eSource = String.Concat(eSource, Path.DirectorySeparatorChar)
+                    Dim remoteFullFilename As String = DBMovie.Filename.Replace(eSource, remoteSource)
+                    remoteFullFilename = remoteFullFilename.Replace(Path.DirectorySeparatorChar, s.RemotePathSeparator)
+                    Dim i As Integer = remoteFullFilename.LastIndexOf(s.RemotePathSeparator) + 1
+                    Dim RemotePath As String = remoteFullFilename.Substring(0, i)
+                    Dim RemoteFilename As String = remoteFullFilename.Substring(i)
+                    Dim ret As String
+                    Dim cmd As String
+                    str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
+                    ret = SendCmd(s, str)
+                    str = String.Format("command=queryvideodatabase(select movie.idMovie,files.idFile,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
+                    files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
+                    If files.Count = 1 AndAlso files(0).Count >= 6 Then
+                        Dim id As String = files(0)(0)
+                        Dim idfile As String = files(0)(1)
+                        If AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False) AndAlso s.Name = AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", "") Then
+                            cmd = String.Concat("update files set ", _
+                                String.Format("playCount =""{0}"" ", StringEscape(If(IsNumeric(DBMovie.Movie.PlayCount), DBMovie.Movie.PlayCount, "0"))), _
+                                String.Format(" Where idFile ={0}", idfile))
+                            str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                            ret = SendCmd(s, str)
+                            If Not ret.Contains("Exec Done") Then
+                                Master.eLog.WriteToErrorLog("Unable to Update XBMC PlayCount", cmd, "Error")
+                            End If
+                        End If
+
+                        ' separated update so uri don't get too long
+                        cmd = String.Concat("update movie set ", _
+                            String.Format("c01 =""{0}"" ", StringEscape(DBMovie.Movie.Plot)), _
+                            String.Format(" Where idMovie ={0}", id))
+                        str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("Exec Done") Then
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Info - Plot", cmd, "Error")
+                        End If
+                        cmd = String.Concat("update movie set ", _
+                        String.Format("c00=""{0}"",", StringEscape(DBMovie.Movie.Title)), _
+                        String.Format("c02=""{0}"",", StringEscape(DBMovie.Movie.Outline)), _
+                        String.Format("c03=""{0}"",", StringEscape(DBMovie.Movie.Tagline)), _
+                        String.Format("c04=""{0}"",", StringEscape(DBMovie.Movie.Votes)), _
+                        String.Format("c05=""{0}"",", StringEscape(DBMovie.Movie.Rating)), _
+                        String.Format("c07=""{0}"",", StringEscape(DBMovie.Movie.Year)), _
+                        String.Format("c09=""{0}"",", StringEscape(DBMovie.Movie.IMDBID)), _
+                        String.Format("c11=""{0}"",", StringEscape(DBMovie.Movie.Runtime)), _
+                        String.Format("c12=""{0}"",", StringEscape(DBMovie.Movie.MPAA)), _
+                        String.Format("c14=""{0}"",", StringEscape(DBMovie.Movie.Genre)), _
+                        String.Format("c15=""{0}"",", StringEscape(DBMovie.Movie.Director)), _
+                        String.Format("c16=""{0}"",", StringEscape(DBMovie.Movie.OriginalTitle)), _
+                        String.Format("c18=""{0}""", StringEscape(DBMovie.Movie.Studio)), _
+                        String.Format(" Where idMovie ={0}", id.ToString))
+                        str = String.Format("command=execvideodatabase({0})", Web.HttpUtility.UrlEncode(cmd))
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("Exec Done") Then
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Info", cmd, "Error")
+                        End If
+                        Dim hash As String = XBMCHash(remoteFullFilename)
+                        Dim imagefile As String = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
+                        Dim thumbpath As String = String.Format("special://profile/Thumbnails/Video/{0}/{1}", hash.Substring(0, 1), String.Concat(hash, ".tbn"))
+                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("OK") Then
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Poster", str, "Error")
+                        End If
+                        imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
+                        thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
+                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                        ret = SendCmd(s, str)
+                        If Not ret.Contains("OK") Then
+                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Fanart", str, "Error")
+                        End If
+                    End If
+                Next
+            End While
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+        Select Case True
+            Case mType = Enums.ModuleEventType.MovieSync AndAlso AdvancedSettings.GetBooleanSetting("XBMCSync", False)
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+                RunQueue.Enqueue(DBMovie)
+                If Not bwRunUpdate.IsBusy Then
+                    bwRunUpdate.RunWorkerAsync()
+                End If
+            Case mType = Enums.ModuleEventType.BeforeEditMovie AndAlso AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False)
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+                Dim c As Integer = GetPlayCount(DBMovie, _MySettings.XComs.FirstOrDefault(Function(y) y.Name = AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", "")))
+                If IsNumeric(DBMovie.Movie.PlayCount) Then
+                    DBMovie.Movie.PlayCount = Math.Max(Convert.ToInt32(DBMovie.Movie.PlayCount), c).ToString
+                Else
+                    DBMovie.Movie.PlayCount = c.ToString
+                End If
+            Case mType = Enums.ModuleEventType.ShowMovie
+                Dim DBMovie As Structures.DBMovie = DirectCast(_refparam, Structures.DBMovie)
+        End Select
+
+    End Function
+    Function StringEscape(ByVal str As String) As String
+        Return str.Replace("""", """""").Replace(";", ";;")
+    End Function
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-        'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
         Me.Enabled = _setup.cbEnabled.Checked
         _MySettings.XComs = _setup.XComs
         MySettings.Save(_MySettings)
-
+        If _setup.cbPlayCountHost.SelectedIndex >= 0 Then AdvancedSettings.SetSetting("XBMCSyncPlayCountHost", _setup.cbPlayCountHost.SelectedItem.ToString)
+        AdvancedSettings.SetBooleanSetting("XBMCSyncPlayCount", _setup.chkPlayCount.Checked)
+        AdvancedSettings.SetBooleanSetting("XBMCSync", _setup.chkRealTime.Checked)
         If Me._enabled Then
             Me.Disable()
             Me.Enable()
@@ -139,28 +286,6 @@ Public Class XBMCxCom
         Catch ex As Exception
         End Try
     End Sub
-
-    Private Sub DoXCom(ByVal xCom As XBMCCom)
-        Try
-            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
-            Wr.Timeout = 2500
-
-            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-            End If
-
-            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-                If Not Sr.Contains("OK") Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-                End If
-            End Using
-            Wr = Nothing
-        Catch
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 5, Master.eLang.GetString(16, "Unable to Start XBMC Update"), String.Format(Master.eLang.GetString(17, "There was a problem communicating with {0}{1}."), xCom.Name, vbNewLine), Nothing}))
-        End Try
-    End Sub
-
     Sub Enable()
         Try
             _MySettings = MySettings.Load
@@ -206,7 +331,7 @@ Public Class XBMCxCom
     End Sub
 
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
+        RaiseEvent ModuleEnabledChanged(Me._name, state, difforder)
     End Sub
 
     Private Sub xCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -215,41 +340,127 @@ Public Class XBMCxCom
         If tMenu.Tag Is Nothing Then
             Try
                 For Each tCom As XBMCCom In _MySettings.XComs
-                    Me.DoXCom(tCom)
+                    SendCmd(tCom, "command=ExecBuiltIn(XBMC.updatelibrary(video))")
                 Next
             Catch
             End Try
         Else
             Dim xCom As XBMCCom = DirectCast(tMenu.Tag, XBMCCom)
-            DoXCom(xCom)
+            SendCmd(xCom, "command=ExecBuiltIn(XBMC.updatelibrary(video))")
+
         End If
     End Sub
 
-    #End Region 'Methods
+    Public Shared Function SendCmd(ByVal xCom As XBMCCom, ByVal str As String) As String
+        Dim Wr As HttpWebRequest
+        Dim Sr As String = String.Empty
+        Try
+            Wr = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
+            Wr.Timeout = 10000
+            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+            End If
+            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
+                Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+            End Using
+            Wr = Nothing
+            Sr = Sr.Replace("<html>", String.Empty).Replace("</html>", String.Empty)
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.OkOnly)
+        End Try
+        Return Sr
+    End Function
 
-    #Region "Nested Types"
+    Public Shared Function SplitResponse(ByVal sr As String) As List(Of String())
+        Dim rec As New List(Of String())
+        Dim trec() As String = Nothing
+        sr = sr.Replace("<record>", "")
+        trec = sr.Split(New String() {"</record>"}, StringSplitOptions.RemoveEmptyEntries)
+        For Each t As String In trec
+            Dim tt As String() = t.Replace("<field>", "").Split(New String() {"</field>"}, StringSplitOptions.None)
+            rec.Add(tt)
+        Next
+        Return rec
+    End Function
+
+    Public Function XBMCHash(ByVal input As String) As String
+        Dim chars As Char() = input.ToCharArray()
+        Dim index As Integer = 0
+        While index < chars.Length
+            If Convert.ToSByte(chars(index)) <= 127 Then
+                chars(index) = System.[Char].ToLowerInvariant(chars(index))
+            End If
+            System.Math.Max(System.Threading.Interlocked.Increment(index), index - 1)
+        End While
+        input = New String(chars)
+        Dim m_crc As UInteger = 4294967295
+        Dim bytes As Byte() = System.Text.Encoding.UTF8.GetBytes(input)
+        For Each myByte As Byte In bytes
+            m_crc = m_crc Xor (System.Convert.ToUInt32(myByte) << 24)
+            Dim i As Integer = 0
+            While i < 8
+                If (System.Convert.ToUInt32(m_crc) And System.Convert.ToUInt32(2147483648)) = (2147483648) Then
+                    m_crc = (m_crc << 1) Xor System.Convert.ToUInt32(&H4C11DB7)
+                Else
+                    m_crc <<= 1
+                End If
+                System.Math.Max(System.Threading.Interlocked.Increment(i), i - 1)
+            End While
+        Next
+        Return [String].Format("{0:x8}", m_crc)
+    End Function
+
+#End Region 'Methods
+
+#Region "Nested Types"
 
     Public Class XBMCCom
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _xbmcip As String
         Private _xbmcname As String
         Private _xbmcpassword As String
         Private _xbmcport As String
         Private _xbmcusername As String
+        Private _paths As Hashtable
+        Private _RemotePathSeparator As String
+        Private _realtime As Boolean
+#End Region 'Fields
 
-        #End Region 'Fields
-
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
+        Public Property Paths() As Hashtable
+            Get
+                Return Me._paths
+            End Get
+            Set(ByVal value As Hashtable)
+                Me._paths = value
+            End Set
+        End Property
+        Public Property RemotePathSeparator() As String
+            Get
+                Return Me._RemotePathSeparator
+            End Get
+            Set(ByVal value As String)
+                Me._RemotePathSeparator = value
+            End Set
+        End Property
+        Public Property RealTime() As Boolean
+            Get
+                Return Me._realtime
+            End Get
+            Set(ByVal value As Boolean)
+                Me._realtime = value
+            End Set
+        End Property
 
         Public Property IP() As String
             Get
@@ -304,9 +515,9 @@ Public Class XBMCxCom
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._xbmcname = String.Empty
@@ -316,19 +527,19 @@ Public Class XBMCxCom
             Me._xbmcpassword = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Class MySettings
 
-        #Region "Fields"
+#Region "Fields"
 
         Public XComs As New List(Of XBMCxCom.XBMCCom)
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Shared Function Load() As MySettings
             Dim tmp As New MySettings
@@ -351,21 +562,20 @@ Public Class XBMCxCom
                                     t.Username = i.Item("Username").ToString
                                 Case "Password"
                                     t.Password = i.Item("Password").ToString
+                                Case "RemotePathSeparator"
+                                    t.RemotePathSeparator = i.Item("RemotePathSeparator").ToString
+                                Case "RealTime"
+                                    t.RealTime = Convert.ToBoolean(i.Item("RealTime").ToString)
                             End Select
                         Next
+                        Dim AsettPath As New List(Of Hashtable)
+                        AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
+                        If Not AsettPath Is Nothing AndAlso AsettPath.Count = 1 Then
+                            t.Paths = AsettPath(0)
+                        End If
                         tmp.XComs.Add(t)
                     Next
                 End If
-                'Dim tmp As New MySettings
-                'Try
-                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                'If File.Exists(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml")) Then
-                ' Dim strmReader As New StreamReader(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                'tmp = DirectCast(xmlSerial.Deserialize(strmReader), MySettings)
-                'strmReader.Close()
-                'Else
-                'tmp = New MySettings
-                'End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 tmp = New MySettings
@@ -384,24 +594,27 @@ Public Class XBMCxCom
                     h.Add("Port", t.Port)
                     h.Add("Username", t.Username)
                     h.Add("Password", t.Password)
+                    h.Add("RemotePathSeparator", t.RemotePathSeparator)
+                    h.Add("RealTime", t.RealTime.ToString)
                     Asett.Add(h)
+                    If Not t.Paths Is Nothing AndAlso t.Paths.Count > 0 Then
+                        Dim AsettPath As New List(Of Hashtable)
+                        AsettPath.Add(t.Paths)
+                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
+                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", t.Name), AsettPath)
+                    End If
                 Next
                 AdvancedSettings.ClearComplexSetting("XBMCHosts")
                 AdvancedSettings.SetComplexSetting("XBMCHosts", Asett)
-
-                'Dim xmlSerial As New XmlSerializer(GetType(MySettings))
-                'Dim xmlWriter As New StreamWriter(Path.Combine(Path.Combine(Functions.AppPath, "Modules"), "XBMCxCom.xml"))
-                'xmlSerial.Serialize(xmlWriter, tmp)
-                'xmlWriter.Close()
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

@@ -213,6 +213,7 @@ Public Class EmberXMLScraperModule
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.Scraper
         Try
+            lMediaTag = Nothing
             LoadSettings()
             LastDBMovieID = -1
             If Not ScrapersLoaded AndAlso Not String.IsNullOrEmpty(scraperFileName) Then
@@ -228,7 +229,9 @@ Public Class EmberXMLScraperModule
 
             If Master.GlobalScrapeMod.NFO Then
 
-                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch Then
+                If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch AndAlso _
+                    ModulesManager.Instance.externalScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+
                     DBMovie.ClearExtras = True
                     DBMovie.PosterPath = String.Empty
                     DBMovie.FanartPath = String.Empty
@@ -240,7 +243,13 @@ Public Class EmberXMLScraperModule
                 End If
                 Dim tmpTitle As String = DBMovie.Movie.Title
                 If String.IsNullOrEmpty(tmpTitle) Then
-                    tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                    If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+                    ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                    Else
+                        tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                    End If
                 End If
                 Select Case ScrapeType
                     Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
@@ -256,7 +265,7 @@ Public Class EmberXMLScraperModule
                             Using dlg As New dlgSearchResults
                                 dlg.XMLManager = XMLManager
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-                                If Not IsNothing(s) Then
+                                If Not IsNothing(s) AndAlso File.Exists(s.ScraperThumb) Then
                                     dlg.pbScraperLogo.Load(s.ScraperThumb)
                                 End If
                                 If dlg.ShowDialog(res, DBMovie.Movie.Title) = Windows.Forms.DialogResult.OK Then

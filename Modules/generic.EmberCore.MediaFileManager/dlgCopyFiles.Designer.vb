@@ -26,6 +26,8 @@ Partial Class dlgCopyFiles
         Me.Label1 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Cancel_Button
@@ -33,7 +35,7 @@ Partial Class dlgCopyFiles
         Me.Cancel_Button.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(130, 72)
+        Me.Cancel_Button.Location = New System.Drawing.Point(130, 73)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -42,7 +44,7 @@ Partial Class dlgCopyFiles
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Location = New System.Drawing.Point(31, 7)
+        Me.Label1.Location = New System.Drawing.Point(28, 4)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(261, 18)
         Me.Label1.TabIndex = 2
@@ -51,7 +53,7 @@ Partial Class dlgCopyFiles
         'Label2
         '
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label2.Location = New System.Drawing.Point(31, 28)
+        Me.Label2.Location = New System.Drawing.Point(28, 25)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(261, 18)
         Me.Label2.TabIndex = 3
@@ -60,10 +62,21 @@ Partial Class dlgCopyFiles
         'ProgressBar1
         '
         Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(12, 49)
+        Me.ProgressBar1.Location = New System.Drawing.Point(9, 46)
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(297, 13)
         Me.ProgressBar1.TabIndex = 4
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.ProgressBar1)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Location = New System.Drawing.Point(3, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(316, 69)
+        Me.Panel1.TabIndex = 5
         '
         'dlgCopyFiles
         '
@@ -71,9 +84,7 @@ Partial Class dlgCopyFiles
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(321, 98)
-        Me.Controls.Add(Me.ProgressBar1)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -84,6 +95,7 @@ Partial Class dlgCopyFiles
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "dlgCopyFiles"
         Me.TopMost = True
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -91,5 +103,6 @@ Partial Class dlgCopyFiles
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

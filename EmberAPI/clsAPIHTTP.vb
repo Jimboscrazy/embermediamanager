@@ -20,10 +20,11 @@
 
 Imports System.IO
 Imports System.IO.Compression
+Imports System.Text
 
 Public Class HTTP
 
-    #Region "Fields"
+#Region "Fields"
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -31,10 +32,9 @@ Public Class HTTP
     Private _image As Image
     Private _responseuri As String
     Private _URL As String = String.Empty
+#End Region 'Fields
 
-    #End Region 'Fields
-
-    #Region "Constructors"
+#Region "Constructors"
 
     Public Sub New()
         Me.Clear()
@@ -45,16 +45,15 @@ Public Class HTTP
         MyBase.Finalize()
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
-    #Region "Events"
+#Region "Events"
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
-
+#Region "Properties"
     Public ReadOnly Property Image() As Image
         Get
             Return Me._image
@@ -70,9 +69,9 @@ Public Class HTTP
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Sub Cancel()
         Me._cancel = True
@@ -84,7 +83,6 @@ Public Class HTTP
         Me._image = Nothing
         Me._cancel = False
     End Sub
-
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
@@ -92,7 +90,6 @@ Public Class HTTP
         Me.Clear()
 
         Try
-
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = 20000
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
@@ -107,11 +104,88 @@ Public Class HTTP
                 End If
                 Me.wrRequest.Proxy = wProxy
             End If
-
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
                     'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
-                    Case wrResponse.ContentType.ToLower.Contains("application/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                        cEncoding = System.Text.Encoding.UTF8
+                    Case Else
+                        cEncoding = System.Text.Encoding.GetEncoding(28591)
+                End Select
+                Using Ms As Stream = wrResponse.GetResponseStream
+                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    Else
+                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                    End If
+                End Using
+                Me._responseuri = wrResponse.ResponseUri.ToString
+            End Using
+        Catch ex As Exception
+        End Try
+
+        Return sResponse
+    End Function
+    Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
+    End Function
+    Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
+    End Function
+
+    Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
+        Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
+        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
+        Dim Boundary As String = String.Format("--{0}", Idboundary)
+        Dim postDataBytes As New List(Of Byte())
+        Me.Clear()
+
+        Try
+            For Each s() As String In postDataList
+                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
+                If s.Count = 3 Then
+                    Select Case s(2)
+                        Case "file"  'array in list is {filename,filepath,"file"}
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
+                            postDataBytes.Add(File.ReadAllBytes(s(1)))
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
+                    End Select
+                End If
+            Next
+            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
+
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+                wProxy.BypassProxyOnLocal = True
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    wProxy.Credentials = Master.eSettings.ProxyCreds
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                Me.wrRequest.Proxy = wProxy
+            End If
+            Me.wrRequest.Method = "POST"
+            Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
+            Dim size As Integer = 0
+            For i As Integer = 0 To postDataBytes.Count - 1
+                size += postDataBytes(i).Length
+            Next
+            Me.wrRequest.ContentLength = size
+            Dim newStream As Stream = Me.wrRequest.GetRequestStream()
+            For i As Integer = 0 To postDataBytes.Count - 1
+                newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
+            Next
+            newStream.Close()
+
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                Select Case True
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                         cEncoding = System.Text.Encoding.UTF8
                     Case Else
                         cEncoding = System.Text.Encoding.GetEncoding(28591)
@@ -163,23 +237,11 @@ Public Class HTTP
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
                     Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("flv")
                         outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-                    Case Type = "translation"
-                        outFile = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
-                    Case Type = "template"
-                        Dim basePath As String = Path.Combine(Functions.AppPath, "Langs")
-                        Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(Convert.ToChar("/"))
-                        For i As Integer = 0 To folders.Count - 2
-                            If Not Directory.Exists(Path.Combine(basePath, folders(i))) Then Directory.CreateDirectory(Path.Combine(basePath, folders(i)))
-                            basePath = Path.Combine(basePath, folders(i))
-                        Next
-                        outFile = Path.Combine(basePath, URL.Substring(URL.LastIndexOf("/") + 1))
-                    Case Type = "movietheme"
-                        outFile = String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
                     Case Type = "other"
                         outFile = LocalFile
                 End Select
 
-                If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then
+                If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
                     If File.Exists(outFile) Then File.Delete(outFile)
 
@@ -206,7 +268,7 @@ Public Class HTTP
                 End If
 
             End Using
-        Catch
+        Catch ex As Exception
         End Try
 
         Return outFile
@@ -335,5 +397,5 @@ Public Class HTTP
         Me.dThread.Start()
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 End Class

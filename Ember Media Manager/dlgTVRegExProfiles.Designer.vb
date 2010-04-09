@@ -29,7 +29,9 @@ Partial Class dlgTVRegExProfiles
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.txtDescription = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.TableLayoutPanel1.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -41,7 +43,7 @@ Partial Class dlgTVRegExProfiles
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
         Me.TableLayoutPanel1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(224, 288)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(227, 292)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -77,7 +79,7 @@ Partial Class dlgTVRegExProfiles
         Me.lstProfiles.FullRowSelect = True
         Me.lstProfiles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lstProfiles.HideSelection = False
-        Me.lstProfiles.Location = New System.Drawing.Point(10, 11)
+        Me.lstProfiles.Location = New System.Drawing.Point(9, 7)
         Me.lstProfiles.Name = "lstProfiles"
         Me.lstProfiles.Size = New System.Drawing.Size(358, 130)
         Me.lstProfiles.TabIndex = 1
@@ -91,7 +93,7 @@ Partial Class dlgTVRegExProfiles
         '
         'txtDescription
         '
-        Me.txtDescription.Location = New System.Drawing.Point(10, 163)
+        Me.txtDescription.Location = New System.Drawing.Point(9, 159)
         Me.txtDescription.Multiline = True
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.ReadOnly = True
@@ -101,12 +103,23 @@ Partial Class dlgTVRegExProfiles
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(12, 144)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(11, 140)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(136, 18)
         Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Description"
+        Me.Label1.Text = "Description:"
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.txtDescription)
+        Me.Panel1.Controls.Add(Me.lstProfiles)
+        Me.Panel1.Location = New System.Drawing.Point(4, 4)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(378, 284)
+        Me.Panel1.TabIndex = 4
         '
         'dlgTVRegExProfiles
         '
@@ -114,10 +127,8 @@ Partial Class dlgTVRegExProfiles
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(382, 324)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txtDescription)
-        Me.Controls.Add(Me.lstProfiles)
+        Me.ClientSize = New System.Drawing.Size(385, 324)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -127,8 +138,9 @@ Partial Class dlgTVRegExProfiles
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV RegEx Profiles"
         Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
@@ -138,5 +150,6 @@ Partial Class dlgTVRegExProfiles
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtDescription As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class

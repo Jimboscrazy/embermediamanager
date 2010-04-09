@@ -68,10 +68,13 @@ Partial Class dlgWizard
         Me.Label6 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
         Me.Panel4 = New System.Windows.Forms.Panel
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.btnTVLanguageFetch = New System.Windows.Forms.Button
         Me.lvTVSources = New System.Windows.Forms.ListView
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
+        Me.cbTVLanguage = New System.Windows.Forms.ComboBox
         Me.btnTVRemoveSource = New System.Windows.Forms.Button
         Me.btnTVAddSource = New System.Windows.Forms.Button
         Me.Label9 = New System.Windows.Forms.Label
@@ -109,9 +112,6 @@ Partial Class dlgWizard
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
         Me.Label11 = New System.Windows.Forms.Label
-        Me.btnTVLanguageFetch = New System.Windows.Forms.Button
-        Me.cbTVLanguage = New System.Windows.Forms.ComboBox
-        Me.Label10 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -609,6 +609,27 @@ Partial Class dlgWizard
         Me.Panel4.TabIndex = 58
         Me.Panel4.Visible = False
         '
+        'Label10
+        '
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label10.Location = New System.Drawing.Point(18, 220)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(332, 41)
+        Me.Label10.TabIndex = 58
+        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
+            " Show items."
+        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btnTVLanguageFetch
+        '
+        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(101, 293)
+        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
+        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVLanguageFetch.TabIndex = 1
+        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
+        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        '
         'lvTVSources
         '
         Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
@@ -636,6 +657,15 @@ Partial Class dlgWizard
         '
         Me.ColumnHeader3.Text = "Path"
         Me.ColumnHeader3.Width = 261
+        '
+        'cbTVLanguage
+        '
+        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguage.Location = New System.Drawing.Point(101, 268)
+        Me.cbTVLanguage.Name = "cbTVLanguage"
+        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVLanguage.TabIndex = 0
         '
         'btnTVRemoveSource
         '
@@ -1071,36 +1101,6 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'btnTVLanguageFetch
-        '
-        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(101, 293)
-        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
-        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
-        Me.btnTVLanguageFetch.TabIndex = 1
-        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
-        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
-        '
-        'cbTVLanguage
-        '
-        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguage.Location = New System.Drawing.Point(101, 268)
-        Me.cbTVLanguage.Name = "cbTVLanguage"
-        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
-        Me.cbTVLanguage.TabIndex = 0
-        '
-        'Label10
-        '
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label10.Location = New System.Drawing.Point(18, 220)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(332, 41)
-        Me.Label10.TabIndex = 58
-        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
-            " Show items."
-        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -1121,11 +1121,13 @@ Partial Class dlgWizard
         Me.Controls.Add(Me.Panel3)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgWizard"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Ember Startup Wizard"
+        Me.TopMost = True
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel3.ResumeLayout(False)

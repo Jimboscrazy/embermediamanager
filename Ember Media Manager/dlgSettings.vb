@@ -436,8 +436,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnDLTrans_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrans.Click
-        Using dTranslationDL As New dlgTranslationDL
-            If dTranslationDL.ShowDialog = Windows.Forms.DialogResult.OK Then
+        Using dAddons As New dlgAddons
+            If dAddons.ShowDialog = Windows.Forms.DialogResult.OK Then
                 Me.LoadIntLangs()
                 Me.cbIntLang.SelectedItem = Master.eSettings.Language
 
@@ -445,6 +445,9 @@ Public Class dlgSettings
                 Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
                 Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
                 Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
+            End If
+            If dAddons.NeedsRestart Then
+                sResult.NeedsRestart = True
             End If
         End Using
     End Sub
@@ -2900,20 +2903,16 @@ Public Class dlgSettings
         Dim lvItem As ListViewItem
 
         lvMovies.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLcommand.CommandText = "SELECT * FROM sources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    lvItem = New ListViewItem(SQLreader("ID").ToString)
-                    lvItem.SubItems.Add(SQLreader("Name").ToString)
-                    lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Single")), "Yes", "No"))
-                    lvMovies.Items.Add(lvItem)
-                End While
-            End Using
-        End Using
+        Master.DB.LoadMovieSourcesFromDB()
+        For Each s As Structures.MovieSource In Master.MovieSources
+            lvItem = New ListViewItem(s.id)
+            lvItem.SubItems.Add(s.Name)
+            lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
+            lvMovies.Items.Add(lvItem)
+        Next
     End Sub
 
     Private Sub RefreshTVSources()

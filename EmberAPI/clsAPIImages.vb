@@ -402,6 +402,9 @@ Public Class Images
 
                     retSave = msSave.ToArray
 
+                    'make sure directory exists
+                    Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+
                     Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
                         fs.Write(retSave, 0, retSave.Length)
                         fs.Flush()

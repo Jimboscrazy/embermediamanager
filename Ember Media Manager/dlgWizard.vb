@@ -214,21 +214,19 @@ Public Class dlgWizard
     End Sub
 
     Private Sub RefreshSources()
+        Dim lvItem As ListViewItem
+
         lvMovies.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLcommand.CommandText = "SELECT * FROM sources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
-                    lvItem.SubItems.Add(SQLreader("Name").ToString)
-                    lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Single")), "Yes", "No"))
-                    lvMovies.Items.Add(lvItem)
-                End While
-            End Using
-        End Using
+        Master.DB.LoadMovieSourcesFromDB()
+        For Each s As Structures.MovieSource In Master.MovieSources
+            lvItem = New ListViewItem(s.id)
+            lvItem.SubItems.Add(s.Name)
+            lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
+            lvMovies.Items.Add(lvItem)
+        Next
     End Sub
 
     Private Sub RefreshTVSources()

@@ -89,7 +89,7 @@ Public Class frmXMLSettingsHolder
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order", True)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
         Me.Label3.Text = Master.eLang.GetString(9, "Loading Please Wait")
-
+        Me.Label4.Text = String.Format(Master.eLang.GetString(11, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
     Public Sub New()
         InitializeComponent()

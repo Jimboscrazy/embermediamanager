@@ -39,15 +39,17 @@ Partial Class dlgTrailer
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnSetNfo = New System.Windows.Forms.Button
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.GroupBox1.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(290, 334)
+        Me.OK_Button.Location = New System.Drawing.Point(290, 338)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(74, 23)
         Me.OK_Button.TabIndex = 0
@@ -56,7 +58,7 @@ Partial Class dlgTrailer
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(369, 334)
+        Me.Cancel_Button.Location = New System.Drawing.Point(369, 338)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -78,7 +80,7 @@ Partial Class dlgTrailer
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.lbTrailers)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(9, 9)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(424, 319)
         Me.GroupBox1.TabIndex = 2
@@ -138,6 +140,7 @@ Partial Class dlgTrailer
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 5
         Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
         '
         'txtManual
         '
@@ -151,10 +154,10 @@ Partial Class dlgTrailer
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(6, 68)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(70, 13)
+        Me.Label2.Size = New System.Drawing.Size(72, 13)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Local Trailer:"
         '
@@ -170,10 +173,10 @@ Partial Class dlgTrailer
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(6, 14)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(64, 13)
+        Me.Label1.Size = New System.Drawing.Size(65, 13)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Direct Link:"
         '
@@ -182,7 +185,7 @@ Partial Class dlgTrailer
         Me.btnPlayTrailer.Enabled = False
         Me.btnPlayTrailer.Image = CType(resources.GetObject("btnPlayTrailer.Image"), System.Drawing.Image)
         Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 334)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 338)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(106, 23)
         Me.btnPlayTrailer.TabIndex = 109
@@ -193,11 +196,20 @@ Partial Class dlgTrailer
         'btnSetNfo
         '
         Me.btnSetNfo.Enabled = False
-        Me.btnSetNfo.Location = New System.Drawing.Point(207, 334)
+        Me.btnSetNfo.Location = New System.Drawing.Point(207, 338)
         Me.btnSetNfo.Name = "btnSetNfo"
         Me.btnSetNfo.Size = New System.Drawing.Size(77, 23)
         Me.btnSetNfo.TabIndex = 110
         Me.btnSetNfo.Text = "Set To Nfo"
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Location = New System.Drawing.Point(3, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(444, 331)
+        Me.Panel1.TabIndex = 111
         '
         'dlgTrailer
         '
@@ -205,13 +217,13 @@ Partial Class dlgTrailer
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(450, 363)
+        Me.ClientSize = New System.Drawing.Size(450, 365)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnSetNfo)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.btnPlayTrailer)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -225,6 +237,7 @@ Partial Class dlgTrailer
         Me.pnlStatus.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -244,5 +257,6 @@ Partial Class dlgTrailer
     Friend WithEvents txtManual As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 
 End Class
