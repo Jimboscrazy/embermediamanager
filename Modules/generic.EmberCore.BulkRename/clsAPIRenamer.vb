@@ -95,7 +95,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
-                    strCond = ApplyPattern(strCond, "A", f.Audio.ToString)
+                    strCond = ApplyPattern(strCond, "A", f.Audio)
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -121,7 +121,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
-            pattern = ApplyPattern(pattern, "A", f.Audio.ToString)
+            pattern = ApplyPattern(pattern, "A", f.Audio)
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -171,9 +171,29 @@ Public Class FileFolderRenamer
 
     Public Shared Sub RenameSingle(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
         Dim MovieFile As New FileRename
+
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
-            If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = NFO.GetResFromDimensions(NFO.GetBestVideo(_tmpMovie.Movie.FileInfo))
-            If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False).Codec
+            Try
+                If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
+                    Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes))
+                Else
+                    MovieFile.Resolution = String.Empty
+                End If
+
+                If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                    Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
+                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels))
+                Else
+                    MovieFile.Audio = String.Empty
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+            End Try
+        Else
+            MovieFile.Resolution = String.Empty
+            MovieFile.Audio = String.Empty
         End If
 
         MovieFile.Title = _tmpMovie.Movie.Title
@@ -214,7 +234,7 @@ Public Class FileFolderRenamer
                     Else
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
-                    MovieFile.IsVideo_TS = True
+                    MovieFile.IsBDMV = True
                 Else
                     MovieFile.Parent = Directory.GetParent(_tmpMovie.Filename).Name
                     If MovieFile.BasePath = Directory.GetParent(_tmpMovie.Filename).FullName Then
@@ -236,10 +256,13 @@ Public Class FileFolderRenamer
             If _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                 MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
             End If
+            MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
         ElseIf MovieFile.IsBDMV Then
             MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
+            MovieFile.NewFileName = MovieFile.FileName
         Else
             MovieFile.FileName = "VIDEO_TS"
+            MovieFile.NewFileName = MovieFile.FileName
         End If
 
         If HaveBase(folderPattern) Then
@@ -248,8 +271,6 @@ Public Class FileFolderRenamer
             MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim)
         End If
         MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
-
-        MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
 
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)

@@ -203,12 +203,13 @@ Public Class DVD
                 For Each fFile As String In IFOFiles
                     Try
                         ParsedIFOFile = fctParseIFO_VSTFile(fFile)
+                        Dim test As String = GetProgramChainPlayBackTime(1, True)
                         currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
                         If currDuration > currLongest Then
                             currLongest = currDuration
                             tIFOFile = ParsedIFOFile
                         End If
-                    Catch
+                    Catch ex As Exception
                     End Try
                 Next
 

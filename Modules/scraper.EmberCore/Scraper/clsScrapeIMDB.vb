@@ -115,10 +115,6 @@ Namespace IMDB
 
         Public Event Exception(ByVal ex As Exception)
 
-        Public Event MovieInfoDownloaded(ByVal bSuccess As Boolean)
-
-        Public Event ProgressUpdated(ByVal iPercent As Integer)
-
         Public Event SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
         Public Event SearchResultsDownloaded(ByVal mResults As IMDB.MovieSearchResults)
@@ -135,7 +131,7 @@ Namespace IMDB
             End While
         End Sub
 
-        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions, Optional ByVal doProgress As Boolean = False) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions) As Boolean
             Try
                 Dim ofdbTitle As String = String.Empty
                 Dim ofdbOutline As String = String.Empty
@@ -165,9 +161,6 @@ Namespace IMDB
                 Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", strID, "/plotsummary"))
                 sPlot = Nothing
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(1)
-                End If
                 IMDBMovie.IMDBID = strID
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -214,10 +207,6 @@ Namespace IMDB
                     IMDBMovie.MPAA = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 26)).Trim(), String.Empty)
                 End If
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(2)
-                End If
-
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bCert Then
@@ -261,10 +250,6 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(3)
-                End If
-
                 If Options.bRating AndAlso (String.IsNullOrEmpty(IMDBMovie.Rating) OrElse Not Master.eSettings.LockRating) Then
                     Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
                     If String.IsNullOrEmpty(RegexRating) Then
@@ -304,10 +289,6 @@ Namespace IMDB
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
                 If Options.bTop250 Then IMDBMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top\?tt", IMDBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(4)
-                End If
-
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bCast Then
@@ -342,10 +323,6 @@ Namespace IMDB
                     Next
 
                     IMDBMovie.Actors = Cast
-                End If
-
-                If doProgress Then
-                    bwIMDB.ReportProgress(5)
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -384,10 +361,6 @@ Namespace IMDB
                     End If
                 End If
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(6)
-                End If
-
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Get genres of the movie
@@ -416,10 +389,6 @@ Namespace IMDB
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
-
-                If doProgress Then
-                    bwIMDB.ReportProgress(7)
-                End If
 
                 If Options.bOutline AndAlso (String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
@@ -470,10 +439,6 @@ Namespace IMDB
                     End If
                 End If
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(8)
-                End If
-
                 If bwIMDB.CancellationPending Then Return Nothing
 
 mPlot:
@@ -500,10 +465,6 @@ mPlot:
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(9)
-                End If
-
                 'Get the movie duration
                 If Options.bRuntime Then IMDBMovie.Runtime = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
 
@@ -529,10 +490,6 @@ mPlot:
                     End If
                 End If
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(10)
-                End If
-
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Get Writers
@@ -555,10 +512,6 @@ mPlot:
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
-
-                If doProgress Then
-                    bwIMDB.ReportProgress(11)
-                End If
 
                 'Get All Other Info
                 If FullCrew Then
@@ -601,10 +554,6 @@ mPlot:
                         Next
                     End If
 
-                    If doProgress Then
-                        bwIMDB.ReportProgress(12)
-                    End If
-
                     If bwIMDB.CancellationPending Then Return Nothing
 
                     'Special Effects
@@ -622,29 +571,12 @@ mPlot:
                     End If
                 End If
 
-                If doProgress Then
-                    bwIMDB.ReportProgress(13)
-                End If
-
                 Return True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Return False
             End Try
         End Function
-
-        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions)
-            ', Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
-            Try
-                If Not bwIMDB.IsBusy Then
-                    bwIMDB.WorkerReportsProgress = True
-                    bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Details, _
-                                          .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = Options.bFullCrew, .FullCast = Options.bFullCast, .Options = Options})
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End Sub
 
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
@@ -765,9 +697,6 @@ mPlot:
                     Case SearchType.Movies
                         Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
-                    Case SearchType.Details
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, Args.FullCrew, Args.FullCast, False, Args.Options, True)
-                        e.Result = New Results With {.ResultType = SearchType.Details, .Success = s}
                     Case SearchType.SearchDetails
                         Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
@@ -777,10 +706,6 @@ mPlot:
             End Try
         End Sub
 
-        Private Sub bwIMDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwIMDB.ProgressChanged
-            RaiseEvent ProgressUpdated(e.ProgressPercentage)
-        End Sub
-
         Private Sub BW_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMDB.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
@@ -788,8 +713,6 @@ mPlot:
                 Select Case Res.ResultType
                     Case SearchType.Movies
                         RaiseEvent SearchResultsDownloaded(DirectCast(Res.Result, MovieSearchResults))
-                    Case SearchType.Details
-                        RaiseEvent MovieInfoDownloaded(Res.Success)
                     Case SearchType.SearchDetails
                         RaiseEvent SearchMovieInfoDownloaded(sPoster, Res.Success)
                 End Select

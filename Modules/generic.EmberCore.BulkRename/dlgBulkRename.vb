@@ -79,9 +79,7 @@ Public Class dlgBulkRenamer
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
             Dim _curMovie As New Structures.DBMovie
-            Dim tVid As New MediaInfo.Video
-            Dim tAud As New MediaInfo.Audio
-            Dim tRes As String = String.Empty
+
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 Dim _tmpPath As String = String.Empty
@@ -114,21 +112,29 @@ Public Class dlgBulkRenamer
                                             MovieFile.Year = _curMovie.Movie.Year
                                             MovieFile.IsLocked = _curMovie.IsLock
                                             MovieFile.IsSingle = _curMovie.isSingle
+
                                             If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                                 Try
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                        tRes = NFO.GetResFromDimensions(tVid)
+                                                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                                        Dim tRes As String = NFO.GetResFromDimensions(tVid)
                                                         MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes))
+                                                    Else
+                                                        MovieFile.Resolution = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
+                                                        Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
                                                         MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels))
+                                                    Else
+                                                        MovieFile.Audio = String.Empty
                                                     End If
                                                 Catch ex As Exception
                                                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
                                                 End Try
+                                            Else
+                                                MovieFile.Resolution = String.Empty
+                                                MovieFile.Audio = String.Empty
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders
