@@ -515,7 +515,7 @@ Public Class dlgEditMovie
         Try
 
             Me.SetUp()
-
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, Master.currMovie)
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
             Me.lvwThumbSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}

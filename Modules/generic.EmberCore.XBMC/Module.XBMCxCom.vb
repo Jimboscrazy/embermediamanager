@@ -99,6 +99,9 @@ Public Class XBMCxCom
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled
+        _setup.chkPlayCount.Checked = AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False)
+        _setup.chkRealTime.Checked = AdvancedSettings.GetBooleanSetting("XBMCSync", False)
+        _setup.chkNotification.Checked = AdvancedSettings.GetBooleanSetting("XBMCNotifications", False)
         _setup.XComs = _MySettings.XComs
         _setup.LoadXComs()
         SPanel.Name = Me._name
@@ -266,6 +269,7 @@ Public Class XBMCxCom
         If _setup.cbPlayCountHost.SelectedIndex >= 0 Then AdvancedSettings.SetSetting("XBMCSyncPlayCountHost", _setup.cbPlayCountHost.SelectedItem.ToString)
         AdvancedSettings.SetBooleanSetting("XBMCSyncPlayCount", _setup.chkPlayCount.Checked)
         AdvancedSettings.SetBooleanSetting("XBMCSync", _setup.chkRealTime.Checked)
+        AdvancedSettings.SetBooleanSetting("XBMCNotifications", _setup.chkNotification.Checked)
         If Me._enabled Then
             Me.Disable()
             Me.Enable()

@@ -1186,7 +1186,7 @@ Public Class frmMain
 
                 dScrapeRow = dRow
                 Dim DBScrapeMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
-
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
                 If Not ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
                     If Master.eSettings.ScanMediaInfo AndAlso Master.GlobalScrapeMod.Meta Then
                         MediaInfo.UpdateMediaInfo(DBScrapeMovie)

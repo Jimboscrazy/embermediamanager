@@ -110,10 +110,11 @@ Public Class frmSettingsHolder
     Sub SetUp()
         Me.GroupBox11.Text = Master.eLang.GetString(9, "XBMC Communication")
         Me.btnEditCom.Text = Master.eLang.GetString(10, "Edit")
-        Me.btnAddCom.Text = Master.eLang.GetString(12, "Add New")
+        Me.btnAddCom.Text = Master.eLang.GetString(12, "Add")
         Me.btnRemoveCom.Text = Master.eLang.GetString(15, "Remove Selected")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
         Me.chkRealTime.Text = Master.eLang.GetString(20, "Enable Real Time synchronization")
+        Me.chkNotification.Text = Master.eLang.GetString(30, "Send Notifications")
     End Sub
 
     Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click
@@ -129,10 +130,10 @@ Public Class frmSettingsHolder
     Private Sub cbPlayCountHost_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbPlayCountHost.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    #End Region 'Methods
+    Private Sub chkNotification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNotification.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 
-
-
-
+#End Region 'Methods
 
 End Class
