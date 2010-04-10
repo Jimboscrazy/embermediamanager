@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<string control="Notify_chkEnabled">Activer ou désactiver ce module.</string>
-	<string control="Notify_chkOnError">Si activé une fenêtre de notification sera affichée lors des erreurs.</string>
-	<string control="Notify_chkOnNewMovie">Si activé une fenêtre de notification sera affichée quand un film est ajouté dans la librairie.</string>
-	<string control="Notify_chkOnMovieScraped">Si activé une fenêtre de notification sera affichée quand un film est scanné.</string>
-	<string control="Notify_chkOnNewEp">Si activé une fenêtre de notification sera affichée lors de l'ajout d'un épisode dans la librairie.</string>
-</strings>
