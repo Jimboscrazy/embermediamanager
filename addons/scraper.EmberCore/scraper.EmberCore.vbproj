@@ -45,7 +45,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x64\Debug\Modules\</OutputPath>
+    <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -58,7 +58,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DefineTrace>false</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x64\Release\Modules\</OutputPath>
+    <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
@@ -73,7 +73,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>false</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Release\Modules\</OutputPath>
+    <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
@@ -98,6 +98,10 @@
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EmberAPI, Version=0.0.0.2114, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\trunk\Ember Media Manager\bin\x86\Release\EmberAPI.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Ember Media Manager\bin\x64\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -106,7 +110,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Ember Media Manager\bin\x64\Debug\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\Release Files\x86\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -279,12 +283,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
-      <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
-      <Name>EmberAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

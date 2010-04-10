@@ -23,17 +23,17 @@ Imports EmberAPI
 Public Class MovieExporterModule
     Implements Interfaces.EmberExternalModule
 
-    #Region "Fields"
+#Region "Fields"
 
-    Private  WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private  WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
     Private _setup As frmSettingsHolder
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Events"
+#Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
 
@@ -41,9 +41,9 @@ Public Class MovieExporterModule
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
 
-    #End Region 'Events
+#End Region 'Events
 
-    #Region "Properties"
+#Region "Properties"
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
@@ -78,9 +78,9 @@ Public Class MovieExporterModule
         End Get
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
@@ -153,6 +153,6 @@ Public Class MovieExporterModule
         Me.Enabled = Me._setup.cbEnabled.Checked
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class
