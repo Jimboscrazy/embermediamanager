@@ -8143,6 +8143,8 @@ doCancel:
 
         Select Case tabsMain.SelectedIndex
             Case 0
+                Me.ToolsToolStripMenuItem.Enabled = True
+                Me.cmnuTrayIconTools.Enabled = True
                 Me.pnlFilter.Visible = True
                 Me.pnlListTop.Height = 56
                 Me.btnMarkAll.Visible = True
