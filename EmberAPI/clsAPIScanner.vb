@@ -754,7 +754,7 @@ Public Class Scanner
                         If lfile.Extension.ToLower = ".ifo" Then hasIfo = 1
                         If lfile.Extension.ToLower = ".vob" Then hasVob = 1
                         If lfile.Extension.ToLower = ".bup" Then hasBup = 1
-                        If lfile.Name.ToLower = "video_ts.vob" Then
+                        If lfile.Name.ToLower = "video_ts.ifo" Then
                             'video_ts.vob takes precedence
                             tFile = lfile.FullName
                         ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
@@ -762,7 +762,7 @@ Public Class Scanner
                             tFile = lfile.FullName
                         End If
                         vtsSingle = (hasIfo + hasVob + hasBup) > 1
-                        If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.vob" Then Exit For
+                        If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.ifo" Then Exit For
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
                 End If
