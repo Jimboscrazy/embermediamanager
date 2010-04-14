@@ -246,7 +246,7 @@ Public Class dlgAddons
 
                 For Each xAddon In xdAddons.Descendants("entry")
                     Try
-                        If AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
+                        If (xAddon.Element("User").Value = Me.txtUsername.Text) OrElse AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
                             ReDim Preserve Me.AddonItem(iIndex)
                             Me.AddonItem(iIndex) = New AddonItem
                             Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
