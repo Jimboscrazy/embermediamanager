@@ -530,7 +530,7 @@ Public Class EmberNativeScraperModule
 
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
             AndAlso ModulesManager.Instance.externalScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
-
+            DBMovie.Movie.IMDBID = String.Empty
             DBMovie.ClearExtras = True
             DBMovie.PosterPath = String.Empty
             DBMovie.FanartPath = String.Empty
