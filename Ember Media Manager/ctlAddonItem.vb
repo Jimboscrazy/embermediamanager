@@ -247,6 +247,10 @@ Public Class AddonItem
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
+            ' Almost all addons will need restat for one reason ot another
+            ' Until we find a way to control it better better allways ask fro restart
+            _needRestart = True
+
             If _needRestart Then
                 _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
                 RaiseEvent NeedsRestart()
@@ -285,6 +289,9 @@ Public Class AddonItem
     Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
         Using dDelAddon As New dlgDeleteAddon
             If dDelAddon.ShowDialog(Me._id) = DialogResult.OK Then
+                ' Almost all addons will need restat for one reason ot another
+                ' Until we find a way to control it better better allways ask fro restart
+                RaiseEvent NeedsRestart()
                 RaiseEvent NeedsRefresh()
             End If
         End Using
