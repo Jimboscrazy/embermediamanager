@@ -7374,7 +7374,11 @@ doCancel:
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
                     o.Enabled = (isEnabled OrElse Not withTools) AndAlso ((Me.dgvMediaList.RowCount > 0 OrElse tagmenu.IfNoMovies) OrElse (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow))
+
                 End If
+            ElseIf TypeOf i Is ToolStripSeparator Then
+                Dim o As ToolStripSeparator = DirectCast(i, ToolStripSeparator)
+                o.Visible = (Me.ToolsToolStripMenuItem.DropDownItems.IndexOf(o) < Me.ToolsToolStripMenuItem.DropDownItems.Count - 1)
             End If
         Next
         With Master.eSettings
