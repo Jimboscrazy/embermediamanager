@@ -258,6 +258,7 @@ Public Class AdvancedSettings
         SetSetting("VideoFormatConvert:3iv2", "3ivx")
         SetSetting("VideoFormatConvert:3ivd", "3ivx")
 
+        SetSetting("StackMarkers", "cd|dvd|part|dis[ck]")
         _DoNotSave = False
     End Sub
 
