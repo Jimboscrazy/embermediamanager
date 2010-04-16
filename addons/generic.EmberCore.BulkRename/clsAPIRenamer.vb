@@ -96,6 +96,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "A", f.Audio)
+                    strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -122,6 +123,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "A", f.Audio)
+            pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
@@ -744,6 +746,7 @@ Public Class FileFolderRenamer
         Private _title As String
         Private _year As String
         Private _sorttitle As String
+        Private _imdbid As String
 
         #End Region 'Fields
 
@@ -953,7 +956,14 @@ Public Class FileFolderRenamer
                 Me._year = value
             End Set
         End Property
-
+        Public Property IMDBID() As String
+            Get
+                Return Me._imdbid
+            End Get
+            Set(ByVal value As String)
+                Me._imdbid = value.Trim
+            End Set
+        End Property
         #End Region 'Properties
 
         #Region "Methods"

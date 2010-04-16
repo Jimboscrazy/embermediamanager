@@ -112,6 +112,7 @@ Public Class dlgBulkRenamer
                                             MovieFile.Year = _curMovie.Movie.Year
                                             MovieFile.IsLocked = _curMovie.IsLock
                                             MovieFile.IsSingle = _curMovie.isSingle
+                                            MovieFile.IMDBID = _curMovie.Movie.IMDBID
 
                                             If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                                 Try
@@ -586,7 +587,7 @@ Public Class dlgBulkRenamer
         If dHelpTips Is Nothing OrElse dHelpTips.IsDisposed Then
             dHelpTips = New dlgHelpTips
         End If
-        Dim s As String = String.Format(Master.eLang.GetString(11, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(11, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$I = IMDB ID{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
         dHelpTips.lblTips.Text = s
         dHelpTips.Width = dHelpTips.lblTips.Width + 5
         dHelpTips.Height = dHelpTips.lblTips.Height + 35

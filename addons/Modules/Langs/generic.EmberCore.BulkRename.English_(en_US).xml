@@ -11,7 +11,7 @@
 	<string id="8">File Pattern</string>
 	<string id="9">Folder Pattern (for Multiple movies in Folder)</string>
 	<string id="10">Display Only Movies That Will Be Renamed</string>
-	<string id="11">$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}$E = Sort Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
+	<string id="11">$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$I = IMDB ID{0}$R = Resolution{0}$A = Audio{0}$S = Source{0}$M = MPAA{0}$B = Base Path{0}$L = List Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
 	<string id="12">An error occured while attempting to rename the folder:{0}{0}{1}{0}{0}Please ensure that you are not accessing this folder or any of its files from another program (including browsing via Windows Explorer</string>
 	<string id="13">Unable to Rename Folder</string>
 	<string id="14">An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.</string>
