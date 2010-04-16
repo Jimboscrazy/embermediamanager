@@ -25,7 +25,7 @@ Public Class dlgChangeOptions
     #Region "Fields"
 
     Dim localPath As String = String.Empty
-
+    Dim internalChange As Boolean = False
     #End Region 'Fields
 
     #Region "Methods"
@@ -75,7 +75,9 @@ Public Class dlgChangeOptions
             d.Description = "Select the folder in which you would like to install Ember Media Manager."
             If d.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 localPath = d.SelectedPath
+                internalChange = True
                 txtEMMPath.Text = (Path.Combine(d.SelectedPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+                internalChange = True
                 txtEMMPath.Text.Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
             End If
         End Using
@@ -88,6 +90,7 @@ Public Class dlgChangeOptions
 
     Private Sub cbCreateFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCreateFolder.CheckedChanged
         If Not localPath = String.Empty Then
+            internalChange = True
             txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
         End If
     End Sub
@@ -96,10 +99,13 @@ Public Class dlgChangeOptions
         SetUp()
         If String.IsNullOrEmpty(frmMainSetup.emberPath) Then
             localPath = frmMainSetup.AppPath()
+            internalChange = True
             txtEMMPath.Text = (Path.Combine(localPath, If(cbCreateFolder.Checked, "Ember Media Manager", String.Empty)) & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
         Else
-            localPath = frmMainSetup.emberPath
-            txtEMMPath.Text = frmMainSetup.emberPath
+            localPath = (frmMainSetup.emberPath & Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, Path.DirectorySeparatorChar)
+            'internalChange = True
+            txtEMMPath.Text = localPath
+            cbCreateFolder.Checked = localPath.EndsWith("Ember Media Manager" & Path.DirectorySeparatorChar)
         End If
         'txtEMMPath.Text = frmMainSetup.emberPath
         'localPath = frmMainSetup.emberPath
@@ -111,6 +117,7 @@ Public Class dlgChangeOptions
 
     Private Sub lstEMMPaths_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstEMMPaths.SelectedIndexChanged
         If lstEMMPaths.SelectedItems.Count > 0 Then
+            internalChange = True
             txtEMMPath.Text = lstEMMPaths.SelectedItems(0).Text
             localPath = lstEMMPaths.SelectedItems(0).Text
         End If
@@ -150,6 +157,16 @@ Public Class dlgChangeOptions
             lblInfo.Text = "Platform: Mono"
             rbX86.Visible = False
             rbX64.Visible = False
+        End If
+        If Not internalChange Then
+            If txtEMMPath.Text.EndsWith(Path.DirectorySeparatorChar) Then
+                localPath = Path.GetDirectoryName(txtEMMPath.Text.Substring(0, txtEMMPath.Text.Length - 1))
+                'localPath = Path.GetDirectoryName(txtEMMPath.Text)
+            Else
+                localPath = Path.GetDirectoryName(txtEMMPath.Text)
+            End If
+        Else
+            internalChange = False
         End If
     End Sub
     Sub SetUp()

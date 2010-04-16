@@ -984,6 +984,14 @@ Public Class frmMainSetup
                                     LogWrite(String.Format("*** Execute DB: {0}", s.CommandExecute))
                                     UpdateTasks.Command.Add(s)
                                     HaveCommands = True
+                                ElseIf s.CommandType = "FILE.Delete" Then
+                                    Try
+                                        LogWrite(String.Format("*** Execute File Delete: {0}", s.CommandExecute))
+                                        File.Delete(Path.Combine(emberPath, s.CommandExecute.Replace("/", Path.DirectorySeparatorChar)))
+                                    Catch ex As Exception
+                                        LogWrite(String.Format("--- Error: {0}", ex.Message))
+                                    End Try
+
                                 End If
                             Next
                             If HaveCommands Then UpdateTasks.Save(Path.Combine(Path.GetDirectoryName(emberPath), "InstallTasks.xml"))
