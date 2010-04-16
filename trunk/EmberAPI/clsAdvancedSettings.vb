@@ -258,7 +258,8 @@ Public Class AdvancedSettings
         SetSetting("VideoFormatConvert:3iv2", "3ivx")
         SetSetting("VideoFormatConvert:3ivd", "3ivx")
 
-        SetSetting("StackMarkers", "cd|dvd|part|dis[ck]")
+        SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)")
+        SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)[\W_]?")
         _DoNotSave = False
     End Sub
 
