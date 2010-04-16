@@ -38,8 +38,7 @@ Public Class StringUtils
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
         If String.IsNullOrEmpty(sPath) Then Return String.Empty
-        Dim stackMarker As String = String.Format("[\W_]\s?({0})([0-9])[\W_]*([0-9a-d]+)[\W_]?", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
-        Dim sReturn As String = Regex.Replace(sPath, stackMarker, If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
+        Dim sReturn As String = Regex.Replace(sPath, AdvancedSettings.GetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)[\W_]?"), If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
         Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
 
@@ -294,11 +293,9 @@ Public Class StringUtils
         If String.IsNullOrEmpty(sName) Then Return False
         Dim bReturn As Boolean = False
         If VTS Then
-            Dim stackMarker As String = String.Format("[\W_]+({0})([0-9])[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
-            bReturn = Regex.IsMatch(sName, stackMarker, RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, AdvancedSettings.GetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)"), RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
         Else
-            Dim stackMarker As String = String.Format("[\W_]+({0})([0-9])[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
-            bReturn = Regex.IsMatch(sName, stackMarker, RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, AdvancedSettings.GetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)"), RegexOptions.IgnoreCase)
         End If
         Return bReturn
     End Function
