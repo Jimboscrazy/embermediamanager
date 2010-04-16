@@ -38,7 +38,7 @@ Public Class StringUtils
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
         If String.IsNullOrEmpty(sPath) Then Return String.Empty
-        Dim stackMarker As String = String.Format("[\W_]\s?({0})[\W_]*([0-9a-d]+)[\W_]?", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
+        Dim stackMarker As String = String.Format("[\W_]\s?({0})([0-9])[\W_]*([0-9a-d]+)[\W_]?", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
         Dim sReturn As String = Regex.Replace(sPath, stackMarker, If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
         Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
@@ -294,10 +294,10 @@ Public Class StringUtils
         If String.IsNullOrEmpty(sName) Then Return False
         Dim bReturn As Boolean = False
         If VTS Then
-            Dim stackMarker As String = String.Format("[\W_]+({0})[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
+            Dim stackMarker As String = String.Format("[\W_]+({0})([0-9])[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
             bReturn = Regex.IsMatch(sName, stackMarker, RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
         Else
-            Dim stackMarker As String = String.Format("[\W_]+({0})[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
+            Dim stackMarker As String = String.Format("[\W_]+({0})([0-9])[\W_]*([0-9a-d]+)", AdvancedSettings.GetSetting("StackMarkers", "cd|dvd|part|dis[ck]"))
             bReturn = Regex.IsMatch(sName, stackMarker, RegexOptions.IgnoreCase)
         End If
         Return bReturn
