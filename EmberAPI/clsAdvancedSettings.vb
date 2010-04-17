@@ -127,7 +127,12 @@ Public Class AdvancedSettings
                 Dim xdoc As New XDocument
                 xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
                 For Each i As XElement In xdoc...<Setting>
-                    _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                    Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = i.@Name AndAlso f.Section = i.@Section)
+                    If v Is Nothing Then
+                        _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                    Else
+                        _AdvancedSettings.FirstOrDefault(Function(f) f.Name = i.@Name AndAlso f.Section = i.@Section).Value = Convert.ToString(i.Value)
+                    End If
                 Next
                 For Each i As XElement In xdoc...<ComplexSettings>...<Table>
                     Dim l As XElement = i
@@ -139,6 +144,8 @@ Public Class AdvancedSettings
                     If cs Is Nothing Then
                         _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = l.@Section, .Name = l.@Name})
                         cs = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
+                    Else
+                        cs.TableItem.Clear()
                     End If
                     cs.TableItem.Add(dict)
                 Next
@@ -250,6 +257,7 @@ Public Class AdvancedSettings
         SetSetting("VideoFormatConvert:divx 3", "div3")
         SetSetting("VideoFormatConvert:lmp4", "h264")
         SetSetting("VideoFormatConvert:svq3", "h264")
+        SetSetting("VideoFormatConvert:v_mpeg4/iso/avc", "h264")
         SetSetting("VideoFormatConvert:x264", "h264")
         SetSetting("VideoFormatConvert:avc", "h264")
         SetSetting("VideoFormatConvert:swf", "flv")
