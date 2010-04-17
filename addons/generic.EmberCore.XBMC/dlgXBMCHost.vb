@@ -258,9 +258,11 @@ Public Class dlgXBMCHost
 
     Private Sub rbLinux_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLinux.CheckedChanged
         Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+        RemotePathSeparator = Me.xCom.RemotePathSeparator
     End Sub
 
     Private Sub rbWindows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbWindows.CheckedChanged
         Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+        RemotePathSeparator = Me.xCom.RemotePathSeparator
     End Sub
 End Class
