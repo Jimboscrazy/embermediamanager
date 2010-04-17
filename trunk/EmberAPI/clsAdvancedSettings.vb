@@ -260,6 +260,7 @@ Public Class AdvancedSettings
 
         SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)")
         SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)[\W_]?")
+        SetBooleanSetting("DisableMultiPartMedia", False)
         _DoNotSave = False
     End Sub
 
