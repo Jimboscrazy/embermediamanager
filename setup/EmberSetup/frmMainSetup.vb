@@ -987,7 +987,7 @@ Public Class frmMainSetup
                                 ElseIf s.CommandType = "FILE.Delete" Then
                                     Try
                                         LogWrite(String.Format("*** Execute File Delete: {0}", s.CommandExecute))
-                                        File.Delete(Path.Combine(emberPath, s.CommandExecute.Replace("/", Path.DirectorySeparatorChar)))
+                                        File.Delete(Path.Combine(Path.GetDirectoryName(emberPath), s.CommandExecute.Replace("/", Path.DirectorySeparatorChar)))
                                     Catch ex As Exception
                                         LogWrite(String.Format("--- Error: {0}", ex.Message))
                                     End Try
@@ -1013,7 +1013,7 @@ Public Class frmMainSetup
                                     ElseIf s.CommandType = "FILE.Delete" Then
                                         Try
                                             LogWrite(String.Format("*** Execute File Delete: {0}", s.CommandExecute))
-                                            File.Delete(Path.Combine(emberPath, s.CommandExecute.Replace("/", Path.DirectorySeparatorChar)))
+                                            File.Delete(Path.Combine(Path.GetDirectoryName(emberPath), s.CommandExecute.Replace("/", Path.DirectorySeparatorChar)))
                                         Catch ex As Exception
                                             LogWrite(String.Format("--- Error: {0}", ex.Message))
                                         End Try
