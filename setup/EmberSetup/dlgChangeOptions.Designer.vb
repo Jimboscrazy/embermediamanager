@@ -52,12 +52,12 @@ Partial Class dlgChangeOptions
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(253, 207)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(228, 207)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(171, 29)
         Me.TableLayoutPanel1.TabIndex = 0
         '
         'OK_Button
@@ -65,7 +65,7 @@ Partial Class dlgChangeOptions
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
+        Me.OK_Button.Size = New System.Drawing.Size(79, 23)
         Me.OK_Button.TabIndex = 0
         Me.OK_Button.Text = "OK"
         '
@@ -73,9 +73,9 @@ Partial Class dlgChangeOptions
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
+        Me.Cancel_Button.Location = New System.Drawing.Point(88, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
+        Me.Cancel_Button.Size = New System.Drawing.Size(79, 23)
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
@@ -83,20 +83,20 @@ Partial Class dlgChangeOptions
         '
         Me.txtEMMPath.Location = New System.Drawing.Point(7, 125)
         Me.txtEMMPath.Name = "txtEMMPath"
-        Me.txtEMMPath.Size = New System.Drawing.Size(367, 22)
+        Me.txtEMMPath.Size = New System.Drawing.Size(364, 22)
         Me.txtEMMPath.TabIndex = 1
         '
         'btnGetEMMPath
         '
-        Me.btnGetEMMPath.Location = New System.Drawing.Point(377, 124)
+        Me.btnGetEMMPath.Location = New System.Drawing.Point(371, 124)
         Me.btnGetEMMPath.Name = "btnGetEMMPath"
-        Me.btnGetEMMPath.Size = New System.Drawing.Size(20, 23)
+        Me.btnGetEMMPath.Size = New System.Drawing.Size(25, 23)
         Me.btnGetEMMPath.TabIndex = 3
+        Me.btnGetEMMPath.Text = "..."
         Me.btnGetEMMPath.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.pnlCancel)
         Me.GroupBox1.Controls.Add(Me.cbCreateFolder)
         Me.GroupBox1.Controls.Add(Me.btnFindPaths)
         Me.GroupBox1.Controls.Add(Me.lstEMMPaths)
@@ -116,7 +116,7 @@ Partial Class dlgChangeOptions
         Me.pnlCancel.Controls.Add(Me.btnCancel)
         Me.pnlCancel.Controls.Add(Me.lblStatus)
         Me.pnlCancel.Controls.Add(Me.pbCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(74, 48)
+        Me.pnlCancel.Location = New System.Drawing.Point(80, 67)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(260, 96)
         Me.pnlCancel.TabIndex = 5
@@ -125,9 +125,9 @@ Partial Class dlgChangeOptions
         'btnCancel
         '
         Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(88, 35)
+        Me.btnCancel.Location = New System.Drawing.Point(91, 38)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(75, 25)
+        Me.btnCancel.Size = New System.Drawing.Size(79, 23)
         Me.btnCancel.TabIndex = 2
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -226,6 +226,7 @@ Partial Class dlgChangeOptions
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(411, 248)
+        Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.lblInfo)
         Me.Controls.Add(Me.rbX86)
         Me.Controls.Add(Me.rbX64)

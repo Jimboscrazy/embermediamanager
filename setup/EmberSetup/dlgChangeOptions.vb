@@ -177,6 +177,7 @@ Public Class dlgChangeOptions
         btnFindPaths.Text = frmMainSetup.MyLang.GetString(49, "Find Ember Installations")
         OK_Button.Text = frmMainSetup.MyLang.GetString(50, "OK")
         Cancel_Button.Text = frmMainSetup.MyLang.GetString(37, "Cancel")
+        btnCancel.Text = frmMainSetup.MyLang.GetString(37, "Cancel")
         lblInfo.Text = frmMainSetup.MyLang.GetString(51, "Platform")
     End Sub
     #End Region 'Methods

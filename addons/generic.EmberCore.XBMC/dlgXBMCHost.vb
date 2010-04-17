@@ -80,7 +80,7 @@ Public Class dlgXBMCHost
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(25, "XBMC Source")
         Me.GroupBox1.Text = Master.eLang.GetString(26, "XBMC Host OS")
         Me.rbWindows.Text = Master.eLang.GetString(27, "Windows")
-        Me.rbLinux.Text = Master.eLang.GetString(27, "Linux/MacOS X")
+        Me.rbLinux.Text = Master.eLang.GetString(28, "Linux/MacOS X")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
     End Sub
