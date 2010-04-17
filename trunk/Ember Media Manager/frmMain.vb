@@ -5429,6 +5429,7 @@ doCancel:
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
                         Using dNewVer As New dlgNewVersion
+                            fLoading.Hide()
                             If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
                                 tmrAppExit.Enabled = True
                                 CloseApp = True
