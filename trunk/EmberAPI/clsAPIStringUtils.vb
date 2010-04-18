@@ -317,7 +317,7 @@ Public Class StringUtils
     Public Shared Function ProperCase(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
         Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
-        Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b"
+        Dim toUpper As String = AdvancedSettings.GetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
 
         Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
         For Each M As Match In mcUp

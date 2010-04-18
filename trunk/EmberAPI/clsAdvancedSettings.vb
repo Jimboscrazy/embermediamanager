@@ -90,7 +90,7 @@ Public Class AdvancedSettings
         Catch ex As Exception
         End Try
     End Sub
-    Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of Hashtable)
+    Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As Hashtable
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
@@ -102,7 +102,7 @@ Public Class AdvancedSettings
         Return If(v Is Nothing, Nothing, v.TableItem)
     End Function
 
-    Public Shared Function SetComplexSetting(ByVal key As String, ByVal value As List(Of Hashtable), Optional ByVal cAssembly As String = "") As Boolean
+    Public Shared Function SetComplexSetting(ByVal key As String, ByVal value As Hashtable, Optional ByVal cAssembly As String = "") As Boolean
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
@@ -149,7 +149,7 @@ Public Class AdvancedSettings
                     Else
                         cs.TableItem.Clear()
                     End If
-                    cs.TableItem.Add(dict)
+                    cs.TableItem = dict
                 Next
             End If
         Catch ex As Exception
@@ -181,27 +181,26 @@ Public Class AdvancedSettings
             Next
             Dim elemp As XmlElement = xdoc.CreateElement("ComplexSettings")
             For Each i As ComplexSettingItem In _ComplexAdvancedSettings
-                For Each o As Hashtable In i.TableItem
-                    If Not o Is Nothing Then
-                        Dim elem As XmlElement = xdoc.CreateElement("Table")
-                        Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
-                        attr.Value = i.Section
-                        elem.Attributes.SetNamedItem(attr)
-                        Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                        attr2.Value = i.Name
-                        elem.Attributes.SetNamedItem(attr2)
-                        For Each ti In o.Keys
-                            Dim elemi As XmlElement = xdoc.CreateElement("Item")
-                            Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                            attr3.Value = ti.ToString
-                            elemi.InnerText = o.Item(ti.ToString).ToString
-                            elemi.Attributes.SetNamedItem(attr3)
-                            elem.AppendChild(elemi)
-                        Next
-                        elemp.AppendChild(elem)
-                        count += 1
-                    End If
-                Next
+
+                If Not i.TableItem Is Nothing Then
+                    Dim elem As XmlElement = xdoc.CreateElement("Table")
+                    Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                    attr.Value = i.Section
+                    elem.Attributes.SetNamedItem(attr)
+                    Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                    attr2.Value = i.Name
+                    elem.Attributes.SetNamedItem(attr2)
+                    For Each ti In i.TableItem.Keys
+                        Dim elemi As XmlElement = xdoc.CreateElement("Item")
+                        Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                        attr3.Value = ti.ToString
+                        elemi.InnerText = i.TableItem.Item(ti.ToString).ToString
+                        elemi.Attributes.SetNamedItem(attr3)
+                        elem.AppendChild(elemi)
+                    Next
+                    elemp.AppendChild(elem)
+                    count += 1
+                End If
             Next
             xdoc.DocumentElement.AppendChild(elemp)
             If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
@@ -274,6 +273,17 @@ Public Class AdvancedSettings
         SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)")
         SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)[\W_]?")
         SetBooleanSetting("DisableMultiPartMedia", False)
+
+        SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")
+        SetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
+
+        Dim keypair As New Hashtable
+        keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
+        keypair.Add("hd[-\s]?dvd", "hddvd")
+        keypair.Add("hd[-\s]?tv", "hdtv")
+        keypair.Add("(sd[-\s]?)?dvd", "dvd")
+        keypair.Add("sd[-\s]?tv", "sdtv")
+        SetComplexSetting("MovieSources", keypair)
         _DoNotSave = False
     End Sub
 
@@ -293,7 +303,7 @@ Public Class AdvancedSettings
     Public Class ComplexSettingItem
         Public Name As String
         Public Section As String
-        Public TableItem As New List(Of Hashtable)
+        Public TableItem As New Hashtable
     End Class
 
 

@@ -93,8 +93,8 @@ Public Class MediaInfo
                         Dim sMask As String = Master.eSettings.RuntimeMask
                         Dim sRuntime As String = String.Empty
 
-                        If sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
-                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString)
+                        If sMask.Contains("<h>") AndAlso (sMask.Contains("<m>") OrElse sMask.Contains("<0m>")) Then
+                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00"))
                         ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
                             Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
                             sRuntime = sMask.Replace("<h>", String.Concat(sHour, tHDec))
