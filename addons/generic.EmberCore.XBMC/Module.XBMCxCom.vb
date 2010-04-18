@@ -362,20 +362,32 @@ Public Class XBMCxCom
     Public Shared Function SendCmd(ByVal xCom As XBMCCom, ByVal str As String) As String
         Dim Wr As HttpWebRequest
         Dim Sr As String = String.Empty
-        Try
-            Wr = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
-            Wr.Timeout = 10000
-            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
-                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
-            End If
-            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
-                Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-            End Using
-            Wr = Nothing
-            Sr = Sr.Replace("<html>", String.Empty).Replace("</html>", String.Empty)
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.OkOnly)
-        End Try
+        Dim retry As Integer = 3
+        Dim needRetry As Boolean = False
+        Dim errorMessage As String = String.Empty
+
+        Do
+            needRetry = False
+            Try
+                Wr = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?{2}", xCom.IP, xCom.Port, str)), HttpWebRequest)
+                Wr.Timeout = 15000
+                If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+                    Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+                End If
+                Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
+                    Sr = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+                End Using
+                Wr = Nothing
+                Sr = Sr.Replace("<html>", String.Empty).Replace("</html>", String.Empty)
+            Catch ex As Exception
+                needRetry = True
+                retry -= 1
+                errorMessage = ex.Message
+            End Try
+        Loop While needRetry AndAlso retry > 0
+        If needRetry AndAlso retry <= 0 Then
+            MsgBox(errorMessage, MsgBoxStyle.OkOnly, "XBMC")
+        End If
         Return Sr
     End Function
 
