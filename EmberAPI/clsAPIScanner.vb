@@ -1039,7 +1039,7 @@ Public Class Scanner
                                 Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                                 Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
                                 While SQLreader.Read
-                                    SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
+                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
                                     If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.IgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > SourceLastScan) Then
                                         'save the scan time back to the db
                                         parLastScan.Value = Now
