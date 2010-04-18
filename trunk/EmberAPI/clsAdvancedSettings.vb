@@ -45,7 +45,7 @@ Public Class AdvancedSettings
 
     Public Sub New()
         SetDefaults()
-        Load()
+        Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
     End Sub
 
     #End Region 'Constructors
@@ -109,29 +109,31 @@ Public Class AdvancedSettings
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v Is Nothing Then
-                _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
-            Else
-                _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
-            End If
         End If
+        Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If v Is Nothing Then
+            _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
+        Else
+            _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
+        End If
+
         If Not _DoNotSave Then Save()
         Return True
     End Function
 
-    Public Shared Sub Load()
+    Public Shared Sub Load(ByVal fname As String)
         _DoNotSave = True
         Try
-            If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
+            If File.Exists(fname) Then
                 Dim xdoc As New XDocument
-                xdoc = XDocument.Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+                xdoc = XDocument.Load(fname)
                 For Each i As XElement In xdoc...<Setting>
-                    Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = i.@Name AndAlso f.Section = i.@Section)
+                    Dim ii As XElement = i
+                    Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section)
                     If v Is Nothing Then
-                        _AdvancedSettings.Add(New SettingItem With {.Section = i.@Section, .Name = i.@Name, .Value = i.Value, .DefaultValue = ""})
+                        _AdvancedSettings.Add(New SettingItem With {.Section = ii.@Section, .Name = ii.@Name, .Value = ii.Value, .DefaultValue = ""})
                     Else
-                        _AdvancedSettings.FirstOrDefault(Function(f) f.Name = i.@Name AndAlso f.Section = i.@Section).Value = Convert.ToString(i.Value)
+                        _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section).Value = Convert.ToString(i.Value)
                     End If
                 Next
                 For Each i As XElement In xdoc...<ComplexSettings>...<Table>
@@ -215,13 +217,14 @@ Public Class AdvancedSettings
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
-            Else
-                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
-            End If
         End If
+        Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If v Is Nothing Then
+            _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(Assembly = "*EmberAPP", Convert.ToString(value), "")})
+        Else
+            _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
+        End If
+
         If Not _DoNotSave Then Save()
         Return True
     End Function
@@ -233,13 +236,14 @@ Public Class AdvancedSettings
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
-            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If v Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
-            Else
-                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
-            End If
         End If
+        Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If v Is Nothing Then
+            _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(Assembly = "*EmberAPP", value, "")})
+        Else
+            _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
+        End If
+
         If Not _DoNotSave Then Save()
         Return True
     End Function
