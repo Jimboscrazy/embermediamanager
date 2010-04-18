@@ -215,27 +215,13 @@ Public Class APIXML
                 Return "bluray"
             Else
                 sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
-                Select Case True
-                    Case Regex.IsMatch(sourceCheck, "(b[dr][-\s]?rip|blu[-\s]?ray)")
-                        Return "bluray"
-                    Case Regex.IsMatch(sourceCheck, "hd[-\s]?dvd")
-                        Return "hddvd"
-                    Case Regex.IsMatch(sourceCheck, "hd[-\s]?tv")
-                        Return "hdtv"
-                    Case Regex.IsMatch(sourceCheck, "(sd[-\s]?)?dvd")
-                        Return "dvd"
-                    Case Regex.IsMatch(sourceCheck, "sd[-\s]?tv")
-                        Return "sdtv"
-                End Select
-                Dim mySources As New List(Of Hashtable)
+                Dim mySources As New Hashtable
                 mySources = AdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
-                    For Each i In mySources
-                        For Each k In i.Keys
-                            If Regex.IsMatch(sourceCheck, k.ToString) Then
-                                Return i.Item(k).ToString
-                            End If
-                        Next
+                    For Each k In mySources.Keys
+                        If Regex.IsMatch(sourceCheck, k.ToString) Then
+                            Return mySources.Item(k).ToString
+                        End If
                     Next
                 End If
             End If
