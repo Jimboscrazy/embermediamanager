@@ -5312,7 +5312,7 @@ doCancel:
                 Next
                 APIXML.CacheXMLs()
                 fLoading.SetStage("Loading database...")
-                If Master.DB.CheckDatabase() Then
+                If Master.DB.CheckEssentials() Then
                     Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                 End If
 
@@ -5490,13 +5490,13 @@ doCancel:
                     Application.DoEvents()
                     fLoading.SetStage("Loading database...")
                     If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                        If Master.DB.CheckDatabase() Then
+                        If Master.DB.CheckEssentials() Then
                             Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                         End If
                         Me.FillList(0)
                         Me.Visible = True
                     Else
-                        If Master.DB.CheckDatabase() Then
+                        If Master.DB.CheckEssentials() Then
                             Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                         End If
                         If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
