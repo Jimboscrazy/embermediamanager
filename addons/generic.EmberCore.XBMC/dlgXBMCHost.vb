@@ -179,7 +179,9 @@ Public Class dlgXBMCHost
                     Dim sPath As String = s.Path
                     Dim i As Integer = dgvSources.Rows.Add(sPath)
                     Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
-                    dcb.DataSource = XBMCSources.ToArray
+                    Dim tmp As List(Of String) = New List(Of String)(New String() {""})
+                    tmp.AddRange(XBMCSources)
+                    dcb.DataSource = tmp.ToArray
                     Dim es As EmberSource = EmberSources.FirstOrDefault(Function(y) y.Path = sPath)
                     ' If it match > 90% of the movies
                     If Convert.ToInt32(es.XBMCSource(getMaxSourceCount(es.XBMCSource))) > es.ElemCounts * 0.9 Then

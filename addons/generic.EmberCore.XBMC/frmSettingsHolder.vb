@@ -61,16 +61,18 @@ Public Class frmSettingsHolder
 
     Private Sub btnEditCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCom.Click
         Dim iSel As Integer = Me.lbXBMCCom.SelectedIndex
-
-        Using dlg As New dlgXBMCHost
-            dlg.XComs = XComs
-            dlg.hostid = Me.lbXBMCCom.SelectedItem.ToString
-            If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                XComs = dlg.XComs
-                RaiseEvent ModuleSettingsChanged()
-                Me.LoadXComs()
-            End If
-        End Using
+        If Me.lbXBMCCom.SelectedItems.Count > 0 Then
+            Using dlg As New dlgXBMCHost
+                dlg.XComs = XComs
+                dlg.hostid = Me.lbXBMCCom.SelectedItem.ToString
+                If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    XComs = dlg.XComs
+                    RaiseEvent ModuleSettingsChanged()
+                    Me.LoadXComs()
+                End If
+                btnEditCom.Enabled = False
+            End Using
+        End If
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
