@@ -1036,7 +1036,7 @@ Public Class frmMainSetup
             End Try
 
             '###################################################################################
-            Me.bwDoInstall.ReportProgress(5, "Cleaning Up")
+            Me.bwDoInstall.ReportProgress(5, MyLang.GetString(55, "Cleaning Up"))
             If Not CheckIfWindows() Then
                 'Mono Can't run Movie Exporter.. Until Commands are working this will solve the issue
                 File.Delete(Path.Combine(Path.Combine(emberPath, "Modules"), "generic.EmberCore.MovieExporter.dll"))
@@ -1044,7 +1044,7 @@ Public Class frmMainSetup
             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
             System.Threading.Thread.Sleep(2000)
             LogWrite(String.Format("*** Main: Installation Finished with Success"))
-            Me.bwDoInstall.ReportProgress(6, "Thank you for supporting Ember" & vbCrLf & "You can now Start Ember Media Manager")
+            Me.bwDoInstall.ReportProgress(6, String.Format(MyLang.GetString(54, "Thank you for supporting Ember{0}You can now Start Ember Media Manager"), vbCrLf))
 
             '###################################################################################
         Else

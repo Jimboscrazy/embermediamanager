@@ -1,54 +1,350 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <string id="1">Annulation...</string>
-  <string id="2">Chemin d'installtion d'Ember Media Manager:{0}"{1}"</string>
-  <string id="3">Installation Annulée</string>
-  <string id="4">Annulé par l'utilisateur</string>
-  <string id="5">Installation terminée</string>
-  <string id="6">Recherche du répertoire d'installation d'Ember</string>
-  <string id="7">Téléchargement de la liste des versions</string>
-  <string id="8">Aucune plateforme selectionnée</string>
-  <string id="9">Site de téléchargement indisponible.{0}Merci de réessayer plus tard.</string>
-  <string id="10">Pas de nouvelle version disponible</string>
-  <string id="11">Téléchargement des fichiers de version</string>
-  <string id="12">Téléchargement des scripts de mise à jour</string>
-  <string id="13">Vérification des fichiers installés</string>
-  <string id="14">Téléchargement des fichiers</string>
-  <string id="15">En Cache: {0}</string>
-  <string id="16">Téléchargement: {0}</string>
-  <string id="17">Erreur téléchargement: {0}</string>
-  <string id="18">Installation fichiers</string>
-  <string id="19">Installation des fichiers pour Mono</string>
-  <string id="20">ATTENTION Hash du fichier non valide</string>
-  <string id="21">Erreur: {0} {1}</string>
-  <string id="22">Installé: {0}</string>
-  <string id="23">Erreur: {0}</string>
-  <string id="24">Preparation configuration d'Ember</string>
-  <string id="25">Préparation des tâches de mise à jour</string>
-  <string id="26">Execution des commandes pour la version : {0}</string>
-  <string id="27">Chargement paramètres</string>
-  <string id="28">Une seule instance de Setup</string>
-  <string id="29">Installation d'Ember trouvée dans {0}</string>
-  <string id="30">Si vous souhaitez modifier ce paramètres utiliser [Changer Options]</string>
-  <string id="31">Pas d'installation d'Ember trouvée{0}</string>
-  <string id="32">Répertoire d'installation par défaut{0}</string>
-  <string id="33">Merci d'utiliser [Changer Options] pour changer le répertoire d'installation</string>
-  <string id="34">Bienvenue dans l'installation d'Ember Media Manager</string>
-  <string id="35">Retour</string>
-  <string id="36">A Propos</string>
-  <string id="37">Annuler</string>
-  <string id="38">Quitter</string>
-  <string id="39">Installer</string>
-  <string id="40">Changer Options</string>
-  <string id="41">EmberMM Setup</string>
-  <string id="42">Démarrer Ember Media Manager</string>
-  <string id="43">Configurer - Ember Media Manager</string>
-  <string id="44">Sélectionner la langue pour l'installation</string>
-  <string id="45">Choisir langue</string>
-  <string id="46">Répertoire d'installation d'Ember Media Manager</string>
-  <string id="47">Chercher les installations possibles d'Ember Media Manager</string>
-  <string id="48">Créer répertoire EMM</string>
-  <string id="49">Trouver installations Ember</string>
-  <string id="50">OK</string>
-  <string id="51">Platforme</string>
-</strings>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Ember Media Manager - Setup.Francais__fr_FR_.xml - Ember Media Manager</title>
+<meta name="description" content="Redmine" />
+<meta name="keywords" content="issue,bug,tracker" />
+<link href="/themes/watersky/stylesheets/application.css?1266970552" media="all" rel="stylesheet" type="text/css" />
+<script src="/javascripts/prototype.js?1266969902" type="text/javascript"></script>
+<script src="/javascripts/effects.js?1266969902" type="text/javascript"></script>
+<script src="/javascripts/dragdrop.js?1266969902" type="text/javascript"></script>
+<script src="/javascripts/controls.js?1266969902" type="text/javascript"></script>
+<script src="/javascripts/application.js?1266969902" type="text/javascript"></script>
+<link href="/stylesheets/jstoolbar.css?1266969902" media="screen" rel="stylesheet" type="text/css" />
+<!--[if IE]>
+    <style type="text/css">
+      * html body{ width: expression( document.documentElement.clientWidth < 900 ? '900px' : '100%' ); }
+      body {behavior: url(/stylesheets/csshover.htc?1266969902);}
+    </style>
+<![endif]-->
+
+<!-- page specific tags -->
+    <link href="/stylesheets/scm.css?1266969902" media="screen" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+<div id="wrapper2">
+<div id="top-menu">
+    <div id="account">
+        <ul><li><a href="/my/account" class="my-account">My account</a></li>
+<li><a href="/logout" class="logout">Sign out</a></li></ul>
+    </div>
+    <div id="loggedas">Logged in as <a href="/users/113">nuno</a></div>
+    <ul><li><a href="/" class="home">Home</a></li>
+<li><a href="/my/page" class="my-page">My page</a></li>
+<li><a href="/admin" class="administration">Administration</a></li></ul>
+</div>
+      
+<div id="header">
+    <div id="quick-search">
+        <form action="/search/index/embermm" method="get">
+        
+        <a href="/search/index/embermm" accesskey="4">Search</a>:
+        <input accesskey="f" class="small" id="q" name="q" size="20" type="text" />
+        </form>
+        <select onchange="if (this.value != '') { window.location = this.value; }"><option value=''>Jump to a project...</option><option value="" disabled="disabled">---</option><option selected="selected" value="/projects/embermm?jump=attachments">Ember Media Manager</option></select>
+    </div>
+    
+    <h1>Ember Media Manager</h1>
+    
+    <div id="main-menu">
+        <ul><li><a href="/projects/embermm" class="overview">Overview</a></li>
+<li><a href="/projects/embermm/activity" class="activity">Activity</a></li>
+<li><a href="/projects/embermm/roadmap" class="roadmap">Roadmap</a></li>
+<li><a href="/projects/embermm/issues" class="issues">Issues</a></li>
+<li><a href="/projects/embermm/issues/new" accesskey="7" class="new-issue">New issue</a></li>
+<li><a href="/projects/embermm/news" class="news">News</a></li>
+<li><a href="/projects/embermm/wiki" class="wiki">Wiki</a></li>
+<li><a href="/projects/embermm/boards" class="boards">Forums</a></li>
+<li><a href="/projects/embermm/repository" class="repository">Repository</a></li>
+<li><a href="/tab/show/embermm" class="tab">Download</a></li>
+<li><a href="/projects/embermm/settings" class="settings">Settings</a></li></ul>
+    </div>
+</div>
+
+<div class="nosidebar" id="main">
+    <div id="sidebar">        
+        
+        
+    </div>
+    
+    <div id="content">
+				
+        <h2>Setup.Francais__fr_FR_.xml</h2>
+
+<div class="attachments">
+<p>
+   <span class="author">Tolriq Tolriq, 04/18/2010 05:16 am</span></p>
+<p><a href="/attachments/download/215/Setup.Francais__fr_FR_.xml">Download</a>   <span class="size">(3.3 KB)</span></p>
+
+</div>
+&nbsp;
+<div class="autoscroll">
+<table class="filecontent CodeRay">
+<tbody>
+
+
+<tr><th class="line-num" id="L1"><a href="#L1">1</a></th><td class="line-code"><pre>﻿<span class="pp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L2"><a href="#L2">2</a></th><td class="line-code"><pre><span class="ta">&lt;strings</span> <span class="an">xmlns:xsi</span>=<span class="s"><span class="dl">&quot;</span><span class="k">http://www.w3.org/2001/XMLSchema-instance</span><span class="dl">&quot;</span></span> <span class="an">xmlns:xsd</span>=<span class="s"><span class="dl">&quot;</span><span class="k">http://www.w3.org/2001/XMLSchema</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L3"><a href="#L3">3</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">1</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Annulation...<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L4"><a href="#L4">4</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">2</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Chemin d'installtion d'Ember Media Manager:{0}&quot;{1}&quot;<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L5"><a href="#L5">5</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">3</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installation Annulée<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L6"><a href="#L6">6</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">4</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Annulé par l'utilisateur<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L7"><a href="#L7">7</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">5</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installation terminée<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L8"><a href="#L8">8</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">6</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Recherche du répertoire d'installation d'Ember<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L9"><a href="#L9">9</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">7</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Téléchargement de la liste des versions<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L10"><a href="#L10">10</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">8</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Aucune plateforme selectionnée<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L11"><a href="#L11">11</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">9</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Site de téléchargement indisponible.{0}Merci de réessayer plus tard.<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L12"><a href="#L12">12</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">10</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Pas de nouvelle version disponible<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L13"><a href="#L13">13</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">11</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Téléchargement des fichiers de version<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L14"><a href="#L14">14</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">12</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Téléchargement des scripts de mise à jour<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L15"><a href="#L15">15</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">13</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Vérification des fichiers installés<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L16"><a href="#L16">16</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">14</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Téléchargement des fichiers<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L17"><a href="#L17">17</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">15</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>En Cache: {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L18"><a href="#L18">18</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">16</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Téléchargement: {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L19"><a href="#L19">19</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">17</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Erreur téléchargement: {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L20"><a href="#L20">20</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">18</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installation fichiers<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L21"><a href="#L21">21</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">19</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installation des fichiers pour Mono<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L22"><a href="#L22">22</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">20</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>ATTENTION Hash du fichier non valide<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L23"><a href="#L23">23</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">21</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Erreur: {0} {1}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L24"><a href="#L24">24</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">22</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installé: {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L25"><a href="#L25">25</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">23</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Erreur: {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L26"><a href="#L26">26</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">24</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Preparation configuration d'Ember<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L27"><a href="#L27">27</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">25</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Préparation des tâches de mise à jour<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L28"><a href="#L28">28</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">26</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Execution des commandes pour la version : {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L29"><a href="#L29">29</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">27</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Chargement paramètres<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L30"><a href="#L30">30</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">28</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Une seule instance de Setup<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L31"><a href="#L31">31</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">29</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installation d'Ember trouvée dans {0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L32"><a href="#L32">32</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">30</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Si vous souhaitez modifier ce paramètres utiliser [Changer Options]<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L33"><a href="#L33">33</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">31</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Pas d'installation d'Ember trouvée{0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L34"><a href="#L34">34</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">32</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Répertoire d'installation par défaut{0}<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L35"><a href="#L35">35</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">33</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Merci d'utiliser [Changer Options] pour changer le répertoire d'installation<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L36"><a href="#L36">36</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">34</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Bienvenue dans l'installation d'Ember Media Manager<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L37"><a href="#L37">37</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">35</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Retour<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L38"><a href="#L38">38</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">36</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>A Propos<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L39"><a href="#L39">39</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">37</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Annuler<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L40"><a href="#L40">40</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">38</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Quitter<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L41"><a href="#L41">41</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">39</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Installer<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L42"><a href="#L42">42</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">40</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Changer Options<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L43"><a href="#L43">43</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">41</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>EmberMM Setup<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L44"><a href="#L44">44</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">42</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Démarrer Ember Media Manager<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L45"><a href="#L45">45</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">43</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Configurer - Ember Media Manager<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L46"><a href="#L46">46</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">44</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Sélectionner la langue pour l'installation<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L47"><a href="#L47">47</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">45</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Choisir langue<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L48"><a href="#L48">48</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">46</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Répertoire d'installation d'Ember Media Manager<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L49"><a href="#L49">49</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">47</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Chercher les installations possibles d'Ember Media Manager<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L50"><a href="#L50">50</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">48</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Créer répertoire EMM<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L51"><a href="#L51">51</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">49</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Trouver installations Ember<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L52"><a href="#L52">52</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">50</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>OK<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L53"><a href="#L53">53</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">51</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Platforme<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L54"><a href="#L54">54</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">52</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Une nouvelle version est en cours de mise à disposition. {0}Merci de réessayer plus tard.<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L55"><a href="#L55">55</a></th><td class="line-code"><pre>  <span class="ta">&lt;string</span> <span class="an">id</span>=<span class="s"><span class="dl">&quot;</span><span class="k">53</span><span class="dl">&quot;</span></span><span class="ta">&gt;</span>Execution commandes de bases<span class="ta">&lt;/string&gt;</span>
+</pre></td></tr>
+
+
+<tr><th class="line-num" id="L56"><a href="#L56">56</a></th><td class="line-code"><pre><span class="ta">&lt;/strings&gt;</span></pre></td></tr>
+
+
+</tbody>
+</table>
+</div>
+
+
+
+
+
+        
+				<div style="clear:both;"></div>
+    </div>
+</div>
+
+<div id="ajax-indicator" style="display:none;"><span>Loading...</span></div>
+	
+<div id="footer">
+  <div class="bgl"><div class="bgr">
+    Powered by <a href="http://www.redmine.org/">Redmine</a> &copy; 2006-2010 Jean-Philippe Lang
+  </div></div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+    __compete_code = '98778a4697d250133582c764396374ab';
+    (function () {
+        var s = document.createElement('script'),
+            d = document.getElementsByTagName('head')[0] ||
+                document.getElementsByTagName('body')[0],
+            t = 'https:' == document.location.protocol ? 
+                'https://c.compete.com/bootstrap/' : 
+                'http://c.compete.com/bootstrap/';
+        s.src = t + __compete_code + '/bootstrap.js';
+        s.type = 'text/javascript';
+        s.async = 'async'; 
+        if (d) { d.appendChild(s); }
+    }());
+</script>
+</body>
+</html>
