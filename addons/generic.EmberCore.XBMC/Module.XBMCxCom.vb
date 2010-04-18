@@ -171,13 +171,14 @@ Public Class XBMCxCom
                     Dim RemoteFilename As String = remoteFullFilename.Substring(i)
                     Dim ret As String
                     Dim cmd As String
-                    If _sendNotification Then
-                        str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
-                        ret = SendCmd(s, str)
-                    End If
+
                     str = String.Format("command=queryvideodatabase(select movie.idMovie,files.idFile,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath Where path.strpath=""{0}"" and files.strfilename=""{1}"")", RemotePath, RemoteFilename)
                     files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(s, str))
                     If files.Count = 1 AndAlso files(0).Count >= 6 Then
+                        If _sendNotification Then
+                            str = String.Format("command=ExecBuiltIn(Notification(EmberMM - Updating Movie,{0}))", DBMovie.Movie.Title)
+                            ret = SendCmd(s, str)
+                        End If
                         Dim id As String = files(0)(0)
                         Dim idfile As String = files(0)(1)
                         If AdvancedSettings.GetBooleanSetting("XBMCSyncPlayCount", False) AndAlso s.Name = AdvancedSettings.GetSetting("XBMCSyncPlayCountHost", "") Then
