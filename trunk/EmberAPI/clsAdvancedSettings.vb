@@ -248,6 +248,7 @@ Public Class AdvancedSettings
         _DoNotSave = True
         SetSetting("AudioFormatConvert:ac-3", "ac3")
         SetSetting("AudioFormatConvert:a_ac3", "ac3")
+        SetSetting("AudioFormatConvert:a_aac", "aac")
         SetSetting("AudioFormatConvert:wma2", "wmav2")
         SetSetting("AudioFormatConvert:a_dts", "dca")
         SetSetting("AudioFormatConvert:dts", "dca")
