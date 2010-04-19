@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.Text.RegularExpressions
+Imports EmberAPI
 
 Public Class dlgIMDBSearchResults
 

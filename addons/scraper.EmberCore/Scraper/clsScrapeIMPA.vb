@@ -22,6 +22,7 @@ Imports System.IO
 Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports EmberAPI
 
 Namespace IMPA
 

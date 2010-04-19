@@ -325,7 +325,7 @@
 	<string control="Core_btnNewMetaDataFT">Create default meta data for the entered extension and add the to the default meta data list.</string>
 	<string control="Core_chkIFOScan">If enabled, Ember will process *.ifo files for meta data information.</string>
 	<string control="Core_cbLanguages">If the selected language is found in the movie, a special icon indicator will be overlayed on the meta data audio icon.</string>
-	<string control="Core_txtRuntimeFormat">Enter the format you wish to use for the movie duration retrieved from scanning meta data.</string>
+	<string control="Core_txtRuntimeFormat">Enter the format you wish to use for the movie duration retrieved from scanning meta data. Note you can also use &lt;0m&gt; for 0 padding minutes</string>
 	<string control="Core_chkScanMediaInfo">If enabled, Ember will scan movie files for meta data.</string>
 	<string control="Core_chkUseMIDuration">Use the movie duration retrieved from scanning meta data as the runtime of the movie.</string>
 	<string control="Core_chkLockOutline">If enabled, the movie outline will only be scraped if a current one does not exist.</string>

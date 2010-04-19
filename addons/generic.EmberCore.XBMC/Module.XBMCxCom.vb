@@ -565,37 +565,35 @@ Public Class XBMCxCom
         Public Shared Function Load() As MySettings
             Dim tmp As New MySettings
             Try
-                Dim Asett As New List(Of Hashtable)
+                Dim Asett As New Hashtable
                 Asett = AdvancedSettings.GetComplexSetting("XBMCHosts")
                 If Not Asett Is Nothing Then
-                    Dim t As XBMCxCom.XBMCCom
-                    For Each i In Asett
-                        t = New XBMCxCom.XBMCCom
-                        For Each k In i.Keys
-                            Select Case k.ToString
-                                Case "Name"
-                                    t.Name = i.Item("Name").ToString
-                                Case "IP"
-                                    t.IP = i.Item("IP").ToString
-                                Case "Port"
-                                    t.Port = i.Item("Port").ToString
-                                Case "Username"
-                                    t.Username = i.Item("Username").ToString
-                                Case "Password"
-                                    t.Password = i.Item("Password").ToString
-                                Case "RemotePathSeparator"
-                                    t.RemotePathSeparator = i.Item("RemotePathSeparator").ToString
-                                Case "RealTime"
-                                    t.RealTime = Convert.ToBoolean(i.Item("RealTime").ToString)
-                            End Select
-                        Next
-                        Dim AsettPath As New List(Of Hashtable)
-                        AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
-                        If Not AsettPath Is Nothing AndAlso AsettPath.Count = 1 Then
-                            t.Paths = AsettPath(0)
-                        End If
-                        tmp.XComs.Add(t)
+                    Dim t As New XBMCxCom.XBMCCom
+                    For Each k In Asett.Keys
+                        Select Case k.ToString
+                            Case "Name"
+                                t.Name = Asett.Item("Name").ToString
+                            Case "IP"
+                                t.IP = Asett.Item("IP").ToString
+                            Case "Port"
+                                t.Port = Asett.Item("Port").ToString
+                            Case "Username"
+                                t.Username = Asett.Item("Username").ToString
+                            Case "Password"
+                                t.Password = Asett.Item("Password").ToString
+                            Case "RemotePathSeparator"
+                                t.RemotePathSeparator = Asett.Item("RemotePathSeparator").ToString
+                            Case "RealTime"
+                                t.RealTime = Convert.ToBoolean(Asett.Item("RealTime").ToString)
+                        End Select
                     Next
+                    Dim AsettPath As New Hashtable
+                    AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
+                    If Not AsettPath Is Nothing Then
+                        t.Paths = AsettPath
+                    End If
+                    tmp.XComs.Add(t)
+
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -607,7 +605,7 @@ Public Class XBMCxCom
         Public Shared Sub Save(ByVal tmp As MySettings)
             Try
 
-                Dim Asett As New List(Of Hashtable)
+                Dim Asett As New Hashtable
                 For Each t As XBMCxCom.XBMCCom In tmp.XComs
                     Dim h As New Hashtable
                     h.Add("Name", t.Name)
@@ -617,10 +615,10 @@ Public Class XBMCxCom
                     h.Add("Password", t.Password)
                     h.Add("RemotePathSeparator", t.RemotePathSeparator)
                     h.Add("RealTime", t.RealTime.ToString)
-                    Asett.Add(h)
+                    Asett = h
                     If Not t.Paths Is Nothing AndAlso t.Paths.Count > 0 Then
-                        Dim AsettPath As New List(Of Hashtable)
-                        AsettPath.Add(t.Paths)
+                        Dim AsettPath As New Hashtable
+                        AsettPath = t.Paths
                         AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
                         AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", t.Name), AsettPath)
                     End If
