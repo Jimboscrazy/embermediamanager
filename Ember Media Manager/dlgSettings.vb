@@ -939,6 +939,9 @@ Public Class dlgSettings
 
     Private Sub chkAutoBD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoBD.CheckedChanged
         Me.SetApplyButton(True)
+        Me.txtBDPath.Enabled = chkAutoBD.Checked
+        Me.btnBrowse.Enabled = chkAutoBD.Checked
+
     End Sub
 
     Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoDetectVTS.CheckedChanged
@@ -2259,6 +2262,8 @@ Public Class dlgSettings
             End If
 
             Me.txtBDPath.Text = Master.eSettings.BDPath
+            Me.txtBDPath.Enabled = Master.eSettings.AutoBD
+            Me.btnBrowse.Enabled = Master.eSettings.AutoBD
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
             Me.txtRuntimeFormat.Text = Master.eSettings.RuntimeMask
@@ -3309,7 +3314,11 @@ Public Class dlgSettings
                 Master.eSettings.UseETasFA = False
             End If
             Master.eSettings.BDPath = Me.txtBDPath.Text
-            Master.eSettings.AutoBD = Me.chkAutoBD.Checked
+            If Not String.IsNullOrEmpty(Me.txtBDPath.Text) Then
+                Master.eSettings.AutoBD = Me.chkAutoBD.Checked
+            Else
+                Master.eSettings.AutoBD = False
+            End If
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
             Master.eSettings.RuntimeMask = Me.txtRuntimeFormat.Text
             Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
