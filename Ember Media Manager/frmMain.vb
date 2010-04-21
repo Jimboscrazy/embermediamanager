@@ -5065,18 +5065,6 @@ doCancel:
             Me.EnableFilters(False)
 
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-            If Not isCL Then
-                Master.eSettings.WindowLoc = Me.Location
-                Master.eSettings.WindowSize = Me.Size
-                Master.eSettings.WindowState = Me.WindowState
-                Master.eSettings.InfoPanelState = Me.aniType
-                Master.eSettings.ShowInfoPanelState = Me.aniShowType
-                Master.eSettings.FilterPanelState = Me.aniFilterRaise
-                Master.eSettings.SplitterPanelState = Me.scMain.SplitterDistance
-                Master.eSettings.ShowSplitterPanelState = Me.scTV.SplitterDistance
-                Master.eSettings.SeasonSplitterPanelState = Me.SplitContainer2.SplitterDistance
-            End If
-            If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
             If Me.fScanner.IsBusy OrElse isCL Then
                 doSave = False
@@ -5116,6 +5104,21 @@ doCancel:
             If Not Master.eSettings.PersistImgCache Then
                 Me.ClearCache()
             End If
+
+            If Not isCL Then
+                Master.eSettings.WindowLoc = Me.Location
+                Master.eSettings.WindowSize = Me.Size
+                Master.eSettings.WindowState = Me.WindowState
+                Master.eSettings.InfoPanelState = Me.aniType
+                Master.eSettings.ShowInfoPanelState = Me.aniShowType
+                Master.eSettings.FilterPanelState = Me.aniFilterRaise
+                Master.eSettings.SplitterPanelState = Me.scMain.SplitterDistance
+                Me.pnlFilter.Visible = False
+                Master.eSettings.SeasonSplitterPanelState = Me.SplitContainer2.SplitterDistance
+                Master.eSettings.ShowSplitterPanelState = Me.scTV.SplitterDistance
+            End If
+            If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
+
         Catch ex As Exception
             ' If we got here, then some of the above not run. Application.Exit can not be used. 
             ' If any BackgroundWorker still running will raise exception 
@@ -5482,8 +5485,10 @@ doCancel:
                     End If
 
                     Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
-                    Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
                     Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
+                    Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+
+                    Me.pnlFilter.Visible = True
 
                     Me.ClearInfo()
 
@@ -8279,6 +8284,7 @@ doCancel:
                     Me.pnlFilter.Height = 25
                 End If
             End If
+
             If Me.pnlFilter.Height = 25 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
@@ -8288,6 +8294,8 @@ doCancel:
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
             End If
+
+            Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
