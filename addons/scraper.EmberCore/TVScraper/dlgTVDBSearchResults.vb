@@ -71,7 +71,7 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        If Me.txtTVDBID.Text.Length = 5 Then
+        If IsNumeric(Me.txtTVDBID.Text) AndAlso Me.txtTVDBID.Text.Length >= 5 Then
             Dim tmpXML As XDocument = Nothing
             Dim sLang As String = String.Empty
 
