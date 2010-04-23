@@ -546,6 +546,7 @@ Public Class XBMCxCom
             Me._xbmcport = String.Empty
             Me._xbmcusername = String.Empty
             Me._xbmcpassword = String.Empty
+            Me._RemotePathSeparator = Path.DirectorySeparatorChar
         End Sub
 
 #End Region 'Methods

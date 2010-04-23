@@ -249,12 +249,12 @@ Namespace XMLScraper
                 End Set
             End Property
 
-            Public Property Votes() As Integer
+            Public Property Votes() As String
                 Get
-                    Return Convert.ToInt32(MyBase.UserProperties("votes"))
+                    Return MyBase.UserProperties("votes")
                 End Get
-                Set(ByVal value As Integer)
-                    MyBase.UserProperties("votes") = value.ToString()
+                Set(ByVal value As String)
+                    MyBase.UserProperties("votes") = value
                 End Set
             End Property
 
@@ -298,7 +298,7 @@ Namespace XMLScraper
                 Me.Rating = 0.0
                 Me.Year = 0
                 Me.Top250 = 0
-                Me.Votes = 0
+                Me.Votes = String.Empty
 
                 Me.Trailers = New List(Of String)()
                 Me.Genres = New List(Of String)()
@@ -350,23 +350,24 @@ Namespace XMLScraper
             End Sub
 
             Public Overloads Overrides Sub Deserialize(ByVal element As XElement)
-                Me.Title = element.GetStringElement("title", Title)
-                Me.ID = element.GetStringElement("id", ID)
-                Me.MPAA = element.GetStringElement("mpaa", MPAA)
-                Me.Plot = element.GetStringElement("plot", Plot)
-                Me.Premiered = element.GetStringElement("premiered", Premiered)
-                Tagline = element.GetStringElement("tagline", Tagline)
-                Outline = element.GetStringElement("outline", Outline)
-                Studio = element.GetStringElement("studio", Studio)
-                Runtime = element.GetStringElement("runtime", Runtime)
+                Me.Title = element.GetStringElement("title", Me.Title)
+                Me.ID = element.GetStringElement("id", Me.ID)
+                Me.MPAA = element.GetStringElement("mpaa", Me.MPAA)
+                Me.Plot = element.GetStringElement("plot", Me.Plot)
+                Me.Premiered = element.GetStringElement("premiered", Me.Premiered)
+                Me.Tagline = element.GetStringElement("tagline", Me.Tagline)
+                Me.Outline = element.GetStringElement("outline", Me.Outline)
+                Me.Studio = element.GetStringElement("studio", Me.Studio)
+                Me.Runtime = element.GetStringElement("runtime", Me.Runtime)
 
-                Top250 = element.GetIntElement("top250", Top250)
-                Year = element.GetIntElement("year", Year)
-                Rating = ProcessRating(element.Element("rating"))
+                Me.Top250 = element.GetIntElement("top250", Top250)
+                Me.Year = element.GetIntElement("year", Me.Year)
+                Me.Rating = ProcessRating(element.Element("rating"), Me.Rating)
+                Me.Votes = element.GetStringElement("votes", Me.Votes)
 
-                element.UpdateStringList("certification", Certifications)
+                element.UpdateStringList("certification", Me.Certifications)
 
-                element.UpdateStringList("genre", Genres)
+                element.UpdateStringList("genre", Me.Genres)
 
                 element.UpdateStringList("director", Me.Directors)
 
@@ -394,16 +395,16 @@ Namespace XMLScraper
                     Fanart.Deserialize(element.Element("fanart"))
                 End If
 
-                element.UpdateStringList("set", Sets)
-                PlayCount = element.GetIntElement("playcount", PlayCount)
-                LastPlayed = element.GetStringElement("lastplayed", LastPlayed)
+                element.UpdateStringList("set", Me.Sets)
+                Me.PlayCount = element.GetIntElement("playcount", Me.PlayCount)
+                Me.LastPlayed = element.GetStringElement("lastplayed", Me.LastPlayed)
 
-                Genres.Clean("/")
-                Genres.Clean("|")
-                Directors.Clean("|")
-                Directors.Clean("/")
-                Writers.Clean("/")
-                Writers.Clean("|")
+                Me.Genres.Clean("/")
+                Me.Genres.Clean("|")
+                Me.Directors.Clean("|")
+                Me.Directors.Clean("/")
+                Me.Writers.Clean("/")
+                Me.Writers.Clean("|")
             End Sub
 
             Public Overloads Overrides Sub Deserialize(ByVal xmlFilePath As String)
@@ -432,7 +433,7 @@ Namespace XMLScraper
                 xTemp.AddIntElement("year", Year, 1)
 
                 xTemp.AddIntElement("top250", Top250, 1)
-                xTemp.AddIntElement("votes", Votes, 1)
+                xTemp.AddStringElement("votes", Votes)
 
                 For Each Trailer As String In Trailers
                     If Not String.IsNullOrEmpty(Trailer) Then

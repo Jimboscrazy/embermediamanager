@@ -257,7 +257,7 @@ Namespace XMLScraper
                 Dim intElement As XElement = element.Element(name)
                 If Not IsNothing(intElement) Then
                     Try
-                        Return Convert.ToInt32(intElement.Value.Trim)
+                        Return Convert.ToInt32(intElement.Value.Replace(",", String.Empty).Trim)
                     Catch
                         Return defaultValue
                     End Try

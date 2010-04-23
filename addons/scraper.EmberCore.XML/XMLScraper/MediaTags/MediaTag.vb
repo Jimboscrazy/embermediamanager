@@ -162,7 +162,7 @@ Namespace XMLScraper
 
             Public MustOverride Sub Deserialize(ByVal xmlElement As XElement)
 
-            Friend Function ProcessRating(ByVal ratingElement As XElement) As Single
+            Friend Function ProcessRating(ByVal ratingElement As XElement, ByVal defaultValue As Single) As Single
                 If Not IsNothing(ratingElement) Then
                     If Not IsNothing(ratingElement.Attribute("max")) Then
                         Dim scale As Single = 10 / NumUtils.ConvertToSingle(ratingElement.Attribute("max").Value)
@@ -172,7 +172,7 @@ Namespace XMLScraper
                     End If
                 End If
 
-                Return 0.0
+                Return defaultValue
             End Function
 
 #End Region 'Methods
