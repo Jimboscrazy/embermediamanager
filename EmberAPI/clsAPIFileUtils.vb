@@ -108,7 +108,18 @@ Namespace FileUtils
         End Function
 
         #End Region 'Methods
-
+        Public Shared Function MakeValidFilename(ByVal filename As String) As String
+            filename = filename.Replace(":", " -")
+            filename = filename.Replace("/", String.Empty)
+            'pattern = pattern.Replace("\", String.Empty)
+            filename = filename.Replace("|", String.Empty)
+            filename = filename.Replace("<", String.Empty)
+            filename = filename.Replace(">", String.Empty)
+            filename = filename.Replace("?", String.Empty)
+            filename = filename.Replace("*", String.Empty)
+            filename = filename.Replace("  ", " ")
+            Return filename
+        End Function
     End Class
 
     Public Class Delete
