@@ -1158,14 +1158,18 @@ Public Class frmMain
         End If
 
         If Res.scrapeType = Enums.ScrapeType.SingleScrape Then
-            MovieInfoDownloaded()
+            Me.MovieInfoDownloaded()
         Else
-            SelectRow(Me.currRow)
+            If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
+            Else
+                Me.ClearInfo()
+            End If
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            pbCanceling.Visible = False
+            Me.btnCancel.Visible = False
+            Me.lblCanceling.Visible = False
+            Me.pbCanceling.Visible = False
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         End If
