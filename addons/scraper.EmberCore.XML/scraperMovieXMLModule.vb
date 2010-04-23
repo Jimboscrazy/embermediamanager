@@ -261,13 +261,13 @@ Public Class EmberXMLScraperModule
                         res = XMLManager.GetResults(scraperName, tmpTitle, DBMovie.Movie.Year, XMLScraper.ScraperLib.MediaType.movie)
                         If res.Count > 1 Then  'OrElse (res.Count = 1 AndAlso ScrapeType = Enums.ScrapeType.SingleScrape) Then
                             Using dlg As New dlgSearchResults
-                                dlg.XMLManager = XMLManager
+                                Dim ScraperThumb As String = String.Empty
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
                                 If Not IsNothing(s) AndAlso File.Exists(s.ScraperThumb) Then
-                                    dlg.pbScraperLogo.Load(s.ScraperThumb)
+                                    ScraperThumb = s.ScraperThumb
                                 End If
-                                If dlg.ShowDialog(res, DBMovie.Movie.Title, scraperName) = Windows.Forms.DialogResult.OK Then
-                                    lMediaTag = XMLManager.GetDetails(res(dlg.SelectIdx))
+                                lMediaTag = dlg.ShowDialog(res, DBMovie.Movie.Title, scraperName, ScraperThumb, XMLManager)
+                                If Not IsNothing(lMediaTag) Then
                                     MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
                                 Else
                                     Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}

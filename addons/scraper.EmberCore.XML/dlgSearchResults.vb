@@ -26,19 +26,18 @@ Imports System.Text
 Public Class dlgSearchResults
 
 #Region "Fields"
-    Public SelectIdx As Integer = -1
     Friend WithEvents bwDownloadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwSearchInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Public XMLManager As ScraperManager = Nothing
+    Private XMLManager As ScraperManager = Nothing
     Private lMediaTag As XMLScraper.MediaTags.MovieTag ' XMLScraper.MediaTags.MediaTag
     Private sHTTP As New HTTP
-    Dim UseOFDBGenre As Boolean
-    Dim UseOFDBOutline As Boolean
-    Dim UseOFDBPlot As Boolean
-    Dim UseOFDBTitle As Boolean
+    Private UseOFDBGenre As Boolean
+    Private UseOFDBOutline As Boolean
+    Private UseOFDBPlot As Boolean
+    Private UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
     Private mList As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
@@ -48,17 +47,25 @@ Public Class dlgSearchResults
 #Region "Methods"
 
 
-    Public Overloads Function ShowDialog(ByVal Res As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity), ByVal sMovieTitle As String, ByVal scrapername As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity), ByVal sMovieTitle As String, ByVal scrapername As String, ByVal ScraperThumb As String, ByVal xmlmanager As ScraperManager) As XMLScraper.MediaTags.MovieTag
         '//
         ' Overload to pass data
         '\\
 
         Me.Text = String.Concat(Master.eLang.GetString(7, "Search Results - "), sMovieTitle)
-        mList = Res
-        _scrapername = scrapername
+        If Not String.IsNullOrEmpty(ScraperThumb) Then Me.pbScraperLogo.Load(ScraperThumb)
+
+        Me.XMLManager = xmlmanager
+
+        Me.mList = Res
+        Me._scrapername = scrapername
         SearchResultsDownloaded()
 
-        Return MyBase.ShowDialog()
+        If MyBase.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Return lMediaTag
+        Else
+            Return Nothing
+        End If
     End Function
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
@@ -262,7 +269,6 @@ Public Class dlgSearchResults
 
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
-            SelectIdx = Convert.ToInt32(Me.tvResults.SelectedNode.Tag)
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.ClearInfo()
