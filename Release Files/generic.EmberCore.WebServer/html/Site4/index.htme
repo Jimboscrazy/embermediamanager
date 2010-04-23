@@ -1,0 +1,100 @@
+<html>
+<head>
+</head>
+<body ONLOADSET=zeropos>
+<link rel="stylesheet" type="text/css" href="default.css" />
+<center>
+<table class="tabela">
+<tr><td colspan="5" width="100%" height="550px">
+<div class="main">
+aaa
+</div>
+</td></tr>
+<tr>
+
+<td>
+<div id="place-5" class="place">
+	<a href="#"> <img id="image-5" src=""/></a></div>
+
+</div>
+</td>
+
+<td>
+<div id="place-4" class="place">
+	<a  href="#"> <img id="image-4" src=""/></a></div>
+
+</div>
+</td>
+
+<td>
+<div id="place-3" class="place">
+	<a href="#"> <img id="image-3" src=""/></a></div>
+</div>
+</td>
+
+<td>
+<div id="place-2" class="place">
+	<a  href="#"> <img id="image-2" src=""/></a></div>
+</div>
+</td>
+
+
+<td>
+<div id="place-1" class="place">
+	<a href="#"> <img id="image-1" src=""/></a></div>
+</td>
+
+<td>
+<div id="place0" class="place">
+	<a name="zeropos" href="#"> <img id="image0" src=""/></a>
+</div>
+</td>
+
+<td>
+<div id="place1" class="place" >
+	<a onFocus="MoveNext();" ONFOCUSSET=zeropos href="#"> <img id="image1" src="Downloads/9%20Songs%20%282004%29/9%20Songs.tbn"/></a></div>
+</div>
+</td>
+
+<td>
+<div id="place2" class="place" >
+	<a href="#"> <img id="image2" src=""/></a></div>
+</div>
+</td>
+
+<td>
+<div id="place3" class="place">
+	<a href="#"> <img id="image3" src=""/></a></div></div>
+</td>
+
+<td>
+<div id="place4" class="place">
+	<a href="#"> <img id="image4" src=""/></a></div></div>
+</td>
+
+<td>
+<div id="place5" class="place">
+	<a href="#"> <img id="image5" src=""/></a></div></div>
+</td>
+
+</tr>
+</table>
+</center>
+<script>
+
+var imgSrc=new Array(); 
+
+<$MOVIE>
+imgSrc[<$MORDERID>]="<$MPOSTER_FILE>";       
+<$/MOVIE>
+
+var MyIdx = 0;
+
+function MoveNext() {
+//	document.getElementById('image-1').setAttribute('src', 'Downloads/9%20Songs%20%282004%29/9%20Songs.tbn');
+	MyIdx += 1;
+	document.getElementById('image0').setAttribute('src', imgSrc[MyIdx]);
+}
+</script>
+</body>
+</html>
