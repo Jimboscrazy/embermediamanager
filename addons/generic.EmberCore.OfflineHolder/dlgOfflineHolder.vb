@@ -182,8 +182,6 @@ Public Class dlgOfflineHolder
         DirectoryCopy(WorkingPath, destPath)
 
         tMovie.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
-        If Not String.IsNullOrEmpty(tMovie.PosterPath) Then tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
-        If Not String.IsNullOrEmpty(tMovie.FanartPath) Then tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
 
         If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
             Dim tTitle As String = StringUtils.FilterTokens(tMovie.Movie.Title)
@@ -198,7 +196,21 @@ Public Class dlgOfflineHolder
         End If
 
         tMovie.Movie.SortTitle = tMovie.ListTitle
+        If Not String.IsNullOrEmpty(tMovie.PosterPath) Then
+            'File.Copy(tMovie.PosterPath, Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString))
+            Dim poster As New EmberAPI.Images
+            poster.FromFile(tMovie.PosterPath)
+            tMovie.PosterPath = poster.SaveAsPoster(tMovie)
+            'tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
+        End If
 
+        If Not String.IsNullOrEmpty(tMovie.FanartPath) Then
+            'File.Copy(tMovie.PosterPath, Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString))
+            Dim fanart As New EmberAPI.Images
+            fanart.FromFile(tMovie.FanartPath)
+            tMovie.FanartPath = fanart.SaveAsFanart(tMovie)
+            'tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
+        End If
         tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
 
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(6, "Renaming Files"))
@@ -264,10 +276,10 @@ Public Class dlgOfflineHolder
         Dim Fanart As New Images
         Try
             If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
-                MovieName = txtMovieName.Text
+                MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
                 tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
             Else
-                MovieName = txtMovieName.Text
+                MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
                 For Each Invalid As Char In Path.GetInvalidPathChars
                     MovieName = MovieName.Replace(Invalid, String.Empty)
                 Next
@@ -445,31 +457,36 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
-        Dim dir As New DirectoryInfo(sourceDirName)
-        ' If the source directory does not exist, throw an exception.
-        If Not dir.Exists Then
-            Throw New DirectoryNotFoundException( _
-                Master.eLang.GetString(8, "Source directory does not exist or could not be found: ") _
-                + sourceDirName)
-        End If
-        ' If the destination directory does not exist, create it.
-        If Not Directory.Exists(destDirName) Then
-            Directory.CreateDirectory(destDirName)
-        End If
-        ' Get the file contents of the directory to copy.
-        Dim Files As New List(Of FileInfo)
-
         Try
-            Files.AddRange(dir.GetFiles())
-        Catch
+
+            Dim dir As New DirectoryInfo(sourceDirName)
+            ' If the source directory does not exist, throw an exception.
+            If Not dir.Exists Then
+                Throw New DirectoryNotFoundException( _
+                    Master.eLang.GetString(8, "Source directory does not exist or could not be found: ") _
+                    + sourceDirName)
+            End If
+            ' If the destination directory does not exist, create it.
+            If Not Directory.Exists(destDirName) Then
+                Directory.CreateDirectory(destDirName)
+            End If
+            ' Get the file contents of the directory to copy.
+            Dim Files As New List(Of FileInfo)
+
+            Try
+                Files.AddRange(dir.GetFiles())
+            Catch
+            End Try
+
+            For Each sFile As FileInfo In Files
+                FileUtils.Common.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+            Next
+
+            Files = Nothing
+            dir = Nothing
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
-        For Each sFile As FileInfo In Files
-            FileUtils.Common.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
-        Next
-
-        Files = Nothing
-        dir = Nothing
     End Sub
 
     Private Sub dlgOfflineHolder_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -534,6 +551,7 @@ Public Class dlgOfflineHolder
 
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
+            tMovie.Movie.Clear()
             tMovie.Movie.Title = txtMovieName.Text
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
@@ -541,12 +559,18 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
             If Not ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
                 Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
-                Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
+                'Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
                 Dim fResults As New Containers.ImgResult
                 ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
                 If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                     tMovie.FanartPath = fResults.ImagePath
                     If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
+                End If
+                'sPath = Path.Combine(Master.TempPath, "poster.jpg")
+                fResults = New Containers.ImgResult
+                ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Posters, fResults, True)
+                If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                    tMovie.PosterPath = fResults.ImagePath
                 End If
             End If
             CheckConditions()
