@@ -3158,14 +3158,14 @@ Public Class Settings
         Me._postersize = Enums.PosterSize.Xlrg
         Me._fanartsize = Enums.FanartSize.Lrg
         Me._showbanner = True
-        Me._showbannertype = Enums.ShowBannerType.None
+        Me._showbannertype = Enums.ShowBannerType.Graphical
         Me._showpostersize = Enums.PosterSize.Xlrg
         Me._allsbanner = False
-        Me._allsbannertype = Enums.ShowBannerType.None
+        Me._allsbannertype = Enums.ShowBannerType.Graphical
         Me._allspostersize = Enums.PosterSize.Xlrg
         Me._showfanartsize = Enums.FanartSize.Lrg
         Me._epfanartsize = Enums.FanartSize.Lrg
-        Me._seasonpostersize = Enums.SeasonPosterType.None
+        Me._seasonpostersize = Enums.SeasonPosterType.Poster
         Me._seasonfanartsize = Enums.FanartSize.Lrg
         Me._autoET = False
         Me._autoETsize = Enums.FanartSize.Lrg

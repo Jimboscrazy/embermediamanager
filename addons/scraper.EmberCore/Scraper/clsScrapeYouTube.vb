@@ -179,7 +179,7 @@ Namespace YouTube
 
                         If bwYT.CancellationPending Then Return DownloadLinks
 
-                        If Link.URL <> "" AndAlso sHTTP.IsValidURL(Link.URL) Then
+                        If Not String.IsNullOrEmpty(Link.URL) AndAlso sHTTP.IsValidURL(Link.URL) Then
                             DownloadLinks.Add(Link)
                         End If
 

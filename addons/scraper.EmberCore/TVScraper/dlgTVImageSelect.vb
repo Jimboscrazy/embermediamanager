@@ -69,6 +69,10 @@ Public Class dlgTVImageSelect
                 If Master.eSettings.IsShowBanner Then
                     Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowBannerType AndAlso p.Language = Master.eSettings.TVDBLanguage)
 
+                    If Master.eSettings.OnlyGetTVImagesForSelectedLanguage Then
+                        If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    End If
+
                     If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowBannerType)
 
                     'no preferred size, just get any one of them
@@ -92,6 +96,10 @@ Public Class dlgTVImageSelect
                     End If
                 Else
                     Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredShowPosterSize AndAlso p.Language = Master.eSettings.TVDBLanguage)
+
+                    If Master.eSettings.OnlyGetTVImagesForSelectedLanguage Then
+                        If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    End If
 
                     If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredShowPosterSize)
 
@@ -149,7 +157,7 @@ Public Class dlgTVImageSelect
             If Me.bwLoadImages.CancellationPending Then
                 Return True
             End If
-                Me.bwLoadImages.ReportProgress(2, "progress")
+            Me.bwLoadImages.ReportProgress(2, "progress")
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
                 If Master.eSettings.IsAllSBanner Then
@@ -230,33 +238,33 @@ Public Class dlgTVImageSelect
                 Next
             End If
 
-                If Me._type = Enums.TVImageType.All Then
-                    For Each Episode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
-                        Try
-                            If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
-                                Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
-                            ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                                Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
-                            End If
+            If Me._type = Enums.TVImageType.All Then
+                For Each Episode As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
+                    Try
+                        If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
+                            Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
+                        ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
+                            Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
+                        End If
 
-                            If Master.eSettings.EpisodeFanartEnabled Then
-                                If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                                    Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
-                                ElseIf Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                                    Episode.TVEp.Fanart.Image = Scraper.TVDBImages.ShowFanart.Image.Image
-                                End If
+                        If Master.eSettings.EpisodeFanartEnabled Then
+                            If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
+                                Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
+                            ElseIf Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                                Episode.TVEp.Fanart.Image = Scraper.TVDBImages.ShowFanart.Image.Image
                             End If
+                        End If
 
-                            If Me.bwLoadImages.CancellationPending Then
-                                Return True
-                            End If
-                            Me.bwLoadImages.ReportProgress(iProgress, "progress")
-                            iProgress += 1
-                        Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                        End Try
-                    Next
-                End If
+                        If Me.bwLoadImages.CancellationPending Then
+                            Return True
+                        End If
+                        Me.bwLoadImages.ReportProgress(iProgress, "progress")
+                        iProgress += 1
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
