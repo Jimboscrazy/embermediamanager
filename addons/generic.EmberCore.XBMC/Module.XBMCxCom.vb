@@ -162,6 +162,7 @@ Public Class XBMCxCom
                 DBMovie = RunQueue.Dequeue
                 eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = DBMovie.Source).Path
                 For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
+                    If s.Paths.Count = 0 Then Continue For
                     Dim remoteSource As String = s.Paths(eSource).ToString
                     If Not eSource.EndsWith(Path.DirectorySeparatorChar) Then eSource = String.Concat(eSource, Path.DirectorySeparatorChar)
                     Dim remoteFullFilename As String = DBMovie.Filename.Replace(eSource, remoteSource)
@@ -619,9 +620,10 @@ Public Class XBMCxCom
                     Asett = h
                     If Not t.Paths Is Nothing AndAlso t.Paths.Count > 0 Then
                         Dim AsettPath As New Hashtable
-                        AsettPath = t.Paths
-                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
-                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", t.Name), AsettPath)
+                        Dim name As String = t.Name
+                        AsettPath = DirectCast(t.Paths.Clone, Hashtable)
+                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", name))
+                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", name), AsettPath)
                     End If
                 Next
                 AdvancedSettings.ClearComplexSetting("XBMCHosts")

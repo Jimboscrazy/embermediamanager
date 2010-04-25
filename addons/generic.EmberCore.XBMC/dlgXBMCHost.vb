@@ -90,6 +90,7 @@ Public Class dlgXBMCHost
         xCom = XComs.FirstOrDefault(Function(y) y.Name = hostid)
         If Not xCom Is Nothing Then
             Try
+                Paths = xCom.Paths
                 Me.txtName.Text = xCom.Name
                 Me.txtIP.Text = xCom.IP
                 Me.txtPort.Text = xCom.Port
@@ -114,7 +115,7 @@ Public Class dlgXBMCHost
                     Next
 
                     dcb.DataSource = l.ToArray
-                    dcb.Value = xCom.Paths(sPath).ToString
+                    If xCom.Paths.Count > 0 Then dcb.Value = xCom.Paths(sPath).ToString
                 Next
             Catch ex As Exception
             End Try

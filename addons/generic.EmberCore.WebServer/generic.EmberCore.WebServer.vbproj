@@ -73,7 +73,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x86\Debug\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -176,7 +176,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
+    <ProjectReference Include="..\..\trunk\EmberAPI\EmberAPI.vbproj">
       <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
