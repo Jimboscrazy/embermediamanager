@@ -583,26 +583,16 @@ Public Class Scanner
     Public Function isValidDir(ByVal dInfo As DirectoryInfo, ByVal isTV As Boolean) As Boolean
         Try
 
-            If dInfo.Name.ToLower = "extrathumbs" OrElse _
-            (Not isTV AndAlso dInfo.Name.ToLower = "extras") OrElse _
-            dInfo.Name.ToLower = "video_ts" OrElse _
-            dInfo.Name.ToLower = "bdmv" OrElse _
-            dInfo.Name.ToLower = "audio_ts" OrElse _
-            dInfo.Name.ToLower = "recycler" OrElse _
-            dInfo.Name.ToLower = "subs" OrElse _
-            dInfo.Name.ToLower = "subtitles" OrElse _
-            dInfo.Name.ToLower = ".trashes" OrElse _
-            dInfo.Name.ToLower.Contains("-trailer") OrElse _
-            dInfo.Name.ToLower.Contains("[trailer") OrElse _
-            dInfo.Name.ToLower.Contains("temporary files") OrElse _
-            dInfo.Name.ToLower.Contains("(noscan)") OrElse _
-            dInfo.Name.ToLower.Contains("$recycle.bin") OrElse _
-            dInfo.Name.ToLower.Contains("lost+found") OrElse _
-            dInfo.Name.ToLower.Contains("system volume information") OrElse _
-            dInfo.Name.ToLower.Contains("sample") OrElse _
+            If (Not isTV AndAlso dInfo.Name.ToLower = "extras") OrElse _
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                If dInfo.Name.ToLower = s Then Return False
+            Next
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                If dInfo.Name.ToLower.Contains(s) Then Return False
+            Next
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

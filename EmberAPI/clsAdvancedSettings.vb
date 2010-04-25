@@ -277,6 +277,9 @@ Public Class AdvancedSettings
         SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")
         SetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
 
+        SetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes")
+        SetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample")
+
         Dim keypair As New Hashtable
         keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
         keypair.Add("hd[-\s]?dvd", "hddvd")
