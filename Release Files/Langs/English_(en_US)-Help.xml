@@ -32,7 +32,7 @@
 	<string control="Core_lstWhitelist">This list contains all the current extensions that will be skipped during cleaning.</string>
 	<string control="Core_chkYAMJCompatibleSets">If enabled, Ember will save sets information in a format that is compatible with YAMJ. If disabled, Ember will save sets information in a format that is compatible with XBMC.</string>
 	<string control="Core_chkMarkNew">If enabled, new movies will be "marked". If disabled, new movies will still be colored green until updated or the next Ember session.</string>
-	<string control="Core_lbGenre">Select the langauge(s) of the genres you would like Ember to display.</string>
+	<string control="Core_lbGenre">Select the language(s) of the genres you would like Ember to display.</string>
 	<string control="Core_txtCheckTitleTol">Enter the tolerance level you would like Ember to use when title matching. The higher the number, the more lenient the algorithm is. 0 = disabled</string>
 	<string control="Core_chkCheckTitles">Enable this to have Ember check the differences between the title of the movie and it's file name. This is useful to make sure that the scraped data is actually for the selected movie file.</string>
 	<string control="Core_btnRemoveToken">Remove the selected sort token from the list.</string>
