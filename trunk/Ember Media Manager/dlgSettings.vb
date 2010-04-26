@@ -584,6 +584,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
         Me.RemoveMovieSource()
+        Master.DB.LoadMovieSourcesFromDB()
     End Sub
 
     Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
