@@ -45,7 +45,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x64\Debug\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x64\Debug\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -58,7 +58,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DefineTrace>false</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x64\Release\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x64\Release\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>false</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x86\Release\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
