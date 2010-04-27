@@ -495,7 +495,7 @@ Public Class Enums
     Public Enum PostScraperCapabilities
         Poster = 1
         Fanart = 2
-        Trailer = 2
+        Trailer = 3
     End Enum
 
 
@@ -510,8 +510,8 @@ Public Class Enums
         RandomFrameExtrator = 7
         CL_MovieExporter = 8            ' Command Line Exporter
         MovieSync = 9
-        ShowMovie = 10                  ' Called after displaying Movie
-        ShowTVShow = 11                 ' Called after displaying TVShow
+        ShowMovie = 10                  ' Called after displaying Movie  (not in place yet)
+        ShowTVShow = 11                 ' Called after displaying TVShow (not in place yet)
         BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
     End Enum
 
