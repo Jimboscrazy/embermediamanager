@@ -231,6 +231,7 @@ Public Class dlgWizard
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
+        Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLcommand.CommandText = "SELECT * FROM TVSources;"

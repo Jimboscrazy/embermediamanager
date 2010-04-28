@@ -5519,6 +5519,7 @@ doCancel:
                         End If
                     End If
                     Master.DB.LoadMovieSourcesFromDB()
+                    Master.DB.LoadTVSourcesFromDB()
                     fLoading.SetStage("Setting menus...")
                     Me.SetMenus(True)
                     Functions.GetListOfSources()
