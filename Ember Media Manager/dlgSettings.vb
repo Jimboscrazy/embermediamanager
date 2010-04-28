@@ -786,6 +786,7 @@ Public Class dlgSettings
 
     Private Sub btnRemTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemTVSource.Click
         Me.RemoveTVSource()
+        Master.DB.LoadTVSourcesFromDB()
     End Sub
 
     Private Sub btnShowFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowFilterDown.Click
@@ -2923,6 +2924,7 @@ Public Class dlgSettings
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
+        Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLcommand.CommandText = "SELECT * FROM TVSources;"

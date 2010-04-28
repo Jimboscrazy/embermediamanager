@@ -1090,6 +1090,11 @@ Public Class Structures
         Dim UseFolderName As Boolean
         Dim IsSingle As Boolean
     End Structure
+    Public Structure TVSource
+        Dim id As String
+        Dim Name As String
+        Dim Path As String
+    End Structure
 
     Public Structure DBMovie
 

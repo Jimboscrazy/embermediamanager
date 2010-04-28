@@ -1782,6 +1782,22 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Public Sub LoadTVSourcesFromDB()
+        Master.TVSources.Clear()
+
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim tvsource As New Structures.TVSource
+                    tvsource.id = SQLreader("ID").ToString
+                    tvsource.Name = SQLreader("Name").ToString
+                    tvsource.Path = SQLreader("Path").ToString
+                    Master.TVSources.Add(tvsource)
+                End While
+            End Using
+        End Using
+    End Sub
 
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
