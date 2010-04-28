@@ -104,6 +104,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "E", f.SortTitle)
+                    strCond = ApplyPattern(strCond, "C", f.Director)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
                         If strCond.Length > joinIndex + 2 Then
@@ -117,7 +118,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRAISMBLE]|G[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRAISMBLEC]|G[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -144,6 +145,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "E", f.SortTitle)
+            pattern = ApplyPattern(pattern, "C", f.Director)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
@@ -234,6 +236,7 @@ Public Class FileFolderRenamer
         MovieFile.IsSingle = _tmpMovie.isSingle
         MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
         MovieFile.Genre = _tmpMovie.Movie.Genre
+        MovieFile.Director = _tmpMovie.Movie.Director
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -777,6 +780,7 @@ Public Class FileFolderRenamer
         Private _sorttitle As String
         Private _imdbid As String
         Private _genre As String
+        Private _director As String
 
         #End Region 'Fields
 
@@ -1007,6 +1011,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property Director() As String
+            Get
+                Return Me._director
+            End Get
+            Set(ByVal value As String)
+                Me._director = value.Trim
+            End Set
+        End Property
+
         #End Region 'Properties
 
         #Region "Methods"
@@ -1035,6 +1048,7 @@ Public Class FileFolderRenamer
             _isvideo_ts = False
             _isbdmv = False
             _genre = String.Empty
+            _director = String.Empty
         End Sub
 
         #End Region 'Methods
