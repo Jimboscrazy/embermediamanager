@@ -721,7 +721,6 @@ Public Class Functions
         Return options
     End Function
 
-
     Public Shared Sub CreateDefaultOptions()
         With Master.DefaultOptions
             .bCast = Master.eSettings.FieldCast
@@ -1092,7 +1091,6 @@ Public Class Structures
         Dim IsSingle As Boolean
     End Structure
 
-
     Public Structure DBMovie
 
 #Region "Fields"
@@ -1118,6 +1116,8 @@ Public Class Structures
         Dim TrailerPath As String
         Dim UseFolder As Boolean
         Dim JobLog As MediaLog
+        Dim Genres As String
+
 #End Region 'Fields
 
     End Structure

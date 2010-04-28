@@ -78,12 +78,14 @@ Public Class FileFolderRenamer
             Dim strSource As String = APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
 
             'pattern = "$T{($S.$S)}"
+            Dim joinIndex As Integer
             Dim nextC = pattern.IndexOf("$")
             Dim nextIB = pattern.IndexOf("{")
             Dim nextEB = pattern.IndexOf("}")
             Dim strCond As String
             Dim strBase As String
             Dim strNoFlags As String
+            Dim strJoin As String
             While Not nextC = -1
                 If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
                     strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
@@ -102,7 +104,20 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "E", f.SortTitle)
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRAISMBLE]))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    joinIndex = strCond.IndexOf("$G")
+                    If Not joinIndex = -1 Then
+                        If strCond.Length > joinIndex + 2 Then
+                            strJoin = strCond.Substring(joinIndex + 2, 1)
+                            If Not ". -".IndexOf(strJoin) = -1 Then
+                                strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
+                            Else
+                                strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
+                            End If
+                        Else
+                            strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
+                        End If
+                    End If
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRAISMBLE]|G[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -129,6 +144,19 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "E", f.SortTitle)
+            nextC = pattern.IndexOf("$G")
+            If Not nextC = -1 Then
+                If pattern.Length > nextC + 2 Then
+                    strCond = pattern.Substring(nextC + 2, 1)
+                    If Not ". -".IndexOf(strCond) = -1 Then
+                        pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
+                    Else
+                        pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                    End If
+                Else
+                    pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                End If
+            End If
             nextC = pattern.IndexOf("$X")
             If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                 strCond = pattern.Substring(nextC + 2, 1)
@@ -205,6 +233,7 @@ Public Class FileFolderRenamer
         MovieFile.Year = _tmpMovie.Movie.Year
         MovieFile.IsSingle = _tmpMovie.isSingle
         MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
+        MovieFile.Genre = _tmpMovie.Movie.Genre
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -747,6 +776,7 @@ Public Class FileFolderRenamer
         Private _year As String
         Private _sorttitle As String
         Private _imdbid As String
+        Private _genre As String
 
         #End Region 'Fields
 
@@ -940,6 +970,7 @@ Public Class FileFolderRenamer
                 Me._title = value.Trim
             End Set
         End Property
+
         Public Property SortTitle() As String
             Get
                 Return Me._sorttitle
@@ -948,6 +979,7 @@ Public Class FileFolderRenamer
                 Me._sorttitle = value.Trim
             End Set
         End Property
+
         Public Property Year() As String
             Get
                 Return Me._year
@@ -956,6 +988,7 @@ Public Class FileFolderRenamer
                 Me._year = value
             End Set
         End Property
+
         Public Property IMDBID() As String
             Get
                 Return Me._imdbid
@@ -964,6 +997,16 @@ Public Class FileFolderRenamer
                 Me._imdbid = value.Trim
             End Set
         End Property
+
+        Public Property Genre() As String
+            Get
+                Return Me._genre
+            End Get
+            Set(ByVal value As String)
+                Me._genre = value.Trim
+            End Set
+        End Property
+
         #End Region 'Properties
 
         #Region "Methods"
@@ -991,6 +1034,7 @@ Public Class FileFolderRenamer
             _originalTitle = String.Empty
             _isvideo_ts = False
             _isbdmv = False
+            _genre = String.Empty
         End Sub
 
         #End Region 'Methods
