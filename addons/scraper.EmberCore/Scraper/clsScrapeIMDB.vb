@@ -232,6 +232,9 @@ Namespace IMDB
                             End If
                         End If
                     End If
+                    If String.IsNullOrEmpty(IMDBMovie.Certification) AndAlso Not String.IsNullOrEmpty(IMDBMovie.MPAA) Then
+                        IMDBMovie.Certification = IMDBMovie.MPAA
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
