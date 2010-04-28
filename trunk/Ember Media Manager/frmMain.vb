@@ -92,6 +92,7 @@ Public Class frmMain
     Private prevRow As Integer = -1
     Private prevSeasonRow As Integer = -1
     Private prevShowRow As Integer = -1
+    Private bDoingSearch As Boolean = False
 
     'filters
     Private FilterArray As New List(Of String)
@@ -3000,6 +3001,7 @@ doCancel:
     Private Sub dgvMediaList_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMediaList.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearch.Focus()
     End Sub
 
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
@@ -4674,7 +4676,13 @@ doCancel:
             Else
                 Me.dgvMediaList.Enabled = True
             End If
-            Me.dgvMediaList.Focus()
+            If bDoingSearch Then
+                Me.txtSearch.Focus()
+                bDoingSearch = False
+            Else
+                Me.dgvMediaList.Focus()
+            End If
+
 
             Application.DoEvents()
 
@@ -8391,8 +8399,9 @@ doCancel:
 
     Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
         Me.tmrSearchWait.Enabled = False
+        Me.tmrSearch.Enabled = False
+        bDoingSearch = True
         Try
-
             If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
                 Me.FilterArray.Remove(Me.filSearch)
                 Me.filSearch = String.Empty
@@ -8417,10 +8426,8 @@ doCancel:
                 End If
                 Me.RunFilter(True)
             End If
-
         Catch
         End Try
-        Me.tmrSearch.Enabled = False
     End Sub
 
     Private Sub tmrWaitEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitEp.Tick
@@ -8619,6 +8626,9 @@ doCancel:
 
     Private Sub txtSearch_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearch.KeyPress
         e.Handled = StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
+            Me.dgvMediaList.Focus()
+        End If
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged

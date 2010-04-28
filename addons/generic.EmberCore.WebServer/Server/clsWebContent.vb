@@ -157,7 +157,7 @@ Public Class ProccessPages
                             Case "<$MCERTIFICATION>"
                                 row = row.Replace("<$MCERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Item("Certification").ToString))
                             Case "<$MIMDBID>"
-                                row = row.Replace("<$MIMDBID>", StringUtils.HtmlEncode(_curMovie.Item("IMDBID").ToString))
+                                row = row.Replace("<$MIMDBID>", StringUtils.HtmlEncode(_curMovie.Item("IMDB").ToString))
                             Case "<$MMPAA>"
                                 row = row.Replace("<$MMPAA>", StringUtils.HtmlEncode(_curMovie.Item("MPAA").ToString))
                             Case "<$MRELEASEDATE>"
