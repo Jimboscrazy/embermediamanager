@@ -1116,8 +1116,6 @@ Public Class Structures
         Dim TrailerPath As String
         Dim UseFolder As Boolean
         Dim JobLog As MediaLog
-        Dim Genres As String
-
 #End Region 'Fields
 
     End Structure
