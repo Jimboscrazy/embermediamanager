@@ -169,7 +169,7 @@ Partial Class dlgImgSelect
         '
         Me.rbMedium.AutoSize = True
         Me.rbMedium.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbMedium.Location = New System.Drawing.Point(322, 8)
+        Me.rbMedium.Location = New System.Drawing.Point(201, 8)
         Me.rbMedium.Name = "rbMedium"
         Me.rbMedium.Size = New System.Drawing.Size(69, 17)
         Me.rbMedium.TabIndex = 4
@@ -182,12 +182,12 @@ Partial Class dlgImgSelect
         Me.rbLarge.AutoSize = True
         Me.rbLarge.Enabled = False
         Me.rbLarge.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbLarge.Location = New System.Drawing.Point(179, 8)
+        Me.rbLarge.Location = New System.Drawing.Point(343, 8)
         Me.rbLarge.Name = "rbLarge"
-        Me.rbLarge.Size = New System.Drawing.Size(54, 17)
+        Me.rbLarge.Size = New System.Drawing.Size(55, 17)
         Me.rbLarge.TabIndex = 3
         Me.rbLarge.TabStop = True
-        Me.rbLarge.Text = "Large"
+        Me.rbLarge.Text = "Cover"
         Me.rbLarge.UseVisualStyleBackColor = True
         '
         'rbXLarge
@@ -197,10 +197,10 @@ Partial Class dlgImgSelect
         Me.rbXLarge.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbXLarge.Location = New System.Drawing.Point(26, 8)
         Me.rbXLarge.Name = "rbXLarge"
-        Me.rbXLarge.Size = New System.Drawing.Size(65, 17)
+        Me.rbXLarge.Size = New System.Drawing.Size(66, 17)
         Me.rbXLarge.TabIndex = 2
         Me.rbXLarge.TabStop = True
-        Me.rbXLarge.Text = "X-Large"
+        Me.rbXLarge.Text = "Original"
         Me.rbXLarge.UseVisualStyleBackColor = True
         '
         'pnlFanart

@@ -1091,10 +1091,10 @@ Public Class dlgImgSelect
 
             Me.rbXLarge.Checked = False
             Me.rbXLarge.Enabled = False
-            Me.rbXLarge.Text = Master.eLang.GetString(47, "X-Large")
+            Me.rbXLarge.Text = Master.eLang.GetString(47, "Original")
             Me.rbLarge.Checked = False
             Me.rbLarge.Enabled = False
-            Me.rbLarge.Text = Master.eLang.GetString(48, "Large")
+            Me.rbLarge.Text = Master.eLang.GetString(48, "Cover")
             Me.rbMedium.Checked = False
             Me.rbMedium.Text = Master.eLang.GetString(49, "Medium")
             Me.rbSmall.Checked = False
@@ -1105,28 +1105,28 @@ Public Class dlgImgSelect
 
             For i As Integer = 0 To Me.TMDBPosters.Count - 1
                 Select Case True
-                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "-original.jpg")
                         ' xlarge
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage.Image) Then
                             Me.rbXLarge.Enabled = True
                             Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
-                            If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format(Master.eLang.GetString(51, "X-Large ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
+                            If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format(Master.eLang.GetString(51, "Original ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                         End If
-                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "-cover.jpg")
                         ' large
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage.Image) Then
                             Me.rbLarge.Enabled = True
                             Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
-                            If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format(Master.eLang.GetString(52, "Large ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
+                            If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format(Master.eLang.GetString(52, "Cover ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                         End If
-                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "-thumb.jpg")
                         ' small
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage.Image) Then
                             Me.rbSmall.Enabled = True
                             Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
                             If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format(Master.eLang.GetString(53, "Small ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                         End If
-                    Case Me.TMDBPosters.Item(i).URL = sURL
+                    Case Me.TMDBPosters.Item(i).URL = sURL '-mid.jpg
                         If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format(Master.eLang.GetString(54, "Medium ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                 End Select
             Next

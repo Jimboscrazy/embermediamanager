@@ -47,12 +47,12 @@
 	<string id="44">Selected item will be set as fanart. All checked items will be saved to \extrathumbs.</string>
 	<string id="45">Performing Preliminary Tasks...</string>
 	<string id="46">Downloading Selected Image...</string>
-	<string id="47">X-Large</string>
-	<string id="48">Large</string>
+	<string id="47">Original</string>
+	<string id="48">Cover</string>
 	<string id="49">Medium</string>
 	<string id="50">Small</string>
-	<string id="51">X-Large ({0}x{1})</string>
-	<string id="52">Large ({0}x{1})</string>
+	<string id="51">Original ({0}x{1})</string>
+	<string id="52">Cover ({0}x{1})</string>
 	<string id="53">Small ({0}x{1})</string>
 	<string id="54">Medium ({0}x{1})</string>
 	<string id="55">Multiple</string>
