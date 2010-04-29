@@ -156,21 +156,27 @@ Public Class dlgAddons
     End Sub
 
     Private Sub tsCategories_ItemClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles tsCategories.ItemClicked
-        If e.ClickedItem.Tag.ToString = "Create New" Then
-            Using dNewAddon As New dlgAddEditAddon
-                Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
-                If Not IsNothing(tAddon) Then
-                    Me.DoUpload(tAddon)
+        Try
+            If Not e.ClickedItem.Tag Is Nothing Then
+                If e.ClickedItem.Tag.ToString = "Create New" Then
+                    Using dNewAddon As New dlgAddEditAddon
+                        Dim tAddon As Containers.Addon = dNewAddon.ShowDialog(New Containers.Addon)
+                        If Not IsNothing(tAddon) Then
+                            Me.DoUpload(tAddon)
+                        End If
+                    End Using
+                Else
+                    If Not Me.currType = e.ClickedItem.Tag.ToString Then
+                        Me.currType = e.ClickedItem.Tag.ToString
+                        Me.pbCurrent.Image = e.ClickedItem.Image
+                        Me.lblCurrent.Text = e.ClickedItem.Text
+                        Me.LoadItems(e.ClickedItem.Tag.ToString)
+                    End If
                 End If
-            End Using
-        Else
-            If Not Me.currType = e.ClickedItem.Tag.ToString Then
-                Me.currType = e.ClickedItem.Tag.ToString
-                Me.pbCurrent.Image = e.ClickedItem.Image
-                Me.lblCurrent.Text = e.ClickedItem.Text
-                Me.LoadItems(e.ClickedItem.Tag.ToString)
             End If
-        End If
+        Catch ex As Exception
+        End Try
+
     End Sub
 
     Public Sub LoadItems(ByVal sType As String)
