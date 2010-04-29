@@ -110,6 +110,7 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Darren ""RogueDazza"" Sayers"})
         CredList.Add(New CredLine With {.Text = "Jim ""FCCWizard"" Brown"})
+        CredList.Add(New CredLine With {.Text = "Jeremy ""Jem"" Worboys"})
         CredList.Add(New CredLine With {.Text = """pcjco"""})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})

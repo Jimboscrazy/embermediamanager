@@ -91,20 +91,22 @@ Public Class FileFolderRenamer
                     strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
                     strNoFlags = strCond
                     strBase = strCond
-                    strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
-                    strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
-                    strCond = ApplyPattern(strCond, "T", f.Title)
-                    strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                    strCond = ApplyPattern(strCond, "Y", f.Year)
-                    strCond = ApplyPattern(strCond, "R", f.Resolution)
+                    strCond = ApplyPattern(strCond, "1", f.SortTitle.Substring(0, 1))
                     strCond = ApplyPattern(strCond, "A", f.Audio)
-                    strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
-                    strCond = ApplyPattern(strCond, "S", strSource)
-                    strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
-                    strCond = ApplyPattern(strCond, "L", f.ListTitle)
-                    strCond = ApplyPattern(strCond, "E", f.SortTitle)
                     strCond = ApplyPattern(strCond, "C", f.Director)
+                    strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
+                    strCond = ApplyPattern(strCond, "E", f.SortTitle)
+                    strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
+                    '                                G   Genres
+                    strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                    strCond = ApplyPattern(strCond, "L", f.ListTitle)
+                    strCond = ApplyPattern(strCond, "M", f.MPAARate)
+                    strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
+                    strCond = ApplyPattern(strCond, "R", f.Resolution)
+                    strCond = ApplyPattern(strCond, "S", strSource)
+                    strCond = ApplyPattern(strCond, "T", f.Title)
+                    strCond = ApplyPattern(strCond, "Y", f.Year)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
                         If strCond.Length > joinIndex + 2 Then
@@ -118,7 +120,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRAISMBLEC]|G[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFILMORSTY]|G[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -132,20 +134,22 @@ Public Class FileFolderRenamer
                 nextIB = pattern.IndexOf("{")
                 nextEB = pattern.IndexOf("}")
             End While
-            pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
-            pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
-            pattern = ApplyPattern(pattern, "T", f.Title)
-            pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-            pattern = ApplyPattern(pattern, "Y", f.Year)
-            pattern = ApplyPattern(pattern, "R", f.Resolution)
+            pattern = ApplyPattern(pattern, "1", f.SortTitle.Substring(0, 1))
             pattern = ApplyPattern(pattern, "A", f.Audio)
-            pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
-            pattern = ApplyPattern(pattern, "S", strSource)
-            pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
-            pattern = ApplyPattern(pattern, "L", f.ListTitle)
-            pattern = ApplyPattern(pattern, "E", f.SortTitle)
             pattern = ApplyPattern(pattern, "C", f.Director)
+            pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
+            pattern = ApplyPattern(pattern, "E", f.SortTitle)
+            pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
+            '                                G   Genres
+            pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+            pattern = ApplyPattern(pattern, "L", f.ListTitle)
+            pattern = ApplyPattern(pattern, "M", f.MPAARate)
+            pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
+            pattern = ApplyPattern(pattern, "R", f.Resolution)
+            pattern = ApplyPattern(pattern, "S", strSource)
+            pattern = ApplyPattern(pattern, "T", f.Title)
+            pattern = ApplyPattern(pattern, "Y", f.Year)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
                 If pattern.Length > nextC + 2 Then
@@ -1028,6 +1032,7 @@ Public Class FileFolderRenamer
             _id = -1
             _title = String.Empty
             _listtitle = String.Empty
+            _sorttitle = String.Empty
             _year = String.Empty
             _basePath = String.Empty
             _oldpath = String.Empty
