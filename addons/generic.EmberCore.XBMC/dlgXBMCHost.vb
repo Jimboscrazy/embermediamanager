@@ -5,11 +5,11 @@ Imports System.IO
 Public Class dlgXBMCHost
     Public XComs As New List(Of XBMCxCom.XBMCCom)
     Public hostid As String = Nothing
-    Dim xCom As New XBMCxCom.XBMCCom
-    Dim xc As New XBMCxCom.XBMCCom
-    Dim XBMCSources As New List(Of String)
-    Dim RemotePathSeparator As String = String.Empty
-    Dim Paths As New Hashtable
+    Private xCom As New XBMCxCom.XBMCCom
+    Private xc As New XBMCxCom.XBMCCom
+    Private XBMCSources As New List(Of String)
+    Private RemotePathSeparator As String = String.Empty
+    Private Paths As New Hashtable
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
     Structure EmberSource
@@ -17,7 +17,7 @@ Public Class dlgXBMCHost
         Dim ElemCounts As Integer
         Dim XBMCSource As Hashtable
     End Structure
-    Dim EmberSources As New List(Of EmberSource)
+    Private EmberSources As New List(Of EmberSource)
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
@@ -110,12 +110,15 @@ Public Class dlgXBMCHost
                     Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
                     Dim l As New List(Of String)
                     l.Add("") 'Empty Entrie for combo
-                    For Each sp As Object In xCom.Paths.Values
-                        If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
-                    Next
+                    If Not xCom.Paths Is Nothing Then
+                        For Each sp As Object In xCom.Paths.Values
+                            If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
+                        Next
+
+                    End If
 
                     dcb.DataSource = l.ToArray
-                    If xCom.Paths.Count > 0 Then dcb.Value = xCom.Paths(sPath).ToString
+                    If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 Then dcb.Value = xCom.Paths(sPath).ToString
                 Next
             Catch ex As Exception
             End Try
@@ -166,6 +169,7 @@ Public Class dlgXBMCHost
         txtUsername.Enabled = False
         dgvSources.Enabled = False
         EmberSources.Clear()
+        If Paths Is Nothing Then Paths = New Hashtable
         Paths.Clear()
 
         xc = New XBMCxCom.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text, .RealTime = chkRealTime.Checked}

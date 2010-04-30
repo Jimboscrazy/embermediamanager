@@ -92,7 +92,6 @@ Public Class Database
                                 Else
                                     tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
                                     If Not IsNothing(tSource) Then
-                                        'tPath = Directory.GetParent(SQLReader("MoviePath").ToString).FullName
                                         If Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).Name.ToLower = "bdmv" Then
                                             tPath = Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).FullName
                                         Else
