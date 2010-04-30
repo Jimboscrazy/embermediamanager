@@ -12,4 +12,8 @@
     <Name>German (de/DE)</Name>
     <Filename>German_(de_DE)</Filename>
   </LanguageList>
+  <LanguageList>
+    <Name>Spanish (es/SPA)</Name>
+    <Filename>Setup.Spanish_(es_SPA)</Filename>
+  </LanguageList>
 </ArrayOfLanguageList>
