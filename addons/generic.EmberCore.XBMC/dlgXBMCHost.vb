@@ -118,7 +118,7 @@ Public Class dlgXBMCHost
                     End If
 
                     dcb.DataSource = l.ToArray
-                    If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 Then dcb.Value = xCom.Paths(sPath).ToString
+                    If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 AndAlso Not String.IsNullOrEmpty(sPath) Then dcb.Value = xCom.Paths(sPath).ToString
                 Next
             Catch ex As Exception
             End Try

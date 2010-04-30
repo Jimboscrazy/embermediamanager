@@ -570,31 +570,35 @@ Public Class XBMCxCom
                 Dim Asett As New Hashtable
                 Asett = AdvancedSettings.GetComplexSetting("XBMCHosts")
                 If Not Asett Is Nothing Then
-                    Dim t As New XBMCxCom.XBMCCom
-                    For Each k In Asett.Keys
-                        Select Case k.ToString
-                            Case "Name"
-                                t.Name = Asett.Item("Name").ToString
-                            Case "IP"
-                                t.IP = Asett.Item("IP").ToString
-                            Case "Port"
-                                t.Port = Asett.Item("Port").ToString
-                            Case "Username"
-                                t.Username = Asett.Item("Username").ToString
-                            Case "Password"
-                                t.Password = Asett.Item("Password").ToString
-                            Case "RemotePathSeparator"
-                                t.RemotePathSeparator = Asett.Item("RemotePathSeparator").ToString
-                            Case "RealTime"
-                                t.RealTime = Convert.ToBoolean(Asett.Item("RealTime").ToString)
-                        End Select
+                    For Each n In Asett.Keys
+                        Dim t As New XBMCxCom.XBMCCom
+                        Dim Aett As New Hashtable
+                        Aett = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts.", n.ToString))
+                        For Each k In Aett.Keys
+                            Select Case k.ToString
+                                Case "Name"
+                                    t.Name = Aett.Item("Name").ToString
+                                Case "IP"
+                                    t.IP = Aett.Item("IP").ToString
+                                Case "Port"
+                                    t.Port = Aett.Item("Port").ToString
+                                Case "Username"
+                                    t.Username = Aett.Item("Username").ToString
+                                Case "Password"
+                                    t.Password = Aett.Item("Password").ToString
+                                Case "RemotePathSeparator"
+                                    t.RemotePathSeparator = Aett.Item("RemotePathSeparator").ToString
+                                Case "RealTime"
+                                    t.RealTime = Convert.ToBoolean(Aett.Item("RealTime").ToString)
+                            End Select
+                        Next
+                        Dim AsettPath As New Hashtable
+                        AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts.Paths", ".", t.Name))
+                        If Not AsettPath Is Nothing Then
+                            t.Paths = AsettPath
+                        End If
+                        tmp.XComs.Add(t)
                     Next
-                    Dim AsettPath As New Hashtable
-                    AsettPath = AdvancedSettings.GetComplexSetting(String.Concat("XBMCHosts", ".", t.Name))
-                    If Not AsettPath Is Nothing Then
-                        t.Paths = AsettPath
-                    End If
-                    tmp.XComs.Add(t)
 
                 End If
             Catch ex As Exception
@@ -617,14 +621,16 @@ Public Class XBMCxCom
                     h.Add("Password", t.Password)
                     h.Add("RemotePathSeparator", t.RemotePathSeparator)
                     h.Add("RealTime", t.RealTime.ToString)
-                    Asett = h
+                    Asett.Add(t.Name, t.Name)
+                    Dim name As String = t.Name
                     If Not t.Paths Is Nothing AndAlso t.Paths.Count > 0 Then
                         Dim AsettPath As New Hashtable
-                        Dim name As String = t.Name
                         AsettPath = DirectCast(t.Paths.Clone, Hashtable)
-                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts", ".", name))
-                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts", ".", name), AsettPath)
+                        AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts.Paths.", name))
+                        AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts.Paths.", name), AsettPath)
                     End If
+                    AdvancedSettings.ClearComplexSetting(String.Concat("XBMCHosts.", name))
+                    AdvancedSettings.SetComplexSetting(String.Concat("XBMCHosts.", name), h)
                 Next
                 AdvancedSettings.ClearComplexSetting("XBMCHosts")
                 AdvancedSettings.SetComplexSetting("XBMCHosts", Asett)
