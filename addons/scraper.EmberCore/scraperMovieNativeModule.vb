@@ -440,7 +440,7 @@ Public Class EmberNativeScraperModule
 
         AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
         AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+        'AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
     End Sub
 
     Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule.SaveSetupPostScraper
@@ -500,6 +500,7 @@ Public Class EmberNativeScraperModule
         ConfigOptions.bTop250 = _setup.chkTop250.Checked
         ConfigOptions.bCert = _setup.chkCertification.Checked
         ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
+        ConfigOptions.bFullCast = _setup.chkFullCast.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then

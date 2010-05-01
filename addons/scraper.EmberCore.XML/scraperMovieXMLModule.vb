@@ -202,7 +202,7 @@ Public Class EmberXMLScraperModule
 
         AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
         AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+        'AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
     End Sub
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.GetMovieStudio
@@ -549,6 +549,7 @@ Public Class EmberXMLScraperModule
         ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
         ConfigOptions.bProducers = _setup.chkProducers.Checked
         ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
+        ConfigOptions.bFullCast = _setup.chkFullCast.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
