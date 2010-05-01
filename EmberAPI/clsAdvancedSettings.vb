@@ -270,8 +270,8 @@ Public Class AdvancedSettings
         SetSetting("VideoFormatConvert:3iv2", "3ivx")
         SetSetting("VideoFormatConvert:3ivd", "3ivx")
 
-        SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)")
-        SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])[\W_]*([0-9a-d]+)[\W_]?")
+        SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])")
+        SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])?")
         SetBooleanSetting("DisableMultiPartMedia", False)
 
         SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")

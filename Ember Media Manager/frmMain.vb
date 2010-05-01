@@ -182,6 +182,7 @@ Public Class frmMain
                     Case "FILE.Move"
                         Dim s() As String = _cmd.CommandExecute.Split("|"c)
                         If s.Count >= 2 Then
+                            File.Delete(s(1))
                             File.Move(s(0), s(1))
                         End If
                     Case "FILE.Delete"

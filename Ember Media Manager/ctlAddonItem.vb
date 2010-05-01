@@ -224,7 +224,6 @@ Public Class AddonItem
             If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
 
             Dim sHTTP As New HTTP
-            Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), Functions.ConvertToUnixTimestamp(Now).ToString))
             Dim finalFile As String = String.Empty
 
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
@@ -233,6 +232,8 @@ Public Class AddonItem
             End If
 
             For Each _file As KeyValuePair(Of String, String) In Me._filelist
+                Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), String.Concat(Functions.ConvertToUnixTimestamp(Now).ToString, Now.Ticks.ToString)))
+
                 Try
                     finalFile = Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar))
                     sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), tempFile, False, "other")
