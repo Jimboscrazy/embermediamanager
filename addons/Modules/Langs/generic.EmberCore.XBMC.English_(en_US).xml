@@ -26,9 +26,9 @@
 	<string id="23">Populate Sources</string>
 	<string id="24">Ember Source</string>
 	<string id="25">XBMC Source</string>
-	<string id="26">XBMC Host OS</string>
-	<string id="27">Windows</string>
-	<string id="28">Linux/MacOS X</string>
+	<string id="26">XBMC Source type</string>
+	<string id="27">Windows Drive Letter (X:\)</string>
+	<string id="28">Windows UNC/Linux/MacOS X</string>
 	<string id="29">XBMC Host</string>
 	<string id="30">Send Notifications</string>
 </strings>
