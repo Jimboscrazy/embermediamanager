@@ -42,7 +42,7 @@ Public Class FileManagerExternalModule
     Private _enabled As Boolean = False
     Private _Name As String = Master.eLang.GetString(1, "Media File Manager")
     Private _setup As frmSettingsHolder
-
+    Private withErrors As Boolean
     #End Region 'Fields
 
     #Region "Events"
@@ -94,22 +94,25 @@ Public Class FileManagerExternalModule
 
     #Region "Methods"
 
-    Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
+    Public Shared Function MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String) As Boolean
         Try
             Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
                 Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                    Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
-
-                    SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
-
+                    Dim StreamBuffer(4096) As Byte
+                    Dim nbytes As Integer
+                    Do
+                        nbytes = SourceStream.Read(StreamBuffer, 0, 4096)
+                        DestinationStream.Write(StreamBuffer, 0, nbytes)
+                    Loop While nbytes > 0
                     StreamBuffer = Nothing
                 End Using
             End Using
         Catch ex As Exception
+            Return False
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
+        Return True
+    End Function
 
     Public Sub Load()
         eSettings.ModuleSettings.Clear()
@@ -137,7 +140,8 @@ Public Class FileManagerExternalModule
 
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        _DirectoryCopy(Args.src, Args.dst)
+        withErrors = False
+        _DirectoryCopy(Args.src, Args.dst, Args.doMove)
     End Sub
 
     Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
@@ -148,7 +152,7 @@ Public Class FileManagerExternalModule
             dCopy.Label1.Text = Path.GetFileNameWithoutExtension(src)
             bwCopyDirectory.WorkerReportsProgress = True
             bwCopyDirectory.WorkerSupportsCancellation = True
-            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst})
+            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst, .domove = False})
             While bwCopyDirectory.IsBusy
                 Application.DoEvents()
             End While
@@ -163,11 +167,12 @@ Public Class FileManagerExternalModule
             dCopy.Label1.Text = Path.GetFileNameWithoutExtension(src)
             bwCopyDirectory.WorkerReportsProgress = True
             bwCopyDirectory.WorkerSupportsCancellation = True
-            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst})
+            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst, .domove = True})
             While bwCopyDirectory.IsBusy
                 Application.DoEvents()
             End While
-            Directory.Delete(src, True)
+            If Not withErrors Then Directory.Delete(src, True)
+
         End Using
     End Sub
 
@@ -222,12 +227,14 @@ Public Class FileManagerExternalModule
                                     'TODO:  need to test it better
                                     DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(6, "Moving Movie"))
                                     Master.DB.DeleteFromDB(MovieId)
+                                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
 
                             Case "COPY"
                                 If MsgBox(String.Format(Master.eLang.GetString(5, "Copy from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Copy") = MsgBoxResult.Yes Then
                                     'TODO:   need to test it better
                                     DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(7, "Copying Movie"))
+                                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
                         End Select
                     End If
@@ -320,7 +327,7 @@ Public Class FileManagerExternalModule
         End If
     End Sub
 
-    Private Sub _DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
+    Private Sub _DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
         Dim dir As New DirectoryInfo(sourceDirName)
         ' If the source directory does not exist, throw an exception.
         If Not dir.Exists Then
@@ -339,7 +346,20 @@ Public Class FileManagerExternalModule
         End Try
 
         For Each sFile As FileInfo In Files
-            MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+            If doMove Then
+                Try
+                    File.Move(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+                Catch ex As Exception
+                    If Not MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name)) Then
+                        withErrors = True
+                    End If
+                End Try
+            Else
+                If Not MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name)) Then
+                    withErrors = True
+                End If
+            End If
+
         Next
 
         Files = Nothing
@@ -356,7 +376,7 @@ Public Class FileManagerExternalModule
 
         Dim dst As String
         Dim src As String
-
+        Dim doMove As Boolean
         #End Region 'Fields
 
     End Structure

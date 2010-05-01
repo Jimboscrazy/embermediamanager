@@ -263,14 +263,16 @@ Public Class EmberXMLScraperModule
                             Using dlg As New dlgSearchResults
                                 Dim ScraperThumb As String = String.Empty
                                 Dim s As ScraperInfo = XMLManager.AllScrapers.FirstOrDefault(Function(y) y.ScraperName = scraperName)
-                                If Not IsNothing(s) AndAlso File.Exists(s.ScraperThumb) Then
-                                    ScraperThumb = s.ScraperThumb
-                                End If
-                                lMediaTag = dlg.ShowDialog(res, DBMovie.Movie.Title, scraperName, ScraperThumb, XMLManager)
-                                If Not IsNothing(lMediaTag) Then
-                                    MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
-                                Else
-                                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                                If Not IsNothing(s) Then
+                                    If File.Exists(s.ScraperThumb) Then
+                                        ScraperThumb = s.ScraperThumb
+                                    End If
+                                    lMediaTag = dlg.ShowDialog(res, DBMovie.Movie.Title, scraperName, ScraperThumb, XMLManager)
+                                    If Not IsNothing(lMediaTag) Then
+                                        MapFields(DBMovie, DirectCast(lMediaTag, XMLScraper.MediaTags.MovieTag), Options)
+                                    Else
+                                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                                    End If
                                 End If
                             End Using
                         ElseIf res.Count = 1 Then

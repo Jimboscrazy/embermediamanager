@@ -34,10 +34,6 @@ Public Class dlgSearchResults
     Private XMLManager As ScraperManager = Nothing
     Private lMediaTag As XMLScraper.MediaTags.MovieTag ' XMLScraper.MediaTags.MediaTag
     Private sHTTP As New HTTP
-    Private UseOFDBGenre As Boolean
-    Private UseOFDBOutline As Boolean
-    Private UseOFDBPlot As Boolean
-    Private UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
     Private mList As List(Of XMLScraper.ScraperLib.ScrapeResultsEntity)
