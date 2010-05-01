@@ -22,7 +22,9 @@ Public Class dlgXBMCHost
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         If Not String.IsNullOrEmpty(txtName.Text) Then
-
+            For Each row As DataGridViewRow In dgvSources.Rows
+                Paths(row.Cells(0).Value.ToString) = row.Cells(1).Value.ToString
+            Next
             'have to iterate the list instead of using .comtains so we can convert each to lower case
 
             For i As Integer = 0 To XComs.Count - 1
@@ -104,23 +106,30 @@ Public Class dlgXBMCHost
                 RemotePathSeparator = xCom.RemotePathSeparator
                 chkRealTime.Checked = xCom.RealTime
                 dgvSources.Rows.Clear()
+                Dim sPath As String
                 For Each s As Structures.MovieSource In Master.MovieSources
-                    Dim sPath As String = s.Path
-                    Dim i As Integer = dgvSources.Rows.Add(sPath)
-                    Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
-                    Dim l As New List(Of String)
-                    l.Add("") 'Empty Entrie for combo
-                    If Not xCom.Paths Is Nothing Then
-                        For Each sp As Object In xCom.Paths.Values
-                            If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
-                        Next
+                    Try
+                        sPath = s.Path
+                        Dim i As Integer = dgvSources.Rows.Add(sPath)
+                        Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                        Dim l As New List(Of String)
+                        l.Add("") 'Empty Entrie for combo
+                        If Not xCom.Paths Is Nothing Then
+                            For Each sp As Object In xCom.Paths.Values
+                                If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
+                            Next
+                        End If
+                        dcb.DataSource = l.ToArray
+                        If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 AndAlso Not sPath Is Nothing AndAlso Not xCom.Paths(sPath) Is Nothing Then
+                            dcb.Value = xCom.Paths(sPath).ToString
+                        End If
 
-                    End If
-
-                    dcb.DataSource = l.ToArray
-                    If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 AndAlso Not String.IsNullOrEmpty(sPath) Then dcb.Value = xCom.Paths(sPath).ToString
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
                 Next
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             xCom = New XBMCxCom.XBMCCom
@@ -150,9 +159,11 @@ Public Class dlgXBMCHost
                         listSources.Add(x)
                     Next
                 Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             End If
         Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return listSources
     End Function
@@ -197,6 +208,7 @@ Public Class dlgXBMCHost
                     End If
                 Next
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
         End If
@@ -271,5 +283,11 @@ Public Class dlgXBMCHost
     Private Sub rbWindows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbWindows.CheckedChanged
         Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
         RemotePathSeparator = Me.xCom.RemotePathSeparator
+    End Sub
+
+    Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
+        If dgvSources.IsCurrentCellDirty Then
+            dgvSources.CommitEdit(DataGridViewDataErrorContexts.Commit)
+        End If
     End Sub
 End Class
