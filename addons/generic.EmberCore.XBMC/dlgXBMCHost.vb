@@ -20,48 +20,58 @@ Public Class dlgXBMCHost
     Private EmberSources As New List(Of EmberSource)
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Try
 
-        If Not String.IsNullOrEmpty(txtName.Text) Then
-            For Each row As DataGridViewRow In dgvSources.Rows
-                Paths(row.Cells(0).Value.ToString) = row.Cells(1).Value.ToString
-            Next
-            'have to iterate the list instead of using .comtains so we can convert each to lower case
+            If Not String.IsNullOrEmpty(txtName.Text) Then
+                For Each row As DataGridViewRow In dgvSources.Rows
+                    If Not Paths.ContainsKey(row.Cells(0).Value.ToString) Then
+                        Paths.Add(row.Cells(0).Value.ToString, row.Cells(1).Value.ToString)
+                    Else
+                        Paths(row.Cells(0).Value.ToString) = If(row.Cells(1).Value Is Nothing, String.Empty, row.Cells(1).Value.ToString)
+                    End If
 
-            For i As Integer = 0 To XComs.Count - 1
-                If XComs(i).Name.ToLower = Me.txtName.Text.ToLower AndAlso Not XComs(i) Is xCom Then
-                    MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
-                    txtName.Focus()
-                    Exit Sub
-                End If
-            Next
-            If Not String.IsNullOrEmpty(txtIP.Text) Then
-                If Not String.IsNullOrEmpty(txtPort.Text) Then
-                    Me.xCom.Name = Me.txtName.Text
-                    Me.xCom.IP = Me.txtIP.Text
-                    Me.xCom.Port = Me.txtPort.Text
-                    Me.xCom.Username = Me.txtUsername.Text
-                    Me.xCom.Password = Me.txtPassword.Text
-                    Me.xCom.Paths = Paths
-                    Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
-                    Me.xCom.RealTime = chkRealTime.Checked
-                    'XComs.Add(xCom)
+                Next
+                'have to iterate the list instead of using .comtains so we can convert each to lower case
+
+                For i As Integer = 0 To XComs.Count - 1
+                    If XComs(i).Name.ToLower = Me.txtName.Text.ToLower AndAlso Not XComs(i) Is xCom Then
+                        MsgBox(Master.eLang.GetString(1, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(2, "Each name must be unique"))
+                        txtName.Focus()
+                        Exit Sub
+                    End If
+                Next
+                If Not String.IsNullOrEmpty(txtIP.Text) Then
+                    If Not String.IsNullOrEmpty(txtPort.Text) Then
+                        Me.xCom.Name = Me.txtName.Text
+                        Me.xCom.IP = Me.txtIP.Text
+                        Me.xCom.Port = Me.txtPort.Text
+                        Me.xCom.Username = Me.txtUsername.Text
+                        Me.xCom.Password = Me.txtPassword.Text
+                        Me.xCom.Paths = Paths
+                        Me.xCom.RemotePathSeparator = If(rbWindows.Checked, Path.DirectorySeparatorChar, "/")
+                        Me.xCom.RealTime = chkRealTime.Checked
+                        'XComs.Add(xCom)
+                    Else
+                        MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
+                        txtPort.Focus()
+                        Return
+                    End If
                 Else
-                    MsgBox(Master.eLang.GetString(3, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(4, "Please Enter a Port"))
-                    txtPort.Focus()
+                    MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
+                    txtIP.Focus()
                     Return
                 End If
             Else
-                MsgBox(Master.eLang.GetString(5, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(6, "Please Enter an IP"))
-                txtIP.Focus()
+                MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
+                txtName.Focus()
                 Return
             End If
-        Else
-            MsgBox(Master.eLang.GetString(7, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(8, "Please Enter a Unique Name"))
-            txtName.Focus()
-            Return
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
+
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -116,7 +126,7 @@ Public Class dlgXBMCHost
                         l.Add("") 'Empty Entrie for combo
                         If Not xCom.Paths Is Nothing Then
                             For Each sp As Object In xCom.Paths.Values
-                                If Not String.IsNullOrEmpty(sp.ToString) Then l.Add(sp.ToString)
+                                If Not String.IsNullOrEmpty(sp.ToString) AndAlso Not l.Contains(sp.ToString) Then l.Add(sp.ToString)
                             Next
                         End If
                         dcb.DataSource = l.ToArray
