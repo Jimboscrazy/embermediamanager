@@ -224,8 +224,8 @@ Public Class XBMCxCom
                         End If
                         Dim imagefile As String
                         Dim thumbpath As String
+                        Dim hash As String = XBMCHash(remoteFullFilename)
                         If File.Exists(DBMovie.PosterPath) Then
-                            Dim hash As String = XBMCHash(remoteFullFilename)
                             imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
                             thumbpath = String.Format("special://profile/Thumbnails/Video/{0}/{1}", hash.Substring(0, 1), String.Concat(hash, ".tbn"))
                             str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
