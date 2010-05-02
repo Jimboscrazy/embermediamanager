@@ -25,7 +25,7 @@ Public Class dlgXBMCHost
             If Not String.IsNullOrEmpty(txtName.Text) Then
                 For Each row As DataGridViewRow In dgvSources.Rows
                     If Not Paths.ContainsKey(row.Cells(0).Value.ToString) Then
-                        Paths.Add(row.Cells(0).Value.ToString, row.Cells(1).Value.ToString)
+                        Paths.Add(row.Cells(0).Value.ToString, If(row.Cells(1).Value Is Nothing, String.Empty, row.Cells(1).Value.ToString))
                     Else
                         Paths(row.Cells(0).Value.ToString) = If(row.Cells(1).Value Is Nothing, String.Empty, row.Cells(1).Value.ToString)
                     End If
@@ -103,34 +103,7 @@ Public Class dlgXBMCHost
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Setup()
-        xCom = XComs.FirstOrDefault(Function(y) y.Name = hostid)
-        If Not xCom Is Nothing Then
-            Try
-                Paths = xCom.Paths
-                Me.txtName.Text = xCom.Name
-                Me.txtIP.Text = xCom.IP
-                Me.txtPort.Text = xCom.Port
-                Me.txtUsername.Text = xCom.Username
-                Me.txtPassword.Text = xCom.Password
-                If xCom.RemotePathSeparator = Path.DirectorySeparatorChar Then
-                    Me.rbWindows.Checked = True
-                Else
-                    Me.rbLinux.Checked = True
-                End If
-                RemotePathSeparator = xCom.RemotePathSeparator
-                chkRealTime.Checked = xCom.RealTime
-                PopulateSources()
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Else
-            xCom = New XBMCxCom.XBMCCom
-            XComs.Add(xCom)
-            PopulateSources()
-        End If
 
-        dgvSources.Enabled = True
 
     End Sub
 
@@ -168,6 +141,34 @@ Public Class dlgXBMCHost
 
 
     Private Sub dlgXBMCHost_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Setup()
+        xCom = XComs.FirstOrDefault(Function(y) y.Name = hostid)
+        If Not xCom Is Nothing Then
+            Try
+                Paths = xCom.Paths
+                Me.txtName.Text = xCom.Name
+                Me.txtIP.Text = xCom.IP
+                Me.txtPort.Text = xCom.Port
+                Me.txtUsername.Text = xCom.Username
+                Me.txtPassword.Text = xCom.Password
+                If xCom.RemotePathSeparator = Path.DirectorySeparatorChar Then
+                    Me.rbWindows.Checked = True
+                Else
+                    Me.rbLinux.Checked = True
+                End If
+                RemotePathSeparator = xCom.RemotePathSeparator
+                chkRealTime.Checked = xCom.RealTime
+                PopulateSources()
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            xCom = New XBMCxCom.XBMCCom
+            XComs.Add(xCom)
+            PopulateSources()
+        End If
+
+        dgvSources.Enabled = True
     End Sub
 
     Public Shared Function XBMCGetSources(ByVal xc As XBMCxCom.XBMCCom) As List(Of String)
