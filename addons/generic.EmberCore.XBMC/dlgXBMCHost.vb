@@ -97,7 +97,12 @@ Public Class dlgXBMCHost
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
     End Sub
 
-    Private Sub dlgXBMCHost_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Sub New()
+
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
         Setup()
         xCom = XComs.FirstOrDefault(Function(y) y.Name = hostid)
         If Not xCom Is Nothing Then
@@ -115,38 +120,54 @@ Public Class dlgXBMCHost
                 End If
                 RemotePathSeparator = xCom.RemotePathSeparator
                 chkRealTime.Checked = xCom.RealTime
-                dgvSources.Rows.Clear()
-                Dim sPath As String
-                For Each s As Structures.MovieSource In Master.MovieSources
-                    Try
-                        sPath = s.Path
-                        Dim i As Integer = dgvSources.Rows.Add(sPath)
-                        Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
-                        Dim l As New List(Of String)
-                        l.Add("") 'Empty Entrie for combo
-                        If Not xCom.Paths Is Nothing Then
-                            For Each sp As Object In xCom.Paths.Values
-                                If Not String.IsNullOrEmpty(sp.ToString) AndAlso Not l.Contains(sp.ToString) Then l.Add(sp.ToString)
-                            Next
-                        End If
-                        dcb.DataSource = l.ToArray
-                        If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 AndAlso Not sPath Is Nothing AndAlso Not xCom.Paths(sPath) Is Nothing Then
-                            dcb.Value = xCom.Paths(sPath).ToString
-                        End If
-
-                    Catch ex As Exception
-                        'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                    End Try
-                Next
+                PopulateSources()
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             xCom = New XBMCxCom.XBMCCom
             XComs.Add(xCom)
+            PopulateSources()
         End If
 
         dgvSources.Enabled = True
+
+    End Sub
+
+    Sub PopulateSources()
+        Try
+
+            dgvSources.Rows.Clear()
+            Dim sPath As String
+            For Each s As Structures.MovieSource In Master.MovieSources
+                Try
+                    sPath = s.Path
+                    Dim i As Integer = dgvSources.Rows.Add(sPath)
+                    Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                    Dim l As New List(Of String)
+                    l.Add("") 'Empty Entrie for combo
+                    If Not xCom.Paths Is Nothing Then
+                        For Each sp As Object In xCom.Paths.Values
+                            If Not String.IsNullOrEmpty(sp.ToString) AndAlso Not l.Contains(sp.ToString) Then l.Add(sp.ToString)
+                        Next
+                    End If
+                    dcb.DataSource = l.ToArray
+                    If Not xCom.Paths Is Nothing AndAlso xCom.Paths.Count > 0 AndAlso Not sPath Is Nothing AndAlso Not xCom.Paths(sPath) Is Nothing Then
+                        dcb.Value = xCom.Paths(sPath).ToString
+                    End If
+
+                Catch ex As Exception
+                    'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+
+    Private Sub dlgXBMCHost_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
     End Sub
 
     Public Shared Function XBMCGetSources(ByVal xc As XBMCxCom.XBMCCom) As List(Of String)
