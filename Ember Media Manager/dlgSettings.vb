@@ -940,7 +940,11 @@ Public Class dlgSettings
     Private Sub chEpFanartSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEpFanartSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+    Private Sub chkClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkClickScrape.CheckedChanged
+        chkAskCheckboxScrape.Enabled = chkClickScrape.Checked
+        Me.SetApplyButton(True)
 
+    End Sub
     Private Sub chkAskCheckboxScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAskCheckboxScrape.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2214,6 +2218,8 @@ Public Class dlgSettings
             Me.chkLockGenre.Checked = Master.eSettings.LockGenre
             Me.chkLockTrailer.Checked = Master.eSettings.LockTrailer
             Me.chkSingleScrapeImages.Checked = Master.eSettings.SingleScrapeImages
+            Me.chkClickScrape.Checked = Master.eSettings.ClickScrape
+            Me.chkAskCheckboxScrape.Enabled = Me.chkClickScrape.Checked
             Me.chkAskCheckboxScrape.Checked = Master.eSettings.AskCheckboxScrape
             Me.chkMarkNew.Checked = Master.eSettings.MarkNew
             Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
@@ -3286,6 +3292,7 @@ Public Class dlgSettings
             Master.eSettings.LockGenre = Me.chkLockGenre.Checked
             Master.eSettings.LockTrailer = Me.chkLockTrailer.Checked
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
+            Master.eSettings.ClickScrape = Me.chkClickScrape.Checked
             Master.eSettings.AskCheckboxScrape = Me.chkAskCheckboxScrape.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
@@ -3792,6 +3799,7 @@ Public Class dlgSettings
         Me.chkMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
         Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
+        Me.chkClickScrape.Text = Master.eLang.GetString(849, "Enable Click Scrape")
 
         Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs:")
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
@@ -3940,7 +3948,7 @@ Public Class dlgSettings
         Me.lblAllSPosterHeight.Text = Me.Label12.Text
         Me.lblAllSPosterQ.Text = Me.Label24.Text
         Me.btnClearRegex.Text = Master.eLang.GetString(123, "Clear")
-        Me.chkAskCheckboxScrape.Text = Master.eLang.GetString(852, "Ask On Checkbox Scrape")
+        Me.chkAskCheckboxScrape.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -4493,5 +4501,4 @@ Public Class dlgSettings
     End Class
 
 #End Region 'Methods
-
 End Class
