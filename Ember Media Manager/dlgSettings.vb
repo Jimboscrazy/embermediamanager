@@ -37,6 +37,7 @@ Public Class dlgSettings
     Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
     Public Event LoadEnd()
+
     #End Region 'Fields
 
     #Region "Methods"
@@ -728,6 +729,7 @@ Public Class dlgSettings
             End If
         End Using
     End Sub
+
     Private Sub btnResetShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetShowRegex.Click
         If MsgBox(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowRegex, True)
@@ -936,6 +938,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chEpFanartSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEpFanartSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkAskCheckboxScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAskCheckboxScrape.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2017,6 +2023,7 @@ Public Class dlgSettings
         Me.txtEpRegex.Text = String.Empty
         Me.cboEpRetrieve.SelectedIndex = -1
     End Sub
+
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
@@ -2207,6 +2214,7 @@ Public Class dlgSettings
             Me.chkLockGenre.Checked = Master.eSettings.LockGenre
             Me.chkLockTrailer.Checked = Master.eSettings.LockTrailer
             Me.chkSingleScrapeImages.Checked = Master.eSettings.SingleScrapeImages
+            Me.chkAskCheckboxScrape.Checked = Master.eSettings.AskCheckboxScrape
             Me.chkMarkNew.Checked = Master.eSettings.MarkNew
             Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
             If Master.eSettings.ResizeFanart Then
@@ -3278,6 +3286,7 @@ Public Class dlgSettings
             Master.eSettings.LockGenre = Me.chkLockGenre.Checked
             Master.eSettings.LockTrailer = Me.chkLockTrailer.Checked
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
+            Master.eSettings.AskCheckboxScrape = Me.chkAskCheckboxScrape.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
             Master.eSettings.FanartHeight = If(Not String.IsNullOrEmpty(Me.txtFanartHeight.Text), Convert.ToInt32(Me.txtFanartHeight.Text), 0)
@@ -3931,6 +3940,7 @@ Public Class dlgSettings
         Me.lblAllSPosterHeight.Text = Me.Label12.Text
         Me.lblAllSPosterQ.Text = Me.Label24.Text
         Me.btnClearRegex.Text = Master.eLang.GetString(123, "Clear")
+        Me.chkAskCheckboxScrape.Text = Master.eLang.GetString(852, "Ask On Checkbox Scrape")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")

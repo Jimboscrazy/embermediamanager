@@ -76,6 +76,7 @@ Partial Class dlgSettings
         Me.lstWhitelist = New System.Windows.Forms.ListBox
         Me.Label25 = New System.Windows.Forms.Label
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.chkAskCheckboxScrape = New System.Windows.Forms.CheckBox
         Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
@@ -1219,6 +1220,7 @@ Partial Class dlgSettings
         '
         'GroupBox12
         '
+        Me.GroupBox12.Controls.Add(Me.chkAskCheckboxScrape)
         Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -1228,6 +1230,17 @@ Partial Class dlgSettings
         Me.GroupBox12.TabIndex = 1
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
+        '
+        'chkAskCheckboxScrape
+        '
+        Me.chkAskCheckboxScrape.AutoSize = True
+        Me.chkAskCheckboxScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkAskCheckboxScrape.Location = New System.Drawing.Point(12, 50)
+        Me.chkAskCheckboxScrape.Name = "chkAskCheckboxScrape"
+        Me.chkAskCheckboxScrape.Size = New System.Drawing.Size(153, 17)
+        Me.chkAskCheckboxScrape.TabIndex = 64
+        Me.chkAskCheckboxScrape.Text = "Ask On Checkbox Scrape"
+        Me.chkAskCheckboxScrape.UseVisualStyleBackColor = True
         '
         'chkYAMJCompatibleSets
         '
@@ -7778,4 +7791,5 @@ Partial Class dlgSettings
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents btnClearRegex As System.Windows.Forms.Button
     Friend WithEvents btnGetTVProfiles As System.Windows.Forms.Button
+    Friend WithEvents chkAskCheckboxScrape As System.Windows.Forms.CheckBox
 End Class
