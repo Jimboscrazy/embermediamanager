@@ -222,20 +222,26 @@ Public Class XBMCxCom
                         If Not ret.Contains("Exec Done") Then
                             Master.eLog.WriteToErrorLog("Unable to Update XBMC Info", cmd, "Error")
                         End If
-                        Dim hash As String = XBMCHash(remoteFullFilename)
-                        Dim imagefile As String = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
-                        Dim thumbpath As String = String.Format("special://profile/Thumbnails/Video/{0}/{1}", hash.Substring(0, 1), String.Concat(hash, ".tbn"))
-                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
-                        ret = SendCmd(s, str)
-                        If Not ret.Contains("OK") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Poster", str, "Error")
+                        Dim imagefile As String
+                        Dim thumbpath As String
+                        If File.Exists(DBMovie.PosterPath) Then
+                            Dim hash As String = XBMCHash(remoteFullFilename)
+                            imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.PosterPath))
+                            thumbpath = String.Format("special://profile/Thumbnails/Video/{0}/{1}", hash.Substring(0, 1), String.Concat(hash, ".tbn"))
+                            str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                            ret = SendCmd(s, str)
+                            If Not ret.Contains("OK") Then
+                                Master.eLog.WriteToErrorLog("Unable to Update XBMC Poster", str, "Error")
+                            End If
                         End If
-                        imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
-                        thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
-                        str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
-                        ret = SendCmd(s, str)
-                        If Not ret.Contains("OK") Then
-                            Master.eLog.WriteToErrorLog("Unable to Update XBMC Fanart", str, "Error")
+                        If File.Exists(DBMovie.FanartPath) Then
+                            imagefile = String.Concat(RemotePath, Path.GetFileName(DBMovie.FanartPath))
+                            thumbpath = String.Format("special://profile/Thumbnails/Video/Fanart/{0}", String.Concat(hash, ".tbn"))
+                            str = String.Format("command=FileCopy({0};{1})", imagefile, thumbpath)
+                            ret = SendCmd(s, str)
+                            If Not ret.Contains("OK") Then
+                                Master.eLog.WriteToErrorLog("Unable to Update XBMC Fanart", str, "Error")
+                            End If
                         End If
                     End If
                 Next
