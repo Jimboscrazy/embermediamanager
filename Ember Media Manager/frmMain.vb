@@ -111,6 +111,7 @@ Public Class frmMain
     Private _ipup As Integer = 500
     Private CloseApp As Boolean = False
 
+    Private oldStatus As String = String.Empty
     #End Region 'Fields
 
     #Region "Delegates"
@@ -2965,10 +2966,12 @@ doCancel:
         End Try
     End Sub
 
+
     Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseEnter
         'EMM not able to scrape subtitles yet.
         'So don't set status for it, but leave the option open for the future.
         If e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 Then
+            oldStatus = GetStatus()
             Dim movieName As String = Me.dgvMediaList.Rows(e.RowIndex).Cells(15).Value.ToString
             Dim scrapeFor As String = ""
             Dim scrapeType As String = ""
@@ -2994,11 +2997,13 @@ doCancel:
                 scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
             End If
             Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+        Else
+            oldStatus = String.Empty
         End If
     End Sub
 
     Private Sub dgvMediaList_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseLeave
-        Me.SetStatus("")
+        If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
@@ -7736,6 +7741,11 @@ doCancel:
     Private Sub SetStatus(ByVal sText As String)
         Me.tslStatus.Text = sText.Replace("&", "&&")
     End Sub
+
+    Private Function GetStatus() As String
+        Return Me.tslStatus.Text.Replace("&&", "&")
+    End Function
+
     Sub HideLoadingSettings()
         If Not Me.pnlLoadingSettings.InvokeRequired Then
             Me.pnlLoadingSettings.Visible = False
