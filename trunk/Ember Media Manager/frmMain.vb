@@ -2861,7 +2861,7 @@ doCancel:
             Dim movie As Int32 = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(0).Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
-            If e.ColumnIndex = 3 Then 'Title
+            If e.ColumnIndex = 3 OrElse Not Master.eSettings.ClickScrape Then 'Title
                 If Me.dgvMediaList.SelectedRows.Count > 0 Then
                     If Me.dgvMediaList.RowCount > 0 Then
                         If Me.dgvMediaList.SelectedRows.Count > 1 Then
@@ -2872,12 +2872,10 @@ doCancel:
                     End If
                     Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
                 End If
-            ElseIf e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.ClickScrape AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
                 'EMM not able to scrape subtitles yet.
                 'So don't set status for it, but leave the option open for the future.
-                For Each row As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    row.Selected = False
-                Next
+                Me.dgvMediaList.ClearSelection()
                 Me.dgvMediaList.Rows(objCell.RowIndex).Selected = True
                 Me.currRow = objCell.RowIndex
                 Select Case e.ColumnIndex
@@ -2970,7 +2968,7 @@ doCancel:
     Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseEnter
         'EMM not able to scrape subtitles yet.
         'So don't set status for it, but leave the option open for the future.
-        If e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+        If Master.eSettings.ClickScrape AndAlso e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
             oldStatus = GetStatus()
             Dim movieName As String = Me.dgvMediaList.Rows(e.RowIndex).Cells(15).Value.ToString
             Dim scrapeFor As String = ""
@@ -7484,7 +7482,7 @@ doCancel:
             .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
             .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
             (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                Me.CleanFoldersToolStripMenuItem.Enabled = True AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+                Me.CleanFoldersToolStripMenuItem.Enabled = isEnabled AndAlso Me.dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
             Else
                 Me.CleanFoldersToolStripMenuItem.Enabled = False
             End If

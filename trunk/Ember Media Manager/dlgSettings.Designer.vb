@@ -76,6 +76,7 @@ Partial Class dlgSettings
         Me.lstWhitelist = New System.Windows.Forms.ListBox
         Me.Label25 = New System.Windows.Forms.Label
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.chkClickScrape = New System.Windows.Forms.CheckBox
         Me.chkAskCheckboxScrape = New System.Windows.Forms.CheckBox
         Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
@@ -1220,26 +1221,38 @@ Partial Class dlgSettings
         '
         'GroupBox12
         '
+        Me.GroupBox12.Controls.Add(Me.chkClickScrape)
         Me.GroupBox12.Controls.Add(Me.chkAskCheckboxScrape)
         Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox12.Location = New System.Drawing.Point(6, 7)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(219, 80)
+        Me.GroupBox12.Size = New System.Drawing.Size(219, 93)
         Me.GroupBox12.TabIndex = 1
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
+        '
+        'chkClickScrape
+        '
+        Me.chkClickScrape.AutoSize = True
+        Me.chkClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkClickScrape.Location = New System.Drawing.Point(12, 50)
+        Me.chkClickScrape.Name = "chkClickScrape"
+        Me.chkClickScrape.Size = New System.Drawing.Size(125, 17)
+        Me.chkClickScrape.TabIndex = 65
+        Me.chkClickScrape.Text = "Enable Click Scrape"
+        Me.chkClickScrape.UseVisualStyleBackColor = True
         '
         'chkAskCheckboxScrape
         '
         Me.chkAskCheckboxScrape.AutoSize = True
         Me.chkAskCheckboxScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkAskCheckboxScrape.Location = New System.Drawing.Point(12, 50)
+        Me.chkAskCheckboxScrape.Location = New System.Drawing.Point(25, 67)
         Me.chkAskCheckboxScrape.Name = "chkAskCheckboxScrape"
-        Me.chkAskCheckboxScrape.Size = New System.Drawing.Size(153, 17)
+        Me.chkAskCheckboxScrape.Size = New System.Drawing.Size(127, 17)
         Me.chkAskCheckboxScrape.TabIndex = 64
-        Me.chkAskCheckboxScrape.Text = "Ask On Checkbox Scrape"
+        Me.chkAskCheckboxScrape.Text = "Ask On Click Scrape"
         Me.chkAskCheckboxScrape.UseVisualStyleBackColor = True
         '
         'chkYAMJCompatibleSets
@@ -1290,7 +1303,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
         Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(7, 92)
+        Me.GroupBox2.Location = New System.Drawing.Point(7, 106)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(218, 279)
         Me.GroupBox2.TabIndex = 4
@@ -2312,7 +2325,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Location = New System.Drawing.Point(251, 147)
+        Me.pnlGeneral.Location = New System.Drawing.Point(0, 0)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 59
@@ -4540,6 +4553,7 @@ Partial Class dlgSettings
         'pnlTVImages
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
+        Me.pnlTVImages.Controls.Add(Me.pnlGeneral)
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
         Me.pnlTVImages.Location = New System.Drawing.Point(251, 147)
         Me.pnlTVImages.Name = "pnlTVImages"
@@ -7029,6 +7043,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7038,10 +7053,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlMain)
@@ -7792,4 +7805,5 @@ Partial Class dlgSettings
     Friend WithEvents btnClearRegex As System.Windows.Forms.Button
     Friend WithEvents btnGetTVProfiles As System.Windows.Forms.Button
     Friend WithEvents chkAskCheckboxScrape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkClickScrape As System.Windows.Forms.CheckBox
 End Class

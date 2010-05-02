@@ -35,6 +35,7 @@ Public Class Settings
     Private _allsposterwidth As Integer
     Private _allwaysdisplaygenrestext As Boolean
     Private _alwaysgetenglishtvimages As Boolean
+    Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
     Private _autodetectvts As Boolean
@@ -407,6 +408,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._alwaysgetenglishtvimages = value
+        End Set
+    End Property
+
+    Public Property ClickScrape() As Boolean
+        Get
+            Return Me._clickscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._clickscrape = value
         End Set
     End Property
 

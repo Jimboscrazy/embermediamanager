@@ -848,8 +848,8 @@
   <string id="846"></string>
   <string id="847"></string>
   <string id="848"></string>
-  <string id="849"></string>
+  <string id="849">Enable Click Scrape</string>
   <string id="850">&amp;Check For Updates...</string>
   <string id="851">No Updates at this time</string>
-  <string id="852">Ask On Checkbox Scrape</string>
+  <string id="852">Ask On Click Scrape</string>
 </strings>
