@@ -37,8 +37,6 @@ Partial Class dlgXBMCHost
         Me.txtIP = New System.Windows.Forms.TextBox
         Me.btnPopulate = New System.Windows.Forms.Button
         Me.dgvSources = New System.Windows.Forms.DataGridView
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column2 = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.pnlLoading = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
@@ -47,6 +45,8 @@ Partial Class dlgXBMCHost
         Me.rbLinux = New System.Windows.Forms.RadioButton
         Me.rbWindows = New System.Windows.Forms.RadioButton
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Column2 = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
@@ -212,22 +212,6 @@ Partial Class dlgXBMCHost
         Me.dgvSources.Size = New System.Drawing.Size(440, 150)
         Me.dgvSources.TabIndex = 24
         '
-        'Column1
-        '
-        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column1.FillWeight = 150.0!
-        Me.Column1.HeaderText = "Ember Source"
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        Me.Column1.Width = 150
-        '
-        'Column2
-        '
-        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Column2.FillWeight = 96.96582!
-        Me.Column2.HeaderText = "XBMC Source"
-        Me.Column2.Name = "Column2"
-        '
         'pnlLoading
         '
         Me.pnlLoading.BackColor = System.Drawing.Color.White
@@ -327,6 +311,23 @@ Partial Class dlgXBMCHost
         Me.Panel1.Size = New System.Drawing.Size(467, 311)
         Me.Panel1.TabIndex = 72
         '
+        'Column1
+        '
+        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column1.FillWeight = 150.0!
+        Me.Column1.HeaderText = "Ember Source"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        Me.Column1.Width = 150
+        '
+        'Column2
+        '
+        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column2.FillWeight = 270.0!
+        Me.Column2.HeaderText = "XBMC Source"
+        Me.Column2.Name = "Column2"
+        Me.Column2.Width = 270
+        '
         'dlgXBMCHost
         '
         Me.AcceptButton = Me.OK_Button
@@ -372,11 +373,11 @@ Partial Class dlgXBMCHost
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents chkRealTime As System.Windows.Forms.CheckBox
-    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents rbLinux As System.Windows.Forms.RadioButton
     Friend WithEvents rbWindows As System.Windows.Forms.RadioButton
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewComboBoxColumn
 
 End Class

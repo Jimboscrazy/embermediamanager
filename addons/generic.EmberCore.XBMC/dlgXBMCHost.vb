@@ -180,6 +180,7 @@ Public Class dlgXBMCHost
 
     Private Sub btnPopulate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPopulate.Click
         pnlLoading.Visible = True
+        GroupBox1.Enabled = False
         btnPopulate.Enabled = False
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
@@ -232,6 +233,7 @@ Public Class dlgXBMCHost
         txtPort.Enabled = True
         txtUsername.Enabled = True
         dgvSources.Enabled = True
+        GroupBox1.Enabled = True
 
     End Sub
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -253,6 +255,7 @@ Public Class dlgXBMCHost
     Sub SourceGuessing()
         Dim files As List(Of String()) = Nothing
         XBMCSources = XBMCGetSources(xc)
+        If XBMCSources.Count = 0 Then Return
         '"command=queryvideodatabase(select movie.*,path.strpath,files.strfilename,path.strcontent,path.strHash from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath)"
         Dim cmd As String = "command=queryvideodatabase(select movie.*,path.strpath,files.strfilename from movie inner join files on movie.idfile=files.idfile inner join path on files.idpath = path.idpath)"
         files = XBMCxCom.SplitResponse(XBMCxCom.SendCmd(xc, cmd))
