@@ -2872,7 +2872,7 @@ doCancel:
                     End If
                     Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
                 End If
-            ElseIf e.ColumnIndex <> 8 Then
+            ElseIf e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
                 'EMM not able to scrape subtitles yet.
                 'So don't set status for it, but leave the option open for the future.
                 For Each row As DataGridViewRow In Me.dgvMediaList.SelectedRows
@@ -2970,7 +2970,7 @@ doCancel:
     Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseEnter
         'EMM not able to scrape subtitles yet.
         'So don't set status for it, but leave the option open for the future.
-        If e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 Then
+        If e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
             oldStatus = GetStatus()
             Dim movieName As String = Me.dgvMediaList.Rows(e.RowIndex).Cells(15).Value.ToString
             Dim scrapeFor As String = ""
