@@ -806,6 +806,7 @@ Public Class dlgEditMovie
                         If Me.bwThumbs.CancellationPending Then Return
                         If Not Me.DeleteList.Contains(thumb.Name) Then
                             Using fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                                If fsImage.Length = 0 Then Continue For
                                 If Me.bwThumbs.CancellationPending Then Return
                                 Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
                                 ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)

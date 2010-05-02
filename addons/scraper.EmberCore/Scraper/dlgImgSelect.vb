@@ -1132,7 +1132,7 @@ Public Class dlgImgSelect
                             Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
                             If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format(Master.eLang.GetString(53, "Small ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                         End If
-                    Case RemoveServerURL(Me.TMDBPosters.Item(i).URL) = sURL.Substring(sURL.LastIndexOf("/")) '-mid.jpg
+                    Case RemoveServerURL(Me.TMDBPosters.Item(i).URL) = sURL '-mid.jpg
                         If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format(Master.eLang.GetString(54, "Medium ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Image.Width, Me.TMDBPosters.Item(i).WebImage.Image.Height)
                 End Select
             Next
