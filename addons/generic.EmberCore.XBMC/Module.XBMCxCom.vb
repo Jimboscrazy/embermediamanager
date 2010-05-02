@@ -409,9 +409,9 @@ Public Class XBMCxCom
         Dim chars As Char() = input.ToCharArray()
         Dim index As Integer = 0
         While index < chars.Length
-            If Convert.ToSByte(chars(index)) <= 127 Then
-                chars(index) = System.[Char].ToLowerInvariant(chars(index))
-            End If
+            'If Convert.ToSByte(chars(index)) <= 127 Then
+            chars(index) = System.[Char].ToLowerInvariant(chars(index))
+            'End If
             System.Math.Max(System.Threading.Interlocked.Increment(index), index - 1)
         End While
         input = New String(chars)
