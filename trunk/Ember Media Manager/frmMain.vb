@@ -2856,17 +2856,54 @@ doCancel:
     End Sub
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
-        If Me.dgvMediaList.SelectedRows.Count > 0 Then
-            If Me.dgvMediaList.RowCount > 0 Then
-                If Me.dgvMediaList.SelectedRows.Count > 1 Then
-                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
-                ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.SetStatus(Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString)
+        Try
+            Dim movie As Int32 = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(0).Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+            If e.ColumnIndex = 3 Then 'Title
+                If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                    If Me.dgvMediaList.RowCount > 0 Then
+                        If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
+                        ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
+                            Me.SetStatus(Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString)
+                        End If
+                    End If
+                    Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
+                End If
+            ElseIf e.ColumnIndex <> 8 Then
+                'EMM not able to scrape subtitles yet.
+                'So don't set status for it, but leave the option open for the future.
+                For Each row As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    row.Selected = False
+                Next
+                Me.dgvMediaList.Rows(objCell.RowIndex).Selected = True
+                Me.currRow = objCell.RowIndex
+                Select Case e.ColumnIndex
+                    Case 4 'Poster
+                        Functions.SetScraperMod(Enums.ModType.Poster, True)
+                    Case 5 'Fanart
+                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+                    Case 6 'Nfo
+                        Functions.SetScraperMod(Enums.ModType.NFO, True)
+                    Case 7 'Trailer
+                        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+                    Case 8 'Subtitles
+                        'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
+                    Case 9 'Extrathumbs
+                        Functions.SetScraperMod(Enums.ModType.Extra, True)
+                    Case 10 'Metadata - need to add this column to the view.
+                        Functions.SetScraperMod(Enums.ModType.Meta, True)
+                End Select
+                If Master.eSettings.AskCheckboxScrape Then
+                    MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
+                Else
+                    MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
                 End If
             End If
-
-            Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
@@ -2926,6 +2963,42 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseEnter
+        'EMM not able to scrape subtitles yet.
+        'So don't set status for it, but leave the option open for the future.
+        If e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 Then
+            Dim movieName As String = Me.dgvMediaList.Rows(e.RowIndex).Cells(15).Value.ToString
+            Dim scrapeFor As String = ""
+            Dim scrapeType As String = ""
+            Select Case e.ColumnIndex
+                Case 4
+                    scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                Case 5
+                    scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                Case 6
+                    scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                Case 7
+                    scrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                Case 8
+                    'scrapeFor = Master.eLang.GetString(00, "Subtitles")
+                Case 9
+                    scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
+                Case 10
+                    scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+            End Select
+            If Master.eSettings.AskCheckboxScrape Then
+                scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+            Else
+                scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+            End If
+            Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+        End If
+    End Sub
+
+    Private Sub dgvMediaList_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseLeave
+        Me.SetStatus("")
     End Sub
 
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
@@ -5134,9 +5207,9 @@ doCancel:
 
         Catch ex As Exception
             ' If we got here, then some of the above not run. Application.Exit can not be used. 
+            ' Because Exit will dispose object that are in use by BackgroundWorkers
             ' If any BackgroundWorker still running will raise exception 
             ' "Collection was modified; enumeration operation may not execute."
-            ' Because Exit will dispose object that are in use by BackgroundWorkers
             ' Application.Exit()
         End Try
     End Sub
@@ -6769,7 +6842,7 @@ doCancel:
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
                 If Not IsNothing(dRow(0)) Then
-                    selrow = DirectCast(dRow(0), DataRow)
+                    selRow = DirectCast(dRow(0), DataRow)
                     tmpMovieDb.IsMark = Convert.ToBoolean(selRow.Item(11))
                     tmpMovieDb.IsLock = Convert.ToBoolean(selRow.Item(14))
 
@@ -8655,6 +8728,7 @@ doCancel:
             End Using
         End If
     End Sub
+
     Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
         tmrAppExit.Enabled = False
         Me.Close()

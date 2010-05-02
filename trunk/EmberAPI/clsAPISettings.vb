@@ -35,6 +35,7 @@ Public Class Settings
     Private _allsposterwidth As Integer
     Private _allwaysdisplaygenrestext As Boolean
     Private _alwaysgetenglishtvimages As Boolean
+    Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
     Private _autodetectvts As Boolean
     Private _autoET As Boolean
@@ -406,6 +407,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._alwaysgetenglishtvimages = value
+        End Set
+    End Property
+
+    Public Property AskCheckboxScrape() As Boolean
+        Get
+            Return Me._askcheckboxscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._askcheckboxscrape = value
         End Set
     End Property
 
@@ -3111,7 +3121,7 @@ Public Class Settings
         End Set
     End Property
 
-    #End Region 'Properties
+	#End Region 'Properties
 
     #Region "Methods"
 
@@ -3128,6 +3138,7 @@ Public Class Settings
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
         Me._showratingregion = "usa"
+        Me._askcheckboxscrape = True
         Me._scanmediainfo = True
         Me._scantvmediainfo = True
         Me._fullcast = False

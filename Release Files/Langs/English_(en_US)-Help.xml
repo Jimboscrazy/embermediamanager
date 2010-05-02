@@ -31,6 +31,7 @@
 	<string control="Core_txtWhitelist">Enter an extension to add to the whitelist.</string>
 	<string control="Core_lstWhitelist">This list contains all the current extensions that will be skipped during cleaning.</string>
 	<string control="Core_chkYAMJCompatibleSets">If enabled, Ember will save sets information in a format that is compatible with YAMJ. If disabled, Ember will save sets information in a format that is compatible with XBMC.</string>
+	<string control="Core_chkAskCheckboxScrape">If enabled, when clicking on a checkbox in the movies list a non-automatic will be used. If disabled, an automatic scrape will be used.</string>
 	<string control="Core_chkMarkNew">If enabled, new movies will be "marked". If disabled, new movies will still be colored green until updated or the next Ember session.</string>
 	<string control="Core_lbGenre">Select the language(s) of the genres you would like Ember to display.</string>
 	<string control="Core_txtCheckTitleTol">Enter the tolerance level you would like Ember to use when title matching. The higher the number, the more lenient the algorithm is. 0 = disabled</string>
