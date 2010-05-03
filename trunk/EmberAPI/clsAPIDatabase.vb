@@ -63,7 +63,7 @@ Public Class Database
                         If source = String.Empty Then
                             SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
                         Else
-                            SQLcommand.CommandText = String.Format("SELECT Path, Name, Recursive, Single FROM sources WHERE Name="" {0}""", source)
+                            SQLcommand.CommandText = String.Format("SELECT Path, Name, Recursive, Single FROM sources WHERE Name=""{0}""", source)
                         End If
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
