@@ -2858,8 +2858,6 @@ doCancel:
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
         Try
-            Dim movie As Int32 = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(0).Value, Int32)
-            Dim objCell As DataGridViewCell = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             If e.ColumnIndex = 3 OrElse Not Master.eSettings.ClickScrape Then 'Title
                 If Me.dgvMediaList.SelectedRows.Count > 0 Then
@@ -2872,7 +2870,10 @@ doCancel:
                     End If
                     Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
                 End If
-            ElseIf Master.eSettings.ClickScrape AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.ClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+                Dim movie As Int32 = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(0).Value, Int32)
+                Dim objCell As DataGridViewCell = CType(Me.dgvMediaList.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
                 'EMM not able to scrape subtitles yet.
                 'So don't set status for it, but leave the option open for the future.
                 Me.dgvMediaList.ClearSelection()
