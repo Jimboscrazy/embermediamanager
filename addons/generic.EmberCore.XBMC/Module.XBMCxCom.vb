@@ -272,7 +272,7 @@ Public Class XBMCxCom
 
     End Function
     Function StringEscape(ByVal str As String) As String
-        Return str.Replace("""", """""").Replace(";", ";;")
+        Return str.Replace("""", """""").Replace(";", ";;").Replace("&", "&&")
     End Function
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = _setup.cbEnabled.Checked
