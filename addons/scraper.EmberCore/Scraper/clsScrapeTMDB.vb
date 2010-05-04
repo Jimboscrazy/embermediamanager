@@ -96,7 +96,7 @@ Namespace TMDB
                             If tmdbImages.Count > 0 Then
                                 For Each tmdbI As XElement In tmdbImages
                                     If Me.bwTMDB.CancellationPending Then Return Nothing
-                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
+                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size, .Width = tmdbI.@width, .Height = tmdbI.@height}
                                     alPosters.Add(tmpPoster)
                                 Next
                             End If
@@ -115,7 +115,7 @@ Namespace TMDB
                                                 If Not tmdbI.@size.ToLower = "thumb" Then Continue For
                                         End Select
                                     End If
-                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
+                                    Dim tmpPoster As New MediaContainers.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size, .Width = tmdbI.@width, .Height = tmdbI.@height}
                                     alPosters.Add(tmpPoster)
                                 Next
                             End If
