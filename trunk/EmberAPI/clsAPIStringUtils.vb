@@ -45,8 +45,13 @@ Public Class StringUtils
 
     Public Shared Function CleanURL(ByVal sURL As String) As String
         If sURL.ToLower.Contains("themoviedb.org") Then
-            Dim tURL As String = sURL.Replace("http://images.themoviedb.org/posters/", String.Empty)
-            tURL = tURL.Replace("http://images.themoviedb.org/backdrops/", String.Empty)
+            Dim tURL As String = String.Empty
+            Dim i As Integer = sURL.IndexOf("/posters/")
+            If i >= 0 Then tURL = sURL.Substring(i + 9)
+            i = sURL.IndexOf("/backdrops/")
+            If i >= 0 Then tURL = sURL.Substring(i + 11)
+            'tURL = sURL.Replace("http://images.themoviedb.org/posters/", String.Empty)
+            'tURL = tURL.Replace("http://images.themoviedb.org/backdrops/", String.Empty)
             '$$ to sort first
             sURL = String.Concat("$$[themoviedb.org]", tURL)
         Else
