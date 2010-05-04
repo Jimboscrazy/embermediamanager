@@ -1409,7 +1409,8 @@ Namespace MediaContainers
         Private _ischecked As Boolean
         Private _url As String
         Private _webimage As Images
-
+        Private _width As String
+        Private _height As String
         #End Region 'Fields
 
         #Region "Constructors"
@@ -1421,6 +1422,23 @@ Namespace MediaContainers
         #End Region 'Constructors
 
         #Region "Properties"
+        Public Property Width() As String
+            Get
+                Return Me._width
+            End Get
+            Set(ByVal value As String)
+                Me._width = value
+            End Set
+        End Property
+
+        Public Property Height() As String
+            Get
+                Return Me._height
+            End Get
+            Set(ByVal value As String)
+                Me._height = value
+            End Set
+        End Property
 
         Public Property Description() As String
             Get
