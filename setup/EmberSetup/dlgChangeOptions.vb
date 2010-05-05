@@ -54,7 +54,8 @@ Public Class dlgChangeOptions
         End If
         If frmMainSetup.emberPath = String.Empty Then
             If frmMainSetup.CheckIfWindows Then
-                frmMainSetup.emberPath = System.Environment.GetEnvironmentVariable("ProgramFiles")
+                frmMainSetup.emberPath = frmMainSetup.WindowsInstallPath
+                'frmMainSetup.emberPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData)
                 If frmMainSetup.emberPath = String.Empty Then
                     frmMainSetup.emberPath = "C:\Ember Media Manager"
                 End If

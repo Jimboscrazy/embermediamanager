@@ -30,10 +30,12 @@ Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports System.Security.Permissions
+Imports System.Security.AccessControl
 
 Public Class frmMainSetup
 
-    #Region "Fields"
+#Region "Fields"
 
     Public Shared EmberVersions As New UpgradeList
 
@@ -51,12 +53,11 @@ Public Class frmMainSetup
     Public mePainting As New Object
     Public NoArgs As Boolean = True
     Public MyLang As New Langs
-
-    Friend  WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
-    Friend  WithEvents bwFF As New System.ComponentModel.BackgroundWorker
-    Friend  WithEvents lblInfo As New MyLabel
-    Friend  WithEvents lblStatus As New MyLabel
-
+    Public WindowsInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData)
+    Friend WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwFF As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents lblInfo As New MyLabel
+    Friend WithEvents lblStatus As New MyLabel
     Private Language As String = "English_(en_US)"
     Private BackAlpha As Integer = 0
     Private BackUp As Boolean = True
@@ -81,9 +82,9 @@ Public Class frmMainSetup
     Dim ProxyUserName As String = ""
     Dim ProxyPassword As String = ""
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
@@ -598,7 +599,7 @@ Public Class frmMainSetup
                         emberPath = emberAllFounds(0)
                     End If
                     If emberPath = String.Empty Then
-                        emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")
+                        emberPath = Path.Combine(WindowsInstallPath, "Ember Media Manager")
                         If emberPath = String.Empty Then
                             emberPath = Path.Combine(Path.GetPathRoot(Application.StartupPath), "Ember Media Manager")
                         End If
@@ -1316,7 +1317,8 @@ Public Class frmMainSetup
                 End Try
                 LogWrite(String.Format("*** Main: START {0}", Now))
                 Dim EmberFound As Boolean = False
-                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")).Split(Convert.ToChar("|"))
+                Dim PFInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
+                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(PFInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
                     If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
                         emberPath = ss
                         EmberFound = True
@@ -1335,7 +1337,7 @@ Public Class frmMainSetup
                 Next
                 If Not EmberFound Then
                     If CheckIfWindows() Then
-                        emberPath = Path.Combine(System.Environment.GetEnvironmentVariable("ProgramFiles"), "Ember Media Manager")
+                        emberPath = Path.Combine(WindowsInstallPath, "Ember Media Manager")
                     Else
                         emberPath = Path.Combine(String.Concat("~", Path.DirectorySeparatorChar), "Ember Media Manager")
                     End If
@@ -1643,42 +1645,42 @@ Public Class frmMainSetup
         'Credits()
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class Comparer
         Implements IComparer(Of FileInfo)
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Function Compare(ByVal x As FileInfo, _
             ByVal y As FileInfo) As Integer Implements IComparer(Of FileInfo).Compare
             Return x.Name.CompareTo(y.Name)
         End Function
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Friend Class CredLine
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _font As Font
         Private _text As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property Font() As Font
             Get
@@ -1698,39 +1700,39 @@ Public Class frmMainSetup
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             _text = String.Empty
             _font = New Font("Microsoft Sans Serif", 11, FontStyle.Regular)
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Class MyLabel
         Inherits Label
 
-        #Region "Fields"
+#Region "Fields"
 
         ' My Label Class, Inherits from Label so i do not need to implement all Properties
         Private _visible As Boolean = True
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             MyBase.AutoSize = False
             MyBase.Visible = False
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Overrides Property BackColor() As Color
             Get
@@ -1760,18 +1762,18 @@ Public Class frmMainSetup
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Overloads Sub SetStyle(ByVal style As ControlStyles, ByVal value As Boolean)
             MyBase.SetStyle(style, value)
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class
