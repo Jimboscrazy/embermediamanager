@@ -28,14 +28,13 @@ Partial Class dlgChangeOptions
         Me.txtEMMPath = New System.Windows.Forms.TextBox
         Me.btnGetEMMPath = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnFindPaths = New System.Windows.Forms.Button
+        Me.lstEMMPaths = New System.Windows.Forms.ListView
+        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.pnlCancel = New System.Windows.Forms.Panel
         Me.btnCancel = New System.Windows.Forms.Button
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbCancel = New System.Windows.Forms.ProgressBar
-        Me.cbCreateFolder = New System.Windows.Forms.CheckBox
-        Me.btnFindPaths = New System.Windows.Forms.Button
-        Me.lstEMMPaths = New System.Windows.Forms.ListView
-        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.rbX64 = New System.Windows.Forms.RadioButton
         Me.rbX86 = New System.Windows.Forms.RadioButton
         Me.lblInfo = New System.Windows.Forms.Label
@@ -97,7 +96,6 @@ Partial Class dlgChangeOptions
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.cbCreateFolder)
         Me.GroupBox1.Controls.Add(Me.btnFindPaths)
         Me.GroupBox1.Controls.Add(Me.lstEMMPaths)
         Me.GroupBox1.Controls.Add(Me.txtEMMPath)
@@ -109,6 +107,32 @@ Partial Class dlgChangeOptions
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Ember Media Manager Installation Path"
         Me.GroupBox1.UseCompatibleTextRendering = True
+        '
+        'btnFindPaths
+        '
+        Me.btnFindPaths.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFindPaths.Location = New System.Drawing.Point(7, 99)
+        Me.btnFindPaths.Name = "btnFindPaths"
+        Me.btnFindPaths.Size = New System.Drawing.Size(110, 23)
+        Me.btnFindPaths.TabIndex = 5
+        Me.btnFindPaths.Text = "Find Ember Installations"
+        Me.btnFindPaths.UseVisualStyleBackColor = True
+        '
+        'lstEMMPaths
+        '
+        Me.lstEMMPaths.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
+        Me.lstEMMPaths.FullRowSelect = True
+        Me.lstEMMPaths.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.lstEMMPaths.Location = New System.Drawing.Point(7, 19)
+        Me.lstEMMPaths.Name = "lstEMMPaths"
+        Me.lstEMMPaths.Size = New System.Drawing.Size(390, 79)
+        Me.lstEMMPaths.TabIndex = 4
+        Me.lstEMMPaths.UseCompatibleStateImageBehavior = False
+        Me.lstEMMPaths.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Width = 367
         '
         'pnlCancel
         '
@@ -149,44 +173,6 @@ Partial Class dlgChangeOptions
         Me.pbCancel.Name = "pbCancel"
         Me.pbCancel.Size = New System.Drawing.Size(254, 23)
         Me.pbCancel.TabIndex = 0
-        '
-        'cbCreateFolder
-        '
-        Me.cbCreateFolder.Checked = True
-        Me.cbCreateFolder.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.cbCreateFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbCreateFolder.Location = New System.Drawing.Point(269, 106)
-        Me.cbCreateFolder.Name = "cbCreateFolder"
-        Me.cbCreateFolder.Size = New System.Drawing.Size(125, 16)
-        Me.cbCreateFolder.TabIndex = 6
-        Me.cbCreateFolder.Text = "Create EMM folder"
-        Me.cbCreateFolder.UseVisualStyleBackColor = True
-        '
-        'btnFindPaths
-        '
-        Me.btnFindPaths.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFindPaths.Location = New System.Drawing.Point(7, 99)
-        Me.btnFindPaths.Name = "btnFindPaths"
-        Me.btnFindPaths.Size = New System.Drawing.Size(110, 23)
-        Me.btnFindPaths.TabIndex = 5
-        Me.btnFindPaths.Text = "Find Ember Installations"
-        Me.btnFindPaths.UseVisualStyleBackColor = True
-        '
-        'lstEMMPaths
-        '
-        Me.lstEMMPaths.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        Me.lstEMMPaths.FullRowSelect = True
-        Me.lstEMMPaths.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.lstEMMPaths.Location = New System.Drawing.Point(7, 19)
-        Me.lstEMMPaths.Name = "lstEMMPaths"
-        Me.lstEMMPaths.Size = New System.Drawing.Size(390, 79)
-        Me.lstEMMPaths.TabIndex = 4
-        Me.lstEMMPaths.UseCompatibleStateImageBehavior = False
-        Me.lstEMMPaths.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Width = 367
         '
         'rbX64
         '
@@ -260,7 +246,6 @@ Partial Class dlgChangeOptions
     Friend WithEvents pbCancel As System.Windows.Forms.ProgressBar
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblStatus As System.Windows.Forms.Label
-    Friend WithEvents cbCreateFolder As System.Windows.Forms.CheckBox
     Friend WithEvents rbX64 As System.Windows.Forms.RadioButton
     Friend WithEvents rbX86 As System.Windows.Forms.RadioButton
     Friend WithEvents lblInfo As System.Windows.Forms.Label
