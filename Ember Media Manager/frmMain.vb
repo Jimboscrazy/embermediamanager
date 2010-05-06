@@ -1246,6 +1246,8 @@ Public Class frmMain
                     Else
                         Master.tmpMovie = DBScrapeMovie.Movie
                     End If
+                Else
+                    Master.tmpMovie = DBScrapeMovie.Movie
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
