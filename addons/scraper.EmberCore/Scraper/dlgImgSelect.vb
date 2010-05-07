@@ -469,7 +469,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub chkMid_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMid.CheckedChanged
-        Me.CheckAll("(mid)", chkMid.Checked)
+        Me.CheckAll("(poster)", chkMid.Checked)
     End Sub
 
     Private Sub chkOriginal_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginal.CheckedChanged
@@ -608,8 +608,11 @@ Public Class dlgImgSelect
                                             tImage.isChecked = True
                                         End If
                                     End If
-                                Case sFile.Name.Contains("(mid)")
-                                    tImage.Description = "mid"
+                                    'Case sFile.Name.Contains("(mid)")
+                                    ' tImage.Description = "mid"
+                                Case sFile.Name.Contains("(poster)")
+                                    tImage.Description = "poster"
+
                                     If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Enums.FanartSize.Mid Then
                                         If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
                                             tImage.isChecked = True
