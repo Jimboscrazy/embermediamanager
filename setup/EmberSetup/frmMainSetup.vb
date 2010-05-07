@@ -555,6 +555,10 @@ Public Class frmMainSetup
             pnlProgress.Visible = False
             pbFiles.Visible = False
         End If
+        If e.ProgressPercentage = 12 Then
+            Dim progress As Integer = e.UserState 'This is true progress %
+            If progress >= pbFiles.Minimum AndAlso progress <= pbFiles.Maximum Then pbFiles.Value = progress
+        End If
     End Sub
 
     Private Sub bwFindeEmber_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFF.DoWork
@@ -794,6 +798,7 @@ Public Class frmMainSetup
                                 f.NeedInstall = False
                             End If
                             counter += 1
+                            Me.bwDoInstall.ReportProgress(12, counter)
                             If bwDoInstall.CancellationPending Then Return False
                         Next
                         Me.bwDoInstall.ReportProgress(5, "")

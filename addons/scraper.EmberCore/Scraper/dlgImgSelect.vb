@@ -369,14 +369,15 @@ Public Class dlgImgSelect
                         Me.TMDBPosters.Item(i).WebImage.FromWeb(Me.TMDBPosters.Item(i).URL)
                         If Not Master.eSettings.NoSaveImagesToNfo Then
                             If Me.DLType = Enums.ImageType.Fanart Then
-                                If Not Me.TMDBPosters.Item(i).URL.Contains("_thumb.") Then
-                                    Me.Results.Fanart.URL = "http://images.themoviedb.org"
-                                    thumbLink = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)
-                                    If thumbLink.Contains("_poster.") Then
-                                        thumbLink = thumbLink.Replace("_poster.", "_thumb.")
-                                    Else
-                                        thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                                    End If
+                                If Not Me.TMDBPosters.Item(i).URL.Contains("-thumb.") Then
+                                    Me.Results.Fanart.URL = GetServerURL(Me.TMDBPosters.Item(i).URL) '  "http://images.themoviedb.org"
+                                    thumbLink = RemoveServerURL(Me.TMDBPosters.Item(i).URL)
+                                    'If thumbLink.Contains("_poster.") Then
+                                    thumbLink = thumbLink.Replace("-poster.", "-thumb.")
+                                    thumbLink = thumbLink.Replace("-original.", "-thumb.")
+                                    ''Else
+                                    'thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "-thumb")
+                                    'End If
                                     Me.Results.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
                                 End If
                             Else
@@ -1084,11 +1085,19 @@ Public Class dlgImgSelect
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Function GetServerURL(ByVal sURL As String) As String
+        If sURL.StartsWith("http://") Then
+            Dim s As Integer = sURL.IndexOf("/", 7)
+            If s >= 0 Then Return sURL.Substring(0, sURL.IndexOf("/", 7))
+        End If
+        Return sURL
+    End Function
+
     Private Function RemoveServerURL(ByVal sURL As String) As String
         If sURL.StartsWith("http://") Then
             Dim s As Integer = sURL.IndexOf("/", 7)
             If s >= 0 Then Return sURL.Substring(sURL.IndexOf("/", 7))
-
         End If
         Return sURL
     End Function
