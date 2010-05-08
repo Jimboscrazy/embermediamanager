@@ -992,7 +992,7 @@ Public Class dlgImgSelect
             End If
 
             If posters.Count > 0 Then
-                For Each xPoster As MediaContainers.Image In posters.OrderBy(Function(p) p.URL)
+                For Each xPoster As MediaContainers.Image In posters.OrderBy(Function(p) RemoveServerURL(p.URL))
                     If Not IsNothing(xPoster.WebImage.Image) AndAlso (Me.DLType = Enums.ImageType.Fanart OrElse Not (xPoster.URL.ToLower.Contains("themoviedb.org") AndAlso Not xPoster.Description = "cover")) Then
                         Me.AddImage(xPoster.WebImage.Image, xPoster.Description, iIndex, xPoster.URL, xPoster.isChecked)
                         iIndex += 1
