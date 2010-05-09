@@ -81,6 +81,7 @@ Public Class frmMainSetup
     Dim ProxyPort As Integer = 0
     Dim ProxyUserName As String = ""
     Dim ProxyPassword As String = ""
+    Public Shared eSettings As New Settings
 
 #End Region 'Fields
 
@@ -223,11 +224,12 @@ Public Class frmMainSetup
             wrRequest.Timeout = 20000
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
 
-            If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
-                Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
+            If Not String.IsNullOrEmpty(eSettings.ProxyURI) AndAlso eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(eSettings.ProxyURI, eSettings.ProxyPort)
                 wProxy.BypassProxyOnLocal = True
-                If Not String.IsNullOrEmpty(ProxyUserName) Then
-                    wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
+                If Not String.IsNullOrEmpty(eSettings.ProxyCreds.UserName) AndAlso _
+                Not String.IsNullOrEmpty(eSettings.ProxyCreds.Password) Then
+                    wProxy.Credentials = eSettings.ProxyCreds
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
@@ -278,16 +280,19 @@ Public Class frmMainSetup
             'create a web request to the URL
             Req = HttpWebRequest.Create(URL)
             '---
-            If Not String.IsNullOrEmpty(ProxyURI) AndAlso ProxyPort >= 0 Then
-                Dim wProxy As New WebProxy(ProxyURI, ProxyPort)
+            If Not String.IsNullOrEmpty(eSettings.ProxyURI) AndAlso eSettings.ProxyPort >= 0 Then
+                Dim wProxy As New WebProxy(eSettings.ProxyURI, eSettings.ProxyPort)
                 wProxy.BypassProxyOnLocal = True
-                If Not String.IsNullOrEmpty(ProxyUserName) Then
-                    wProxy.Credentials = New NetworkCredential(ProxyUserName, ProxyPassword)
+                If Not String.IsNullOrEmpty(eSettings.ProxyCreds.UserName) AndAlso _
+                Not String.IsNullOrEmpty(eSettings.ProxyCreds.Password) Then
+                    wProxy.Credentials = eSettings.ProxyCreds
                 Else
                     wProxy.Credentials = CredentialCache.DefaultCredentials
                 End If
                 Req.Proxy = wProxy
             End If
+
+
             '---
             Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
             Req.CachePolicy = noCachePolicy
@@ -1605,6 +1610,7 @@ Public Class frmMainSetup
     End Sub
 
     Sub StartWorker()
+        eSettings = Settings.Load(Path.Combine(emberPath, "Setup.xml"))
         btnExit.Text = MyLang.GetString(37, "Cancel")
         btnInstall.Enabled = False
         btnOptions.Enabled = False
@@ -1657,35 +1663,21 @@ Public Class frmMainSetup
     Public Class Comparer
         Implements IComparer(Of FileInfo)
 
-#Region "Methods"
-
         Public Function Compare(ByVal x As FileInfo, _
             ByVal y As FileInfo) As Integer Implements IComparer(Of FileInfo).Compare
             Return x.Name.CompareTo(y.Name)
         End Function
 
-#End Region 'Methods
-
     End Class
 
     Friend Class CredLine
 
-#Region "Fields"
-
         Private _font As Font
         Private _text As String
-
-#End Region 'Fields
-
-#Region "Constructors"
 
         Public Sub New()
             Clear()
         End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
 
         Public Property Font() As Font
             Get
@@ -1705,39 +1697,24 @@ Public Class frmMainSetup
             End Set
         End Property
 
-#End Region 'Properties
-
-#Region "Methods"
 
         Public Sub Clear()
             _text = String.Empty
             _font = New Font("Microsoft Sans Serif", 11, FontStyle.Regular)
         End Sub
 
-#End Region 'Methods
-
     End Class
 
     Class MyLabel
         Inherits Label
 
-#Region "Fields"
-
         ' My Label Class, Inherits from Label so i do not need to implement all Properties
         Private _visible As Boolean = True
-
-#End Region 'Fields
-
-#Region "Constructors"
 
         Public Sub New()
             MyBase.AutoSize = False
             MyBase.Visible = False
         End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
 
         Public Overrides Property BackColor() As Color
             Get
@@ -1767,18 +1744,77 @@ Public Class frmMainSetup
             End Set
         End Property
 
-#End Region 'Properties
-
-#Region "Methods"
-
         Public Overloads Sub SetStyle(ByVal style As ControlStyles, ByVal value As Boolean)
             MyBase.SetStyle(style, value)
         End Sub
-
-#End Region 'Methods
-
     End Class
 
+
+    Public Class Settings
+        Private _proxycredentials As NetworkCredential
+        Private _proxyport As Integer
+        Private _proxyuri As String
+        Public Property ProxyCreds() As NetworkCredential
+            Get
+                Return Me._proxycredentials
+            End Get
+            Set(ByVal value As NetworkCredential)
+                Me._proxycredentials = value
+            End Set
+        End Property
+
+        Public Property ProxyPort() As Integer
+            Get
+                Return Me._proxyport
+            End Get
+            Set(ByVal value As Integer)
+                Me._proxyport = value
+            End Set
+        End Property
+
+        Public Property ProxyURI() As String
+            Get
+                Return Me._proxyuri
+            End Get
+            Set(ByVal value As String)
+                Me._proxyuri = value
+            End Set
+        End Property
+        Sub New()
+            Me._proxyuri = String.Empty
+            Me._proxyuri = -1
+            Me.ProxyCreds = New NetworkCredential
+        End Sub
+        Public Shared Function Load(ByVal fname As String) As Settings
+            Try
+                Dim eset As Settings
+                Dim xmlSerial As New XmlSerializer(GetType(Settings))
+
+                If File.Exists(fname) Then
+                    Dim strmReader As New StreamReader(fname)
+                    eset = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
+                    strmReader.Close()
+                    Return eset
+                Else
+                    Return New Settings
+                End If
+            Catch ex As Exception
+                'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Return New Settings
+            End Try
+        End Function
+
+        Public Sub Save(ByVal fname As String)
+            Try
+                Dim xmlSerial As New XmlSerializer(GetType(Settings))
+                Dim xmlWriter As New StreamWriter(fname)
+                xmlSerial.Serialize(xmlWriter, Me)
+                xmlWriter.Close()
+            Catch ex As Exception
+                'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+    End Class
 #End Region 'Nested Types
 
 End Class

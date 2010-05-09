@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.IO
+Imports System.Net
 
 Public Class dlgChangeOptions
 
@@ -153,4 +154,26 @@ Public Class dlgChangeOptions
     End Sub
     #End Region 'Methods
 
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProxy.Click
+        Using proxy As New frmProxy
+            If proxy.ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(proxy.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(proxy.txtProxyPort.Text) Then
+                    frmMainSetup.eSettings.ProxyURI = proxy.txtProxyURI.Text
+                    frmMainSetup.eSettings.ProxyPort = Convert.ToInt32(proxy.txtProxyPort.Text)
+
+                    If Not String.IsNullOrEmpty(proxy.txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(proxy.txtProxyPassword.Text) Then
+                        frmMainSetup.eSettings.ProxyCreds.UserName = proxy.txtProxyUsername.Text
+                        frmMainSetup.eSettings.ProxyCreds.Password = proxy.txtProxyPassword.Text
+                        frmMainSetup.eSettings.ProxyCreds.Domain = proxy.txtProxyDomain.Text
+                    Else
+                        frmMainSetup.eSettings.ProxyCreds = New NetworkCredential
+                    End If
+                Else
+                    frmMainSetup.eSettings.ProxyURI = String.Empty
+                    frmMainSetup.eSettings.ProxyPort = -1
+                End If
+                frmMainSetup.eSettings.Save(Path.Combine(frmMainSetup.emberPath, "Setup.xml"))
+            End If
+        End Using
+    End Sub
 End Class

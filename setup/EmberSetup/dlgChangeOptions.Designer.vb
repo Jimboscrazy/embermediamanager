@@ -38,6 +38,7 @@ Partial Class dlgChangeOptions
         Me.rbX64 = New System.Windows.Forms.RadioButton
         Me.rbX86 = New System.Windows.Forms.RadioButton
         Me.lblInfo = New System.Windows.Forms.Label
+        Me.btnProxy = New System.Windows.Forms.Button
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
@@ -205,6 +206,15 @@ Partial Class dlgChangeOptions
         Me.lblInfo.Text = "Platform"
         Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
+        'btnProxy
+        '
+        Me.btnProxy.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnProxy.Location = New System.Drawing.Point(12, 210)
+        Me.btnProxy.Name = "btnProxy"
+        Me.btnProxy.Size = New System.Drawing.Size(79, 23)
+        Me.btnProxy.TabIndex = 8
+        Me.btnProxy.Text = "Setup Proxy"
+        '
         'dlgChangeOptions
         '
         Me.AcceptButton = Me.OK_Button
@@ -212,6 +222,7 @@ Partial Class dlgChangeOptions
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(411, 248)
+        Me.Controls.Add(Me.btnProxy)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.lblInfo)
         Me.Controls.Add(Me.rbX86)
@@ -250,5 +261,6 @@ Partial Class dlgChangeOptions
     Friend WithEvents rbX86 As System.Windows.Forms.RadioButton
     Friend WithEvents lblInfo As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnProxy As System.Windows.Forms.Button
 
 End Class

@@ -343,9 +343,9 @@
 	<string control="Core_chkCastWithImg">If enabled, Ember will only scrape cast entries that have valid images.</string>
 	<string control="Core_chkUseCertForMPAA">If enabled, Ember will use the certifcation of the selected region in place of the MPAA rating.</string>
 	<string control="Core_chkFullCast">If enabled, all cast members will be scraped instead of only top billed.</string>
-	<string control="Core_chkFullCrew">If enabled, all crew members will be scarped (if individually enabled).</string>
+	<string control="Core_chkFullCrew">If enabled, all crew members will be scraped (if individually enabled).</string>
 	<string control="Core_cbCert">Select the region to filter certification ratings.</string>
-	<string control="Core_chkCert">Only scarpe the certificaton rating for the selected region.</string>
+	<string control="Core_chkCert">Only scrape the certificaton rating for the selected region.</string>
 	<string control="Core_chkMarkNewShows">If enabled, new shows will be "marked". If disabled, new shows will still be colored green until updated or the next Ember session.</string>
 	<string control="Core_chkMarkNewEpisodes">If enabled, new episodes will be "marked". If disabled, new episodes will still be colored green until updated or the next Ember session.</string>
 	<string control="Core_cbOrdering">Select the default ordering Ember will use when scraping information for a show.</string>
