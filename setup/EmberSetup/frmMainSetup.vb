@@ -1610,7 +1610,11 @@ Public Class frmMainSetup
     End Sub
 
     Sub StartWorker()
-        eSettings = Settings.Load(Path.Combine(emberPath, "Setup.xml"))
+        If File.Exists(Path.Combine(emberPath, "Setup.xml")) Then
+            eSettings = Settings.Load(Path.Combine(emberPath, "Setup.xml"))
+        Else
+            eSettings = Settings.Load(Path.Combine(emberPath, "Settings.xml"))
+        End If
         btnExit.Text = MyLang.GetString(37, "Cancel")
         btnInstall.Enabled = False
         btnOptions.Enabled = False
@@ -1782,7 +1786,7 @@ Public Class frmMainSetup
         End Property
         Sub New()
             Me._proxyuri = String.Empty
-            Me._proxyuri = -1
+            Me._proxyport = -1
             Me.ProxyCreds = New NetworkCredential
         End Sub
         Public Shared Function Load(ByVal fname As String) As Settings
