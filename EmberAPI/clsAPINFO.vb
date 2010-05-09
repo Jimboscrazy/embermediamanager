@@ -778,7 +778,12 @@ Public Class NFO
                                 movieToSave.NfoPath = tPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-
+                            If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) Then
+                                Try
+                                    File.Copy(tPath, Path.Combine(Directory.GetParent(nPath).FullName, "mymovies.xml"), True)
+                                Catch  'Just ignore this
+                                End Try
+                            End If
                             If doesExist Then File.SetAttributes(tPath, fAtt)
                         End If
                     End If

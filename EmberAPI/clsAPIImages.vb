@@ -169,7 +169,13 @@ Public Class Images
             ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
             Else
-                If mMovie.isSingle Then Delete(Path.Combine(tPath, "fanart.jpg"))
+                If mMovie.isSingle Then
+                    Delete(Path.Combine(tPath, "fanart.jpg"))
+                    If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) Then
+                        Delete(Path.Combine(tPath, "backdrop.jpg"))
+                    End If
+                End If
+
 
                 If FileUtils.Common.isVideoTS(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
@@ -600,6 +606,9 @@ Public Class Images
 
                 If Master.eSettings.FanartJPG AndAlso mMovie.isSingle Then
                     tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "fanart.jpg")
+                    If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) AndAlso (Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart)) Then
+                        Save(Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "backdrop.jpg"), Master.eSettings.FanartQuality)
+                    End If
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath, Master.eSettings.FanartQuality)
                         strReturn = tPath
