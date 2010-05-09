@@ -3608,7 +3608,6 @@ Public Class dlgSettings
 
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
-
         Me.GroupBox4.Text = Master.eLang.GetString(429, "Miscellaneous")
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language:")
         Me.chkInfoPanelAnim.Text = Master.eLang.GetString(431, "Enable Panel Animation")
