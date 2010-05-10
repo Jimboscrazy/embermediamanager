@@ -163,8 +163,8 @@ Public Class Images
     Public Sub DeleteFanart(ByVal mMovie As Structures.DBMovie)
         Try
             Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-            Dim params As New List(Of Object)(New Object() {"delete", mMovie})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, Nothing, True)
+            Dim params As New List(Of Object)(New Object() {mMovie})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
             If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
@@ -174,7 +174,6 @@ Public Class Images
                 If mMovie.isSingle Then
                     Delete(Path.Combine(tPath, "fanart.jpg"))
                 End If
-
 
                 If FileUtils.Common.isVideoTS(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
@@ -197,7 +196,8 @@ Public Class Images
     Public Sub DeletePosters(ByVal mMovie As Structures.DBMovie)
         Try
             Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-
+            Dim params As New List(Of Object)(New Object() {mMovie})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterDelete, params, Nothing, False)
             If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".jpg"))
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".tbn"))
@@ -529,8 +529,11 @@ Public Class Images
         Try
             Dim fPath As String = String.Empty
             Dim tPath As String = String.Empty
-            Dim params As New List(Of Object)(New Object() {"save", _image, mMovie})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, Nothing, True)
+            Try
+                Dim params As New List(Of Object)(New Object() {mMovie})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, _image, False)
+            Catch ex As Exception
+            End Try
 
             If Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight) Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
@@ -634,8 +637,11 @@ Public Class Images
 
         Try
             Dim pPath As String = String.Empty
-            Dim params As New List(Of Object)(New Object() {"save", _image, mMovie})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, Nothing, True)
+            Try
+                Dim params As New List(Of Object)(New Object() {mMovie})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, _image, False)
+            Catch ex As Exception
+            End Try
             If Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight) Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
             End If
