@@ -281,6 +281,8 @@ Public Class frmMainSetup
             Req = HttpWebRequest.Create(URL)
             '---
             If Not String.IsNullOrEmpty(eSettings.ProxyURI) AndAlso eSettings.ProxyPort >= 0 Then
+                'Dim myUri As New Uri(String.Concat(If(eSettings.ProxyURI.StartsWith("http"), String.Empty, "http://"), String.Format("{0}:{1}", eSettings.ProxyURI, eSettings.ProxyPort)))
+                'Dim wProxy As New WebProxy(myUri)
                 Dim wProxy As New WebProxy(eSettings.ProxyURI, eSettings.ProxyPort)
                 wProxy.BypassProxyOnLocal = True
                 If Not String.IsNullOrEmpty(eSettings.ProxyCreds.UserName) AndAlso _
@@ -1230,6 +1232,19 @@ Public Class frmMainSetup
                 End Select
             Next
 
+            Dim PInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
+            For Each ss As String In String.Concat(AppPath, "|", Path.Combine(PInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
+                If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
+                    emberPath = ss
+                End If
+            Next
+            If Not String.IsNullOrEmpty(emberPath) Then
+                If File.Exists(Path.Combine(emberPath, "Setup.xml")) Then
+                    eSettings = Settings.Load(Path.Combine(emberPath, "Setup.xml"))
+                Else
+                    eSettings = Settings.Load(Path.Combine(emberPath, "Settings.xml"))
+                End If
+            End If
             MyLang.GetFromSite()
             MyLang.Load()
             If MyLang.lLanguages.Count > 1 Then
