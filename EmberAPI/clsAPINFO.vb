@@ -673,7 +673,7 @@ Public Class NFO
 
         Try
             Dim params As New List(Of Object)(New Object() {movieToSave})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave, params, Nothing, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMvoieNFOSave, params, Nothing, True)
 
             If Not String.IsNullOrEmpty(movieToSave.Filename) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
