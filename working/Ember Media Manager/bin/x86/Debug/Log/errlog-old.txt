@@ -1,7 +1,0 @@
-Title: Error
-Message: C:\EMM-Dev-ROOT\trunk\Ember Media Manager\bin\x86\Debug\Bin\MediaInfo.DLL
-StackTrace:    at System.Diagnostics.FileVersionInfo.GetVersionInfo(String fileName)
-   at EmberAPI.Functions.TestMediaInfoDLL() in C:\EMM-Dev-ROOT\trunk\EmberAPI\clsAPICommon.vb:line 1055
-Date/Time: 14-04-2010 17:02:17
-===========================================================================================
-
