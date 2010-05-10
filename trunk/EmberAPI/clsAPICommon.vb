@@ -513,9 +513,11 @@ Public Class Enums
         ShowMovie = 10                  ' Called after displaying Movie  (not in place yet)
         ShowTVShow = 11                 ' Called after displaying TVShow (not in place yet)
         BeforeEditMovie = 12            ' Called when Manual editing or reading from nfo
-        OnMvoieNFOSave = 13
+        OnMovieNFOSave = 13
         OnMoviePosterSave = 14
         OnMovieFanartSave = 15
+        OnMoviePosterDelete = 16
+        OnMovieFanartDelete = 17
     End Enum
 
     Public Enum MovieScraperEventType As Integer
