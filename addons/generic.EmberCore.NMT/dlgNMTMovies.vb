@@ -345,8 +345,8 @@ Public Class dlgNMTMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim ThumbsPath As String = GetUserParam("ThumbsPath", "Thumbs/")
-            Dim BackdropPath As String = GetUserParam("BackdropPath", "Thumbs/")
+            Dim ThumbsPath As String = GetUserParam("TVThumbsPath", "TVThumbs/")
+            Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
             Dim uni As New UnicodeEncoding()
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curMovie.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curMovie.Item("Source").ToString)), selectedSources(_curMovie.Item("Source").ToString).ToString)
             Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curMovie.Item("Source").ToString).Path
@@ -411,7 +411,7 @@ Public Class dlgNMTMovies
         Return row
     End Function
 
-    Function ProcessTVShowsTags(ByVal _curMovie As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal id As String, ByVal movierow As String, Optional ByVal relpath As String = "") As String
+    Function ProcessTVShowsTags(ByVal _curShow As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal id As String, ByVal movierow As String, Optional ByVal relpath As String = "") As String
         Dim row As String = movierow
         Try
             Dim tVid As New MediaInfo.Video
@@ -420,44 +420,44 @@ Public Class dlgNMTMovies
             Dim ThumbsPath As String = GetUserParam("ThumbsPath", "Thumbs/")
             Dim BackdropPath As String = GetUserParam("BackdropPath", "Thumbs/")
             Dim uni As New UnicodeEncoding()
-            Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curMovie.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curMovie.Item("Source").ToString)), selectedSources(_curMovie.Item("Source").ToString).ToString)
-            Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curMovie.Item("Source").ToString).Path
+            Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curShow.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curShow.Item("Source").ToString)), selectedSources(_curShow.Item("Source").ToString).ToString)
+            Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
             row = row.Replace("<$ID>", id.ToString)
             row = row.Replace("<$COUNTER>", counter.ToString)
-            row = row.Replace("<$MOVIE_PATH>", _curMovie.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$MOVIE_PATH>", _curShow.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
             row = row.Replace("<$POSTER_THUMB>", String.Concat(relpath, ThumbsPath, id.ToString, ".jpg"))
             row = row.Replace("<$BACKDROP_THUMB>", String.Concat(relpath, BackdropPath, id.ToString, "-backdrop.jpg"))
-            row = row.Replace("<$POSTER_FILE>", _curMovie.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
-            row = row.Replace("<$FANART_FILE>", _curMovie.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
-            If Not String.IsNullOrEmpty(_curMovie.Item("Title").ToString) Then
-                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.Item("Title").ToString))
+            row = row.Replace("<$POSTER_FILE>", _curShow.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$FANART_FILE>", _curShow.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            If Not String.IsNullOrEmpty(_curShow.Item("Title").ToString) Then
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curShow.Item("Title").ToString))
             Else
-                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.Item("ListTitle").ToString))
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curShow.Item("ListTitle").ToString))
             End If
-            row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(GetMovieActorForID(_curMovie.Item("ID").ToString)))
-            row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curMovie.Item("Director").ToString))
-            row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Item("Certification").ToString))
-            row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curMovie.Item("IMDB").ToString))
-            row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curMovie.Item("MPAA").ToString))
-            row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curMovie.Item("ReleaseDate").ToString))
-            row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curMovie.Item("Runtime").ToString))
-            row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curMovie.Item("Tagline").ToString))
-            row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curMovie.Item("Rating").ToString))
-            row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curMovie.Item("Votes").ToString))
-            row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curMovie.Item("ListTitle").ToString))
-            row = row.Replace("<$YEAR>", _curMovie.Item("Year").ToString)
+            row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(GetMovieActorForID(_curShow.Item("ID").ToString)))
+            row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curShow.Item("Director").ToString))
+            row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curShow.Item("Certification").ToString))
+            row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curShow.Item("IMDB").ToString))
+            row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curShow.Item("MPAA").ToString))
+            row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curShow.Item("ReleaseDate").ToString))
+            row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curShow.Item("Runtime").ToString))
+            row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curShow.Item("Tagline").ToString))
+            row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curShow.Item("Rating").ToString))
+            row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curShow.Item("Votes").ToString))
+            row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curShow.Item("ListTitle").ToString))
+            row = row.Replace("<$YEAR>", _curShow.Item("Year").ToString)
             'row = row.Replace("<$COUNT>", counter.ToString)
-            row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curMovie.Item("MoviePath").ToString)))
-            row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curMovie.Item("MoviePath").ToString)))
-            row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curMovie.Item("Outline").ToString))
-            row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curMovie.Item("Plot").ToString))
-            row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curMovie.Item("Genre").ToString))
-            For Each s As String In _curMovie.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
+            row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curShow.Item("MoviePath").ToString)))
+            row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curShow.Item("MoviePath").ToString)))
+            row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curShow.Item("Outline").ToString))
+            row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curShow.Item("Plot").ToString))
+            row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curShow.Item("Genre").ToString))
+            For Each s As String In _curShow.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
                 If Not MoviesGenres.Contains(s.Trim) Then MoviesGenres.Add(s.Trim)
             Next
-            row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Item("MoviePath").ToString).ToString))
-            row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curMovie.Item("DateAdd").ToString)).ToShortDateString))
-            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curMovie.Item("ID").ToString)
+            row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curShow.Item("MoviePath").ToString).ToString))
+            row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curShow.Item("DateAdd").ToString)).ToShortDateString))
+            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curShow.Item("ID").ToString)
             Dim _vidDetails As String = String.Empty
             Dim _vidDimensions As String = String.Empty
             If Not IsNothing(fiAV) Then
@@ -476,7 +476,151 @@ Public Class dlgNMTMovies
             row = row.Replace("<$VIDEO>", _vidDetails)
             row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
             row = row.Replace("<$AUDIO>", _audDetails)
-            row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, relpath)
+            row = GetAVImages(fiAV, row, _curShow.Item("MoviePath").ToString, relpath)
+        Catch ex As Exception
+        End Try
+
+        Return row
+    End Function
+
+    Function ProcessTVSeasonTags(ByVal _curSeason As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal id As String, ByVal movierow As String, Optional ByVal relpath As String = "") As String
+        Dim row As String = movierow
+        Try
+            Dim tVid As New MediaInfo.Video
+            Dim tAud As New MediaInfo.Audio
+            Dim tRes As String = String.Empty
+            Dim ThumbsPath As String = GetUserParam("TVThumbsPath", "TVThumbs/")
+            Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
+            Dim uni As New UnicodeEncoding()
+            Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curSeason.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curSeason.Item("Source").ToString)), selectedSources(_curSeason.Item("Source").ToString).ToString)
+            Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curSeason.Item("Source").ToString).Path
+            row = row.Replace("<$ID>", id.ToString)
+            row = row.Replace("<$COUNTER>", counter.ToString)
+            row = row.Replace("<$MOVIE_PATH>", _curSeason.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$POSTER_THUMB>", String.Concat(relpath, ThumbsPath, id.ToString, ".jpg"))
+            row = row.Replace("<$BACKDROP_THUMB>", String.Concat(relpath, BackdropPath, id.ToString, "-backdrop.jpg"))
+            row = row.Replace("<$POSTER_FILE>", _curSeason.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$FANART_FILE>", _curSeason.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            If Not String.IsNullOrEmpty(_curSeason.Item("Title").ToString) Then
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curSeason.Item("Title").ToString))
+            Else
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curSeason.Item("ListTitle").ToString))
+            End If
+            row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(GetMovieActorForID(_curSeason.Item("ID").ToString)))
+            row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curSeason.Item("Director").ToString))
+            row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curSeason.Item("Certification").ToString))
+            row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curSeason.Item("IMDB").ToString))
+            row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curSeason.Item("MPAA").ToString))
+            row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curSeason.Item("ReleaseDate").ToString))
+            row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curSeason.Item("Runtime").ToString))
+            row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curSeason.Item("Tagline").ToString))
+            row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curSeason.Item("Rating").ToString))
+            row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curSeason.Item("Votes").ToString))
+            row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curSeason.Item("ListTitle").ToString))
+            row = row.Replace("<$YEAR>", _curSeason.Item("Year").ToString)
+            'row = row.Replace("<$COUNT>", counter.ToString)
+            row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curSeason.Item("MoviePath").ToString)))
+            row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curSeason.Item("MoviePath").ToString)))
+            row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curSeason.Item("Outline").ToString))
+            row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curSeason.Item("Plot").ToString))
+            row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curSeason.Item("Genre").ToString))
+            For Each s As String In _curSeason.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
+                If Not MoviesGenres.Contains(s.Trim) Then MoviesGenres.Add(s.Trim)
+            Next
+            row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curSeason.Item("MoviePath").ToString).ToString))
+            row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curSeason.Item("DateAdd").ToString)).ToShortDateString))
+            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curSeason.Item("ID").ToString)
+            Dim _vidDetails As String = String.Empty
+            Dim _vidDimensions As String = String.Empty
+            If Not IsNothing(fiAV) Then
+                If fiAV.StreamDetails.Video.Count > 0 Then
+                    tVid = NFO.GetBestVideo(fiAV)
+                    tRes = NFO.GetResFromDimensions(tVid)
+                    _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                    _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+                End If
+            End If
+            Dim _audDetails As String = String.Empty
+            If fiAV.StreamDetails.Audio.Count > 0 Then
+                tAud = NFO.GetBestAudio(fiAV, False)
+                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+            End If
+            row = row.Replace("<$VIDEO>", _vidDetails)
+            row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
+            row = row.Replace("<$AUDIO>", _audDetails)
+            row = GetAVImages(fiAV, row, _curSeason.Item("MoviePath").ToString, relpath)
+        Catch ex As Exception
+        End Try
+
+        Return row
+    End Function
+
+    Function ProcessTVEpisodeTags(ByVal _curEpisode As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal id As String, ByVal movierow As String, Optional ByVal relpath As String = "") As String
+        Dim row As String = movierow
+        Try
+            Dim tVid As New MediaInfo.Video
+            Dim tAud As New MediaInfo.Audio
+            Dim tRes As String = String.Empty
+            Dim ThumbsPath As String = GetUserParam("TVThumbsPath", "TVThumbs/")
+            Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
+            Dim uni As New UnicodeEncoding()
+            Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curEpisode.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curEpisode.Item("Source").ToString)), selectedSources(_curEpisode.Item("Source").ToString).ToString)
+            Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curEpisode.Item("Source").ToString).Path
+            row = row.Replace("<$ID>", id.ToString)
+            row = row.Replace("<$COUNTER>", counter.ToString)
+            row = row.Replace("<$MOVIE_PATH>", _curEpisode.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$POSTER_THUMB>", String.Concat(relpath, ThumbsPath, id.ToString, ".jpg"))
+            row = row.Replace("<$BACKDROP_THUMB>", String.Concat(relpath, BackdropPath, id.ToString, "-backdrop.jpg"))
+            row = row.Replace("<$POSTER_FILE>", _curEpisode.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            row = row.Replace("<$FANART_FILE>", _curEpisode.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            If Not String.IsNullOrEmpty(_curEpisode.Item("Title").ToString) Then
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curEpisode.Item("Title").ToString))
+            Else
+                row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curEpisode.Item("ListTitle").ToString))
+            End If
+            row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(GetMovieActorForID(_curEpisode.Item("ID").ToString)))
+            row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curEpisode.Item("Director").ToString))
+            row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curEpisode.Item("Certification").ToString))
+            row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curEpisode.Item("IMDB").ToString))
+            row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curEpisode.Item("MPAA").ToString))
+            row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curEpisode.Item("ReleaseDate").ToString))
+            row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curEpisode.Item("Runtime").ToString))
+            row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curEpisode.Item("Tagline").ToString))
+            row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curEpisode.Item("Rating").ToString))
+            row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curEpisode.Item("Votes").ToString))
+            row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curEpisode.Item("ListTitle").ToString))
+            row = row.Replace("<$YEAR>", _curEpisode.Item("Year").ToString)
+            'row = row.Replace("<$COUNT>", counter.ToString)
+            row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curEpisode.Item("MoviePath").ToString)))
+            row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curEpisode.Item("MoviePath").ToString)))
+            row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curEpisode.Item("Outline").ToString))
+            row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curEpisode.Item("Plot").ToString))
+            row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curEpisode.Item("Genre").ToString))
+            For Each s As String In _curEpisode.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
+                If Not MoviesGenres.Contains(s.Trim) Then MoviesGenres.Add(s.Trim)
+            Next
+            row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curEpisode.Item("MoviePath").ToString).ToString))
+            row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curEpisode.Item("DateAdd").ToString)).ToShortDateString))
+            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curEpisode.Item("ID").ToString)
+            Dim _vidDetails As String = String.Empty
+            Dim _vidDimensions As String = String.Empty
+            If Not IsNothing(fiAV) Then
+                If fiAV.StreamDetails.Video.Count > 0 Then
+                    tVid = NFO.GetBestVideo(fiAV)
+                    tRes = NFO.GetResFromDimensions(tVid)
+                    _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                    _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+                End If
+            End If
+            Dim _audDetails As String = String.Empty
+            If fiAV.StreamDetails.Audio.Count > 0 Then
+                tAud = NFO.GetBestAudio(fiAV, False)
+                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+            End If
+            row = row.Replace("<$VIDEO>", _vidDetails)
+            row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
+            row = row.Replace("<$AUDIO>", _audDetails)
+            row = GetAVImages(fiAV, row, _curEpisode.Item("MoviePath").ToString, relpath)
         Catch ex As Exception
         End Try
 

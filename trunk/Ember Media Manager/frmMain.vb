@@ -4503,8 +4503,10 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
                 Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Tag = Master.currShow.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
+                Me.pbStudio.Tag = String.Empty
             End If
 
             If Master.eSettings.ScanTVMediaInfo AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
@@ -4674,8 +4676,10 @@ doCancel:
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
                 Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Master.currMovie.Movie.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
+                Me.pbStudio.Tag = String.Empty
             End If
 
             If Master.eSettings.ScanMediaInfo Then
@@ -8786,10 +8790,17 @@ doCancel:
             Me.Cursor = Cursors.Default
             lblIMDBHeader.Tag = Nothing
         End If
-
     End Sub
 
-    #End Region 'Methods
+    Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter
+        If Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
+            lblStudio.Text = pbStudio.Tag.ToString
+        End If
+    End Sub
+    Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
+        lblStudio.Text = String.Empty
+    End Sub
+#End Region 'Methods
 
     #Region "Nested Types"
 
@@ -8831,5 +8842,6 @@ doCancel:
     End Structure
 
     #End Region 'Nested Types
+
 
 End Class

@@ -196,7 +196,14 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>rem SVN Revision -&gt; Version Number
+
+echo %25ProgramFiles%25  | find /i "(x86)"
+if errorlevel  1 (
+set ToolExec="$(SolutionDir)SubWCRev.exe"
+) else (
+set ToolExec="$(SolutionDir)SubWCRev64.exe"
+)
+%25ToolExec%25 "$(ProjectDir)." "$(ProjectDir)My Project\AssemblyInfo.temp" "$(ProjectDir)My Project\AssemblyInfo.vb"</PreBuildEvent>
   </PropertyGroup>
 </Project>
