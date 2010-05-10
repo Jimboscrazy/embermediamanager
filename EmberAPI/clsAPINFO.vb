@@ -672,6 +672,8 @@ Public Class NFO
         '\\
 
         Try
+            Dim params As New List(Of Object)(New Object() {movieToSave})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave, params, Nothing, True)
 
             If Not String.IsNullOrEmpty(movieToSave.Filename) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
@@ -778,14 +780,6 @@ Public Class NFO
                                 movieToSave.NfoPath = tPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-                            If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) Then
-                                Try
-                                    Dim params As New List(Of Object)(New Object() {Directory.GetParent(nPath).FullName, movieToSave.Movie})
-                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave, params, Nothing, True)
-                                    'File.Copy(tPath, Path.Combine(Directory.GetParent(nPath).FullName, "mymovies.xml"), True)
-                                Catch  'Just ignore this
-                                End Try
-                            End If
                             If doesExist Then File.SetAttributes(tPath, fAtt)
                         End If
                     End If
