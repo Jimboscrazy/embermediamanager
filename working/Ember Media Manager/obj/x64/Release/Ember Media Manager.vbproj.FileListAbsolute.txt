@@ -1,0 +1,39 @@
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\bin\x64\Release\Ember Media Manager.exe
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\bin\x64\Release\System.Data.SQLite.dll
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\ResolveAssemblyReference.cache
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.AddonItem.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAddEditAddon.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAddonFile.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAddonFiles.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAddons.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgDeleteAddon.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgEditSeason.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgEditEpisode.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgEditShow.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgErrorViewer.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgImgView.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgRestart.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgTVRegExProfiles.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgTVSource.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgDeleteConfirm.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgFileInfo.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgFIStreamEditor.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgImgManual.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgMovieSource.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgNewSet.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgNewVersion.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgSetsManager.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgSortFiles.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgStudioSelect.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgUpdateMedia.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgWizard.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgManualEdit.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAddEditActor.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgEditMovie.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgAbout.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.frmMain.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.dlgSettings.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.frmSplash.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember_Media_Manager.Resources.resources
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember Media Manager.vbproj.GenerateResource.Cache
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\obj\x64\Release\Ember Media Manager.exe

@@ -1,0 +1,6 @@
+C:\EMM-Dev-ROOT\trunk\Ember Media Manager\bin\x86\Release\EmberAPI.dll
+C:\EMM-Dev-ROOT\trunk\EmberAPI\obj\x86\Release\ResolveAssemblyReference.cache
+C:\EMM-Dev-ROOT\trunk\EmberAPI\obj\x86\Release\EmberAPI.dlgVersions.resources
+C:\EMM-Dev-ROOT\trunk\EmberAPI\obj\x86\Release\EmberAPI.Resources.resources
+C:\EMM-Dev-ROOT\trunk\EmberAPI\obj\x86\Release\EmberAPI.vbproj.GenerateResource.Cache
+C:\EMM-Dev-ROOT\trunk\EmberAPI\obj\x86\Release\EmberAPI.dll
