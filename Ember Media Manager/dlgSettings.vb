@@ -3605,7 +3605,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-
+        Me.cbForce.Items.AddRange(Strings.Split(AdvancedSettings.GetSetting("ForceTitle", ""), "|"))
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.GroupBox4.Text = Master.eLang.GetString(429, "Miscellaneous")
