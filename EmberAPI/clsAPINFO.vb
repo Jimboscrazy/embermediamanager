@@ -780,7 +780,9 @@ Public Class NFO
                             End Using
                             If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) Then
                                 Try
-                                    File.Copy(tPath, Path.Combine(Directory.GetParent(nPath).FullName, "mymovies.xml"), True)
+                                    Dim params As New List(Of Object)(New Object() {Directory.GetParent(nPath).FullName, movieToSave.Movie})
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave, params, Nothing, True)
+                                    'File.Copy(tPath, Path.Combine(Directory.GetParent(nPath).FullName, "mymovies.xml"), True)
                                 Catch  'Just ignore this
                                 End Try
                             End If
