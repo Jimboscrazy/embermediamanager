@@ -1,0 +1,155 @@
+<html>
+<body id="mybody" background="diffuse_background.png" ONLOADSET="zeropos" class="parent" BGCOLOR="#222222">
+<link rel="stylesheet" type="text/css" href="default.css" />
+<center>
+<div class="backg">
+<img id="fanart" width="1080px" src="">
+</div>
+
+<table class="tabela">
+<tr><td align="center" height="70px" >
+&nbsp;
+</td></tr>
+<tr><td align="center" class="title" >
+<br><br><br>
+<div id="moviename" class="moviename">&nbsp;</div>
+<div id="year" class="year">&nbsp;</div>
+</td></tr>
+<tr><td align="center" class="main" >
+<div class="infotextspacer">
+<span id="infotext">
+&nbsp;
+</span>
+</div>
+</td></tr>
+</table>
+</center>
+    <a onClick="MovePrevPage();" ONFOCUSSET="zeropos" href="#" TVID="PGUP" ></a>
+    <a onClick="MoveNextPage();" ONFOCUSSET="zeropos" href="#" TVID="PGDN" ></a>
+    <a class="cmdPlay" id="play" href="" TVID="Play" vod><img src="home/play.png"></a>
+
+<div class="placebox">
+</div>
+
+<div id="place-5" class="place">
+	<a href="#"> <img id="image-5" src="blank.jpg"></a></div>
+</div>
+<div id="place-4" class="place">
+	<a  href="#"> <img id="image-4" src="blank.jpg"></a></div>
+</div>
+<div id="place-3" class="place">
+	<a href="#"> <img id="image-3" src="blank.jpg"></a></div>
+</div>
+<div id="place-2" class="place">
+	<a  href="#"> <img id="image-2" src="blank.jpg"></a></div>
+</div>
+<div id="place-1" class="place">
+	<a onFocus="MovePrev();" ONFOCUSSET="zeropos" href="#"> <img id="image-1" src="blank.jpg"></a></div>
+</div>
+<div id="place0" class="placefocus">
+	<a name="zeropos" id="asel" href="#" ONKEYDOWNSET=”zeropos”> <img id="image0" src="blank.jpg"></a>
+</div>
+<div id="place1" class="place" >
+	<a onFocus="MoveNext();" ONFOCUSSET="zeropos" href="#"> <img id="image1" src="blank.jpg"></a></div>
+</div>
+<div id="place2" class="place" >
+	<a href="#"> <img id="image2" src="blank.jpg"></a></div>
+</div>
+<div id="place3" class="place">
+	<a href="#"> <img id="image3" src="blank.jpg"></a></div></div>
+</div>
+<div id="place4" class="place">
+	<a href="#"> <img id="image4" src="blank.jpg"></a></div></div>
+</div>
+<div id="place5" class="place">
+	<a href="#"> <img id="image5" src="blank.jpg"></a></div></div>
+</div>
+
+<br>
+<script>
+
+var imgSrc=new Array(); 
+var movieIDs=new Array();
+var movieTitles=new Array(); 
+var movieYears=new Array(); 
+var movieOutline=new Array(); 
+var fanart=new Array(); 
+var movieFile=new Array();
+var backdrop=new Array(); 
+
+<$MOVIE> 
+</script>
+<script>
+imgSrc[<$COUNTER>]="../<$POSTER_THUMB>";
+movieIDs[<$COUNTER>]="<$ID>";
+movieTitles[<$COUNTER>]="<$MOVIENAME>";
+movieYears[<$COUNTER>]="<$YEAR>";
+movieOutline[<$COUNTER>]="<$OUTLINE>";
+fanart[<$COUNTER>]="<$FANART_FILE>";
+movieFile[<$COUNTER>]="<$MOVIE_PATH>";
+backdrop[<$COUNTER>]="<$BACKDROP_THUMB>";
+</script>
+<script>
+<$/MOVIE> 
+
+var MyIdx = 1;
+
+ShowPosters();
+
+
+function MovePrev() {
+    if (MyIdx > 1) {
+	MyIdx -= 1;
+	ShowPosters();
+    }
+}
+
+function MoveNext() {
+    if (MyIdx < imgSrc.length -1) {
+	MyIdx += 1;
+	ShowPosters();
+    }
+}
+
+
+function MovePrevPage() {
+    if (MyIdx > 1) {
+	MyIdx -= 5;
+	if (MyIdx < 1) { MyIdx = 1; }
+	ShowPosters();
+    }
+}
+
+function MoveNextPage() {
+    if (MyIdx < imgSrc.length -1) {
+	MyIdx += 5;
+	if (MyIdx >= imgSrc.length -1) { MyIdx = imgSrc.length -1 }
+	ShowPosters();
+    }
+}
+
+function ShowPosters() {
+
+	var x=-5;
+	for(x=-5;x<=5;x++) {
+		if(MyIdx + x > 0 && MyIdx + x < imgSrc.length) { 
+			document.getElementById('image' + x).setAttribute('src', imgSrc[MyIdx + x]);
+			document.styleSheets[0].cssRules[x+5].style.visibility='visible';
+		} else {
+			document.styleSheets[0].cssRules[x+5].style.visibility='hidden'; 
+		}
+
+	}
+
+	document.getElementById('asel').setAttribute('href', 'html/' + movieIDs[MyIdx]+'.htm');
+	document.getElementById('play').setAttribute('href', '../'+movieFile[MyIdx]);
+	document.getElementById('moviename').firstChild.nodeValue=movieTitles[MyIdx];
+	document.getElementById('year').firstChild.nodeValue=movieYears[MyIdx];
+	document.getElementById('infotext').firstChild.nodeValue=movieOutline[MyIdx];
+//	document.getElementById('fanart').setAttribute('src', fanart[MyIdx]);
+//	document.getElementById('mybody').setAttribute('background', backdrop[MyIdx]);
+}
+
+</script>
+</body>
+</html>

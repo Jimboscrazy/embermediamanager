@@ -1,0 +1,157 @@
+#place-5 {
+	visibility:visible;
+	left:35px;
+}
+#place-4 {
+	visibility:visible;
+	left:125px;
+}
+#place-3 {
+	visibility:visible;
+	left:215px;
+}
+#place-2 {
+	visibility:visible;
+	left:305px;
+}
+#place-1 {
+	visibility:visible;
+	left:395px;
+}
+#place0 {
+	visibility:visible;
+	left:485px;
+}
+#place1 {
+	visibility:visible;
+	left:605px;
+}
+#place2 {
+	visibility:visible;
+	left:695px;
+}
+#place3 {
+	visibility:visible;
+	left:785px;
+}
+#place4 {
+	visibility:visible;
+	left:875px;
+}
+#place5 {
+	visibility:visible;
+	left:965px;
+}
+
+
+.tabela {
+	align:center;
+	width:1080px;
+}
+
+.main {
+	height:270px;
+	width:1080px;
+}
+
+
+.place { 
+	width:80px;
+	height:118px;
+	position:absolute;
+	top:470px;
+	background-color:black;
+}
+.place img {
+	width:80px;
+	height:118px;
+}
+
+.placefocus { 
+	width:110px;
+	height:148px;
+	position:absolute;
+	top:455px;
+	background-color:black;
+}
+.placefocus img {
+	width:110px;
+	height:148px;
+}
+
+
+.placebox { 
+	width:1018px;
+	height:126px;
+	position:absolute;
+	top:464px;
+	left:31;
+	background-color:Black-alpha2;
+}
+
+.infobox { 
+	width:698px;
+	height:100px;
+	position:absolute;
+	top:373px;
+	left:341;
+	background-color:Black-alpha2;
+	color:white;
+	font-size:20px;
+
+}
+.moviename { 
+	color:white;
+	font-size:28px;
+}
+.year { 
+	color:white;
+	font-size:20px;
+}
+.infotextspacer {
+	color:white;
+	font-size:22px;
+	width:1080px;
+	height:100px;
+}
+
+.flagbox { 
+	width:998px;
+	height:50px;
+	position:absolute;
+	top:290px;
+	left:41;
+	background-color:Black-alpha2;
+}
+
+.title { 
+	height:24px;
+	width:998px;
+	text-align:center;
+	color:white;
+	font-size:22px;
+	// background-color:Black-alpha2;
+}
+.cmdPlay { 
+	text-align:center;
+	color:white;
+	font-size:20px;
+	position:absolute;
+	top:418px;
+	left:525;
+}
+
+
+.backg {
+	width:100%;
+	height:400px;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
+.test {
+	color:red;
+}
+
+

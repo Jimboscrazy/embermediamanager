@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Default Template</Name>
+  <Description>Ember Default Template 
+for Network Media Tank Jukebox Builder</Description>
+  <Author>Nuno (nfnovais@gmail.com)</Author>
+  <Files>
+    <File>
+      <Name>index.htm</Name>
+      <DestPath>./</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>home.htm</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>home</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>folder</Type>
+    </File>
+    <File>
+      <Name>movieindex.htm</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>true</Process>
+      <Type>movieindex</Type>
+    </File>
+    <File>
+      <Name>moviedetails.htm</Name>
+      <DestPath>.Ember/html/</DestPath>
+      <Process>true</Process>
+      <Type>movie</Type>
+    </File>
+    <File>
+      <Name>default.css</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>theme.css</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>standalone.css</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>blank.jpg</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+    <File>
+      <Name>diffuse_background.png</Name>
+      <DestPath>.Ember/</DestPath>
+      <Process>false</Process>
+      <Type>other</Type>
+    </File>
+  </Files>
+  <Params>
+    <Param>
+      <name>CleanBasePath</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>user</access>
+      <description />
+    </Param>
+    <Param>
+      <name>ExportPosters</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>ExportBackdrops</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>ExportFlags</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>BasePath</name>
+      <type>path</type>
+      <value>.Ember/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>RelativePathToBase</name>
+      <type>system</type>
+      <value>../</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>ThumbsPath</name>
+      <type>path</type>
+      <value>.Ember/Thumbs/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>BackdropPath</name>
+      <type>path</type>
+      <value>.Ember/Thumbs/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>FlagsPath</name>
+      <type>path</type>
+      <value>.Ember/Flags/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>MoviesDetailsPath</name>
+      <type>path</type>
+      <value>.Ember/html/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>PostersThumbWidth</name>
+      <type>integer</type>
+      <value>160</value>
+      <access>user</access>
+      <description>Width of the thumbs, height will be calculated to keep porpotion</description>
+    </Param>
+    <Param>
+      <name>BackdropWidth</name>
+      <type>integer</type>
+      <value>1280</value>
+      <access>user</access>
+      <description>Width of the backdrop, height will be calculated to keep porpotion</description>
+    </Param>
+  </Params>
+</config>
