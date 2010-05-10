@@ -163,6 +163,8 @@ Public Class Images
     Public Sub DeleteFanart(ByVal mMovie As Structures.DBMovie)
         Try
             Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
+            Dim params As New List(Of Object)(New Object() {"delete", mMovie})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, Nothing, True)
 
             If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
@@ -171,9 +173,6 @@ Public Class Images
             Else
                 If mMovie.isSingle Then
                     Delete(Path.Combine(tPath, "fanart.jpg"))
-                    If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) Then
-                        Delete(Path.Combine(tPath, "backdrop.jpg"))
-                    End If
                 End If
 
 
@@ -530,6 +529,8 @@ Public Class Images
         Try
             Dim fPath As String = String.Empty
             Dim tPath As String = String.Empty
+            Dim params As New List(Of Object)(New Object() {"save", _image, mMovie})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, Nothing, True)
 
             If Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight) Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
@@ -606,9 +607,6 @@ Public Class Images
 
                 If Master.eSettings.FanartJPG AndAlso mMovie.isSingle Then
                     tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "fanart.jpg")
-                    If AdvancedSettings.GetBooleanSetting("MediaBrowserSupport", False) AndAlso (Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart)) Then
-                        Save(Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "backdrop.jpg"), Master.eSettings.FanartQuality)
-                    End If
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath, Master.eSettings.FanartQuality)
                         strReturn = tPath
@@ -636,7 +634,8 @@ Public Class Images
 
         Try
             Dim pPath As String = String.Empty
-
+            Dim params As New List(Of Object)(New Object() {"save", _image, mMovie})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterSave, params, Nothing, True)
             If Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight) Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
             End If
