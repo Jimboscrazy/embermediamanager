@@ -2472,7 +2472,7 @@ Public Class dlgSettings
             Me.chkMarkNewEpisodes.Checked = Master.eSettings.MarkNewEpisodes
             Me.cbOrdering.SelectedIndex = Master.eSettings.OrderDefault
             Me.chkOnlyValueForCert.Checked = Master.eSettings.OnlyValueForCert
-
+            Me.chkActorCache.Checked = AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False)
             Me.RefreshSources()
             Me.RefreshTVSources()
             Me.RefreshShowFilters()
@@ -3569,7 +3569,7 @@ Public Class dlgSettings
             Master.eSettings.MarkNewEpisodes = Me.chkMarkNewEpisodes.Checked
             Master.eSettings.OrderDefault = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
-
+            AdvancedSettings.SetBooleanSetting("ScrapeActorsThumbs", Me.chkActorCache.Checked)
             For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules
                 Try
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3935,6 +3935,7 @@ Public Class dlgSettings
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.lblOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
+        Me.chkActorCache.Text = Master.eLang.GetString(828, "Enable Actors Cache")
         Me.rbBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.rbPoster.Text = Me.GroupBox5.Text
         Me.rbAllSBanner.Text = Me.rbBanner.Text
