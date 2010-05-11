@@ -4508,7 +4508,9 @@ doCancel:
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
             End If
-
+            If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+                lblStudio.Text = pbStudio.Tag.ToString
+            End If
             If Master.eSettings.ScanTVMediaInfo AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
                 Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
@@ -4681,7 +4683,9 @@ doCancel:
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
             End If
-
+            If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+                lblStudio.Text = pbStudio.Tag.ToString
+            End If
             If Master.eSettings.ScanMediaInfo Then
                 Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
@@ -6288,6 +6292,14 @@ doCancel:
                             Master.currMovie.FanartPath = ETasFA
                         End If
                     End If
+                End If
+                Me.tslLoading.Text = Master.eLang.GetString(568, "Generating Actors Cache:")
+                If Master.GlobalScrapeMod.Actors AndAlso AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then
+                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
+                        Dim img As New Images
+                        img.FromWeb(act.Thumb)
+                        img.SaveAsActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName)
+                    Next
                 End If
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -8793,12 +8805,13 @@ doCancel:
     End Sub
 
     Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter
-        If Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
+
+        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
     End Sub
     Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
-        lblStudio.Text = String.Empty
+        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
     End Sub
 #End Region 'Methods
 

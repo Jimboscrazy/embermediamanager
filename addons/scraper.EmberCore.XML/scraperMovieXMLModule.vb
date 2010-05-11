@@ -403,7 +403,19 @@ Public Class EmberXMLScraperModule
                 End If
             End If
             If Master.GlobalScrapeMod.Extra Then
-
+                If Master.eSettings.AutoET AndAlso DBMovie.isSingle Then
+                    Try
+                        'ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
+                    Catch ex As Exception
+                    End Try
+                End If
+            End If
+            If Master.GlobalScrapeMod.Actors AndAlso AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then
+                For Each act As MediaContainers.Person In DBMovie.Movie.Actors
+                    Dim img As New Images
+                    img.FromWeb(act.Thumb)
+                    img.SaveAsActorThumb(act, Directory.GetParent(DBMovie.Filename).FullName)
+                Next
             End If
         Catch ex As Exception
         End Try

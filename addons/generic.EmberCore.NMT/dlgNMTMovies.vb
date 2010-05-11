@@ -682,11 +682,11 @@ Public Class dlgNMTMovies
 
     Private Sub cbTemplate_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTemplate.MouseHover
 
-        lblHelp.Text = Master.eLang.GetString(5, "Choose a template")
+        lblHelpa.Text = Master.eLang.GetString(5, "Choose a template")
     End Sub
 
     Private Sub cbTemplate_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTemplate.MouseLeave
-        lblHelp.Text = ""
+        lblHelpa.Text = ""
     End Sub
 
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
@@ -1116,11 +1116,11 @@ Public Class dlgNMTMovies
 
 
     Private Sub dgvSources_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseHover
-        lblHelp.Text = String.Format(Master.eLang.GetString(12, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
+        lblHelpa.Text = String.Format(Master.eLang.GetString(12, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
     End Sub
 
     Private Sub dgvSources_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseLeave
-        lblHelp.Text = ""
+        lblHelpa.Text = ""
     End Sub
 
     Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ValidatedToBuild.Tick
@@ -1140,11 +1140,11 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseHover
-        lblHelp.Text = Master.eLang.GetString(13, "Select Root Folder where Jukebox files will be exported")
+        lblHelpa.Text = Master.eLang.GetString(13, "Select Root Folder where Jukebox files will be exported")
     End Sub
 
     Private Sub txtOutputFolder_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseLeave
-        lblHelp.Text = ""
+        lblHelpa.Text = ""
     End Sub
 
     Private Sub txtOutputFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputFolder.TextChanged
@@ -1154,20 +1154,20 @@ Public Class dlgNMTMovies
 
     Private Sub dgvSettings_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellMouseEnter
         If e.RowIndex >= 0 Then
-            lblHelp.Text = conf.Params.FirstOrDefault(Function(y) y.name = dgvSettings.Rows(e.RowIndex).Cells(0).Value.ToString).description
+            lblHelpa.Text = conf.Params.FirstOrDefault(Function(y) y.name = dgvSettings.Rows(e.RowIndex).Cells(0).Value.ToString).description
         End If
 
     End Sub
 
     Private Sub dgvSettings_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellMouseLeave
-        lblHelp.Text = ""
+        lblHelpa.Text = ""
     End Sub
     Private Sub lblTemplateInfo_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseHover
-        lblHelp.Text = If(Not String.IsNullOrEmpty(conf.Author), String.Format("created by: {0}", conf.Author), String.Empty)
+        lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), conf.Author, String.Empty)
     End Sub
 
     Private Sub lblTemplateInfo_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseLeave
-        lblHelp.Text = ""
+        lblHelpa.Text = ""
     End Sub
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
@@ -1242,4 +1242,5 @@ Public Class dlgNMTMovies
             btnSave.Enabled = True
         End If
     End Sub
+
 End Class

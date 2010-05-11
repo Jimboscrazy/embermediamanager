@@ -875,6 +875,15 @@ Public Class Scraper
                                 If Me.bwTVDB.CancellationPending Then Return
                             End If
                             Me.bwTVDB.ReportProgress(iProgress, "progress")
+
+                            'If AdvancedSettings.GetBooleanSetting("ScrapeActorsThumbs", False) Then 
+                            'For Each act As MediaContainers.Person In Episode.TVEp.Actors
+                            'Dim img As New Images
+                            'img.FromWeb(act.Thumb)
+                            'img.SaveAsActorThumb(act, Directory.GetParent(Episode.Filename).FullName)
+                            'Next
+                            'End If
+
                             iProgress += 1
                         Catch ex As Exception
                             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

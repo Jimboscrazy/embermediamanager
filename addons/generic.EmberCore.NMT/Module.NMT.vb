@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports System.IO
 
-Public Class MovieExporterModule
+Public Class NMTExporterModule
     Implements Interfaces.EmberExternalModule
 
 #Region "Fields"

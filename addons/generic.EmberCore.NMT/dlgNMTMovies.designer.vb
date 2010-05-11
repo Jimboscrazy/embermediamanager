@@ -57,7 +57,7 @@ Partial Class dlgNMTMovies
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.gbHelp = New System.Windows.Forms.GroupBox
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.lblHelp = New System.Windows.Forms.Label
+        Me.lblHelpa = New System.Windows.Forms.Label
         Me.dgvSources = New System.Windows.Forms.DataGridView
         Me.export = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.EmberSource = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -65,12 +65,12 @@ Partial Class dlgNMTMovies
         Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.sourcetype = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.dgvSettings = New System.Windows.Forms.DataGridView
+        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ValidatedToBuild = New System.Windows.Forms.Timer(Me.components)
         Me.lblTemplateInfo = New System.Windows.Forms.Label
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.btnSave = New System.Windows.Forms.Button
-        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
@@ -211,7 +211,7 @@ Partial Class dlgNMTMovies
         '
         Me.gbHelp.BackColor = System.Drawing.Color.White
         Me.gbHelp.Controls.Add(Me.PictureBox2)
-        Me.gbHelp.Controls.Add(Me.lblHelp)
+        Me.gbHelp.Controls.Add(Me.lblHelpa)
         Me.gbHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbHelp.Location = New System.Drawing.Point(3, 3)
         Me.gbHelp.Name = "gbHelp"
@@ -229,13 +229,13 @@ Partial Class dlgNMTMovies
         Me.PictureBox2.TabIndex = 1
         Me.PictureBox2.TabStop = False
         '
-        'lblHelp
+        'lblHelpa
         '
-        Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHelp.Location = New System.Drawing.Point(3, 15)
-        Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(622, 74)
-        Me.lblHelp.TabIndex = 0
+        Me.lblHelpa.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHelpa.Location = New System.Drawing.Point(3, 17)
+        Me.lblHelpa.Name = "lblHelpa"
+        Me.lblHelpa.Size = New System.Drawing.Size(622, 74)
+        Me.lblHelpa.TabIndex = 0
         '
         'dgvSources
         '
@@ -326,6 +326,28 @@ Partial Class dlgNMTMovies
         Me.dgvSettings.Size = New System.Drawing.Size(302, 166)
         Me.dgvSettings.TabIndex = 4
         '
+        'Setting
+        '
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
+        Me.Setting.DefaultCellStyle = DataGridViewCellStyle4
+        Me.Setting.FillWeight = 130.0!
+        Me.Setting.HeaderText = "Setting"
+        Me.Setting.Name = "Setting"
+        Me.Setting.ReadOnly = True
+        Me.Setting.Width = 130
+        '
+        'DataGridViewComboBoxColumn1
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
+        Me.DataGridViewComboBoxColumn1.FillWeight = 150.0!
+        Me.DataGridViewComboBoxColumn1.HeaderText = "Value"
+        Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
+        Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewComboBoxColumn1.Width = 150
+        '
         'ValidatedToBuild
         '
         Me.ValidatedToBuild.Interval = 300
@@ -358,28 +380,6 @@ Partial Class dlgNMTMovies
         Me.btnSave.Size = New System.Drawing.Size(136, 23)
         Me.btnSave.TabIndex = 92
         Me.btnSave.Text = "Save Template Settings"
-        '
-        'Setting
-        '
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
-        Me.Setting.DefaultCellStyle = DataGridViewCellStyle4
-        Me.Setting.FillWeight = 130.0!
-        Me.Setting.HeaderText = "Setting"
-        Me.Setting.Name = "Setting"
-        Me.Setting.ReadOnly = True
-        Me.Setting.Width = 130
-        '
-        'DataGridViewComboBoxColumn1
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
-        Me.DataGridViewComboBoxColumn1.FillWeight = 150.0!
-        Me.DataGridViewComboBoxColumn1.HeaderText = "Value"
-        Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
-        Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewComboBoxColumn1.Width = 150
         '
         'dlgNMTMovies
         '
@@ -426,7 +426,7 @@ Partial Class dlgNMTMovies
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents gbHelp As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
-    Friend WithEvents lblHelp As System.Windows.Forms.Label
+    Friend WithEvents lblHelpa As System.Windows.Forms.Label
     Friend WithEvents dgvSources As System.Windows.Forms.DataGridView
     Friend WithEvents dgvSettings As System.Windows.Forms.DataGridView
     Friend WithEvents ValidatedToBuild As System.Windows.Forms.Timer

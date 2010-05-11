@@ -491,6 +491,7 @@ Public Class Enums
         Meta = 5
         All = 6
         DoSearch = 7
+        Actor = 8
     End Enum
     Public Enum PostScraperCapabilities
         Poster = 1
@@ -979,6 +980,7 @@ Public Class Functions
         filterModifier.NFO = Options.NFO AndAlso Options2.NFO
         filterModifier.Poster = Options.Poster AndAlso Options2.Poster
         filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
+        filterModifier.Actors = Options.Actors AndAlso Options2.Actors
         Return filterModifier
     End Function
 
@@ -1020,6 +1022,7 @@ Public Class Functions
                 .Poster = False
                 .Trailer = False
                 .DoSearch = False
+                .Actors = False
             End If
 
             Select Case MType
@@ -1030,6 +1033,7 @@ Public Class Functions
                     .NFO = MValue
                     .Poster = MValue
                     .Trailer = If(Master.eSettings.UpdaterTrailers, MValue, False)
+                    .Actors = MValue
                 Case Enums.ModType.Extra
                     .Extra = MValue
                 Case Enums.ModType.Fanart
@@ -1044,6 +1048,8 @@ Public Class Functions
                     .Trailer = MValue
                 Case Enums.ModType.DoSearch
                     .DoSearch = MValue
+                Case Enums.ModType.Actor
+                    .Actors = MValue
             End Select
 
         End With
@@ -1206,7 +1212,7 @@ Public Class Structures
         Dim NFO As Boolean
         Dim Poster As Boolean
         Dim Trailer As Boolean
-
+        Dim Actors As Boolean
 #End Region 'Fields
 
     End Structure
