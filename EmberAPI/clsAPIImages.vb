@@ -755,7 +755,15 @@ Public Class Images
 
         Return strReturn
     End Function
-
+    Public Function SaveAsActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String) As String
+        Dim tPath As String = String.Empty
+        tPath = Path.Combine(Path.Combine(fpath, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".tbn"))
+        If Not Directory.Exists(Path.Combine(fpath, ".actors")) Then Directory.CreateDirectory(Path.Combine(fpath, ".actors"))
+        If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+            Save(tPath, Master.eSettings.PosterQuality)
+        End If
+        Return tPath
+    End Function
     Public Function SaveAsSeasonFanart(ByVal mShow As Structures.DBTV) As String
         Dim strReturn As String = String.Empty
 
