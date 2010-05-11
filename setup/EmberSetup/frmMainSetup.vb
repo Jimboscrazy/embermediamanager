@@ -1543,22 +1543,23 @@ Public Class frmMainSetup
         SyncLock mePainting
             Try
                 Dim g As Graphics = e.Graphics
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
-                'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
-                If iLogo Is Nothing Then
-                    SetupLogo()
+                If CheckIfWindows() Then
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
+                    'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
+                    If iLogo Is Nothing Then
+                        SetupLogo()
+                    End If
+                    Dim WaterLine As Double = 0.78
+                    Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * WaterLine)
+                    g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                    DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * WaterLine), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * (1 - WaterLine)))
+                    g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
+                    Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
+                    Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
+                    g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
+                    If DisablePaint Then Return
+                    UpdateBackgorund()
                 End If
-                Dim WaterLine As Double = 0.78
-                Dim DrawRect As New Rectangle(0, 0, Me.MyBackGround.Width, Me.MyBackGround.Height * WaterLine)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 180 + BackAlpha, 180 + BackAlpha, 255), Color.FromArgb(255, 250 - BackAlpha, 250 - BackAlpha, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-                DrawRect = New Rectangle(0, Convert.ToInt32(Me.MyBackGround.Height * WaterLine), Me.MyBackGround.Width, Convert.ToInt32(Me.MyBackGround.Height * (1 - WaterLine)))
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-                Dim x As Integer = Convert.ToInt32((Me.MyBackGround.Width - My.Resources.Logo.Width) / 2)
-                Dim y As Integer = Convert.ToInt32((Me.MyBackGround.Height - My.Resources.Logo.Height) / 2)
-                g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
-                If DisablePaint Then Return
-                UpdateBackgorund()
-
                 If ShowCredits Then
                     Credits(g)
                     'If Not bCredits Is Nothing Then g.DrawImage(bCredits, 0, 0)
@@ -1566,9 +1567,7 @@ Public Class frmMainSetup
                     DrawString(g, lblStatus)
                     DrawString(g, lblInfo)
                 End If
-                'If NeedDoEvents Then Application.DoEvents()
-                'If pbFiles.Visible Then pbFiles.Refresh()
-                Me.MyBackGround.Invalidate()
+                If CheckIfWindows() Then Me.MyBackGround.Invalidate()
             Catch ex As Exception
                 LogWrite(String.Format("--- Error: {0}", ex.Message))
                 LogWrite(ex.StackTrace)
