@@ -43,8 +43,7 @@ Public Class AdvancedSettings
 
     #Region "Constructors"
 
-    Public Sub New()
-        SetDefaults()
+    Public Shared Sub LoadBase()
         Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
     End Sub
 
@@ -247,7 +246,7 @@ Public Class AdvancedSettings
         Return True
     End Function
 
-    Private Shared Sub SetDefaults()
+    Public Shared Sub SetDefaults()
         _DoNotSave = True
         SetSetting("AudioFormatConvert:ac-3", "ac3")
         SetSetting("AudioFormatConvert:a_ac3", "ac3")
@@ -270,8 +269,8 @@ Public Class AdvancedSettings
         SetSetting("VideoFormatConvert:3iv2", "3ivx")
         SetSetting("VideoFormatConvert:3ivd", "3ivx")
 
-        SetSetting("CheckStackMarkers", "[\W_]+(cd|dvd|part|dis[ck])([0-9])")
-        SetSetting("DeleteStackMarkers", "[\W_]\s?(cd|dvd|part|dis[ck])([0-9])?")
+        SetSetting("CheckStackMarkers", "[\W_]+((cd|dvd|part|dis[ck])([0-9]))")
+        SetSetting("DeleteStackMarkers", "[\W_]\s?((cd|dvd|part|dis[ck])([0-9]))?")
         SetBooleanSetting("DisableMultiPartMedia", False)
 
         SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")
