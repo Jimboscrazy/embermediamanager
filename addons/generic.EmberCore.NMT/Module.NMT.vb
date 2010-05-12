@@ -48,7 +48,7 @@ Public Class NMTExporterModule
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.MovieSync})
         End Get
     End Property
 
@@ -85,11 +85,14 @@ Public Class NMTExporterModule
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
         Try
-            'dlgnmtMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
-
+            Dim movie As New Structures.DBMovie
+            Select Case mType
+                Case Enums.ModuleEventType.MovieSync
+                    movie = DirectCast(_refparam, Structures.DBMovie)
+                    dlgNMTMovies.dtMovieMedia = Nothing
+            End Select
         Catch ex As Exception
         End Try
-
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

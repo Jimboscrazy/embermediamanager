@@ -38,8 +38,8 @@ Public Class dlgNMTMovies
     Private bexportBackDrops As Boolean = False
     Private bFiltered As Boolean = False
     Private DontSaveExtra As Boolean = False
-    Dim FilterMovies As New List(Of Long)
-    Dim FilterTVShows As New List(Of Long)
+    Private FilterMovies As New List(Of Long)
+    Private FilterTVShows As New List(Of Long)
     Private HTMLMovieBody As New StringBuilder
     Private HTMLTVBody As New StringBuilder
     Private isCL As Boolean = False
@@ -53,10 +53,10 @@ Public Class dlgNMTMovies
     Private selectedSources As New Hashtable
     Private outputFolder As String
     'Private dtMovieMedia As New List(Of Structures.DBMovie)
-    Private Shared dtMovieMedia As DataTable = Nothing
-    Private dtEpisodes As DataTable = Nothing
-    Private dtSeasons As DataTable = Nothing
-    Private dtShows As DataTable = Nothing
+    Public Shared dtMovieMedia As DataTable = Nothing
+    Public Shared dtEpisodes As DataTable = Nothing
+    Public Shared dtSeasons As DataTable = Nothing
+    Public Shared dtShows As DataTable = Nothing
 
     Private MoviesGenres As New List(Of String)
 #End Region 'Fields
@@ -69,12 +69,22 @@ Public Class dlgNMTMovies
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
         Try
-            If Not dtMovieMedia Is Nothing Then
-                dtMovieMedia = Nothing
+            If dtMovieMedia Is Nothing Then
+                dtMovieMedia = New DataTable
+                Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             End If
-            dtMovieMedia = New DataTable
-            Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
-
+            If dtShows Is Nothing Then
+                dtShows = New DataTable
+                Master.DB.FillDataTable(dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            End If
+            If dtSeasons Is Nothing Then
+                dtSeasons = New DataTable
+                Master.DB.FillDataTable(dtSeasons, "SELECT * FROM TVSeason ORDER BY Season COLLATE NOCASE;")
+            End If
+            If dtEpisodes Is Nothing Then
+                dtEpisodes = New DataTable
+                Master.DB.FillDataTable(dtEpisodes, "SELECT * FROM TVEps ORDER BY Episode COLLATE NOCASE;")
+            End If
             txtOutputFolder.Text = AdvancedSettings.GetSetting("BasePath", "")
             Dim fxml As String
             Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(sBasePath, "Templates"))
@@ -265,30 +275,29 @@ Public Class dlgNMTMovies
             Dim htmlShowDetailsPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").Name)
             Dim htmlSeasonDetailsPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvseason").Name)
             Dim htmlEpDetailsPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvepisode").Name)
-            Dim pattern As String = String.Empty
+            Dim patternIndexDetails As String = String.Empty
+            Dim patternShowDetails As String = String.Empty
             Dim patternSeasonDetails As String = String.Empty
             Dim patternEpDetails As String = String.Empty
             Dim tvheader As String = String.Empty
             Dim tvfooter As String = String.Empty
             Dim tvrow As String = String.Empty
 
-            pattern = File.ReadAllText(htmlPath)
+            patternIndexDetails = File.ReadAllText(htmlPath)
+            patternShowDetails = File.ReadAllText(htmlShowDetailsPath)
             patternSeasonDetails = File.ReadAllText(htmlSeasonDetailsPath)
             patternEpDetails = File.ReadAllText(htmlEpDetailsPath)
-            Dim s = pattern.IndexOf("<$TVSHOW>")
+            Dim s = patternShowDetails.IndexOf("<$TVSHOW>")
             If s >= 0 Then
-                Dim e = pattern.IndexOf("<$/TVSHOW>")
+                Dim e = patternIndexDetails.IndexOf("<$/TVSHOW>")
                 If e >= 0 Then
-                    tvheader = pattern.Substring(0, s)
-                    tvrow = pattern.Substring(s + 8, e - s - 8)
-                    tvfooter = pattern.Substring(e + 9, pattern.Length - e - 9)
-                Else
-                    'error
+                    tvheader = patternIndexDetails.Substring(0, s)
+                    tvrow = patternIndexDetails.Substring(s + 8, e - s - 8)
+                    tvfooter = patternIndexDetails.Substring(e + 9, patternIndexDetails.Length - e - 9)
+                Else 'error
                 End If
-            Else
-                'error
+            Else 'error
             End If
-
             HTMLTVBody.Append(tvheader)
             Dim counter As Integer = 1
             FilterTVShows.Clear()
@@ -303,15 +312,20 @@ Public Class dlgNMTMovies
                 End If
                 FilterTVShows.Add(Convert.ToInt32(_curShow.Item("ID")))
                 HTMLTVBody.Append(ProcessTVShowsTags(_curShow, outputbase, counter, _curShow.Item("ID").ToString, tvrow))
-                Dim detailsShowOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat(_curShow.Item("ID").ToString, ".htm"))
-                File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
+
+                Dim detailsShowOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show.", _curShow.Item("ID").ToString, ".htm"))
+                File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternShowDetails, GetUserParam("RelativePathToBase", "../../")))
 
                 For Each _curSeason As DataRow In dtSeasons.Select(String.Format("TVShowID = {0}", _curShow.Item("ID").ToString))
-                    Dim detailsSeasonOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat(_curShow.Item("ID").ToString, ".htm"))
-                    File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
+
+                    Dim SeasonId As String = String.Concat(_curShow.Item("ID").ToString, ".", _curSeason.Item("Season").ToString)
+                    Dim detailsSeasonOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Season.", SeasonId, ".htm"))
+                    File.WriteAllText(detailsSeasonOutput, ProcessTVSeasonTags(_curSeason, detailsSeasonOutput, counter, SeasonId, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
 
                     For Each _curEp As DataRow In dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString))
 
+                        Dim detailsEpsOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps.", _curEp.Item("ID").ToString, ".htm"))
+                        File.WriteAllText(detailsEpsOutput, ProcessTVSeasonTags(_curEp, detailsEpsOutput, counter, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
                         counter += 1
                         bwBuildHTML.ReportProgress(1)
                     Next
