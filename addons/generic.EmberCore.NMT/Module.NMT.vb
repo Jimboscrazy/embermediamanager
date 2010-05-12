@@ -203,16 +203,19 @@ Public Class NMTExporterModule
             End Using
         End Sub
         Public Shared Function Load(ByVal fpath As String) As Config
+            Dim conf As Config = Nothing
             Try
                 If Not File.Exists(fpath) Then Return New Config
                 Dim xmlSer As XmlSerializer
                 xmlSer = New XmlSerializer(GetType(Config))
                 Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
-                    Return DirectCast(xmlSer.Deserialize(xmlSW), Config)
+                    conf = DirectCast(xmlSer.Deserialize(xmlSW), Config)
                 End Using
+                conf.Version = If(String.IsNullOrEmpty(conf.Version), String.Empty, conf.Version)
+                conf.Author = If(String.IsNullOrEmpty(conf.Author), String.Empty, conf.Author)
             Catch ex As Exception
             End Try
-            Return Nothing
+            Return conf
         End Function
     End Class
 End Class

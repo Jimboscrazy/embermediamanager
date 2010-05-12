@@ -292,7 +292,7 @@ Public Class FileFolderRenamer
         If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
             MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_tmpMovie.Filename))
             Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-            If _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+            If Not stackMark = String.Empty AndAlso _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                 MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
             End If
             MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim

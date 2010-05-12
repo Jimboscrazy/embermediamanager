@@ -2,11 +2,7 @@
 
 Imports EmberAPI
 
-''' <summary>
-''' Native Scraper
-''' </summary>
-''' <remarks></remarks>
-Public Class EmberExtrasScraperModule
+Public Class EmberExtrasMovieScraperModule
     Implements Interfaces.EmberMovieScraperModule
 
 #Region "Fields"

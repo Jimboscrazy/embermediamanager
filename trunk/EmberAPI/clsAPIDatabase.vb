@@ -1015,13 +1015,14 @@ Public Class Database
             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
             needUpdate = True
         End If
-
+        AdvancedSettings.LoadBase()
         Dim settingString As String = lhttp.DownloadData(String.Format("http://www.embermm.com/{0}/AdvancedSettings.r{1}.lst", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates"), My.Application.Info.Version.Revision))
         If Not String.IsNullOrEmpty(settingString) Then
             Dim sPath As String = String.Concat(Functions.AppPath, "Temp")
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
+
             For Each s As String In settingString.Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries)
                 Dim lst As New List(Of String)
                 lst.AddRange(AdvancedSettings.GetSetting("SettingPatchList", String.Empty, "*Internal").Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries))
@@ -1037,6 +1038,7 @@ Public Class Database
                 End If
             Next
         End If
+        AdvancedSettings.SetDefaults()
         Return needUpdate
     End Function
 

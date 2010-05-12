@@ -49,7 +49,7 @@ Public Class dlgRenameManual
         Me.SetUp()
         Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
         Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
-        If Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+        If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
             FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
         End If
         If Master.currMovie.isSingle Then

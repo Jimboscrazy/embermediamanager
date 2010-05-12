@@ -342,7 +342,6 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
-
     Public Function GetMovieActorForID(ByVal id As String) As String
         Dim dtActorMedia = New DataTable
         Dim actors As String = String.Empty

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Default Template</Name>
   <Description>Ember Default Template 
 for Network Media Tank Jukebox Builder</Description>
   <Author>Nuno (nfnovais@gmail.com)</Author>
+  <Version>1.0</Version>
   <Files>
     <File>
       <Name>index.htm</Name>
@@ -89,6 +90,20 @@ for Network Media Tank Jukebox Builder</Description>
       <description />
     </Param>
     <Param>
+      <name>ExportTVPosters</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>ExportTVBackdrops</name>
+      <type>bool</type>
+      <value>true</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
       <name>ExportFlags</name>
       <type>bool</type>
       <value>true</value>
@@ -124,6 +139,20 @@ for Network Media Tank Jukebox Builder</Description>
       <description />
     </Param>
     <Param>
+      <name>TVThumbsPath</name>
+      <type>path</type>
+      <value>.Ember/TVThumbs/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
+      <name>TVBackdropPath</name>
+      <type>path</type>
+      <value>.Ember/TVThumbs/</value>
+      <access>internal</access>
+      <description />
+    </Param>
+    <Param>
       <name>FlagsPath</name>
       <type>path</type>
       <value>.Ember/Flags/</value>
@@ -152,4 +181,4 @@ for Network Media Tank Jukebox Builder</Description>
       <description>Width of the backdrop, height will be calculated to keep porpotion</description>
     </Param>
   </Params>
-</config>
+</Config>

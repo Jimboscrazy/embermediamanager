@@ -181,7 +181,7 @@ Public Class dlgBulkRenamer
                                             If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
                                                 MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_curMovie.Filename))
                                                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-                                                If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                                                If Not stackMark = String.Empty AndAlso _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                                                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
                                                 End If
                                             ElseIf MovieFile.IsBDMV Then
