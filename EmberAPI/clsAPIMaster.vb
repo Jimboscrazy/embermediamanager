@@ -30,7 +30,7 @@ Public Class Master
     Public Shared currShow As New Structures.DBTV
     Public Shared DefaultOptions As New Structures.ScrapeOptions
     Public Shared DefaultTVOptions As New Structures.TVScrapeOptions
-    Public Shared eAdvancedSettings As New AdvancedSettings
+    'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization
     Public Shared eLog As New ErrorLogger
     Public Shared eSettings As New Settings
