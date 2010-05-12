@@ -296,7 +296,7 @@ Public Class frmMainSetup
 
 
             '---
-            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
+            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.Reload)
             Req.CachePolicy = noCachePolicy
             'Grrrrr.... HttpWebRequest does not know rfc
             'you cannot use http://username:password@server:port/uri

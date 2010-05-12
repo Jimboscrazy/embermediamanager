@@ -20,6 +20,7 @@
 
 Imports EmberAPI
 Imports System.IO
+Imports System.Xml.Serialization
 
 Public Class NMTExporterModule
     Implements Interfaces.EmberExternalModule
@@ -132,6 +133,9 @@ Public Class NMTExporterModule
         If Not Directory.Exists(Path.Combine(sBasePath, "Templates")) Then
             Directory.CreateDirectory(Path.Combine(sBasePath, "Templates"))
         End If
+        If Not Directory.Exists(Path.Combine(sBasePath, "Temp")) Then
+            Directory.CreateDirectory(Path.Combine(sBasePath, "Temp"))
+        End If
 
     End Sub
 
@@ -166,5 +170,49 @@ Public Class NMTExporterModule
     End Sub
 
 #End Region 'Methods
+    Public Class Config
+        Public Name As String
+        Public Description As String
+        Public Author As String
+        Public Version As String
+        Public ReadMe As Boolean
+        <XmlArrayItem("File")> _
+        Public Files As New List(Of _File)
+        <XmlArrayItem("Param")> _
+        Public Params As New List(Of _Param)
+        <XmlIgnore()> _
+        Public TemplatePath As String
+        Class _File
+            Public Name As String
+            Public DestPath As String
+            Public Process As Boolean
+            Public Type As String
+        End Class
+        Class _Param
+            Public name As String
+            Public type As String
+            Public value As String
+            Public access As String
+            Public description As String
+        End Class
 
+        Public Sub Save(ByVal fpath As String)
+            Dim xmlSer As New XmlSerializer(GetType(Config))
+            Using xmlSW As New StreamWriter(fpath)
+                xmlSer.Serialize(xmlSW, Me)
+            End Using
+        End Sub
+        Public Shared Function Load(ByVal fpath As String) As Config
+            Try
+                If Not File.Exists(fpath) Then Return New Config
+                Dim xmlSer As XmlSerializer
+                xmlSer = New XmlSerializer(GetType(Config))
+                Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
+                    Return DirectCast(xmlSer.Deserialize(xmlSW), Config)
+                End Using
+            Catch ex As Exception
+            End Try
+            Return Nothing
+        End Function
+    End Class
 End Class

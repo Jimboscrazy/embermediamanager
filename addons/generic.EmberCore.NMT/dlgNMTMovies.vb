@@ -48,8 +48,8 @@ Public Class dlgNMTMovies
     Private workerCanceled As Boolean = False
 
     Private sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
-    Private conf As config
-    Private confs As New List(Of config)
+    Private conf As NMTExporterModule.Config
+    Private confs As New List(Of NMTExporterModule.Config)
     Private selectedSources As New Hashtable
     Private outputFolder As String
     'Private dtMovieMedia As New List(Of Structures.DBMovie)
@@ -91,7 +91,7 @@ Public Class dlgNMTMovies
             For Each i As DirectoryInfo In di.GetDirectories
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
                     fxml = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, i.Name))
-                    conf = config.Load(Path.Combine(fxml, "config.xml"))
+                    conf = NMTExporterModule.Config.Load(Path.Combine(fxml, "config.xml"))
                     If Not String.IsNullOrEmpty(conf.Name) Then
                         conf.TemplatePath = fxml
                         confs.Add(conf)
@@ -123,7 +123,7 @@ Public Class dlgNMTMovies
 
     Public Sub SaveConfig()
         AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
-        For Each r As config._Param In conf.Params
+        For Each r As NMTExporterModule.Config._Param In conf.Params
             AdvancedSettings.SetSetting(String.Concat("Param.", r.name), r.value)
         Next
         For Each r As DataGridViewRow In dgvSources.Rows
@@ -726,7 +726,7 @@ Public Class dlgNMTMovies
 
     Private Sub populateParams()
         dgvSettings.Rows.Clear()
-        For Each c As config._Param In conf.Params.OrderByDescending(Function(y) y.access)
+        For Each c As NMTExporterModule.Config._Param In conf.Params.OrderByDescending(Function(y) y.access)
             Dim i As Integer
             i = dgvSettings.Rows.Add(New Object() {c.name})
             If c.access = "user" AndAlso c.type = "bool" Then
@@ -755,20 +755,20 @@ Public Class dlgNMTMovies
     Private Sub SetAllUserParam()
         For Each r As DataGridViewRow In dgvSettings.Rows
             Dim r0 As DataGridViewRow = r
-            Dim c As config._Param = conf.Params.FirstOrDefault(Function(y) y.name = r0.Cells(0).Value.ToString)
+            Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = r0.Cells(0).Value.ToString)
             If Not c Is Nothing Then c.value = r.Cells(1).Value.ToString
         Next
     End Sub
 
     Private Sub SetUserParam(ByVal param As String, ByVal value As String)
-        Dim c As config._Param = conf.Params.FirstOrDefault(Function(y) y.name = param)
+        Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = param)
         If Not c Is Nothing Then
             c.value = value
         End If
     End Sub
 
     Private Function GetUserParam(ByVal param As String, ByVal defvalue As String) As String
-        Dim c As config._Param = conf.Params.FirstOrDefault(Function(y) y.name = param)
+        Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = param)
         If Not c Is Nothing Then
             Return c.value
         Else
@@ -1016,7 +1016,7 @@ Public Class dlgNMTMovies
                     Application.DoEvents()
                 End While
             End If
-            For Each s As config._Param In conf.Params.Where(Function(y) y.type = "path")
+            For Each s As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) y.type = "path")
                 If Not Directory.Exists(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar))) Then
                     Try
                         Directory.CreateDirectory(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar)))
@@ -1069,11 +1069,11 @@ Public Class dlgNMTMovies
         Try
             bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Exporting Data..."))
             If Not DontSaveExtra Then
-                For Each f As config._File In conf.Files.Where(Function(y) y.Type = "other")
+                For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
                     File.Copy(Path.Combine(srcPath, f.Name), Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name), True)
                     'CopyDirectory(srcPath, Path.GetDirectoryName(destPath), True)
                 Next
-                For Each f As config._File In conf.Files.Where(Function(y) y.Type = "folder")
+                For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "folder")
                     Dim srcf As String = Path.Combine(srcPath, f.Name)
                     Dim destf As String = Path.Combine(outputFolder, Path.Combine(f.DestPath.Replace("/", Path.DirectorySeparatorChar), f.Name))
                     If Not srcf.EndsWith(Path.DirectorySeparatorChar) Then srcf = String.Concat(srcf, Path.DirectorySeparatorChar)
@@ -1199,46 +1199,7 @@ Public Class dlgNMTMovies
     End Sub
 #End Region 'Methods
 
-    Class config
-        Public Name As String
-        Public Description As String
-        Public Author As String
-        Public Version As String
-        <XmlArrayItem("File")> _
-        Public Files As New List(Of _File)
-        <XmlArrayItem("Param")> _
-        Public Params As New List(Of _Param)
-        <XmlIgnore()> _
-        Public TemplatePath As String
-        Class _File
-            Public Name As String
-            Public DestPath As String
-            Public Process As Boolean
-            Public Type As String
-        End Class
-        Class _Param
-            Public name As String
-            Public type As String
-            Public value As String
-            Public access As String
-            Public description As String
-        End Class
 
-        Public Sub Save(ByVal fpath As String)
-            Dim xmlSer As New XmlSerializer(GetType(config))
-            Using xmlSW As New StreamWriter(fpath)
-                xmlSer.Serialize(xmlSW, Me)
-            End Using
-        End Sub
-        Public Shared Function Load(ByVal fpath As String) As config
-            If Not File.Exists(fpath) Then Return New config
-            Dim xmlSer As XmlSerializer
-            xmlSer = New XmlSerializer(GetType(config))
-            Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
-                Return DirectCast(xmlSer.Deserialize(xmlSW), config)
-            End Using
-        End Function
-    End Class
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         SaveConfig()
