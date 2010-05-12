@@ -1015,6 +1015,7 @@ Public Class Database
             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
             needUpdate = True
         End If
+        AdvancedSettings.SetDefaults()
         AdvancedSettings.LoadBase()
         Dim settingString As String = lhttp.DownloadData(String.Format("http://www.embermm.com/{0}/AdvancedSettings.r{1}.lst", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates"), My.Application.Info.Version.Revision))
         If Not String.IsNullOrEmpty(settingString) Then
@@ -1038,7 +1039,6 @@ Public Class Database
                 End If
             Next
         End If
-        AdvancedSettings.SetDefaults()
         Return needUpdate
     End Function
 
