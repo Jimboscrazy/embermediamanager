@@ -36,6 +36,7 @@ Public Class dlgSettings
     Private sResult As New Structures.SettingsResult
     Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
+    Private frmMisc As New dlgMiscellaneous
     Public Event LoadEnd()
 
     #End Region 'Fields
@@ -85,6 +86,15 @@ Public Class dlgSettings
                                 .TextImageRelation = TextImageRelation.ImageAboveText, _
                                 .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
                                 .Tag = 400}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+
+        TSB = New ToolStripButton With { _
+                        .Text = Master.eLang.GetString(822, "Miscellaneous"), _
+                        .Image = My.Resources.Miscellaneous, _
+                        .TextImageRelation = TextImageRelation.ImageAboveText, _
+                        .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+                        .Tag = 400}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -217,6 +227,21 @@ Public Class dlgSettings
                       .Type = Master.eLang.GetString(390, "Options"), _
                       .Panel = Me.pnlXBMCCom, _
                       .Order = 300})
+        '-----------------------------------------------------------------
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+              .Name = "pnlGenres", _
+              .Text = Master.eLang.GetString(20, "Genres"), _
+              .ImageIndex = 11, _
+              .Type = Master.eLang.GetString(822, "Miscellaneous"), _
+              .Panel = Me.frmMisc.pnlGenres, _
+              .Order = 300})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+              .Name = "pnlMetadata", _
+              .Text = Master.eLang.GetString(823, "Audio &amp; Video Codec Mapping"), _
+              .ImageIndex = 12, _
+              .Type = Master.eLang.GetString(822, "Miscellaneous"), _
+              .Panel = Me.frmMisc.pnlMetadata, _
+              .Order = 300})
 
         AddScraperPanels()
     End Sub

@@ -153,6 +153,7 @@ Partial Class dlgSettings
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
+        Me.chkActorCache = New System.Windows.Forms.CheckBox
         Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.GroupBox17 = New System.Windows.Forms.GroupBox
@@ -595,7 +596,6 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.chkActorCache = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2081,6 +2081,18 @@ Partial Class dlgSettings
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
         '
+        'chkActorCache
+        '
+        Me.chkActorCache.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkActorCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkActorCache.Location = New System.Drawing.Point(6, 35)
+        Me.chkActorCache.Name = "chkActorCache"
+        Me.chkActorCache.Size = New System.Drawing.Size(173, 19)
+        Me.chkActorCache.TabIndex = 5
+        Me.chkActorCache.Text = "Enable Actors Cache"
+        Me.chkActorCache.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkActorCache.UseVisualStyleBackColor = True
+        '
         'chkNoSaveImagesToNfo
         '
         Me.chkNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2305,6 +2317,8 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
         Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
         Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
+        Me.ilSettings.Images.SetKeyName(11, "heart.png")
+        Me.ilSettings.Images.SetKeyName(12, "equalizer.png")
         '
         'tvSettings
         '
@@ -7036,18 +7050,6 @@ Partial Class dlgSettings
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
-        '
-        'chkActorCache
-        '
-        Me.chkActorCache.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkActorCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkActorCache.Location = New System.Drawing.Point(6, 35)
-        Me.chkActorCache.Name = "chkActorCache"
-        Me.chkActorCache.Size = New System.Drawing.Size(173, 19)
-        Me.chkActorCache.TabIndex = 5
-        Me.chkActorCache.Text = "Enable Actors Cache"
-        Me.chkActorCache.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkActorCache.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
