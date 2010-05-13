@@ -56,7 +56,7 @@ Public Class frmSettingsHolder
             If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
                 fxml = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, i.Name))
                 conf = NMTExporterModule.Config.Load(Path.Combine(fxml, "config.xml"))
-                If Not conf Is Nothing Then
+                If Not conf Is Nothing AndAlso Not String.IsNullOrEmpty(conf.Name) Then
                     conf.TemplatePath = fxml
                     conf.ReadMe = File.Exists(Path.Combine(conf.TemplatePath, "readme.txt"))
                     confs.Add(conf)
@@ -142,28 +142,37 @@ Public Class frmSettingsHolder
         Return readme
     End Function
 
-    Private Function UnZip(ByVal fname As String) As String
-        Dim readme As String = String.Empty
-
+    Private Function UnZip(ByVal fname As String) As Boolean
+        Dim baseFolder As String = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(fname)))
+        If Directory.Exists(baseFolder) Then
+            If MsgBox("Folder already exist. Overwrite?", MsgBoxStyle.YesNo, "Install Template") = MsgBoxResult.No Then
+                Return False
+            Else
+                Directory.Delete(baseFolder, True)
+            End If
+        End If
         Using fStream As FileStream = New FileStream(fname, FileMode.Open, FileAccess.Read)
             Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
             Try
                 Using zStream As ZipInputStream = New ZipInputStream(New MemoryStream(fZip))
                     Dim zEntry As ZipEntry = zStream.GetNextEntry
                     While Not IsNothing(zEntry)
-                        Select Case zEntry.Name
-                            Case "readme.txt"
-                                readme = System.Text.Encoding.UTF8.GetString(Functions.ReadStreamToEnd(zStream))
-                                Exit While
-                        End Select
+                        Dim folderName As String = Path.Combine(baseFolder, Path.GetDirectoryName(zEntry.Name))
+                        Dim fileName As String = Path.GetFileName(zEntry.Name)
+                        Dim fFile As Byte() = Functions.ReadStreamToEnd(zStream)
+                        If Not Directory.Exists(folderName) Then
+                            Directory.CreateDirectory(folderName)
+                        End If
+                        If Not String.IsNullOrEmpty(fileName) Then File.WriteAllBytes(Path.Combine(folderName, fileName), fFile)
                         zEntry = zStream.GetNextEntry
                     End While
                 End Using
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Return False
             End Try
         End Using
-        Return readme
+        Return True
     End Function
 
     Private Sub SetUp()
@@ -189,7 +198,9 @@ Public Class frmSettingsHolder
             Dim conf As NMTExporterModule.Config = DirectCast(lstTemplates.SelectedItems(0).Tag, NMTExporterModule.Config)
             Select Case lstTemplates.SelectedItems(0).SubItems(3).Text
                 Case Master.eLang.GetString(19, "New")
-
+                    If UnZip(conf.TemplatePath) Then
+                        File.Delete(conf.TemplatePath)
+                    End If
             End Select
         End If
     End Sub
@@ -227,6 +238,11 @@ Public Class frmSettingsHolder
         RemoveTemplate()
         LoadTemplates(True)
     End Sub
-
+    Private Sub btnInstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInstall.Click
+        InstallTemplate()
+        LoadTemplates(True)
+    End Sub
 #End Region 'Methods
+
+
 End Class
