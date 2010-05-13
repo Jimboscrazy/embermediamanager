@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -132,13 +132,15 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EmberAPI, Version=0.0.0.2164, Culture=neutral, processorArchitecture=AMD64" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release Files\x86\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -228,6 +230,12 @@
       <DependentUpon>dlgImgView.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgImgView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgMiscellaneous.Designer.vb">
+      <DependentUpon>dlgMiscellaneous.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgMiscellaneous.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgRestart.Designer.vb">
@@ -424,6 +432,10 @@
       <DependentUpon>dlgImgView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="dlgMiscellaneous.resx">
+      <DependentUpon>dlgMiscellaneous.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgRestart.resx">
       <DependentUpon>dlgRestart.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -553,6 +565,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
+    <None Include="Resources\pages.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
+      <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
+      <Name>EmberAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
