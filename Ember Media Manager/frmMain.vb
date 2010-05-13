@@ -5261,6 +5261,7 @@ doCancel:
             FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
         End If
+        AdvancedSettings.Start()
         'Create Modules Folders
         sPath = String.Concat(Functions.AppPath, "Modules")
         If Not Directory.Exists(sPath) Then

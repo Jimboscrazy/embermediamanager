@@ -1015,30 +1015,6 @@ Public Class Database
             File.Delete(Path.Combine(Functions.AppPath, "UpdateTasks.xml"))
             needUpdate = True
         End If
-        AdvancedSettings.SetDefaults()
-        AdvancedSettings.LoadBase()
-        Dim settingString As String = lhttp.DownloadData(String.Format("http://www.embermm.com/{0}/AdvancedSettings.r{1}.lst", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates"), My.Application.Info.Version.Revision))
-        If Not String.IsNullOrEmpty(settingString) Then
-            Dim sPath As String = String.Concat(Functions.AppPath, "Temp")
-            If Not Directory.Exists(sPath) Then
-                Directory.CreateDirectory(sPath)
-            End If
-
-            For Each s As String In settingString.Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                Dim lst As New List(Of String)
-                lst.AddRange(AdvancedSettings.GetSetting("SettingPatchList", String.Empty, "*Internal").Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries))
-                If lst.Contains(s) Then Continue For
-                lst.Add(s)
-                AdvancedSettings.SetSetting("SettingPatchList", Strings.Join(lst.ToArray, ","), "*Internal")
-                If Not String.IsNullOrEmpty(s) Then
-                    Dim localFile As String = Path.Combine(Functions.AppPath, String.Format("Temp{0}AdvancedSettings.{1}.xml", Path.DirectorySeparatorChar, s))
-                    If Not String.IsNullOrEmpty(lhttp.DownloadFile(String.Format("http://www.embermm.com/{0}/AdvancedSettings.{1}.xml", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates"), s), localFile, False, "other")) Then
-                        AdvancedSettings.Load(localFile)
-                        AdvancedSettings.Save()
-                    End If
-                End If
-            Next
-        End If
         Return needUpdate
     End Function
 
