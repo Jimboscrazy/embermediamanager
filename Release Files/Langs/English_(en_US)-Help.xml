@@ -358,5 +358,4 @@
 	<string control="Core_btnResetValidExts">This will reset the valid extensions to the default list. WARNING: This WILL delete any custom extensions you have entered.</string>
 	<string control="Core_ResetShowRegex">This will reset the show regex to the default list. WARNING: This WILL delete any custom regex you have entered.</string>
 	<string control="Core_chkClickScrape">Enable Click Scrape on main screen column marks.</string>
-	<string control="Core_chkAskCheckboxScrape">On Click Scrape do a ASK scrape. When disable will do Auto Scrape.</string>
 </strings>
