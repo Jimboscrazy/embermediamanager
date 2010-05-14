@@ -142,6 +142,7 @@ Public Class InstallCommands
 #Region "Fields"
 
         Dim _imageindex As Integer
+        Dim _image As Image
         Dim _name As String
         Dim _order As Integer
         Dim _panel As Panel
@@ -168,6 +169,16 @@ Public Class InstallCommands
             End Get
             Set(ByVal value As Integer)
                 Me._imageindex = value
+            End Set
+        End Property
+
+        <System.Xml.Serialization.XmlIgnore()> _
+        Public Property Image() As Image
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Image)
+                Me._image = value
             End Set
         End Property
 
@@ -244,6 +255,7 @@ Public Class InstallCommands
             Me._text = String.Empty
             Me._prefix = String.Empty
             Me._imageindex = 0
+            Me._image = Nothing
             Me._type = String.Empty
             Me._panel = New Panel
             Me._order = 0

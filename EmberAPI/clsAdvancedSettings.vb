@@ -71,14 +71,17 @@ Public Class AdvancedSettings
         End If
     End Sub
 
+    Public Shared Function GetAllSettings() As List(Of SettingItem)
+        Return _AdvancedSettings
+    End Function
 
     Public Shared Sub LoadBase()
         Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "") As Boolean
         Dim Assembly As String = cAssembly
@@ -323,12 +326,12 @@ Public Class AdvancedSettings
         _DoNotSave = False
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     ' ******************************************************************************
-    Private Class SettingItem
+    Public Class SettingItem
 #Region "Fields"
         Public DefaultValue As String
         Public Name As String
@@ -343,6 +346,6 @@ Public Class AdvancedSettings
     End Class
 
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class
