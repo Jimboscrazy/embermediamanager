@@ -24,7 +24,10 @@ Partial Class frmGenresEditor
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlGenres = New System.Windows.Forms.Panel
+        Me.cbLangs = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.btnRemoveLang = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.btnChangeImg = New System.Windows.Forms.Button
@@ -34,10 +37,10 @@ Partial Class frmGenresEditor
         Me.searchstring = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.btnRemoveString = New System.Windows.Forms.Button
         Me.dgvLang = New System.Windows.Forms.DataGridView
-        Me.Column1 = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.btnAddLang = New System.Windows.Forms.Button
         Me.btnAddString = New System.Windows.Forms.Button
+        Me.Column1 = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.pnlGenres.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -47,6 +50,8 @@ Partial Class frmGenresEditor
         '
         'pnlGenres
         '
+        Me.pnlGenres.Controls.Add(Me.cbLangs)
+        Me.pnlGenres.Controls.Add(Me.Label1)
         Me.pnlGenres.Controls.Add(Me.btnRemoveLang)
         Me.pnlGenres.Controls.Add(Me.GroupBox1)
         Me.pnlGenres.Controls.Add(Me.dgvGenres)
@@ -59,12 +64,29 @@ Partial Class frmGenresEditor
         Me.pnlGenres.Size = New System.Drawing.Size(627, 367)
         Me.pnlGenres.TabIndex = 0
         '
+        'cbLangs
+        '
+        Me.cbLangs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLangs.FormattingEnabled = True
+        Me.cbLangs.Location = New System.Drawing.Point(20, 23)
+        Me.cbLangs.Name = "cbLangs"
+        Me.cbLangs.Size = New System.Drawing.Size(188, 21)
+        Me.cbLangs.TabIndex = 38
+        '
+        'Label1
+        '
+        Me.Label1.Location = New System.Drawing.Point(17, 7)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(90, 13)
+        Me.Label1.TabIndex = 37
+        Me.Label1.Text = "Genres Filter"
+        '
         'btnRemoveLang
         '
         Me.btnRemoveLang.Enabled = False
         Me.btnRemoveLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveLang.Location = New System.Drawing.Point(331, 224)
+        Me.btnRemoveLang.Location = New System.Drawing.Point(331, 253)
         Me.btnRemoveLang.Name = "btnRemoveLang"
         Me.btnRemoveLang.Size = New System.Drawing.Size(81, 23)
         Me.btnRemoveLang.TabIndex = 35
@@ -77,7 +99,7 @@ Partial Class frmGenresEditor
         Me.GroupBox1.Controls.Add(Me.btnChangeImg)
         Me.GroupBox1.Controls.Add(Me.PictureBox1)
         Me.GroupBox1.Controls.Add(Me.btnAddImg)
-        Me.GroupBox1.Location = New System.Drawing.Point(431, 18)
+        Me.GroupBox1.Location = New System.Drawing.Point(431, 47)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(180, 195)
         Me.GroupBox1.TabIndex = 30
@@ -128,7 +150,7 @@ Partial Class frmGenresEditor
         Me.dgvGenres.BackgroundColor = System.Drawing.Color.White
         Me.dgvGenres.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvGenres.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.searchstring})
-        Me.dgvGenres.Location = New System.Drawing.Point(15, 21)
+        Me.dgvGenres.Location = New System.Drawing.Point(15, 50)
         Me.dgvGenres.MultiSelect = False
         Me.dgvGenres.Name = "dgvGenres"
         Me.dgvGenres.RowHeadersVisible = False
@@ -156,7 +178,7 @@ Partial Class frmGenresEditor
         Me.btnRemoveString.Enabled = False
         Me.btnRemoveString.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveString.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveString.Location = New System.Drawing.Point(121, 224)
+        Me.btnRemoveString.Location = New System.Drawing.Point(121, 253)
         Me.btnRemoveString.Name = "btnRemoveString"
         Me.btnRemoveString.Size = New System.Drawing.Size(87, 23)
         Me.btnRemoveString.TabIndex = 32
@@ -173,7 +195,7 @@ Partial Class frmGenresEditor
         Me.dgvLang.BackgroundColor = System.Drawing.Color.White
         Me.dgvLang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLang.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.DataGridViewTextBoxColumn1})
-        Me.dgvLang.Location = New System.Drawing.Point(245, 21)
+        Me.dgvLang.Location = New System.Drawing.Point(245, 50)
         Me.dgvLang.MultiSelect = False
         Me.dgvLang.Name = "dgvLang"
         Me.dgvLang.RowHeadersVisible = False
@@ -185,29 +207,11 @@ Partial Class frmGenresEditor
         Me.dgvLang.Size = New System.Drawing.Size(164, 192)
         Me.dgvLang.TabIndex = 34
         '
-        'Column1
-        '
-        Me.Column1.FillWeight = 22.0!
-        Me.Column1.HeaderText = ""
-        Me.Column1.Name = "Column1"
-        Me.Column1.Width = 22
-        '
-        'DataGridViewTextBoxColumn1
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle2
-        Me.DataGridViewTextBoxColumn1.FillWeight = 120.0!
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Language"
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn1.Width = 120
-        '
         'btnAddLang
         '
         Me.btnAddLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddLang.Location = New System.Drawing.Point(245, 224)
+        Me.btnAddLang.Location = New System.Drawing.Point(245, 253)
         Me.btnAddLang.Name = "btnAddLang"
         Me.btnAddLang.Size = New System.Drawing.Size(81, 23)
         Me.btnAddLang.TabIndex = 36
@@ -219,13 +223,37 @@ Partial Class frmGenresEditor
         '
         Me.btnAddString.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddString.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddString.Location = New System.Drawing.Point(20, 224)
+        Me.btnAddString.Location = New System.Drawing.Point(20, 253)
         Me.btnAddString.Name = "btnAddString"
         Me.btnAddString.Size = New System.Drawing.Size(87, 23)
         Me.btnAddString.TabIndex = 33
         Me.btnAddString.Text = "Add"
         Me.btnAddString.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddString.UseVisualStyleBackColor = True
+        '
+        'Column1
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.NullValue = False
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        Me.Column1.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Column1.FillWeight = 22.0!
+        Me.Column1.HeaderText = ""
+        Me.Column1.Name = "Column1"
+        Me.Column1.Width = 22
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle3
+        Me.DataGridViewTextBoxColumn1.FillWeight = 120.0!
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Languages"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn1.Width = 120
         '
         'frmGenresEditor
         '
@@ -258,9 +286,11 @@ Partial Class frmGenresEditor
     Friend WithEvents searchstring As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents btnRemoveString As System.Windows.Forms.Button
     Friend WithEvents dgvLang As System.Windows.Forms.DataGridView
-    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents btnAddLang As System.Windows.Forms.Button
     Friend WithEvents btnAddString As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cbLangs As System.Windows.Forms.ComboBox
+    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
 
 End Class
