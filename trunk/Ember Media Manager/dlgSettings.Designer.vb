@@ -2317,8 +2317,6 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
         Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
         Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
-        Me.ilSettings.Images.SetKeyName(11, "heart.png")
-        Me.ilSettings.Images.SetKeyName(12, "equalizer.png")
         '
         'tvSettings
         '

@@ -5,10 +5,9 @@
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
-
+            Return True
         End Get
         Set(ByVal value As Boolean)
-
         End Set
     End Property
 
@@ -36,6 +35,7 @@
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberExternalModule.ModuleName
         Get
             Return "Audio & Video Codec Mapping"
@@ -48,7 +48,7 @@
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return Nothing
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
         End Get
     End Property
 

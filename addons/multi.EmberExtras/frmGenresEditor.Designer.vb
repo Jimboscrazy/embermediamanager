@@ -27,16 +27,16 @@ Partial Class frmGenresEditor
         '
         'pnlGenres
         '
-        Me.pnlGenres.Location = New System.Drawing.Point(3, 1)
+        Me.pnlGenres.Location = New System.Drawing.Point(0, 0)
         Me.pnlGenres.Name = "pnlGenres"
-        Me.pnlGenres.Size = New System.Drawing.Size(430, 311)
+        Me.pnlGenres.Size = New System.Drawing.Size(627, 367)
         Me.pnlGenres.TabIndex = 0
         '
         'frmGenresEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(435, 315)
+        Me.ClientSize = New System.Drawing.Size(628, 366)
         Me.Controls.Add(Me.pnlGenres)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
