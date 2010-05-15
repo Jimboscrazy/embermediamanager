@@ -1490,5 +1490,4 @@ Public Class dlgEditMovie
     End Class
 
     #End Region 'Nested Types
-
 End Class
