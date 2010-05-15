@@ -380,7 +380,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.cmnuTrayIcon = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTrayIconTitle = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator
@@ -3671,12 +3670,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'TrayIcon
-        '
-        Me.TrayIcon.ContextMenuStrip = Me.cmnuTrayIcon
-        Me.TrayIcon.Text = "Ember Media Manager"
-        Me.TrayIcon.Visible = True
         '
         'cmnuTrayIcon
         '

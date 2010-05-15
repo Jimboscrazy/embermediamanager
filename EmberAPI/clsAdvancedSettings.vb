@@ -345,7 +345,6 @@ Public Class AdvancedSettings
         Public TableItem As New Hashtable
     End Class
 
-
 #End Region 'Nested Types
 
 End Class
