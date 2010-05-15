@@ -126,6 +126,7 @@ Public Class EmberNativeScraperModule
 
     Function DownloadTrailer(ByRef DBMovie As Structures.DBMovie, ByRef sURL As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule.DownloadTrailer
         Using dTrailer As New dlgTrailer
+            dTrailer.IMDBURL = MySettings.IMDBURL
             sURL = dTrailer.ShowDialog(DBMovie.Movie.IMDBID, DBMovie.Filename)
         End Using
         Return New Interfaces.ModuleResult With {.breakChain = False}

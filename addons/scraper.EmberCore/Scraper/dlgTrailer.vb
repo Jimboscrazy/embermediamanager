@@ -122,25 +122,25 @@ Public Class dlgTrailer
                 Me.bwDownloadTrailer.WorkerSupportsCancellation = True
                 Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
             Else
-                If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-                    Using dFormats As New dlgTrailerFormat
-                        Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
+            If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                Using dFormats As New dlgTrailerFormat
+                    Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
 
-                        If Not String.IsNullOrEmpty(sFormat) Then
-                            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                            Me.bwDownloadTrailer.WorkerReportsProgress = True
-                            Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
-                        Else
-                            didCancel = True
-                        End If
-                    End Using
-                Else
-                    Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadTrailer.WorkerReportsProgress = True
-                    Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
-                End If
+                    If Not String.IsNullOrEmpty(sFormat) Then
+                        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                        Me.bwDownloadTrailer.WorkerReportsProgress = True
+                        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                        Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                    Else
+                        didCancel = True
+                    End If
+                End Using
+            Else
+                Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                Me.bwDownloadTrailer.WorkerReportsProgress = True
+                Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
+            End If
             End If
 
             If didCancel Then

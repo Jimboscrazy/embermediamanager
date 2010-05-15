@@ -112,6 +112,9 @@ Public Class frmMain
     Private CloseApp As Boolean = False
 
     Private oldStatus As String = String.Empty
+
+    Private KeyBuffer As String = String.Empty
+
     #End Region 'Fields
 
     #Region "Delegates"
@@ -1938,6 +1941,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
+        If Me.dgvMediaList.SelectedRows.Count > 1 Then Return
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -2502,6 +2506,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
+        If Me.dgvMediaList.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
         Using dEditMeta As New dlgFileInfo
@@ -2690,11 +2695,14 @@ doCancel:
     End Sub
 
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
-        Functions.SetScraperMod(Enums.ModType.All, True, True)
-        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+        If Me.dgvMediaList.SelectedRows.Count = 1 Then
+            Functions.SetScraperMod(Enums.ModType.All, True, True)
+            Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+        End If
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
+        If Me.dgvMediaList.SelectedRows.Count > 1 Then Return
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, True, False)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -3090,10 +3098,13 @@ doCancel:
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
         Try
             If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+                tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
+
                         Exit For
                     End If
                 Next
@@ -3384,8 +3395,10 @@ doCancel:
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
         Try
             If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+                tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
-                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvTVEpisodes.CurrentCell = drvRow.Cells(3)
                         Exit For
@@ -3706,8 +3719,10 @@ doCancel:
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
         Try
             If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+                tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                    If drvRow.Cells(2).Value.ToString = e.KeyChar.ToString Then
+                    If drvRow.Cells(2).Value.ToString.StartsWith (KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvTVSeasons.CurrentCell = drvRow.Cells(1)
                         Exit For
@@ -3968,8 +3983,10 @@ doCancel:
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
         Try
             If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+                KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
+                tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
-                    If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                    If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvTVShows.CurrentCell = drvRow.Cells(1)
                         Exit For
@@ -4528,7 +4545,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -4712,7 +4729,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -4858,7 +4875,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5001,7 +5018,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5051,7 +5068,7 @@ doCancel:
             If Not IsNothing(Me.MainAllSeason.Image) Then
                 Me.pbAllSeasonCache.Image = Me.MainAllSeason.Image
                 ImageUtils.ResizePB(Me.pbAllSeason, Me.pbAllSeasonCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                ImageUtils.SetGlassOverlay(Me.pbAllSeason)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbAllSeason)
                 Me.pnlAllSeason.Size = New Size(Me.pbAllSeason.Width + 10, Me.pbAllSeason.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -8868,4 +8885,8 @@ doCancel:
     #End Region 'Nested Types
 
 
+    Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick
+        tmrKeyBuffer.Enabled = False
+        KeyBuffer = String.Empty
+    End Sub
 End Class

@@ -494,6 +494,7 @@ Partial Class frmMain
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -4402,6 +4403,10 @@ Partial Class frmMain
         '
         Me.tmrAppExit.Interval = 1000
         '
+        'tmrKeyBuffer
+        '
+        Me.tmrKeyBuffer.Interval = 1000
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -4974,4 +4979,5 @@ Partial Class frmMain
     Friend WithEvents tmrAppExit As System.Windows.Forms.Timer
     Friend WithEvents CheckUpdatesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents lblStudio As System.Windows.Forms.Label
+    Friend WithEvents tmrKeyBuffer As System.Windows.Forms.Timer
 End Class

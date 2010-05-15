@@ -118,8 +118,9 @@ Namespace YouTube
 
         Private Function GetVideoTitle(ByVal HTML As String) As String
             Dim result As String = ""
-            Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
-
+            'Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
+            Dim KeyPattern As String = "meta name=\""title\"" content=\s*\""([^']*?)\"""
+            'meta name="title" content=
             If Regex.IsMatch(HTML, KeyPattern) Then
                 result = Regex.Match(HTML, KeyPattern).Groups(1).Value
             End If
@@ -172,7 +173,9 @@ Namespace YouTube
                                 Link.Description = "1080p"
                                 Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             Case Else
-                                Continue For
+                                Link.Description = "Other"
+                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                'Continue For
                         End Select
 
                         Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
