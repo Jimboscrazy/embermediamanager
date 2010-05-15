@@ -196,6 +196,9 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
+        PreviewImage()
+    End Sub
+    Private Sub PreviewImage()
         Try
             Dim tImage As New Images
 
@@ -966,9 +969,9 @@ Public Class dlgImgSelect
     Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             If Me.DLType = Enums.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
-
                 ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(DirectCast(sender, PictureBox).Image)
-
+            Else
+                PreviewImage()
             End If
         Catch
         End Try

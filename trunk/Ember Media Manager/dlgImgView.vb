@@ -40,7 +40,7 @@ Public Class dlgImgView
     End Function
 
     Private Sub dlgImgView_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        If e.KeyCode = Keys.Escape Then
+        If e.KeyCode = Keys.Escape OrElse e.KeyCode = Keys.Enter Then
             Me.Close()
         End If
     End Sub
