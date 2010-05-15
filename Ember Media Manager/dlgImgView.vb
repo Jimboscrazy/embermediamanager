@@ -39,6 +39,12 @@ Public Class dlgImgView
         Return MyBase.ShowDialog()
     End Function
 
+    Private Sub dlgImgView_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        If e.KeyCode = Keys.Escape Then
+            Me.Close()
+        End If
+    End Sub
+
     Private Sub dlgImgView_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         '//
         ' Default to Fit method
