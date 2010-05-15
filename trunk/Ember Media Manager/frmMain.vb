@@ -183,11 +183,14 @@ Public Class frmMain
                     Case "FILE.Move"
                         Dim s() As String = _cmd.CommandExecute.Split("|"c)
                         If s.Count >= 2 Then
-                            File.Delete(s(1))
+                            If File.Exists(s(1)) Then File.Delete(s(1))
+                            If Not Directory.Exists(Path.GetDirectoryName(s(1))) Then
+                                Directory.CreateDirectory(Path.GetDirectoryName(s(1)))
+                            End If
                             File.Move(s(0), s(1))
                         End If
                     Case "FILE.Delete"
-                        File.Delete(_cmd.CommandExecute)
+                            If File.Exists(_cmd.CommandExecute) Then File.Delete(_cmd.CommandExecute)
                 End Select
             Catch ex As Exception
                 Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
@@ -5231,8 +5234,15 @@ doCancel:
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Visible = False
         fLoading = New frmSplash
+        If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
+            Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
+            Me.TrayIcon.Icon = Me.Icon
+            Me.TrayIcon.ContextMenuStrip = Me.cmnuTrayIcon
+            Me.TrayIcon.Text = "Ember Media Manager"
+            Me.TrayIcon.Visible = True
+        End If
 
-        Me.TrayIcon.Icon = Me.Icon
+        'Me.TrayIcon.Icon = Me.Icon
         Dim Args() As String = Environment.GetCommandLineArgs
 
         If Args.Count > 1 Then

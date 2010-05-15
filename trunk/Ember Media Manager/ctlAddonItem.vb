@@ -239,6 +239,9 @@ Public Class AddonItem
                     sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), tempFile, False, "other")
                     Me.bwDownload.ReportProgress(1)
                     Try
+                        If Not Directory.Exists(Path.GetDirectoryName(finalFile)) Then
+                            Directory.CreateDirectory(Path.GetDirectoryName(finalFile))
+                        End If
                         File.Move(tempFile, finalFile)
                     Catch
                         _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Move", .CommandExecute = String.Concat(tempFile, "|", finalFile)})

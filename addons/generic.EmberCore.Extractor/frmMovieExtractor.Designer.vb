@@ -77,7 +77,7 @@ Partial Class frmMovieExtractor
         Me.txtThumbCount.Location = New System.Drawing.Point(68, 18)
         Me.txtThumbCount.Name = "txtThumbCount"
         Me.txtThumbCount.Size = New System.Drawing.Size(25, 22)
-        Me.txtThumbCount.TabIndex = 11
+        Me.txtThumbCount.TabIndex = 2
         '
         'Label5
         '
@@ -98,7 +98,7 @@ Partial Class frmMovieExtractor
         Me.btnAutoGen.Location = New System.Drawing.Point(5, 49)
         Me.btnAutoGen.Name = "btnAutoGen"
         Me.btnAutoGen.Size = New System.Drawing.Size(89, 45)
-        Me.btnAutoGen.TabIndex = 9
+        Me.btnAutoGen.TabIndex = 3
         Me.btnAutoGen.Text = "Auto-Gen"
         Me.btnAutoGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAutoGen.UseVisualStyleBackColor = True
@@ -112,7 +112,7 @@ Partial Class frmMovieExtractor
         Me.btnFrameSave.Location = New System.Drawing.Point(735, 361)
         Me.btnFrameSave.Name = "btnFrameSave"
         Me.btnFrameSave.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameSave.TabIndex = 15
+        Me.btnFrameSave.TabIndex = 4
         Me.btnFrameSave.Text = "Save Extrathumb"
         Me.btnFrameSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnFrameSave.UseVisualStyleBackColor = True
@@ -163,7 +163,7 @@ Partial Class frmMovieExtractor
         Me.tbFrame.Location = New System.Drawing.Point(6, 420)
         Me.tbFrame.Name = "tbFrame"
         Me.tbFrame.Size = New System.Drawing.Size(659, 45)
-        Me.tbFrame.TabIndex = 12
+        Me.tbFrame.TabIndex = 5
         Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
         '
         'btnFrameLoad
@@ -174,7 +174,7 @@ Partial Class frmMovieExtractor
         Me.btnFrameLoad.Location = New System.Drawing.Point(735, 4)
         Me.btnFrameLoad.Name = "btnFrameLoad"
         Me.btnFrameLoad.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameLoad.TabIndex = 11
+        Me.btnFrameLoad.TabIndex = 1
         Me.btnFrameLoad.Text = "Load Movie"
         Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnFrameLoad.UseVisualStyleBackColor = True
@@ -198,7 +198,7 @@ Partial Class frmMovieExtractor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(843, 457)
+        Me.ClientSize = New System.Drawing.Size(843, 455)
         Me.Controls.Add(Me.pnlExtrator)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog

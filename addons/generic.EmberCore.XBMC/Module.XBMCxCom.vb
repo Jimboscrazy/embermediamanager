@@ -394,7 +394,7 @@ Public Class XBMCxCom
             End Try
         Loop While needRetry AndAlso retry > 0
         If needRetry AndAlso retry <= 0 Then
-            MsgBox(errorMessage, MsgBoxStyle.OkOnly, "XBMC")
+            MsgBox(errorMessage, MsgBoxStyle.OkOnly, "XBMC Controller")
         End If
         Return Sr
     End Function

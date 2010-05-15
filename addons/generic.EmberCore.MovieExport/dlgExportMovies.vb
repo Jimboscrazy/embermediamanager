@@ -150,6 +150,9 @@ Public Class dlgExportMovies
             If Not File.Exists(htmlPath) Then
                 htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
             End If
+            If Not File.Exists(htmlPath) Then
+                Return
+            End If
             pattern = File.ReadAllText(htmlPath)
             If pattern.Contains("<$NEED_POSTERS>") Then
                 Me.bexportPosters = True
@@ -456,7 +459,10 @@ Public Class dlgExportMovies
         Else
             sFilter = txtSearch.Text
         End If
+
         BuildHTML(use_filter, sFilter, cbSearch.Text, base_template, True)
+
+
     End Sub
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
@@ -481,16 +487,18 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
-        For Each i As DirectoryInfo In di.GetDirectories
-            If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
-                cbTemplate.Items.Add(i.Name)
+        If di.Exists Then
+            For Each i As DirectoryInfo In di.GetDirectories
+                If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
+                    cbTemplate.Items.Add(i.Name)
+                End If
+            Next
+            If cbTemplate.Items.Count > 0 Then
+                RemoveHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
+                cbTemplate.SelectedIndex = 0
+                base_template = cbTemplate.Text
+                AddHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
             End If
-        Next
-        If cbTemplate.Items.Count > 0 Then
-            RemoveHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
-            cbTemplate.SelectedIndex = 0
-            base_template = cbTemplate.Text
-            AddHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
         End If
     End Sub
 
@@ -807,7 +815,7 @@ Public Class dlgExportMovies
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles wbMovieList.DocumentCompleted
         If Not bCancelled Then
             'wbMovieList.Visible = True
-            Me.Save_Button.Enabled = True
+            If Not cbTemplate.Text = String.Empty Then Me.Save_Button.Enabled = True
             pnlSearch.Enabled = True
             Reset_Button.Enabled = bFiltered
         End If
