@@ -598,6 +598,7 @@ Public Class Enums
         SQMP4 = 2
         HQFLV = 3
         SQFLV = 4
+        OTHERS = 5
     End Enum
 
     Public Enum TVImageType As Integer

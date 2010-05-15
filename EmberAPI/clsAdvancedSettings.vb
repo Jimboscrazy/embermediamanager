@@ -312,9 +312,10 @@ Public Class AdvancedSettings
         SetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample")
 
         SetSetting("ForceTitle", "Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Finland|France|Germany|Hong Kong|Iceland|Ireland|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA")
-        'SetBooleanSetting("MediaBrowserSupport", False)
+
         SetBooleanSetting("StudioTagAlwaysOn", False)
         SetBooleanSetting("ScrapeActorsThumbs", False)
+        SetBooleanSetting("PosterGlassOverlay", True)
 
         Dim keypair As New Hashtable
         keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
