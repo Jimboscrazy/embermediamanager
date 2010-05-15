@@ -529,6 +529,9 @@ Public Class NFO
                         xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                         xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
                         xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
+                        xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+                        xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+
                     End Using
                 Else
                     If Not String.IsNullOrEmpty(sPath) Then
