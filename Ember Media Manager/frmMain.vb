@@ -1220,17 +1220,11 @@ Public Class frmMain
                         Dim didEts As Interfaces.ModuleResult = ModulesManager.Instance.MoviePostScrapeOnly(DBScrapeMovie, Args.scrapeType)
 
                         If bwMovieScraper.CancellationPending Then Exit For
-                        ' Movie Remane  Moved to RunGeneric On ModuleEventType.MovieScraperRDYtoSave
+
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
 
                         If Master.GlobalScrapeMod.Extra Then
-                            'If Master.eSettings.AutoET AndAlso Not didEts.BoolProperty Then
-                            'Using Fanart As New Images
-                            'Fanart.GetPreferredFAasET(DBScrapeMovie.Movie.IMDBID, DBScrapeMovie.Filename)
-                            'End Using
-                            'End If
                             If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
-                                'Dim ETasFA As String = ThumbGenerator.CreateRandomThumbs(DBScrapeMovie, Master.eSettings.AutoThumbs, False)
                                 Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
                                 Dim ETasFA As String = DirectCast(params(3), String)
