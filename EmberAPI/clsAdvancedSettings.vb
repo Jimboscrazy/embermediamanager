@@ -107,6 +107,20 @@ Public Class AdvancedSettings
         Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
     End Function
 
+    Public Shared Sub CleanSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "")
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+        End If
+        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If Not v(0) Is Nothing Then
+            _AdvancedSettings.Remove(v(0))
+        End If
+    End Sub
+
     Public Shared Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         Try
             Dim Assembly As String = cAssembly
