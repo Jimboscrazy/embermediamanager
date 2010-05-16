@@ -55,13 +55,16 @@ Public Class frmGenresEditor
             r.Cells(0).Value = False
         Next
     End Sub
+    Private Sub dgvGenres_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvGenres.KeyDown
+        e.Handled = (e.KeyCode = Keys.Enter)
+    End Sub
 
     Private Sub dgvGenres_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvGenres.SelectionChanged
         btnRemoveGenre.Enabled = False
         btnChangeImg.Enabled = False
+        dgvLang.Enabled = False
         pbIcon.Image = Nothing
         Try
-
             dgvLang.ClearSelection()
             If dgvGenres.SelectedCells.Count > 0 Then
                 Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
@@ -74,6 +77,7 @@ Public Class frmGenresEditor
                     Next
                     btnRemoveGenre.Enabled = True
                     btnChangeImg.Enabled = True
+                    dgvLang.Enabled = True
                     If g.icon Is Nothing Then
                         pbIcon.Image = Nothing
                     Else
@@ -94,6 +98,21 @@ Public Class frmGenresEditor
 
     End Sub
 
+    Private Sub dgvLang_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvLang.CurrentCellDirtyStateChanged
+        Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
+        If Not g Is Nothing Then
+            dgvLang.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            If Convert.ToBoolean(dgvLang.CurrentRow.Cells(0).Value) Then
+                g.Langs.Add(dgvLang.CurrentRow.Cells(1).Value.ToString)
+            Else
+                g.Langs.Remove(dgvLang.CurrentRow.Cells(1).Value.ToString)
+            End If
+
+            If g.Langs.Count > 0 AndAlso dgvLang.CurrentRow.DefaultCellStyle.ForeColor = Drawing.Color.Red Then
+                dgvLang.CurrentRow.DefaultCellStyle.ForeColor = Drawing.Color.Black
+            End If
+        End If
+    End Sub
     Private Sub dgvLang_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvLang.SelectionChanged
         If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
             btnRemoveLang.Enabled = True
@@ -112,13 +131,59 @@ Public Class frmGenresEditor
         dgvGenres.Rows(i).Tag = g
         xmlGenres.listOfGenres.Add(g)
         dgvGenres.CurrentCell = dgvGenres.Rows(i).Cells(0)
+        pbIcon.Image = Nothing
+        dgvLang.ClearSelection()
+        ClearLangSelection()
+        Application.DoEvents()
         dgvGenres.BeginEdit(True)
     End Sub
 
     Private Sub btnAddLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddLang.Click
-        Dim i As Integer = dgvLang.Rows.Add(New Object() {False, String.Empty})
+        Dim s As String = InputBox("Enter the new Language", "New Language")
+        Dim i As Integer = dgvLang.Rows.Add(New Object() {False, s})
         dgvLang.CurrentCell = dgvLang.Rows(i).Cells(1)
         dgvLang.BeginEdit(True)
+    End Sub
+    Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
+        If dgvGenres.SelectedCells.Count > 0 Then
+            dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
+        End If
+    End Sub
+
+    Private Sub btnRemoveLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLang.Click
+        If MsgBox("This will remove the Language from all Genres. Are you sure?", MsgBoxStyle.YesNo, "Remove Language") = MsgBoxResult.Yes Then
+            If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
+                Dim lang As String = dgvLang.SelectedRows(0).Cells(1).Value.ToString
+                dgvLang.Rows.Remove(dgvLang.SelectedRows(0))
+                For Each g As xGenre In xmlGenres.listOfGenres
+                    If g.Langs.Contains(lang) Then
+                        g.Langs.Remove(lang)
+                        If g.Langs.Count = 0 Then
+                            For Each d As DataGridViewRow In dgvGenres.Rows
+                                If d.Cells(0).Value.ToString = g.searchstring Then
+                                    d.DefaultCellStyle.ForeColor = Drawing.Color.Red
+                                End If
+                            Next
+                        End If
+                    End If
+                Next
+            End If
+        End If
+    End Sub
+
+    Private Sub btnChangeImg_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeImg.Click
+        Try
+            Using fbImages As New OpenFileDialog
+                fbImages.InitialDirectory = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}", Path.DirectorySeparatorChar))
+                fbImages.Filter = "Jpeg|*.jpg|PNG|*.png|Gif|*.gif"
+                fbImages.ShowDialog()
+                Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
+                g.icon = Path.GetFileName(fbImages.FileName)
+                pbIcon.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, g.icon)))
+            End Using
+        Catch ex As Exception
+        End Try
+
     End Sub
 
 #Region "Nested Types"
@@ -168,7 +233,6 @@ Public Class frmGenresEditor
         Public icon As String
     End Class
 #End Region 'Nested Types
-
 
 
 End Class
