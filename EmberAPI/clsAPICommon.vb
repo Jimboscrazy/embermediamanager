@@ -571,6 +571,7 @@ Public Class Enums
         FilterAuto = 11
         FilterAsk = 12
         CopyBD = 13
+        None = 99 ' 
     End Enum
 
     Public Enum SeasonPosterType As Integer
