@@ -102,7 +102,7 @@ Public Class NMTExporterModule
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyTrayMenu)
+        If Not tsi Is Nothing Then tsi.DropDownItems.Remove(MyTrayMenu)
     End Sub
 
     Sub Enable()
@@ -114,7 +114,7 @@ Public Class NMTExporterModule
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(15, "NMT Jukebox Builder")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyTrayMenu)
+        If Not tsi Is Nothing Then tsi.DropDownItems.Add(MyTrayMenu)
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)

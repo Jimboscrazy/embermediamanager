@@ -20,8 +20,8 @@
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me.fGenres = New frmGenresEditor
-        SPanel.Name = Master.eLang.GetString(0, "Genres Editor")
-        SPanel.Text = Master.eLang.GetString(0, "Genres Editor")
+        SPanel.Name = Master.eLang.GetString(1, "Genres Editor")
+        SPanel.Text = Master.eLang.GetString(1, "Genres Editor")
         SPanel.Prefix = "GenresEditor_"
         SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
         SPanel.ImageIndex = -1
@@ -62,6 +62,6 @@
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-
+        If Not fGenres Is Nothing Then fGenres.SaveChanges()
     End Sub
 End Class

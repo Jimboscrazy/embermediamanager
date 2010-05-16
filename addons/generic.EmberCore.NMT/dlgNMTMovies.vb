@@ -1164,7 +1164,22 @@ Public Class dlgNMTMovies
         ValidatedToBuild.Start()
         btnSave.Enabled = True
     End Sub
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SaveConfig()
+        btnSave.Enabled = False
+    End Sub
 
+    Private Sub dgvSettings_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellValueChanged
+        btnSave.Enabled = True
+        SetAllUserParam()
+    End Sub
+
+    Private Sub dgvSettings_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSettings.CurrentCellDirtyStateChanged
+        If dgvSettings.IsCurrentCellDirty Then
+            dgvSettings.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            btnSave.Enabled = True
+        End If
+    End Sub
     Private Sub dgvSettings_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellMouseEnter
         If e.RowIndex >= 0 Then
             lblHelpa.Text = conf.Params.FirstOrDefault(Function(y) y.name = dgvSettings.Rows(e.RowIndex).Cells(0).Value.ToString).description
@@ -1197,24 +1212,5 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 #End Region 'Methods
-
-
-
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
-        SaveConfig()
-        btnSave.Enabled = False
-    End Sub
-
-    Private Sub dgvSettings_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellValueChanged
-        btnSave.Enabled = True
-        SetAllUserParam()
-    End Sub
-
-    Private Sub dgvSettings_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSettings.CurrentCellDirtyStateChanged
-        If dgvSettings.IsCurrentCellDirty Then
-            dgvSettings.CommitEdit(DataGridViewDataErrorContexts.Commit)
-            btnSave.Enabled = True
-        End If
-    End Sub
 
 End Class

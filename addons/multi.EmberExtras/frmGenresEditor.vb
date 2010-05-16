@@ -9,16 +9,21 @@ Public Class frmGenresEditor
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-
         ' Add any initialization after the InitializeComponent() call.
+        SetUp()
         xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
         GetLanguages()
         'xmlGenres.Save(Path.Combine(Functions.AppPath, "Images\Genres\Genres2.xml"))
     End Sub
 
-    Sub GetLanguages()
+    Public Sub SaveChanges()
+        xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+    End Sub
+
+
+    Private Sub GetLanguages()
         Try
-            cbLangs.Items.Add("< All >")
+            cbLangs.Items.Add(Master.eLang.GetString(2, "< All >"))
             cbLangs.Items.AddRange(xmlGenres.listOfLanguages.ToArray)
             cbLangs.SelectedIndex = 0
             For Each s As String In xmlGenres.listOfLanguages
@@ -30,11 +35,11 @@ Public Class frmGenresEditor
         End Try
     End Sub
 
-    Sub PopulateGenres()
+    Private Sub PopulateGenres()
         Try
             dgvGenres.Rows.Clear()
             ClearLangSelection()
-            If cbLangs.SelectedItem.ToString = "< All >" Then
+            If cbLangs.SelectedItem.ToString = Master.eLang.GetString(2, "< All >") Then
                 For Each sett As xGenre In xmlGenres.listOfGenres
                     Dim i As Integer = dgvGenres.Rows.Add(New Object() {sett.searchstring})
                     dgvGenres.Rows(i).Tag = sett
@@ -50,7 +55,7 @@ Public Class frmGenresEditor
         End Try
     End Sub
 
-    Sub ClearLangSelection()
+    Private Sub ClearLangSelection()
         For Each r As DataGridViewRow In dgvLang.Rows
             r.Cells(0).Value = False
         Next
@@ -102,10 +107,15 @@ Public Class frmGenresEditor
         Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
         If Not g Is Nothing Then
             dgvLang.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            RaiseEvent ModuleSettingsChanged()
             If Convert.ToBoolean(dgvLang.CurrentRow.Cells(0).Value) Then
-                g.Langs.Add(dgvLang.CurrentRow.Cells(1).Value.ToString)
+                If Not g.Langs.Contains(dgvLang.CurrentRow.Cells(1).Value.ToString) Then
+                    g.Langs.Add(dgvLang.CurrentRow.Cells(1).Value.ToString)
+                End If
             Else
-                g.Langs.Remove(dgvLang.CurrentRow.Cells(1).Value.ToString)
+                If g.Langs.Contains(dgvLang.CurrentRow.Cells(1).Value.ToString) Then
+                    g.Langs.Remove(dgvLang.CurrentRow.Cells(1).Value.ToString)
+                End If
             End If
 
             If g.Langs.Count > 0 AndAlso dgvLang.CurrentRow.DefaultCellStyle.ForeColor = Drawing.Color.Red Then
@@ -134,27 +144,30 @@ Public Class frmGenresEditor
         pbIcon.Image = Nothing
         dgvLang.ClearSelection()
         ClearLangSelection()
-        Application.DoEvents()
         dgvGenres.BeginEdit(True)
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub btnAddLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddLang.Click
-        Dim s As String = InputBox("Enter the new Language", "New Language")
+        Dim s As String = InputBox(Master.eLang.GetString(3, "Enter the new Language"), Master.eLang.GetString(4, "New Language"))
         Dim i As Integer = dgvLang.Rows.Add(New Object() {False, s})
         dgvLang.CurrentCell = dgvLang.Rows(i).Cells(1)
         dgvLang.BeginEdit(True)
+        RaiseEvent ModuleSettingsChanged()
     End Sub
     Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
         If dgvGenres.SelectedCells.Count > 0 Then
             dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
+            RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
 
     Private Sub btnRemoveLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLang.Click
-        If MsgBox("This will remove the Language from all Genres. Are you sure?", MsgBoxStyle.YesNo, "Remove Language") = MsgBoxResult.Yes Then
+        If MsgBox(Master.eLang.GetString(5, "This will remove the Language from all Genres. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(6, "Remove Language")) = MsgBoxResult.Yes Then
             If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim lang As String = dgvLang.SelectedRows(0).Cells(1).Value.ToString
                 dgvLang.Rows.Remove(dgvLang.SelectedRows(0))
+                RaiseEvent ModuleSettingsChanged()
                 For Each g As xGenre In xmlGenres.listOfGenres
                     If g.Langs.Contains(lang) Then
                         g.Langs.Remove(lang)
@@ -175,16 +188,31 @@ Public Class frmGenresEditor
         Try
             Using fbImages As New OpenFileDialog
                 fbImages.InitialDirectory = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}", Path.DirectorySeparatorChar))
-                fbImages.Filter = "Jpeg|*.jpg|PNG|*.png|Gif|*.gif"
+                fbImages.Filter = "Jpeg|*.jpg|PNG|*.png|GIF|*.gif"
                 fbImages.ShowDialog()
                 Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
                 g.icon = Path.GetFileName(fbImages.FileName)
                 pbIcon.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, g.icon)))
+                RaiseEvent ModuleSettingsChanged()
             End Using
         Catch ex As Exception
         End Try
 
     End Sub
+
+    Private Sub SetUp()
+        btnAddGenre.Text = Master.eLang.GetString(28, "Add", True)
+        btnAddLang.Text = Master.eLang.GetString(28, "Add", True)
+        btnRemoveGenre.Text = Master.eLang.GetString(30, "Remove", True)
+        btnRemoveLang.Text = Master.eLang.GetString(30, "Remove", True)
+        btnChangeImg.Text = Master.eLang.GetString(8, "Change")
+        GroupBox1.Text = Master.eLang.GetString(9, "Images")
+        Label1.Text = Master.eLang.GetString(10, "Genres Filter")
+        Me.dgvGenres.Columns(0).HeaderText = Master.eLang.GetString(20, "Genres", True)
+        Me.dgvLang.Columns(1).HeaderText = Master.eLang.GetString(7, "Languages")
+
+    End Sub
+
 
 #Region "Nested Types"
     <XmlRoot("genres")> _
@@ -215,6 +243,9 @@ Public Class frmGenresEditor
             Return conf
         End Function
         Public Sub Save(ByVal fpath As String)
+            For i As Integer = 0 To Me.listOfGenres.Count - 1
+                Me.listOfGenres(i).language = Strings.Join(Me.listOfGenres(i).Langs.ToArray, "|")
+            Next
             Dim xmlSer As New XmlSerializer(GetType(xGenres))
             Using xmlSW As New StreamWriter(fpath)
                 xmlSer.Serialize(xmlSW, Me)

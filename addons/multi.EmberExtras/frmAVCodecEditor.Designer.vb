@@ -25,18 +25,16 @@ Partial Class frmAVCodecEditor
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAVCodecEditor))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlGenres = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
+        Me.btnRemoveVideo = New System.Windows.Forms.Button
+        Me.btnAddVideo = New System.Windows.Forms.Button
         Me.dgvVideo = New System.Windows.Forms.DataGridView
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnRemoveCom = New System.Windows.Forms.Button
-        Me.btnAddCom = New System.Windows.Forms.Button
+        Me.btnRemoveAudio = New System.Windows.Forms.Button
+        Me.btnAddAudio = New System.Windows.Forms.Button
         Me.dgvAudio = New System.Windows.Forms.DataGridView
         Me.Codec = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -49,11 +47,11 @@ Partial Class frmAVCodecEditor
         '
         Me.pnlGenres.Controls.Add(Me.Label2)
         Me.pnlGenres.Controls.Add(Me.Label1)
-        Me.pnlGenres.Controls.Add(Me.Button2)
-        Me.pnlGenres.Controls.Add(Me.Button3)
+        Me.pnlGenres.Controls.Add(Me.btnRemoveVideo)
+        Me.pnlGenres.Controls.Add(Me.btnAddVideo)
         Me.pnlGenres.Controls.Add(Me.dgvVideo)
-        Me.pnlGenres.Controls.Add(Me.btnRemoveCom)
-        Me.pnlGenres.Controls.Add(Me.btnAddCom)
+        Me.pnlGenres.Controls.Add(Me.btnRemoveAudio)
+        Me.pnlGenres.Controls.Add(Me.btnAddAudio)
         Me.pnlGenres.Controls.Add(Me.dgvAudio)
         Me.pnlGenres.Location = New System.Drawing.Point(0, 0)
         Me.pnlGenres.Name = "pnlGenres"
@@ -65,45 +63,45 @@ Partial Class frmAVCodecEditor
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(319, 9)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(73, 13)
+        Me.Label2.Size = New System.Drawing.Size(34, 13)
         Me.Label2.TabIndex = 17
-        Me.Label2.Text = "Video Codecs"
+        Me.Label2.Text = "Video"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(7, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(73, 13)
+        Me.Label1.Size = New System.Drawing.Size(34, 13)
         Me.Label1.TabIndex = 16
-        Me.Label1.Text = "Audio Codecs"
+        Me.Label1.Text = "Audio"
         '
-        'Button2
+        'btnRemoveVideo
         '
-        Me.Button2.Enabled = False
-        Me.Button2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(536, 261)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(87, 23)
-        Me.Button2.TabIndex = 13
-        Me.Button2.Text = "Remove"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.btnRemoveVideo.Enabled = False
+        Me.btnRemoveVideo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveVideo.Image = CType(resources.GetObject("btnRemoveVideo.Image"), System.Drawing.Image)
+        Me.btnRemoveVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveVideo.Location = New System.Drawing.Point(536, 261)
+        Me.btnRemoveVideo.Name = "btnRemoveVideo"
+        Me.btnRemoveVideo.Size = New System.Drawing.Size(87, 23)
+        Me.btnRemoveVideo.TabIndex = 13
+        Me.btnRemoveVideo.Text = "Remove"
+        Me.btnRemoveVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveVideo.UseVisualStyleBackColor = True
         '
-        'Button3
+        'btnAddVideo
         '
-        Me.Button3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(443, 261)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(87, 23)
-        Me.Button3.TabIndex = 15
-        Me.Button3.Text = "Add"
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.btnAddVideo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddVideo.Image = CType(resources.GetObject("btnAddVideo.Image"), System.Drawing.Image)
+        Me.btnAddVideo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddVideo.Location = New System.Drawing.Point(443, 261)
+        Me.btnAddVideo.Name = "btnAddVideo"
+        Me.btnAddVideo.Size = New System.Drawing.Size(87, 23)
+        Me.btnAddVideo.TabIndex = 15
+        Me.btnAddVideo.Text = "Add"
+        Me.btnAddVideo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddVideo.UseVisualStyleBackColor = True
         '
         'dgvVideo
         '
@@ -128,9 +126,6 @@ Partial Class frmAVCodecEditor
         '
         'DataGridViewTextBoxColumn1
         '
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle1
         Me.DataGridViewTextBoxColumn1.FillWeight = 130.0!
         Me.DataGridViewTextBoxColumn1.HeaderText = "Mediainfo Codec"
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
@@ -138,41 +133,40 @@ Partial Class frmAVCodecEditor
         '
         'DataGridViewTextBoxColumn2
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle1
         Me.DataGridViewTextBoxColumn2.FillWeight = 150.0!
-        Me.DataGridViewTextBoxColumn2.HeaderText = "Maped Codec"
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Mapped Codec"
         Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
         Me.DataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.DataGridViewTextBoxColumn2.Width = 150
         '
-        'btnRemoveCom
+        'btnRemoveAudio
         '
-        Me.btnRemoveCom.Enabled = False
-        Me.btnRemoveCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveCom.Image = CType(resources.GetObject("btnRemoveCom.Image"), System.Drawing.Image)
-        Me.btnRemoveCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveCom.Location = New System.Drawing.Point(220, 261)
-        Me.btnRemoveCom.Name = "btnRemoveCom"
-        Me.btnRemoveCom.Size = New System.Drawing.Size(87, 23)
-        Me.btnRemoveCom.TabIndex = 9
-        Me.btnRemoveCom.Text = "Remove"
-        Me.btnRemoveCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveCom.UseVisualStyleBackColor = True
+        Me.btnRemoveAudio.Enabled = False
+        Me.btnRemoveAudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveAudio.Image = CType(resources.GetObject("btnRemoveAudio.Image"), System.Drawing.Image)
+        Me.btnRemoveAudio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveAudio.Location = New System.Drawing.Point(220, 261)
+        Me.btnRemoveAudio.Name = "btnRemoveAudio"
+        Me.btnRemoveAudio.Size = New System.Drawing.Size(87, 23)
+        Me.btnRemoveAudio.TabIndex = 9
+        Me.btnRemoveAudio.Text = "Remove"
+        Me.btnRemoveAudio.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveAudio.UseVisualStyleBackColor = True
         '
-        'btnAddCom
+        'btnAddAudio
         '
-        Me.btnAddCom.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddCom.Image = CType(resources.GetObject("btnAddCom.Image"), System.Drawing.Image)
-        Me.btnAddCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddCom.Location = New System.Drawing.Point(127, 261)
-        Me.btnAddCom.Name = "btnAddCom"
-        Me.btnAddCom.Size = New System.Drawing.Size(87, 23)
-        Me.btnAddCom.TabIndex = 11
-        Me.btnAddCom.Text = "Add"
-        Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddCom.UseVisualStyleBackColor = True
+        Me.btnAddAudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddAudio.Image = CType(resources.GetObject("btnAddAudio.Image"), System.Drawing.Image)
+        Me.btnAddAudio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddAudio.Location = New System.Drawing.Point(127, 261)
+        Me.btnAddAudio.Name = "btnAddAudio"
+        Me.btnAddAudio.Size = New System.Drawing.Size(87, 23)
+        Me.btnAddAudio.TabIndex = 11
+        Me.btnAddAudio.Text = "Add"
+        Me.btnAddAudio.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddAudio.UseVisualStyleBackColor = True
         '
         'dgvAudio
         '
@@ -197,9 +191,6 @@ Partial Class frmAVCodecEditor
         '
         'Codec
         '
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
-        Me.Codec.DefaultCellStyle = DataGridViewCellStyle3
         Me.Codec.FillWeight = 130.0!
         Me.Codec.HeaderText = "Mediainfo Codec"
         Me.Codec.Name = "Codec"
@@ -207,13 +198,12 @@ Partial Class frmAVCodecEditor
         '
         'DataGridViewComboBoxColumn1
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle2
         Me.DataGridViewComboBoxColumn1.FillWeight = 150.0!
-        Me.DataGridViewComboBoxColumn1.HeaderText = "Maped Codec"
+        Me.DataGridViewComboBoxColumn1.HeaderText = "Mapped Codec"
         Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
         Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.DataGridViewComboBoxColumn1.Width = 150
         '
         'frmAVCodecEditor
@@ -238,12 +228,12 @@ Partial Class frmAVCodecEditor
     End Sub
     Friend WithEvents pnlGenres As System.Windows.Forms.Panel
     Friend WithEvents dgvAudio As System.Windows.Forms.DataGridView
-    Friend WithEvents btnRemoveCom As System.Windows.Forms.Button
-    Friend WithEvents btnAddCom As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveAudio As System.Windows.Forms.Button
+    Friend WithEvents btnAddAudio As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveVideo As System.Windows.Forms.Button
+    Friend WithEvents btnAddVideo As System.Windows.Forms.Button
     Friend WithEvents dgvVideo As System.Windows.Forms.DataGridView
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
