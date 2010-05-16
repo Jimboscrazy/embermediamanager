@@ -1254,6 +1254,7 @@ Public Class frmMain
                     End If
                 Else
                     Master.tmpMovie = DBScrapeMovie.Movie
+                    Args.scrapeType = Enums.ScrapeType.None
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
