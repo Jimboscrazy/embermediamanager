@@ -69,7 +69,7 @@ Partial Class frmGenresEditor
         Me.btnRemoveGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveGenre.Image = CType(resources.GetObject("btnRemoveGenre.Image"), System.Drawing.Image)
         Me.btnRemoveGenre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveGenre.Location = New System.Drawing.Point(122, 246)
+        Me.btnRemoveGenre.Location = New System.Drawing.Point(114, 248)
         Me.btnRemoveGenre.Name = "btnRemoveGenre"
         Me.btnRemoveGenre.Size = New System.Drawing.Size(72, 23)
         Me.btnRemoveGenre.TabIndex = 41
@@ -82,7 +82,7 @@ Partial Class frmGenresEditor
         Me.btnAddGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddGenre.Image = CType(resources.GetObject("btnAddGenre.Image"), System.Drawing.Image)
         Me.btnAddGenre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddGenre.Location = New System.Drawing.Point(30, 246)
+        Me.btnAddGenre.Location = New System.Drawing.Point(22, 248)
         Me.btnAddGenre.Name = "btnAddGenre"
         Me.btnAddGenre.Size = New System.Drawing.Size(72, 23)
         Me.btnAddGenre.TabIndex = 42
@@ -96,7 +96,7 @@ Partial Class frmGenresEditor
         Me.btnRemoveLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveLang.Image = CType(resources.GetObject("btnRemoveLang.Image"), System.Drawing.Image)
         Me.btnRemoveLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveLang.Location = New System.Drawing.Point(334, 246)
+        Me.btnRemoveLang.Location = New System.Drawing.Point(331, 248)
         Me.btnRemoveLang.Name = "btnRemoveLang"
         Me.btnRemoveLang.Size = New System.Drawing.Size(72, 23)
         Me.btnRemoveLang.TabIndex = 39
@@ -109,7 +109,7 @@ Partial Class frmGenresEditor
         Me.btnAddLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddLang.Image = CType(resources.GetObject("btnAddLang.Image"), System.Drawing.Image)
         Me.btnAddLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddLang.Location = New System.Drawing.Point(242, 246)
+        Me.btnAddLang.Location = New System.Drawing.Point(239, 248)
         Me.btnAddLang.Name = "btnAddLang"
         Me.btnAddLang.Size = New System.Drawing.Size(72, 23)
         Me.btnAddLang.TabIndex = 40
@@ -121,14 +121,14 @@ Partial Class frmGenresEditor
         '
         Me.cbLangs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLangs.FormattingEnabled = True
-        Me.cbLangs.Location = New System.Drawing.Point(16, 23)
+        Me.cbLangs.Location = New System.Drawing.Point(8, 25)
         Me.cbLangs.Name = "cbLangs"
         Me.cbLangs.Size = New System.Drawing.Size(188, 21)
         Me.cbLangs.TabIndex = 38
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(17, 7)
+        Me.Label1.Location = New System.Drawing.Point(9, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(90, 13)
         Me.Label1.TabIndex = 37
@@ -138,7 +138,7 @@ Partial Class frmGenresEditor
         '
         Me.GroupBox1.Controls.Add(Me.btnChangeImg)
         Me.GroupBox1.Controls.Add(Me.pbIcon)
-        Me.GroupBox1.Location = New System.Drawing.Point(431, 47)
+        Me.GroupBox1.Location = New System.Drawing.Point(431, 49)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(180, 195)
         Me.GroupBox1.TabIndex = 30
@@ -149,6 +149,7 @@ Partial Class frmGenresEditor
         '
         Me.btnChangeImg.Enabled = False
         Me.btnChangeImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnChangeImg.Image = Global.multi.EmberExtras.My.Resources.Resources.image
         Me.btnChangeImg.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnChangeImg.Location = New System.Drawing.Point(87, 19)
         Me.btnChangeImg.Name = "btnChangeImg"
@@ -176,7 +177,7 @@ Partial Class frmGenresEditor
         Me.dgvGenres.BackgroundColor = System.Drawing.Color.White
         Me.dgvGenres.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvGenres.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.searchstring})
-        Me.dgvGenres.Location = New System.Drawing.Point(15, 50)
+        Me.dgvGenres.Location = New System.Drawing.Point(7, 52)
         Me.dgvGenres.MultiSelect = False
         Me.dgvGenres.Name = "dgvGenres"
         Me.dgvGenres.RowHeadersVisible = False
@@ -208,7 +209,7 @@ Partial Class frmGenresEditor
         Me.dgvLang.BackgroundColor = System.Drawing.Color.White
         Me.dgvLang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLang.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.DataGridViewTextBoxColumn1})
-        Me.dgvLang.Location = New System.Drawing.Point(242, 50)
+        Me.dgvLang.Location = New System.Drawing.Point(239, 52)
         Me.dgvLang.MultiSelect = False
         Me.dgvLang.Name = "dgvLang"
         Me.dgvLang.RowHeadersVisible = False

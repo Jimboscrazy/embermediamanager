@@ -63,6 +63,6 @@
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-
+        fMetadata.SaveChanges()
     End Sub
 End Class

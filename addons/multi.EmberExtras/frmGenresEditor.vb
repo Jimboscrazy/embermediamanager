@@ -223,8 +223,7 @@ Public Class frmGenresEditor
         <XmlElement("name")> _
         Public listOfGenres As New List(Of xGenre)
         <XmlElement("default")> _
-        <XmlText()> _
-        Public icon As String
+        Public defaulticon As New xDefaulticon
 
         Public Shared Function Load(ByVal fpath As String) As xGenres
             Dim conf As xGenres = Nothing
@@ -251,6 +250,11 @@ Public Class frmGenresEditor
                 xmlSer.Serialize(xmlSW, Me)
             End Using
         End Sub
+    End Class
+    Class xDefaulticon
+        <XmlText()> _
+       <XmlElement()> _
+       Public icon As String
     End Class
     Class xGenre
         <XmlIgnore()> _

@@ -3,7 +3,7 @@
 Public Class frmAVCodecEditor
     Public Event ModuleSettingsChanged()
 
-    Private DeletedSettings As New List(Of AdvancedSettings.SettingItem)
+    Private DeletedSettings As New List(Of String)
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -44,12 +44,14 @@ Public Class frmAVCodecEditor
 
     Private Sub btnRemoveAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveAudio.Click
         If dgvAudio.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvAudio.Rows(dgvAudio.SelectedCells(0).RowIndex).Tag) Then
+            DeletedSettings.Add(String.Concat("AudioFormatConvert:", dgvAudio.SelectedCells(0).Value.ToString))
             dgvAudio.Rows.RemoveAt(dgvAudio.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
     Private Sub btnRemoveVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveVideo.Click
         If dgvVideo.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvVideo.Rows(dgvVideo.SelectedCells(0).RowIndex).Tag) Then
+            DeletedSettings.Add(String.Concat("VideoFormatConvert:", dgvVideo.SelectedCells(0).Value.ToString))
             dgvVideo.Rows.RemoveAt(dgvVideo.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
@@ -100,6 +102,15 @@ Public Class frmAVCodecEditor
     End Sub
 
     Public Sub SaveChanges()
-
+        For Each s As String In DeletedSettings
+            AdvancedSettings.CleanSetting(s)
+        Next
+        DeletedSettings.Clear()
+        For Each r As DataGridViewRow In dgvAudio.Rows
+            AdvancedSettings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+        Next
+        For Each r As DataGridViewRow In dgvVideo.Rows
+            AdvancedSettings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+        Next
     End Sub
 End Class

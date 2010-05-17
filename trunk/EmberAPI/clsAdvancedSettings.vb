@@ -107,7 +107,7 @@ Public Class AdvancedSettings
         Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
     End Function
 
-    Public Shared Sub CleanSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "")
+    Public Shared Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
