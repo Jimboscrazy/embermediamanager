@@ -11,17 +11,27 @@ Public Class frmAVCodecEditor
         ' Add any initialization after the InitializeComponent() call.
         For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
             Dim i As Integer = dgvAudio.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            dgvAudio.Rows(i).Tag = True
-            dgvAudio.Rows(i).Cells(0).ReadOnly = True
-            'dgvAudio.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-            dgvAudio.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            If Not sett.DefaultValue = String.Empty Then
+                dgvAudio.Rows(i).Tag = True
+                dgvAudio.Rows(i).Cells(0).ReadOnly = True
+                'dgvAudio.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
+                dgvAudio.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            Else
+                dgvAudio.Rows(i).Tag = False
+            End If
+
         Next
         For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
             Dim i As Integer = dgvVideo.Rows.Add(New Object() {sett.Name.Substring(19), sett.Value})
-            dgvVideo.Rows(i).Tag = True
-            dgvVideo.Rows(i).Cells(0).ReadOnly = True
-            'dgvVideo.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
-            dgvVideo.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            If Not sett.DefaultValue = String.Empty Then
+                dgvVideo.Rows(i).Tag = True
+                dgvVideo.Rows(i).Cells(0).ReadOnly = True
+                'dgvVideo.Rows(i).Cells(0).Style.SelectionBackColor = Drawing.Color.White
+                dgvVideo.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+            Else
+                dgvVideo.Rows(i).Tag = False
+            End If
+
         Next
         dgvAudio.ClearSelection()
         dgvVideo.ClearSelection()
@@ -44,14 +54,14 @@ Public Class frmAVCodecEditor
 
     Private Sub btnRemoveAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveAudio.Click
         If dgvAudio.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvAudio.Rows(dgvAudio.SelectedCells(0).RowIndex).Tag) Then
-            DeletedSettings.Add(String.Concat("AudioFormatConvert:", dgvAudio.SelectedCells(0).Value.ToString))
+            DeletedSettings.Add(String.Concat("AudioFormatConvert:", dgvAudio.Rows(dgvAudio.SelectedCells(0).RowIndex).Cells(0).Value.ToString))
             dgvAudio.Rows.RemoveAt(dgvAudio.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
     Private Sub btnRemoveVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveVideo.Click
         If dgvVideo.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvVideo.Rows(dgvVideo.SelectedCells(0).RowIndex).Tag) Then
-            DeletedSettings.Add(String.Concat("VideoFormatConvert:", dgvVideo.SelectedCells(0).Value.ToString))
+            DeletedSettings.Add(String.Concat("VideoFormatConvert:", dgvVideo.Rows(dgvVideo.SelectedCells(0).RowIndex).Cells(0).Value.ToString))
             dgvVideo.Rows.RemoveAt(dgvVideo.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
@@ -103,7 +113,7 @@ Public Class frmAVCodecEditor
 
     Public Sub SaveChanges()
         For Each s As String In DeletedSettings
-            AdvancedSettings.CleanSetting(s)
+            AdvancedSettings.CleanSetting(s, "*EmberAPP")
         Next
         DeletedSettings.Clear()
         For Each r As DataGridViewRow In dgvAudio.Rows
