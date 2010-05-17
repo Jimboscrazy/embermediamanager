@@ -118,6 +118,7 @@ Public Class AdvancedSettings
         Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
         If Not v(0) Is Nothing Then
             _AdvancedSettings.Remove(v(0))
+            If Not _DoNotSave Then Save()
         End If
     End Sub
 
