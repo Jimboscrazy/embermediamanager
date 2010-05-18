@@ -531,6 +531,7 @@ Public Class Enums
         OnMovieFanartSave = 15
         OnMoviePosterDelete = 16
         OnMovieFanartDelete = 17
+        TVImageNaming = 18              ' See TVImageNamingEventType 
     End Enum
 
     Public Enum MovieScraperEventType As Integer
