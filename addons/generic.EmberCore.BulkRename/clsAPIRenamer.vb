@@ -170,7 +170,9 @@ Public Class FileFolderRenamer
                 pattern = pattern.Replace(" ", strCond)
             End If
             nextC = pattern.IndexOf("$?")
-            If nextC > -1 Then
+            Dim strmore As String = String.Empty
+            While nextC > -1
+                'If nextC > -1 Then
                 strBase = pattern.Substring(nextC + 2)
                 pattern = pattern.Substring(0, nextC)
                 If Not strBase = String.Empty Then
@@ -179,13 +181,16 @@ Public Class FileFolderRenamer
                         nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
                         If nextEB > -1 Then
                             strCond = strBase.Substring(nextIB + 1, nextEB)
+                            strmore = strBase.Substring(nextIB + nextEB + 2)
                             strBase = strBase.Substring(0, nextIB)
                             If Not strBase = String.Empty Then pattern = pattern.Replace(strBase, strCond)
                         End If
                     End If
                 End If
-            End If
-
+                'End If
+                pattern = String.Concat(pattern, strmore)
+                nextC = pattern.IndexOf("$?")
+            End While
             pattern = pattern.Replace(":", " -")
             pattern = pattern.Replace("/", String.Empty)
             'pattern = pattern.Replace("\", String.Empty)
