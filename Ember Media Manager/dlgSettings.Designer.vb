@@ -78,7 +78,6 @@ Partial Class dlgSettings
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
         Me.chkClickScrape = New System.Windows.Forms.CheckBox
         Me.chkAskCheckboxScrape = New System.Windows.Forms.CheckBox
-        Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
@@ -102,7 +101,6 @@ Partial Class dlgSettings
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
         Me.rbDashTrailer = New System.Windows.Forms.RadioButton
-        Me.chkVideoTSParent = New System.Windows.Forms.CheckBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
         Me.chkMovieNFO = New System.Windows.Forms.CheckBox
@@ -1224,7 +1222,6 @@ Partial Class dlgSettings
         '
         Me.GroupBox12.Controls.Add(Me.chkClickScrape)
         Me.GroupBox12.Controls.Add(Me.chkAskCheckboxScrape)
-        Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox12.Location = New System.Drawing.Point(6, 7)
@@ -1238,7 +1235,7 @@ Partial Class dlgSettings
         '
         Me.chkClickScrape.AutoSize = True
         Me.chkClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkClickScrape.Location = New System.Drawing.Point(12, 50)
+        Me.chkClickScrape.Location = New System.Drawing.Point(12, 36)
         Me.chkClickScrape.Name = "chkClickScrape"
         Me.chkClickScrape.Size = New System.Drawing.Size(125, 17)
         Me.chkClickScrape.TabIndex = 65
@@ -1249,23 +1246,12 @@ Partial Class dlgSettings
         '
         Me.chkAskCheckboxScrape.AutoSize = True
         Me.chkAskCheckboxScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkAskCheckboxScrape.Location = New System.Drawing.Point(25, 67)
+        Me.chkAskCheckboxScrape.Location = New System.Drawing.Point(25, 56)
         Me.chkAskCheckboxScrape.Name = "chkAskCheckboxScrape"
         Me.chkAskCheckboxScrape.Size = New System.Drawing.Size(127, 17)
         Me.chkAskCheckboxScrape.TabIndex = 64
         Me.chkAskCheckboxScrape.Text = "Ask On Click Scrape"
         Me.chkAskCheckboxScrape.UseVisualStyleBackColor = True
-        '
-        'chkYAMJCompatibleSets
-        '
-        Me.chkYAMJCompatibleSets.AutoSize = True
-        Me.chkYAMJCompatibleSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkYAMJCompatibleSets.Location = New System.Drawing.Point(12, 32)
-        Me.chkYAMJCompatibleSets.Name = "chkYAMJCompatibleSets"
-        Me.chkYAMJCompatibleSets.Size = New System.Drawing.Size(138, 17)
-        Me.chkYAMJCompatibleSets.TabIndex = 63
-        Me.chkYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
-        Me.chkYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'chkMarkNew
         '
@@ -1474,7 +1460,6 @@ Partial Class dlgSettings
         '
         Me.GroupBox8.Controls.Add(Me.chkMovieNameMultiOnly)
         Me.GroupBox8.Controls.Add(Me.GroupBox21)
-        Me.GroupBox8.Controls.Add(Me.chkVideoTSParent)
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
@@ -1533,18 +1518,6 @@ Partial Class dlgSettings
         Me.rbDashTrailer.TabStop = True
         Me.rbDashTrailer.Text = "-trailer"
         Me.rbDashTrailer.UseVisualStyleBackColor = True
-        '
-        'chkVideoTSParent
-        '
-        Me.chkVideoTSParent.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkVideoTSParent.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVideoTSParent.Location = New System.Drawing.Point(195, 22)
-        Me.chkVideoTSParent.Name = "chkVideoTSParent"
-        Me.chkVideoTSParent.Size = New System.Drawing.Size(167, 48)
-        Me.chkVideoTSParent.TabIndex = 1
-        Me.chkVideoTSParent.Text = "YAMJ Compatible VIDEO_TS File Placement/Naming"
-        Me.chkVideoTSParent.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkVideoTSParent.UseVisualStyleBackColor = True
         '
         'GroupBox7
         '
@@ -7056,7 +7029,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
@@ -7073,9 +7045,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -7329,7 +7302,6 @@ Partial Class dlgSettings
     Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents txtAutoThumbs As System.Windows.Forms.TextBox
-    Friend WithEvents chkVideoTSParent As System.Windows.Forms.CheckBox
     Friend WithEvents ilSettings As System.Windows.Forms.ImageList
     Friend WithEvents tvSettings As System.Windows.Forms.TreeView
     Friend WithEvents pnlGeneral As System.Windows.Forms.Panel
@@ -7439,7 +7411,6 @@ Partial Class dlgSettings
     Friend WithEvents cbMovieTheme As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox29 As System.Windows.Forms.GroupBox
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
-    Friend WithEvents chkYAMJCompatibleSets As System.Windows.Forms.CheckBox
     Friend WithEvents pnlTVSources As System.Windows.Forms.Panel
     Friend WithEvents btnEditTVSource As System.Windows.Forms.Button
     Friend WithEvents lvTVSources As System.Windows.Forms.ListView

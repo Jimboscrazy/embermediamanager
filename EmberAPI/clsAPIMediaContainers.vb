@@ -383,7 +383,7 @@ Namespace MediaContainers
         Private _ysets As New SetContainer
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _lev As Integer
-
+        Private _videosource As String
         #End Region 'Fields
 
         #Region "Constructors"
@@ -930,6 +930,23 @@ Namespace MediaContainers
             Set(ByVal value As Integer)
                 Me._lev = value
             End Set
+        End Property
+
+        <XmlElement("videoSource")> _
+        Public Property VideoSource() As String
+            Get
+                Return Me._videoSource
+            End Get
+            Set(ByVal value As String)
+                Me._videosource = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property VideoSourceSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._videoSource)
+            End Get
         End Property
 
         #End Region 'Properties
