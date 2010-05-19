@@ -272,16 +272,18 @@ Public Class dlgSettings
         ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
             tPanel = s.ProcessorModule.InjectSetup
-            tPanel.Order += ModuleCounter
-            If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+            If Not tPanel Is Nothing Then
+                tPanel.Order += ModuleCounter
+                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
+                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
+                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+                End If
+                Me.SettingsPanels.Add(tPanel)
+                ModuleCounter += 1
+                AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
+                AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
-            Me.SettingsPanels.Add(tPanel)
-            ModuleCounter += 1
-            AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
-            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
     End Sub
 

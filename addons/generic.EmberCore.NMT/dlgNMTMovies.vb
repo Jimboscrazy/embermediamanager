@@ -59,6 +59,10 @@ Public Class dlgNMTMovies
     Public Shared dtShows As DataTable = Nothing
 
     Private MoviesGenres As New List(Of String)
+
+    Public Loaded As Boolean = False
+    Public CanBuild As Boolean = False
+
 #End Region 'Fields
 
 
@@ -100,7 +104,12 @@ Public Class dlgNMTMovies
                 End If
             Next
             If cbTemplate.Items.Count > 0 Then
-                cbTemplate.SelectedIndex = 0
+                Dim idx As Integer = cbTemplate.FindStringExact(AdvancedSettings.GetSetting("Template", "***"))
+                If idx >= 0 Then
+                    cbTemplate.SelectedIndex = idx
+                Else
+                    cbTemplate.SelectedIndex = 0
+                End If
             End If
             dgvSources.ShowCellToolTips = True
             For Each s As Structures.MovieSource In Master.MovieSources
@@ -115,13 +124,19 @@ Public Class dlgNMTMovies
                 dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", s.Name), "")
                 dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", s.Name), False)
             Next
-            populateParams()
+            If Not conf Is Nothing Then
+                populateParams()
+                Application.DoEvents()
+                Loaded = True
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Public Sub SaveConfig()
+        AdvancedSettings.SetSetting("Template", cbTemplate.Text)
         AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
         For Each r As NMTExporterModule.Config._Param In conf.Params
             AdvancedSettings.SetSetting(String.Concat("Param.", r.name), r.value)
@@ -137,9 +152,12 @@ Public Class dlgNMTMovies
         Try
             Dim MySelf As New dlgNMTMovies
             MySelf.isCL = True
-            'MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
-            'Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
-            'MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
+            While Not MySelf.Loaded
+                Application.DoEvents()
+            End While
+            If MySelf.CanBuild Then
+                MySelf.DoBuild()
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -983,12 +1001,16 @@ Public Class dlgNMTMovies
     End Structure
 
     Private Sub btnBuild_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBuild.Click
+        DoBuild()
+    End Sub
+    Public Sub DoBuild()
         Me.bexportPosters = If(GetUserParam("ExportPosters", "true").ToLower = "true", True, False)
         Me.bexportBackDrops = If(GetUserParam("ExportBackdrops", "true").ToLower = "true", True, False)
         Me.bexportFlags = If(GetUserParam("ExportFlags", "true").ToLower = "true", True, False)
         cbTemplate.Enabled = False
         txtOutputFolder.Enabled = False
         btnBuild.Enabled = False
+        CanBuild = False
         dgvSettings.Enabled = False
         dgvSources.Enabled = False
         pbCompile.Maximum = dtMovieMedia.Rows.Count + If(bexportPosters, dtMovieMedia.Rows.Count, 0) + If(bexportBackDrops, dtMovieMedia.Rows.Count, 0)
@@ -1038,6 +1060,7 @@ Public Class dlgNMTMovies
         cbTemplate.Enabled = True
         txtOutputFolder.Enabled = True
         btnBuild.Enabled = True
+        CanBuild = True
         dgvSettings.Enabled = True
         dgvSources.Enabled = True
     End Sub
@@ -1145,10 +1168,12 @@ Public Class dlgNMTMovies
                 selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
             End If
         Next
-        If selectedSources.Count > 0 AndAlso Directory.Exists(txtOutputFolder.Text) Then
+        If Not conf Is Nothing AndAlso selectedSources.Count > 0 AndAlso Directory.Exists(txtOutputFolder.Text) Then
             btnBuild.Enabled = True
+            CanBuild = True
         Else
             btnBuild.Enabled = False
+            CanBuild = False
         End If
     End Sub
 

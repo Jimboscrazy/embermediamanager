@@ -80,5 +80,12 @@ Namespace My.Resources
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
+        
+        Friend ReadOnly Property yamj() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("yamj", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
     End Module
 End Namespace

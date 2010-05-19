@@ -91,6 +91,9 @@ Public Class NMTExporterModule
                 Case Enums.ModuleEventType.MovieSync
                     movie = DirectCast(_refparam, Structures.DBMovie)
                     dlgNMTMovies.dtMovieMedia = Nothing
+                    ' TODO
+                Case Enums.ModuleEventType.CL_MovieExporter
+                    dlgNMTMovies.ExportSingle()
             End Select
         Catch ex As Exception
         End Try

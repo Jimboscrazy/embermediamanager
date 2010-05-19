@@ -587,7 +587,7 @@ Public Class frmMainSetup
             e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
         Next
         SlowDown += 1
-        If SlowDown > 5 Then
+        If SlowDown > 2 Then
             PicY -= 1
             SlowDown = 0
         End If
@@ -1447,18 +1447,25 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "__________Project Coders__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        'CredList.Add(New CredLine With {.Text = "_______Project Main Coders________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Jason ""nul7"" Schnitzler"})
         CredList.Add(New CredLine With {.Text = "Nuno ""Zordor"" Novais"})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
-        CredList.Add(New CredLine With {.Text = "__________Project Manager_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        'CredList.Add(New CredLine With {.Text = "__________Project Manager_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "___QA/Documentation Coordinator___", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Bence ""olympia"" Nádas"})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
+        'CredList.Add(New CredLine With {.Text = "__________Project Coders__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        'CredList.Add(New CredLine With {.Text = String.Empty})
+        'CredList.Add(New CredLine With {.Text = String.Empty})
+        'CredList.Add(New CredLine With {.Text = String.Empty})
+        'CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "___________Beta Testers___________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Tristan ""sphere"" Fischer"})
