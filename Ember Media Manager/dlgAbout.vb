@@ -65,7 +65,7 @@ Public NotInheritable Class dlgAbout
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or _
                  ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
 
-        CredList.Add(New CredLine With {.Text = String.Concat("Ember Media Manager v", Master.MajorVersion.ToString), .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = String.Concat("Ember Media Manager v", Master.MajorVersion.ToString.Replace(",", ".")), .Font = New Font("Microsoft Sans Serif", 18, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Format("Revision: {0}", My.Application.Info.Version.Revision), .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = My.Application.Info.Description, .Font = New Font("Microsoft Sans Serif", 8, FontStyle.Bold)})
@@ -84,8 +84,8 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
-        CredList.Add(New CredLine With {.Text = "__________Project Manager_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
-        'CredList.Add(New CredLine With {.Text = "___QA/Documentation Coordinator___", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        'CredList.Add(New CredLine With {.Text = "__________Project Manager_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "___QA/Documentation Coordinator___", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Bence ""olympia"" Nádas"})
         CredList.Add(New CredLine With {.Text = String.Empty})
@@ -93,7 +93,6 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = String.Empty})
         'CredList.Add(New CredLine With {.Text = "__________Project Coders__________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         'CredList.Add(New CredLine With {.Text = String.Empty})
-        '* CredList.Add(New CredLine With {.Text = "Jeremy ""Jem"" Worboys"})
         'CredList.Add(New CredLine With {.Text = String.Empty})
         'CredList.Add(New CredLine With {.Text = String.Empty})
         'CredList.Add(New CredLine With {.Text = String.Empty})
