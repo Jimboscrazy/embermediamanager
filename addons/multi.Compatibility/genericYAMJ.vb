@@ -32,6 +32,11 @@ Public Class genericYAMJ
         Dim SPanel As New Containers.SettingsPanel
         Me.fYAMJ = New frmYAMJ
         Me.fYAMJ.chkEnabled.Checked = Me._enabled
+        Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+        Me.fYAMJ.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
+        Me.fYAMJ.chkYAMJCompatibleTVImages.Checked = AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False)
+        Me.fYAMJ.chkYAMJnfoFields.Checked = AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False)
+        'chkYAMJnfoFields
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(101, "YAMJ Compatibility")
         SPanel.Prefix = "YAMJ_"
@@ -42,8 +47,8 @@ Public Class genericYAMJ
         AddHandler Me.fYAMJ.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler fYAMJ.ModuleEnabledChanged, AddressOf Handle_SetupChanged
 
-        'Return SPanel
-        Return Nothing
+        Return SPanel
+        'Return Nothing
     End Function
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
@@ -63,7 +68,7 @@ Public Class genericYAMJ
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.TVImageNaming})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.TVImageNaming, Enums.ModuleEventType.OnMovieNFOSave})
         End Get
     End Property
 
@@ -75,6 +80,10 @@ Public Class genericYAMJ
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fYAMJ.chkEnabled.Checked
+        Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
+        Master.eSettings.YAMJSetsCompatible = Me.fYAMJ.chkYAMJCompatibleSets.Checked
+        AdvancedSettings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
+        AdvancedSettings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
     End Sub
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
@@ -82,35 +91,45 @@ Public Class genericYAMJ
         Dim mShow As Structures.DBTV
         Dim imageList As List(Of String)
         Dim doContinue As Boolean
+        Dim mMovie As Structures.DBMovie
         If Enabled Then
             Select Case mType
                 Case Enums.ModuleEventType.TVImageNaming
-                    iType = DirectCast(_params(0), Enums.TVImageType)
-                    mShow = DirectCast(_params(1), Structures.DBTV)
-                    imageList = DirectCast(_params(2), List(Of String))
-                    doContinue = DirectCast(_refparam, Boolean)
-                    Dim tPath As String = String.Empty
-                    Select Case iType
-                        Case Enums.TVImageType.AllSeasonPoster
-                        Case Enums.TVImageType.EpisodePoster
-                        Case Enums.TVImageType.EpisodeFanart
-                        Case Enums.TVImageType.SeasonPoster
-                        Case Enums.TVImageType.SeasonFanart
-                        Case Enums.TVImageType.ShowPoster
-                        Case Enums.TVImageType.ShowFanart
-                            Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
-                            If Not String.IsNullOrEmpty(seasonPath) Then
-                                tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-                                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteShowFanart Then
-                                    imageList.Add(tPath)
-                                    'SET_<show>_1.fanart.jpg
+                    If AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False) Then
+                        iType = DirectCast(_params(0), Enums.TVImageType)
+                        mShow = DirectCast(_params(1), Structures.DBTV)
+                        imageList = DirectCast(_params(2), List(Of String))
+                        doContinue = DirectCast(_refparam, Boolean)
+                        Dim tPath As String = String.Empty
+                        Select Case iType
+                            Case Enums.TVImageType.AllSeasonPoster
+                            Case Enums.TVImageType.EpisodePoster
+                            Case Enums.TVImageType.EpisodeFanart
+                            Case Enums.TVImageType.SeasonPoster
+                            Case Enums.TVImageType.SeasonFanart
+                            Case Enums.TVImageType.ShowPoster
+                            Case Enums.TVImageType.ShowFanart
+                                Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                If Not String.IsNullOrEmpty(seasonPath) Then
+                                    tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                    tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                    If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteShowFanart Then
+                                        imageList.Add(tPath)
+                                        'SET_<show>_1.fanart.jpg
+                                    End If
                                 End If
-                            End If
-                    End Select
+                        End Select
+                    End If
+                Case Enums.ModuleEventType.OnMovieNFOSave
+                    mMovie = DirectCast(_params(0), Structures.DBMovie)
+                    doContinue = DirectCast(_refparam, Boolean)
+                    If AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False) Then
+                        mMovie.Movie.VideoSource = APIXML.GetFileSource(mMovie.Filename.ToLower)
+                    Else
+                        mMovie.Movie.VideoSource = String.Empty
+                    End If
             End Select
         End If
-
     End Function
 
 

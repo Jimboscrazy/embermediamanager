@@ -2003,7 +2003,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
+    Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
         Me.sResult.NeedsUpdate = True
     End Sub
@@ -2020,7 +2020,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged
+    Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2136,7 +2136,7 @@ Public Class dlgSettings
             Me.chkWhitelistVideo.Checked = Master.eSettings.CleanWhitelistVideo
             Me.lstWhitelist.Items.AddRange(Master.eSettings.CleanWhitelistExts.ToArray)
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
-            Me.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
+            'Me.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
@@ -2222,7 +2222,7 @@ Public Class dlgSettings
             Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
             Me.rbDashTrailer.Checked = Master.eSettings.DashTrailer
             Me.rbBracketTrailer.Checked = Not Master.eSettings.DashTrailer
-            Me.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+            'Me.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
             Me.chkLockPlot.Checked = Master.eSettings.LockPlot
             Me.chkLockOutline.Checked = Master.eSettings.LockOutline
             Me.chkLockTitle.Checked = Master.eSettings.LockTitle
@@ -3221,7 +3221,7 @@ Public Class dlgSettings
             Master.eSettings.NoStackExts.AddRange(lstNoStack.Items.OfType(Of String).ToList)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
-            Master.eSettings.YAMJSetsCompatible = chkYAMJCompatibleSets.Checked
+            'Master.eSettings.YAMJSetsCompatible = chkYAMJCompatibleSets.Checked
             Master.eSettings.CertificationLang = Me.cbCert.Text
             If Not String.IsNullOrEmpty(Me.cbCert.Text) Then
                 Master.eSettings.UseCertForMPAA = Me.chkUseCertForMPAA.Checked
@@ -3296,7 +3296,7 @@ Public Class dlgSettings
             Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
             Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
             Master.eSettings.DashTrailer = Me.rbDashTrailer.Checked
-            Master.eSettings.VideoTSParent = Me.chkVideoTSParent.Checked
+            'Master.eSettings.VideoTSParent = Me.chkVideoTSParent.Checked
             Master.eSettings.LockPlot = Me.chkLockPlot.Checked
             Master.eSettings.LockOutline = Me.chkLockOutline.Checked
             Master.eSettings.LockTitle = Me.chkLockTitle.Checked
@@ -3663,7 +3663,7 @@ Public Class dlgSettings
         Me.gbTVNaming.Text = Me.GroupBox8.Text
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.GroupBox21.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
+        'Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
         Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
         Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -3825,7 +3825,7 @@ Public Class dlgSettings
         Me.Label49.Text = Me.Label34.Text
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
-        Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
+        'Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
         Me.chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         Me.chkTVCleanDB.Text = Me.chkCleanDB.Text
         Me.chkIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")

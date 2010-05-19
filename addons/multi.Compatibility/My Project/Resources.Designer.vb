@@ -60,27 +60,6 @@ Namespace My.Resources
             End Set
         End Property
         
-        Friend ReadOnly Property GenresEditor() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("GenresEditor", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property image() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("image", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property MetadataEditor() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("MetadataEditor", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property yamj() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("yamj", resourceCulture)

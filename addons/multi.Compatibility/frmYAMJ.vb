@@ -27,7 +27,7 @@ Public Class frmYAMJ
 
 #End Region 'Events
 
-#Region "Methods"
+
 
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
@@ -40,14 +40,45 @@ Public Class frmYAMJ
     End Sub
 
     Private Sub SetUp()
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        'Me.chkOnError.Text = Master.eLang.GetString(1, "On Error")
-        'Me.chkOnNewMovie.Text = Master.eLang.GetString(2, "On New Movie Added")
-        'Me.chkOnMovieScraped.Text = Master.eLang.GetString(3, "On Movie Scraped")
-        'Me.chkOnNewEp.Text = Master.eLang.GetString(4, "On New Episode Added")
-
+        'Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        'Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
+        'Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
     End Sub
 
-#End Region 'Methods
 
+    Sub CheckAnyEnabled()
+        If chkVideoTSParent.Checked OrElse chkYAMJCompatibleSets.Checked OrElse chkYAMJCompatibleTVImages.Checked _
+            OrElse chkYAMJnfoFields.Checked Then
+            chkEnabled.Checked = True
+        Else
+            chkEnabled.Checked = False
+        End If
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
+    End Sub
+
+    Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
+        CheckAnyEnabled()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged
+        CheckAnyEnabled()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkYAMJCompatibleTVSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleTVImages.CheckedChanged
+        CheckAnyEnabled()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnCheckAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCheckAll.Click
+        chkVideoTSParent.Checked = True
+        chkYAMJCompatibleSets.Checked = True
+        chkYAMJCompatibleTVImages.Checked = True
+    End Sub
+
+    Private Sub chkYAMJnfoFields_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJnfoFields.CheckedChanged
+        CheckAnyEnabled()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 End Class

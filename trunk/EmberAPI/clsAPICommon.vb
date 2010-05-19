@@ -488,12 +488,6 @@ Public Class Enums
         Small = 2
     End Enum
 
-    Public Enum ImageType As Integer
-        Posters = 0
-        Fanart = 1
-        ASPoster = 2
-    End Enum
-
     Public Enum ModType As Integer
         NFO = 0
         Poster = 1
@@ -531,7 +525,8 @@ Public Class Enums
         OnMovieFanartSave = 15
         OnMoviePosterDelete = 16
         OnMovieFanartDelete = 17
-        TVImageNaming = 18              ' See TVImageNamingEventType 
+        TVImageNaming = 18
+        MovieImageNaming = 19
     End Enum
 
     Public Enum MovieScraperEventType As Integer
@@ -601,6 +596,12 @@ Public Class Enums
         HQFLV = 3
         SQFLV = 4
         OTHERS = 5
+    End Enum
+
+    Public Enum ImageType As Integer
+        Posters = 0
+        Fanart = 1
+        ASPoster = 2
     End Enum
 
     Public Enum TVImageType As Integer
