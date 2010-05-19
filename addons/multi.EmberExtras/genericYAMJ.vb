@@ -1,4 +1,6 @@
-﻿Public Class genericYAMJ
+﻿Imports System.IO
+
+Public Class genericYAMJ
     Implements Interfaces.EmberExternalModule
 
     Private fYAMJ As frmYAMJ
@@ -61,7 +63,7 @@
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.TVImageNaming})
         End Get
     End Property
 
@@ -71,11 +73,45 @@
         End Get
     End Property
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-
-    End Function
-
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fYAMJ.chkEnabled.Checked
     End Sub
+
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+        Dim iType As Enums.TVImageType
+        Dim mShow As Structures.DBTV
+        Dim imageList As List(Of String)
+        Dim doContinue As Boolean
+        If Enabled Then
+            Select Case mType
+                Case Enums.ModuleEventType.TVImageNaming
+                    iType = DirectCast(_params(0), Enums.TVImageType)
+                    mShow = DirectCast(_params(1), Structures.DBTV)
+                    imageList = DirectCast(_params(2), List(Of String))
+                    doContinue = DirectCast(_refparam, Boolean)
+                    Dim tPath As String = String.Empty
+                    Select Case iType
+                        Case Enums.TVImageType.AllSeasonPoster
+                        Case Enums.TVImageType.EpisodePoster
+                        Case Enums.TVImageType.EpisodeFanart
+                        Case Enums.TVImageType.SeasonPoster
+                        Case Enums.TVImageType.SeasonFanart
+                        Case Enums.TVImageType.ShowPoster
+                        Case Enums.TVImageType.ShowFanart
+                            Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                            If Not String.IsNullOrEmpty(seasonPath) Then
+                                tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteShowFanart Then
+                                    imageList.Add(tPath)
+                                    'SET_<show>_1.fanart.jpg
+                                End If
+                            End If
+                    End Select
+            End Select
+        End If
+
+    End Function
+
+
 End Class
