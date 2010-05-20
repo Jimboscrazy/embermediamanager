@@ -351,10 +351,10 @@ Public Class dlgNMTMovies
             Next
             HTMLTVBody.Append(tvfooter)
             'HTMLTVBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
-            If Not Me.isCL Then
-                DontSaveExtra = False
-                'Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
-            End If
+
+            DontSaveExtra = False
+            'Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

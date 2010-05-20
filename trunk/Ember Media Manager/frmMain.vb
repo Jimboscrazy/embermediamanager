@@ -5335,7 +5335,7 @@ doCancel:
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-        If isCL Then
+        If isCL Then ' Command Line
             Try
                 Dim MoviePath As String = String.Empty
                 Dim isSingle As Boolean = False
@@ -5457,7 +5457,7 @@ doCancel:
                     fLoading.pbLoading.Style = ProgressBarStyle.Marquee
                     fLoading.SetStage("Running Module...")
                     Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
-                    If Not gModule Is Nothing Then
+                    If Not IsNothing(gModule) Then
                         gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
                     End If
                 End If
@@ -5495,7 +5495,7 @@ doCancel:
                                 Else
                                     tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                                 End If
-                                If Master.currMovie.Movie Is Nothing Then
+                                If IsNothing(Master.currMovie.Movie) Then
                                     Master.currMovie.Movie = New MediaContainers.Movie
                                     Master.currMovie.Movie.Title = tmpTitle
                                     Dim sFile As New Scanner.MovieContainer
@@ -5569,7 +5569,7 @@ doCancel:
             Catch ex As Exception
             End Try
 
-        Else
+        Else 'Regular Run (GUI)
             Try
                 If Master.eSettings.CheckUpdates Then
                     If Functions.CheckNeedUpdate() Then
