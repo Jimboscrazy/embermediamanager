@@ -727,6 +727,7 @@ Public Class frmMainSetup
                         '###################################################################################
                         'At this point it have current a new file list and all commands
                         'Need to mark files changed by user, and download all new (hash based) files
+                        Dim skipFiles As String() = {"\Images\Genres\Genres.xml", "\Bin\MediaInfo.dll"}
                         If bwDoInstall.CancellationPending Then Return False
                         If Not CurrentEmberVersion = String.Empty Then
                             Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(13, "Checking Installed Files")})
@@ -767,6 +768,10 @@ Public Class frmMainSetup
                             If (curr_hash = f.Hash AndAlso Not f.NeedBackup) OrElse (f.Hash = hash) Then
                                 f.NeedInstall = False
                             End If
+                            If (File.Exists(fpath) AndAlso skipFiles.Contains(String.Concat(f.Path, "\", f.Filename))) And Not Force Then
+                                f.NeedInstall = False
+                            End If
+
                             Dim cachefile As String = Path.Combine(Path.GetDirectoryName(emberPath), String.Format(String.Concat("updates", Path.DirectorySeparatorChar, "{0}.emm"), f.Hash))
                             If File.Exists(cachefile) Then
                                 If GetHash(cachefile) = f.Hash Then
