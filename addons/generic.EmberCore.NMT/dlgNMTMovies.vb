@@ -376,8 +376,8 @@ Public Class dlgNMTMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim ThumbsPath As String = GetUserParam("TVThumbsPath", "TVThumbs/")
-            Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
+            Dim ThumbsPath As String = GetUserParam("ThumbsPath", "Thumbs/")
+            Dim BackdropPath As String = GetUserParam("BackdropPath", "Thumbs/")
             Dim uni As New UnicodeEncoding()
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curMovie.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curMovie.Item("Source").ToString)), selectedSources(_curMovie.Item("Source").ToString).ToString)
             Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curMovie.Item("Source").ToString).Path
