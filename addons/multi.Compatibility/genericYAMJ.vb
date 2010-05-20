@@ -94,7 +94,6 @@ Public Class genericYAMJ
         Dim mMovie As Structures.DBMovie
         If Enabled Then
             Try
-
                 Select Case mType
                     Case Enums.ModuleEventType.TVImageNaming
                         If AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False) Then
@@ -107,23 +106,11 @@ Public Class genericYAMJ
                                 Case Enums.TVImageType.AllSeasonPoster
                                 Case Enums.TVImageType.EpisodePoster
                                     tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage.jpg")
-                                    If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteEpPoster Then
-                                        imageList.Add(tPath)
-                                    End If
+                                    imageList.Add(tPath)
                                 Case Enums.TVImageType.EpisodeFanart
                                 Case Enums.TVImageType.SeasonPoster
                                 Case Enums.TVImageType.SeasonFanart
                                 Case Enums.TVImageType.ShowPoster
-                                    Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
-                                    If Not String.IsNullOrEmpty(seasonPath) Then
-                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-                                        If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteShowPoster Then
-                                            imageList.Add(tPath)
-                                            'SET_<show>_1.jpg
-                                        End If
-                                    End If
-                                Case Enums.TVImageType.ShowFanart
                                     Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
                                     If String.IsNullOrEmpty(seasonPath) Then
                                         Dim dtSeasons As New DataTable
@@ -132,14 +119,23 @@ Public Class genericYAMJ
                                             seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                                         End If
                                     End If
-                                    If String.IsNullOrEmpty(seasonPath) Then
+                                    If Not String.IsNullOrEmpty(seasonPath) Then
                                         tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
-                                        If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteShowFanart Then
-                                            imageList.Add(tPath)
-                                            'SET_<show>_1.fanart.jpg
-                                        End If
+                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                        imageList.Add(tPath)
+                                        'SET_<show>_1.jpg
                                     End If
+                                Case Enums.TVImageType.ShowFanart
+                                    Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                    If String.IsNullOrEmpty(seasonPath) Then
+                                        Dim dtSeasons As New DataTable
+                                        Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT Season FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                        seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                    End If
+                                    tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                    tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
+                                    imageList.Add(tPath)
+                                    'SET_<show>_1.fanart.jpg
                             End Select
                         End If
                     Case Enums.ModuleEventType.OnMovieNFOSave
@@ -152,6 +148,7 @@ Public Class genericYAMJ
                         End If
                 End Select
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
     End Function

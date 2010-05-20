@@ -62,7 +62,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Build\x86\Debug\</OutputPath>
+    <OutputPath>..\..\Build\x86\Debug\Modules\</OutputPath>
     <DocumentationFile>multi.Compatibility.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
