@@ -75,6 +75,7 @@ Public Class frmYAMJ
         chkVideoTSParent.Checked = True
         chkYAMJCompatibleSets.Checked = True
         chkYAMJCompatibleTVImages.Checked = True
+        chkYAMJnfoFields.Checked = True
     End Sub
 
     Private Sub chkYAMJnfoFields_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJnfoFields.CheckedChanged

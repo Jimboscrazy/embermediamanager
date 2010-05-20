@@ -18,6 +18,7 @@ Public Class frmGenresEditor
 
     Public Sub SaveChanges()
         xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
     End Sub
 
 
@@ -59,6 +60,19 @@ Public Class frmGenresEditor
         For Each r As DataGridViewRow In dgvLang.Rows
             r.Cells(0).Value = False
         Next
+    End Sub
+
+    Private Sub dgvGenres_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvGenres.CurrentCellDirtyStateChanged
+        Try
+            Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
+            If Not g Is Nothing Then
+                dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                g.searchstring = dgvGenres.CurrentRow.Cells(0).Value.ToString
+                RaiseEvent ModuleSettingsChanged()
+            End If
+        Catch ex As Exception
+        End Try
+
     End Sub
     Private Sub dgvGenres_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvGenres.KeyDown
         e.Handled = (e.KeyCode = Keys.Enter)
@@ -268,6 +282,5 @@ Public Class frmGenresEditor
         Public icon As String
     End Class
 #End Region 'Nested Types
-
 
 End Class
