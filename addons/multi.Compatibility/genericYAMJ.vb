@@ -114,28 +114,33 @@ Public Class genericYAMJ
                                     Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
                                     If String.IsNullOrEmpty(seasonPath) Then
                                         Dim dtSeasons As New DataTable
-                                        Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT Season FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                        Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
                                         If dtSeasons.Rows.Count > 0 Then
                                             seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                                         End If
                                     End If
-                                    If Not String.IsNullOrEmpty(seasonPath) Then
-                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-                                        imageList.Add(tPath)
-                                        'SET_<show>_1.jpg
-                                    End If
+
+                                    tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                    tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                    imageList.Add(tPath)
+                                    'SET_<show>_1.jpg
+
                                 Case Enums.TVImageType.ShowFanart
                                     Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
                                     If String.IsNullOrEmpty(seasonPath) Then
                                         Dim dtSeasons As New DataTable
-                                        Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT Season FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-                                        seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                        Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                        If dtSeasons.Rows.Count > 0 Then
+                                            seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                        End If
                                     End If
+
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
                                     imageList.Add(tPath)
                                     'SET_<show>_1.fanart.jpg
+
+
                             End Select
                         End If
                     Case Enums.ModuleEventType.OnMovieNFOSave

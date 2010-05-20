@@ -5346,6 +5346,8 @@ doCancel:
                 Dim clExportTemplate As String = "template"
                 Dim clAsk As Boolean = False
                 Dim nowindow As Boolean = False
+                Dim RunModule As Boolean = False
+                Dim ModuleName As String = String.Empty
                 For i As Integer = 1 To Args.Count - 1
 
                     Select Case Args(i).ToLower
@@ -5430,23 +5432,40 @@ doCancel:
                             clAsk = True
                         Case "-nowindow"
                             nowindow = True
+                        Case "-run"
+                            If Args.Count - 1 > i Then
+                                ModuleName = Args(i + 1).Replace("""", String.Empty)
+                                RunModule = True
+                            Else
+                                Exit For
+                            End If
                         Case Else
                             'If File.Exists(Args(2).Replace("""", String.Empty)) Then
                             'MoviePath = Args(2).Replace("""", String.Empty)
                             'End If
                     End Select
                 Next
+                If nowindow Then fLoading.Visible = False
                 APIXML.CacheXMLs()
                 fLoading.SetStage("Loading database...")
                 If Master.DB.CheckEssentials() Then
                     Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
                 End If
-
+                Master.DB.LoadMovieSourcesFromDB()
+                Master.DB.LoadTVSourcesFromDB()
+                If RunModule Then
+                    fLoading.pbLoading.Style = ProgressBarStyle.Marquee
+                    fLoading.SetStage("Running Module...")
+                    Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
+                    If Not gModule Is Nothing Then
+                        gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
+                    End If
+                End If
                 If clExport = True Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CL_MovieExporter, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
                     'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
                 End If
-                If nowindow Then fLoading.Visible = False
+
                 If Not IsNothing(clScrapeType) Then
                     Me.cmnuTrayIconExit.Enabled = True
                     Me.cmnuTrayIcon.Enabled = True

@@ -127,9 +127,9 @@ Public Class dlgNMTMovies
             If Not conf Is Nothing Then
                 populateParams()
                 Application.DoEvents()
-                Loaded = True
             End If
-
+            Loaded = True
+            btnSave.Enabled = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -155,6 +155,7 @@ Public Class dlgNMTMovies
             While Not MySelf.Loaded
                 Application.DoEvents()
             End While
+            Application.DoEvents()
             If MySelf.CanBuild Then
                 MySelf.DoBuild()
             End If
@@ -274,10 +275,9 @@ Public Class dlgNMTMovies
             Next
             HTMLMovieBody.Append(moviefooter)
             HTMLMovieBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
-            If Not Me.isCL Then
-                DontSaveExtra = False
-                Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
-            End If
+            DontSaveExtra = False
+            Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -738,7 +738,7 @@ Public Class dlgNMTMovies
 
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
-        btnSave.Enabled = False
+
     End Sub
 
     Private Sub populateParams()
@@ -1175,6 +1175,7 @@ Public Class dlgNMTMovies
             btnBuild.Enabled = False
             CanBuild = False
         End If
+
     End Sub
 
     Private Sub txtOutputFolder_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseHover
@@ -1216,7 +1217,12 @@ Public Class dlgNMTMovies
         lblHelpa.Text = ""
     End Sub
     Private Sub lblTemplateInfo_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseHover
-        lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), conf.Author, String.Empty)
+        lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), String.Concat("Author ", conf.Author), String.Empty)
+        If conf.ReadMe AndAlso File.Exists(Path.Combine(conf.TemplatePath, "readme.txt")) Then
+            Dim readme As String = File.ReadAllText(Path.Combine(conf.TemplatePath, "readme.txt"))
+            lblHelpa.Text = String.Concat(lblHelpa.Text, vbCrLf, readme)
+        End If
+
     End Sub
 
     Private Sub lblTemplateInfo_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseLeave
@@ -1237,5 +1243,6 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 #End Region 'Methods
+
 
 End Class

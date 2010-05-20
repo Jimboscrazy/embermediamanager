@@ -92,7 +92,7 @@ Public Class NMTExporterModule
                     movie = DirectCast(_refparam, Structures.DBMovie)
                     dlgNMTMovies.dtMovieMedia = Nothing
                     ' TODO
-                Case Enums.ModuleEventType.CL_MovieExporter
+                Case Enums.ModuleEventType.CommandLine
                     dlgNMTMovies.ExportSingle()
             End Select
         Catch ex As Exception
@@ -214,8 +214,10 @@ Public Class NMTExporterModule
                 Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
                     conf = DirectCast(xmlSer.Deserialize(xmlSW), Config)
                 End Using
+                conf.TemplatePath = Path.GetDirectoryName(fpath)
                 conf.Version = If(String.IsNullOrEmpty(conf.Version), String.Empty, conf.Version)
                 conf.Author = If(String.IsNullOrEmpty(conf.Author), String.Empty, conf.Author)
+                conf.ReadMe = File.Exists(Path.Combine(conf.TemplatePath, "readme.txt"))
             Catch ex As Exception
             End Try
             Return conf
