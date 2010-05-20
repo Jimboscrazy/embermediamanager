@@ -38,7 +38,7 @@ Public Class genericYAMJ
         Me.fYAMJ.chkYAMJnfoFields.Checked = AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False)
         'chkYAMJnfoFields
         SPanel.Name = _name
-        SPanel.Text = Master.eLang.GetString(101, "YAMJ Compatibility")
+        SPanel.Text = Master.eLang.GetString(1, "YAMJ Compatibility")
         SPanel.Prefix = "YAMJ_"
         SPanel.Type = Master.eLang.GetString(802, "Modules", True)
         SPanel.ImageIndex = If(Me._enabled, 9, 10)

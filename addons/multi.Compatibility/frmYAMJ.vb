@@ -41,8 +41,11 @@ Public Class frmYAMJ
 
     Private Sub SetUp()
         'Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        'Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
-        'Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
+        Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(2, "YAMJ Compatible Sets")
+        Me.chkVideoTSParent.Text = Master.eLang.GetString(3, "YAMJ Compatible VIDEO_TS File Placement/Naming")
+        Me.chkYAMJCompatibleTVImages.Text = Master.eLang.GetString(4, "YAMJ Compatible TV Images Naming")
+        Me.chkYAMJnfoFields.Text = Master.eLang.GetString(5, "YAMJ Specific NFO fields")
+
     End Sub
 
 
