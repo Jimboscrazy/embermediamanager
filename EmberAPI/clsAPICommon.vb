@@ -515,7 +515,7 @@ Public Class Enums
         MovieFrameExtrator = 5
         TVFrameExtrator = 6
         RandomFrameExtrator = 7
-        CL_MovieExporter = 8            ' Command Line Exporter
+        CommandLine = 8            ' Command Line Module Call
         MovieSync = 9
         ShowMovie = 10                  ' Called after displaying Movie  (not in place yet)
         ShowTVShow = 11                 ' Called after displaying TVShow (not in place yet)
