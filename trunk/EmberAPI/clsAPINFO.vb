@@ -676,7 +676,6 @@ Public Class NFO
         '//
         ' Serialize MediaContainers.Movie to an NFO
         '\\
-
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
