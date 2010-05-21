@@ -26,7 +26,6 @@ Partial Class frmSettingsHolder
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.lblDetails = New System.Windows.Forms.Label
         Me.btnRemove = New System.Windows.Forms.Button
         Me.btnInstall = New System.Windows.Forms.Button
         Me.lstTemplates = New System.Windows.Forms.ListView
@@ -34,6 +33,7 @@ Partial Class frmSettingsHolder
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
+        Me.txtDetails = New System.Windows.Forms.TextBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -73,20 +73,13 @@ Partial Class frmSettingsHolder
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.lblDetails)
+        Me.GroupBox1.Controls.Add(Me.txtDetails)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 229)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(600, 133)
         Me.GroupBox1.TabIndex = 87
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Details"
-        '
-        'lblDetails
-        '
-        Me.lblDetails.Location = New System.Drawing.Point(6, 18)
-        Me.lblDetails.Name = "lblDetails"
-        Me.lblDetails.Size = New System.Drawing.Size(588, 105)
-        Me.lblDetails.TabIndex = 0
         '
         'btnRemove
         '
@@ -143,6 +136,17 @@ Partial Class frmSettingsHolder
         Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader4.Width = 69
         '
+        'txtDetails
+        '
+        Me.txtDetails.BackColor = System.Drawing.Color.White
+        Me.txtDetails.Location = New System.Drawing.Point(6, 12)
+        Me.txtDetails.Multiline = True
+        Me.txtDetails.Name = "txtDetails"
+        Me.txtDetails.ReadOnly = True
+        Me.txtDetails.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtDetails.Size = New System.Drawing.Size(588, 121)
+        Me.txtDetails.TabIndex = 0
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -162,6 +166,7 @@ Partial Class frmSettingsHolder
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -176,6 +181,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnRemove As System.Windows.Forms.Button
     Friend WithEvents btnInstall As System.Windows.Forms.Button
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents lblDetails As System.Windows.Forms.Label
+    Friend WithEvents txtDetails As System.Windows.Forms.TextBox
 
 End Class

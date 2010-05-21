@@ -228,9 +228,9 @@ Public Class frmSettingsHolder
         Else
             btnRemove.Enabled = False
             btnInstall.Enabled = False
-            lblDetails.Text = String.Empty
+            txtDetails.Text = String.Empty
         End If
-        lblDetails.Text = readme
+        txtDetails.Text = readme
     End Sub
 
 
