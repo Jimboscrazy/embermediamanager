@@ -680,7 +680,7 @@ Public Class NFO
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
-                Dim doContinue As Boolean
+                Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
                 If Not doContinue Then Return
             Catch ex As Exception
