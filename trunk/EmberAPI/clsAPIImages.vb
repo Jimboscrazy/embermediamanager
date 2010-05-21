@@ -878,22 +878,24 @@ Public Class Images
                 ImageUtils.ResizeImage(_image, Master.eSettings.SeasonPosterWidth, Master.eSettings.SeasonPosterHeight)
             End If
 
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonPoster, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
+                        Save(s, Master.eSettings.SeasonPosterQuality)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+            End Try
+
             If Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse Master.eSettings.SeasonNameTBN OrElse _
             Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
                 Dim tPath As String = String.Empty
-                Try
-                    Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonPoster, mShow, New List(Of String)})
-                    Dim doContinue As Boolean = True
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                    For Each s As String In DirectCast(params(2), List(Of String))
-                        If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonPoster) Then
-                            Save(s, Master.eSettings.SeasonPosterQuality)
-                            If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                        End If
-                    Next
-                    If Not doContinue Then Return strReturn
-                Catch ex As Exception
-                End Try
+
 
                 Try
                     tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)

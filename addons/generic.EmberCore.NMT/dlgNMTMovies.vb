@@ -1217,12 +1217,13 @@ Public Class dlgNMTMovies
         lblHelpa.Text = ""
     End Sub
     Private Sub lblTemplateInfo_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseHover
-        lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), String.Concat("Author ", conf.Author), String.Empty)
-        If conf.ReadMe AndAlso File.Exists(Path.Combine(conf.TemplatePath, "readme.txt")) Then
-            Dim readme As String = File.ReadAllText(Path.Combine(conf.TemplatePath, "readme.txt"))
-            lblHelpa.Text = String.Concat(lblHelpa.Text, vbCrLf, readme)
+        If Not IsNothing(conf) Then
+            lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), String.Concat("Author ", conf.Author), String.Empty)
+            If conf.ReadMe AndAlso File.Exists(Path.Combine(conf.TemplatePath, "readme.txt")) Then
+                Dim readme As String = File.ReadAllText(Path.Combine(conf.TemplatePath, "readme.txt"))
+                lblHelpa.Text = String.Concat(lblHelpa.Text, vbCrLf, readme)
+            End If
         End If
-
     End Sub
 
     Private Sub lblTemplateInfo_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseLeave
