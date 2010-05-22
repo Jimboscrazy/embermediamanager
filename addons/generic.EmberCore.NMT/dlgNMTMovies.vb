@@ -141,6 +141,10 @@ Public Class dlgNMTMovies
         For Each r As NMTExporterModule.Config._Param In conf.Params
             AdvancedSettings.SetSetting(String.Concat("Param.", r.name), r.value)
         Next
+        For Each r As NMTExporterModule.Config._Property In conf.Properties
+            Dim v As String = r.value
+            AdvancedSettings.SetSetting(String.Concat("Property.", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
+        Next
         For Each r As DataGridViewRow In dgvSources.Rows
             AdvancedSettings.SetSetting(String.Concat("Path.Movie.", r.Cells(1).Value.ToString), r.Cells(3).Value.ToString)
             AdvancedSettings.SetBooleanSetting(String.Concat("Path.Movie.Status.", r.Cells(1).Value.ToString), Convert.ToBoolean(r.Cells(0).Value))
@@ -222,10 +226,17 @@ Public Class dlgNMTMovies
         'End If
         btnCancel.Enabled = False
     End Sub
-
     Private Sub processProperties(ByRef str As String)
         Dim propreties As List(Of String)
         propreties = GetProperties(str)
+        For Each s As NMTExporterModule.Config._Property In conf.Properties
+            If propreties.Contains(String.Concat("{$", s.name, "}")) Then
+                str = str.Replace(String.Concat("{$", s.name, "}"), s.value)
+            End If
+        Next
+        For Each s As String In propreties
+            str = str.Replace(s, String.Empty)
+        Next
     End Sub
     Public Function GetProperties(ByVal s As String) As List(Of String)
         Dim rets As New List(Of String)
@@ -257,7 +268,9 @@ Public Class dlgNMTMovies
             Dim movierow As String = String.Empty
 
             pattern = File.ReadAllText(htmlPath)
+            processProperties(pattern)
             patternDetails = File.ReadAllText(htmlDetailsPath)
+            processProperties(patternDetails)
             Dim s = pattern.IndexOf("<$MOVIE>")
             If s >= 0 Then
                 Dim e = pattern.IndexOf("<$/MOVIE>")
@@ -296,7 +309,7 @@ Public Class dlgNMTMovies
             HTMLMovieBody.Append(moviefooter)
             HTMLMovieBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
             DontSaveExtra = False
-            Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
+            Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -788,7 +801,39 @@ Public Class dlgNMTMovies
                 dgvSettings.Rows(i).DefaultCellStyle.SelectionForeColor = Color.Gray
             End If
         Next
+        dgvProperties.Rows.Clear()
+        For Each c As NMTExporterModule.Config._Property In conf.Properties.OrderByDescending(Function(y) y.group)
+            Dim i As Integer
+            Dim lst As New List(Of String)
+            i = dgvProperties.Rows.Add(New Object() {c.label})
+            dgvProperties.Rows(i).Tag = c.name
+            For Each s As NMTExporterModule.Config._value In c.values
+                lst.Add(s.label)
+            Next
+            Dim cCell As New DataGridViewComboBoxCell()
+            dgvProperties.Rows(i).Cells(1) = cCell
+            Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvProperties.Rows(i).Cells(1), DataGridViewComboBoxCell)
+            dcb.DataSource = lst.ToArray
+            'If lst.Count > 0 Then dcb.Value = lst(0)
+            Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", c.name), lst(0))
+            Dim defvalue As String = c.values.FirstOrDefault(Function(y) y.label = saved).value
+            defvalue = If(IsNothing(defvalue), String.Empty, defvalue)
+            c.value = defvalue
+            If lst.Count > 0 Then dcb.Value = saved
+        Next
     End Sub
+
+    Private Sub dgvProperties_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvProperties.CurrentCellDirtyStateChanged
+        If dgvProperties.IsCurrentCellDirty AndAlso dgvProperties.CurrentCell.ColumnIndex = 1 Then
+            dgvProperties.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            btnSave.Enabled = True
+            Dim s As String = dgvProperties.CurrentCell.Value.ToString
+            Dim p As NMTExporterModule.Config._Property = conf.Properties.FirstOrDefault(Function(y) y.name = dgvProperties.Rows(dgvProperties.CurrentCell.RowIndex).Tag.ToString)
+            p.value = p.values.FirstOrDefault(Function(y) y.label = s).value
+            p.value = If(IsNothing(p.value), String.Empty, p.value)
+        End If
+    End Sub
+
     Private Sub SetAllUserParam()
         For Each r As DataGridViewRow In dgvSettings.Rows
             Dim r0 As DataGridViewRow = r
@@ -1012,6 +1057,8 @@ Public Class dlgNMTMovies
         Me.btnSave.Text = Master.eLang.GetString(15, "Save Template Settings")
         Me.btnBuild.Text = Master.eLang.GetString(16, "Build")
         Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(17, "Help"))
+
+
     End Sub
 
     Private Structure Arguments
@@ -1109,12 +1156,18 @@ Public Class dlgNMTMovies
         End If
 
     End Sub
-    Private Sub SaveMovieImages(ByVal srcPath As String, ByVal destPath As String)
+    Private Sub SaveMovieFiles(ByVal srcPath As String, ByVal destPath As String)
         Try
             bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Exporting Data..."))
             If Not DontSaveExtra Then
                 For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
-                    File.Copy(Path.Combine(srcPath, f.Name), Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name), True)
+                    Dim dstPath As String = Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name)
+                    File.Copy(Path.Combine(srcPath, f.Name), dstPath, True)
+                    If f.Process Then
+                        Dim fileContent As String = File.ReadAllText(dstPath)
+                        processProperties(fileContent)
+                        File.WriteAllText(dstPath, fileContent)
+                    End If
                     'CopyDirectory(srcPath, Path.GetDirectoryName(destPath), True)
                     If bwBuildHTML.CancellationPending Then Return
                 Next
@@ -1237,6 +1290,17 @@ Public Class dlgNMTMovies
     Private Sub dgvSettings_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSettings.CellMouseLeave
         lblHelpa.Text = ""
     End Sub
+
+    Private Sub dgvProperties_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvProperties.CellMouseEnter
+        If e.RowIndex >= 0 AndAlso Not IsNothing(dgvProperties.Rows(e.RowIndex).Tag) Then
+            lblHelpa.Text = conf.Properties.FirstOrDefault(Function(y) y.name = dgvProperties.Rows(e.RowIndex).Tag.ToString).description
+        End If
+    End Sub
+
+    Private Sub dgvProperties_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvProperties.CellMouseLeave
+        lblHelpa.Text = ""
+    End Sub
+
     Private Sub lblTemplateInfo_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTemplateInfo.MouseHover
         If Not IsNothing(conf) Then
             lblHelpa.Text = If(Not String.IsNullOrEmpty(conf.Author), String.Concat("Author ", conf.Author), String.Empty)
@@ -1265,6 +1329,5 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 #End Region 'Methods
-
 
 End Class

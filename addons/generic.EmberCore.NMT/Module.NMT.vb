@@ -183,6 +183,9 @@ Public Class NMTExporterModule
         Public Files As New List(Of _File)
         <XmlArrayItem("Param")> _
         Public Params As New List(Of _Param)
+        <XmlArray("Properties")> _
+        <XmlArrayItem("Property")> _
+        Public Properties As New List(Of _Property)
         <XmlIgnore()> _
         Public TemplatePath As String
         Class _File
@@ -198,11 +201,21 @@ Public Class NMTExporterModule
             Public access As String
             Public description As String
         End Class
-        Class _Propertie
+        Class _Property
+            Public label As String
             Public name As String
+            Public description As String
+            Public group As String
+            Public value As String
             <XmlArray("values")> _
             <XmlArrayItem("value")> _
-            Public values As List(Of String)
+            Public values As List(Of _value)
+        End Class
+        Class _value
+            <XmlText()> _
+            Public value As String
+            <XmlAttribute("label")> _
+            Public label As String
         End Class
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(Config))
@@ -223,6 +236,9 @@ Public Class NMTExporterModule
                 conf.Version = If(String.IsNullOrEmpty(conf.Version), String.Empty, conf.Version)
                 conf.Author = If(String.IsNullOrEmpty(conf.Author), String.Empty, conf.Author)
                 conf.ReadMe = File.Exists(Path.Combine(conf.TemplatePath, "readme.txt"))
+                For Each p As _Property In conf.Properties
+                    p.value = If(String.IsNullOrEmpty(p.value), String.Empty, p.value)
+                Next
             Catch ex As Exception
             End Try
             Return conf

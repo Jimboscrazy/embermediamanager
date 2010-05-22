@@ -5581,6 +5581,7 @@ doCancel:
                             End If
                         End Using
                     End If
+
                 End If
                 If Not CloseApp Then
                     fLoading.SetStage("Loading translations...")
@@ -5656,6 +5657,16 @@ doCancel:
                             Me.Visible = True
                         End If
                     End If
+                    If Master.eSettings.CheckUpdates AndAlso Not CloseApp Then
+                        If EmberAddons.CheckUpdates() > 0 Then
+                            Dim s As String = String.Empty
+                            For Each a As EmberAddons.Addon In EmberAddons.AddonList
+                                s = String.Concat(vbCrLf, s, a.Name)
+                            Next
+                            MsgBox(String.Format("New Version(s) for following Installed Addon(s){0}", s), MsgBoxStyle.OkOnly, "Addon check")
+                        End If
+                    End If
+
                     Master.DB.LoadMovieSourcesFromDB()
                     Master.DB.LoadTVSourcesFromDB()
                     fLoading.SetStage("Setting menus...")

@@ -67,16 +67,16 @@ Partial Class dlgNMTMovies
         Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.sourcetype = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.dgvSettings = New System.Windows.Forms.DataGridView
+        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ValidatedToBuild = New System.Windows.Forms.Timer(Me.components)
         Me.lblTemplateInfo = New System.Windows.Forms.Label
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.btnSave = New System.Windows.Forms.Button
-        Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.dgvProperties = New System.Windows.Forms.DataGridView
+        Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.pnlCancel.SuspendLayout()
@@ -86,9 +86,9 @@ Partial Class dlgNMTMovies
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -338,6 +338,28 @@ Partial Class dlgNMTMovies
         Me.dgvSettings.Size = New System.Drawing.Size(347, 166)
         Me.dgvSettings.TabIndex = 4
         '
+        'Setting
+        '
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
+        Me.Setting.DefaultCellStyle = DataGridViewCellStyle4
+        Me.Setting.FillWeight = 145.0!
+        Me.Setting.HeaderText = "Setting"
+        Me.Setting.Name = "Setting"
+        Me.Setting.ReadOnly = True
+        Me.Setting.Width = 145
+        '
+        'DataGridViewComboBoxColumn1
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
+        Me.DataGridViewComboBoxColumn1.FillWeight = 180.0!
+        Me.DataGridViewComboBoxColumn1.HeaderText = "Value"
+        Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
+        Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewComboBoxColumn1.Width = 180
+        '
         'ValidatedToBuild
         '
         Me.ValidatedToBuild.Interval = 300
@@ -371,28 +393,6 @@ Partial Class dlgNMTMovies
         Me.btnSave.TabIndex = 92
         Me.btnSave.Text = "Save Template Settings"
         '
-        'Setting
-        '
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
-        Me.Setting.DefaultCellStyle = DataGridViewCellStyle4
-        Me.Setting.FillWeight = 145.0!
-        Me.Setting.HeaderText = "Setting"
-        Me.Setting.Name = "Setting"
-        Me.Setting.ReadOnly = True
-        Me.Setting.Width = 145
-        '
-        'DataGridViewComboBoxColumn1
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
-        Me.DataGridViewComboBoxColumn1.FillWeight = 180.0!
-        Me.DataGridViewComboBoxColumn1.HeaderText = "Value"
-        Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
-        Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewComboBoxColumn1.Width = 180
-        '
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage2)
@@ -402,17 +402,6 @@ Partial Class dlgNMTMovies
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(357, 194)
         Me.TabControl1.TabIndex = 93
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.dgvSettings)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(349, 168)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Template Settings"
-        Me.TabPage1.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -446,27 +435,38 @@ Partial Class dlgNMTMovies
         Me.dgvProperties.Size = New System.Drawing.Size(347, 166)
         Me.dgvProperties.TabIndex = 5
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.dgvSettings)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(349, 168)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Template Settings"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
         'DataGridViewTextBoxColumn1
         '
         DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
         DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
         Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle6
-        Me.DataGridViewTextBoxColumn1.FillWeight = 145.0!
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Propertie"
+        Me.DataGridViewTextBoxColumn1.FillWeight = 185.0!
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Property"
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
         Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        Me.DataGridViewTextBoxColumn1.Width = 145
+        Me.DataGridViewTextBoxColumn1.Width = 185
         '
         'DataGridViewTextBoxColumn2
         '
         DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle7
-        Me.DataGridViewTextBoxColumn2.FillWeight = 180.0!
+        Me.DataGridViewTextBoxColumn2.FillWeight = 140.0!
         Me.DataGridViewTextBoxColumn2.HeaderText = "Value"
         Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
         Me.DataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn2.Width = 180
+        Me.DataGridViewTextBoxColumn2.Width = 140
         '
         'dlgNMTMovies
         '
@@ -503,9 +503,9 @@ Partial Class dlgNMTMovies
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
