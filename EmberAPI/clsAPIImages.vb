@@ -445,6 +445,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.SeasonAllJPG Then
@@ -491,6 +492,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.EpisodeDotFanart Then
@@ -537,6 +539,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.EpisodeJPG Then
@@ -825,6 +828,7 @@ Public Class Images
                     Next
                     If Not doContinue Then Return strReturn
                 Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 Dim tPath As String = String.Empty
@@ -890,6 +894,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse Master.eSettings.SeasonNameTBN OrElse _
@@ -998,6 +1003,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.ShowDotFanart Then
@@ -1053,6 +1059,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Master.eSettings.ShowPosterJPG Then
