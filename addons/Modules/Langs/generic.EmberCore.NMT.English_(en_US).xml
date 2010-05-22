@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<string id="1">Jukebox Builder</string>
+	<string id="2">Compiling Movie List...</string>
+	<string id="3">Canceling Compilation...</string>
+	<string id="4">Template</string>
+	<string id="5">Choose a template</string>
+	<string id="6">BasePath can not be the same as Output Folder</string>
+	<string id="7">Warning</string>
+	<string id="8">Exporting Data...</string>
+	<string id="9">Exporting Flags...</string>
+	<string id="10">Exporting Posters...</string>
+	<string id="11">Exporting Backdrops...</string>
+	<string id="12">Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]</string>
+	<string id="13">Select Root Folder where Jukebox files will be exported</string>
+	<string id="14">Output Folder</string>
+	<string id="15">Save Template Settings</string>
+	<string id="16">Build</string>
+	<string id="17">Help</string>
+	<string id="18">Installed</string>
+	<string id="19">New</string>
+	<string id="20">Starting...</string>
+	<string id="21">Cleaning output folder...</string>
+
+</strings>

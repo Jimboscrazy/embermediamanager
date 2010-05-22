@@ -24,6 +24,8 @@ Public Class frmGenresEditor
 
     Private Sub GetLanguages()
         Try
+            cbLangs.Items.Clear()
+            dgvLang.Rows.Clear()
             cbLangs.Items.Add(Master.eLang.GetString(2, "< All >"))
             cbLangs.Items.AddRange(xmlGenres.listOfLanguages.ToArray)
             cbLangs.SelectedIndex = 0
@@ -44,6 +46,9 @@ Public Class frmGenresEditor
                 For Each sett As xGenre In xmlGenres.listOfGenres
                     Dim i As Integer = dgvGenres.Rows.Add(New Object() {sett.searchstring})
                     dgvGenres.Rows(i).Tag = sett
+                    If sett.Langs.Count = 0 Then
+                        dgvGenres.Rows(i).DefaultCellStyle.ForeColor = Drawing.Color.Red
+                    End If
                 Next
             Else
                 btnRemoveGenre.Enabled = False
@@ -181,6 +186,8 @@ Public Class frmGenresEditor
             If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim lang As String = dgvLang.SelectedRows(0).Cells(1).Value.ToString
                 dgvLang.Rows.Remove(dgvLang.SelectedRows(0))
+                xmlGenres.listOfLanguages.Remove(lang)
+                GetLanguages()
                 RaiseEvent ModuleSettingsChanged()
                 For Each g As xGenre In xmlGenres.listOfGenres
                     If g.Langs.Contains(lang) Then
@@ -249,7 +256,9 @@ Public Class frmGenresEditor
                     conf = DirectCast(xmlSer.Deserialize(xmlSW), xGenres)
                 End Using
                 For i As Integer = 0 To conf.listOfGenres.Count - 1
-                    conf.listOfGenres(i).Langs.AddRange(conf.listOfGenres(i).language.Split(Convert.ToChar("|")))
+                    If Not IsNothing(conf.listOfGenres(i).language) Then
+                        conf.listOfGenres(i).Langs.AddRange(conf.listOfGenres(i).language.Split(Convert.ToChar("|")))
+                    End If
                 Next
             Catch ex As Exception
             End Try

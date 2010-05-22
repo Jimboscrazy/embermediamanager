@@ -76,9 +76,10 @@ Partial Class dlgNMTMovies
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.dgvProperties = New System.Windows.Forms.DataGridView
-        Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.pbTemplateLogo = New System.Windows.Forms.PictureBox
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
@@ -89,6 +90,7 @@ Partial Class dlgNMTMovies
         Me.TabPage2.SuspendLayout()
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
+        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -435,17 +437,6 @@ Partial Class dlgNMTMovies
         Me.dgvProperties.Size = New System.Drawing.Size(347, 166)
         Me.dgvProperties.TabIndex = 5
         '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.dgvSettings)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(349, 168)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Template Settings"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
         'DataGridViewTextBoxColumn1
         '
         DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
@@ -468,6 +459,25 @@ Partial Class dlgNMTMovies
         Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.DataGridViewTextBoxColumn2.Width = 140
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.dgvSettings)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(349, 168)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Template Settings"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'pbTemplateLogo
+        '
+        Me.pbTemplateLogo.Location = New System.Drawing.Point(324, 6)
+        Me.pbTemplateLogo.Name = "pbTemplateLogo"
+        Me.pbTemplateLogo.Size = New System.Drawing.Size(130, 67)
+        Me.pbTemplateLogo.TabIndex = 94
+        Me.pbTemplateLogo.TabStop = False
+        '
         'dlgNMTMovies
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -475,6 +485,7 @@ Partial Class dlgNMTMovies
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(853, 372)
+        Me.Controls.Add(Me.pbTemplateLogo)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnSave)
@@ -506,6 +517,7 @@ Partial Class dlgNMTMovies
         Me.TabPage2.ResumeLayout(False)
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
+        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -537,6 +549,7 @@ Partial Class dlgNMTMovies
     Friend WithEvents dgvProperties As System.Windows.Forms.DataGridView
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pbTemplateLogo As System.Windows.Forms.PictureBox
 
 #End Region 'Methods
 
