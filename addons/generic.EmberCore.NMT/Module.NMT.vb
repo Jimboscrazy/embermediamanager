@@ -198,7 +198,12 @@ Public Class NMTExporterModule
             Public access As String
             Public description As String
         End Class
-
+        Class _Propertie
+            Public name As String
+            <XmlArray("values")> _
+            <XmlArrayItem("value")> _
+            Public values As List(Of String)
+        End Class
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(Config))
             Using xmlSW As New StreamWriter(fpath)

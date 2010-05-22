@@ -223,6 +223,25 @@ Public Class dlgNMTMovies
         btnCancel.Enabled = False
     End Sub
 
+    Private Sub processProperties(ByRef str As String)
+        Dim propreties As List(Of String)
+        propreties = GetProperties(str)
+    End Sub
+    Public Function GetProperties(ByVal s As String) As List(Of String)
+        Dim rets As New List(Of String)
+        Try
+            Dim regStat As MatchCollection = Regex.Matches(s, "\{\$(?<values>.*?)\}", RegexOptions.Multiline)
+            If regStat.Count > 0 Then
+                For Each status As Match In regStat
+                    rets.Add(status.Value)
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return rets
+    End Function
+
     Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String, ByVal doNavigate As Boolean)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
@@ -260,6 +279,7 @@ Public Class dlgNMTMovies
             MoviesGenres.Clear()
 
             For Each _curMovie As DataRow In dtMovieMedia.Rows
+                If bwBuildHTML.CancellationPending Then Return
                 'now check if we need to include this movie
                 If Not selectedSources.Contains(_curMovie.Item("Source").ToString) Then
                     bwBuildHTML.ReportProgress(1)
@@ -323,7 +343,7 @@ Public Class dlgNMTMovies
             'MoviesGenres.Clear()
 
             For Each _curShow As DataRow In dtShows.Rows
-                'now check if we need to include this movie
+                If bwBuildHTML.CancellationPending Then Return
                 If Not selectedSources.Contains(_curShow.Item("Source").ToString) Then
                     bwBuildHTML.ReportProgress(1)
                     Continue For
@@ -341,7 +361,7 @@ Public Class dlgNMTMovies
                     File.WriteAllText(detailsSeasonOutput, ProcessTVSeasonTags(_curSeason, detailsSeasonOutput, counter, SeasonId, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
 
                     For Each _curEp As DataRow In dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString))
-
+                        If bwBuildHTML.CancellationPending Then Return
                         Dim detailsEpsOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps.", _curEp.Item("ID").ToString, ".htm"))
                         File.WriteAllText(detailsEpsOutput, ProcessTVSeasonTags(_curEp, detailsEpsOutput, counter, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
                         counter += 1
@@ -1011,6 +1031,7 @@ Public Class dlgNMTMovies
         txtOutputFolder.Enabled = False
         btnBuild.Enabled = False
         CanBuild = False
+        dgvProperties.Enabled = False
         dgvSettings.Enabled = False
         dgvSources.Enabled = False
         pbCompile.Maximum = dtMovieMedia.Rows.Count + If(bexportPosters, dtMovieMedia.Rows.Count, 0) + If(bexportBackDrops, dtMovieMedia.Rows.Count, 0)
@@ -1063,6 +1084,7 @@ Public Class dlgNMTMovies
         CanBuild = True
         dgvSettings.Enabled = True
         dgvSources.Enabled = True
+        dgvProperties.Enabled = True
     End Sub
     Private Shared Sub DoDelete(ByVal state As Object)
         If DirectCast(state, String).Contains("..") Then Return
@@ -1094,6 +1116,7 @@ Public Class dlgNMTMovies
                 For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
                     File.Copy(Path.Combine(srcPath, f.Name), Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name), True)
                     'CopyDirectory(srcPath, Path.GetDirectoryName(destPath), True)
+                    If bwBuildHTML.CancellationPending Then Return
                 Next
                 For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "folder")
                     Dim srcf As String = Path.Combine(srcPath, f.Name)
@@ -1101,6 +1124,7 @@ Public Class dlgNMTMovies
                     If Not srcf.EndsWith(Path.DirectorySeparatorChar) Then srcf = String.Concat(srcf, Path.DirectorySeparatorChar)
                     If Not destf.EndsWith(Path.DirectorySeparatorChar) Then destf = String.Concat(destf, Path.DirectorySeparatorChar)
                     CopyDirectory(srcf, destf, True)
+                    If bwBuildHTML.CancellationPending Then Return
                 Next
                 If Me.bexportFlags Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(9, "Exporting Flags..."))
@@ -1108,20 +1132,17 @@ Public Class dlgNMTMovies
                     Dim flagspath As String = Path.Combine(destPath, GetUserParam("FlagsPath", "Flags/").Replace("/", Path.DirectorySeparatorChar))
                     CopyDirectory(srcPath, flagspath, True)
                 End If
-                If bwBuildHTML.CancellationPending Then
-                    Return
-                End If
+                If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Exporting Posters..."))
                     Me.ExportPoster(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
                 End If
+                If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(11, "Exporting Backdrops..."))
                     Me.ExportBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
                 End If
-                If bwBuildHTML.CancellationPending Then
-                    Return
-                End If
+                If bwBuildHTML.CancellationPending Then Return
                 DontSaveExtra = True
             End If
             Dim hfile As String = Path.Combine(Path.Combine(destPath, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").DestPath), conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name)

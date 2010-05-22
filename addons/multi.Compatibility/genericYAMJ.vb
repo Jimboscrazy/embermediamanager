@@ -120,7 +120,7 @@ Public Class genericYAMJ
                                         If dtEpisodes.Rows.Count > 0 Then
                                             epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                                             imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".jpg")))
-                                            doContinue = False
+                                            'doContinue = False
                                         End If
                                     End If
                                 Case Enums.TVImageType.SeasonFanart
@@ -133,7 +133,7 @@ Public Class genericYAMJ
                                         If dtEpisodes.Rows.Count > 0 Then
                                             epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                                             imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".fanart.jpg")))
-                                            doContinue = False
+                                            'doContinue = False
                                         End If
                                     End If
                                 Case Enums.TVImageType.ShowPoster
@@ -149,7 +149,7 @@ Public Class genericYAMJ
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
                                     imageList.Add(tPath)
-                                    doContinue = False
+                                    'doContinue = False
                                     'SET_<show>_1.jpg
 
                                 Case Enums.TVImageType.ShowFanart
@@ -165,7 +165,7 @@ Public Class genericYAMJ
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
                                     imageList.Add(tPath)
-                                    doContinue = False
+                                    'doContinue = False
                                     'SET_<show>_1.fanart.jpg
 
 
@@ -180,6 +180,7 @@ Public Class genericYAMJ
                             mMovie.Movie.VideoSource = String.Empty
                         End If
                 End Select
+                _refparam = doContinue
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
