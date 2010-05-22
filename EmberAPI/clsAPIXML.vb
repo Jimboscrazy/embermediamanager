@@ -288,12 +288,14 @@ Public Class APIXML
                 Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
                 If xGenre.Count > 0 Then
                     For i As Integer = 0 To xGenre.Count - 1
-                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
-                        For Each strGen As String In splitLang
-                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-                                retGenre.Add(xGenre(i).searchstring)
-                            End If
-                        Next
+                        If Not IsNothing(xGenre(i).language) Then
+                            splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
+                            For Each strGen As String In splitLang
+                                If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
+                                    retGenre.Add(xGenre(i).searchstring)
+                                End If
+                            Next
+                        End If
                     Next
                 End If
             End If
