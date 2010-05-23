@@ -1018,7 +1018,7 @@ Public Class dlgNMTMovies
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
         Me.Label2.Text = Master.eLang.GetString(4, "Template")
         Me.Label1.Text = Master.eLang.GetString(14, "Output Folder")
-        Me.btnSave.Text = Master.eLang.GetString(15, "Save Template Settings")
+        Me.btnSave.Text = Master.eLang.GetString(15, "Save Settings")
         Me.btnBuild.Text = Master.eLang.GetString(16, "Build")
         Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(17, "Help"))
 

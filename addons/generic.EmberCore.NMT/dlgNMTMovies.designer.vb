@@ -393,7 +393,7 @@ Partial Class dlgNMTMovies
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(136, 23)
         Me.btnSave.TabIndex = 92
-        Me.btnSave.Text = "Save Template Settings"
+        Me.btnSave.Text = "Save Settings"
         '
         'TabControl1
         '
