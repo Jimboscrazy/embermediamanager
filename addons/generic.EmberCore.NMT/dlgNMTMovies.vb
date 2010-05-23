@@ -718,6 +718,11 @@ Public Class dlgNMTMovies
             template_Path = conf.TemplatePath
             populateParams()
             lblTemplateInfo.Text = conf.Description
+            If File.Exists(Path.Combine(conf.TemplatePath, "logo.jpg")) Then
+                pbTemplateLogo.Load(Path.Combine(conf.TemplatePath, "logo.jpg"))
+            Else
+                pbTemplateLogo.Image = Nothing
+            End If
             DontSaveExtra = False
         End If
 

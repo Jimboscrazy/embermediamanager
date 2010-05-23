@@ -148,7 +148,13 @@ Public Class frmSettingsHolder
             If MsgBox("Folder already exist. Overwrite?", MsgBoxStyle.YesNo, "Install Template") = MsgBoxResult.No Then
                 Return False
             Else
-                Directory.Delete(baseFolder, True)
+                Try
+                    Directory.Delete(baseFolder, True)
+                Catch ex As Exception
+                    MsgBox("File/Folder in use! Can Not overwrite", MsgBoxStyle.OkOnly, "Install Template")
+                End Try
+
+
             End If
         End If
         Using fStream As FileStream = New FileStream(fname, FileMode.Open, FileAccess.Read)

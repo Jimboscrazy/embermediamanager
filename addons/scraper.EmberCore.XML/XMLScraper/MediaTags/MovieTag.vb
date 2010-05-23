@@ -364,7 +364,7 @@ Namespace XMLScraper
                 Me.Year = element.GetIntElement("year", Me.Year)
                 Me.Rating = ProcessRating(element.Element("rating"), Me.Rating)
                 Me.Votes = element.GetStringElement("votes", Me.Votes)
-
+                element.UpdateStringList("trailer", Me.Trailers)
                 element.UpdateStringList("certification", Me.Certifications)
 
                 element.UpdateStringList("genre", Me.Genres)

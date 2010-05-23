@@ -198,8 +198,10 @@ Public Class dlgTrailer
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
+            Dim WebPage As New HTTP
+            AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
             If Not String.IsNullOrEmpty(Args.Parameter) Then
-                Dim WebPage As New HTTP
+
                 If Args.bType Then
                     Me.tURL = WebPage.DownloadFile(Args.Parameter, Me.sPath, True, "trailer")
                     If Not String.IsNullOrEmpty(Me.tURL) Then
@@ -219,7 +221,7 @@ Public Class dlgTrailer
                 End If
                 WebPage = Nothing
             End If
-
+            RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Catch
         End Try
 

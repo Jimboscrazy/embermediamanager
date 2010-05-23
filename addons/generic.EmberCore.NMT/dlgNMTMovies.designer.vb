@@ -472,9 +472,9 @@ Partial Class dlgNMTMovies
         '
         'pbTemplateLogo
         '
-        Me.pbTemplateLogo.Location = New System.Drawing.Point(324, 6)
+        Me.pbTemplateLogo.Location = New System.Drawing.Point(324, 5)
         Me.pbTemplateLogo.Name = "pbTemplateLogo"
-        Me.pbTemplateLogo.Size = New System.Drawing.Size(130, 67)
+        Me.pbTemplateLogo.Size = New System.Drawing.Size(130, 70)
         Me.pbTemplateLogo.TabIndex = 94
         Me.pbTemplateLogo.TabStop = False
         '

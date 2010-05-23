@@ -165,7 +165,6 @@ Public Class Trailers
 
     Public Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
         Dim tURL As String = String.Empty
-
         If Not String.IsNullOrEmpty(sURL) Then
             tURL = WebPage.DownloadFile(sURL, sPath, True, "trailer")
 
@@ -176,7 +175,6 @@ Public Class Trailers
                 End If
             End If
         End If
-
         Return tURL
     End Function
 
