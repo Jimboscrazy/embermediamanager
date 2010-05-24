@@ -467,7 +467,7 @@ Public Class EmberXMLScraperModule
         Spanel.Prefix = "XMLMovieInfo_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieData"
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.Type = Master.eLang.GetString(36, "Movies", True)
         Spanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         Spanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -499,7 +499,7 @@ Public Class EmberXMLScraperModule
         Spanel.Prefix = "XMLMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
-        Spanel.Type = Master.eLang.GetString(36, "Movies")
+        Spanel.Type = Master.eLang.GetString(36, "Movies", True)
         Spanel.ImageIndex = If(Me._PostScraperEnabled, 9, 10)
         Spanel.Panel = _postsetup.pnlSettings
         AddHandler _postsetup.SetupScraperChanged, AddressOf Handle_SetupPostScraperChanged
