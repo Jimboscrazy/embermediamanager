@@ -53,6 +53,7 @@ Public Class dlgSetsManager
 
                 lbMovies.SelectedIndex = -1
                 Me.LoadCurrSet()
+
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -190,12 +191,12 @@ Public Class dlgSetsManager
         Me.lbMoviesInSet.Enabled = True
         Me.lbMovies.Enabled = True
         Me.btnNewSet.Enabled = True
-        Me.btnUp.Enabled = True
-        Me.btnDown.Enabled = True
-        Me.btnRemove.Enabled = True
+        'Me.btnUp.Enabled = True
+        'Me.btnDown.Enabled = True
+        'Me.btnRemove.Enabled = True
         Me.btnAdd.Enabled = True
-        Me.btnEditSet.Enabled = True
-        Me.btnRemoveSet.Enabled = True
+        'Me.btnEditSet.Enabled = True
+        'Me.btnRemoveSet.Enabled = True
     End Sub
 
     Private Sub DeleteFromSet()
@@ -215,6 +216,9 @@ Public Class dlgSetsManager
             Me.LoadCurrSet()
             Me.FillMovies()
             Me.SetControlsEnabled(True)
+            Me.btnUp.Enabled = False
+            Me.btnDown.Enabled = False
+            Me.btnRemove.Enabled = False
         End If
     End Sub
 
@@ -352,13 +356,20 @@ Public Class dlgSetsManager
                     Next
                 Next
 
-                If Me.currSet.Movies.Count > 0 Then Me.LoadCurrSet()
-
+                If Me.currSet.Movies.Count > 0 Then
+                    Me.LoadCurrSet()
+                End If
+                Me.btnEditSet.Enabled = True
+                Me.btnRemoveSet.Enabled = True
             Else
                 Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
                 needsSave = False
+                Me.btnEditSet.Enabled = False
+                Me.btnRemoveSet.Enabled = False
             End If
-
+            Me.btnUp.Enabled = False
+            Me.btnDown.Enabled = False
+            Me.btnRemove.Enabled = False
             Me.FillMovies()
 
         Catch ex As Exception
@@ -378,6 +389,9 @@ Public Class dlgSetsManager
             Next
 
             Me.lbMoviesInSet.ResumeLayout()
+            Me.btnUp.Enabled = False
+            Me.btnDown.Enabled = False
+            Me.btnRemove.Enabled = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -420,14 +434,17 @@ Public Class dlgSetsManager
     Private Sub RemoveSet()
         Try
             If lbMoviesInSet.Items.Count > 0 Then
-                For Each lMov As Movies In Me.currSet.Movies
-                    Me.RemoveFromSet(lMov, False)
+
+                For x As Integer = Me.currSet.Movies.Count - 1 To 0 Step -1
+                    Me.RemoveFromSet(Me.currSet.Movies(x), False)
                 Next
             End If
 
             Me.alSets.Remove(Me.lbSets.SelectedItem.ToString)
 
             Me.LoadSets()
+            Me.btnEditSet.Enabled = False
+            Me.btnRemoveSet.Enabled = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -462,11 +479,11 @@ Public Class dlgSetsManager
         Me.lbMoviesInSet.Enabled = isEnabled
         Me.lbMovies.Enabled = isEnabled
         Me.btnNewSet.Enabled = isEnabled
-        Me.btnEditSet.Enabled = isEnabled
-        Me.btnRemoveSet.Enabled = isEnabled
-        Me.btnUp.Enabled = isEnabled
-        Me.btnDown.Enabled = isEnabled
-        Me.btnRemove.Enabled = isEnabled
+        'Me.btnEditSet.Enabled = isEnabled
+        'Me.btnRemoveSet.Enabled = isEnabled
+        'Me.btnUp.Enabled = isEnabled
+        'Me.btnDown.Enabled = isEnabled
+        'Me.btnRemove.Enabled = isEnabled
         Me.btnAdd.Enabled = isEnabled
         Me.OK_Button.Enabled = isEnabled
         Application.DoEvents()
@@ -488,6 +505,23 @@ Public Class dlgSetsManager
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
         Me.Label4.Text = Me.Text
+    End Sub
+
+    Private Sub lbMoviesInSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbMoviesInSet.SelectedIndexChanged
+        ValidateMoviesInSet()
+    End Sub
+
+    Sub ValidateMoviesInSet()
+        If Me.currSet.Movies.Count > 0 Then
+            Dim canMove As Boolean = (Me.currSet.Movies.Count > 1)
+            Me.btnUp.Enabled = canMove
+            Me.btnDown.Enabled = canMove
+            Me.btnRemove.Enabled = True
+        Else
+            Me.btnUp.Enabled = False
+            Me.btnDown.Enabled = False
+            Me.btnRemove.Enabled = False
+        End If
     End Sub
 
     #End Region 'Methods
@@ -618,5 +652,6 @@ Public Class dlgSetsManager
     End Class
 
     #End Region 'Nested Types
+
 
 End Class
