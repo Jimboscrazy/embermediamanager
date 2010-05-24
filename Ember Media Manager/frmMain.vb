@@ -1227,9 +1227,9 @@ Public Class frmMain
                             If Master.eSettings.AutoThumbs > 0 AndAlso DBScrapeMovie.isSingle Then
                                 Dim params As New List(Of Object)(New Object() {DBScrapeMovie, Master.eSettings.AutoThumbs, False, ""})
                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
+                                MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                                 Dim ETasFA As String = DirectCast(params(3), String)
                                 If Not String.IsNullOrEmpty(ETasFA) Then
-                                    MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                                     DBScrapeMovie.ExtraPath = "TRUE"
                                     If Not ETasFA = "TRUE" Then
                                         MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
@@ -3145,6 +3145,10 @@ doCancel:
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
+                If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    Return
+                End If
 
                 Me.mnuMediaList.Enabled = False
 
@@ -6339,6 +6343,7 @@ doCancel:
                     'ThumbGenerator.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                     Dim params As New List(Of Object)(New Object() {Master.currMovie, Master.eSettings.AutoThumbs, True, ""})
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
+                    MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                     Dim ETasFA As String = DirectCast(params(3), String)
                     If Not String.IsNullOrEmpty(ETasFA) Then
                         Master.currMovie.ExtraPath = "TRUE"
@@ -6512,6 +6517,7 @@ doCancel:
                     dScrapeRow.Item(46) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ListTitle
                     dScrapeRow.Item(3) = DirectCast(Parameter, String)
+
             End Select
             Me.dgvMediaList.Invalidate()
         End If
