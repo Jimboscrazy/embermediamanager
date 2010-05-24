@@ -392,6 +392,7 @@ Public Class EmberNativeScraperModule
             If Master.eSettings.AutoET AndAlso DBMovie.isSingle Then
                 Try
                     ScrapeImages.GetPreferredFAasET(DBMovie.Movie.IMDBID, DBMovie.Filename)
+                    RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                 Catch ex As Exception
                 End Try
             End If

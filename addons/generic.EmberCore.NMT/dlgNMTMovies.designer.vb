@@ -122,7 +122,7 @@ Partial Class dlgNMTMovies
         Me.pnlCancel.Controls.Add(Me.pbCompile)
         Me.pnlCancel.Controls.Add(Me.lblCompiling)
         Me.pnlCancel.Controls.Add(Me.lblCanceling)
-        Me.pnlCancel.Location = New System.Drawing.Point(208, 137)
+        Me.pnlCancel.Location = New System.Drawing.Point(250, 137)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
         Me.pnlCancel.TabIndex = 9
