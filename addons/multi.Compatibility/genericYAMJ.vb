@@ -111,31 +111,31 @@ Public Class genericYAMJ
                                 Case Enums.TVImageType.EpisodeFanart
                                     doContinue = False
                                 Case Enums.TVImageType.SeasonPoster
-                                    Dim dtSeasons As New DataTable
+                                    'Dim dtSeasons As New DataTable
                                     Dim epPath As String = String.Empty
-                                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-                                    If dtSeasons.Rows.Count > 0 Then
-                                        Dim dtEpisodes As New DataTable
-                                        Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", dtSeasons.Rows(0).Item("Season").ToString, " ORDER BY Episode;"))
-                                        If dtEpisodes.Rows.Count > 0 Then
-                                            epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
-                                            imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".jpg")))
-                                            'doContinue = False
-                                        End If
+                                    'Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                    'If dtSeasons.Rows.Count > 0 Then
+                                    Dim dtEpisodes As New DataTable
+                                    Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                                    If dtEpisodes.Rows.Count > 0 Then
+                                        epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                                        imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".jpg")))
+                                        'doContinue = False
+                                        'End If
                                     End If
                                 Case Enums.TVImageType.SeasonFanart
-                                    Dim dtSeasons As New DataTable
+                                    'Dim dtSeasons As New DataTable
                                     Dim epPath As String = String.Empty
-                                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-                                    If dtSeasons.Rows.Count > 0 Then
-                                        Dim dtEpisodes As New DataTable
-                                        Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", dtSeasons.Rows(0).Item("Season").ToString, " ORDER BY Episode;"))
-                                        If dtEpisodes.Rows.Count > 0 Then
-                                            epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
-                                            imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".fanart.jpg")))
-                                            'doContinue = False
-                                        End If
+                                    'Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                    'If dtSeasons.Rows.Count > 0 Then
+                                    Dim dtEpisodes As New DataTable
+                                    Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                                    If dtEpisodes.Rows.Count > 0 Then
+                                        epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                                        imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".fanart.jpg")))
+                                        'doContinue = False
                                     End If
+                                    'End If
                                 Case Enums.TVImageType.ShowPoster
                                     Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
                                     If String.IsNullOrEmpty(seasonPath) Then
@@ -167,8 +167,6 @@ Public Class genericYAMJ
                                     imageList.Add(tPath)
                                     'doContinue = False
                                     'SET_<show>_1.fanart.jpg
-
-
                             End Select
                         End If
                     Case Enums.ModuleEventType.OnMovieNFOSave
