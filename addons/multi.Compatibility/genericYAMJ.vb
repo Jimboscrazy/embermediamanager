@@ -140,7 +140,7 @@ Public Class genericYAMJ
 
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-                                    imageList.Add(tPath)
+                                    'imageList.Add(tPath)
                                     'doContinue = False
                                     'SET_<show>_1.jpg
 
@@ -156,7 +156,7 @@ Public Class genericYAMJ
 
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
-                                    imageList.Add(tPath)
+                                    'imageList.Add(tPath)
                                     'doContinue = False
                                     'SET_<show>_1.fanart.jpg
                             End Select

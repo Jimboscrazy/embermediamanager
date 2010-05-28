@@ -96,10 +96,12 @@ Public Class dlgNMTMovies
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
                     fxml = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, i.Name))
                     conf = NMTExporterModule.Config.Load(Path.Combine(fxml, "config.xml"))
-                    If Not String.IsNullOrEmpty(conf.Name) Then
+                    If Not String.IsNullOrEmpty(conf.Name) AndAlso Convert.ToSingle(conf.DesignVersion) >= NMTExporterModule.MinDesignVersion Then
                         conf.TemplatePath = fxml
                         confs.Add(conf)
                         cbTemplate.Items.Add(conf.Name)
+                    Else
+                        conf = Nothing
                     End If
                 End If
             Next

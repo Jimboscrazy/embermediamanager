@@ -25,6 +25,8 @@ Imports System.Xml.Serialization
 Public Class NMTExporterModule
     Implements Interfaces.EmberExternalModule
 
+    Public Shared MinDesignVersion As Single = 0.7
+
 #Region "Fields"
 
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
@@ -178,6 +180,7 @@ Public Class NMTExporterModule
         Public Description As String
         Public Author As String
         Public Version As String
+        Public DesignVersion As String
         Public ReadMe As Boolean
         <XmlArrayItem("File")> _
         Public Files As New List(Of _File)

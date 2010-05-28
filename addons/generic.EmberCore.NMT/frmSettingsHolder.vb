@@ -61,7 +61,13 @@ Public Class frmSettingsHolder
                     conf.ReadMe = File.Exists(Path.Combine(conf.TemplatePath, "readme.txt"))
                     confs.Add(conf)
                     Dim li As New ListViewItem(conf.Name)
-                    li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, Master.eLang.GetString(18, "Installed")})
+                    Dim status As String
+                    If Convert.ToSingle(conf.DesignVersion) < NMTExporterModule.MinDesignVersion Then
+                        status = Master.eLang.GetString(22, "Outdated")
+                    Else
+                        status = Master.eLang.GetString(18, "Installed")
+                    End If
+                    li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, status})
                     li.ToolTipText = conf.Description
                     li.Tag = conf
                     lstTemplates.Items.Add(li)
