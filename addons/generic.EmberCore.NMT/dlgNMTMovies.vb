@@ -132,6 +132,7 @@ Public Class dlgNMTMovies
             End If
             Loaded = True
             btnSave.Enabled = False
+            pbWarning.Image = Nothing 'ilNMT.Images("green")
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -228,7 +229,7 @@ Public Class dlgNMTMovies
         End If
         btnCancel.Enabled = False
     End Sub
-    Private Sub processProperties(ByRef str As String)
+    Private Sub PreProcessProperties(ByRef str As String)
         Dim propreties As List(Of String)
         propreties = GetProperties(str)
         For Each s As NMTExporterModule.Config._Property In conf.Properties
@@ -270,9 +271,9 @@ Public Class dlgNMTMovies
             Dim movierow As String = String.Empty
 
             pattern = File.ReadAllText(htmlPath)
-            processProperties(pattern)
+            PreProcessProperties(pattern)
             patternDetails = File.ReadAllText(htmlDetailsPath)
-            processProperties(patternDetails)
+            PreProcessProperties(patternDetails)
             Dim s = pattern.IndexOf("<$MOVIE>")
             If s >= 0 Then
                 Dim e = pattern.IndexOf("<$/MOVIE>")
@@ -1141,7 +1142,7 @@ Public Class dlgNMTMovies
     Private Sub bwBuildHTML_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwBuildHTML.DoWork
         Try
             BuildMovieHTML(template_Path, outputFolder, False)
-            BuildTVHTML(template_Path, outputFolder, False)
+            'BuildTVHTML(template_Path, outputFolder, False)
         Catch ex As Exception
         End Try
     End Sub
@@ -1164,7 +1165,7 @@ Public Class dlgNMTMovies
                     File.Copy(Path.Combine(srcPath, f.Name), dstPath, True)
                     If f.Process Then
                         Dim fileContent As String = File.ReadAllText(dstPath)
-                        processProperties(fileContent)
+                        PreProcessProperties(fileContent)
                         File.WriteAllText(dstPath, fileContent)
                     End If
                     'CopyDirectory(srcPath, Path.GetDirectoryName(destPath), True)
@@ -1235,20 +1236,36 @@ Public Class dlgNMTMovies
     Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ValidatedToBuild.Tick
         ValidatedToBuild.Stop()
         selectedSources.Clear()
+        Dim warn As String = String.Empty
         For Each row As DataGridViewRow In dgvSources.Rows
             Dim dcb As DataGridViewCheckBoxCell = DirectCast(row.Cells(0), DataGridViewCheckBoxCell)
             If DirectCast(dcb.Value, Boolean) = True Then
-                selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
+                Try
+                    If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText) = Path.GetPathRoot(txtOutputFolder.Text) Then
+                        ' TODO Strings
+                        warn = "Output Folder don't match Selected Sources and no NMT Path defined"
+                    Else
+                        selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
+                    End If
+                Catch ex As Exception
+                    ' TODO Strings
+                    warn = "Invalid Output Folder"
+                End Try
             End If
         Next
-        If Not conf Is Nothing AndAlso selectedSources.Count > 0 AndAlso Directory.Exists(txtOutputFolder.Text) Then
+        If String.IsNullOrEmpty(warn) AndAlso Not conf Is Nothing AndAlso selectedSources.Count > 0 AndAlso Directory.Exists(txtOutputFolder.Text) Then
             btnBuild.Enabled = True
             CanBuild = True
         Else
             btnBuild.Enabled = False
             CanBuild = False
         End If
-
+        lblWarning.Text = warn
+        If String.IsNullOrEmpty(warn) Then
+            pbWarning.Image = Nothing 'ilNMT.Images("green")
+        Else
+            pbWarning.Image = ilNMT.Images("block")
+        End If
     End Sub
 
     Private Sub txtOutputFolder_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseHover
@@ -1328,5 +1345,4 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 #End Region 'Methods
-
 End Class

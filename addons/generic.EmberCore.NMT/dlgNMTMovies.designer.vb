@@ -80,6 +80,10 @@ Partial Class dlgNMTMovies
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.pbTemplateLogo = New System.Windows.Forms.PictureBox
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.lblWarning = New System.Windows.Forms.Label
+        Me.pbWarning = New System.Windows.Forms.PictureBox
+        Me.ilNMT = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
@@ -91,6 +95,8 @@ Partial Class dlgNMTMovies
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
         CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
+        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -98,7 +104,7 @@ Partial Class dlgNMTMovies
         Me.Close_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(778, 344)
+        Me.Close_Button.Location = New System.Drawing.Point(778, 368)
         Me.Close_Button.Name = "Close_Button"
         Me.Close_Button.Size = New System.Drawing.Size(67, 23)
         Me.Close_Button.TabIndex = 7
@@ -186,7 +192,7 @@ Partial Class dlgNMTMovies
         Me.btnBuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBuild.Enabled = False
         Me.btnBuild.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBuild.Location = New System.Drawing.Point(705, 344)
+        Me.btnBuild.Location = New System.Drawing.Point(705, 368)
         Me.btnBuild.Name = "btnBuild"
         Me.btnBuild.Size = New System.Drawing.Size(67, 23)
         Me.btnBuild.TabIndex = 6
@@ -216,7 +222,7 @@ Partial Class dlgNMTMovies
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel2.Controls.Add(Me.gbHelp)
         Me.Panel2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Panel2.Location = New System.Drawing.Point(7, 268)
+        Me.Panel2.Location = New System.Drawing.Point(7, 292)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(692, 102)
         Me.Panel2.TabIndex = 78
@@ -269,7 +275,7 @@ Partial Class dlgNMTMovies
         Me.dgvSources.ShowCellErrors = False
         Me.dgvSources.ShowCellToolTips = False
         Me.dgvSources.ShowRowErrors = False
-        Me.dgvSources.Size = New System.Drawing.Size(472, 172)
+        Me.dgvSources.Size = New System.Drawing.Size(472, 168)
         Me.dgvSources.TabIndex = 5
         '
         'export
@@ -389,7 +395,7 @@ Partial Class dlgNMTMovies
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnSave.Enabled = False
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(705, 268)
+        Me.btnSave.Location = New System.Drawing.Point(705, 263)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(136, 23)
         Me.btnSave.TabIndex = 92
@@ -478,13 +484,48 @@ Partial Class dlgNMTMovies
         Me.pbTemplateLogo.TabIndex = 94
         Me.pbTemplateLogo.TabStop = False
         '
+        'Panel1
+        '
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.lblWarning)
+        Me.Panel1.Controls.Add(Me.pbWarning)
+        Me.Panel1.Location = New System.Drawing.Point(7, 261)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(692, 28)
+        Me.Panel1.TabIndex = 95
+        '
+        'lblWarning
+        '
+        Me.lblWarning.Location = New System.Drawing.Point(25, 4)
+        Me.lblWarning.Name = "lblWarning"
+        Me.lblWarning.Size = New System.Drawing.Size(654, 18)
+        Me.lblWarning.TabIndex = 1
+        Me.lblWarning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pbWarning
+        '
+        Me.pbWarning.Location = New System.Drawing.Point(3, 5)
+        Me.pbWarning.Name = "pbWarning"
+        Me.pbWarning.Size = New System.Drawing.Size(18, 18)
+        Me.pbWarning.TabIndex = 0
+        Me.pbWarning.TabStop = False
+        '
+        'ilNMT
+        '
+        Me.ilNMT.ImageStream = CType(resources.GetObject("ilNMT.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ilNMT.TransparentColor = System.Drawing.Color.Transparent
+        Me.ilNMT.Images.SetKeyName(0, "green")
+        Me.ilNMT.Images.SetKeyName(1, "red")
+        Me.ilNMT.Images.SetKeyName(2, "block")
+        '
         'dlgNMTMovies
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
-        Me.ClientSize = New System.Drawing.Size(853, 372)
+        Me.ClientSize = New System.Drawing.Size(853, 396)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pbTemplateLogo)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.TabControl1)
@@ -518,6 +559,8 @@ Partial Class dlgNMTMovies
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
         CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -550,6 +593,10 @@ Partial Class dlgNMTMovies
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents pbTemplateLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pbWarning As System.Windows.Forms.PictureBox
+    Friend WithEvents ilNMT As System.Windows.Forms.ImageList
+    Friend WithEvents lblWarning As System.Windows.Forms.Label
 
 #End Region 'Methods
 
