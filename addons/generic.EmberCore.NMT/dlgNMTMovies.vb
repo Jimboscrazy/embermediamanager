@@ -43,25 +43,25 @@ Public Class dlgNMTMovies
     Private HTMLMovieBody As New StringBuilder
     Private HTMLTVBody As New StringBuilder
     Private isCL As Boolean = False
-    'Private TempPath As String = Path.Combine(Master.TempPath, "Export")
     Private use_filter As Boolean = False
     Private workerCanceled As Boolean = False
-
     Private sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
     Private conf As NMTExporterModule.Config
     Private confs As New List(Of NMTExporterModule.Config)
     Private selectedSources As New Hashtable
     Private outputFolder As String
-    'Private dtMovieMedia As New List(Of Structures.DBMovie)
+    Private MoviesGenres As New List(Of String)
+    Private OutputExist As Boolean = False
+    Private outputChanged As Boolean = False
+    Private HaveTV As Boolean
+    Private HaveMovies As Boolean
+    Public Loaded As Boolean = False
+    Public CanBuild As Boolean = False
+
     Public Shared dtMovieMedia As DataTable = Nothing
     Public Shared dtEpisodes As DataTable = Nothing
     Public Shared dtSeasons As DataTable = Nothing
     Public Shared dtShows As DataTable = Nothing
-
-    Private MoviesGenres As New List(Of String)
-
-    Public Loaded As Boolean = False
-    Public CanBuild As Boolean = False
 
 #End Region 'Fields
 
@@ -73,6 +73,7 @@ Public Class dlgNMTMovies
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
         Try
+            Me.SetUp()
             If dtMovieMedia Is Nothing Then
                 dtMovieMedia = New DataTable
                 Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
@@ -231,7 +232,7 @@ Public Class dlgNMTMovies
     End Sub
     Private Sub PreProcessProperties(ByRef str As String)
         Dim propreties As List(Of String)
-        propreties = GetProperties(str)
+        propreties = GetPropertiesPre(str)
         For Each s As NMTExporterModule.Config._Property In conf.Properties
             If propreties.Contains(String.Concat("{$", s.name, "}")) Then
                 str = str.Replace(String.Concat("{$", s.name, "}"), s.value)
@@ -241,7 +242,7 @@ Public Class dlgNMTMovies
             str = str.Replace(s, String.Empty)
         Next
     End Sub
-    Public Function GetProperties(ByVal s As String) As List(Of String)
+    Public Function GetPropertiesPre(ByVal s As String) As List(Of String)
         Dim rets As New List(Of String)
         Try
             Dim regStat As MatchCollection = Regex.Matches(s, "\{\$(?<values>.*?)\}", RegexOptions.Multiline)
@@ -258,7 +259,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String, ByVal doNavigate As Boolean)
         Try
-            ' Build HTML Documment in Code ... ugly but will work until new option
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(2, "Compiling Movie List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("MoviesDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLMovieBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -322,7 +323,6 @@ Public Class dlgNMTMovies
 
     Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String, ByVal doNavigate As Boolean)
         Try
-            ' Build HTML Documment in Code ... ugly but will work until new option
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -411,8 +411,8 @@ Public Class dlgNMTMovies
         If Not String.IsNullOrEmpty(mapPath) Then
             ret = mediaPath.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/")
         Else
-            Dim pr As String = Path.GetPathRoot(outputPath)
-            outputPath = outputPath.Substring(pr.Length)
+            Dim pr As String ' = Path.GetPathRoot(outputPath)
+            outputPath = outputPath.Substring(outputFolder.Length) 'outputPath.Substring(pr.Length)
             Dim count As Integer
             For Each ch As Char In outputPath
                 If ch = Convert.ToChar(Path.DirectorySeparatorChar) Then
@@ -764,8 +764,6 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-
     End Sub
 
     Private Sub populateParams()
@@ -1075,7 +1073,8 @@ Public Class dlgNMTMovies
         dgvProperties.Enabled = False
         dgvSettings.Enabled = False
         dgvSources.Enabled = False
-        pbCompile.Maximum = dtShows.Rows.Count + dtMovieMedia.Rows.Count + If(bexportPosters, dtMovieMedia.Rows.Count, 0) + If(bexportBackDrops, dtMovieMedia.Rows.Count, 0)
+        If HaveMovies Then pbCompile.Maximum = dtMovieMedia.Rows.Count + If(bexportPosters, dtMovieMedia.Rows.Count, 0) + If(bexportBackDrops, dtMovieMedia.Rows.Count, 0)
+        If HaveTV Then pbCompile.Maximum = pbCompile.Maximum + dtShows.Rows.Count
         pbCompile.Value = pbCompile.Minimum
         btnCancel.Visible = True
         btnCancel.Enabled = True
@@ -1101,7 +1100,7 @@ Public Class dlgNMTMovies
                         Application.DoEvents()
                     End While
                 End If
-                lblCompiling.Text = Master.eLang.GetString(2, "Compiling Movie List...")
+                lblCompiling.Text = Master.eLang.GetString(23, "Preparing folders")
                 For Each s As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) y.type = "path")
                     If Not Directory.Exists(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar))) Then
                         Try
@@ -1141,8 +1140,8 @@ Public Class dlgNMTMovies
     End Sub
     Private Sub bwBuildHTML_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwBuildHTML.DoWork
         Try
-            BuildMovieHTML(template_Path, outputFolder, False)
-            'BuildTVHTML(template_Path, outputFolder, False)
+            If HaveMovies Then BuildMovieHTML(template_Path, outputFolder, False)
+            If HaveTV Then BuildTVHTML(template_Path, outputFolder, False)
         Catch ex As Exception
         End Try
     End Sub
@@ -1158,7 +1157,7 @@ Public Class dlgNMTMovies
     End Sub
     Private Sub SaveMovieFiles(ByVal srcPath As String, ByVal destPath As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Exporting Data..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Movies - Exporting Data..."))
             If Not DontSaveExtra Then
                 For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
                     Dim dstPath As String = Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name)
@@ -1180,19 +1179,19 @@ Public Class dlgNMTMovies
                     If bwBuildHTML.CancellationPending Then Return
                 Next
                 If Me.bexportFlags Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(9, "Exporting Flags..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(9, "Movies - Exporting Flags..."))
                     srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                     Dim flagspath As String = Path.Combine(destPath, GetUserParam("FlagsPath", "Flags/").Replace("/", Path.DirectorySeparatorChar))
                     CopyDirectory(srcPath, flagspath, True)
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Exporting Posters..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Movies - Exporting Posters..."))
                     Me.ExportPoster(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(11, "Exporting Backdrops..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(11, "Movies - Exporting Backdrops..."))
                     Me.ExportBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
@@ -1235,25 +1234,47 @@ Public Class dlgNMTMovies
 
     Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ValidatedToBuild.Tick
         ValidatedToBuild.Stop()
+        ValidatedToBuild.Interval = 300
         selectedSources.Clear()
+        HaveMovies = False
+        HaveTV = False
+        Cursor = Cursors.WaitCursor
+        pbWarning.Image = ilNMT.Images("red")
+        lblWarning.Text = "Validating Info..."
+        Application.DoEvents()
         Dim warn As String = String.Empty
-        For Each row As DataGridViewRow In dgvSources.Rows
-            Dim dcb As DataGridViewCheckBoxCell = DirectCast(row.Cells(0), DataGridViewCheckBoxCell)
-            If DirectCast(dcb.Value, Boolean) = True Then
-                Try
-                    If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText) = Path.GetPathRoot(txtOutputFolder.Text) Then
+        If outputChanged Then
+            outputChanged = False
+            OutputExist = Directory.Exists(txtOutputFolder.Text)
+        End If
+        If Not OutputExist Then
+            ' TODO Strings
+            warn = "Invalid Output Folder"
+        End If
+        If String.IsNullOrEmpty(warn) Then
+            For Each row As DataGridViewRow In dgvSources.Rows
+                Dim dcb As DataGridViewCheckBoxCell = DirectCast(row.Cells(0), DataGridViewCheckBoxCell)
+                If DirectCast(dcb.Value, Boolean) = True Then
+                    Try
+                        row.Cells(3).Value = If(IsNothing(row.Cells(3).Value), String.Empty, row.Cells(3).Value)
+                        If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
+                            ' TODO Strings
+                            warn = "Output Folder don't match Selected Sources and no NMT Path defined"
+                            Exit For
+                        Else
+                            selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
+                            If row.Cells(4).Value.ToString = "tv" Then HaveTV = True
+                            If row.Cells(4).Value.ToString = "movie" Then HaveMovies = True
+                        End If
+                    Catch ex As Exception
                         ' TODO Strings
-                        warn = "Output Folder don't match Selected Sources and no NMT Path defined"
-                    Else
-                        selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
-                    End If
-                Catch ex As Exception
-                    ' TODO Strings
-                    warn = "Invalid Output Folder"
-                End Try
-            End If
-        Next
-        If String.IsNullOrEmpty(warn) AndAlso Not conf Is Nothing AndAlso selectedSources.Count > 0 AndAlso Directory.Exists(txtOutputFolder.Text) Then
+                        warn = "Invalid Output Folder"
+                        Exit For
+                    End Try
+                End If
+            Next
+        End If
+        If String.IsNullOrEmpty(warn) AndAlso Not conf Is Nothing AndAlso selectedSources.Count > 0 AndAlso OutputExist Then
             btnBuild.Enabled = True
             CanBuild = True
         Else
@@ -1266,6 +1287,12 @@ Public Class dlgNMTMovies
         Else
             pbWarning.Image = ilNMT.Images("block")
         End If
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub txtOutputFolder_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.LostFocus
+        ValidatedToBuild.Start()
+        btnSave.Enabled = True
     End Sub
 
     Private Sub txtOutputFolder_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseHover
@@ -1277,8 +1304,7 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputFolder.TextChanged
-        ValidatedToBuild.Start()
-        btnSave.Enabled = True
+        outputChanged = True
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         SaveConfig()
@@ -1344,5 +1370,27 @@ Public Class dlgNMTMovies
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Private oldWarning As String = String.Empty
+    Private Sub pbWarning_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbWarning.Click
+        If Not IsNothing(pbWarning.Image) Then
+            ValidatedToBuild.Start()
+        End If
+    End Sub
+    Private Sub pbWarning_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbWarning.MouseHover
+        If Not IsNothing(pbWarning.Image) Then
+            Cursor = Cursors.Hand
+            oldWarning = lblWarning.Text
+        End If
+    End Sub
+    Private Sub pbWarning_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbWarning.MouseLeave
+        If Not IsNothing(pbWarning.Image) Then
+            Cursor = Cursors.Default
+            lblWarning.Text = oldWarning
+        End If
+    End Sub
 #End Region 'Methods
+
+
+
+
 End Class

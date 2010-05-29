@@ -25,10 +25,10 @@ Imports System.Xml.Serialization
 Public Class NMTExporterModule
     Implements Interfaces.EmberExternalModule
 
-    Public Shared MinDesignVersion As Single = 0.7
+    ' This will Control What Templates are valid!
+    Public Shared MinDesignVersion As Single = 0.8
 
 #Region "Fields"
-
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
