@@ -7,10 +7,10 @@
 	<string id="5">Choose a template</string>
 	<string id="6">BasePath can not be the same as Output Folder</string>
 	<string id="7">Warning</string>
-	<string id="8">Exporting Data...</string>
-	<string id="9">Exporting Flags...</string>
-	<string id="10">Exporting Posters...</string>
-	<string id="11">Exporting Backdrops...</string>
+	<string id="8">Movies - Exporting Data...</string>
+	<string id="9">Movies - Exporting Flags...</string>
+	<string id="10">Movies - Exporting Posters...</string>
+	<string id="11">Movies - Exporting Backdrops...</string>
 	<string id="12">Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]</string>
 	<string id="13">Select Root Folder where Jukebox files will be exported</string>
 	<string id="14">Output Folder</string>
@@ -22,4 +22,8 @@
 	<string id="20">Starting...</string>
 	<string id="21">Cleaning output folder...</string>
 	<string id="22">Outdated</string>
+	<string id="23">Preparing folders...</string>
+	<string id="24">Validating Info...</string>
+	<string id="25">Invalid Output Folder</string>
+	<string id="26">Output Folder don't match Selected Sources and no NMT Path defined</string>
 </strings>

@@ -142,7 +142,7 @@ Public Class dlgNMTMovies
     Public Sub SaveConfig()
         AdvancedSettings.SetSetting("Template", cbTemplate.Text)
         AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
-        For Each r As NMTExporterModule.Config._Param In conf.Params
+        For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
             AdvancedSettings.SetSetting(String.Concat("Param.", r.name), r.value)
         Next
         For Each r As NMTExporterModule.Config._Property In conf.Properties
@@ -781,7 +781,12 @@ Public Class dlgNMTMovies
                 Dim cCell As New DataGridViewTextBoxCell()
                 dgvSettings.Rows(i).Cells(1) = cCell
                 Dim dcb As DataGridViewTextBoxCell = DirectCast(dgvSettings.Rows(i).Cells(1), DataGridViewTextBoxCell)
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", c.name), c.value)
+                If c.access = "internal" Then
+                    dcb.Value = c.value
+                Else
+                    dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", c.name), c.value)
+                End If
+
                 If c.access = "hidden" Then
                     dgvSettings.Rows(i).Visible = False
                 End If
@@ -1085,6 +1090,7 @@ Public Class dlgNMTMovies
         pnlCancel.Visible = True
         pnlCancel.BringToFront()
         outputFolder = txtOutputFolder.Text
+        outputFolder = If(outputFolder.EndsWith(Path.DirectorySeparatorChar), outputFolder, String.Concat(outputFolder, Path.DirectorySeparatorChar))
         Try
             While True
                 If GetUserParam("CleanBasePath", "true").ToLower = "true" Then
@@ -1225,7 +1231,7 @@ Public Class dlgNMTMovies
 
 
     Private Sub dgvSources_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseHover
-        lblHelpa.Text = String.Format(Master.eLang.GetString(12, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
+        lblHelpa.Text = String.Format(Master.eLang.GetString(12, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}file:///opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}file:///opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
     End Sub
 
     Private Sub dgvSources_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseLeave
@@ -1240,7 +1246,7 @@ Public Class dlgNMTMovies
         HaveTV = False
         Cursor = Cursors.WaitCursor
         pbWarning.Image = ilNMT.Images("red")
-        lblWarning.Text = "Validating Info..."
+        lblWarning.Text = Master.eLang.GetString(24, "Validating Info...")
         Application.DoEvents()
         Dim warn As String = String.Empty
         If outputChanged Then
@@ -1249,7 +1255,7 @@ Public Class dlgNMTMovies
         End If
         If Not OutputExist Then
             ' TODO Strings
-            warn = "Invalid Output Folder"
+            warn = Master.eLang.GetString(25, "Invalid Output Folder")
         End If
         If String.IsNullOrEmpty(warn) Then
             For Each row As DataGridViewRow In dgvSources.Rows
@@ -1259,7 +1265,7 @@ Public Class dlgNMTMovies
                         row.Cells(3).Value = If(IsNothing(row.Cells(3).Value), String.Empty, row.Cells(3).Value)
                         If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
                             ' TODO Strings
-                            warn = "Output Folder don't match Selected Sources and no NMT Path defined"
+                            warn = Master.eLang.GetString(26, "Output Folder don't match Selected Sources and no NMT Path defined")
                             Exit For
                         Else
                             selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
@@ -1268,7 +1274,7 @@ Public Class dlgNMTMovies
                         End If
                     Catch ex As Exception
                         ' TODO Strings
-                        warn = "Invalid Output Folder"
+                        warn = Master.eLang.GetString(25, "Invalid Output Folder")
                         Exit For
                     End Try
                 End If
@@ -1304,7 +1310,10 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputFolder.TextChanged
+        btnBuild.Enabled = False
         outputChanged = True
+        ValidatedToBuild.Interval = 2000
+        ValidatedToBuild.Start()
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         SaveConfig()
