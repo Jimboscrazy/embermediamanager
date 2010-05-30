@@ -1054,7 +1054,14 @@ Public Class dlgNMTMovies
         Me.btnSave.Text = Master.eLang.GetString(15, "Save Settings")
         Me.btnBuild.Text = Master.eLang.GetString(16, "Build")
         Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(17, "Help"))
-
+        Me.dgvProperties.Columns(0).HeaderText = Master.eLang.GetString(29, "Property")
+        Me.dgvProperties.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
+        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(31, "Ember Source")
+        Me.dgvSources.Columns(2).HeaderText = Master.eLang.GetString(32, "NMT Path")
+        Me.dgvSettings.Columns(0).HeaderText = Master.eLang.GetString(33, "Setting")
+        Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
+        Me.TabPage1.Text = Master.eLang.GetString(34, "Template Settings")
+        Me.TabPage2.Text = Master.eLang.GetString(35, "Skin Properties")
 
     End Sub
 

@@ -11,7 +11,7 @@
 	<string id="9">Movies - Exporting Flags...</string>
 	<string id="10">Movies - Exporting Posters...</string>
 	<string id="11">Movies - Exporting Backdrops...</string>
-	<string id="12">Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}/opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}/opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]</string>
+	<string id="12">Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}file:///opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}file:///opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]</string>
 	<string id="13">Select Root Folder where Jukebox files will be exported</string>
 	<string id="14">Output Folder</string>
 	<string id="15">Save Settings</string>
@@ -26,4 +26,14 @@
 	<string id="24">Validating Info...</string>
 	<string id="25">Invalid Output Folder</string>
 	<string id="26">Output Folder don't match Selected Sources and no NMT Path defined</string>
+	<string id="27">Removing Template can not be undone. Are you sure?</string>
+	<string id="28">Remove Template</string>
+	<string id="29">Property</string>
+	<string id="30">Value</string>
+	<string id="31">Ember Source</string>
+	<string id="32">NMT Path</string>
+	<string id="33">Setting</string>
+	<string id="34">Template Settings</string>
+	<string id="35">Skin Properties</string>
+
 </strings>

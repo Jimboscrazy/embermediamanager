@@ -194,7 +194,7 @@ Public Class frmSettingsHolder
     Sub RemoveTemplate()
         If lstTemplates.SelectedItems.Count > 0 Then
             Dim conf As NMTExporterModule.Config = DirectCast(lstTemplates.SelectedItems(0).Tag, NMTExporterModule.Config)
-            If MsgBox("Removing Template can not be undone. Are you sure?", MsgBoxStyle.YesNo, "Remove Template") = MsgBoxResult.Yes Then
+            If MsgBox(Master.eLang.GetString(27, "Removing Template can not be undone. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(28, "Remove Template")) = MsgBoxResult.Yes Then
                 Select Case lstTemplates.SelectedItems(0).SubItems(3).Text
                     Case Master.eLang.GetString(18, "Installed")
                         Directory.Delete(conf.TemplatePath, True)

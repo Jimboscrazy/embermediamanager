@@ -525,8 +525,8 @@ Partial Class dlgNMTMovies
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(853, 396)
-        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pbTemplateLogo)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnSave)
