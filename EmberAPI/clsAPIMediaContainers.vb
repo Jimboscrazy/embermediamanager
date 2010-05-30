@@ -950,7 +950,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("AudioSource")> _
+        <XmlElement("audioSource")> _
         Public Property AudioSource() As String
             Get
                 Return Me._audiosource
