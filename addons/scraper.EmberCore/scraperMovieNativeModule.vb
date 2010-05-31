@@ -291,6 +291,7 @@ Public Class EmberNativeScraperModule
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
         ConfigScrapeModifier.Extra = True
+        ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
