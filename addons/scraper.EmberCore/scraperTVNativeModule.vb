@@ -109,7 +109,7 @@ Public Class EmberNativeTVScraperModule
 
     Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ChangeEpisode
         epDet = TVScraper.ChangeEpisode(ShowID, TVDBID, Lang)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetLangs
@@ -119,7 +119,7 @@ Public Class EmberNativeTVScraperModule
 
     Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleEpisode
         epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, Ordering, Options)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Image, ByRef Image As Image) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetSingleImage
@@ -166,7 +166,7 @@ Public Class EmberNativeTVScraperModule
 
     Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.SaveImages
         TVScraper.SaveImages()
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
@@ -177,17 +177,17 @@ Public Class EmberNativeTVScraperModule
 
     Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
         TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, Options)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, Options, WithCurrent)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
         TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, Options)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     #End Region 'Methods
