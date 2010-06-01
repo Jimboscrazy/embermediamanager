@@ -118,14 +118,14 @@ Public Class dlgNMTMovies
             For Each s As Structures.MovieSource In Master.MovieSources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
-                dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", s.Name), "")
-                dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", s.Name), False)
+                'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Name), "")
+                'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Name), False)
             Next
             For Each s As Structures.TVSource In Master.TVSources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.television, String.Empty, "tv"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
-                dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", s.Name), "")
-                dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", s.Name), False)
+                'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Name), "")
+                'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Name), False)
             Next
             If Not conf Is Nothing Then
                 populateParams()
@@ -143,15 +143,15 @@ Public Class dlgNMTMovies
         AdvancedSettings.SetSetting("Template", cbTemplate.Text)
         AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
         For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
-            AdvancedSettings.SetSetting(String.Concat("Param.", r.name), r.value)
+            AdvancedSettings.SetSetting(String.Concat("Param.", conf.Name, ".", r.name), r.value)
         Next
         For Each r As NMTExporterModule.Config._Property In conf.Properties
             Dim v As String = r.value
-            AdvancedSettings.SetSetting(String.Concat("Property.", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
+            AdvancedSettings.SetSetting(String.Concat("Property.", conf.Name, ".", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
         Next
         For Each r As DataGridViewRow In dgvSources.Rows
-            AdvancedSettings.SetSetting(String.Concat("Path.Movie.", r.Cells(1).Value.ToString), r.Cells(3).Value.ToString)
-            AdvancedSettings.SetBooleanSetting(String.Concat("Path.Movie.Status.", r.Cells(1).Value.ToString), Convert.ToBoolean(r.Cells(0).Value))
+            AdvancedSettings.SetSetting(String.Concat("Path.Movie.", conf.Name, ".", r.Cells(1).Value.ToString), r.Cells(3).Value.ToString)
+            AdvancedSettings.SetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", r.Cells(1).Value.ToString), Convert.ToBoolean(r.Cells(0).Value))
         Next
         'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
     End Sub
@@ -430,6 +430,16 @@ Public Class dlgNMTMovies
         'String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curMovie.Item("Source").ToString))
         Return ret
     End Function
+
+    Private Function GetSufix(ByVal _type As String) As String
+        Dim p As NMTExporterModule.Config._ImageProcessing = conf.ImageProcessing.FirstOrDefault(Function(y) y._type = _type)
+        If Not IsNothing(p) Then
+            Dim c As NMTExporterModule.Config._ImageProcessingCommand = p.Commands.FirstOrDefault(Function(x) x.prefix = String.Empty)
+            If Not IsNothing(c) Then Return c.sufix
+        End If
+        Return ".jpg"
+    End Function
+
     Function ProcessMovieTags(ByVal _curMovie As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal id As String, ByVal movierow As String) As String
         Dim row As String = movierow
         Try
@@ -445,7 +455,7 @@ Public Class dlgNMTMovies
             row = row.Replace("<$COUNTER>", counter.ToString)
 
             row = row.Replace("<$MOVIE_PATH>", GetRelativePath(_curMovie.Item("MoviePath").ToString, sourcePath, mapPath, outputbase))
-            row = row.Replace("<$POSTER_THUMB>", GetRelativePath(String.Concat(ThumbsPath, id.ToString, ".jpg"), String.Empty, String.Empty, outputbase))
+            row = row.Replace("<$POSTER_THUMB>", GetRelativePath(String.Concat(ThumbsPath, id.ToString, GetSufix("Thumb")), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$BACKDROP_THUMB>", GetRelativePath(String.Concat(BackdropPath, id.ToString, "-backdrop.jpg"), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$POSTER_FILE>", GetRelativePath(_curMovie.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$FANART_FILE>", GetRelativePath(_curMovie.Item("FanartPath").ToString, sourcePath, mapPath, outputbase))
@@ -734,7 +744,6 @@ Public Class dlgNMTMovies
 
 
     Private Sub cbTemplate_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTemplate.MouseHover
-
         lblHelpa.Text = Master.eLang.GetString(5, "Choose a template")
     End Sub
 
@@ -754,6 +763,7 @@ Public Class dlgNMTMovies
                 pbTemplateLogo.Image = Nothing
             End If
             DontSaveExtra = False
+            'btnSave.Enabled = False
         End If
 
     End Sub
@@ -767,6 +777,17 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub populateParams()
+        For Each s As DataGridViewRow In dgvSources.Rows
+            ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
+            If s.Cells(4).Value.ToString = "movie" Then
+                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
+            Else
+                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
+            End If
+        Next
+
         dgvSettings.Rows.Clear()
         For Each c As NMTExporterModule.Config._Param In conf.Params.OrderByDescending(Function(y) y.access)
             Dim i As Integer
@@ -776,7 +797,7 @@ Public Class dlgNMTMovies
                 dgvSettings.Rows(i).Cells(1) = cCell
                 Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
                 dcb.DataSource = New String() {"true", "false"}
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", c.name), c.value)
+                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
             Else
                 Dim cCell As New DataGridViewTextBoxCell()
                 dgvSettings.Rows(i).Cells(1) = cCell
@@ -784,7 +805,7 @@ Public Class dlgNMTMovies
                 If c.access = "internal" Then
                     dcb.Value = c.value
                 Else
-                    dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", c.name), c.value)
+                    dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
                 End If
 
                 If c.access = "hidden" Then
@@ -812,7 +833,7 @@ Public Class dlgNMTMovies
             Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvProperties.Rows(i).Cells(1), DataGridViewComboBoxCell)
             dcb.DataSource = lst.ToArray
             'If lst.Count > 0 Then dcb.Value = lst(0)
-            Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", c.name), lst(0))
+            Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", conf.Name, ".", c.name), lst(0))
             Dim defvalue As String = c.values.FirstOrDefault(Function(y) y.label = saved).value
             defvalue = If(IsNothing(defvalue), String.Empty, defvalue)
             c.value = defvalue
@@ -880,18 +901,43 @@ Public Class dlgNMTMovies
 
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("ID").ToString, ".jpg"))
-                    If File.Exists(_curMovie.Item("PosterPath").ToString) Then
-                        Dim im As New Images
-                        If new_width > 0 Then
-
-                            im.FromFile(_curMovie.Item("PosterPath").ToString)
-                            ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                            im.Save(posterfile)
-
-                            'RotateImage(im.Image, 5).Save(Path.Combine(finalpath, String.Concat("r-", counter.ToString, ".jpg")))
+                    If File.Exists(_curMovie.Item("PosterPath").ToString) AndAlso Not File.Exists(posterfile) Then
+                        If ImageNeedProcess("Thumb") Then
+                            For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Thumb")
+                                For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curMovie.Item("ID").ToString, c.sufix))
+                                    Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
+                                    Dim params As String = c.params.Replace("$1", String.Concat("""", _curMovie.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
+                                    Using execute As New Process
+                                        execute.StartInfo.FileName = exe
+                                        execute.StartInfo.Arguments = params
+                                        execute.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                                        'execute.StartInfo.UseShellExecute = False
+                                        'execute.StartInfo.RedirectStandardOutput = True
+                                        execute.Start()
+                                        While Not execute.HasExited
+                                            Application.DoEvents()
+                                            execute.Refresh()
+                                        End While
+                                        'Dim output As String = execute.StandardOutput.ReadToEnd()
+                                    End Using
+                                Next
+                            Next
                         Else
-                            File.Copy(_curMovie.Item("PosterPath").ToString, posterfile, True)
+                            Dim im As New Images
+                            If new_width > 0 Then
+
+                                im.FromFile(_curMovie.Item("PosterPath").ToString)
+                                ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
+                                im.Save(posterfile)
+
+                                'RotateImage(im.Image, 5).Save(Path.Combine(finalpath, String.Concat("r-", counter.ToString, ".jpg")))
+                            Else
+                                File.Copy(_curMovie.Item("PosterPath").ToString, posterfile, True)
+                            End If
                         End If
+
+
                     End If
                 Catch ex As Exception
                 End Try
@@ -906,6 +952,13 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
+    Private Function ImageNeedProcess(ByVal _type As String) As Boolean
+        For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing
+            If s._type = _type Then Return True
+        Next
+        Return False
+    End Function
+
 
     Private Sub ExportBackDrops(ByVal fpath As String, ByVal new_width As Integer)
         Try
@@ -916,7 +969,7 @@ Public Class dlgNMTMovies
                 If Not FilterMovies.Contains(Convert.ToInt32(_curMovie.Item("ID"))) Then Continue For
                 Try
                     Dim Fanartfile As String = Path.Combine(finalpath, String.Concat(_curMovie.Item("ID").ToString, "-backdrop.jpg"))
-                    If File.Exists(_curMovie.Item("FanartPath").ToString) Then
+                    If File.Exists(_curMovie.Item("FanartPath").ToString) AndAlso Not File.Exists(Fanartfile) Then
                         If new_width > 0 Then
                             Dim im As New Images
                             im.FromFile(_curMovie.Item("FanartPath").ToString)
@@ -1057,7 +1110,7 @@ Public Class dlgNMTMovies
         Me.dgvProperties.Columns(0).HeaderText = Master.eLang.GetString(29, "Property")
         Me.dgvProperties.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(31, "Ember Source")
-        Me.dgvSources.Columns(2).HeaderText = Master.eLang.GetString(32, "NMT Path")
+        Me.dgvSources.Columns(3).HeaderText = Master.eLang.GetString(32, "NMT Path")
         Me.dgvSettings.Columns(0).HeaderText = Master.eLang.GetString(33, "Setting")
         Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
         Me.TabPage1.Text = Master.eLang.GetString(34, "Template Settings")

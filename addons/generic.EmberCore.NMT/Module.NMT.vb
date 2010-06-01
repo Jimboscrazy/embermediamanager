@@ -189,8 +189,13 @@ Public Class NMTExporterModule
         <XmlArray("Properties")> _
         <XmlArrayItem("Property")> _
         Public Properties As New List(Of _Property)
+        <XmlArray("ImageProcessing")> _
+        <XmlArrayItem("Image")> _
+        Public ImageProcessing As New List(Of _ImageProcessing)
+
         <XmlIgnore()> _
         Public TemplatePath As String
+
         Class _File
             Public Name As String
             Public DestPath As String
@@ -219,6 +224,19 @@ Public Class NMTExporterModule
             Public value As String
             <XmlAttribute("label")> _
             Public label As String
+        End Class
+        Class _ImageProcessing
+            <XmlElement("Type")> _
+            Public _type As String
+            <XmlArray("Commands")> _
+            <XmlArrayItem("Command")> _
+            Public Commands As New List(Of _ImageProcessingCommand)
+        End Class
+        Class _ImageProcessingCommand
+            Public execute As String
+            Public params As String
+            Public prefix As String
+            Public sufix As String
         End Class
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(Config))
