@@ -257,7 +257,7 @@ Public Class dlgNMTMovies
         Return rets
     End Function
 
-    Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String, ByVal doNavigate As Boolean)
+    Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String)
         Try
             bwBuildHTML.ReportProgress(0, Master.eLang.GetString(2, "Compiling Movie List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("MoviesDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
@@ -321,7 +321,7 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
-    Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String, ByVal doNavigate As Boolean)
+    Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String)
         Try
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
@@ -1206,8 +1206,8 @@ Public Class dlgNMTMovies
     End Sub
     Private Sub bwBuildHTML_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwBuildHTML.DoWork
         Try
-            If HaveMovies Then BuildMovieHTML(template_Path, outputFolder, False)
-            If HaveTV Then BuildTVHTML(template_Path, outputFolder, False)
+            If HaveMovies Then BuildMovieHTML(template_Path, outputFolder)
+            If HaveTV Then BuildTVHTML(template_Path, outputFolder)
         Catch ex As Exception
         End Try
     End Sub

@@ -137,10 +137,9 @@ Public Class genericYAMJ
                                             seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                                         End If
                                     End If
-
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-                                    'imageList.Add(tPath)
+                                    imageList.Add(tPath)
                                     'doContinue = False
                                     'SET_<show>_1.jpg
 
@@ -153,10 +152,9 @@ Public Class genericYAMJ
                                             seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                                         End If
                                     End If
-
                                     tPath = Path.Combine(mShow.ShowPath, seasonPath)
                                     tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
-                                    'imageList.Add(tPath)
+                                    imageList.Add(tPath)
                                     'doContinue = False
                                     'SET_<show>_1.fanart.jpg
                             End Select
