@@ -35,5 +35,7 @@
 	<string id="33">Setting</string>
 	<string id="34">Template Settings</string>
 	<string id="35">Skin Properties</string>
-
+	<string id="36">Install Template</string>
+	<string id="37">Folder already exist. Overwrite?</string>
+	<string id="38">File/Folder in use! Can Not overwrite</string>
 </strings>

@@ -1374,6 +1374,7 @@ Public Class dlgNMTMovies
         outputChanged = True
         ValidatedToBuild.Interval = 2000
         ValidatedToBuild.Start()
+        btnSave.Enabled = True
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         SaveConfig()

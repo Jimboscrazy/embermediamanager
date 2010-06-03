@@ -151,16 +151,14 @@ Public Class frmSettingsHolder
     Private Function UnZip(ByVal fname As String) As Boolean
         Dim baseFolder As String = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(fname)))
         If Directory.Exists(baseFolder) Then
-            If MsgBox("Folder already exist. Overwrite?", MsgBoxStyle.YesNo, "Install Template") = MsgBoxResult.No Then
+            If MsgBox(Master.eLang.GetString(37, "Folder already exist. Overwrite?"), MsgBoxStyle.YesNo, Master.eLang.GetString(36, "Install Template")) = MsgBoxResult.No Then
                 Return False
             Else
                 Try
                     Directory.Delete(baseFolder, True)
                 Catch ex As Exception
-                    MsgBox("File/Folder in use! Can Not overwrite", MsgBoxStyle.OkOnly, "Install Template")
+                    MsgBox(Master.eLang.GetString(38, "File/Folder in use! Can Not overwrite"), MsgBoxStyle.OkOnly, Master.eLang.GetString(36, "Install Template"))
                 End Try
-
-
             End If
         End If
         Using fStream As FileStream = New FileStream(fname, FileMode.Open, FileAccess.Read)

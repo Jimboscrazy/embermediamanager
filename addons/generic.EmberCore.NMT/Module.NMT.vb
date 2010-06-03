@@ -181,7 +181,7 @@ Public Class NMTExporterModule
         Public Author As String
         Public Version As String
         Public DesignVersion As String
-        Public ReadMe As Boolean
+
         <XmlArrayItem("File")> _
         Public Files As New List(Of _File)
         <XmlArrayItem("Param")> _
@@ -193,6 +193,8 @@ Public Class NMTExporterModule
         <XmlArrayItem("Image")> _
         Public ImageProcessing As New List(Of _ImageProcessing)
 
+        <XmlIgnore()> _
+        Public ReadMe As Boolean
         <XmlIgnore()> _
         Public TemplatePath As String
 
