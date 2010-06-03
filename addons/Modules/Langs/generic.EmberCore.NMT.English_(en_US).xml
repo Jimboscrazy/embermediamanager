@@ -38,4 +38,6 @@
 	<string id="36">Install Template</string>
 	<string id="37">Folder already exist. Overwrite?</string>
 	<string id="38">File/Folder in use! Can Not overwrite</string>
+	<string id="39">High Priority</string>
+	<string id="40">When using external tools, run several instances for a faster build"</string>
 </strings>

@@ -55,9 +55,10 @@ Public Class dlgNMTMovies
     Private outputChanged As Boolean = False
     Private HaveTV As Boolean
     Private HaveMovies As Boolean
+    Private bHighPriority As Boolean = False
+
     Public Loaded As Boolean = False
     Public CanBuild As Boolean = False
-
     Public Shared dtMovieMedia As DataTable = Nothing
     Public Shared dtEpisodes As DataTable = Nothing
     Public Shared dtSeasons As DataTable = Nothing
@@ -142,10 +143,12 @@ Public Class dlgNMTMovies
     Public Sub SaveConfig()
         AdvancedSettings.SetSetting("Template", cbTemplate.Text)
         AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
+        AdvancedSettings.SetBooleanSetting(String.Concat("HighPriority.", conf.Name), chHighPriority.Checked)
+
         For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
             AdvancedSettings.SetSetting(String.Concat("Param.", conf.Name, ".", r.name), r.value)
         Next
-        For Each r As NMTExporterModule.Config._Property In conf.Properties
+        For Each r As NMTExporterModule.Config._Property In conf.Properties.Where(Function(y) y.type = "list")
             Dim v As String = r.value
             AdvancedSettings.SetSetting(String.Concat("Property.", conf.Name, ".", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
         Next
@@ -292,7 +295,6 @@ Public Class dlgNMTMovies
             HTMLMovieBody.Append(movieheader)
             Dim counter As Integer = 1
             FilterMovies.Clear()
-
             MoviesGenres.Clear()
 
             For Each _curMovie As DataRow In dtMovieMedia.Rows
@@ -356,7 +358,6 @@ Public Class dlgNMTMovies
             HTMLTVBody.Append(tvheader)
             Dim counter As Integer = 1
             FilterTVShows.Clear()
-
             'MoviesGenres.Clear()
 
             For Each _curShow As DataRow In dtShows.Rows
@@ -388,7 +389,6 @@ Public Class dlgNMTMovies
             Next
             HTMLTVBody.Append(tvfooter)
             'HTMLTVBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
-
             DontSaveExtra = False
             'Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
 
@@ -454,6 +454,7 @@ Public Class dlgNMTMovies
             row = row.Replace("<$ID>", id.ToString)
             row = row.Replace("<$COUNTER>", counter.ToString)
 
+            row = row.Replace("<$THUMB_PATH>", GetRelativePath(ThumbsPath, String.Empty, String.Empty, outputbase))
             row = row.Replace("<$MOVIE_PATH>", GetRelativePath(_curMovie.Item("MoviePath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$POSTER_THUMB>", GetRelativePath(String.Concat(ThumbsPath, id.ToString, GetSufix("Thumb")), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$BACKDROP_THUMB>", GetRelativePath(String.Concat(BackdropPath, id.ToString, "-backdrop.jpg"), String.Empty, String.Empty, outputbase))
@@ -664,26 +665,34 @@ Public Class dlgNMTMovies
             Next
             row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curEpisode.Item("MoviePath").ToString).ToString))
             row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curEpisode.Item("DateAdd").ToString)).ToShortDateString))
-            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curEpisode.Item("ID").ToString)
-            Dim _vidDetails As String = String.Empty
-            Dim _vidDimensions As String = String.Empty
-            If Not IsNothing(fiAV) Then
-                If fiAV.StreamDetails.Video.Count > 0 Then
-                    tVid = NFO.GetBestVideo(fiAV)
-                    tRes = NFO.GetResFromDimensions(tVid)
-                    _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                    _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+            If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") OrElse row.Contains("<$AUDIO>") Then
+                Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curEpisode.Item("ID").ToString)
+                If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") Then
+                    Dim _vidDetails As String = String.Empty
+                    Dim _vidDimensions As String = String.Empty
+                    If Not IsNothing(fiAV) Then
+                        If fiAV.StreamDetails.Video.Count > 0 Then
+                            tVid = NFO.GetBestVideo(fiAV)
+                            tRes = NFO.GetResFromDimensions(tVid)
+                            _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+                        End If
+                    End If
+                    row = row.Replace("<$VIDEO>", _vidDetails)
+                    row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 End If
+                If row.Contains("<$AUDIO>") Then
+                    Dim _audDetails As String = String.Empty
+                    If fiAV.StreamDetails.Audio.Count > 0 Then
+                        tAud = NFO.GetBestAudio(fiAV, False)
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+                    End If
+                    row = row.Replace("<$AUDIO>", _audDetails)
+                End If
+                row = GetAVImages(fiAV, row, _curEpisode.Item("MoviePath").ToString, relpath)
             End If
-            Dim _audDetails As String = String.Empty
-            If fiAV.StreamDetails.Audio.Count > 0 Then
-                tAud = NFO.GetBestAudio(fiAV, False)
-                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
-            End If
-            row = row.Replace("<$VIDEO>", _vidDetails)
-            row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
-            row = row.Replace("<$AUDIO>", _audDetails)
-            row = GetAVImages(fiAV, row, _curEpisode.Item("MoviePath").ToString, relpath)
+
+
         Catch ex As Exception
         End Try
 
@@ -762,6 +771,7 @@ Public Class dlgNMTMovies
             Else
                 pbTemplateLogo.Image = Nothing
             End If
+            chHighPriority.Checked = AdvancedSettings.GetBooleanSetting(String.Concat("HighPriority.", conf.Name), False)
             DontSaveExtra = False
             'btnSave.Enabled = False
         End If
@@ -825,19 +835,21 @@ Public Class dlgNMTMovies
             Dim lst As New List(Of String)
             i = dgvProperties.Rows.Add(New Object() {c.label})
             dgvProperties.Rows(i).Tag = c.name
-            For Each s As NMTExporterModule.Config._value In c.values
-                lst.Add(s.label)
-            Next
-            Dim cCell As New DataGridViewComboBoxCell()
-            dgvProperties.Rows(i).Cells(1) = cCell
-            Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvProperties.Rows(i).Cells(1), DataGridViewComboBoxCell)
-            dcb.DataSource = lst.ToArray
-            'If lst.Count > 0 Then dcb.Value = lst(0)
-            Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", conf.Name, ".", c.name), lst(0))
-            Dim defvalue As String = c.values.FirstOrDefault(Function(y) y.label = saved).value
-            defvalue = If(IsNothing(defvalue), String.Empty, defvalue)
-            c.value = defvalue
-            If lst.Count > 0 Then dcb.Value = saved
+            If c.type = "list" Then
+                For Each s As NMTExporterModule.Config._value In c.values
+                    lst.Add(s.label)
+                Next
+                Dim cCell As New DataGridViewComboBoxCell()
+                dgvProperties.Rows(i).Cells(1) = cCell
+                Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvProperties.Rows(i).Cells(1), DataGridViewComboBoxCell)
+                dcb.DataSource = lst.ToArray
+                'If lst.Count > 0 Then dcb.Value = lst(0)
+                Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", conf.Name, ".", c.name), lst(0))
+                Dim defvalue As String = c.values.FirstOrDefault(Function(y) y.label = saved).value
+                defvalue = If(IsNothing(defvalue), String.Empty, defvalue)
+                c.value = defvalue
+                If lst.Count > 0 Then dcb.Value = saved
+            End If
         Next
     End Sub
 
@@ -887,11 +899,7 @@ Public Class dlgNMTMovies
         pbCompile.MarqueeAnimationSpeed = 25
         lblCanceling.Visible = True
     End Sub
-    Private Sub RotateImage(ByVal src As String, ByVal dst As String, ByVal rot As Integer)
-
-    End Sub
-
-    Private Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
+    Private Sub ExportPosterThumb(ByVal fpath As String, ByVal new_width As Integer)
         Try
             Dim finalpath As String = Path.Combine(fpath, GetUserParam("ThumbsPath", "Thumbs/").Replace("/", Path.DirectorySeparatorChar))
             Dim counter As Integer = 1
@@ -912,14 +920,13 @@ Public Class dlgNMTMovies
                                         execute.StartInfo.FileName = exe
                                         execute.StartInfo.Arguments = params
                                         execute.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
-                                        'execute.StartInfo.UseShellExecute = False
-                                        'execute.StartInfo.RedirectStandardOutput = True
                                         execute.Start()
-                                        While Not execute.HasExited
-                                            Application.DoEvents()
-                                            execute.Refresh()
-                                        End While
-                                        'Dim output As String = execute.StandardOutput.ReadToEnd()
+                                        If Not bHighPriority Then
+                                            While Not execute.HasExited
+                                                Application.DoEvents()
+                                                execute.Refresh()
+                                            End While
+                                        End If
                                     End Using
                                 Next
                             Next
@@ -930,14 +937,31 @@ Public Class dlgNMTMovies
                                 im.FromFile(_curMovie.Item("PosterPath").ToString)
                                 ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
                                 im.Save(posterfile)
-
-                                'RotateImage(im.Image, 5).Save(Path.Combine(finalpath, String.Concat("r-", counter.ToString, ".jpg")))
                             Else
                                 File.Copy(_curMovie.Item("PosterPath").ToString, posterfile, True)
                             End If
                         End If
-
-
+                        If ImageNeedProcess("Poster") Then
+                            For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Poster")
+                                For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curMovie.Item("ID").ToString, c.sufix))
+                                    Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
+                                    Dim params As String = c.params.Replace("$1", String.Concat("""", _curMovie.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
+                                    Using execute As New Process
+                                        execute.StartInfo.FileName = exe
+                                        execute.StartInfo.Arguments = params
+                                        execute.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                                        execute.Start()
+                                        If Not bHighPriority Then
+                                            While Not execute.HasExited
+                                                Application.DoEvents()
+                                                execute.Refresh()
+                                            End While
+                                        End If
+                                    End Using
+                                Next
+                            Next
+                        End If
                     End If
                 Catch ex As Exception
                 End Try
@@ -1115,6 +1139,7 @@ Public Class dlgNMTMovies
         Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
         Me.TabPage1.Text = Master.eLang.GetString(34, "Template Settings")
         Me.TabPage2.Text = Master.eLang.GetString(35, "Skin Properties")
+        Me.chHighPriority.Text = Master.eLang.GetString(39, "High Priority")
 
     End Sub
 
@@ -1128,6 +1153,7 @@ Public Class dlgNMTMovies
         DoBuild()
     End Sub
     Public Sub DoBuild()
+        btnSave.Tag = btnSave.Enabled
         Me.bexportPosters = If(GetUserParam("ExportPosters", "true").ToLower = "true", True, False)
         Me.bexportBackDrops = If(GetUserParam("ExportBackdrops", "true").ToLower = "true", True, False)
         Me.bexportFlags = If(GetUserParam("ExportFlags", "true").ToLower = "true", True, False)
@@ -1138,6 +1164,9 @@ Public Class dlgNMTMovies
         dgvProperties.Enabled = False
         dgvSettings.Enabled = False
         dgvSources.Enabled = False
+        chHighPriority.Enabled = False
+        btnSave.Enabled = False
+        TabControl1.Enabled = False
         If HaveMovies Then pbCompile.Maximum = dtMovieMedia.Rows.Count + If(bexportPosters, dtMovieMedia.Rows.Count, 0) + If(bexportBackDrops, dtMovieMedia.Rows.Count, 0)
         If HaveTV Then pbCompile.Maximum = pbCompile.Maximum + dtShows.Rows.Count
         pbCompile.Value = pbCompile.Minimum
@@ -1150,6 +1179,7 @@ Public Class dlgNMTMovies
         pnlCancel.Visible = True
         pnlCancel.BringToFront()
         outputFolder = txtOutputFolder.Text
+        bHighPriority = chHighPriority.Checked
         outputFolder = If(outputFolder.EndsWith(Path.DirectorySeparatorChar), outputFolder, String.Concat(outputFolder, Path.DirectorySeparatorChar))
         Try
             While True
@@ -1193,9 +1223,12 @@ Public Class dlgNMTMovies
         txtOutputFolder.Enabled = True
         btnBuild.Enabled = True
         CanBuild = True
+        TabControl1.Enabled = True
         dgvSettings.Enabled = True
         dgvSources.Enabled = True
         dgvProperties.Enabled = True
+        chHighPriority.Enabled = True
+        btnSave.Enabled = DirectCast(btnSave.Tag, Boolean)
     End Sub
     Private Shared Sub DoDelete(ByVal state As Object)
         If DirectCast(state, String).Contains("..") Then Return
@@ -1253,7 +1286,7 @@ Public Class dlgNMTMovies
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Movies - Exporting Posters..."))
-                    Me.ExportPoster(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
+                    Me.ExportPosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
@@ -1458,9 +1491,17 @@ Public Class dlgNMTMovies
             lblWarning.Text = oldWarning
         End If
     End Sub
+
+    Private Sub chHighPriority_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles chHighPriority.MouseHover
+        lblHelpa.Text = Master.eLang.GetString(40, "When using external tools, run several instances for a faster build")
+    End Sub
+
+    Private Sub chHighPriority_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles chHighPriority.MouseLeave
+        lblHelpa.Text = ""
+    End Sub
+    Private Sub chHighPriority_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chHighPriority.CheckedChanged
+        btnSave.Enabled = True
+    End Sub
 #End Region 'Methods
-
-
-
 
 End Class

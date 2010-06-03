@@ -84,6 +84,7 @@ Partial Class dlgNMTMovies
         Me.lblWarning = New System.Windows.Forms.Label
         Me.pbWarning = New System.Windows.Forms.PictureBox
         Me.ilNMT = New System.Windows.Forms.ImageList(Me.components)
+        Me.chHighPriority = New System.Windows.Forms.CheckBox
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
@@ -518,6 +519,15 @@ Partial Class dlgNMTMovies
         Me.ilNMT.Images.SetKeyName(1, "red")
         Me.ilNMT.Images.SetKeyName(2, "block")
         '
+        'chHighPriority
+        '
+        Me.chHighPriority.Location = New System.Drawing.Point(705, 346)
+        Me.chHighPriority.Name = "chHighPriority"
+        Me.chHighPriority.Size = New System.Drawing.Size(129, 18)
+        Me.chHighPriority.TabIndex = 96
+        Me.chHighPriority.Text = "High Priority"
+        Me.chHighPriority.UseVisualStyleBackColor = True
+        '
         'dlgNMTMovies
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -525,6 +535,7 @@ Partial Class dlgNMTMovies
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(853, 396)
+        Me.Controls.Add(Me.chHighPriority)
         Me.Controls.Add(Me.pbTemplateLogo)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCancel)
@@ -597,6 +608,7 @@ Partial Class dlgNMTMovies
     Friend WithEvents pbWarning As System.Windows.Forms.PictureBox
     Friend WithEvents ilNMT As System.Windows.Forms.ImageList
     Friend WithEvents lblWarning As System.Windows.Forms.Label
+    Friend WithEvents chHighPriority As System.Windows.Forms.CheckBox
 
 #End Region 'Methods
 
