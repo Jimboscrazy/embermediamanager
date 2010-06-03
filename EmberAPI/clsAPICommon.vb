@@ -840,7 +840,11 @@ Public Class Functions
                 End Try
 
                 If lThumbs.Count > 0 Then
-                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1).ToString, "(\d+).jpg").Groups(1).ToString)
+                    Dim cur As Integer = 0
+                    For Each t As String In lThumbs
+                        cur = Convert.ToInt32(Regex.Match(t, "(\d+).jpg").Groups(1).ToString)
+                        iMod = Math.Max(iMod, cur)
+                    Next
                 End If
             End If
 
