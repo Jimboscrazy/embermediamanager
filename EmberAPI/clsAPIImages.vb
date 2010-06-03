@@ -409,11 +409,12 @@ Public Class Images
 
                     'make sure directory exists
                     Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-
-                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
-                        fs.Write(retSave, 0, retSave.Length)
-                        fs.Flush()
-                    End Using
+                    If sPath.Length <= 260 Then
+                        Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                            fs.Write(retSave, 0, retSave.Length)
+                            fs.Flush()
+                        End Using
+                    End If
                     msSave.Flush()
                 End Using
 
