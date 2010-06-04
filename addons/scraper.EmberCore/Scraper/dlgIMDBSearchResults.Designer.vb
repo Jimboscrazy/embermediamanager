@@ -61,7 +61,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(497, 400)
+        Me.OK_Button.Location = New System.Drawing.Point(497, 401)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 22)
         Me.OK_Button.TabIndex = 4
@@ -71,7 +71,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(570, 400)
+        Me.Cancel_Button.Location = New System.Drawing.Point(570, 401)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 22)
         Me.Cancel_Button.TabIndex = 5
@@ -162,7 +162,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.txtIMDBID.Enabled = False
         Me.txtIMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIMDBID.Location = New System.Drawing.Point(139, 398)
+        Me.txtIMDBID.Location = New System.Drawing.Point(139, 399)
         Me.txtIMDBID.Name = "txtIMDBID"
         Me.txtIMDBID.Size = New System.Drawing.Size(100, 22)
         Me.txtIMDBID.TabIndex = 2
@@ -219,7 +219,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.chkManual.AutoSize = True
         Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkManual.Location = New System.Drawing.Point(4, 402)
+        Me.chkManual.Location = New System.Drawing.Point(4, 403)
         Me.chkManual.Name = "chkManual"
         Me.chkManual.Size = New System.Drawing.Size(128, 17)
         Me.chkManual.TabIndex = 1
@@ -230,7 +230,7 @@ Partial Class dlgIMDBSearchResults
         '
         Me.btnVerify.Enabled = False
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(245, 398)
+        Me.btnVerify.Location = New System.Drawing.Point(245, 399)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 3
@@ -355,7 +355,7 @@ Partial Class dlgIMDBSearchResults
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 426)
+        Me.ClientSize = New System.Drawing.Size(643, 431)
         Me.ControlBox = False
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -383,9 +383,8 @@ Partial Class dlgIMDBSearchResults
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(649, 452)
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(649, 452)
+        Me.MinimumSize = New System.Drawing.Size(649, 460)
         Me.Name = "dlgIMDBSearchResults"
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
