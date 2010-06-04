@@ -53,7 +53,8 @@ Public Class frmMainSetup
     Public mePainting As New Object
     Public NoArgs As Boolean = True
     Public MyLang As New Langs
-    Public WindowsInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData)
+
+    Public WindowsInstallPath As String
     Friend WithEvents bwDoInstall As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwFF As New System.ComponentModel.BackgroundWorker
     Friend WithEvents lblInfo As New MyLabel
@@ -1236,9 +1237,9 @@ Public Class frmMainSetup
                         Force = True
                 End Select
             Next
-
+            WindowsInstallPath = Path.GetDirectoryName(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData))
             Dim PInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
-            For Each ss As String In String.Concat(AppPath, "|", Path.Combine(PInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
+            For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "Ember Media Manager"), "|", Path.Combine(PInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
                 If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
                     emberPath = ss
                 End If
@@ -1347,8 +1348,10 @@ Public Class frmMainSetup
                 End Try
                 LogWrite(String.Format("*** Main: START {0}", Now))
                 Dim EmberFound As Boolean = False
+                WindowsInstallPath = Path.GetDirectoryName(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData))
+
                 Dim PFInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
-                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(PFInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
+                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "Ember Media Manager"), "|", Path.Combine(PFInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
                     If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
                         emberPath = ss
                         EmberFound = True
