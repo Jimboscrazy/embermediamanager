@@ -244,6 +244,9 @@ Public Class dlgNMTMovies
         For Each s As String In propreties
             str = str.Replace(s, String.Empty)
         Next
+        str = str.Replace("<$EVERSION>", My.Application.Info.Version.Revision.ToString)
+        str = str.Replace("<$MVERSION>", FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FilePrivatePart.ToString)
+        str = str.Replace("<$SVERSION>", conf.Version)
     End Sub
     Public Function GetPropertiesPre(ByVal s As String) As List(Of String)
         Dim rets As New List(Of String)
