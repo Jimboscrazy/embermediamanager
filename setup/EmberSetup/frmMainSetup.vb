@@ -50,6 +50,7 @@ Public Class frmMainSetup
     Public ExitMe As Boolean = False
     Public Final As Boolean = False
     Public Force As Boolean = False
+    Public BlindSetup As Boolean = False
     Public mePainting As New Object
     Public NoArgs As Boolean = True
     Public MyLang As New Langs
@@ -699,12 +700,18 @@ Public Class frmMainSetup
                         Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(11, "Downloading Version Files")})
                         LogWrite(String.Format("--- Main: Downloading Version Files ({0})", Now))
                         getFile = String.Format("version_{0}.xml", InstallVersion)
-                        If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
-                            ' Cant get Version # ... Abort
-                            LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
-                            CurrentEmberVersion = String.Empty
-                            Me.bwDoInstall.ReportProgress(2, Nothing) '  Error
-                            Return True
+
+                        If BlindSetup AndAlso File.Exists(Path.Combine(AppPath, getFile)) Then
+                            LogWrite(String.Format("### Main: BlindSetup... Using Version Files ({0})", Path.Combine(AppPath, getFile)))
+                            File.Copy(Path.Combine(AppPath, getFile), Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile)))
+                        Else
+                            If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Concat("updates", Path.DirectorySeparatorChar, getFile))) Then
+                                ' Cant get Version # ... Abort
+                                LogWrite(String.Format("*** Main: Installation File Not Found, ABORT : {0}", getFile))
+                                CurrentEmberVersion = String.Empty
+                                Me.bwDoInstall.ReportProgress(2, Nothing) '  Error
+                                Return True
+                            End If
                         End If
                         If Not CurrentEmberVersion = String.Empty Then
                             getFile = String.Format("version_{0}.xml", CurrentEmberVersion)
@@ -1235,13 +1242,17 @@ Public Class frmMainSetup
                         Force = True
                     Case "-recover"
                         Force = True
+                    Case "-blind"
+                        blindSetup = True
                 End Select
             Next
             WindowsInstallPath = Path.GetDirectoryName(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData))
             Dim PInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
-            For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "Ember Media Manager"), "|", Path.Combine(PInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
-                If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
-                    emberPath = ss
+            Dim fol As String = String.Concat(Path.GetDirectoryName(AppPath), "|", System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "|", PInstallPath, "|", WindowsInstallPath)
+            For Each ss As String In fol.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                If File.Exists(Path.Combine(Path.Combine(ss, "Ember Media Manager"), "Ember Media Manager.exe")) Then
+                    emberPath = String.Concat(Path.Combine(ss, "Ember Media Manager"), Path.DirectorySeparatorChar)
+                    Exit For
                 End If
             Next
             If Not String.IsNullOrEmpty(emberPath) Then
@@ -1351,9 +1362,10 @@ Public Class frmMainSetup
                 WindowsInstallPath = Path.GetDirectoryName(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData))
 
                 Dim PFInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
-                For Each ss As String In String.Concat(AppPath, "|", Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "Ember Media Manager"), "|", Path.Combine(PFInstallPath, "Ember Media Manager"), "|", Path.Combine(WindowsInstallPath, "Ember Media Manager")).Split(Convert.ToChar("|"))
-                    If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
-                        emberPath = ss
+                fol = String.Concat(Path.GetDirectoryName(AppPath), "|", System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "|", PFInstallPath, "|", WindowsInstallPath)
+                For Each ss As String In fol.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                    If File.Exists(Path.Combine(Path.Combine(ss, "Ember Media Manager"), "Ember Media Manager.exe")) Then
+                        emberPath = String.Concat(Path.Combine(ss, "Ember Media Manager"), Path.DirectorySeparatorChar)
                         EmberFound = True
                         CurrentEmberVersion = GetEmberVersion(emberPath)
                         LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
