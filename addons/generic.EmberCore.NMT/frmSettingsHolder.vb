@@ -102,7 +102,7 @@ Public Class frmSettingsHolder
                 Using zStream As ZipInputStream = New ZipInputStream(New MemoryStream(fZip))
                     Dim zEntry As ZipEntry = zStream.GetNextEntry
                     While Not IsNothing(zEntry)
-                        Select zEntry.Name
+                        Select Case zEntry.Name
                             Case "config.xml"
                                 Dim xmlSer As XmlSerializer
                                 xmlSer = New XmlSerializer(GetType(NMTExporterModule.Config))
@@ -120,7 +120,11 @@ Public Class frmSettingsHolder
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Using
-        If Not conf Is Nothing Then conf.ReadMe = haveReadMe
+        If Not conf Is Nothing Then
+            conf.ReadMe = haveReadMe
+        End If
+
+
         Return conf
     End Function
 
@@ -210,6 +214,13 @@ Public Class frmSettingsHolder
                 Case Master.eLang.GetString(19, "New")
                     If UnZip(conf.TemplatePath) Then
                         File.Delete(conf.TemplatePath)
+                        Dim wn As String = Path.Combine(Path.Combine(Path.GetDirectoryName(conf.TemplatePath), Path.GetFileNameWithoutExtension(conf.TemplatePath)), "WhatsNew.txt")
+                        If conf.WhatsNew AndAlso File.Exists(wn) Then
+                            Using dWN As New frmWhatsNew
+                                dWN.txtWhatsNew.Text = File.ReadAllText(wn)
+                                dWN.ShowDialog()
+                            End Using
+                        End If
                     End If
             End Select
         End If

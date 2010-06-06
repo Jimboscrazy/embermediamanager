@@ -26,7 +26,7 @@ Public Class NMTExporterModule
     Implements Interfaces.EmberExternalModule
 
     ' This will Control What Templates are valid!
-    Public Shared MinDesignVersion As Single = 1.0
+    Public Shared MinDesignVersion As Single = 1.1
 
 #Region "Fields"
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
@@ -181,6 +181,7 @@ Public Class NMTExporterModule
         Public Author As String
         Public Version As String
         Public DesignVersion As String
+        Public WhatsNew As Boolean
 
         <XmlArrayItem("File")> _
         Public Files As New List(Of _File)
