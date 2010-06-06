@@ -798,4 +798,7 @@ Public Class ModulesManager
 
 #End Region 'Nested Types
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class
