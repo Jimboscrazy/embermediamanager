@@ -490,27 +490,42 @@ Public Class dlgNMTMovies
                 If Not MoviesGenres.Contains(s.Trim) Then MoviesGenres.Add(s.Trim)
             Next
             row = row.Replace("<$SIZE>", (MovieSize(_curMovie.Item("MoviePath").ToString).ToString))
-            row = row.Replace("<$DATEADD>", (Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curMovie.Item("DateAdd").ToString)).ToShortDateString))
-            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curMovie.Item("ID").ToString)
-            Dim _vidDetails As String = String.Empty
-            Dim _vidDimensions As String = String.Empty
-            If Not IsNothing(fiAV) Then
-                If fiAV.StreamDetails.Video.Count > 0 Then
-                    tVid = NFO.GetBestVideo(fiAV)
-                    tRes = NFO.GetResFromDimensions(tVid)
-                    _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                    _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+            If row.Contains("<$EXTRATHUMB>") Then
+                If DirectCast(_curMovie.Item("HasExtra"), Boolean) Then
+                    Dim di As DirectoryInfo = New DirectoryInfo(Path.GetDirectoryName(_curMovie.Item("ExtraPath").ToString))
+                    Dim c As Integer = di.GetFiles("thumb*.jpg").Count
+                    row = row.Replace("<$EXTRATHUMB>", c.ToString)
+                Else
+                    row = row.Replace("<$EXTRATHUMB>", "0")
                 End If
             End If
-            Dim _audDetails As String = String.Empty
-            If fiAV.StreamDetails.Audio.Count > 0 Then
-                tAud = NFO.GetBestAudio(fiAV, False)
-                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+            row = row.Replace("<$DATEADD>", (Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curMovie.Item("DateAdd").ToString)).ToShortDateString))
+            If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") OrElse row.Contains("<$AUDIO>") Then
+                Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curMovie.Item("ID").ToString)
+                Dim _vidDetails As String = String.Empty
+                If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") Then
+                    Dim _vidDimensions As String = String.Empty
+                    If Not IsNothing(fiAV) Then
+                        If fiAV.StreamDetails.Video.Count > 0 Then
+                            tVid = NFO.GetBestVideo(fiAV)
+                            tRes = NFO.GetResFromDimensions(tVid)
+                            _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+                        End If
+                    End If
+                    row = row.Replace("<$VIDEO>", _vidDetails)
+                    row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
+                End If
+                If row.Contains("<$AUDIO>") Then
+                    Dim _audDetails As String = String.Empty
+                    If fiAV.StreamDetails.Audio.Count > 0 Then
+                        tAud = NFO.GetBestAudio(fiAV, False)
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+                    End If
+                    row = row.Replace("<$AUDIO>", _audDetails)
+                End If
+                row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
             End If
-            row = row.Replace("<$VIDEO>", _vidDetails)
-            row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
-            row = row.Replace("<$AUDIO>", _audDetails)
-            row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
         Catch ex As Exception
         End Try
 
