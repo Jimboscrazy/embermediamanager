@@ -5310,6 +5310,7 @@ doCancel:
             'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
             'ExternalModulesManager = New ModulesManager
             ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.mnuMediaList
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList = Me.mnuShows
             ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMediaList
             ModulesManager.Instance.RuntimeObjects.TopMenu = Me.MenuStrip
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
