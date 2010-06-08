@@ -636,6 +636,11 @@ Public Class dlgEditMovie
                     .txtCredits.Text = Master.currMovie.Movie.Credits
                 End If
 
+
+                If Not String.IsNullOrEmpty(Master.currMovie.FileSource) Then
+                    .txtFileSource.Text = Master.currMovie.FileSource
+                End If
+
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
                     If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                         Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(Convert.ToChar("/"))
@@ -1179,6 +1184,8 @@ Public Class dlgEditMovie
 
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
 
+                Master.currMovie.FileSource = .txtFileSource.Text.Trim
+
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
                     Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.UseCertForMPAA AndAlso Master.eSettings.OnlyValueForCert AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
                 Else
@@ -1324,6 +1331,7 @@ Public Class dlgEditMovie
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.Label6.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
+        Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged

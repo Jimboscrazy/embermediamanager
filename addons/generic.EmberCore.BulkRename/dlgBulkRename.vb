@@ -120,6 +120,7 @@ Public Class dlgBulkRenamer
                                             MovieFile.IMDBID = _curMovie.Movie.IMDBID
                                             MovieFile.Genre = _curMovie.Movie.Genre
                                             MovieFile.Director = _curMovie.Movie.Director
+                                            MovieFile.FileSource = _curMovie.FileSource
 
                                             If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                                 Try

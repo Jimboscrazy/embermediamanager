@@ -163,14 +163,19 @@ Public Class genericYAMJ
                         mMovie = DirectCast(_params(0), Structures.DBMovie)
                         doContinue = DirectCast(_refparam, Boolean)
                         If AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False) Then
-                            Dim vsource As String = APIXML.GetFileSource(mMovie.Filename.ToLower)
-                            If Not String.IsNullOrEmpty(vsource) Then
-                                mMovie.Movie.VideoSource = vsource
-                                mMovie.Movie.AudioSource = vsource
+                            'Dim vsource As String = APIXML.GetFileSource(mMovie.Filename.ToLower)
+                            'If Not String.IsNullOrEmpty(vsource) Then
+                            'mMovie.Movie.VideoSource = vsource
+                            'mMovie.Movie.AudioSource = vsource
+                            'Else
+                            If Not String.IsNullOrEmpty(mMovie.FileSource) Then
+                                mMovie.Movie.VideoSource = mMovie.FileSource
+                                mMovie.Movie.AudioSource = mMovie.FileSource
                             End If
+                            'End If
                         Else
-                            mMovie.Movie.VideoSource = String.Empty
-                            mMovie.Movie.AudioSource = String.Empty
+                        mMovie.Movie.VideoSource = String.Empty
+                        mMovie.Movie.AudioSource = String.Empty
                         End If
                 End Select
                 _refparam = doContinue

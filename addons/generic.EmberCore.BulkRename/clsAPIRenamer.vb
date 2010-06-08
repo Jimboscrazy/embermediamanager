@@ -75,7 +75,7 @@ Public Class FileFolderRenamer
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
         Try
             Dim pattern As String = opattern
-            Dim strSource As String = APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
+            Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
 
             'pattern = "$T{($S.$S)}"
             Dim joinIndex As Integer
@@ -790,6 +790,7 @@ Public Class FileFolderRenamer
         Private _imdbid As String
         Private _genre As String
         Private _director As String
+        Private _filesource As String
 
         #End Region 'Fields
 
@@ -1026,6 +1027,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 Me._director = value.Trim
+            End Set
+        End Property
+
+        Public Property FileSource() As String
+            Get
+                Return Me._filesource
+            End Get
+            Set(ByVal value As String)
+                Me._filesource = value.Trim
             End Set
         End Property
 

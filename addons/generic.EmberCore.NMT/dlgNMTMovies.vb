@@ -524,7 +524,7 @@ Public Class dlgNMTMovies
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
-                row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
+                row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, _curMovie.Item("FileSource").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
             End If
         Catch ex As Exception
         End Try
@@ -707,7 +707,7 @@ Public Class dlgNMTMovies
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
-                row = GetAVImages(fiAV, row, _curEpisode.Item("MoviePath").ToString, relpath)
+                row = GetAVImages(fiAV, row, _curEpisode.Item("MoviePath").ToString, "", relpath)
             End If
 
 
@@ -1035,7 +1035,7 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
-    Private Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal line As String, ByVal filename As String, Optional ByVal relpath As String = "") As String
+    Private Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal line As String, ByVal filename As String, ByVal FileSource As String, Optional ByVal relpath As String = "") As String
         If APIXML.lFlags.Count > 0 Then
             Try
                 Dim flagspath As String = GetUserParam("FlagsPath", "Flags/")
@@ -1052,7 +1052,8 @@ Public Class dlgNMTMovies
                     End If
                 End If
 
-                Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
+                'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
+                Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = FileSource.ToLower AndAlso f.Type = APIXML.FlagType.VideoSource)
                 If Not IsNothing(vsourceFlag) Then
                     line = line.Replace("<$FLAG_VSOURCE>", String.Concat(relpath, flagspath, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                 Else
