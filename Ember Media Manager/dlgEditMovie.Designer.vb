@@ -126,6 +126,8 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
         Me.DelayTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.lblFileSource = New System.Windows.Forms.Label
+        Me.txtFileSource = New System.Windows.Forms.TextBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -231,6 +233,8 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.txtFileSource)
+        Me.TabPage1.Controls.Add(Me.lblFileSource)
         Me.TabPage1.Controls.Add(Me.btnActorDown)
         Me.TabPage1.Controls.Add(Me.btnActorUp)
         Me.TabPage1.Controls.Add(Me.Label6)
@@ -1248,6 +1252,25 @@ Partial Class dlgEditMovie
         '
         Me.DelayTimer.Interval = 250
         '
+        'lblFileSource
+        '
+        Me.lblFileSource.AutoSize = True
+        Me.lblFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFileSource.Location = New System.Drawing.Point(633, 370)
+        Me.lblFileSource.Name = "lblFileSource"
+        Me.lblFileSource.Size = New System.Drawing.Size(78, 13)
+        Me.lblFileSource.TabIndex = 114
+        Me.lblFileSource.Text = "Video Source:"
+        '
+        'txtFileSource
+        '
+        Me.txtFileSource.BackColor = System.Drawing.SystemColors.Window
+        Me.txtFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFileSource.Location = New System.Drawing.Point(636, 385)
+        Me.txtFileSource.Name = "txtFileSource"
+        Me.txtFileSource.Size = New System.Drawing.Size(167, 22)
+        Me.txtFileSource.TabIndex = 115
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1398,5 +1421,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
+    Friend WithEvents txtFileSource As System.Windows.Forms.TextBox
+    Friend WithEvents lblFileSource As System.Windows.Forms.Label
 
 End Class

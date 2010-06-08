@@ -678,7 +678,8 @@ Public Class Scanner
                 tmpMovieDB.isSingle = mContainer.isSingle
                 tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.Source = mContainer.Source
-                tmpMovieDB.FileSource = APIXML.GetFileSource(mContainer.Filename)
+                Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
+                If Not String.IsNullOrEmpty(fSource) Then tmpMovieDB.FileSource = fSource
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MarkNew
                 'Do the Save
