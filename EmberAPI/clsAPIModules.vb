@@ -662,6 +662,7 @@ Public Class ModulesManager
         Private _MainTool As System.Windows.Forms.ToolStrip
         Private _MediaList As System.Windows.Forms.DataGridView
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
+        Private _MenuTVShowList As System.Windows.Forms.ContextMenuStrip
         Private _OpenImageViewer As OpenImageViewer
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
@@ -703,6 +704,15 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
                 _MenuMediaList = value
+            End Set
+        End Property
+
+        Public Property MenuTVShowList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuTVShowList
+            End Get
+            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+                _MenuTVShowList = value
             End Set
         End Property
 
