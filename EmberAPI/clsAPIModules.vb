@@ -394,6 +394,16 @@ Public Class ModulesManager
             t.ScraperOrder = _externalScraperModule.ScraperOrder
             tmpForXML.Add(t)
         Next
+        For Each _externalTVScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules
+            Dim t As New _XMLEmberModuleClass
+            t.AssemblyName = _externalTVScraperModule.AssemblyName
+            t.AssemblyFileName = _externalTVScraperModule.AssemblyFileName
+            t.PostScraperEnabled = _externalTVScraperModule.ProcessorModule.PostScraperEnabled
+            t.ScraperEnabled = _externalTVScraperModule.ProcessorModule.ScraperEnabled
+            t.PostScraperOrder = _externalTVScraperModule.PostScraperOrder
+            t.ScraperOrder = _externalTVScraperModule.ScraperOrder
+            tmpForXML.Add(t)
+        Next
         Master.eSettings.EmberModules = tmpForXML
         Master.eSettings.Save()
     End Sub
@@ -530,6 +540,11 @@ Public Class ModulesManager
             VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName, _
                     .AssemblyFileName = _externalModule.AssemblyFileName, _
                     .Version = _externalModule.ProcessorModule.ModuleVersion})
+        Next
+        For Each _externalTVScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules
+            VersionList.Add(New VersionItem With {.Name = _externalTVScraperModule.ProcessorModule.ModuleName, _
+                    .AssemblyFileName = _externalTVScraperModule.AssemblyFileName, _
+                    .Version = _externalTVScraperModule.ProcessorModule.ModuleVersion})
         Next
     End Sub
 

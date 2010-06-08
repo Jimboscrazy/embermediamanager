@@ -252,11 +252,12 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.SetupScraperChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
@@ -266,6 +267,7 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
+            AddHandler s.ProcessorModule.SetupPostScraperChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
