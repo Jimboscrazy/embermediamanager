@@ -105,7 +105,7 @@ Public Class genericYAMJ
                             Select Case iType
                                 Case Enums.TVImageType.AllSeasonPoster
                                 Case Enums.TVImageType.EpisodePoster
-                                    tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage.jpg")
+                                    tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage_1.jpg")
                                     imageList.Add(tPath)
                                     doContinue = False
                                 Case Enums.TVImageType.EpisodeFanart

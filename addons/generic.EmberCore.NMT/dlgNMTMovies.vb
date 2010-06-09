@@ -500,8 +500,9 @@ Public Class dlgNMTMovies
                 End If
             End If
             row = row.Replace("<$DATEADD>", (Functions.ConvertFromUnixTimestamp(Convert.ToDouble(_curMovie.Item("DateAdd").ToString)).ToShortDateString))
+            Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curMovie.Item("ID").ToString)
             If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") OrElse row.Contains("<$AUDIO>") Then
-                Dim fiAV As MediaInfo.Fileinfo = GetMovieFileInfo(_curMovie.Item("ID").ToString)
+
                 Dim _vidDetails As String = String.Empty
                 If row.Contains("<$VIDEO>") OrElse row.Contains("<$VIDEO_DIMENSIONS>") Then
                     Dim _vidDimensions As String = String.Empty
@@ -524,8 +525,8 @@ Public Class dlgNMTMovies
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
-                row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, _curMovie.Item("FileSource").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
             End If
+            row = GetAVImages(fiAV, row, _curMovie.Item("MoviePath").ToString, _curMovie.Item("FileSource").ToString, GetRelativePath(String.Empty, String.Empty, String.Empty, outputbase))
         Catch ex As Exception
         End Try
 
