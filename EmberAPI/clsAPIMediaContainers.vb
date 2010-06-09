@@ -384,8 +384,7 @@ Namespace MediaContainers
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _lev As Integer
         Private _videosource As String
-        Private _audiosource As String
-        #End Region 'Fields
+#End Region 'Fields
 
         #Region "Constructors"
 
@@ -950,24 +949,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("audioSource")> _
-        Public Property AudioSource() As String
-            Get
-                Return Me._audiosource
-            End Get
-            Set(ByVal value As String)
-                Me._audiosource = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property AudioSourceSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._audiosource)
-            End Get
-        End Property
-
-        #End Region 'Properties
+#End Region 'Properties
 
         #Region "Methods"
 

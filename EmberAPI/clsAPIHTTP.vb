@@ -142,7 +142,7 @@ Public Class HTTP
         Dim Boundary As String = String.Format("--{0}", Idboundary)
         Dim postDataBytes As New List(Of Byte())
         Me.Clear()
-
+        System.Net.ServicePointManager.Expect100Continue = False
         Try
             For Each s() As String In postDataList
                 If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
@@ -202,6 +202,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
         End Try
 
         Return sResponse

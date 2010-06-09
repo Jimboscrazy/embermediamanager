@@ -225,6 +225,7 @@ Public Class dlgAddons
             Else
                 Me.pnlStatus.Visible = False
                 Me.pnlLogin.Visible = True
+                Master.eLog.WriteToErrorLog("HTTP Response", Me.SessionID, "HTTP Error", False)
             End If
 
         Catch ex As Exception
