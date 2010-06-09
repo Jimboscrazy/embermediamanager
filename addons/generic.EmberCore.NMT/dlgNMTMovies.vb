@@ -328,6 +328,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String)
         Try
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(42, "Compiling TV Shows List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -393,7 +394,7 @@ Public Class dlgNMTMovies
             HTMLTVBody.Append(tvfooter)
             'HTMLTVBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
             DontSaveExtra = False
-            'Me.SaveMovieImages(Path.GetDirectoryName(htmlPath), outputbase)
+            Me.SaveTVFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1323,6 +1324,65 @@ Public Class dlgNMTMovies
             Dim myStream As Stream = File.OpenWrite(hfile)
             If Not IsNothing(myStream) Then
                 myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLMovieBody.ToString), 0, HTMLMovieBody.ToString.Length)
+                myStream.Close()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SaveTVFiles(ByVal srcPath As String, ByVal destPath As String)
+        Try
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(48, "TV - Exporting Data..."))
+            If Not DontSaveExtra Then
+                If Not HaveMovies Then ' If have Movies already done!
+                    For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
+                        Dim dstPath As String = Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name)
+                        File.Copy(Path.Combine(srcPath, f.Name), dstPath, True)
+                        If f.Process Then
+                            Dim fileContent As String = File.ReadAllText(dstPath)
+                            PreProcessProperties(fileContent)
+                            File.WriteAllText(dstPath, fileContent)
+                        End If
+                        'CopyDirectory(srcPath, Path.GetDirectoryName(destPath), True)
+                        If bwBuildHTML.CancellationPending Then Return
+                    Next
+                    For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "folder")
+                        Dim srcf As String = Path.Combine(srcPath, f.Name)
+                        Dim destf As String = Path.Combine(outputFolder, Path.Combine(f.DestPath.Replace("/", Path.DirectorySeparatorChar), f.Name))
+                        If Not srcf.EndsWith(Path.DirectorySeparatorChar) Then srcf = String.Concat(srcf, Path.DirectorySeparatorChar)
+                        If Not destf.EndsWith(Path.DirectorySeparatorChar) Then destf = String.Concat(destf, Path.DirectorySeparatorChar)
+                        CopyDirectory(srcf, destf, True)
+                        If bwBuildHTML.CancellationPending Then Return
+                    Next
+                    If Me.bexportFlags Then
+                        bwBuildHTML.ReportProgress(0, Master.eLang.GetString(49, "TV - Exporting Flags..."))
+                        srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+                        Dim flagspath As String = Path.Combine(destPath, GetUserParam("FlagsPath", "Flags/").Replace("/", Path.DirectorySeparatorChar))
+                        CopyDirectory(srcPath, flagspath, True)
+                    End If
+                End If
+
+                If bwBuildHTML.CancellationPending Then Return
+                If Me.bexportPosters Then
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(50, "TV - Exporting Posters..."))
+                    'Me.ExportPosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
+                End If
+                If bwBuildHTML.CancellationPending Then Return
+                If Me.bexportBackDrops Then
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(51, "TV - Exporting Backdrops..."))
+                    'Me.ExportBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
+                End If
+                If bwBuildHTML.CancellationPending Then Return
+                DontSaveExtra = True
+            End If
+            Dim hfile As String = Path.Combine(Path.Combine(destPath, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").DestPath), conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").Name)
+            If File.Exists(hfile) Then
+                System.IO.File.Delete(hfile)
+            End If
+            Dim myStream As Stream = File.OpenWrite(hfile)
+            If Not IsNothing(myStream) Then
+                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLTVBody.ToString), 0, HTMLTVBody.ToString.Length)
                 myStream.Close()
             End If
         Catch ex As Exception

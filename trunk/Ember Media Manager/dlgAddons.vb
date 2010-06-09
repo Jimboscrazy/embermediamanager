@@ -252,7 +252,7 @@ Public Class dlgAddons
 
                 For Each xAddon In xdAddons.Descendants("entry")
                     Try
-                        If (xAddon.Element("User").Value = Me.txtUsername.Text) OrElse AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
+                        If (xAddon.Element("User").Value = Me.txtUsername.Text) OrElse EmberAddons.AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
                             ReDim Preserve Me.AddonItem(iIndex)
                             Me.AddonItem(iIndex) = New AddonItem
                             Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
@@ -300,20 +300,6 @@ Public Class dlgAddons
 
     End Sub
 
-    Private Function AllowedVersion(ByVal MinVersion As String, ByVal MaxVersion As String) As Boolean
-        Dim MinAllowed As Boolean = False
-        Dim MaxAllowed As Boolean = False
-
-        If String.IsNullOrEmpty(MinVersion) OrElse NumUtils.ConvertToSingle(MinVersion) <= Master.MajorVersion Then
-            MinAllowed = True
-        End If
-
-        If String.IsNullOrEmpty(MaxVersion) OrElse NumUtils.ConvertToSingle(MaxVersion) >= Master.MajorVersion Then
-            MaxAllowed = True
-        End If
-
-        Return MinAllowed AndAlso MaxAllowed
-    End Function
 
     Private Sub bwDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownload.ProgressChanged
         Dim tAOI As AddonItem = DirectCast(e.UserState, AddonItem)
