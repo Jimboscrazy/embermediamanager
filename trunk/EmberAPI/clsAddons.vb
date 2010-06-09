@@ -79,17 +79,10 @@
                                 Dim AddonItem As New Addon
                                 AddonItem.ID = Convert.ToInt32(xAddon.Element("id").Value)
                                 AddonItem.Name = xAddon.Element("Name").Value
-                                'AddonItem.Author = xAddon.Element("User").Value
                                 AddonItem.Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
                                 AddonItem.MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
                                 AddonItem.MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
-                                'AddonItem.Summary = xAddon.Element("Description").Value
                                 AddonItem.Category = sType
-                                'sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
-                                'While sHTTP.IsDownloading
-                                'Application.DoEvents()
-                                'End While
-                                'Me.bwDownload.ReportProgress(0, AddonItem)
                                 AddonItem.InstalledVersion = Master.DB.IsAddonInstalled(AddonItem.ID)
                                 If AddonItem.InstalledVersion > 0 AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
                                     AddonList.Add(AddonItem)

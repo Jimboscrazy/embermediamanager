@@ -67,7 +67,7 @@ Public Class ErrorLogger
 
                 RaiseEvent ErrorOccurred()
             End If
-        Catch
+        Catch 
         End Try
     End Sub
 
