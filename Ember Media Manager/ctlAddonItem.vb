@@ -43,6 +43,7 @@ Public Class AddonItem
     Private _owned As Boolean
     Private _installed As Single
 
+    Private _downloads As Integer = -1
 
     Public Property ID() As Integer
         Get
@@ -109,6 +110,15 @@ Public Class AddonItem
         Set(ByVal value As Single)
             Me._version = value
             Me.lblVersionNumber.Text = value.ToString
+        End Set
+    End Property
+
+    Public Property Downloads() As Integer
+        Get
+            Return Me._downloads
+        End Get
+        Set(ByVal value As Integer)
+            Me._downloads = value
         End Set
     End Property
 
@@ -195,6 +205,7 @@ Public Class AddonItem
     Private Sub SetUp()
         Me.lblVersion.Text = Master.eLang.GetString(262, "Version:")
         Me.lblInstalled.Text = Master.eLang.GetString(263, "Installed:")
+        Me.lblDownloads.Text = Master.eLang.GetString(825, "Downloads:")
         Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading Files...")
     End Sub
 
@@ -235,6 +246,11 @@ Public Class AddonItem
                 Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), String.Concat(Functions.ConvertToUnixTimestamp(Now).ToString, Now.Ticks.ToString)))
 
                 Try
+                    Try
+                        Dim scHTTP As New HTTP
+                        Dim updateXML As String = scHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?DownloadCount={0}&Version={1}", Me._id, Me._version))
+                    Catch ex As Exception
+                    End Try
                     finalFile = Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar))
                     sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), tempFile, False, "other")
                     Me.bwDownload.ReportProgress(1)

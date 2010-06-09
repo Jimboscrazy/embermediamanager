@@ -41,6 +41,8 @@ Partial Class AddonItem
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbStatus = New System.Windows.Forms.ProgressBar
         Me.btnUninstall = New System.Windows.Forms.Button
+        Me.lblDownloads = New System.Windows.Forms.Label
+        Me.lblDownloadsCount = New System.Windows.Forms.Label
         CType(Me.pbScreenShot, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cMenu.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
@@ -211,6 +213,28 @@ Partial Class AddonItem
         Me.btnUninstall.UseVisualStyleBackColor = True
         Me.btnUninstall.Visible = False
         '
+        'lblDownloads
+        '
+        Me.lblDownloads.BackColor = System.Drawing.Color.Transparent
+        Me.lblDownloads.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDownloads.Location = New System.Drawing.Point(413, 30)
+        Me.lblDownloads.Name = "lblDownloads"
+        Me.lblDownloads.Size = New System.Drawing.Size(55, 12)
+        Me.lblDownloads.TabIndex = 14
+        Me.lblDownloads.Text = "Downloads:"
+        Me.lblDownloads.Visible = False
+        '
+        'lblDownloadsCount
+        '
+        Me.lblDownloadsCount.BackColor = System.Drawing.Color.Transparent
+        Me.lblDownloadsCount.Font = New System.Drawing.Font("Segoe UI", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDownloadsCount.Location = New System.Drawing.Point(466, 29)
+        Me.lblDownloadsCount.Name = "lblDownloadsCount"
+        Me.lblDownloadsCount.Size = New System.Drawing.Size(24, 13)
+        Me.lblDownloadsCount.TabIndex = 15
+        Me.lblDownloadsCount.Text = "0"
+        Me.lblDownloadsCount.Visible = False
+        '
         'AddonItem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -220,6 +244,8 @@ Partial Class AddonItem
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.ContextMenuStrip = Me.cMenu
+        Me.Controls.Add(Me.lblDownloadsCount)
+        Me.Controls.Add(Me.lblDownloads)
         Me.Controls.Add(Me.btnUninstall)
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.lblInstalledNumber)
@@ -260,5 +286,7 @@ Partial Class AddonItem
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents btnUninstall As System.Windows.Forms.Button
+    Friend WithEvents lblDownloads As System.Windows.Forms.Label
+    Friend WithEvents lblDownloadsCount As System.Windows.Forms.Label
 
 End Class

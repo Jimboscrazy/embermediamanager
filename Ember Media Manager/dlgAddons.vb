@@ -263,6 +263,9 @@ Public Class dlgAddons
                             Me.AddonItem(iIndex).MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
                             Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
                             Me.AddonItem(iIndex).Category = e.Argument.ToString
+                            If Me.txtUsername.Text = Me.AddonItem(iIndex).Author Then
+                                Me.AddonItem(iIndex).Downloads = Convert.ToInt32(xAddon.Element("Count").Value)
+                            End If
                             sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
                             While sHTTP.IsDownloading
                                 Application.DoEvents()
@@ -318,6 +321,11 @@ Public Class dlgAddons
         AddHandler tAOI.SendEdit, AddressOf Me.DoUpload
         AddHandler tAOI.IsDownloading, AddressOf Me.IsDownloading
         AddHandler tAOI.NeedsRestart, AddressOf Me.HandleNeedsRestart
+        If tAOI.Downloads >= 0 Then
+            tAOI.lblDownloads.Visible = True
+            tAOI.lblDownloadsCount.Visible = True
+            tAOI.lblDownloadsCount.Text = tAOI.Downloads.ToString
+        End If
         tAOI.Owned = tAOI.Author = Master.eSettings.Username AndAlso Not String.IsNullOrEmpty(Me.SessionID)
         tAOI.Installed = Master.DB.IsAddonInstalled(tAOI.ID)
         Me.pnlList.Controls.Add(tAOI)
