@@ -1,6 +1,40 @@
 ﻿Public Class EmberAddons
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
     Public Shared AddonList As New List(Of Addon)
+
+
+    Public Shared Function AllowedVersion(ByVal MinVersion As String, ByVal MaxVersion As String) As Boolean
+        Dim MinAllowed As Boolean = False
+        Dim MaxAllowed As Boolean = False
+        Dim tMinVersion As Single = 0
+        Dim tMinRevision As Integer = 0
+        Dim tMaxVersion As Single = 9999
+        Dim tMaxRevision As Integer = 99999
+
+        If MinVersion.Split(New Char() {Convert.ToChar("."), Convert.ToChar(".")}).Count = 3 Then
+            tMinVersion = NumUtils.ConvertToSingle(MinVersion.Substring(0, MinVersion.LastIndexOf(Convert.ToChar("."))))
+        Else
+            tMinVersion = If(String.IsNullOrEmpty(MinVersion), 0, NumUtils.ConvertToSingle(MinVersion))
+        End If
+        If MaxVersion.Split(Convert.ToChar(".")).Count = 3 Then
+            tMinVersion = NumUtils.ConvertToSingle(MaxVersion.Substring(0, MaxVersion.LastIndexOf(Convert.ToChar("."))))
+        Else
+            tMaxVersion = If(String.IsNullOrEmpty(MaxVersion), 99999, NumUtils.ConvertToSingle(MaxVersion))
+        End If
+
+        Dim myRevision As Integer = My.Application.Info.Version.Revision
+
+        If tMinVersion <= Master.MajorVersion AndAlso tMinRevision <= myRevision Then
+            MinAllowed = True
+        End If
+
+        If tMaxVersion >= Master.MajorVersion AndAlso tMaxRevision >= myRevision Then
+            MaxAllowed = True
+        End If
+
+        Return MinAllowed AndAlso MaxAllowed
+    End Function
+
     Structure Addon
         Public ID As Integer
         Public Name As String
@@ -40,25 +74,26 @@
 
                     For Each xAddon In xdAddons.Descendants("entry")
                         Try
-                            Dim AddonItem As New Addon
-                            AddonItem.ID = Convert.ToInt32(xAddon.Element("id").Value)
-                            AddonItem.Name = xAddon.Element("Name").Value
-                            'AddonItem.Author = xAddon.Element("User").Value
-                            AddonItem.Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
-                            AddonItem.MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
-                            AddonItem.MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
-                            'AddonItem.Summary = xAddon.Element("Description").Value
-                            AddonItem.Category = sType
-                            'sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
-                            'While sHTTP.IsDownloading
-                            'Application.DoEvents()
-                            'End While
-                            'Me.bwDownload.ReportProgress(0, AddonItem)
-                            AddonItem.InstalledVersion = Master.DB.IsAddonInstalled(AddonItem.ID)
-                            If AddonItem.InstalledVersion > 0 AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
-                                AddonList.Add(AddonItem)
+                            If (xAddon.Element("User").Value = Master.eSettings.Username) OrElse AllowedVersion(xAddon.Element("EmberVersion_Min").Value, xAddon.Element("EmberVersion_Max").Value) Then
+                                Dim AddonItem As New Addon
+                                AddonItem.ID = Convert.ToInt32(xAddon.Element("id").Value)
+                                AddonItem.Name = xAddon.Element("Name").Value
+                                'AddonItem.Author = xAddon.Element("User").Value
+                                AddonItem.Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
+                                AddonItem.MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
+                                AddonItem.MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
+                                'AddonItem.Summary = xAddon.Element("Description").Value
+                                AddonItem.Category = sType
+                                'sHTTP.StartDownloadImage(String.Format("http://www.embermm.com/addons/addons.php?screenshot={0}", xAddon.Element("id").Value))
+                                'While sHTTP.IsDownloading
+                                'Application.DoEvents()
+                                'End While
+                                'Me.bwDownload.ReportProgress(0, AddonItem)
+                                AddonItem.InstalledVersion = Master.DB.IsAddonInstalled(AddonItem.ID)
+                                If AddonItem.InstalledVersion > 0 AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
+                                    AddonList.Add(AddonItem)
+                                End If
                             End If
-
                         Catch ex As Exception
                             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                         End Try
