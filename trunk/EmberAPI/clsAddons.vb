@@ -10,8 +10,9 @@
         Dim tMinRevision As Integer = 0
         Dim tMaxVersion As Single = 9999
         Dim tMaxRevision As Integer = 99999
-
-        If MinVersion.Split(New Char() {Convert.ToChar("."), Convert.ToChar(".")}).Count = 3 Then
+        MinVersion = MinVersion.Replace(",", ".")
+        MaxVersion = MaxVersion.Replace(",", ".")
+        If MinVersion.Split(Convert.ToChar(".")).Count = 3 Then
             tMinVersion = NumUtils.ConvertToSingle(MinVersion.Substring(0, MinVersion.LastIndexOf(Convert.ToChar("."))))
         Else
             tMinVersion = If(String.IsNullOrEmpty(MinVersion), 0, NumUtils.ConvertToSingle(MinVersion))
