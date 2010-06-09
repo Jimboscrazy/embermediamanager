@@ -241,16 +241,15 @@ Public Class AddonItem
             If Not Directory.Exists(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons"))) Then
                 Directory.CreateDirectory(Path.Combine(Functions.AppPath, String.Concat("Temp", Path.DirectorySeparatorChar, "addons")))
             End If
-
+            Try
+                Dim scHTTP As New HTTP
+                Dim result As String = scHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?DownloadCount={0}&Version={1}", Me._id, Me._version))
+                scHTTP = Nothing
+            Catch ex As Exception
+            End Try
             For Each _file As KeyValuePair(Of String, String) In Me._filelist
                 Dim tempFile As String = Path.Combine(Functions.AppPath, Path.Combine(String.Concat("Temp", Path.DirectorySeparatorChar, "addons"), String.Concat(Functions.ConvertToUnixTimestamp(Now).ToString, Now.Ticks.ToString)))
-
                 Try
-                    Try
-                        Dim scHTTP As New HTTP
-                        Dim updateXML As String = scHTTP.DownloadData(String.Format("http://www.embermm.com/addons/addons.php?DownloadCount={0}&Version={1}", Me._id, Me._version))
-                    Catch ex As Exception
-                    End Try
                     finalFile = Path.Combine(Functions.AppPath, _file.Key.Replace("/", Path.DirectorySeparatorChar))
                     sHTTP.DownloadFile(String.Format("http://www.embermm.com/addons/addons.php?getfile={0}&id={1}", Web.HttpUtility.UrlEncode(_file.Key), Me._id), tempFile, False, "other")
                     Me.bwDownload.ReportProgress(1)
