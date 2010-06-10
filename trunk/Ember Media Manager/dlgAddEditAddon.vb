@@ -95,7 +95,8 @@ Public Class dlgAddEditAddon
     End Sub
 
     Private Sub Version_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtVersion.KeyPress, txtMinEVersion.KeyPress, txtMaxEVersion.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) OrElse (e.KeyChar = "." AndAlso Regex.Matches(DirectCast(sender, TextBox).Text, "\.").Count = 1)
+        If e.KeyChar = "," Then e.KeyChar = Convert.ToChar(".")
+        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) OrElse (e.KeyChar = "." AndAlso Regex.Matches(DirectCast(sender, TextBox).Text, "\.").Count > 1)
     End Sub
 
     Private Function ValidateEntry() As Boolean
