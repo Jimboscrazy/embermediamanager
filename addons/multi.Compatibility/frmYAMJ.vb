@@ -45,7 +45,11 @@ Public Class frmYAMJ
         Me.chkVideoTSParent.Text = Master.eLang.GetString(3, "YAMJ Compatible VIDEO_TS File Placement/Naming")
         Me.chkYAMJCompatibleTVImages.Text = Master.eLang.GetString(4, "YAMJ Compatible TV Images Naming")
         Me.chkYAMJnfoFields.Text = Master.eLang.GetString(5, "YAMJ Specific NFO fields")
-
+        Me.chkShowPoster.Text = Master.eLang.GetString(6, "Show Poster as SET_<Show>_1.jpg")
+        Me.chkShowFanart.Text = Master.eLang.GetString(7, "Show Poster as SET_<Show>_1.jpg")
+        Me.chkSeasonPoster.Text = Master.eLang.GetString(8, "Season Poster as <Episode>SxxE01.jpg")
+        Me.chkSeasonFanart.Text = Master.eLang.GetString(9, "Season Fanart as <Episode>SxxE01.fanart.jpg")
+        Me.chkEpisodePoster.Text = Master.eLang.GetString(10, "Episode Poster as <Show>.videoimage.jpg")
     End Sub
 
 
@@ -71,6 +75,7 @@ Public Class frmYAMJ
 
     Private Sub chkYAMJCompatibleTVSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleTVImages.CheckedChanged
         CheckAnyEnabled()
+        gbImages.Enabled = chkYAMJCompatibleTVImages.Checked
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -79,10 +84,36 @@ Public Class frmYAMJ
         chkYAMJCompatibleSets.Checked = True
         chkYAMJCompatibleTVImages.Checked = True
         chkYAMJnfoFields.Checked = True
+        chkShowPoster.Checked = True
+        chkShowFanart.Checked = True
+        chkSeasonPoster.Checked = True
+        chkSeasonFanart.Checked = True
+        chkEpisodePoster.Checked = True
+
     End Sub
 
     Private Sub chkYAMJnfoFields_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJnfoFields.CheckedChanged
         CheckAnyEnabled()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkShowPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkShowFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkSeasonPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkSeasonFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkEpisodePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodePoster.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class
