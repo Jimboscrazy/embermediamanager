@@ -117,8 +117,8 @@ Public Class Scraper
         sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
-    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean)
-        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options, .WithCurrent = WithCurrent, .iSeason = -999})
+    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean)
+        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
     End Sub
 
     #End Region 'Methods
@@ -654,18 +654,21 @@ Public Class Scraper
             bwTVDB.WorkerReportsProgress = False
             bwTVDB.WorkerSupportsCancellation = True
             bwTVDB.RunWorkerAsync(New Arguments With {.Type = 2, .Parameter = sInfo})
+            While bwTVDB.IsBusy
+                Application.DoEvents()
+            End While
         End Sub
 
         Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
             Try
-                If String.IsNullOrEmpty(sInfo.TVDBID) Then
+                If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                     RaiseEvent ScraperEvent(Enums.TVScraperEventType.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Show
                             RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                             Using dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                     If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                         Me.SaveImages()
                                     Else
@@ -685,24 +688,28 @@ Public Class Scraper
                         Master.currShow = tmpTVDBShow.Show
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                         Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                            If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                 If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                     Me.SaveImages()
                                 Else
-                                    RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                    If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
+                                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.SaveAuto, 0, Nothing)
+                                    Else
+                                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Verifying, 0, Nothing)
+                                    End If
                                 End If
                             Else
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
-                    Else
+                    ElseIf sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.Searching, 0, Nothing)
                         Using dTVDBSearch As New dlgTVDBSearchResults
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Show
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.SelectImages, 0, Nothing)
                                 Using dTVImageSel As New dlgTVImageSelect
-                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
+                                    If dTVImageSel.ShowDialog(sInfo.ShowID, Enums.TVImageType.All, sInfo.ScrapeType, sInfo.WithCurrent) = Windows.Forms.DialogResult.OK Then
                                         If Not IsNothing(sInfo.iSeason) AndAlso sInfo.iSeason >= 0 Then
                                             Me.SaveImages()
                                         Else
@@ -716,6 +723,9 @@ Public Class Scraper
                                 RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                             End If
                         End Using
+                    Else
+                        'Ignore Show scrape if ScrapeAuto and show don't have ID
+                        RaiseEvent ScraperEvent(Enums.TVScraperEventType.Cancelled, 0, Nothing)
                     End If
                 End If
             Catch ex As Exception

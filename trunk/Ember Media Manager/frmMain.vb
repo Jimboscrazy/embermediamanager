@@ -1822,7 +1822,7 @@ doCancel:
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, False)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType.SingleScrape, False)
     End Sub
 
     Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
@@ -2685,9 +2685,26 @@ doCancel:
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
         Me.SetControlsEnabled(False, True)
-        Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, True)
+        'Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
+        'ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, True)
+        TVShowScrapeData()
     End Sub
+
+    Sub TVShowScrapeData()
+        For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            ' Temporary Scratetype
+            Dim ScrapeType As Enums.ScrapeType
+            If Me.dgvTVShows.SelectedRows.Count = 1 Then
+                ScrapeType = Enums.ScrapeType.FullAsk
+            Else
+                ScrapeType = Enums.ScrapeType.FullAuto
+            End If
+            Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+        Next
+
+    End Sub
+
 
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
         If Me.dgvMediaList.SelectedRows.Count = 1 Then
@@ -4039,7 +4056,7 @@ doCancel:
                         Me.ToolStripSeparator8.Visible = False
                         Me.cmnuEditShow.Visible = False
                         Me.ToolStripSeparator7.Visible = False
-                        Me.cmnuRescrapeShow.Visible = False
+                        ' Me.cmnuRescrapeShow.Visible = False
                         Me.cmnuChangeShow.Visible = False
                         Me.cmnuShowOpenFolder.Visible = False
                         Me.ToolStripSeparator20.Visible = False
@@ -8704,6 +8721,14 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(760, "Downloading Show Zip:")
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
+            Case Enums.TVScraperEventType.SaveAuto
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Select Case iProgress
+                    Case 0 ' show
+                        Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
+                        ModulesManager.Instance.TVSaveImages()
+                End Select
+
             Case Enums.TVScraperEventType.Verifying
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
 

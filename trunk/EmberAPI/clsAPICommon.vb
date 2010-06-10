@@ -627,6 +627,7 @@ Public Class Enums
         SelectImages = 8
         Verifying = 9
         Cancelled = 10
+        SaveAuto = 11
     End Enum
 
     Public Enum TVUpdateTime As Integer
@@ -1216,6 +1217,7 @@ Public Class Structures
         Dim ShowTitle As String
         Dim TVDBID As String
         Dim WithCurrent As Boolean
+        Dim ScrapeType As Enums.ScrapeType
 
 #End Region 'Fields
 

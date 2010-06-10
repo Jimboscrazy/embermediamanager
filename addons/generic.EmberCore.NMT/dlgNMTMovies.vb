@@ -382,18 +382,18 @@ Public Class dlgNMTMovies
                 HTMLTVBody.Append(ProcessTVShowsTags(_curShow, hfile, counter, _curShow.Item("ID").ToString, tvrow))
 
                 Dim detailsShowOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show.", _curShow.Item("ID").ToString, ".htm"))
-                File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternShowDetails, GetUserParam("RelativePathToBase", "../../")))
+                'File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternShowDetails, GetUserParam("RelativePathToBase", "../../")))
 
                 For Each _curSeason As DataRow In dtSeasons.Select(String.Format("TVShowID = {0}", _curShow.Item("ID").ToString))
 
                     Dim SeasonId As String = String.Concat(_curShow.Item("ID").ToString, ".", _curSeason.Item("Season").ToString)
                     Dim detailsSeasonOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Season.", SeasonId, ".htm"))
-                    File.WriteAllText(detailsSeasonOutput, ProcessTVSeasonTags(_curSeason, detailsSeasonOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
+                    'File.WriteAllText(detailsSeasonOutput, ProcessTVSeasonTags(_curSeason, detailsSeasonOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
 
                     For Each _curEp As DataRow In dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString))
                         If bwBuildHTML.CancellationPending Then Return
                         Dim detailsEpsOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps.", _curEp.Item("ID").ToString, ".htm"))
-                        File.WriteAllText(detailsEpsOutput, ProcessTVEpisodeTags(_curEp, detailsEpsOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
+                        'File.WriteAllText(detailsEpsOutput, ProcessTVEpisodeTags(_curEp, detailsEpsOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
                         counter += 1
                         'bwBuildHTML.ReportProgress(1)
                     Next
@@ -553,15 +553,15 @@ Public Class dlgNMTMovies
             Dim uni As New UnicodeEncoding()
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curShow.Item("Source").ToString).ToString), String.Empty, selectedSources(_curShow.Item("Source").ToString).ToString)
             Dim sourcePath As String = Master.TVSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
-            row = row.Replace("<$ID>", id.ToString)
-            row = row.Replace("<$COUNTER>", counter.ToString)
+            row = row.Replace("<$SHOWID>", id.ToString)
+            row = row.Replace("<$SHOWCOUNTER>", counter.ToString)
             'row = row.Replace("<$SHOW_PATH>", GetRelativePath(_curShow.Item("MoviePath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$SHOWNAME>", (_curShow.Item("Title").ToString))
             row = row.Replace("<$TVPOSTER_THUMB>", GetRelativePath(String.Concat(ThumbsPath, id.ToString, ".jpg"), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$TVBACKDROP_THUMB>", GetRelativePath(String.Concat(BackdropPath, id.ToString, "-backdrop.jpg"), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$TVSHOW_PATH>", GetRelativePath(_curShow.Item("TVShowPath").ToString, sourcePath, mapPath, outputbase))
-            row = row.Replace("<$PLOT>", (_curShow.Item("Plot").ToString))
-            row = row.Replace("<$GENRES>", (_curShow.Item("Genre").ToString))
+            row = row.Replace("<$SHOWPLOT>", (_curShow.Item("Plot").ToString))
+            row = row.Replace("<$SHOWGENRES>", (_curShow.Item("Genre").ToString))
             row = row.Replace("<$TVPOSTER_FILE>", GetRelativePath(_curShow.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$TVFANART_FILE>", GetRelativePath(_curShow.Item("FanartPath").ToString, sourcePath, mapPath, outputbase))
             For Each s As String In _curShow.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
@@ -593,6 +593,7 @@ Public Class dlgNMTMovies
     End Function
 
     Function ProcessTVSeasonTags(ByVal _curSeason As DataRow, ByVal outputbase As String, ByVal counter As Integer, ByVal showid As String, ByVal seasonid As String, ByVal movierow As String, Optional ByVal relpath As String = "") As String
+
         Dim row As String = movierow
         Try
             Dim tVid As New MediaInfo.Video
@@ -602,15 +603,16 @@ Public Class dlgNMTMovies
             Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
             Dim uni As New UnicodeEncoding()
             'above need to be fixed
-            Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curSeason.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curSeason.Item("Source").ToString)), selectedSources(_curSeason.Item("Source").ToString).ToString)
+            'Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curSeason.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curSeason.Item("Source").ToString)), selectedSources(_curSeason.Item("Source").ToString).ToString)
             Dim sourcePath As String = Master.MovieSources.FirstOrDefault(Function(y) y.Name = _curSeason.Item("Source").ToString).Path
+
             row = row.Replace("<$ID>", showid.ToString)
             row = row.Replace("<$COUNTER>", counter.ToString)
-            row = row.Replace("<$MOVIE_PATH>", _curSeason.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            'row = row.Replace("<$MOVIE_PATH>", _curSeason.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
             row = row.Replace("<$POSTER_THUMB>", String.Concat(relpath, ThumbsPath, showid.ToString, ".jpg"))
             row = row.Replace("<$BACKDROP_THUMB>", String.Concat(relpath, BackdropPath, showid.ToString, "-backdrop.jpg"))
-            row = row.Replace("<$POSTER_FILE>", _curSeason.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
-            row = row.Replace("<$FANART_FILE>", _curSeason.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            'row = row.Replace("<$POSTER_FILE>", _curSeason.Item("PosterPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            'row = row.Replace("<$FANART_FILE>", _curSeason.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
             If Not String.IsNullOrEmpty(_curSeason.Item("Title").ToString) Then
                 row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curSeason.Item("Title").ToString))
             Else

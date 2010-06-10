@@ -50,6 +50,7 @@ Public Class dlgTVImageSelect
     Private _season As Integer = -999
     Private _type As Enums.TVImageType = Enums.TVImageType.All
     Private _withcurrent As Boolean = True
+    Private _ScrapeType As Enums.ScrapeType
 
     #End Region 'Fields
 
@@ -274,10 +275,11 @@ Public Class dlgTVImageSelect
         Return False
     End Function
 
-    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.TVImageType, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.TVImageType, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
         Me._id = ShowID
         Me._type = Type
         Me._withcurrent = WithCurrent
+        Me._ScrapeType = ScrapeType
         Return MyBase.ShowDialog
     End Function
 
@@ -366,6 +368,10 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        DoneAndClose()
+    End Sub
+
+    Private Sub DoneAndClose()
         If Me._type = Enums.TVImageType.All Then
             Me.lblStatus.Text = Master.eLang.GetString(87, "Downloading Fullsize Fanart Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
@@ -423,6 +429,7 @@ Public Class dlgTVImageSelect
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
+
 
     Private Sub bwLoadData_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadData.DoWork
         Dim cSI As Scraper.TVDBSeasonImage
@@ -616,18 +623,21 @@ Public Class dlgTVImageSelect
 
     Private Sub bwLoadImages_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages.RunWorkerCompleted
         Me.pnlStatus.Visible = False
+        If _ScrapeType = Enums.ScrapeType.FullAuto Then
+            DoneAndClose()
+        Else
+            If Not e.Cancelled Then
+                Me.tvList.Enabled = True
+                Me.tvList.Visible = True
+                Me.tvList.SelectedNode = Me.tvList.Nodes(0)
+                Me.tvList.Focus()
 
-        If Not e.Cancelled Then
-            Me.tvList.Enabled = True
-            Me.tvList.Visible = True
-            Me.tvList.SelectedNode = Me.tvList.Nodes(0)
-            Me.tvList.Focus()
+                Me.btnOK.Enabled = True
+            End If
 
-            Me.btnOK.Enabled = True
+            Me.pbCurrent.Visible = True
+            Me.lblCurrentImage.Visible = True
         End If
-
-        Me.pbCurrent.Visible = True
-        Me.lblCurrentImage.Visible = True
     End Sub
 
     Private Sub CheckCurrentImage()

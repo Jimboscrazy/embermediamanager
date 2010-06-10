@@ -180,8 +180,8 @@ Public Class EmberNativeTVScraperModule
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
-        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, Options, WithCurrent)
+    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
+        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, Options, ScrapeType, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
