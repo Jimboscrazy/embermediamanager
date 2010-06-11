@@ -7571,11 +7571,10 @@ doCancel:
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
-                    o.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+                    o.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tabsMain.SelectedIndex = 0
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
-                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso ((Me.dgvMediaList.RowCount > 0 OrElse tagmenu.IfNoMovies) OrElse (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow))
-
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMediaList.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tabsMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tabsMain.SelectedIndex = 1))
                 End If
             ElseIf TypeOf i Is ToolStripSeparator Then
                 Dim o As ToolStripSeparator = DirectCast(i, ToolStripSeparator)
@@ -8376,7 +8375,7 @@ doCancel:
                     Me.dgvMediaList.Focus()
                 End If
             Case 1
-                Me.ToolsToolStripMenuItem.Enabled = False
+                Me.ToolsToolStripMenuItem.Enabled = True
                 Me.cmnuTrayIconTools.Enabled = False
                 Me.tsbAutoPilot.Enabled = False
                 Me.cmnuTrayIconScrapeMedia.Enabled = False
