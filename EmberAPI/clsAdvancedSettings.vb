@@ -293,52 +293,63 @@ Public Class AdvancedSettings
         Return True
     End Function
 
-    Public Shared Sub SetDefaults()
+    Public Shared Sub SetDefaults(Optional ByVal loadSingle As Boolean = False, Optional ByVal section As String = "")
         _DoNotSave = True
-        SetSetting("AudioFormatConvert:ac-3", "ac3")
-        SetSetting("AudioFormatConvert:a_ac3", "ac3")
-        SetSetting("AudioFormatConvert:a_aac", "aac")
-        SetSetting("AudioFormatConvert:wma2", "wmav2")
-        SetSetting("AudioFormatConvert:a_dts", "dca")
-        SetSetting("AudioFormatConvert:dts", "dca")
+        If Not loadSingle OrElse section = "AudioFormatConvert" Then
+            SetSetting("AudioFormatConvert:ac-3", "ac3")
+            SetSetting("AudioFormatConvert:a_ac3", "ac3")
+            SetSetting("AudioFormatConvert:a_aac", "aac")
+            SetSetting("AudioFormatConvert:wma2", "wmav2")
+            SetSetting("AudioFormatConvert:a_dts", "dca")
+            SetSetting("AudioFormatConvert:dts", "dca")
+        End If
 
-        SetSetting("VideoFormatConvert:divx 5", "dx50")
-        SetSetting("VideoFormatConvert:mpeg-4 video", "mpeg4")
-        SetSetting("VideoFormatConvert:divx 3", "div3")
-        SetSetting("VideoFormatConvert:lmp4", "h264")
-        SetSetting("VideoFormatConvert:svq3", "h264")
-        SetSetting("VideoFormatConvert:v_mpeg4/iso/avc", "h264")
-        SetSetting("VideoFormatConvert:x264", "h264")
-        SetSetting("VideoFormatConvert:avc", "h264")
-        SetSetting("VideoFormatConvert:swf", "flv")
-        SetSetting("VideoFormatConvert:3iv0", "3ivx")
-        SetSetting("VideoFormatConvert:3iv1", "3ivx")
-        SetSetting("VideoFormatConvert:3iv2", "3ivx")
-        SetSetting("VideoFormatConvert:3ivd", "3ivx")
+        If Not loadSingle OrElse section = "VideoFormatConvert" Then
+            SetSetting("VideoFormatConvert:divx 5", "dx50")
+            SetSetting("VideoFormatConvert:mpeg-4 video", "mpeg4")
+            SetSetting("VideoFormatConvert:divx 3", "div3")
+            SetSetting("VideoFormatConvert:lmp4", "h264")
+            SetSetting("VideoFormatConvert:svq3", "h264")
+            SetSetting("VideoFormatConvert:v_mpeg4/iso/avc", "h264")
+            SetSetting("VideoFormatConvert:x264", "h264")
+            SetSetting("VideoFormatConvert:avc", "h264")
+            SetSetting("VideoFormatConvert:swf", "flv")
+            SetSetting("VideoFormatConvert:3iv0", "3ivx")
+            SetSetting("VideoFormatConvert:3iv1", "3ivx")
+            SetSetting("VideoFormatConvert:3iv2", "3ivx")
+            SetSetting("VideoFormatConvert:3ivd", "3ivx")
+        End If
 
-        SetSetting("CheckStackMarkers", "\|?((cd|dvd|part|dis[ck])([0-9]))")
-        SetSetting("DeleteStackMarkers", "\|?((cd|dvd|part|dis[ck])([0-9]))")
-        SetBooleanSetting("DisableMultiPartMedia", False)
+        If Not loadSingle Then
+            SetSetting("CheckStackMarkers", "\|?((cd|dvd|part|dis[ck])([0-9]))")
+            SetSetting("DeleteStackMarkers", "\|?((cd|dvd|part|dis[ck])([0-9]))")
+            SetBooleanSetting("DisableMultiPartMedia", False)
 
-        SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")
-        SetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
+            SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")
+            SetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
 
-        SetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes")
-        SetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample")
+            SetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes")
+            SetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample")
 
-        SetSetting("ForceTitle", "Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Finland|France|Germany|Hong Kong|Iceland|Ireland|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA")
+            SetSetting("ForceTitle", "Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Finland|France|Germany|Hong Kong|Iceland|Ireland|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA")
 
-        SetBooleanSetting("StudioTagAlwaysOn", False)
-        SetBooleanSetting("ScrapeActorsThumbs", False)
-        SetBooleanSetting("PosterGlassOverlay", True)
+            SetBooleanSetting("StudioTagAlwaysOn", False)
+            SetBooleanSetting("ScrapeActorsThumbs", False)
+            SetBooleanSetting("PosterGlassOverlay", True)
+        End If
 
-        Dim keypair As New Hashtable
-        keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
-        keypair.Add("hd[-\s]?dvd", "hddvd")
-        keypair.Add("hd[-\s]?tv", "hdtv")
-        keypair.Add("(sd[-\s]?)?dvd", "dvd")
-        keypair.Add("sd[-\s]?tv", "sdtv")
-        SetComplexSetting("MovieSources", keypair)
+ 
+
+        If Not loadSingle OrElse section = "MovieSources" Then
+            Dim keypair As New Hashtable
+            keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
+            keypair.Add("hd[-\s]?dvd", "hddvd")
+            keypair.Add("hd[-\s]?tv", "hdtv")
+            keypair.Add("(sd[-\s]?)?dvd", "dvd")
+            keypair.Add("sd[-\s]?tv", "sdtv")
+            SetComplexSetting("MovieSources", keypair)
+        End If
+
         _DoNotSave = False
     End Sub
 
