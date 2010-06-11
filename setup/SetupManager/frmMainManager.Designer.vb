@@ -101,6 +101,8 @@ Partial Class frmMainManager
         Me.btnClose = New System.Windows.Forms.Button
         Me.btnUpdateFrom = New System.Windows.Forms.Button
         Me.Button5 = New System.Windows.Forms.Button
+        Me.txtReport = New System.Windows.Forms.TextBox
+        Me.btnReport = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -399,42 +401,42 @@ Partial Class frmMainManager
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllwaysExcludeFileToolStripMenuItem, Me.RemoveExclusionToolStripMenuItem, Me.AllwaysExcludeFileinFolderMenuItem, Me.RemoveExcludeFileinFolderToolStripMenuItem, Me.AllwaysExcludeFolderToolStripMenuItem, Me.RemoveFolderExclusionToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(245, 136)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(250, 136)
         '
         'AllwaysExcludeFileToolStripMenuItem
         '
         Me.AllwaysExcludeFileToolStripMenuItem.Name = "AllwaysExcludeFileToolStripMenuItem"
-        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFileToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFileToolStripMenuItem.Text = "Allways Exclude File"
         '
         'RemoveExclusionToolStripMenuItem
         '
         Me.RemoveExclusionToolStripMenuItem.Name = "RemoveExclusionToolStripMenuItem"
-        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveExclusionToolStripMenuItem.Text = "Remove File Exclusion"
         '
         'AllwaysExcludeFileinFolderMenuItem
         '
         Me.AllwaysExcludeFileinFolderMenuItem.Name = "AllwaysExcludeFileinFolderMenuItem"
-        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFileinFolderMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFileinFolderMenuItem.Text = "Allways Exclude File in this Folder"
         '
         'RemoveExcludeFileinFolderToolStripMenuItem
         '
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Name = "RemoveExcludeFileinFolderToolStripMenuItem"
-        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveExcludeFileinFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveExcludeFileinFolderToolStripMenuItem.Text = "Remove File in Folder Exclusion"
         '
         'AllwaysExcludeFolderToolStripMenuItem
         '
         Me.AllwaysExcludeFolderToolStripMenuItem.Name = "AllwaysExcludeFolderToolStripMenuItem"
-        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.AllwaysExcludeFolderToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.AllwaysExcludeFolderToolStripMenuItem.Text = "Allways Exclude Folder"
         '
         'RemoveFolderExclusionToolStripMenuItem
         '
         Me.RemoveFolderExclusionToolStripMenuItem.Name = "RemoveFolderExclusionToolStripMenuItem"
-        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveFolderExclusionToolStripMenuItem.Size = New System.Drawing.Size(249, 22)
         Me.RemoveFolderExclusionToolStripMenuItem.Text = "Remove Folder Exclusion"
         '
         'txtEMMVersion
@@ -687,6 +689,8 @@ Partial Class frmMainManager
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.btnReport)
+        Me.TabPage4.Controls.Add(Me.txtReport)
         Me.TabPage4.Controls.Add(Me.cboStats)
         Me.TabPage4.Controls.Add(Me.lstStats)
         Me.TabPage4.Controls.Add(Me.Button1)
@@ -800,6 +804,24 @@ Partial Class frmMainManager
         Me.Button5.Text = "Update from Beta Site"
         Me.Button5.UseVisualStyleBackColor = True
         '
+        'txtReport
+        '
+        Me.txtReport.Location = New System.Drawing.Point(470, 36)
+        Me.txtReport.Multiline = True
+        Me.txtReport.Name = "txtReport"
+        Me.txtReport.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtReport.Size = New System.Drawing.Size(367, 427)
+        Me.txtReport.TabIndex = 8
+        '
+        'btnReport
+        '
+        Me.btnReport.Location = New System.Drawing.Point(476, 5)
+        Me.btnReport.Name = "btnReport"
+        Me.btnReport.Size = New System.Drawing.Size(75, 23)
+        Me.btnReport.TabIndex = 9
+        Me.btnReport.Text = "Gen. Report"
+        Me.btnReport.UseVisualStyleBackColor = True
+        '
         'frmMainManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -830,6 +852,7 @@ Partial Class frmMainManager
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
+        Me.TabPage4.PerformLayout()
         Me.pnlWork.ResumeLayout(False)
         Me.pnlWork.PerformLayout()
         Me.ResumeLayout(False)
@@ -914,5 +937,7 @@ Partial Class frmMainManager
     Friend WithEvents ColumnHeader15 As System.Windows.Forms.ColumnHeader
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents btnReport As System.Windows.Forms.Button
+    Friend WithEvents txtReport As System.Windows.Forms.TextBox
 
 End Class

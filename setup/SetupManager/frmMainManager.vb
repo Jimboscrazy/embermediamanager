@@ -1575,4 +1575,23 @@ Public Class frmMainManager
         End Try
         LoadAll()
     End Sub
+
+    Private Sub btnReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReport.Click
+        Dim f As FileInfo() = New DirectoryInfo(Path.Combine(AppPath, "logs")).GetFiles("*.log")
+        Dim report As String = String.Empty
+        For Each fi As FileInfo In f
+            Dim rdate As String = Path.GetFileNameWithoutExtension(fi.Name).Replace("download-", "")
+            Dim lines() As String = Array.FindAll(File.ReadAllLines(fi.FullName), AddressOf FindEmber)
+            Dim c As Integer = 0
+            For Each s As String In lines
+                Dim parts As String() = s.Split(Convert.ToChar(vbTab))
+                If parts.Length >= 2 Then c += Convert.ToUInt16(parts(1))
+            Next
+            report = String.Concat(report, "Date: ", rdate, "    = ", c.ToString, vbCrLf)
+        Next
+        txtReport.Text = report
+    End Sub
+    Private Shared Function FindEmber(ByVal l As String) As Boolean
+        Return l.Contains("Ember Media Manager.exe")
+    End Function
 End Class
