@@ -34,7 +34,8 @@ Public Class EmberNativeTVScraperModule
     Private _Name As String = "Ember Native TV Scrapers"
     Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
-
+    Private _setup As frmTVInfoSettingsHolder
+    Private _setupPost As frmtvMediaSettingsHolder
     #End Region 'Fields
 
     #Region "Events"
@@ -137,30 +138,54 @@ Public Class EmberNativeTVScraperModule
 
     Public Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupPostScraper
         Dim SPanel As New Containers.SettingsPanel
-        SPanel.Name = Me._Name
+        _setupPost = New frmTVMediaSettingsHolder
+        _setupPost.cbEnabled.Checked = _PostScraperEnabled
+        SPanel.Name = String.Concat(Me._Name, "PostScraper")
         SPanel.Text = Master.eLang.GetString(0, "Ember Native TV Scrapers")
         SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = New Panel
+        SPanel.Panel = Me._setupPost.pnlSettings
         SPanel.Parent = "pnlTVMedia"
+        AddHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
+        AddHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberTVScraperModule.ScraperUpdateMediaList
     Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        SPanel.Name = Me._Name
+        _setup = New frmTVInfoSettingsHolder
+        _setup.cbEnabled.Checked = _ScraperEnabled
+        SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(0, "Ember Native TV Scrapers")
         SPanel.Prefix = "NativeTV_"
         SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = New Panel
+        SPanel.Panel = Me._setup.pnlSettings
         SPanel.Parent = "pnlTVData"
+        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
         Return SPanel
     End Function
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 
+    Private Sub Handle_PostModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        PostScraperEnabled = state
+        RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
+    End Sub
+
+    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled = state
+        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PostScraper
     End Function
 

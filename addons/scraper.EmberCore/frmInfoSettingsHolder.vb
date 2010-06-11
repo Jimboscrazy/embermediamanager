@@ -182,7 +182,7 @@ Public Class frmInfoSettingsHolder
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).ScraperOrder
         btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1)
-        btnUp.Enabled = (order > 0)
+        btnUp.Enabled = (order > 1)
     End Sub
 
     Private Sub SetUp()

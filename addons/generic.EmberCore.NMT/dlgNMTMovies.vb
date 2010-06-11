@@ -130,7 +130,7 @@ Public Class dlgNMTMovies
                 'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Name), False)
             Next
             If Not conf Is Nothing Then
-                populateParams()
+                PopulateParams()
                 Application.DoEvents()
             End If
             Loaded = True
@@ -367,36 +367,39 @@ Public Class dlgNMTMovies
             Else 'error
             End If
             HTMLTVBody.Append(tvheader)
-            Dim counter As Integer = 1
+            Dim ShowCounter As Integer = 1
+
             FilterTVShows.Clear()
             TVShowsGenres.Clear()
 
             For Each _curShow As DataRow In dtShows.Rows
                 If bwBuildHTML.CancellationPending Then Return
-                If Not selectedSources.Contains(_curShow.Item("Source").ToString) Then
+                If Not selectedSources.Contains(_curShow.Item("Source").ToString) OrElse String.IsNullOrEmpty(_curShow.Item("NfoPath").ToString) Then
                     bwBuildHTML.ReportProgress(1)
                     Continue For
                 End If
                 FilterTVShows.Add(Convert.ToInt32(_curShow.Item("ID")))
                 Dim hfile As String = Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").DestPath.Replace("/", Path.DirectorySeparatorChar))
-                HTMLTVBody.Append(ProcessTVShowsTags(_curShow, hfile, counter, _curShow.Item("ID").ToString, tvrow))
+                HTMLTVBody.Append(ProcessTVShowsTags(_curShow, hfile, ShowCounter, _curShow.Item("ID").ToString, tvrow))
 
-                Dim detailsShowOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show.", _curShow.Item("ID").ToString, ".htm"))
+                Dim detailsShowOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show", _curShow.Item("ID").ToString, ".htm"))
                 'File.WriteAllText(detailsShowOutput, ProcessTVShowsTags(_curShow, detailsShowOutput, counter, _curShow.Item("ID").ToString, patternShowDetails, GetUserParam("RelativePathToBase", "../../")))
-
+                ShowCounter += 1
+                Dim SeasonCounter As Integer = 1
                 For Each _curSeason As DataRow In dtSeasons.Select(String.Format("TVShowID = {0}", _curShow.Item("ID").ToString))
 
                     Dim SeasonId As String = String.Concat(_curShow.Item("ID").ToString, ".", _curSeason.Item("Season").ToString)
-                    Dim detailsSeasonOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Season.", SeasonId, ".htm"))
+                    Dim detailsSeasonOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Show", SeasonId, ".htm"))
                     'File.WriteAllText(detailsSeasonOutput, ProcessTVSeasonTags(_curSeason, detailsSeasonOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
-
+                    Dim EpisodeCounter As Integer = 1
                     For Each _curEp As DataRow In dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString))
                         If bwBuildHTML.CancellationPending Then Return
-                        Dim detailsEpsOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps.", _curEp.Item("ID").ToString, ".htm"))
+                        Dim detailsEpsOutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvshow").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat("Eps", _curEp.Item("ID").ToString, ".htm"))
                         'File.WriteAllText(detailsEpsOutput, ProcessTVEpisodeTags(_curEp, detailsEpsOutput, counter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, _curEp.Item("ID").ToString, patternEpDetails, GetUserParam("RelativePathToBase", "../../")))
-                        counter += 1
+                        EpisodeCounter += 1
                         'bwBuildHTML.ReportProgress(1)
                     Next
+                    SeasonCounter += 1
                 Next
             Next
             HTMLTVBody.Append(tvfooter)
@@ -492,7 +495,7 @@ Public Class dlgNMTMovies
             'row = row.Replace("<$COUNT>", counter.ToString)
             row = row.Replace("<$FILENAME>", (Path.GetFileName(_curMovie.Item("MoviePath").ToString)))
             row = row.Replace("<$DIRNAME>", (Path.GetDirectoryName(_curMovie.Item("MoviePath").ToString)))
-            row = row.Replace("<$OUTLINE>", (_curMovie.Item("Outline").ToString))
+            row = row.Replace("<$OUTLINE>", ToStringNMT(_curMovie.Item("Outline").ToString))
             row = row.Replace("<$PLOT>", (_curMovie.Item("Plot").ToString))
             row = row.Replace("<$GENRES>", (_curMovie.Item("Genre").ToString))
             For Each s As String In _curMovie.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
@@ -560,7 +563,7 @@ Public Class dlgNMTMovies
             row = row.Replace("<$TVPOSTER_THUMB>", GetRelativePath(String.Concat(ThumbsPath, id.ToString, ".jpg"), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$TVBACKDROP_THUMB>", GetRelativePath(String.Concat(BackdropPath, id.ToString, "-backdrop.jpg"), String.Empty, String.Empty, outputbase))
             row = row.Replace("<$TVSHOW_PATH>", GetRelativePath(_curShow.Item("TVShowPath").ToString, sourcePath, mapPath, outputbase))
-            row = row.Replace("<$SHOWPLOT>", (_curShow.Item("Plot").ToString))
+            row = row.Replace("<$SHOWPLOT>", ToStringNMT(_curShow.Item("Plot").ToString))
             row = row.Replace("<$SHOWGENRES>", (_curShow.Item("Genre").ToString))
             row = row.Replace("<$TVPOSTER_FILE>", GetRelativePath(_curShow.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$TVFANART_FILE>", GetRelativePath(_curShow.Item("FanartPath").ToString, sourcePath, mapPath, outputbase))
@@ -728,6 +731,22 @@ Public Class dlgNMTMovies
         Return row
     End Function
 
+
+    Public Shared Function ToUTF8(ByVal unicodeString As String) As String
+        Dim utf8 As Encoding = Encoding.UTF8
+        Dim [unicode] As Encoding = Encoding.Unicode
+        Dim unicodeBytes As Byte() = [unicode].GetBytes(unicodeString)
+        Dim utf8Bytes As Byte() = Encoding.Convert([unicode], utf8, unicodeBytes)
+        Dim utf8Chars(utf8.GetCharCount(utf8Bytes, 0, utf8Bytes.Length) - 1) As Char
+        utf8.GetChars(utf8Bytes, 0, utf8Bytes.Length, utf8Chars, 0)
+        Dim utf8String As New String(utf8Chars)
+
+        Return utf8String
+    End Function
+
+
+
+
     Private Function GetMovieFileInfo(ByVal MovieID As String) As MediaInfo.Fileinfo
         Dim fi As New MediaInfo.Fileinfo
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
@@ -793,7 +812,7 @@ Public Class dlgNMTMovies
         If cbTemplate.SelectedIndex >= 0 Then
             conf = confs(cbTemplate.SelectedIndex)
             template_Path = conf.TemplatePath
-            populateParams()
+            PopulateParams()
             lblTemplateInfo.Text = conf.Description
             If File.Exists(Path.Combine(conf.TemplatePath, "logo.jpg")) Then
                 pbTemplateLogo.Load(Path.Combine(conf.TemplatePath, "logo.jpg"))
@@ -815,7 +834,7 @@ Public Class dlgNMTMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
     End Sub
 
-    Private Sub populateParams()
+    Private Sub PopulateParams()
         For Each s As DataGridViewRow In dgvSources.Rows
             ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
             If s.Cells(4).Value.ToString = "movie" Then
@@ -882,25 +901,6 @@ Public Class dlgNMTMovies
         Next
     End Sub
 
-    Private Sub dgvProperties_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvProperties.CurrentCellDirtyStateChanged
-        If dgvProperties.IsCurrentCellDirty AndAlso dgvProperties.CurrentCell.ColumnIndex = 1 Then
-            dgvProperties.CommitEdit(DataGridViewDataErrorContexts.Commit)
-            btnSave.Enabled = True
-            Dim s As String = dgvProperties.CurrentCell.Value.ToString
-            Dim p As NMTExporterModule.Config._Property = conf.Properties.FirstOrDefault(Function(y) y.name = dgvProperties.Rows(dgvProperties.CurrentCell.RowIndex).Tag.ToString)
-            p.value = p.values.FirstOrDefault(Function(y) y.label = s).value
-            p.value = If(IsNothing(p.value), String.Empty, p.value)
-        End If
-    End Sub
-
-    Private Sub SetAllUserParam()
-        For Each r As DataGridViewRow In dgvSettings.Rows
-            Dim r0 As DataGridViewRow = r
-            Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = r0.Cells(0).Value.ToString)
-            If Not c Is Nothing Then c.value = r.Cells(1).Value.ToString
-        Next
-    End Sub
-
     Private Sub SetUserParam(ByVal param As String, ByVal value As String)
         Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = param)
         If Not c Is Nothing Then
@@ -917,6 +917,25 @@ Public Class dlgNMTMovies
         End If
     End Function
 
+    Private Sub SetAllUserParam()
+        For Each r As DataGridViewRow In dgvSettings.Rows
+            Dim r0 As DataGridViewRow = r
+            Dim c As NMTExporterModule.Config._Param = conf.Params.FirstOrDefault(Function(y) y.name = r0.Cells(0).Value.ToString)
+            If Not c Is Nothing Then c.value = r.Cells(1).Value.ToString
+        Next
+    End Sub
+
+    Private Sub dgvProperties_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvProperties.CurrentCellDirtyStateChanged
+        If dgvProperties.IsCurrentCellDirty AndAlso dgvProperties.CurrentCell.ColumnIndex = 1 Then
+            dgvProperties.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            btnSave.Enabled = True
+            Dim s As String = dgvProperties.CurrentCell.Value.ToString
+            Dim p As NMTExporterModule.Config._Property = conf.Properties.FirstOrDefault(Function(y) y.name = dgvProperties.Rows(dgvProperties.CurrentCell.RowIndex).Tag.ToString)
+            p.value = p.values.FirstOrDefault(Function(y) y.label = s).value
+            p.value = If(IsNothing(p.value), String.Empty, p.value)
+        End If
+    End Sub
+
     Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
@@ -928,7 +947,92 @@ Public Class dlgNMTMovies
         pbCompile.MarqueeAnimationSpeed = 25
         lblCanceling.Visible = True
     End Sub
-    Private Sub ExportPosterThumb(ByVal fpath As String, ByVal new_width As Integer)
+
+    Private Function ImageNeedProcess(ByVal _type As String) As Boolean
+        For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing
+            If s._type = _type Then Return True
+        Next
+        Return False
+    End Function
+
+    Private Sub ExportTVShowPosterThumb(ByVal fpath As String, ByVal new_width As Integer)
+        Try
+            Dim finalpath As String = Path.Combine(fpath, GetUserParam("TVThumbsPath", "Thumbs/").Replace("/", Path.DirectorySeparatorChar))
+            Dim counter As Integer = 1
+            Directory.CreateDirectory(finalpath)
+            For Each _curShow As DataRow In dtShows.Rows
+                If Not FilterTVShows.Contains(Convert.ToInt32(_curShow.Item("ID"))) Then Continue For
+
+                Try
+                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(_curShow.Item("ID").ToString, ".jpg"))
+                    If File.Exists(_curShow.Item("PosterPath").ToString) AndAlso Not File.Exists(posterfile) Then
+                        If ImageNeedProcess("TVThumb") Then
+                            For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Thumb")
+                                For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("ID").ToString, c.sufix))
+                                    Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
+                                    Dim params As String = c.params.Replace("$1", String.Concat("""", _curShow.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
+                                    Using execute As New Process
+                                        execute.StartInfo.FileName = exe
+                                        execute.StartInfo.Arguments = params
+                                        execute.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                                        execute.Start()
+                                        If Not bHighPriority Then
+                                            While Not execute.HasExited
+                                                Application.DoEvents()
+                                                execute.Refresh()
+                                            End While
+                                        End If
+                                    End Using
+                                Next
+                            Next
+                        Else
+                            Dim im As New Images
+                            If new_width > 0 Then
+
+                                im.FromFile(_curShow.Item("PosterPath").ToString)
+                                ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
+                                im.Save(posterfile)
+                            Else
+                                File.Copy(_curShow.Item("PosterPath").ToString, posterfile, True)
+                            End If
+                        End If
+                        If ImageNeedProcess("TVPoster") Then
+                            For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing.Where(Function(y) y._type = "Poster")
+                                For Each c As NMTExporterModule.Config._ImageProcessingCommand In s.Commands
+                                    posterfile = Path.Combine(finalpath, String.Concat(c.prefix, _curShow.Item("ID").ToString, c.sufix))
+                                    Dim exe As String = Path.Combine(Path.Combine(sBasePath, "bin"), c.execute)
+                                    Dim params As String = c.params.Replace("$1", String.Concat("""", _curShow.Item("PosterPath").ToString, """")).Replace("$2", String.Concat("""", posterfile, """"))
+                                    Using execute As New Process
+                                        execute.StartInfo.FileName = exe
+                                        execute.StartInfo.Arguments = params
+                                        execute.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                                        execute.Start()
+                                        If Not bHighPriority Then
+                                            While Not execute.HasExited
+                                                Application.DoEvents()
+                                                execute.Refresh()
+                                            End While
+                                        End If
+                                    End Using
+                                Next
+                            Next
+                        End If
+                    End If
+                Catch ex As Exception
+                End Try
+                counter += 1
+                If bwBuildHTML.CancellationPending Then
+                    Return
+                End If
+                bwBuildHTML.ReportProgress(1)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub ExportMoviePosterThumb(ByVal fpath As String, ByVal new_width As Integer)
         Try
             Dim finalpath As String = Path.Combine(fpath, GetUserParam("ThumbsPath", "Thumbs/").Replace("/", Path.DirectorySeparatorChar))
             Dim counter As Integer = 1
@@ -1005,15 +1109,7 @@ Public Class dlgNMTMovies
         End Try
     End Sub
 
-    Private Function ImageNeedProcess(ByVal _type As String) As Boolean
-        For Each s As NMTExporterModule.Config._ImageProcessing In conf.ImageProcessing
-            If s._type = _type Then Return True
-        Next
-        Return False
-    End Function
-
-
-    Private Sub ExportBackDrops(ByVal fpath As String, ByVal new_width As Integer)
+    Private Sub ExportMovieBackDrops(ByVal fpath As String, ByVal new_width As Integer)
         Try
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, GetUserParam("BackdropPath", "Thumbs/").Replace("/", Path.DirectorySeparatorChar))
@@ -1284,6 +1380,9 @@ Public Class dlgNMTMovies
         End If
 
     End Sub
+    Private Function ToStringNMT(ByVal instr As String) As String
+        Return instr.Replace("""", "\""").Replace(vbCrLf, String.Empty)
+    End Function
     Private Sub SaveMovieFiles(ByVal srcPath As String, ByVal destPath As String)
         Try
             bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Movies - Exporting Data..."))
@@ -1316,12 +1415,12 @@ Public Class dlgNMTMovies
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Movies - Exporting Posters..."))
-                    Me.ExportPosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
+                    Me.ExportMoviePosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(11, "Movies - Exporting Backdrops..."))
-                    Me.ExportBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
+                    Me.ExportMovieBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 DontSaveExtra = True
@@ -1330,11 +1429,14 @@ Public Class dlgNMTMovies
             If File.Exists(hfile) Then
                 System.IO.File.Delete(hfile)
             End If
-            Dim myStream As Stream = File.OpenWrite(hfile)
-            If Not IsNothing(myStream) Then
-                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLMovieBody.ToString), 0, HTMLMovieBody.ToString.Length)
-                myStream.Close()
-            End If
+            Dim writer As New StreamWriter(hfile, False, Encoding.Default)
+            writer.Write(HTMLMovieBody.ToString)
+            writer.Close()
+            'Dim myStream As Stream = File.OpenWrite(hfile)
+            'If Not IsNothing(myStream) Then
+            'myStream.Write(System.Text.Encoding.UTF8.GetBytes(HTMLMovieBody.ToString), 0, HTMLMovieBody.ToString.Length)
+            'myStream.Close()
+            'End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1375,7 +1477,7 @@ Public Class dlgNMTMovies
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
                     bwBuildHTML.ReportProgress(0, Master.eLang.GetString(50, "TV - Exporting Posters..."))
-                    'Me.ExportPosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
+                    Me.ExportTVShowPosterThumb(destPath, Convert.ToInt32(GetUserParam("TVPostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
@@ -1389,11 +1491,16 @@ Public Class dlgNMTMovies
             If File.Exists(hfile) Then
                 System.IO.File.Delete(hfile)
             End If
-            Dim myStream As Stream = File.OpenWrite(hfile)
-            If Not IsNothing(myStream) Then
-                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLTVBody.ToString), 0, HTMLTVBody.ToString.Length)
-                myStream.Close()
-            End If
+
+            Dim writer As New StreamWriter(hfile, False, Encoding.Default)
+            writer.Write(HTMLTVBody.ToString)
+            writer.Close()
+
+            'Dim myStream As Stream = File.OpenWrite(hfile)
+            'If Not IsNothing(myStream) Then
+            'myStream.Write(System.Text.Encoding.ASCII.GetBytes((HTMLTVBody.ToString)), 0, (HTMLTVBody.ToString).Length)
+            'myStream.Close()
+            'End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

@@ -59,7 +59,7 @@ Public Class frmXMLMediaSettingsHolder
         Try
             Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberXMLScraperModule._AssemblyName).PostScraperOrder
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).Count - 1)
-            btnUp.Enabled = (order > 0)
+            btnUp.Enabled = (order > 1)
         Catch ex As Exception
         End Try
     End Sub

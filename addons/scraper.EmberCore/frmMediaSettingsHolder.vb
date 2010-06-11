@@ -115,7 +115,7 @@ Public Class frmMediaSettingsHolder
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = EmberNativeScraperModule._AssemblyName).PostScraperOrder
         btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).Count - 1)
-        btnUp.Enabled = (order > 0)
+        btnUp.Enabled = (order > 1)
     End Sub
 
     Sub SetUp()
