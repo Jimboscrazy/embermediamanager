@@ -74,6 +74,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property MediaSourcesEditor() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MediaSourcesEditor", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property MetadataEditor() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("MetadataEditor", resourceCulture)

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EF6A550E-DD76-4F4D-8250-8598140F828B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -98,13 +98,9 @@
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EmberAPI, Version=0.0.0.2164, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Build\x64\Debug\EmberAPI.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Build\x64\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\..\Release Files\x86\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
@@ -136,6 +132,18 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmTVMediaSettingsHolder.Designer.vb">
+      <DependentUpon>frmTVMediaSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTVMediaSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTVInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmTVInfoSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTVInfoSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="scraperTVNativeModule.vb" />
     <Compile Include="Scraper\clsScrapeTrailers.vb" />
     <Compile Include="Scraper\clsScrapeAllHTPC.vb" />
@@ -225,6 +233,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmTVMediaSettingsHolder.resx">
+      <DependentUpon>frmTVMediaSettingsHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTVInfoSettingsHolder.resx">
+      <DependentUpon>frmTVInfoSettingsHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
       <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -282,6 +298,12 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\trunk\EmberAPI\EmberAPI.vbproj">
+      <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
+      <Name>EmberAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
