@@ -32,7 +32,6 @@
         Me.fMediaBrowser = New frmMediaBrowser
         Me.fMediaBrowser.chkEnabled.Checked = Me._enabled
 
-        'chkYAMJnfoFields
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(91, "MediaBrowser Compatibility")
         SPanel.Prefix = "MediaBrowser_"
@@ -75,7 +74,7 @@
     End Property
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-        'Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
+        Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
     End Sub
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
