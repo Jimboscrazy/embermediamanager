@@ -347,7 +347,8 @@ Public Class genericMediaBrowser
             End Get
         End Property
 
-        <XmlElement("Studios")> _
+        <XmlArray("Studios")> _
+        <XmlArrayItem("Studio")> _
         Public Property Studios() As List(Of Studio)
             Get
                 Return Me._Studios
@@ -379,7 +380,8 @@ Public Class genericMediaBrowser
             End Get
         End Property
 
-        <XmlElement("Persons")> _
+        <XmlArray("Persons")> _
+        <XmlArrayItem("Person")> _
         Public Property Persons() As List(Of Person)
             Get
                 Return Me._Persons
@@ -397,7 +399,8 @@ Public Class genericMediaBrowser
             End Get
         End Property
 
-        <XmlElement("Genres")> _
+        <XmlArray("Genres")> _
+        <XmlArrayItem("Genre")> _
         Public Property Genres() As List(Of Genre)
             Get
                 Return Me._Genres
@@ -429,7 +432,8 @@ Public Class genericMediaBrowser
             End Get
         End Property
 
-        <XmlElement("AudioTracks")> _
+        <XmlArray("AudioTracks")> _
+        <XmlArrayItem("AudioTrack")> _
         Public Property AudioTracks() As List(Of AudioTrack)
             Get
                 Return Me._AudioTracks
@@ -445,7 +449,8 @@ Public Class genericMediaBrowser
             End Get
         End Property
 
-        <XmlElement("Subtitles")> _
+        <XmlArray("Subtitles")> _
+        <XmlArrayItem("Subtitle")> _
         Public Property Subtitles() As List(Of Subtitle)
             Get
                 Return Me._Subtitles
@@ -465,16 +470,18 @@ Public Class genericMediaBrowser
         End Property
 
         Public Class Studio
+            <XmlText()> _
             Public Studio As String
         End Class
         Public Class Person
-            <XmlAttribute("Type")> _
-            Public _type As String
+            '<XmlAttribute("Type")> _
+            'Public _type As String
             Public Name As String
             Public Type As String
             Public Role As String
         End Class
         Public Class Genre
+            <XmlText()> _
             Public Genre As String
         End Class
         Public Class AudioTrack
@@ -499,6 +506,15 @@ Public Class genericMediaBrowser
             myself.IMDbId = movie.Movie.ID
             myself.RunningTime = movie.Movie.Runtime
             myself.Description = movie.Movie.Plot
+            For Each g As String In movie.Movie.Genre.Split(Convert.ToChar("/"))
+                myself.Genres.Add(New Genre With {.Genre = g.Trim})
+            Next
+            For Each s As String In movie.Movie.Studio.Split(Convert.ToChar("/"))
+                myself.Studios.Add(New Studio With {.Studio = s.Trim})
+            Next
+            For Each p As MediaContainers.Person In movie.Movie.Actors
+                myself.Persons.Add(New Person With {.Name = p.Name, .Role = p.Role, .Type = "Actor"})
+            Next
             Return myself
         End Function
 
