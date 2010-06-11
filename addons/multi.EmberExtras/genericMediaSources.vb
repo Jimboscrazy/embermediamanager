@@ -25,7 +25,7 @@
         SPanel.Prefix = "MediaSourcesEditor_"
         SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
         SPanel.ImageIndex = -1
-        SPanel.Image = My.Resources.GenresEditor
+        SPanel.Image = My.Resources.MediaSourcesEditor
         SPanel.Order = 100
         SPanel.Panel = Me.fMediaSources.pnlGenres
         AddHandler Me.fMediaSources.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
