@@ -68,12 +68,13 @@ Public Class frmMediaSources
     Sub SetUp()
         btnAddSource.Text = Master.eLang.GetString(28, "Add", True)
         btnRemoveSource.Text = Master.eLang.GetString(30, "Remove", True)
-        btnSetDefaults.Text = Master.eLang.GetString(65, "Set Defaults")
-
+        btnSetDefaults.Text = Master.eLang.GetString(67, "Set Defaults")
         Label1.Text = Master.eLang.GetString(62, "Sources")
-
         Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(63, "Search String")
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(64, "Source Name")
+        Me.chkMapByFile.Text = Master.eLang.GetString(65, "Map Media Source by File Extension")
+        Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(66, "File Extension")
+        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(64, "Source Name")
 
     End Sub
 
