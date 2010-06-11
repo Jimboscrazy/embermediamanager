@@ -24,20 +24,32 @@ Partial Class frmMediaSources
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaSources))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlGenres = New System.Windows.Forms.Panel
+        Me.btnremoveByFile = New System.Windows.Forms.Button
+        Me.btnAddByFile = New System.Windows.Forms.Button
+        Me.dgvByFile = New System.Windows.Forms.DataGridView
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.chkMapByFile = New System.Windows.Forms.CheckBox
+        Me.btnSetDefaults = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.btnRemoveSource = New System.Windows.Forms.Button
         Me.btnAddSource = New System.Windows.Forms.Button
         Me.dgvSources = New System.Windows.Forms.DataGridView
         Me.Search = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnSetDefaults = New System.Windows.Forms.Button
         Me.pnlGenres.SuspendLayout()
+        CType(Me.dgvByFile, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlGenres
         '
+        Me.pnlGenres.Controls.Add(Me.btnremoveByFile)
+        Me.pnlGenres.Controls.Add(Me.btnAddByFile)
+        Me.pnlGenres.Controls.Add(Me.dgvByFile)
+        Me.pnlGenres.Controls.Add(Me.chkMapByFile)
         Me.pnlGenres.Controls.Add(Me.btnSetDefaults)
         Me.pnlGenres.Controls.Add(Me.Label1)
         Me.pnlGenres.Controls.Add(Me.btnRemoveSource)
@@ -48,10 +60,98 @@ Partial Class frmMediaSources
         Me.pnlGenres.Size = New System.Drawing.Size(634, 366)
         Me.pnlGenres.TabIndex = 0
         '
+        'btnremoveByFile
+        '
+        Me.btnremoveByFile.Enabled = False
+        Me.btnremoveByFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnremoveByFile.Image = CType(resources.GetObject("btnremoveByFile.Image"), System.Drawing.Image)
+        Me.btnremoveByFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnremoveByFile.Location = New System.Drawing.Point(530, 261)
+        Me.btnremoveByFile.Name = "btnremoveByFile"
+        Me.btnremoveByFile.Size = New System.Drawing.Size(87, 23)
+        Me.btnremoveByFile.TabIndex = 20
+        Me.btnremoveByFile.Text = "Remove"
+        Me.btnremoveByFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnremoveByFile.UseVisualStyleBackColor = True
+        '
+        'btnAddByFile
+        '
+        Me.btnAddByFile.Enabled = False
+        Me.btnAddByFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddByFile.Image = CType(resources.GetObject("btnAddByFile.Image"), System.Drawing.Image)
+        Me.btnAddByFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddByFile.Location = New System.Drawing.Point(437, 261)
+        Me.btnAddByFile.Name = "btnAddByFile"
+        Me.btnAddByFile.Size = New System.Drawing.Size(87, 23)
+        Me.btnAddByFile.TabIndex = 21
+        Me.btnAddByFile.Text = "Add"
+        Me.btnAddByFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddByFile.UseVisualStyleBackColor = True
+        '
+        'dgvByFile
+        '
+        Me.dgvByFile.AllowUserToAddRows = False
+        Me.dgvByFile.AllowUserToDeleteRows = False
+        Me.dgvByFile.AllowUserToResizeColumns = False
+        Me.dgvByFile.AllowUserToResizeRows = False
+        Me.dgvByFile.BackgroundColor = System.Drawing.Color.White
+        Me.dgvByFile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvByFile.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2})
+        Me.dgvByFile.Enabled = False
+        Me.dgvByFile.Location = New System.Drawing.Point(375, 25)
+        Me.dgvByFile.MultiSelect = False
+        Me.dgvByFile.Name = "dgvByFile"
+        Me.dgvByFile.RowHeadersVisible = False
+        Me.dgvByFile.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvByFile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvByFile.ShowCellErrors = False
+        Me.dgvByFile.ShowCellToolTips = False
+        Me.dgvByFile.ShowRowErrors = False
+        Me.dgvByFile.Size = New System.Drawing.Size(242, 230)
+        Me.dgvByFile.TabIndex = 19
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.FillWeight = 120.0!
+        Me.DataGridViewTextBoxColumn1.HeaderText = "File Extension"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.Width = 120
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle1
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Source Name"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
+        'chkMapByFile
+        '
+        Me.chkMapByFile.AutoSize = True
+        Me.chkMapByFile.Location = New System.Drawing.Point(375, 8)
+        Me.chkMapByFile.Name = "chkMapByFile"
+        Me.chkMapByFile.Size = New System.Drawing.Size(198, 17)
+        Me.chkMapByFile.TabIndex = 18
+        Me.chkMapByFile.Text = "Map Media Source by File Extension"
+        Me.chkMapByFile.UseVisualStyleBackColor = True
+        '
+        'btnSetDefaults
+        '
+        Me.btnSetDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetDefaults.Image = CType(resources.GetObject("btnSetDefaults.Image"), System.Drawing.Image)
+        Me.btnSetDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSetDefaults.Location = New System.Drawing.Point(19, 261)
+        Me.btnSetDefaults.Name = "btnSetDefaults"
+        Me.btnSetDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnSetDefaults.TabIndex = 17
+        Me.btnSetDefaults.Text = "Set Defaults"
+        Me.btnSetDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSetDefaults.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(7, 9)
+        Me.Label1.Location = New System.Drawing.Point(14, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(46, 13)
         Me.Label1.TabIndex = 16
@@ -63,7 +163,7 @@ Partial Class frmMediaSources
         Me.btnRemoveSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveSource.Image = CType(resources.GetObject("btnRemoveSource.Image"), System.Drawing.Image)
         Me.btnRemoveSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveSource.Location = New System.Drawing.Point(283, 261)
+        Me.btnRemoveSource.Location = New System.Drawing.Point(240, 261)
         Me.btnRemoveSource.Name = "btnRemoveSource"
         Me.btnRemoveSource.Size = New System.Drawing.Size(87, 23)
         Me.btnRemoveSource.TabIndex = 9
@@ -76,7 +176,7 @@ Partial Class frmMediaSources
         Me.btnAddSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddSource.Image = CType(resources.GetObject("btnAddSource.Image"), System.Drawing.Image)
         Me.btnAddSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddSource.Location = New System.Drawing.Point(190, 261)
+        Me.btnAddSource.Location = New System.Drawing.Point(147, 261)
         Me.btnAddSource.Name = "btnAddSource"
         Me.btnAddSource.Size = New System.Drawing.Size(87, 23)
         Me.btnAddSource.TabIndex = 11
@@ -93,7 +193,7 @@ Partial Class frmMediaSources
         Me.dgvSources.BackgroundColor = System.Drawing.Color.White
         Me.dgvSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Search, Me.DataGridViewComboBoxColumn1})
-        Me.dgvSources.Location = New System.Drawing.Point(7, 25)
+        Me.dgvSources.Location = New System.Drawing.Point(14, 25)
         Me.dgvSources.MultiSelect = False
         Me.dgvSources.Name = "dgvSources"
         Me.dgvSources.RowHeadersVisible = False
@@ -102,7 +202,7 @@ Partial Class frmMediaSources
         Me.dgvSources.ShowCellErrors = False
         Me.dgvSources.ShowCellToolTips = False
         Me.dgvSources.ShowRowErrors = False
-        Me.dgvSources.Size = New System.Drawing.Size(362, 230)
+        Me.dgvSources.Size = New System.Drawing.Size(312, 230)
         Me.dgvSources.TabIndex = 5
         '
         'Search
@@ -114,25 +214,11 @@ Partial Class frmMediaSources
         '
         'DataGridViewComboBoxColumn1
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle1
-        Me.DataGridViewComboBoxColumn1.FillWeight = 150.0!
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.DataGridViewComboBoxColumn1.DefaultCellStyle = DataGridViewCellStyle2
         Me.DataGridViewComboBoxColumn1.HeaderText = "Source Name"
         Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
         Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewComboBoxColumn1.Width = 150
-        '
-        'btnSetDefaults
-        '
-        Me.btnSetDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSetDefaults.Location = New System.Drawing.Point(12, 261)
-        Me.btnSetDefaults.Name = "btnSetDefaults"
-        Me.btnSetDefaults.Size = New System.Drawing.Size(96, 23)
-        Me.btnSetDefaults.TabIndex = 17
-        Me.btnSetDefaults.Text = "Set Defaults"
-        Me.btnSetDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSetDefaults.UseVisualStyleBackColor = True
         '
         'frmMediaSources
         '
@@ -149,6 +235,7 @@ Partial Class frmMediaSources
         Me.Text = "frmMediaSourcesEditor"
         Me.pnlGenres.ResumeLayout(False)
         Me.pnlGenres.PerformLayout()
+        CType(Me.dgvByFile, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -158,8 +245,14 @@ Partial Class frmMediaSources
     Friend WithEvents btnRemoveSource As System.Windows.Forms.Button
     Friend WithEvents btnAddSource As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents btnSetDefaults As System.Windows.Forms.Button
     Friend WithEvents Search As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewComboBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnSetDefaults As System.Windows.Forms.Button
+    Friend WithEvents chkMapByFile As System.Windows.Forms.CheckBox
+    Friend WithEvents dgvByFile As System.Windows.Forms.DataGridView
+    Friend WithEvents btnremoveByFile As System.Windows.Forms.Button
+    Friend WithEvents btnAddByFile As System.Windows.Forms.Button
+    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
 
 End Class

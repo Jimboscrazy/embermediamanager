@@ -134,7 +134,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'frmTVInfoSettingsHolder
+        'frmTVMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -146,7 +146,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTVInfoSettingsHolder"
+        Me.Name = "frmTVMediaSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"

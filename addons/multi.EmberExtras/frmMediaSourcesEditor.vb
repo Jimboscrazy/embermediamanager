@@ -7,9 +7,15 @@ Public Class frmMediaSources
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
         Try
-
             ' Add any initialization after the InitializeComponent() call.
             LoadSources()
+
+            dgvByFile.Rows.Clear()
+            For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+                Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
+            Next
+            SetByFileStatus(False)
+            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "**EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -61,8 +67,8 @@ Public Class frmMediaSources
 
     Sub SetUp()
         btnAddSource.Text = Master.eLang.GetString(28, "Add", True)
-
         btnRemoveSource.Text = Master.eLang.GetString(30, "Remove", True)
+        btnSetDefaults.Text = Master.eLang.GetString(65, "Set Defaults")
 
         Label1.Text = Master.eLang.GetString(62, "Sources")
 
@@ -79,10 +85,56 @@ Public Class frmMediaSources
             End If
         Next
         AdvancedSettings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
+        AdvancedSettings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "**EmberAPP")
+        For Each r As DataGridViewRow In dgvByFile.Rows
+            If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
+                AdvancedSettings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "**EmberAPP")
+            End If
+        Next
     End Sub
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
         AdvancedSettings.SetDefaults(True, "MovieSources")
         LoadSources()
+    End Sub
+
+    Private Sub chkMapByFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMapByFile.CheckedChanged
+        SetByFileStatus(chkMapByFile.Checked)
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub SetByFileStatus(ByVal b As Boolean)
+        dgvByFile.ClearSelection()
+        dgvByFile.Enabled = b
+        btnAddByFile.Enabled = b
+        btnremoveByFile.Enabled = b
+    End Sub
+
+    Private Sub btnAddByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddByFile.Click
+        Dim i As Integer = dgvByFile.Rows.Add(New Object() {String.Empty, String.Empty})
+        dgvByFile.Rows(i).Tag = False
+        dgvByFile.CurrentCell = dgvByFile.Rows(i).Cells(0)
+        dgvByFile.BeginEdit(True)
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnremoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnremoveByFile.Click
+        If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
+            dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
+    Private Sub dgvByFile_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.CurrentCellDirtyStateChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+
+    Private Sub dgvByFile_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.SelectionChanged
+        If dgvByFile.Enabled AndAlso dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
+            btnremoveByFile.Enabled = True
+        Else
+            btnremoveByFile.Enabled = False
+        End If
     End Sub
 End Class
