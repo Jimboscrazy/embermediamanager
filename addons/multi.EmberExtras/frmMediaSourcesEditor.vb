@@ -3,6 +3,8 @@
 Public Class frmMediaSources
     Public Event ModuleSettingsChanged()
 
+    Private DeletedSettings As New List(Of String)
+
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
@@ -68,6 +70,8 @@ Public Class frmMediaSources
     Sub SetUp()
         btnAddSource.Text = Master.eLang.GetString(28, "Add", True)
         btnRemoveSource.Text = Master.eLang.GetString(30, "Remove", True)
+        btnAddByFile.Text = Master.eLang.GetString(28, "Add", True)
+        btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove", True)
         btnSetDefaults.Text = Master.eLang.GetString(67, "Set Defaults")
         Label1.Text = Master.eLang.GetString(62, "Sources")
         Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(63, "Search String")
@@ -79,6 +83,10 @@ Public Class frmMediaSources
     End Sub
 
     Public Sub SaveChanges()
+        For Each s As String In DeletedSettings
+            AdvancedSettings.CleanSetting(s, "**EmberAPP")
+        Next
+        DeletedSettings.Clear()
         Dim sources As New Hashtable
         For Each r As DataGridViewRow In dgvSources.Rows
             If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
@@ -108,7 +116,7 @@ Public Class frmMediaSources
         dgvByFile.ClearSelection()
         dgvByFile.Enabled = b
         btnAddByFile.Enabled = b
-        btnremoveByFile.Enabled = b
+        btnRemoveByFile.Enabled = b
     End Sub
 
     Private Sub btnAddByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddByFile.Click
@@ -119,8 +127,9 @@ Public Class frmMediaSources
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub btnremoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnremoveByFile.Click
+    Private Sub btnremoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
         If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
+            DeletedSettings.Add(String.Concat("MediaSourcesByExtension:", dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Cells(0).Value.ToString))
             dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
@@ -133,9 +142,9 @@ Public Class frmMediaSources
 
     Private Sub dgvByFile_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.SelectionChanged
         If dgvByFile.Enabled AndAlso dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
-            btnremoveByFile.Enabled = True
+            btnRemoveByFile.Enabled = True
         Else
-            btnremoveByFile.Enabled = False
+            btnRemoveByFile.Enabled = False
         End If
     End Sub
 End Class

@@ -26,7 +26,7 @@ Partial Class frmMediaSources
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.pnlGenres = New System.Windows.Forms.Panel
-        Me.btnremoveByFile = New System.Windows.Forms.Button
+        Me.btnRemoveByFile = New System.Windows.Forms.Button
         Me.btnAddByFile = New System.Windows.Forms.Button
         Me.dgvByFile = New System.Windows.Forms.DataGridView
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -46,7 +46,7 @@ Partial Class frmMediaSources
         '
         'pnlGenres
         '
-        Me.pnlGenres.Controls.Add(Me.btnremoveByFile)
+        Me.pnlGenres.Controls.Add(Me.btnRemoveByFile)
         Me.pnlGenres.Controls.Add(Me.btnAddByFile)
         Me.pnlGenres.Controls.Add(Me.dgvByFile)
         Me.pnlGenres.Controls.Add(Me.chkMapByFile)
@@ -60,19 +60,19 @@ Partial Class frmMediaSources
         Me.pnlGenres.Size = New System.Drawing.Size(634, 366)
         Me.pnlGenres.TabIndex = 0
         '
-        'btnremoveByFile
+        'btnRemoveByFile
         '
-        Me.btnremoveByFile.Enabled = False
-        Me.btnremoveByFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnremoveByFile.Image = CType(resources.GetObject("btnremoveByFile.Image"), System.Drawing.Image)
-        Me.btnremoveByFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnremoveByFile.Location = New System.Drawing.Point(530, 261)
-        Me.btnremoveByFile.Name = "btnremoveByFile"
-        Me.btnremoveByFile.Size = New System.Drawing.Size(87, 23)
-        Me.btnremoveByFile.TabIndex = 20
-        Me.btnremoveByFile.Text = "Remove"
-        Me.btnremoveByFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnremoveByFile.UseVisualStyleBackColor = True
+        Me.btnRemoveByFile.Enabled = False
+        Me.btnRemoveByFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveByFile.Image = CType(resources.GetObject("btnRemoveByFile.Image"), System.Drawing.Image)
+        Me.btnRemoveByFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveByFile.Location = New System.Drawing.Point(530, 261)
+        Me.btnRemoveByFile.Name = "btnRemoveByFile"
+        Me.btnRemoveByFile.Size = New System.Drawing.Size(87, 23)
+        Me.btnRemoveByFile.TabIndex = 20
+        Me.btnRemoveByFile.Text = "Remove"
+        Me.btnRemoveByFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveByFile.UseVisualStyleBackColor = True
         '
         'btnAddByFile
         '
@@ -250,7 +250,7 @@ Partial Class frmMediaSources
     Friend WithEvents DataGridViewComboBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents chkMapByFile As System.Windows.Forms.CheckBox
     Friend WithEvents dgvByFile As System.Windows.Forms.DataGridView
-    Friend WithEvents btnremoveByFile As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveByFile As System.Windows.Forms.Button
     Friend WithEvents btnAddByFile As System.Windows.Forms.Button
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
