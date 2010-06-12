@@ -76,22 +76,22 @@ Public Class dlgNMTMovies
         ' Add any initialization after the InitializeComponent() call.
         Try
             Me.SetUp()
-            If dtMovieMedia Is Nothing Then
-                dtMovieMedia = New DataTable
-                Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
-            End If
-            If dtShows Is Nothing Then
-                dtShows = New DataTable
-                Master.DB.FillDataTable(dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
-            End If
-            If dtSeasons Is Nothing Then
-                dtSeasons = New DataTable
-                Master.DB.FillDataTable(dtSeasons, "SELECT * FROM TVSeason ORDER BY Season COLLATE NOCASE;")
-            End If
-            If dtEpisodes Is Nothing Then
-                dtEpisodes = New DataTable
-                Master.DB.FillDataTable(dtEpisodes, "SELECT * FROM TVEps ORDER BY Episode COLLATE NOCASE;")
-            End If
+            'If dtMovieMedia Is Nothing Then
+            dtMovieMedia = New DataTable
+            Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+            'End If
+            'If dtShows Is Nothing Then
+            dtShows = New DataTable
+            Master.DB.FillDataTable(dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            'End If
+            'If dtSeasons Is Nothing Then
+            dtSeasons = New DataTable
+            Master.DB.FillDataTable(dtSeasons, "SELECT * FROM TVSeason ORDER BY Season COLLATE NOCASE;")
+            'End If
+            'If dtEpisodes Is Nothing Then
+            dtEpisodes = New DataTable
+            Master.DB.FillDataTable(dtEpisodes, "SELECT * FROM TVEps ORDER BY Episode COLLATE NOCASE;")
+            'End If
             txtOutputFolder.Text = AdvancedSettings.GetSetting("BasePath", "")
             Dim fxml As String
             Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(sBasePath, "Templates"))

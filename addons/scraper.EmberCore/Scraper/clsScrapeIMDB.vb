@@ -674,10 +674,7 @@ mPlot:
             Dim i As Integer
             Dim ret As Integer = -1
             tmpname = Path.GetFileNameWithoutExtension(tmpname)
-            tmpname = tmpname.Replace(".", " ").Trim
-            tmpname = tmpname.Replace("(", " ")
-            tmpname = tmpname.Replace(")", "")
-            tmpname = tmpname.Trim
+            tmpname = tmpname.Replace(".", " ").Trim.Replace("(", " ").Replace(")", "").Trim
             i = tmpname.LastIndexOf(" ")
             If i >= 0 Then
                 tmpyear = tmpname.Substring(i + 1, tmpname.Length - i - 1)
@@ -685,6 +682,7 @@ mPlot:
                     For c = 0 To lst.Count - 1
                         If lst(c).Year = tmpyear Then
                             ret = c
+                            Exit For
                         End If
                     Next
                 End If
