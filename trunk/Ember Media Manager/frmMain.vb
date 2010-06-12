@@ -2694,11 +2694,12 @@ doCancel:
         For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
             ' Temporary Scratetype
             Dim ScrapeType As Enums.ScrapeType
-            If Me.dgvTVShows.SelectedRows.Count = 1 Then
-                ScrapeType = Enums.ScrapeType.FullAsk
-            Else
-                ScrapeType = Enums.ScrapeType.FullAuto
-            End If
+            'If Me.dgvTVShows.SelectedRows.Count = 1 Then
+            'ScrapeType = Enums.ScrapeType.FullAsk
+            'Else
+            'ScrapeType = Enums.ScrapeType.FullAuto
+            'End If
+            ScrapeType = Enums.ScrapeType.FullAsk
             Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
             ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next

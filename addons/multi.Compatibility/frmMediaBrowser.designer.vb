@@ -23,6 +23,10 @@ Partial Class frmMediaBrowser
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.chkVideoTSParent = New System.Windows.Forms.CheckBox
+        Me.chkBackdrop = New System.Windows.Forms.CheckBox
+        Me.chkMyMovies = New System.Windows.Forms.CheckBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
@@ -32,11 +36,58 @@ Partial Class frmMediaBrowser
         'pnlSettings
         '
         Me.pnlSettings.BackColor = System.Drawing.Color.White
+        Me.pnlSettings.Controls.Add(Me.chkVideoTSParent)
+        Me.pnlSettings.Controls.Add(Me.chkBackdrop)
+        Me.pnlSettings.Controls.Add(Me.chkMyMovies)
+        Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
+        '
+        'chkVideoTSParent
+        '
+        Me.chkVideoTSParent.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkVideoTSParent.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkVideoTSParent.Location = New System.Drawing.Point(13, 32)
+        Me.chkVideoTSParent.Name = "chkVideoTSParent"
+        Me.chkVideoTSParent.Size = New System.Drawing.Size(584, 17)
+        Me.chkVideoTSParent.TabIndex = 89
+        Me.chkVideoTSParent.Text = "Compatible VIDEO_TS File Placement/Naming"
+        Me.chkVideoTSParent.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkVideoTSParent.UseVisualStyleBackColor = True
+        '
+        'chkBackdrop
+        '
+        Me.chkBackdrop.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkBackdrop.Location = New System.Drawing.Point(13, 55)
+        Me.chkBackdrop.Name = "chkBackdrop"
+        Me.chkBackdrop.Size = New System.Drawing.Size(584, 18)
+        Me.chkBackdrop.TabIndex = 88
+        Me.chkBackdrop.Text = "Movie Fanart as backdrop.jpg"
+        Me.chkBackdrop.UseVisualStyleBackColor = True
+        '
+        'chkMyMovies
+        '
+        Me.chkMyMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMyMovies.Location = New System.Drawing.Point(13, 79)
+        Me.chkMyMovies.Name = "chkMyMovies"
+        Me.chkMyMovies.Size = New System.Drawing.Size(584, 18)
+        Me.chkMyMovies.TabIndex = 87
+        Me.chkMyMovies.Text = "Media Browser mymovies.xml"
+        Me.chkMyMovies.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Red
+        Me.Label1.Location = New System.Drawing.Point(224, 182)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(192, 25)
+        Me.Label1.TabIndex = 83
+        Me.Label1.Text = "Experimental Module"
         '
         'Panel1
         '
@@ -51,7 +102,7 @@ Partial Class frmMediaBrowser
         'chkEnabled
         '
         Me.chkEnabled.AutoSize = True
-        Me.chkEnabled.Location = New System.Drawing.Point(3, 5)
+        Me.chkEnabled.Location = New System.Drawing.Point(10, 5)
         Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 80
@@ -68,6 +119,7 @@ Partial Class frmMediaBrowser
         Me.Name = "frmMediaBrowser"
         Me.Text = "frmSettingsHolder"
         Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
@@ -76,4 +128,8 @@ Partial Class frmMediaBrowser
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents chkBackdrop As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMyMovies As System.Windows.Forms.CheckBox
+    Friend WithEvents chkVideoTSParent As System.Windows.Forms.CheckBox
 End Class

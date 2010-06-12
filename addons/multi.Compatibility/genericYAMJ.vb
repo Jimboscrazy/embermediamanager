@@ -27,7 +27,6 @@ Public Class genericYAMJ
     Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberExternalModule.Init
 
     End Sub
-
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me.fYAMJ = New frmYAMJ
@@ -51,7 +50,7 @@ Public Class genericYAMJ
         SPanel.Panel = Me.fYAMJ.pnlSettings
         AddHandler Me.fYAMJ.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler fYAMJ.ModuleEnabledChanged, AddressOf Handle_SetupChanged
-
+        AddHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
         Return SPanel
         'Return Nothing
     End Function
@@ -85,7 +84,7 @@ Public Class genericYAMJ
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fYAMJ.chkEnabled.Checked
-        Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
+        'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
         Master.eSettings.YAMJSetsCompatible = Me.fYAMJ.chkYAMJCompatibleSets.Checked
         AdvancedSettings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
         AdvancedSettings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
@@ -196,5 +195,25 @@ Public Class genericYAMJ
         End If
     End Function
 
+    Protected Overrides Sub Finalize()
+        RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf SyncSettings
+        MyBase.Finalize()
+    End Sub
+    Public Sub New()
+        AddHandler ModulesManager.Instance.GenericEvent, AddressOf SyncSettings
+    End Sub
+    Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fYAMJ) Then
+            RemoveHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
+            Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+            AddHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
+        End If
+    End Sub
+    Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        If Not IsNothing(Me.fYAMJ) Then
+            Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
+            RaiseEvent GenericEvent(mType, _params)
+        End If
 
+    End Sub
 End Class

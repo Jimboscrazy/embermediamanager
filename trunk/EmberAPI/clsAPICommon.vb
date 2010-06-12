@@ -527,6 +527,7 @@ Public Class Enums
         OnMovieFanartDelete = 17
         TVImageNaming = 18
         MovieImageNaming = 19
+        SyncModuleSettings = 20
     End Enum
 
     Public Enum MovieScraperEventType As Integer

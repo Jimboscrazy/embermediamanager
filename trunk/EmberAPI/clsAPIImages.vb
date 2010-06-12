@@ -572,6 +572,7 @@ Public Class Images
         Try
             Dim fPath As String = String.Empty
             Dim tPath As String = String.Empty
+
             Try
                 Dim params As New List(Of Object)(New Object() {mMovie})
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartSave, params, _image, False)

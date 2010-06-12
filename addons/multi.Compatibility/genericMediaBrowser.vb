@@ -1,5 +1,6 @@
 ﻿Imports System.Xml.Serialization
 Imports System.IO
+Imports System.Drawing
 
 Public Class genericMediaBrowser
     Implements Interfaces.EmberExternalModule
@@ -34,7 +35,9 @@ Public Class genericMediaBrowser
         Dim SPanel As New Containers.SettingsPanel
         Me.fMediaBrowser = New frmMediaBrowser
         Me.fMediaBrowser.chkEnabled.Checked = Me._enabled
-
+        Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+        Me.fMediaBrowser.chkMyMovies.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
+        Me.fMediaBrowser.chkBackdrop.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(91, "MediaBrowser Compatibility")
         SPanel.Prefix = "MediaBrowser_"
@@ -44,7 +47,7 @@ Public Class genericMediaBrowser
         SPanel.Panel = Me.fMediaBrowser.pnlSettings
         AddHandler Me.fMediaBrowser.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler fMediaBrowser.ModuleEnabledChanged, AddressOf Handle_SetupChanged
-
+        AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
         Return SPanel
         'Return Nothing
     End Function
@@ -66,7 +69,7 @@ Public Class genericMediaBrowser
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.EmberExternalModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.TVImageNaming, Enums.ModuleEventType.OnMovieNFOSave})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.OnMovieFanartSave, Enums.ModuleEventType.OnMovieNFOSave})
         End Get
     End Property
 
@@ -78,20 +81,36 @@ Public Class genericMediaBrowser
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
+        'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
+        AdvancedSettings.SetBooleanSetting("MediaBrowserMyMovie", Me.fMediaBrowser.chkMyMovies.Checked)
+        AdvancedSettings.SetBooleanSetting("MediaBrowserBackdrop", Me.fMediaBrowser.chkBackdrop.Checked)
     End Sub
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
         Dim doContinue As Boolean
         Dim mMovie As Structures.DBMovie
+        Dim _image As image
         If Enabled Then
             Try
                 Select Case mType
                     Case Enums.ModuleEventType.OnMovieNFOSave
-                        mMovie = DirectCast(_params(0), Structures.DBMovie)
-                        doContinue = DirectCast(_refparam, Boolean)
-                        XMLmymovies.SaveMovieDB(mMovie)
+                        If AdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
+                            mMovie = DirectCast(_params(0), Structures.DBMovie)
+                            doContinue = DirectCast(_refparam, Boolean)
+                            XMLmymovies.SaveMovieDB(mMovie)
+                            _refparam = doContinue
+                        End If
+                    Case Enums.ModuleEventType.OnMovieFanartSave
+                        If AdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
+                            mMovie = DirectCast(_params(0), Structures.DBMovie)
+                            _image = DirectCast(_refparam, Image)
+                            Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
+                            Dim eimage As New Images
+                            eimage.Image = _image
+                            eimage.Save(fPath, Master.eSettings.FanartQuality)
+                        End If
                 End Select
-                _refparam = doContinue
+
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -528,6 +547,26 @@ Public Class genericMediaBrowser
                 xmlSer.Serialize(xmlSW, myself)
             End Using
         End Sub
-
     End Class
+
+    Protected Overrides Sub Finalize()
+        RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf SyncSettings
+        MyBase.Finalize()
+    End Sub
+    Public Sub New()
+        AddHandler ModulesManager.Instance.GenericEvent, AddressOf SyncSettings
+    End Sub
+    Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fMediaBrowser) Then
+            RemoveHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
+            Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+            AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
+        End If
+    End Sub
+    Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        If Not IsNothing(Me.fMediaBrowser) Then
+            Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
+            RaiseEvent GenericEvent(mType, _params)
+        End If
+    End Sub
 End Class
