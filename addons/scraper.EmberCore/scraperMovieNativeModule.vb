@@ -534,7 +534,7 @@ Public Class EmberNativeScraperModule
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                 IMDB.GetMovieInfo(DBMovie.Movie.IMDBID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
-                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie.Movie, ScrapeType, Options)
+                DBMovie.Movie = IMDB.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, Options)
                 If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If

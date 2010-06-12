@@ -601,9 +601,10 @@ mPlot:
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef imdbMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
             Dim r As MovieSearchResults = SearchMovie(sMovieName)
             Dim b As Boolean = False
+            Dim imdbMovie As MediaContainers.Movie = dbMovie.Movie
 
             r.PopularTitles.Sort()
             r.ExactMatches.Sort()
@@ -643,14 +644,15 @@ mPlot:
                         ((r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) OrElse r.PartialMatches.Count = 0) Then
                             useAnyway = True
                         End If
-
+                        Dim exactHaveYear As Integer = FindYear(dbMovie.Filename, r.ExactMatches)
+                        Dim popularHaveYear As Integer = FindYear(dbMovie.Filename, r.PopularTitles)
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                        ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
+                        ElseIf (popularHaveYear >= 0 OrElse exactHaveYear = -1) AndAlso r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
+                            b = GetMovieInfo(r.PopularTitles.Item(If(popularHaveYear >= 0, popularHaveYear, 0)).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
+                            b = GetMovieInfo(r.ExactMatches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         ElseIf r.PartialMatches.Count > 0 Then
                             b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         End If
@@ -665,6 +667,29 @@ mPlot:
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 Return New MediaContainers.Movie
             End Try
+        End Function
+
+        Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.Movie)) As Integer
+            Dim tmpyear As String = ""
+            Dim i As Integer
+            Dim ret As Integer = -1
+            tmpname = Path.GetFileNameWithoutExtension(tmpname)
+            tmpname = tmpname.Replace(".", " ").Trim
+            tmpname = tmpname.Replace("(", " ")
+            tmpname = tmpname.Replace(")", "")
+            tmpname = tmpname.Trim
+            i = tmpname.LastIndexOf(" ")
+            If i >= 0 Then
+                tmpyear = tmpname.Substring(i + 1, tmpname.Length - i - 1)
+                If IsNumeric(tmpyear) AndAlso Convert.ToInt32(tmpyear) > 1950 Then 'let's assume there are no movies older then 1950
+                    For c = 0 To lst.Count - 1
+                        If lst(c).Year = tmpyear Then
+                            ret = c
+                        End If
+                    Next
+                End If
+            End If
+            Return ret
         End Function
 
         Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions)

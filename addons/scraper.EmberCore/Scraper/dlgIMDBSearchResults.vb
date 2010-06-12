@@ -39,8 +39,7 @@ Public Class dlgIMDBSearchResults
     Dim UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-
-    #End Region 'Fields
+#End Region 'Fields
 
     #Region "Methods"
 
@@ -296,7 +295,9 @@ Public Class dlgIMDBSearchResults
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
+
                         selNode = TnP.FirstNode
+
                     End If
 
                     If M.PopularTitles.Count > 0 Then
@@ -306,11 +307,14 @@ Public Class dlgIMDBSearchResults
                         End If
 
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(19, "Popular Titles ({0})"), M.PopularTitles.Count))
+
                         For Each Movie As MediaContainers.Movie In M.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
+
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
+
                         selNode = TnP.FirstNode
                     End If
                     Me._prevnode = -2
