@@ -3,7 +3,6 @@
 Public Class frmMediaSources
     Public Event ModuleSettingsChanged()
 
-    Private DeletedSettings As New List(Of String)
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -83,10 +82,14 @@ Public Class frmMediaSources
     End Sub
 
     Public Sub SaveChanges()
-        For Each s As String In DeletedSettings
+        Dim deleteitem As New List(Of String)
+        For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+            deleteitem.Add(sett.Name)
+        Next
+        For Each s As String In deleteitem
             AdvancedSettings.CleanSetting(s, "**EmberAPP")
         Next
-        DeletedSettings.Clear()
+
         Dim sources As New Hashtable
         For Each r As DataGridViewRow In dgvSources.Rows
             If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
@@ -129,7 +132,6 @@ Public Class frmMediaSources
 
     Private Sub btnremoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
         If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
-            DeletedSettings.Add(String.Concat("MediaSourcesByExtension:", dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Cells(0).Value.ToString))
             dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
