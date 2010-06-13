@@ -23,6 +23,7 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.Label1 = New System.Windows.Forms.Label
         Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
         Me.chkRenameSingle = New System.Windows.Forms.CheckBox
         Me.chkRenameMulti = New System.Windows.Forms.CheckBox
@@ -34,7 +35,6 @@ Partial Class frmSettingsHolder
         Me.chkGenericModule = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
-        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlSettings.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -52,6 +52,15 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 327)
         Me.pnlSettings.TabIndex = 84
+        '
+        'Label1
+        '
+        Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label1.Location = New System.Drawing.Point(224, 54)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(372, 263)
+        Me.Label1.TabIndex = 75
+        Me.Label1.Text = "Label1"
         '
         'gbRenamerPatterns
         '
@@ -168,15 +177,6 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.TabIndex = 80
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label1.Location = New System.Drawing.Point(224, 54)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(372, 263)
-        Me.Label1.TabIndex = 75
-        Me.Label1.Text = "Label1"
         '
         'frmSettingsHolder
         '

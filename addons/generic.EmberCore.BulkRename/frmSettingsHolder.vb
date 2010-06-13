@@ -84,4 +84,8 @@ Public Class frmSettingsHolder
     Private Sub frmSettingsHolder_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
+
+    End Sub
 End Class

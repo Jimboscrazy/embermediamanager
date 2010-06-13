@@ -98,4 +98,8 @@ Public Class frmYAMJ
         RaiseEvent GenericEvent(Enums.ModuleEventType.SyncModuleSettings, Nothing)
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
+    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
+
+    End Sub
 End Class
