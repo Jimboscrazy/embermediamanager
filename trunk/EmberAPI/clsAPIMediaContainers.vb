@@ -356,7 +356,7 @@ Namespace MediaContainers
         Private _title As String
         Private _originaltitle As String
         Private _sorttitle As String
-        Private _imdbid As String
+        'Private _imdbid As String
         Private _year As String
         Private _releaseDate As String
         Private _top250 As String
@@ -386,11 +386,12 @@ Namespace MediaContainers
         Private _videosource As String
 #End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sYear As String, ByVal iLev As Integer)
             Me.Clear()
-            Me._imdbid = sID
+            'Me._imdbid = sID
+            Me.MovieID.ID = sID
             Me._title = sTitle
             Me._year = sYear
             Me._lev = iLev
@@ -400,9 +401,11 @@ Namespace MediaContainers
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
+        <XmlElement("id")> _
+        Public MovieID As New _MovieID
 
         <XmlElement("title")> _
         Public Property Title() As String
@@ -455,30 +458,53 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("id")> _
+        '<XmlElement("id")> _
+        <XmlIgnore()> _
         Public Property ID() As String
             Get
-                Return If(Strings.Left(Me._imdbid, 2) = "tt", Me._imdbid.Trim, String.Concat("tt", Me._imdbid))
+                'Return If(Strings.Left(Me._imdbid, 2) = "tt", Me._imdbid.Trim, String.Concat("tt", Me._imdbid))
+                'Return _id._imdbid
+                Return Me.MovieID.ID
             End Get
             Set(ByVal value As String)
-                Me._imdbid = If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
+                'Me._imdbid =  If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
+                'Me._id._imdbid = value
+                Me.MovieID.ID = value
+            End Set
+        End Property
+        '<XmlIgnore()> _
+        'Public ReadOnly Property IDSpecified() As Boolean
+        '    Get
+        '        Return Not String.IsNullOrEmpty(Me._imdbid) AndAlso Not Me._imdbid = "tt"
+        '    End Get
+        'End Property
+        <XmlIgnore()> _
+        Public Property IDMovieDB() As String
+            Get
+                'Return _moviedb
+                Return Me.MovieID.IDMovieDB
+            End Get
+            Set(ByVal value As String)
+                'Me._moviedb = value
+                Me.MovieID.IDMovieDB = value
             End Set
         End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property IDSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._imdbid) AndAlso Not Me._imdbid = "tt"
-            End Get
-        End Property
-
+        '<XmlIgnore()> _
+        'Public ReadOnly Property IDMovieDBSpecified() As Boolean
+        '    Get
+        '        Return Not String.IsNullOrEmpty(Me._moviedb)
+        '    End Get
+        'End Property
         <XmlIgnore()> _
         Public Property IMDBID() As String
             Get
-                Return Me._imdbid.Replace("tt", String.Empty).Trim
+                'Return Me._imdbid.Replace("tt", String.Empty).Trim
+                Return MovieID.ID.Replace("tt", String.Empty).Trim
             End Get
             Set(ByVal value As String)
-                Me._imdbid = value
+                'Me._imdbid = value
+                Me.MovieID.ID = value
             End Set
         End Property
 
@@ -594,7 +620,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property CertificationSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._certification)
@@ -674,7 +700,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property CreditsSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._credits)
@@ -892,7 +918,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property YSetsSpecified() As Boolean
             Get
                 Return _ysets.Sets.Count > 0
@@ -935,7 +961,7 @@ Namespace MediaContainers
         <XmlElement("videoSource")> _
         Public Property VideoSource() As String
             Get
-                Return Me._videoSource
+                Return Me._videosource
             End Get
             Set(ByVal value As String)
                 Me._videosource = value
@@ -945,13 +971,55 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property VideoSourceSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._videoSource)
+                Return Not String.IsNullOrEmpty(Me._videosource)
             End Get
         End Property
 
+        Class _MovieID
+            Private _imdbid As String
+            Private _moviedb As String
+            Sub New()
+                Me.Clear()
+            End Sub
+            Public Sub Clear()
+                _imdbid = String.Empty
+                _moviedb = String.Empty
+            End Sub
+            <XmlText()> _
+            Public Property ID() As String
+                Get
+                    Return If(Strings.Left(_imdbid, 2) = "tt", If(String.IsNullOrEmpty(_moviedb), _imdbid.Trim, _imdbid.Replace("tt", String.Empty)), If(String.IsNullOrEmpty(_moviedb), String.Concat("tt", _imdbid), _imdbid))
+                End Get
+                Set(ByVal value As String)
+                    _imdbid = If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
+                End Set
+            End Property
+            <XmlIgnore()> _
+            Public ReadOnly Property IDSpecified() As Boolean
+                Get
+                    Return Not String.IsNullOrEmpty(_imdbid) AndAlso Not _imdbid = "tt"
+                End Get
+            End Property
+            <XmlAttribute("moviedb")> _
+            Public Property IDMovieDB() As String
+                Get
+                    Return _moviedb
+                End Get
+                Set(ByVal value As String)
+                    Me._moviedb = value
+                End Set
+            End Property
+            <XmlIgnore()> _
+            Public ReadOnly Property IDMovieDBSpecified() As Boolean
+                Get
+                    Return Not String.IsNullOrEmpty(Me._moviedb)
+                End Get
+            End Property
+        End Class
+
 #End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
@@ -964,7 +1032,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub Clear()
-            Me._imdbid = String.Empty
+            'Me._imdbid = String.Empty
             Me._title = String.Empty
             Me._originaltitle = String.Empty
             Me._sorttitle = String.Empty
@@ -994,6 +1062,8 @@ Namespace MediaContainers
             Me._ysets = New SetContainer
             Me._xsets.Clear()
             Me._lev = 0
+            Me._videosource = String.Empty
+            Me.MovieID.Clear()
         End Sub
 
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
@@ -1016,15 +1086,15 @@ Namespace MediaContainers
 
     Public Class Person
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _name As String
         Private _role As String
         Private _thumb As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New(ByVal sName As String)
             Me._name = sName
@@ -1040,9 +1110,9 @@ Namespace MediaContainers
             Me.Clean()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("name")> _
         Public Property Name() As String
@@ -1074,9 +1144,9 @@ Namespace MediaContainers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clean()
             Me._name = String.Empty
@@ -1088,27 +1158,27 @@ Namespace MediaContainers
             Return Me._name
         End Function
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class SetContainer
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _set As New List(Of [Set])
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("set")> _
         Public Property Sets() As List(Of [Set])
@@ -1120,35 +1190,35 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property SetsSpecified() As Boolean
             Get
                 Return Me._set.Count > 0
             End Get
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._set = New List(Of [Set])
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class Thumb
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _preview As String
         Private _text As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlAttribute("preview")> _
         Public Property Preview() As String
@@ -1160,7 +1230,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlText> _
+        <XmlText()> _
         Public Property [Text]() As String
             Get
                 Return Me._text
@@ -1170,14 +1240,14 @@ Namespace MediaContainers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
     <XmlRoot("tvshow")> _
     Public Class TVShow
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _title As String
         Private _id As String
@@ -1191,17 +1261,17 @@ Namespace MediaContainers
         Private _plot As String
         Private _actors As New List(Of Person)
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("title")> _
         Public Property Title() As String
@@ -1247,7 +1317,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property EpisodeGuideURLSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._episodeguideurl)
@@ -1310,7 +1380,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property MPAASpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._mpaa)
@@ -1361,7 +1431,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property PlotSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._plot)
@@ -1395,9 +1465,9 @@ Namespace MediaContainers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             _title = String.Empty
@@ -1413,13 +1483,13 @@ Namespace MediaContainers
             _actors.Clear()
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class [Image]
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _description As String
         Private _ischecked As Boolean
@@ -1427,17 +1497,17 @@ Namespace MediaContainers
         Private _webimage As Images
         Private _width As String
         Private _height As String
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
         Public Property Width() As String
             Get
                 Return Me._width
@@ -1492,9 +1562,9 @@ Namespace MediaContainers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._url = String.Empty
@@ -1503,28 +1573,28 @@ Namespace MediaContainers
             Me._ischecked = False
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class [Set]
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _order As String
         Private _set As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlAttribute("order")> _
         Public Property Order() As String
@@ -1536,21 +1606,21 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property OrderSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._order)
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property SetSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._set)
             End Get
         End Property
 
-        <XmlText> _
+        <XmlText()> _
         Public Property [Set]() As String
             Get
                 Return _set
@@ -1560,16 +1630,16 @@ Namespace MediaContainers
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             _set = String.Empty
             _order = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 

@@ -184,7 +184,9 @@ Public Class genericYAMJ
                             If Not String.IsNullOrEmpty(mMovie.FileSource) Then
                                 mMovie.Movie.VideoSource = mMovie.FileSource
                             End If
+                            mMovie.Movie.IDMovieDB = "imdb"
                         Else
+                            mMovie.Movie.IDMovieDB = String.Empty
                             mMovie.Movie.VideoSource = String.Empty
                         End If
                 End Select
