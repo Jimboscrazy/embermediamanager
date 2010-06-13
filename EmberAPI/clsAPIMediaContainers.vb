@@ -356,7 +356,6 @@ Namespace MediaContainers
         Private _title As String
         Private _originaltitle As String
         Private _sorttitle As String
-        'Private _imdbid As String
         Private _year As String
         Private _releaseDate As String
         Private _top250 As String
@@ -390,7 +389,6 @@ Namespace MediaContainers
 
         Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sYear As String, ByVal iLev As Integer)
             Me.Clear()
-            'Me._imdbid = sID
             Me.MovieID.ID = sID
             Me._title = sTitle
             Me._year = sYear
@@ -458,52 +456,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        '<XmlElement("id")> _
         <XmlIgnore()> _
         Public Property ID() As String
             Get
-                'Return If(Strings.Left(Me._imdbid, 2) = "tt", Me._imdbid.Trim, String.Concat("tt", Me._imdbid))
-                'Return _id._imdbid
                 Return Me.MovieID.ID
             End Get
             Set(ByVal value As String)
-                'Me._imdbid =  If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
-                'Me._id._imdbid = value
                 Me.MovieID.ID = value
             End Set
         End Property
-        '<XmlIgnore()> _
-        'Public ReadOnly Property IDSpecified() As Boolean
-        '    Get
-        '        Return Not String.IsNullOrEmpty(Me._imdbid) AndAlso Not Me._imdbid = "tt"
-        '    End Get
-        'End Property
         <XmlIgnore()> _
         Public Property IDMovieDB() As String
             Get
-                'Return _moviedb
                 Return Me.MovieID.IDMovieDB
             End Get
             Set(ByVal value As String)
-                'Me._moviedb = value
                 Me.MovieID.IDMovieDB = value
             End Set
         End Property
 
-        '<XmlIgnore()> _
-        'Public ReadOnly Property IDMovieDBSpecified() As Boolean
-        '    Get
-        '        Return Not String.IsNullOrEmpty(Me._moviedb)
-        '    End Get
-        'End Property
         <XmlIgnore()> _
         Public Property IMDBID() As String
             Get
-                'Return Me._imdbid.Replace("tt", String.Empty).Trim
                 Return MovieID.ID.Replace("tt", String.Empty).Trim
             End Get
             Set(ByVal value As String)
-                'Me._imdbid = value
                 Me.MovieID.ID = value
             End Set
         End Property

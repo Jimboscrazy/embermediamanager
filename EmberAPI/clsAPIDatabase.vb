@@ -519,6 +519,9 @@ Public Class Database
     ''' <returns>Structures.DBMovie object</returns>
     Public Function LoadMovieFromDB(ByVal MovieID As Long) As Structures.DBMovie
         Dim _movieDB As New Structures.DBMovie
+        ' Clean some variables that in previous versions are nothing
+        _movieDB.FileSource = String.Empty
+
         Try
             _movieDB.ID = MovieID
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
