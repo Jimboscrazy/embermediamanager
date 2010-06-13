@@ -138,4 +138,7 @@ Public Class frmSettingsHolder
 
 #End Region 'Methods
 
+    Private Sub GroupBox11_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox11.Enter
+
+    End Sub
 End Class

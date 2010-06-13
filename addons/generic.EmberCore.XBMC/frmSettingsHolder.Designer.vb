@@ -27,6 +27,7 @@ Partial Class frmSettingsHolder
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.chkNotification = New System.Windows.Forms.CheckBox
         Me.cbPlayCountHost = New System.Windows.Forms.ComboBox
         Me.chkPlayCount = New System.Windows.Forms.CheckBox
         Me.chkRealTime = New System.Windows.Forms.CheckBox
@@ -34,7 +35,6 @@ Partial Class frmSettingsHolder
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.btnAddCom = New System.Windows.Forms.Button
-        Me.chkNotification = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -89,6 +89,17 @@ Partial Class frmSettingsHolder
         Me.GroupBox11.TabIndex = 83
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
+        '
+        'chkNotification
+        '
+        Me.chkNotification.AutoSize = True
+        Me.chkNotification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkNotification.Location = New System.Drawing.Point(319, 92)
+        Me.chkNotification.Name = "chkNotification"
+        Me.chkNotification.Size = New System.Drawing.Size(121, 17)
+        Me.chkNotification.TabIndex = 12
+        Me.chkNotification.Text = "Send Notifications"
+        Me.chkNotification.UseVisualStyleBackColor = True
         '
         'cbPlayCountHost
         '
@@ -170,17 +181,6 @@ Partial Class frmSettingsHolder
         Me.btnAddCom.Text = "Add"
         Me.btnAddCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCom.UseVisualStyleBackColor = True
-        '
-        'chkNotification
-        '
-        Me.chkNotification.AutoSize = True
-        Me.chkNotification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNotification.Location = New System.Drawing.Point(319, 92)
-        Me.chkNotification.Name = "chkNotification"
-        Me.chkNotification.Size = New System.Drawing.Size(121, 17)
-        Me.chkNotification.TabIndex = 12
-        Me.chkNotification.Text = "Send Notifications"
-        Me.chkNotification.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
