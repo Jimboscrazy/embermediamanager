@@ -6893,7 +6893,7 @@ doCancel:
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
-                        If Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
+                        If tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
                             tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
                             tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
                         End If
