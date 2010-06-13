@@ -6930,8 +6930,8 @@ doCancel:
                 Dim fromFile As String = APIXML.GetFileSource(tmpMovieDb.Filename)
                 If Not String.IsNullOrEmpty(fromFile) Then
                     tmpMovieDb.FileSource = fromFile
-                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "**EmberAPP") Then
-                    tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "**EmberAPP")
+                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
                 End If
 
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}

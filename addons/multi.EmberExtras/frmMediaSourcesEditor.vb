@@ -16,7 +16,7 @@ Public Class frmMediaSources
                 Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
-            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "**EmberAPP")
+            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -87,7 +87,7 @@ Public Class frmMediaSources
             deleteitem.Add(sett.Name)
         Next
         For Each s As String In deleteitem
-            AdvancedSettings.CleanSetting(s, "**EmberAPP")
+            AdvancedSettings.CleanSetting(s, "*EmberAPP")
         Next
 
         Dim sources As New Hashtable
@@ -97,10 +97,10 @@ Public Class frmMediaSources
             End If
         Next
         AdvancedSettings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
-        AdvancedSettings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "**EmberAPP")
+        AdvancedSettings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
         For Each r As DataGridViewRow In dgvByFile.Rows
             If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
-                AdvancedSettings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "**EmberAPP")
+                AdvancedSettings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
             End If
         Next
     End Sub

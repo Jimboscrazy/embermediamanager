@@ -681,8 +681,8 @@ Public Class Scanner
                 Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
                 If Not String.IsNullOrEmpty(fSource) Then
                     tmpMovieDB.FileSource = fSource
-                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "**EmberAPP") Then
-                    tmpMovieDB.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "**EmberAPP")
+                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDB.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
                 End If
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MarkNew
