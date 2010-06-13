@@ -216,10 +216,10 @@ Public Class frmSettingsHolder
                         File.Delete(conf.TemplatePath)
                         Dim wn As String = Path.Combine(Path.Combine(Path.GetDirectoryName(conf.TemplatePath), Path.GetFileNameWithoutExtension(conf.TemplatePath)), "WhatsNew.txt")
                         If conf.WhatsNew AndAlso File.Exists(wn) Then
-                            'Using dWN As New frmWhatsNew
-                            'dWN.txtWhatsNew.Text = File.ReadAllText(wn)
-                            'dWN.ShowDialog()
-                            'End Using
+                            Using dWN As New frmWhatsNew
+                                dWN.txtWhatsNew.Text = File.ReadAllText(wn)
+                                dWN.ShowDialog()
+                            End Using
                         End If
                     End If
             End Select
