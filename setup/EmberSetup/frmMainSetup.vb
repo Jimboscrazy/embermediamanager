@@ -50,6 +50,7 @@ Public Class frmMainSetup
     Public ExitMe As Boolean = False
     Public Final As Boolean = False
     Public Force As Boolean = False
+    Public Recover As Boolean = False
     Public BlindSetup As Boolean = False
     Public mePainting As New Object
     Public NoArgs As Boolean = True
@@ -664,7 +665,7 @@ Public Class frmMainSetup
                             Return True
                         End If
                         InstallVersion = EmberVersions.VersionList(EmberVersions.VersionList.Count - 1).Version
-                        If InstallVersion = CurrentEmberVersion AndAlso Not Force Then
+                        If InstallVersion = CurrentEmberVersion AndAlso Not Recover Then
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
                             Me.bwDoInstall.ReportProgress(6, MyLang.GetString(10, "No New Version to Install"))
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
@@ -776,7 +777,7 @@ Public Class frmMainSetup
                             If (curr_hash = f.Hash AndAlso Not f.NeedBackup) OrElse (f.Hash = hash) Then
                                 f.NeedInstall = False
                             End If
-                            If (File.Exists(fpath) AndAlso skipFiles.Contains(String.Concat(f.Path, "\", f.Filename).ToLower)) And Not Force Then
+                            If (File.Exists(fpath) AndAlso skipFiles.Contains(String.Concat(f.Path, "\", f.Filename).ToLower)) And Not Recover Then
                                 f.NeedInstall = False
                             End If
 
@@ -1241,7 +1242,7 @@ Public Class frmMainSetup
                     Case "-force"
                         Force = True
                     Case "-recover"
-                        Force = True
+                        Recover = True
                     Case "-blind"
                         blindSetup = True
                 End Select
@@ -1408,7 +1409,7 @@ Public Class frmMainSetup
                 btnInstall.Enabled = True
                 LogWrite(String.Format("--- Main: Setting Install Path: {0}", emberPath))
             End If
-            If Force Then
+            If Force OrElse Recover Then
                 StartWorker()
                 LogoStop = False
                 llAbout.Visible = False
