@@ -119,10 +119,10 @@ Public Class frmAVCodecEditor
             AdvancedSettings.CleanSetting(s, "*EmberAPP")
         Next
         For Each r As DataGridViewRow In dgvAudio.Rows
-            AdvancedSettings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP", DirectCast(r.Tag, Boolean))
+            AdvancedSettings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
         Next
         For Each r As DataGridViewRow In dgvVideo.Rows
-            AdvancedSettings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP", DirectCast(r.Tag, Boolean))
+            AdvancedSettings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
         Next
     End Sub
 End Class

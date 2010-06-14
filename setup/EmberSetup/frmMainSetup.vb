@@ -1254,6 +1254,10 @@ Public Class frmMainSetup
                     emberPath = String.Concat(Path.Combine(ss, "Ember Media Manager"), Path.DirectorySeparatorChar)
                     Exit For
                 End If
+                If File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
+                    emberPath = String.Concat(ss, Path.DirectorySeparatorChar)
+                    Exit For
+                End If
             Next
             If Not String.IsNullOrEmpty(emberPath) Then
                 If File.Exists(Path.Combine(emberPath, "Setup.xml")) Then
@@ -1364,8 +1368,12 @@ Public Class frmMainSetup
                 Dim PFInstallPath As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles)
                 fol = String.Concat(Path.GetDirectoryName(AppPath), "|", System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData), "|", PFInstallPath, "|", WindowsInstallPath)
                 For Each ss As String In fol.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-                    If File.Exists(Path.Combine(Path.Combine(ss, "Ember Media Manager"), "Ember Media Manager.exe")) Then
-                        emberPath = String.Concat(Path.Combine(ss, "Ember Media Manager"), Path.DirectorySeparatorChar)
+                    If File.Exists(Path.Combine(Path.Combine(ss, "Ember Media Manager"), "Ember Media Manager.exe")) OrElse File.Exists(Path.Combine(ss, "Ember Media Manager.exe")) Then
+                        If File.Exists(Path.Combine(Path.Combine(ss, "Ember Media Manager"), "Ember Media Manager.exe")) Then
+                            emberPath = String.Concat(Path.Combine(ss, "Ember Media Manager"), Path.DirectorySeparatorChar)
+                        Else
+                            emberPath = String.Concat(ss, Path.DirectorySeparatorChar)
+                        End If
                         EmberFound = True
                         CurrentEmberVersion = GetEmberVersion(emberPath)
                         LogWrite(String.Format("--- Main: Found Ember Version: {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
