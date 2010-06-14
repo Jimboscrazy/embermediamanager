@@ -965,7 +965,7 @@ Namespace MediaContainers
             <XmlText()> _
             Public Property ID() As String
                 Get
-                    Return If(Strings.Left(_imdbid, 2) = "tt", If(String.IsNullOrEmpty(_moviedb), _imdbid.Trim, _imdbid.Replace("tt", String.Empty)), If(String.IsNullOrEmpty(_moviedb), String.Concat("tt", _imdbid), _imdbid))
+                    Return If(Strings.Left(_imdbid, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", String.Concat("tt", _imdbid), _imdbid))
                 End Get
                 Set(ByVal value As String)
                     _imdbid = If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
