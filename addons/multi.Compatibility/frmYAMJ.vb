@@ -46,7 +46,7 @@ Public Class frmYAMJ
         Me.chkSeasonPoster.Text = Master.eLang.GetString(8, "Season Poster as <Episode>SxxE01.jpg")
         Me.chkSeasonFanart.Text = Master.eLang.GetString(9, "Season Fanart as <Episode>SxxE01.fanart.jpg")
         Me.chkEpisodePoster.Text = Master.eLang.GetString(10, "Episode Poster as <Show>.videoimage.jpg")
-        Me.chkAllSeasonPoster.Text = Master.eLang.GetString(7, "Show Poster as Set_<Show>_1.banner.jpg")
+        Me.chkAllSeasonPoster.Text = Master.eLang.GetString(14, "Show All Season as Set_<Show>_1.banner.jpg")
     End Sub
 
     Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged

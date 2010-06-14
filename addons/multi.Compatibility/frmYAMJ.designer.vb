@@ -26,6 +26,7 @@ Partial Class frmYAMJ
         Me.btnCheckAll = New System.Windows.Forms.Button
         Me.chkYAMJCompatibleTVImages = New System.Windows.Forms.CheckBox
         Me.gbImages = New System.Windows.Forms.GroupBox
+        Me.chkAllSeasonPoster = New System.Windows.Forms.CheckBox
         Me.chkEpisodePoster = New System.Windows.Forms.CheckBox
         Me.chkShowFanart = New System.Windows.Forms.CheckBox
         Me.chkShowPoster = New System.Windows.Forms.CheckBox
@@ -36,7 +37,6 @@ Partial Class frmYAMJ
         Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
-        Me.chkAllSeasonPoster = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -92,6 +92,17 @@ Partial Class frmYAMJ
         Me.gbImages.Size = New System.Drawing.Size(594, 114)
         Me.gbImages.TabIndex = 87
         Me.gbImages.TabStop = False
+        '
+        'chkAllSeasonPoster
+        '
+        Me.chkAllSeasonPoster.AutoSize = True
+        Me.chkAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAllSeasonPoster.Location = New System.Drawing.Point(15, 39)
+        Me.chkAllSeasonPoster.Name = "chkAllSeasonPoster"
+        Me.chkAllSeasonPoster.Size = New System.Drawing.Size(265, 17)
+        Me.chkAllSeasonPoster.TabIndex = 93
+        Me.chkAllSeasonPoster.Text = "Show All Season as Set_<Show>_1.banner.jpg"
+        Me.chkAllSeasonPoster.UseVisualStyleBackColor = True
         '
         'chkEpisodePoster
         '
@@ -199,17 +210,6 @@ Partial Class frmYAMJ
         Me.chkEnabled.TabIndex = 80
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
-        '
-        'chkAllSeasonPoster
-        '
-        Me.chkAllSeasonPoster.AutoSize = True
-        Me.chkAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAllSeasonPoster.Location = New System.Drawing.Point(15, 39)
-        Me.chkAllSeasonPoster.Name = "chkAllSeasonPoster"
-        Me.chkAllSeasonPoster.Size = New System.Drawing.Size(244, 17)
-        Me.chkAllSeasonPoster.TabIndex = 93
-        Me.chkAllSeasonPoster.Text = "Show Poster as Set_<Show>_1.banner.jpg"
-        Me.chkAllSeasonPoster.UseVisualStyleBackColor = True
         '
         'frmYAMJ
         '
