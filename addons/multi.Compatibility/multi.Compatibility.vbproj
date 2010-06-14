@@ -118,7 +118,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="genericYAMJ.vb" />
-    <Compile Include="genreicMediaBrowser.vb" />
+    <Compile Include="genericMediaBrowser.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
