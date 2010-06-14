@@ -4549,7 +4549,7 @@ doCancel:
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.ScanTVMediaInfo AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
-                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, ""))
+                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, APIXML.GetFileSource(Master.currShow.Filename)))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else

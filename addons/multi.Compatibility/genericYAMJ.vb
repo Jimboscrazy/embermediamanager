@@ -40,6 +40,7 @@ Public Class genericYAMJ
         Me.fYAMJ.chkSeasonPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJSeasonPoster", False)
         Me.fYAMJ.chkSeasonFanart.Checked = AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False)
         Me.fYAMJ.chkEpisodePoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False)
+        Me.fYAMJ.chkAllSeasonPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False)
         'chkYAMJnfoFields
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(1, "YAMJ Compatibility")
@@ -93,6 +94,7 @@ Public Class genericYAMJ
         AdvancedSettings.SetBooleanSetting("YAMJSeasonPoster", Me.fYAMJ.chkSeasonPoster.Checked)
         AdvancedSettings.SetBooleanSetting("YAMJSeasonFanart", Me.fYAMJ.chkSeasonFanart.Checked)
         AdvancedSettings.SetBooleanSetting("YAMJEpisodePoster", Me.fYAMJ.chkEpisodePoster.Checked)
+        AdvancedSettings.SetBooleanSetting("YAMJAllSeasonPoster", Me.fYAMJ.chkAllSeasonPoster.Checked)
     End Sub
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
@@ -113,6 +115,21 @@ Public Class genericYAMJ
                             Dim tPath As String = String.Empty
                             Select Case iType
                                 Case Enums.TVImageType.AllSeasonPoster
+                                    If AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False) Then
+                                        Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                        If String.IsNullOrEmpty(seasonPath) Then
+                                            Dim dtSeasons As New DataTable
+                                            Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
+                                            If dtSeasons.Rows.Count > 0 Then
+                                                seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                            End If
+                                        End If
+                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.banner.jpg"))
+                                        imageList.Add(tPath)
+                                        'doContinue = False
+                                        'SET_<show>_1.banner.jpg
+                                    End If
                                 Case Enums.TVImageType.EpisodePoster
                                     If AdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False) Then
                                         tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage.jpg")
@@ -154,7 +171,7 @@ Public Class genericYAMJ
                                             End If
                                         End If
                                         tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
                                         imageList.Add(tPath)
                                         'doContinue = False
                                         'SET_<show>_1.jpg
@@ -170,7 +187,7 @@ Public Class genericYAMJ
                                             End If
                                         End If
                                         tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("SET_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
+                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
                                         imageList.Add(tPath)
                                         'doContinue = False
                                         'SET_<show>_1.fanart.jpg

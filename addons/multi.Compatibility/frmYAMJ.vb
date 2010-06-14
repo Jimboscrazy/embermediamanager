@@ -41,11 +41,12 @@ Public Class frmYAMJ
         Me.chkVideoTSParent.Text = Master.eLang.GetString(3, "Compatible VIDEO_TS File Placement/Naming")
         Me.chkYAMJCompatibleTVImages.Text = Master.eLang.GetString(4, "YAMJ Compatible TV Images Naming")
         Me.chkYAMJnfoFields.Text = Master.eLang.GetString(5, "YAMJ Specific NFO fields")
-        Me.chkShowPoster.Text = Master.eLang.GetString(6, "Show Poster as SET_<Show>_1.jpg")
-        Me.chkShowFanart.Text = Master.eLang.GetString(7, "Show Poster as SET_<Show>_1.fanart.jpg")
+        Me.chkShowPoster.Text = Master.eLang.GetString(6, "Show Poster as Set_<Show>_1.jpg")
+        Me.chkShowFanart.Text = Master.eLang.GetString(7, "Show Poster as Set_<Show>_1.fanart.jpg")
         Me.chkSeasonPoster.Text = Master.eLang.GetString(8, "Season Poster as <Episode>SxxE01.jpg")
         Me.chkSeasonFanart.Text = Master.eLang.GetString(9, "Season Fanart as <Episode>SxxE01.fanart.jpg")
         Me.chkEpisodePoster.Text = Master.eLang.GetString(10, "Episode Poster as <Show>.videoimage.jpg")
+        Me.chkAllSeasonPoster.Text = Master.eLang.GetString(7, "Show Poster as Set_<Show>_1.banner.jpg")
     End Sub
 
     Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged
@@ -67,6 +68,7 @@ Public Class frmYAMJ
         chkSeasonPoster.Checked = True
         chkSeasonFanart.Checked = True
         chkEpisodePoster.Checked = True
+        Me.chkAllSeasonPoster.Checked = True
 
     End Sub
 
@@ -98,8 +100,7 @@ Public Class frmYAMJ
         RaiseEvent GenericEvent(Enums.ModuleEventType.SyncModuleSettings, Nothing)
         RaiseEvent ModuleSettingsChanged()
     End Sub
-
-    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
-
+    Private Sub chkAllSeasonPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAllSeasonPoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 End Class

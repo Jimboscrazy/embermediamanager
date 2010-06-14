@@ -36,6 +36,7 @@ Partial Class frmYAMJ
         Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
+        Me.chkAllSeasonPoster = New System.Windows.Forms.CheckBox
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -79,6 +80,7 @@ Partial Class frmYAMJ
         '
         'gbImages
         '
+        Me.gbImages.Controls.Add(Me.chkAllSeasonPoster)
         Me.gbImages.Controls.Add(Me.chkEpisodePoster)
         Me.gbImages.Controls.Add(Me.chkShowFanart)
         Me.gbImages.Controls.Add(Me.chkShowPoster)
@@ -87,7 +89,7 @@ Partial Class frmYAMJ
         Me.gbImages.Enabled = False
         Me.gbImages.Location = New System.Drawing.Point(6, 126)
         Me.gbImages.Name = "gbImages"
-        Me.gbImages.Size = New System.Drawing.Size(594, 96)
+        Me.gbImages.Size = New System.Drawing.Size(594, 114)
         Me.gbImages.TabIndex = 87
         Me.gbImages.TabStop = False
         '
@@ -95,7 +97,7 @@ Partial Class frmYAMJ
         '
         Me.chkEpisodePoster.AutoSize = True
         Me.chkEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpisodePoster.Location = New System.Drawing.Point(15, 64)
+        Me.chkEpisodePoster.Location = New System.Drawing.Point(15, 85)
         Me.chkEpisodePoster.Name = "chkEpisodePoster"
         Me.chkEpisodePoster.Size = New System.Drawing.Size(246, 17)
         Me.chkEpisodePoster.TabIndex = 92
@@ -108,9 +110,9 @@ Partial Class frmYAMJ
         Me.chkShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkShowFanart.Location = New System.Drawing.Point(286, 20)
         Me.chkShowFanart.Name = "chkShowFanart"
-        Me.chkShowFanart.Size = New System.Drawing.Size(239, 17)
+        Me.chkShowFanart.Size = New System.Drawing.Size(238, 17)
         Me.chkShowFanart.TabIndex = 91
-        Me.chkShowFanart.Text = "Show Poster as SET_<Show>_1.fanart.jpg"
+        Me.chkShowFanart.Text = "Show Poster as Set_<Show>_1.fanart.jpg"
         Me.chkShowFanart.UseVisualStyleBackColor = True
         '
         'chkShowPoster
@@ -119,16 +121,16 @@ Partial Class frmYAMJ
         Me.chkShowPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkShowPoster.Location = New System.Drawing.Point(15, 20)
         Me.chkShowPoster.Name = "chkShowPoster"
-        Me.chkShowPoster.Size = New System.Drawing.Size(205, 17)
+        Me.chkShowPoster.Size = New System.Drawing.Size(204, 17)
         Me.chkShowPoster.TabIndex = 90
-        Me.chkShowPoster.Text = "Show Poster as SET_<Show>_1.jpg"
+        Me.chkShowPoster.Text = "Show Poster as Set_<Show>_1.jpg"
         Me.chkShowPoster.UseVisualStyleBackColor = True
         '
         'chkSeasonFanart
         '
         Me.chkSeasonFanart.AutoSize = True
         Me.chkSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonFanart.Location = New System.Drawing.Point(286, 41)
+        Me.chkSeasonFanart.Location = New System.Drawing.Point(286, 62)
         Me.chkSeasonFanart.Name = "chkSeasonFanart"
         Me.chkSeasonFanart.Size = New System.Drawing.Size(261, 17)
         Me.chkSeasonFanart.TabIndex = 89
@@ -139,7 +141,7 @@ Partial Class frmYAMJ
         '
         Me.chkSeasonPoster.AutoSize = True
         Me.chkSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonPoster.Location = New System.Drawing.Point(15, 41)
+        Me.chkSeasonPoster.Location = New System.Drawing.Point(15, 62)
         Me.chkSeasonPoster.Name = "chkSeasonPoster"
         Me.chkSeasonPoster.Size = New System.Drawing.Size(226, 17)
         Me.chkSeasonPoster.TabIndex = 88
@@ -198,6 +200,17 @@ Partial Class frmYAMJ
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'chkAllSeasonPoster
+        '
+        Me.chkAllSeasonPoster.AutoSize = True
+        Me.chkAllSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAllSeasonPoster.Location = New System.Drawing.Point(15, 39)
+        Me.chkAllSeasonPoster.Name = "chkAllSeasonPoster"
+        Me.chkAllSeasonPoster.Size = New System.Drawing.Size(244, 17)
+        Me.chkAllSeasonPoster.TabIndex = 93
+        Me.chkAllSeasonPoster.Text = "Show Poster as Set_<Show>_1.banner.jpg"
+        Me.chkAllSeasonPoster.UseVisualStyleBackColor = True
+        '
         'frmYAMJ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -230,4 +243,5 @@ Partial Class frmYAMJ
     Friend WithEvents chkShowFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowPoster As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodePoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkAllSeasonPoster As System.Windows.Forms.CheckBox
 End Class

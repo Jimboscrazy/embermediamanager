@@ -75,17 +75,21 @@ Public Class MediaInfo
 
     Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
         Try
-            'clear it out
-            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
-
+            'DON'T clear it out
+            'miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
+            Dim tinfo = New MediaInfo.Fileinfo
             Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
             If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
                 Dim MI As New MediaInfo
-                MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
+                'MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
+                MI.GetMIFromPath(tinfo, miMovie.Filename, False)
+                If tinfo.StreamDetails.Video.Count > 0 OrElse tinfo.StreamDetails.Audio.Count > 0 OrElse tinfo.StreamDetails.Subtitle.Count > 0 Then
+                    ' overwrite only if it get something from Mediainfo
+                    miMovie.Movie.FileInfo = tinfo
+                End If
                 If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
-
                     If Not String.IsNullOrEmpty(tVid.Duration) Then
                         Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
                         Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
