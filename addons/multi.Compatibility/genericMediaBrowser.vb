@@ -8,7 +8,7 @@ Public Class genericMediaBrowser
 
     Private fMediaBrowser As frmMediaBrowser
     Private _enabled As Boolean = False
-    Private _name As String = "MediaBrowser compatibility"
+    Private _name As String = "MediaBrowser Compatibility"
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberExternalModule.Enabled
         Get
@@ -141,6 +141,7 @@ Public Class genericMediaBrowser
         Private _Description As String
         Private _AudioTracks As New List(Of AudioTrack)
         Private _Subtitles As New List(Of Subtitle)
+        Private _MPAARating As String
 
         <XmlElement("ID")> _
         Public Property ID() As String
@@ -250,7 +251,7 @@ Public Class genericMediaBrowser
         <XmlIgnore()> _
         Public ReadOnly Property ForcedTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._ForcedTitle)
+                Return True 'Not String.IsNullOrEmpty(Me._ForcedTitle)
             End Get
         End Property
 
@@ -267,6 +268,23 @@ Public Class genericMediaBrowser
         Public ReadOnly Property IMDBratingSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._IMDBrating)
+            End Get
+        End Property
+
+
+        <XmlElement("MPAARating")> _
+        Public Property MPAARating() As String
+            Get
+                Return Me._MPAARating
+            End Get
+            Set(ByVal value As String)
+                Me._MPAARating = value
+            End Set
+        End Property
+        <XmlIgnore()> _
+        Public ReadOnly Property MPAARatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._MPAARating)
             End Get
         End Property
 
@@ -395,7 +413,7 @@ Public Class genericMediaBrowser
         <XmlIgnore()> _
         Public ReadOnly Property CDUniverseIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._CDUniverseId)
+                Return True 'Not String.IsNullOrEmpty(Me._CDUniverseId)
             End Get
         End Property
 
@@ -518,6 +536,8 @@ Public Class genericMediaBrowser
 
         Public Shared Function GetFromMovieDB(ByVal movie As Structures.DBMovie) As XMLmymovies
             Dim myself As New XMLmymovies
+            myself.ForcedTitle = String.Empty
+            myself.CDUniverseId = String.Empty
             myself.ID = movie.ID.ToString
             myself.LocalTitle = movie.Movie.Title
             myself.OriginalTitle = movie.Movie.OriginalTitle
@@ -525,6 +545,9 @@ Public Class genericMediaBrowser
             myself.IMDbId = movie.Movie.ID
             myself.RunningTime = movie.Movie.Runtime
             myself.Description = movie.Movie.Plot
+            myself.IMDBrating = movie.Movie.Rating
+            myself.ProductionYear = movie.Movie.Year
+            myself.MPAARating = movie.Movie.MPAA
             For Each g As String In movie.Movie.Genre.Split(Convert.ToChar("/"))
                 myself.Genres.Add(New Genre With {.Genre = g.Trim})
             Next
@@ -534,6 +557,7 @@ Public Class genericMediaBrowser
             For Each p As MediaContainers.Person In movie.Movie.Actors
                 myself.Persons.Add(New Person With {.Name = p.Name, .Role = p.Role, .Type = "Actor"})
             Next
+            If Not String.IsNullOrEmpty(movie.Movie.Director) Then myself.Persons.Add(New Person With {.Name = movie.Movie.Director, .Type = "Director"})
             Return myself
         End Function
 
