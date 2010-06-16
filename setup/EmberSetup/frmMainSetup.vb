@@ -978,6 +978,10 @@ Public Class frmMainSetup
 
                 LogWrite(String.Format("--- Main: Last Version {0}", If(CurrentEmberVersion = String.Empty OrElse CurrentEmberVersion = "0", "(None)", CurrentEmberVersion)))
                 LogWrite(String.Format("--- Main: Installing Version {0}", InstallVersion))
+
+                Dim plat As String = If(Not CheckIfWindows(), "Mono", CurrentEmberPlatform)
+                DownloadTextData(String.Format("EmberDownload.php?Platform={0}&Version={1}", plat, InstallVersion))
+
                 System.Threading.Thread.Sleep(3000)
                 If bwDoInstall.CancellationPending Then Return False
                 ' pnlProgress.Visible = False
