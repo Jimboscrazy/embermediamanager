@@ -2544,6 +2544,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub Handle_ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
+        If Name = "!#RELOAD" Then
+            Me.FillSettings()
+            Return
+        End If
         Dim tSetPan As New Containers.SettingsPanel
         Dim oSetPan As New Containers.SettingsPanel
         Me.SuspendLayout()

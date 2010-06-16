@@ -125,7 +125,8 @@ Public Class genericYAMJ
                                             End If
                                         End If
                                         tPath = Path.Combine(mShow.ShowPath, seasonPath)
-                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.banner.jpg"))
+                                        'tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.banner.jpg"))
+                                        tPath = Path.Combine(tPath, "Season 1.banner.jpg")
                                         imageList.Add(tPath)
                                         'doContinue = False
                                         'SET_<show>_1.banner.jpg
