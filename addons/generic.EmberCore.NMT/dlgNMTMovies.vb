@@ -496,6 +496,7 @@ Public Class dlgNMTMovies
             row = row.Replace("<$DIRNAME>", (Path.GetDirectoryName(_curMovie.Item("MoviePath").ToString)))
             row = row.Replace("<$OUTLINE>", ToStringNMT(_curMovie.Item("Outline").ToString))
             row = row.Replace("<$PLOT>", (_curMovie.Item("Plot").ToString))
+            row = row.Replace("<$FILESOURCE>", If(Not String.IsNullOrEmpty(_curMovie.Item("FileSource").ToString), _curMovie.Item("FileSource").ToString, "default"))
             row = row.Replace("<$GENRES>", (_curMovie.Item("Genre").ToString))
             For Each s As String In _curMovie.Item("Genre").ToString.Split(New String() {"/"}, StringSplitOptions.RemoveEmptyEntries)
                 If Not MoviesGenres.Contains(s.Trim) Then MoviesGenres.Add(s.Trim)
