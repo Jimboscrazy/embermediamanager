@@ -246,6 +246,7 @@ Public Class FileFolderRenamer
         MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
         MovieFile.Genre = _tmpMovie.Movie.Genre
         MovieFile.Director = _tmpMovie.Movie.Director
+        MovieFile.FileSource = _tmpMovie.FileSource
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
