@@ -4540,8 +4540,8 @@ Partial Class dlgSettings
         'pnlTVImages
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
-        Me.pnlTVImages.Controls.Add(Me.pnlGeneral)
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
+        Me.pnlTVImages.Controls.Add(Me.pnlGeneral)
         Me.pnlTVImages.Location = New System.Drawing.Point(251, 147)
         Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 402)
@@ -4550,10 +4550,10 @@ Partial Class dlgSettings
         '
         'TabControl3
         '
-        Me.TabControl3.Controls.Add(Me.TabPage8)
         Me.TabControl3.Controls.Add(Me.TabPage5)
         Me.TabControl3.Controls.Add(Me.TabPage6)
         Me.TabControl3.Controls.Add(Me.TabPage7)
+        Me.TabControl3.Controls.Add(Me.TabPage8)
         Me.TabControl3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.TabControl3.Location = New System.Drawing.Point(6, 2)
         Me.TabControl3.Name = "TabControl3"
@@ -6539,7 +6539,6 @@ Partial Class dlgSettings
         Me.GroupBox26.Controls.Add(Me.Label31)
         Me.GroupBox26.Controls.Add(Me.gbRTFormat)
         Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
-        Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox26.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox26.Location = New System.Drawing.Point(159, 6)
         Me.GroupBox26.Name = "GroupBox26"
@@ -6662,14 +6661,15 @@ Partial Class dlgSettings
         '
         Me.gbRTFormat.Controls.Add(Me.Label51)
         Me.gbRTFormat.Controls.Add(Me.txtRuntimeFormat)
+        Me.gbRTFormat.Controls.Add(Me.chkUseMIDuration)
         Me.gbRTFormat.Enabled = False
         Me.gbRTFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRTFormat.Location = New System.Drawing.Point(3, 65)
+        Me.gbRTFormat.Location = New System.Drawing.Point(5, 49)
         Me.gbRTFormat.Name = "gbRTFormat"
-        Me.gbRTFormat.Size = New System.Drawing.Size(244, 49)
+        Me.gbRTFormat.Size = New System.Drawing.Size(244, 63)
         Me.gbRTFormat.TabIndex = 9
         Me.gbRTFormat.TabStop = False
-        Me.gbRTFormat.Text = "Runtime Format"
+        Me.gbRTFormat.Text = "Duration Format"
         '
         'Label51
         '
@@ -6705,7 +6705,7 @@ Partial Class dlgSettings
         Me.chkUseMIDuration.AutoSize = True
         Me.chkUseMIDuration.Enabled = False
         Me.chkUseMIDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(18, 49)
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(12, 44)
         Me.chkUseMIDuration.Name = "chkUseMIDuration"
         Me.chkUseMIDuration.Size = New System.Drawing.Size(158, 17)
         Me.chkUseMIDuration.TabIndex = 8
@@ -7029,7 +7029,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7039,7 +7038,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
@@ -7049,6 +7047,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
