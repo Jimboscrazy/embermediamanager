@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{62356BCF-D15A-4BF1-B980-395CEC0004A9}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -43,7 +43,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\..\Build\x64\Debug\Modules\</OutputPath>
     <DocumentationFile>multi.EmberExtras.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -179,18 +179,6 @@
       <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\heart.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\equalizer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\image.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dvd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
