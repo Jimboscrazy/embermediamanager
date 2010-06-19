@@ -8352,7 +8352,7 @@ doCancel:
     Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
         Me.ClearInfo()
         Me.ShowNoInfo(False)
-
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = tabsMain.SelectedIndex
         Select Case tabsMain.SelectedIndex
             Case 0
                 Me.ToolsToolStripMenuItem.Enabled = True
