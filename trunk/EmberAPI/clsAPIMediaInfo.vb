@@ -88,28 +88,11 @@ Public Class MediaInfo
                     ' overwrite only if it get something from Mediainfo
                     miMovie.Movie.FileInfo = tinfo
                 End If
-                If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
                     If Not String.IsNullOrEmpty(tVid.Duration) Then
-                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
-                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                        Dim sMask As String = Master.eSettings.RuntimeMask
-                        Dim sRuntime As String = String.Empty
-
-                        If sMask.Contains("<h>") AndAlso (sMask.Contains("<m>") OrElse sMask.Contains("<0m>")) Then
-                            sRuntime = sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00"))
-                        ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
-                            Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
-                            sRuntime = sMask.Replace("<h>", String.Concat(sHour, tHDec))
-                        ElseIf Not sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
-                            sRuntime = sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
-                        Else
-                            sRuntime = sMask
-                        End If
-                        miMovie.Movie.Runtime = sRuntime
+                        miMovie.Movie.Runtime = tVid.Duration
                     End If
-
                 End If
                 MI = Nothing
             End If
@@ -294,6 +277,17 @@ Public Class MediaInfo
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
+            End If
+
+            'finally go through all the video streams and reformat the duration
+            'we do this afterwards because of scanning mediainfo from stacked files... we need total
+            'duration so we need to keep a consistent duration format while scanning
+            'it's easier to format at the end so we don't need to bother with creating a generic
+            'conversion routine
+            If Not IsNothing(fiOut.StreamDetails) AndAlso fiOut.StreamDetails.Video.Count > 0 Then
+                For Each tVid As Video In fiOut.StreamDetails.Video
+                    tVid.Duration = FormatDuration(tVid.Duration)
+                Next
             End If
         End If
     End Sub
@@ -518,6 +512,25 @@ Public Class MediaInfo
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
         End Try
         Return fiOut
+    End Function
+
+    Private Function FormatDuration(ByVal tDur As String) As String
+        Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
+        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+        Dim sMask As String = Master.eSettings.RuntimeMask
+        Dim sRuntime As String = String.Empty
+
+        If sMask.Contains("<h>") AndAlso (sMask.Contains("<m>") OrElse sMask.Contains("<0m>")) Then
+            Return sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00"))
+        ElseIf sMask.Contains("<h>") AndAlso Not sMask.Contains("<m>") Then
+            Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
+            Return sMask.Replace("<h>", String.Concat(sHour, tHDec))
+        ElseIf Not sMask.Contains("<h>") AndAlso sMask.Contains("<m>") Then
+            Return sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
+        Else
+            Return sMask
+        End If
     End Function
 
     #End Region 'Methods

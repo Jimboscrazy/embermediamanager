@@ -1653,12 +1653,14 @@ Public Class dlgSettings
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
         Me.cbLanguages.Enabled = Me.chkScanMediaInfo.Checked
         Me.chkIFOScan.Enabled = Me.chkScanMediaInfo.Checked
+        Me.gbRTFormat.Enabled = Me.chkScanMediaInfo.Checked
         If Not Me.chkScanMediaInfo.Checked Then
             Me.cbLanguages.SelectedIndex = 0
             Me.chkUseMIDuration.Checked = False
-            Me.gbRTFormat.Enabled = False
             Me.txtRuntimeFormat.Text = String.Empty
             Me.chkIFOScan.Checked = False
+        Else
+            If String.IsNullOrEmpty(Me.txtRuntimeFormat.Text) Then Me.txtRuntimeFormat.Text = "<m> mins"
         End If
     End Sub
 
@@ -1997,12 +1999,6 @@ Public Class dlgSettings
 
     Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
         Me.SetApplyButton(True)
-        Me.gbRTFormat.Enabled = Me.chkUseMIDuration.Checked
-        If Not chkUseMIDuration.Checked Then
-            Me.txtRuntimeFormat.Text = String.Empty
-        Else
-            If Me.txtRuntimeFormat.Text = String.Empty Then Me.txtRuntimeFormat.Text = "<m> mins"
-        End If
     End Sub
 
     Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -3720,7 +3716,7 @@ Public Class dlgSettings
         Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkCert.Text = Master.eLang.GetString(514, "Use Certification Language:")
-        Me.gbRTFormat.Text = Master.eLang.GetString(515, "Runtime Format")
+        Me.gbRTFormat.Text = Master.eLang.GetString(515, "Duration Format")
         Me.chkUseMIDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkScanMediaInfo.Text = Master.eLang.GetString(517, "Scan Meta Data")
         Me.chkTVScanMetaData.Text = Me.chkScanMediaInfo.Text

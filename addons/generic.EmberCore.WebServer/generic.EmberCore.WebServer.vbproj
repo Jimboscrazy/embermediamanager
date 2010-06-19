@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Debug\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x86\Debug\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -34,7 +34,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Ember Media Manager\bin\x86\Release\Modules\</OutputPath>
+    <OutputPath>..\..\Build\x86\Release\Modules\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
