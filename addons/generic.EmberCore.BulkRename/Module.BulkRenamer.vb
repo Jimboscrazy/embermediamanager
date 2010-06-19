@@ -150,6 +150,7 @@ Public Class BulkRenamerModule
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(26, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(26, "Bulk &Renamer")
@@ -216,19 +217,25 @@ Public Class BulkRenamerModule
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
 
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-
-        Using dBulkRename As New dlgBulkRenamer
-            dBulkRename.txtFolder.Text = MySettings.FoldersPattern
-            dBulkRename.txtFile.Text = MySettings.FilesPattern
-            Try
-                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
-                Else
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
-                End If
-            Catch ex As Exception
-            End Try
-        End Using
+        Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
+            Case 0
+                Using dBulkRename As New dlgBulkRenamer
+                    dBulkRename.txtFolder.Text = MySettings.FoldersPattern
+                    dBulkRename.txtFile.Text = MySettings.FilesPattern
+                    Try
+                        If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                            ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                        End If
+                    Catch ex As Exception
+                    End Try
+                End Using
+            Case 1
+                Using dTVBulkRename As New dlgtvBulkRenamer
+                    If dTVBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    End If
+                End Using
+        End Select
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
     Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup

@@ -666,6 +666,7 @@ Public Class ModulesManager
         Private _OpenImageViewer As OpenImageViewer
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
+        Private _MediaTabSelected As Integer = 0
 
 #End Region 'Fields
 
@@ -679,7 +680,14 @@ Public Class ModulesManager
 #End Region 'Delegates
 
 #Region "Properties"
-
+        Public Property MediaTabSelected() As Integer
+            Get
+                Return _MediaTabSelected
+            End Get
+            Set(ByVal value As Integer)
+                _MediaTabSelected = value
+            End Set
+        End Property
         Public Property MainTool() As System.Windows.Forms.ToolStrip
             Get
                 Return _MainTool
