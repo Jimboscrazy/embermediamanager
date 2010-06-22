@@ -45,10 +45,15 @@ Public Class AdvancedSettings
 
     Public Shared Sub Start()
         Dim lhttp As New HTTP
+
         Try
             AdvancedSettings.SetDefaults()
             AdvancedSettings.LoadBase()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "*Error")
+        End Try
 
+        Try
             Dim settingString As String = lhttp.DownloadData(String.Format("http://www.embermm.com/{0}/AdvancedSettings.r{1}.lst", If(Functions.IsBetaEnabled(), "UpdatesBeta", "Updates"), My.Application.Info.Version.Revision))
             If Not String.IsNullOrEmpty(settingString) Then
                 Dim sPath As String = String.Concat(Functions.AppPath, "Temp")
@@ -72,6 +77,7 @@ Public Class AdvancedSettings
                 Next
             End If
         Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
