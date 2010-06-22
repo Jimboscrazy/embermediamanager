@@ -1583,11 +1583,22 @@ Public Class frmMainManager
             Dim rdate As String = Path.GetFileNameWithoutExtension(fi.Name).Replace("download-", "")
             Dim lines() As String = Array.FindAll(File.ReadAllLines(fi.FullName), AddressOf FindEmber)
             Dim c As Integer = 0
+            Dim x86 As Integer = 0
+            Dim x64 As Integer = 0
             For Each s As String In lines
                 Dim parts As String() = s.Split(Convert.ToChar(vbTab))
-                If parts.Length >= 2 Then c += Convert.ToUInt16(parts(1))
+                If parts(0).Contains("Ember Media Manager") Then
+                    If parts(0).Contains("x86") Then
+                        x86 += Convert.ToUInt16(parts(1))
+                    Else
+                        x64 += Convert.ToUInt16(parts(1))
+                    End If
+                End If
+                'If parts.Length >= 2 Then c += Convert.ToUInt16(parts(1))
             Next
-            report = String.Concat(report, "Date: ", rdate, "    = ", c.ToString, vbCrLf)
+
+            report = String.Concat(report, String.Format("INSERT INTO `EmberDownloads` (`DownloadDate`, `Version`,`x86`,`x64`,`Mono`) VALUES ( '{0}','?' , '{1}','{2}' ,'0');", rdate, x86.ToString, x64.ToString), vbCrLf)
+            'report = String.Concat(report, "Date: ", rdate, "    = ", c.ToString, vbCrLf)
         Next
         txtReport.Text = report
     End Sub

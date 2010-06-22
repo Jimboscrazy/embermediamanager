@@ -230,10 +230,11 @@ Public Class BulkRenamerModule
                     End Try
                 End Using
             Case 1
-                Using dTVBulkRename As New dlgtvBulkRenamer
-                    If dTVBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    End If
-                End Using
+                MsgBox("Not implemented yet", MsgBoxStyle.OkOnly, "Info")
+                'Using dTVBulkRename As New dlgtvBulkRenamer
+                'If dTVBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                'End If
+                'End Using
         End Select
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
