@@ -450,7 +450,7 @@ mPlot:
                     If Not String.IsNullOrEmpty(ofdbPlot) Then
                         IMDBMovie.Plot = ofdbPlot
                     Else
-                        Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
+                        Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
 
                         If Not String.IsNullOrEmpty(FullPlot) Then
                             For Each rMatch As Match In Regex.Matches(FullPlot, HREF_PATTERN_4)
