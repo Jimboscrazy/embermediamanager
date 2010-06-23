@@ -99,7 +99,7 @@ Public Class dlgNMTMovies
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
                     fxml = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, i.Name))
                     conf = NMTExporterModule.Config.Load(Path.Combine(fxml, "config.xml"))
-                    If Not String.IsNullOrEmpty(conf.Name) AndAlso Convert.ToSingle(conf.DesignVersion) >= NMTExporterModule.MinDesignVersion Then
+                    If Not String.IsNullOrEmpty(conf.Name) AndAlso Convert.ToSingle(conf.DesignVersion.Replace(".", System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator)) >= NMTExporterModule.MinDesignVersion Then
                         conf.TemplatePath = fxml
                         confs.Add(conf)
                         cbTemplate.Items.Add(conf.Name)
@@ -850,6 +850,7 @@ Public Class dlgNMTMovies
             Else
                 pbTemplateLogo.Image = Nothing
             End If
+            pbHelp.Visible = File.Exists(Path.Combine(conf.TemplatePath, "help.txt"))
             chHighPriority.Checked = AdvancedSettings.GetBooleanSetting(String.Concat("HighPriority.", conf.Name), False)
             DontSaveExtra = False
             'btnSave.Enabled = False
@@ -1726,9 +1727,25 @@ Public Class dlgNMTMovies
     Private Sub chHighPriority_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles chHighPriority.MouseLeave
         lblHelpa.Text = ""
     End Sub
+    Private Sub pbHelp_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseHover
+        lblHelpa.Text = "Click for more details"
+        Cursor = Cursors.Help
+    End Sub 'Methods
+
+    Private Sub pbHelp_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseLeave
+        lblHelpa.Text = ""
+        Cursor = Cursors.Default
+    End Sub
     Private Sub chHighPriority_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chHighPriority.CheckedChanged
         btnSave.Enabled = True
     End Sub
-#End Region 'Methods
+    Private Sub pbHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbHelp.Click
+        Using dlg As New dlgHelp
+            dlg.ShowDialog(conf.TemplatePath)
+        End Using
+    End Sub
+#End Region
+
+
 
 End Class

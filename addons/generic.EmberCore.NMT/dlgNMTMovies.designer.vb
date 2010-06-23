@@ -76,6 +76,8 @@ Partial Class dlgNMTMovies
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.dgvProperties = New System.Windows.Forms.DataGridView
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.pbTemplateLogo = New System.Windows.Forms.PictureBox
         Me.Panel1 = New System.Windows.Forms.Panel
@@ -83,8 +85,7 @@ Partial Class dlgNMTMovies
         Me.pbWarning = New System.Windows.Forms.PictureBox
         Me.ilNMT = New System.Windows.Forms.ImageList(Me.components)
         Me.chHighPriority = New System.Windows.Forms.CheckBox
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.pbHelp = New System.Windows.Forms.PictureBox
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
@@ -98,6 +99,7 @@ Partial Class dlgNMTMovies
         CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -444,6 +446,26 @@ Partial Class dlgNMTMovies
         Me.dgvProperties.Size = New System.Drawing.Size(347, 166)
         Me.dgvProperties.TabIndex = 5
         '
+        'DataGridViewTextBoxColumn1
+        '
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle6
+        Me.DataGridViewTextBoxColumn1.FillWeight = 225.0!
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Property"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Width = 225
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle7
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Value"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
         'TabPage1
         '
         Me.TabPage1.Controls.Add(Me.dgvSettings)
@@ -506,25 +528,14 @@ Partial Class dlgNMTMovies
         Me.chHighPriority.Text = "High Priority"
         Me.chHighPriority.UseVisualStyleBackColor = True
         '
-        'DataGridViewTextBoxColumn1
+        'pbHelp
         '
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle6
-        Me.DataGridViewTextBoxColumn1.FillWeight = 225.0!
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Property"
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        Me.DataGridViewTextBoxColumn1.Width = 225
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle7
-        Me.DataGridViewTextBoxColumn2.HeaderText = "Value"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.pbHelp.Image = CType(resources.GetObject("pbHelp.Image"), System.Drawing.Image)
+        Me.pbHelp.Location = New System.Drawing.Point(824, 5)
+        Me.pbHelp.Name = "pbHelp"
+        Me.pbHelp.Size = New System.Drawing.Size(16, 16)
+        Me.pbHelp.TabIndex = 97
+        Me.pbHelp.TabStop = False
         '
         'dlgNMTMovies
         '
@@ -533,6 +544,7 @@ Partial Class dlgNMTMovies
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(853, 396)
+        Me.Controls.Add(Me.pbHelp)
         Me.Controls.Add(Me.chHighPriority)
         Me.Controls.Add(Me.pbTemplateLogo)
         Me.Controls.Add(Me.Panel1)
@@ -570,6 +582,7 @@ Partial Class dlgNMTMovies
         CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -607,6 +620,7 @@ Partial Class dlgNMTMovies
     Friend WithEvents chHighPriority As System.Windows.Forms.CheckBox
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pbHelp As System.Windows.Forms.PictureBox
 
 #End Region 'Methods
 
