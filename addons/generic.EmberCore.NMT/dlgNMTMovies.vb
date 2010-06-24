@@ -61,6 +61,7 @@ Public Class dlgNMTMovies
     Public Loaded As Boolean = False
     Public CanBuild As Boolean = False
     Public Shared dtMovieMedia As DataTable = Nothing
+    Public Shared dtEpisodesPaths As DataTable = Nothing
     Public Shared dtEpisodes As DataTable = Nothing
     Public Shared dtSeasons As DataTable = Nothing
     Public Shared dtShows As DataTable = Nothing
@@ -92,6 +93,9 @@ Public Class dlgNMTMovies
             dtEpisodes = New DataTable
             Master.DB.FillDataTable(dtEpisodes, "SELECT * FROM TVEps ORDER BY Episode COLLATE NOCASE;")
             'End If
+            dtEpisodesPaths = New DataTable
+            Master.DB.FillDataTable(dtEpisodesPaths, "SELECT ID,TVEpPath FROM TVEpPaths;")
+
             txtOutputFolder.Text = AdvancedSettings.GetSetting("BasePath", "")
             Dim fxml As String
             Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(sBasePath, "Templates"))
@@ -703,7 +707,10 @@ Public Class dlgNMTMovies
             row = row.Replace("<$EPISODE_POSTER_FILE>", GetRelativePath(_curEpisode.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$EPISODENAME>", (_curEpisode.Item("Title").ToString))
             row = row.Replace("<$EPISODEPLOT>", ToStringNMT(_curEpisode.Item("Plot").ToString))
-            'row = row.Replace("<$EPISODE_PATH>", _curEpisode.Item("MoviePath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            For Each _epPath As DataRow In dtEpisodesPaths.Select(String.Format("ID = {0}", _curEpisode.Item("TVEpPathid").ToString))
+                row = row.Replace("<$EPISODE_PATH>", _epPath.Item("TVEpPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
+            Next
+
             'row = row.Replace("<$POSTER_THUMB>", String.Concat(relpath, ThumbsPath, epid.ToString, ".jpg"))
             'row = row.Replace("<$BACKDROP_THUMB>", String.Concat(relpath, BackdropPath, epid.ToString, "-backdrop.jpg"))
             'row = row.Replace("<$FANART_FILE>", _curEpisode.Item("FanartPath").ToString.Replace(sourcePath, mapPath).Replace(Path.DirectorySeparatorChar, "/"))
