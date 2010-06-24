@@ -62,11 +62,16 @@ Public Class frmSettingsHolder
                     confs.Add(conf)
                     Dim li As New ListViewItem(conf.Name)
                     Dim status As String
-                    If Convert.ToSingle(conf.DesignVersion) < NMTExporterModule.MinDesignVersion Then
+                    Try
+                        If Convert.ToSingle(conf.DesignVersion.Replace(".", System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator)) < NMTExporterModule.MinDesignVersion Then
+                            status = Master.eLang.GetString(22, "Outdated")
+                        Else
+                            status = Master.eLang.GetString(18, "Installed")
+                        End If
+                    Catch ex As Exception
                         status = Master.eLang.GetString(22, "Outdated")
-                    Else
-                        status = Master.eLang.GetString(18, "Installed")
-                    End If
+                    End Try
+
                     li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, status})
                     li.ToolTipText = conf.Description
                     li.Tag = conf
