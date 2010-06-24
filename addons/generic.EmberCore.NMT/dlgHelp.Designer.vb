@@ -29,6 +29,7 @@ Partial Class dlgHelp
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.OK_Button.Location = New System.Drawing.Point(226, 394)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -49,6 +50,7 @@ Partial Class dlgHelp
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.OK_Button
         Me.ClientSize = New System.Drawing.Size(520, 418)
         Me.Controls.Add(Me.txtHelp)
         Me.Controls.Add(Me.OK_Button)
