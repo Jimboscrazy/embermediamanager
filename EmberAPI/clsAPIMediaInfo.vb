@@ -284,8 +284,8 @@ Public Class MediaInfo
             'duration so we need to keep a consistent duration format while scanning
             'it's easier to format at the end so we don't need to bother with creating a generic
             'conversion routine
-            If Not IsNothing(fiOut.StreamDetails) AndAlso fiOut.StreamDetails.Video.Count > 0 Then
-                For Each tVid As Video In fiOut.StreamDetails.Video
+            If Not IsNothing(fiInfo.StreamDetails) AndAlso fiInfo.StreamDetails.Video.Count > 0 Then
+                For Each tVid As Video In fiInfo.StreamDetails.Video
                     tVid.Duration = FormatDuration(tVid.Duration)
                 Next
             End If
