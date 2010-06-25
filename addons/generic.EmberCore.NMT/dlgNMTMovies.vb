@@ -1547,7 +1547,7 @@ Public Class dlgNMTMovies
 
     Private Sub dgvSources_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSources.CellValueChanged
         ValidatedToBuild.Start()
-        btnSave.Enabled = False
+        'btnSave.Enabled = False
     End Sub
 
     Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
@@ -1752,7 +1752,4 @@ Public Class dlgNMTMovies
         End Using
     End Sub
 #End Region
-
-
-
 End Class
