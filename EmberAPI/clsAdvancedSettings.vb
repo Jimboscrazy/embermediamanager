@@ -94,27 +94,39 @@ Public Class AdvancedSettings
 #Region "Methods"
 
     Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "") As Boolean
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return defvalue
+        End Try
     End Function
 
     Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "") As String
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return defvalue
+        End Try
     End Function
 
     Public Shared Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
@@ -147,33 +159,44 @@ Public Class AdvancedSettings
         End Try
     End Sub
     Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As Hashtable
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        Return If(v Is Nothing, Nothing, v.TableItem)
+            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Return If(v Is Nothing, Nothing, v.TableItem)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return Nothing
+        End Try
     End Function
 
     Public Shared Function SetComplexSetting(ByVal key As String, ByVal value As Hashtable, Optional ByVal cAssembly As String = "") As Boolean
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        If v Is Nothing Then
-            _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
-        Else
-            _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
-        End If
+            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
+                _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
+            Else
+                _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
+            End If
 
-        If Not _DoNotSave Then Save()
+            If Not _DoNotSave Then Save()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return True
     End Function
 
@@ -266,40 +289,48 @@ Public Class AdvancedSettings
     End Sub
 
     Public Shared Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        If v Is Nothing Then
-            _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
-        Else
-            _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
-        End If
+            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
+            Else
+                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
+            End If
 
-        If Not _DoNotSave Then Save()
+            If Not _DoNotSave Then Save()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return True
     End Function
 
     Public Shared Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
-        Dim Assembly As String = cAssembly
-        If Assembly = "" Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-                Assembly = "*EmberAPP"
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
             End If
-        End If
-        Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-        If v Is Nothing Then
-            _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
-        Else
-            _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
-        End If
+            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
+            Else
+                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
+            End If
 
-        If Not _DoNotSave Then Save()
+            If Not _DoNotSave Then Save()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return True
     End Function
 
