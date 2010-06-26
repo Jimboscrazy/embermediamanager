@@ -1475,6 +1475,7 @@ Public Class dlgNMTMovies
             If File.Exists(hfile) Then
                 System.IO.File.Delete(hfile)
             End If
+            ' ANSI based on Regional Setting , seems to be only thing NMT likes
             Dim writer As New StreamWriter(hfile, False, Encoding.Default)
             writer.Write(HTMLMovieBody.ToString)
             writer.Close()
@@ -1537,7 +1538,7 @@ Public Class dlgNMTMovies
             If File.Exists(hfile) Then
                 System.IO.File.Delete(hfile)
             End If
-
+            ' ANSI based on Regional Setting , seems to be only thing NMT likes
             Dim writer As New StreamWriter(hfile, False, Encoding.Default)
             writer.Write(HTMLTVBody.ToString)
             writer.Close()
@@ -1589,7 +1590,6 @@ Public Class dlgNMTMovies
             OutputExist = Directory.Exists(txtOutputFolder.Text)
         End If
         If Not OutputExist Then
-            ' TODO Strings
             warn = Master.eLang.GetString(25, "Invalid Output Folder")
         End If
         If String.IsNullOrEmpty(warn) Then
@@ -1599,7 +1599,6 @@ Public Class dlgNMTMovies
                     Try
                         row.Cells(3).Value = If(IsNothing(row.Cells(3).Value), String.Empty, row.Cells(3).Value)
                         If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
-                            ' TODO Strings
                             warn = Master.eLang.GetString(26, "Output Folder don't match Selected Sources and no NMT Path defined")
                             Exit For
                         Else
@@ -1744,7 +1743,8 @@ Public Class dlgNMTMovies
     Private Sub pbHelp_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseHover
         lblHelpa.Text = "Click for more details"
         Cursor = Cursors.Help
-    End Sub 'Methods
+    End Sub
+
 
     Private Sub pbHelp_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseLeave
         lblHelpa.Text = ""
