@@ -40,4 +40,6 @@
 	<string id="38">File/Folder in use! Can Not overwrite</string>
 	<string id="39">High Priority</string>
 	<string id="40">When using external tools, run several instances for a faster build</string>
+	<string id="41">Click for more details</string>
+	<string id="42">Please Choose/Install a Template First</string>
 </strings>

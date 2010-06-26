@@ -147,8 +147,12 @@ Public Class dlgNMTMovies
 
     Public Sub SaveConfig()
         Try
+            If IsNothing(conf) Then
+                MsgBox(Master.eLang.GetString(42, "Please Choose/Install a Template First"), MsgBoxStyle.OkCancel, "Error")
+                Return
+            End If
             AdvancedSettings.SetSetting("Template", cbTemplate.Text)
-            AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text)
+            AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text.ToString)
             AdvancedSettings.SetBooleanSetting(String.Concat("HighPriority.", conf.Name), chHighPriority.Checked)
 
             For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
@@ -1741,7 +1745,7 @@ Public Class dlgNMTMovies
         lblHelpa.Text = ""
     End Sub
     Private Sub pbHelp_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseHover
-        lblHelpa.Text = "Click for more details"
+        lblHelpa.Text = Master.eLang.GetString(41, "Click for more details")
         Cursor = Cursors.Help
     End Sub
 
