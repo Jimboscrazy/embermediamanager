@@ -424,6 +424,9 @@ Public Class dlgNMTMovies
                 GetHtmlParts(ShowDetailsrow, tvshowheader, tvshowrow, tvshowfooter, "TVSEASON")
                 HTMLTVShowBody.Append(tvshowheader)
                 For Each _curSeason As DataRow In dtSeasons.Select(String.Format("TVShowID = {0} AND Season <> 999", _curShow.Item("ID").ToString))
+                    If dtEpisodes.Select(String.Format("TVShowID = {0} AND Season = {1}", _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString)).Count = 0 Then
+                        Continue For
+                    End If
                     If Not String.IsNullOrEmpty(htmlShowDetailsPath) Then
                         showrow = ProcessTVSeasonTags(_curShow, _curSeason, detailsShowOutput, SeasonCounter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, tvshowrow, GetUserParam("RelativePathToBase", "../../"))
                         '**File.WriteAllText(detailsShowOutput, ProcessTVSeasonTags(_curSeason, detailsShowOutput, SeasonCounter, _curShow.Item("ID").ToString, _curSeason.Item("Season").ToString, patternSeasonDetails, GetUserParam("RelativePathToBase", "../../")))
