@@ -5651,11 +5651,12 @@ doCancel:
                             Me.btnFilterDown.Enabled = False
                             Me.btnFilterUp.Enabled = True
                         End If
-
-                        Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
-                        Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
-                        Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
-
+                        Try ' On error just ignore this a let it use default
+                            Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
+                            Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
+                            Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+                        Catch ex As Exception
+                        End Try
                         Me.pnlFilter.Visible = True
 
                         Me.ClearInfo()
