@@ -6,12 +6,11 @@ Namespace EBML
         Private _roots As New List(Of EbmlElement)()
         Private _semantic As EbmlSemantic
         Private _loadPayLoad As Boolean
-
-        Property LoadPayLoad()
+        Property LoadPayLoad() As Boolean
             Get
                 Return _loadPayLoad
             End Get
-            Set(ByVal value)
+            Set(ByVal value As Boolean)
                 _loadPayLoad = value
             End Set
         End Property
@@ -45,18 +44,21 @@ Namespace EBML
             While True
                 Dim usize As Long
                 Dim width As Integer
+                Dim ewidth As Integer
                 strmPos = curPos
                 Dim id As Long = EbmlUtility.ReadID(strm, usize, width)
                 curPos += width
                 If id < 0 Then
                     Exit While
                 End If
-                Dim size As Long = EbmlUtility.ReadVariableSizeInteger(strm, usize, width)
-                curPos += width
+                Dim size As Long = EbmlUtility.ReadVariableSizeInteger(strm, usize, ewidth)
+                curPos += ewidth
                 Dim element As EbmlElement = _semantic.CreateElement(id)
                 element.StreamPosition = strmPos
+                element.ElementSize = width + ewidth + size
+                element.PayLoadSize = size
                 Dim container As EbmlContainerElement = TryCast(element, EbmlContainerElement)
-                If Not _loadPayLoad AndAlso container IsNot Nothing AndAlso _semantic.IsPayLoadElement(container.ID) Then
+                If (Not _loadPayLoad AndAlso container IsNot Nothing AndAlso _semantic.IsPayLoadElement(container.ID)) Then
                     curPos += size
                     strm.Seek(size, SeekOrigin.Current)
                     endPos = -1
@@ -78,7 +80,8 @@ Namespace EBML
                         If buffer.Length < size Then
                             Array.Resize(Of Byte)(buffer, CInt(size))
                         End If
-                        If Not _loadPayLoad AndAlso Not _semantic.IsPayLoadElement(id) Then
+                        If _loadPayLoad OrElse (Not _loadPayLoad AndAlso Not _semantic.IsPayLoadElement(id)) Then
+                            element.Loaded = True
                             strm.Read(buffer, 0, CInt(size))
                             TryCast(element, EbmlValueElement).UpdateValue(buffer, 0, CInt(size))
                         Else
@@ -116,6 +119,7 @@ Namespace EBML
                     Throw New FormatException()
                 End If
                 If container IsNot Nothing Then
+                    element.Loaded = True
                     stack1.Push(endPos)
                     stack2.Push(parent)
                     If size = usize Then

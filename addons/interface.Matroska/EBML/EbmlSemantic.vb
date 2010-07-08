@@ -51,7 +51,7 @@ Namespace EBML
         Public Function IsPayLoadElement(ByVal id As Long) As Boolean
             Dim entry As New Entry
             If Not _table.TryGetValue(id, entry) Then
-                Return "Unknown"
+                Return False
             End If
             Return entry.IsPayLoad
         End Function

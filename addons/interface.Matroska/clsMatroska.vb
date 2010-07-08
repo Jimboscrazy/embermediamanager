@@ -17,7 +17,7 @@ Public Class Matroska
         LoadMKV(filename, loadPayLoad)
     End Sub
 
-    Public Function LoadMKV(ByVal filename As String, Optional ByVal loadPayLoad As Boolean = False)
+    Public Function LoadMKV(ByVal filename As String, Optional ByVal loadPayLoad As Boolean = False) As Boolean
         _filename = filename
         Using fs As New FileStream(filename, FileMode.Open)
             _doc = New EbmlDocument(loadPayLoad, _semantic, fs)
@@ -25,17 +25,26 @@ Public Class Matroska
         Return True
     End Function
 
-    Public ReadOnly Property GetRootElements() As List(Of EbmlElement)
+    Public ReadOnly Property EBMLRootElements() As List(Of EbmlElement)
         Get
             Return _doc.RootElements
         End Get
     End Property
 
-    Public ReadOnly Property GetSemantic() As EbmlSemantic
+    Public ReadOnly Property EBMLSemantic() As EbmlSemantic
         Get
             Return _semantic
         End Get
     End Property
+
+
+
+    Public Function IsMatroska() As Boolean
+        Return (_doc.GetValueUniqueElement("DocType").ToString = "matroska")
+    End Function
+
+
+
 
     Private Sub SetupMatroskaSemantic(ByVal semantic As EbmlSemantic)
         semantic.AddSemantic(&H18538067, GetType(EbmlContainerElement), "Segment")

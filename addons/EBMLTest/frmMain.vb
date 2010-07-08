@@ -2,12 +2,10 @@
 Imports System.IO
 
 Public Class frmMain
-    Private _semantic As EbmlSemantic
-    Private _doc As EbmlDocument
+
+    Dim _mkv As Matroska
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        _semantic = New EbmlSemantic()
-        SetupMatroskaSemantic(_semantic)
-        '_doc = New EbmlDocument(False, _semantic)
+
     End Sub
 
 
@@ -195,8 +193,7 @@ Public Class frmMain
     End Sub
 
     Private Sub menuNew_Click()
-        _doc = New EbmlDocument(_semantic)
-        _doc.LoadPayLoad = True
+
         TreeView1.Nodes.Clear()
     End Sub
 
@@ -204,10 +201,10 @@ Public Class frmMain
         Using dlg As New OpenFileDialog()
             dlg.Filter = "EBML (*.ebml;*.mkv)|*.ebml;*.mkv"
             If dlg.ShowDialog() = DialogResult.OK Then
-                Using fs As New FileStream(dlg.FileName, FileMode.Open)
-                    _doc = New EbmlDocument(False, _semantic, fs)
+                _mkv = New Matroska(dlg.FileName)
+                If _mkv.IsMatroska Then
                     BuildTreeView()
-                End Using
+                End If
             End If
         End Using
     End Sub
@@ -215,9 +212,10 @@ Public Class frmMain
     Private Sub BuildTreeView()
         TreeView1.Nodes.Clear()
         TreeView1.BeginUpdate()
-        For Each element As EbmlElement In _doc.RootElements
+        For Each element As EbmlElement In _mkv.EBMLRootElements
             Dim container As EbmlContainerElement = TryCast(element, EbmlContainerElement)
-            Dim node As New TreeNode(_semantic.GetElementName(element.ID))
+            Dim node As New TreeNode(_mkv.EBMLSemantic.GetElementName(element.ID))
+            If Not element.Loaded Then node.ForeColor = Color.Red
             TreeView1.Nodes.Add(node)
             If container IsNot Nothing Then
                 BuildTreeView(node, container)
@@ -229,11 +227,12 @@ Public Class frmMain
     Private Sub BuildTreeView(ByVal node As TreeNode, ByVal parentElement As EbmlContainerElement)
         For Each element As EbmlElement In parentElement.Children
             Dim container As EbmlContainerElement = TryCast(element, EbmlContainerElement)
-            Dim newNode As New TreeNode(_semantic.GetElementName(element.ID))
+            Dim newNode As New TreeNode(_mkv.EBMLSemantic.GetElementName(element.ID))
             If container Is Nothing Then
                 Dim o As EbmlValueElement = TryCast(element, EbmlValueElement)
                 If Not IsNothing(o) AndAlso Not IsNothing(o.GetValue) Then newNode.Tag = o.GetValue.ToString
             End If
+            If Not element.Loaded Then newNode.ForeColor = Color.Red
             node.Nodes.Add(newNode)
             If container IsNot Nothing Then
                 BuildTreeView(newNode, container)
@@ -246,7 +245,7 @@ Public Class frmMain
             dlg.Filter = "EBML (*.ebml)|*.ebml|Matroska (*.mkv)|*.mkv"
             If dlg.ShowDialog() = DialogResult.OK Then
                 Using fs As New FileStream(dlg.FileName, FileMode.Create)
-                    _doc.WriteTo(fs, EBMLWriteOptions.WriteFixedSizeUseBigMemory)
+                    '_doc.WriteTo(fs, EBMLWriteOptions.WriteFixedSizeUseBigMemory)
                 End Using
             End If
         End Using
