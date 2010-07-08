@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ebml", "ebml.vbproj", "{68222E56-2969-4CD8-8576-7F61D2825095}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EBMLTest", "..\EBMLTest\EBMLTest.vbproj", "{1558E3D8-8FF8-4079-9F5D-5245181F0077}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68222E56-2969-4CD8-8576-7F61D2825095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68222E56-2969-4CD8-8576-7F61D2825095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68222E56-2969-4CD8-8576-7F61D2825095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68222E56-2969-4CD8-8576-7F61D2825095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1558E3D8-8FF8-4079-9F5D-5245181F0077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1558E3D8-8FF8-4079-9F5D-5245181F0077}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1558E3D8-8FF8-4079-9F5D-5245181F0077}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1558E3D8-8FF8-4079-9F5D-5245181F0077}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
