@@ -156,7 +156,7 @@ Public Class ModulesManager
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
                                 externalInputModules.Add(_externalProcessorModule)
-                                'ProcessorModule.Init(_externalProcessorModule.AssemblyName)
+                                ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
@@ -215,7 +215,7 @@ Public Class ModulesManager
                                 _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                                 _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
                                 externalOutputModules.Add(_externalProcessorModule)
-                                'ProcessorModule.Init(_externalProcessorModule.AssemblyName)
+                                ProcessorModule.Init(_externalProcessorModule.AssemblyName)
                                 Dim found As Boolean = False
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
@@ -680,6 +680,19 @@ Public Class ModulesManager
                     .Version = _externalTVScraperModule.ProcessorModule.ModuleVersion})
         Next
     End Sub
+
+    Public Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
+        Dim ret As Boolean
+        For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = _externalInputModuleClass.ProcessorModule.GetFilesFolderContents(Movie)
+            Catch ex As Exception
+            End Try
+            If ret Then Exit For
+        Next
+        Return ret
+    End Function
+
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         Dim ret As Interfaces.ModuleResult

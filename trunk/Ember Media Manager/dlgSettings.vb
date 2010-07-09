@@ -314,8 +314,8 @@ Public Class dlgSettings
                 End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
-                'AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
-                'AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
+                AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
                 Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
         Next
@@ -330,8 +330,8 @@ Public Class dlgSettings
                 End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
-                'AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
-                'AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
+                AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
                 Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
         Next

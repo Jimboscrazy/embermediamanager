@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmOutputSettings
+Partial Class frmMovieOutputSettings
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -382,7 +382,7 @@ Partial Class frmOutputSettings
         Me.Name = "frmOutputSettings"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "XBMC Output Module"
+        Me.Text = "YAMJ Output Module"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)

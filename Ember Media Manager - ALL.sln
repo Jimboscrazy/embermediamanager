@@ -33,6 +33,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "multi.Compatibility", "addo
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.XBMC", "addons\inout.XBMC\inout.XBMC.vbproj", "{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.YAMJ", "addons\inout.YAMJ\inout.YAMJ.vbproj", "{FC114481-C119-49D9-9443-FB9E5A74E987}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -235,6 +237,18 @@ Global
 		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x64.Build.0 = Release|x64
 		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x86.ActiveCfg = Release|x86
 		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x86.Build.0 = Release|x86
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|x64.ActiveCfg = Debug|x64
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|x64.Build.0 = Debug|x64
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|x86.ActiveCfg = Debug|x86
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Debug|x86.Build.0 = Debug|x86
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|x64.ActiveCfg = Release|x64
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|x64.Build.0 = Release|x64
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|x86.ActiveCfg = Release|x86
+		{FC114481-C119-49D9-9443-FB9E5A74E987}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

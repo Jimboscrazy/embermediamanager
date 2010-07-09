@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmInputSettings
+Partial Class frmMovieInputSettings
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -334,7 +334,7 @@ Partial Class frmInputSettings
         Me.Name = "frmInputSettings"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "XBMC Input Module"
+        Me.Text = "YAMJ Input Module"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)

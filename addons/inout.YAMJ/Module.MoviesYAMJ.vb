@@ -23,18 +23,19 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
-Public Class InputXBMC_Module
+Public Class InputYAMJ_Module
     Implements Interfaces.EmberMovieInputModule
 
-    Private fInputSettings As frmInputSettings
+    Public Shared _AssemblyName As String
+    Private fInputSettings As frmMovieInputSettings
     Public Shared eSettings As New MySettings
+
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.Enabled
         Get
             Return False
         End Get
         Set(ByVal value As Boolean)
-
         End Set
     End Property
 
@@ -44,12 +45,9 @@ Public Class InputXBMC_Module
         Dim tmpNameNoStack As String = String.Empty
         Dim currname As String = String.Empty
         Dim parPath As String = String.Empty
-        Dim isYAMJ As Boolean = False
         Dim fList As New List(Of String)
         Try
             If eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
-                isYAMJ = True
-
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
                 Catch
@@ -63,8 +61,6 @@ Public Class InputXBMC_Module
                     Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             ElseIf eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
-                isYAMJ = True
-
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName))
                 Catch
@@ -106,9 +102,8 @@ Public Class InputXBMC_Module
                                 OrElse (eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
                                 OrElse (eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg")))) _
                                 OrElse (eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg")))) _
-                        OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                                (((eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
-                                OrElse ((eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
+                        OrElse (((fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
+                                OrElse (fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
 
                         Movie.Fanart = fFile
                         Continue For
@@ -128,11 +123,10 @@ Public Class InputXBMC_Module
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                                 ((eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "index.tbn")) _
                                 OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")))) _
-                        OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                                (((eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".tbn")) _
-                                OrElse ((eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".tbn")) _
-                                OrElse ((eSettings.MovieNameJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".jpg")) _
-                                OrElse ((eSettings.MovieNameJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".jpg")))) Then
+                        OrElse (((fFile.ToLower = String.Concat(tmpNameNoStack, ".tbn")) _
+                                OrElse (fFile.ToLower = String.Concat(tmpName, ".tbn")) _
+                                OrElse (fFile.ToLower = String.Concat(tmpNameNoStack, ".jpg")) _
+                                OrElse (fFile.ToLower = String.Concat(tmpName, ".jpg")))) Then
                         Movie.Poster = fFile
                         Continue For
                     End If
@@ -141,11 +135,10 @@ Public Class InputXBMC_Module
                 'nfo
                 If String.IsNullOrEmpty(Movie.Nfo) Then
                     If (Movie.isSingle AndAlso eSettings.MovieNFO AndAlso fFile.ToLower = Path.Combine(parPath, "movie.nfo")) _
-                    OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                    (((eSettings.MovieNameNFO OrElse isYAMJ) AndAlso (fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
-                                                                             fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
-                                                                             fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
-                                                                             fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
+                                OrElse ((((fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
+                                 fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
+                                 fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
+                                 fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
                         Movie.Nfo = fFile
                         Continue For
                     End If
@@ -206,7 +199,7 @@ Public Class InputXBMC_Module
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberMovieInputModule.ModuleName
         Get
-            Return "XBMC Input Module"
+            Return "YAMJ Input Module"
         End Get
     End Property
 
@@ -218,11 +211,11 @@ Public Class InputXBMC_Module
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieInputModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fInputSettings = New frmInputSettings
+        Me.fInputSettings = New frmMovieInputSettings
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(91, "XBMC Input Module")
-        SPanel.Prefix = "XBMCInputModule_"
+        SPanel.Text = Master.eLang.GetString(91, "YAMJ Input Module")
+        SPanel.Prefix = "YAMJInputModule_"
         SPanel.Parent = "pnlMovieInput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
         SPanel.ImageIndex = If(Me.Enabled, 9, 10)
@@ -243,13 +236,26 @@ Public Class InputXBMC_Module
     Public Sub SetupOrderChanged() Implements EmberAPI.Interfaces.EmberMovieInputModule.SetupOrderChanged
 
     End Sub
+
+    Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberMovieInputModule.Init
+        _AssemblyName = sAssemblyName
+    End Sub
+    Sub SaveMySettings()
+
+    End Sub
+    Sub LoadMySettings()
+
+    End Sub
+
+    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieInputModule.ModuleSettingsChanged
 End Class
 
 
-Public Class OutputXBMC_Module
+Public Class OutputYAMJ_Module
     Implements Interfaces.EmberMovieOutputModule
 
-    Private fOutputSettings As frmOutputSettings
+    Public Shared _AssemblyName As String
+    Private fOutputSettings As frmMovieOutputSettings
     Public Shared eSettings As New MySettings
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.Enabled
@@ -263,7 +269,7 @@ Public Class OutputXBMC_Module
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleName
         Get
-            Return "XBMC Output Module"
+            Return "YAMJ Output Module"
         End Get
     End Property
 
@@ -283,11 +289,11 @@ Public Class OutputXBMC_Module
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieOutputModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fOutputSettings = New frmOutputSettings
+        Me.fOutputSettings = New frmMovieOutputSettings
         Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(92, "XBMC Output Module")
-        SPanel.Prefix = "XBMCOutputModule_"
+        SPanel.Text = Master.eLang.GetString(92, "YAMJ Output Module")
+        SPanel.Prefix = "YAMJOutputModule_"
         SPanel.Parent = "pnlMovieOutput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
         SPanel.ImageIndex = If(Me.Enabled, 9, 10)
@@ -308,6 +314,12 @@ Public Class OutputXBMC_Module
     Public Sub SetupOrderChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.SetupOrderChanged
 
     End Sub
+
+    Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberMovieOutputModule.Init
+        _AssemblyName = sAssemblyName
+    End Sub
+
+    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleSettingsChanged
 End Class
 
 Public Class MySettings

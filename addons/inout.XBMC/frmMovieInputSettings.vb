@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Public Class frmInputSettings
+Public Class frmMovieInputSettings
 
 
 End Class
