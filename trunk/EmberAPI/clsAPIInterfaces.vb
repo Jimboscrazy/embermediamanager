@@ -23,6 +23,27 @@ Public Class Interfaces
 #Region "Nested Interfaces"
 
     ' Interfaces for external Modules
+    Public Interface EmberMovieInputModule
+        Property Enabled() As Boolean
+        ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleVersion() As String
+        Sub GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer)
+        Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
+    End Interface
+    Public Interface EmberMovieOutputModule
+        Property Enabled() As Boolean
+        ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleVersion() As String
+        Sub SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie)
+        Function SaveImageAs(ByVal imageType As Enums.ImageType, ByVal mMovie As Structures.DBMovie) As String
+    End Interface
+    Public Interface EmberTVInputModule
+
+    End Interface
+    Public Interface EmberTVOutputModule
+
+    End Interface
+
     Public Interface EmberExternalModule
 
 #Region "Events"
