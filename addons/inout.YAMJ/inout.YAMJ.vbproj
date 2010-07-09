@@ -128,13 +128,13 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmOutputSettings.Designer.vb">
-      <DependentUpon>frmOutputSettings.vb</DependentUpon>
+    <Compile Include="frmMovieOutputSettings.Designer.vb">
+      <DependentUpon>frmMovieOutputSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmOutputSettings.vb">
+    <Compile Include="frmMovieOutputSettings.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Module.YAMJ.vb" />
+    <Compile Include="Module.MoviesYAMJ.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -150,20 +150,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmInputSettings.Designer.vb">
-      <DependentUpon>frmInputSettings.vb</DependentUpon>
+    <Compile Include="frmMovieInputSettings.Designer.vb">
+      <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmInputSettings.vb">
+    <Compile Include="frmMovieInputSettings.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmOutputSettings.resx">
-      <DependentUpon>frmOutputSettings.vb</DependentUpon>
+    <EmbeddedResource Include="frmMovieOutputSettings.resx">
+      <DependentUpon>frmMovieOutputSettings.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmInputSettings.resx">
-      <DependentUpon>frmInputSettings.vb</DependentUpon>
+    <EmbeddedResource Include="frmMovieInputSettings.resx">
+      <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
