@@ -31,6 +31,8 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Sub Init(ByVal sAssemblyName As String)
+        Event ModuleSettingsChanged()
         '********************************************************************************************
         Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
         Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As Structures.DBMovie) As Boolean
@@ -43,6 +45,8 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ModuleSettingsChanged()
+        Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
         Function SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie) As Boolean
         Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As String
@@ -55,6 +59,8 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ModuleSettingsChanged()
+        Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
     End Interface
     Public Interface EmberTVOutputModule
@@ -65,6 +71,8 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ModuleSettingsChanged()
+        Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
     End Interface
 
