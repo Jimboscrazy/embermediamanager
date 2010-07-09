@@ -514,7 +514,7 @@
   <string id="512">Scrape Full Cast</string>
   <string id="513">Scrape Full Crew</string>
   <string id="514">Use Certification Language:</string>
-  <string id="515">Duration Format</string>
+  <string id="515">Runtime Format</string>
   <string id="516">Use Duration for Runtime</string>
   <string id="517">Scan Meta Data</string>
   <string id="518">Configure Ember's appearance and operation.</string>
@@ -789,8 +789,8 @@
   <string id="787"></string>
   <string id="788"></string>
   <string id="789"></string>
-  <string id="790"></string>
-  <string id="791"></string>
+  <string id="790">Input Modules</string>
+  <string id="791">Output Modules</string>
   <string id="792">Donate</string>
   <string id="793">&amp;Versions...</string>
   <string id="794">&amp;Module Settings...</string>

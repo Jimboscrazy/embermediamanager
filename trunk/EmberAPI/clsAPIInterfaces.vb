@@ -31,7 +31,7 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
+        '********************************************************************************************
         Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
         Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As Structures.DBMovie) As Boolean
     End Interface
@@ -43,15 +43,29 @@ Public Class Interfaces
         Sub SaveSetup(ByVal DoDispose As Boolean)
         Sub SetupOrderChanged()
         Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
+        '********************************************************************************************
         Function SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie) As Boolean
         Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As String
     End Interface
     Public Interface EmberTVInputModule
-
+        Property Enabled() As Boolean
+        ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleVersion() As String
+        Function InjectSetup() As Containers.SettingsPanel
+        Sub SaveSetup(ByVal DoDispose As Boolean)
+        Sub SetupOrderChanged()
+        Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        '********************************************************************************************
     End Interface
     Public Interface EmberTVOutputModule
-
+        Property Enabled() As Boolean
+        ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleVersion() As String
+        Function InjectSetup() As Containers.SettingsPanel
+        Sub SaveSetup(ByVal DoDispose As Boolean)
+        Sub SetupOrderChanged()
+        Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        '********************************************************************************************
     End Interface
 
     Public Interface EmberExternalModule

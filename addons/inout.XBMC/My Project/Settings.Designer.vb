@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.generic.EmberCore.MediaFileManager.My.MySettings
+        Friend ReadOnly Property Settings() As Global.InOut.XBMC.My.MySettings
             Get
-                Return Global.generic.EmberCore.MediaFileManager.My.MySettings.Default
+                Return Global.InOut.XBMC.My.MySettings.Default
             End Get
         End Property
     End Module

@@ -30,6 +30,8 @@ Public Class ModulesManager
     Public Shared AssemblyList As New List(Of AssemblyListItem)
     Public Shared VersionList As New List(Of VersionItem)
 
+    Public externalInputModules As New List(Of _externalInputModuleClass)
+    Public externalOutputModules As New List(Of _externalOutputModuleClass)
     Public externalProcessorModules As New List(Of _externalGenericModuleClass)
     Public externalScrapersModules As New List(Of _externalScraperModuleClass)
     Public externalTVScrapersModules As New List(Of _externalTVScraperModuleClass)
@@ -116,11 +118,132 @@ Public Class ModulesManager
 
     Public Sub LoadAllModules()
         loadModules()
+        loadInputModules()
+        loadOutputModules()
         loadScrapersModules()
         loadTVScrapersModules()
         BuildVersionList()
         Master.eLang.LoadAllLanguage(Master.eSettings.Language)
     End Sub
+
+    ''' <summary>
+    ''' Load all Input Modules and field in externalInputModules List
+    ''' </summary>
+    Public Sub loadInputModules(Optional ByVal modulefile As String = "*.dll")
+        If Directory.Exists(moduleLocation) Then
+            'Assembly to load the file
+            Dim assembly As System.Reflection.Assembly
+            'For each .dll file in the module directory
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
+                Try
+                    'Load the assembly
+                    assembly = System.Reflection.Assembly.LoadFile(file)
+                    'Loop through each of the assemeblies type
+                    For Each fileType As Type In assembly.GetTypes
+                        Try
+                            'Activate the located module
+                            Dim t As Type = fileType.GetInterface("EmberMovieInputModule")
+                            If Not t Is Nothing Then
+                                Dim ProcessorModule As Interfaces.EmberMovieInputModule  'Object
+                                ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieInputModule)
+                                'Add the activated module to the arraylist
+                                Dim _externalProcessorModule As New _externalInputModuleClass
+                                Dim filename As String = file
+                                If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                    AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                                End If
+                                _externalProcessorModule.ProcessorModule = ProcessorModule
+                                _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
+                                _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
+                                externalInputModules.Add(_externalProcessorModule)
+                                'ProcessorModule.Init(_externalProcessorModule.AssemblyName)
+                                Dim found As Boolean = False
+                                For Each i In Master.eSettings.EmberModules
+                                    If i.AssemblyName = _externalProcessorModule.AssemblyName Then
+                                        _externalProcessorModule.ProcessorModule.Enabled = i.Enabled
+                                        found = True
+                                    End If
+                                Next
+                                'If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
+                                '_externalProcessorModule.ProcessorModule.Enabled = True
+                                'End If
+                                'AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
+
+                            End If
+                        Catch ex As Exception
+                        End Try
+                    Next
+                Catch ex As Exception
+                End Try
+            Next
+            Dim c As Integer = 0
+            'For Each ext As _externalGenericModuleClass In externalProcessorModules.OrderBy(Function(x) x.ModuleOrder)
+            'ext.ModuleOrder = c
+            'c += 1
+            'Next
+
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Load all Output Modules and field in externaOutputModules List
+    ''' </summary>
+    Public Sub loadOutputModules(Optional ByVal modulefile As String = "*.dll")
+        If Directory.Exists(moduleLocation) Then
+            'Assembly to load the file
+            Dim assembly As System.Reflection.Assembly
+            'For each .dll file in the module directory
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
+                Try
+                    'Load the assembly
+                    assembly = System.Reflection.Assembly.LoadFile(file)
+                    'Loop through each of the assemeblies type
+                    For Each fileType As Type In assembly.GetTypes
+                        Try
+                            'Activate the located module
+                            Dim t As Type = fileType.GetInterface("EmberMovieOutputModule")
+                            If Not t Is Nothing Then
+                                Dim ProcessorModule As Interfaces.EmberMovieOutputModule  'Object
+                                ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieOutputModule)
+                                'Add the activated module to the arraylist
+                                Dim _externalProcessorModule As New _externalOutputModuleClass
+                                Dim filename As String = file
+                                If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                    AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                                End If
+                                _externalProcessorModule.ProcessorModule = ProcessorModule
+                                _externalProcessorModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
+                                _externalProcessorModule.AssemblyFileName = Path.GetFileName(file)
+                                externalOutputModules.Add(_externalProcessorModule)
+                                'ProcessorModule.Init(_externalProcessorModule.AssemblyName)
+                                Dim found As Boolean = False
+                                For Each i In Master.eSettings.EmberModules
+                                    If i.AssemblyName = _externalProcessorModule.AssemblyName Then
+                                        _externalProcessorModule.ProcessorModule.Enabled = i.Enabled
+                                        found = True
+                                    End If
+                                Next
+                                'If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
+                                '_externalProcessorModule.ProcessorModule.Enabled = True
+                                'End If
+                                'AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
+
+                            End If
+                        Catch ex As Exception
+                        End Try
+                    Next
+                Catch ex As Exception
+                End Try
+            Next
+            Dim c As Integer = 0
+            'For Each ext As _externalGenericModuleClass In externalProcessorModules.OrderBy(Function(x) x.ModuleOrder)
+            'ext.ModuleOrder = c
+            'c += 1
+            'Next
+
+        End If
+    End Sub
+
 
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
@@ -531,6 +654,16 @@ Public Class ModulesManager
         VersionList.Clear()
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPP", .Name = "Ember Application", .Version = My.Application.Info.Version.Revision.ToString})
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPI", .Name = "Ember API", .Version = Functions.EmberAPIVersion()})
+        For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules
+            VersionList.Add(New VersionItem With {.Name = _externalInputModuleClass.ProcessorModule.ModuleName, _
+                    .AssemblyFileName = _externalInputModuleClass.AssemblyFileName, _
+                    .Version = _externalInputModuleClass.ProcessorModule.ModuleVersion})
+        Next
+        For Each _externaloutputModuleClass As _externalOutputModuleClass In externalOutputModules
+            VersionList.Add(New VersionItem With {.Name = _externaloutputModuleClass.ProcessorModule.ModuleName, _
+                    .AssemblyFileName = _externaloutputModuleClass.AssemblyFileName, _
+                    .Version = _externaloutputModuleClass.ProcessorModule.ModuleVersion})
+        Next
         For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
             VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
                     .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
@@ -765,6 +898,34 @@ Public Class ModulesManager
         End Sub
 
 #End Region 'Methods
+
+    End Class
+    Class _externalInputModuleClass
+
+#Region "Fields"
+
+        Public AssemblyFileName As String
+
+        'Public Enabled As Boolean
+        Public AssemblyName As String
+        Public ModuleOrder As Integer 'TODO: not important at this point.. for 1.5
+        Public ProcessorModule As Interfaces.EmberMovieInputModule  'Object
+
+#End Region 'Fields
+
+    End Class
+
+    Class _externalOutputModuleClass
+
+#Region "Fields"
+
+        Public AssemblyFileName As String
+
+        'Public Enabled As Boolean
+        Public AssemblyName As String
+        Public ModuleOrder As Integer 'TODO: not important at this point.. for 1.5
+        Public ProcessorModule As Interfaces.EmberMovieOutputModule  'Object
+#End Region 'Fields
 
     End Class
 

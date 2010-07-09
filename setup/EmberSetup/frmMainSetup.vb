@@ -1488,7 +1488,7 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         'CredList.Add(New CredLine With {.Text = "__________Project Manager_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
-        CredList.Add(New CredLine With {.Text = "___QA/Documentation Coordinator___", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
+        CredList.Add(New CredLine With {.Text = "__________Honorary Member_________", .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Underline Or FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Bence ""olympia"" Nádas"})
         CredList.Add(New CredLine With {.Text = String.Empty})

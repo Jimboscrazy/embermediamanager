@@ -376,9 +376,6 @@ Partial Class dlgSettings
         Me.lstShowFilters = New System.Windows.Forms.ListBox
         Me.pnlTVImages = New System.Windows.Forms.Panel
         Me.TabControl3 = New System.Windows.Forms.TabControl
-        Me.TabPage8 = New System.Windows.Forms.TabPage
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox
-        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.gbAllSPosterOpts = New System.Windows.Forms.GroupBox
         Me.rbAllSPoster = New System.Windows.Forms.RadioButton
@@ -468,6 +465,9 @@ Partial Class dlgSettings
         Me.cbEpFanartSize = New System.Windows.Forms.ComboBox
         Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
+        Me.TabPage8 = New System.Windows.Forms.TabPage
+        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox
+        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
         Me.GroupBox32 = New System.Windows.Forms.GroupBox
         Me.GroupBox35 = New System.Windows.Forms.GroupBox
@@ -565,8 +565,8 @@ Partial Class dlgSettings
         Me.gbRTFormat = New System.Windows.Forms.GroupBox
         Me.Label51 = New System.Windows.Forms.Label
         Me.txtRuntimeFormat = New System.Windows.Forms.TextBox
-        Me.chkScanMediaInfo = New System.Windows.Forms.CheckBox
         Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
+        Me.chkScanMediaInfo = New System.Windows.Forms.CheckBox
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
@@ -661,7 +661,6 @@ Partial Class dlgSettings
         Me.gbShowFilter.SuspendLayout()
         Me.pnlTVImages.SuspendLayout()
         Me.TabControl3.SuspendLayout()
-        Me.TabPage8.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.gbAllSPosterOpts.SuspendLayout()
         CType(Me.tbAllSPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -679,6 +678,7 @@ Partial Class dlgSettings
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage8.SuspendLayout()
         Me.pnlTVScraper.SuspendLayout()
         Me.GroupBox32.SuspendLayout()
         Me.GroupBox35.SuspendLayout()
@@ -2290,6 +2290,8 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
         Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
         Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
+        Me.ilSettings.Images.SetKeyName(11, "blue_arrow_up.png")
+        Me.ilSettings.Images.SetKeyName(12, "blue_arrow_down.png")
         '
         'tvSettings
         '
@@ -4561,40 +4563,6 @@ Partial Class dlgSettings
         Me.TabControl3.Size = New System.Drawing.Size(609, 397)
         Me.TabControl3.TabIndex = 4
         '
-        'TabPage8
-        '
-        Me.TabPage8.Controls.Add(Me.chkGetEnglishImages)
-        Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(601, 371)
-        Me.TabPage8.TabIndex = 3
-        Me.TabPage8.Text = "General"
-        Me.TabPage8.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.chkGetEnglishImages.Enabled = False
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(21, 32)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
-        Me.chkGetEnglishImages.TabIndex = 1
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
-        '
-        'chkOnlyTVImagesLanguage
-        '
-        Me.chkOnlyTVImagesLanguage.AutoSize = True
-        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(8, 14)
-        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
-        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
-        Me.chkOnlyTVImagesLanguage.TabIndex = 0
-        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
-        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
-        '
         'TabPage5
         '
         Me.TabPage5.Controls.Add(Me.gbAllSPosterOpts)
@@ -5598,6 +5566,40 @@ Partial Class dlgSettings
         Me.chkOverwriteEpFanart.TabIndex = 2
         Me.chkOverwriteEpFanart.Text = "Overwrite Existing"
         Me.chkOverwriteEpFanart.UseVisualStyleBackColor = True
+        '
+        'TabPage8
+        '
+        Me.TabPage8.Controls.Add(Me.chkGetEnglishImages)
+        Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
+        Me.TabPage8.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage8.Name = "TabPage8"
+        Me.TabPage8.Size = New System.Drawing.Size(601, 371)
+        Me.TabPage8.TabIndex = 3
+        Me.TabPage8.Text = "General"
+        Me.TabPage8.UseVisualStyleBackColor = True
+        '
+        'chkGetEnglishImages
+        '
+        Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Enabled = False
+        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkGetEnglishImages.Location = New System.Drawing.Point(21, 32)
+        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
+        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
+        Me.chkGetEnglishImages.TabIndex = 1
+        Me.chkGetEnglishImages.Text = "Also Get English Images"
+        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
+        '
+        'chkOnlyTVImagesLanguage
+        '
+        Me.chkOnlyTVImagesLanguage.AutoSize = True
+        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(8, 14)
+        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
+        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
+        Me.chkOnlyTVImagesLanguage.TabIndex = 0
+        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
+        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
         '
         'pnlTVScraper
         '
@@ -6689,17 +6691,6 @@ Partial Class dlgSettings
         Me.txtRuntimeFormat.Size = New System.Drawing.Size(128, 22)
         Me.txtRuntimeFormat.TabIndex = 22
         '
-        'chkScanMediaInfo
-        '
-        Me.chkScanMediaInfo.AutoSize = True
-        Me.chkScanMediaInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScanMediaInfo.Location = New System.Drawing.Point(5, 16)
-        Me.chkScanMediaInfo.Name = "chkScanMediaInfo"
-        Me.chkScanMediaInfo.Size = New System.Drawing.Size(106, 17)
-        Me.chkScanMediaInfo.TabIndex = 7
-        Me.chkScanMediaInfo.Text = "Scan Meta Data"
-        Me.chkScanMediaInfo.UseVisualStyleBackColor = True
-        '
         'chkUseMIDuration
         '
         Me.chkUseMIDuration.AutoSize = True
@@ -6711,6 +6702,17 @@ Partial Class dlgSettings
         Me.chkUseMIDuration.TabIndex = 8
         Me.chkUseMIDuration.Text = "Use Duration for Runtime"
         Me.chkUseMIDuration.UseVisualStyleBackColor = True
+        '
+        'chkScanMediaInfo
+        '
+        Me.chkScanMediaInfo.AutoSize = True
+        Me.chkScanMediaInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScanMediaInfo.Location = New System.Drawing.Point(5, 16)
+        Me.chkScanMediaInfo.Name = "chkScanMediaInfo"
+        Me.chkScanMediaInfo.Size = New System.Drawing.Size(106, 17)
+        Me.chkScanMediaInfo.TabIndex = 7
+        Me.chkScanMediaInfo.Text = "Scan Meta Data"
+        Me.chkScanMediaInfo.UseVisualStyleBackColor = True
         '
         'GroupBox10
         '
@@ -7029,6 +7031,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7046,8 +7050,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlTVImages)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -7167,8 +7169,6 @@ Partial Class dlgSettings
         Me.gbShowFilter.PerformLayout()
         Me.pnlTVImages.ResumeLayout(False)
         Me.TabControl3.ResumeLayout(False)
-        Me.TabPage8.ResumeLayout(False)
-        Me.TabPage8.PerformLayout()
         Me.TabPage5.ResumeLayout(False)
         Me.gbAllSPosterOpts.ResumeLayout(False)
         Me.gbAllSPosterOpts.PerformLayout()
@@ -7193,6 +7193,8 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.ResumeLayout(False)
         Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage8.ResumeLayout(False)
+        Me.TabPage8.PerformLayout()
         Me.pnlTVScraper.ResumeLayout(False)
         Me.GroupBox32.ResumeLayout(False)
         Me.GroupBox35.ResumeLayout(False)

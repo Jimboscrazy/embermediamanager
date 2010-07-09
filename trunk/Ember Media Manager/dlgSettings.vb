@@ -178,6 +178,21 @@ Public Class dlgSettings
                       .Panel = Me.pnlImages, _
                       .Order = 400})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlMovieInput", _
+                      .Text = Master.eLang.GetString(790, "Input Modules"), _
+                      .ImageIndex = 11, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = New Panel, _
+                      .Order = 500})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlMovieOutput", _
+                      .Text = Master.eLang.GetString(791, "Output Modules"), _
+                      .ImageIndex = 12, _
+                      .Type = Master.eLang.GetString(36, "Movies"), _
+                      .Panel = New Panel, _
+                      .Order = 550})
+
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlShows", _
                       .Text = Master.eLang.GetString(38, "General"), _
                       .ImageIndex = 7, _
@@ -226,10 +241,10 @@ Public Class dlgSettings
                       .Type = Master.eLang.GetString(390, "Options"), _
                       .Panel = Me.pnlXBMCCom, _
                       .Order = 300})
-        AddScraperPanels()
+        AddModulesPanels()
     End Sub
 
-    Sub AddScraperPanels()
+    Sub AddModulesPanels()
         Dim ModuleCounter As Integer = 1
         Dim tPanel As New Containers.SettingsPanel
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -287,9 +302,42 @@ Public Class dlgSettings
                 Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
         Next
+        '****
+        ModuleCounter = 1
+        For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules
+            tPanel = s.ProcessorModule.InjectSetup
+            If Not tPanel Is Nothing Then
+                tPanel.Order += ModuleCounter
+                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
+                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
+                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+                End If
+                Me.SettingsPanels.Add(tPanel)
+                ModuleCounter += 1
+                'AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
+                'AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+            End If
+        Next
+        ModuleCounter = 1
+        For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules
+            tPanel = s.ProcessorModule.InjectSetup
+            If Not tPanel Is Nothing Then
+                tPanel.Order += ModuleCounter
+                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
+                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
+                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+                End If
+                Me.SettingsPanels.Add(tPanel)
+                ModuleCounter += 1
+                'AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
+                'AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+            End If
+        Next
     End Sub
 
-    Sub RemoveScraperPanels()
+    Sub RemoveModulesPanels()
         For Each s As ModulesManager._externalScraperModuleClass In ModulesManager.Instance.externalScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -444,7 +492,7 @@ Public Class dlgSettings
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         If Not didApply Then sResult.DidCancel = True
-        RemoveScraperPanels()
+        RemoveModulesPanels()
         Me.Close()
     End Sub
 
@@ -645,7 +693,7 @@ Public Class dlgSettings
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         NoUpdate = True
         Me.SaveSettings(False)
-        RemoveScraperPanels()
+        RemoveModulesPanels()
         Me.Close()
     End Sub
 

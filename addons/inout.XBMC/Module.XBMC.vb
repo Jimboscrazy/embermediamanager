@@ -26,6 +26,7 @@ Imports System.Xml.Serialization
 Public Class InputXBMC_Module
     Implements Interfaces.EmberMovieInputModule
 
+    Private fInputSettings As frmInputSettings
     Public Shared eSettings As New MySettings
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.Enabled
@@ -216,7 +217,21 @@ Public Class InputXBMC_Module
     End Property
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieInputModule.InjectSetup
-        Return Nothing
+        Dim SPanel As New Containers.SettingsPanel
+        Me.fInputSettings = New frmInputSettings
+        Me.fInputSettings.chkEnabled.Checked = Me.Enabled
+        SPanel.Name = Me.ModuleName
+        SPanel.Text = Master.eLang.GetString(91, "XBMC Input Module")
+        SPanel.Prefix = "XBMCInputModule_"
+        SPanel.Parent = "pnlMovieInput"
+        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.ImageIndex = If(Me.Enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = Me.fInputSettings.pnlSettings
+        'AddHandler Me.fInputSettings.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        'AddHandler me.fInputSettings.EnabledChanged, AddressOf Handle_SetupChanged
+        Return SPanel
+        'Return Nothing
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieInputModule.SaveSetup
@@ -234,6 +249,7 @@ End Class
 Public Class OutputXBMC_Module
     Implements Interfaces.EmberMovieOutputModule
 
+    Private fOutputSettings As frmOutputSettings
     Public Shared eSettings As New MySettings
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.Enabled
@@ -266,7 +282,21 @@ Public Class OutputXBMC_Module
     End Function
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieOutputModule.InjectSetup
-        Return Nothing
+        Dim SPanel As New Containers.SettingsPanel
+        Me.fOutputSettings = New frmOutputSettings
+        Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
+        SPanel.Name = Me.ModuleName
+        SPanel.Text = Master.eLang.GetString(92, "XBMC Output Module")
+        SPanel.Prefix = "XBMCOutputModule_"
+        SPanel.Parent = "pnlMovieOutput"
+        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.ImageIndex = If(Me.Enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = Me.fOutputSettings.pnlSettings
+        'AddHandler Me.fInputSettings.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        'AddHandler me.fInputSettings.EnabledChanged, AddressOf Handle_SetupChanged
+        Return SPanel
+        'Return Nothing
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveSetup
