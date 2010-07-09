@@ -31,6 +31,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "multi.EmberExtras", "addons
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "multi.Compatibility", "addons\multi.Compatibility\multi.Compatibility.vbproj", "{859C1085-518B-49D2-9C84-D91C4094097F}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.XBMC", "addons\inout.XBMC\inout.XBMC.vbproj", "{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -221,6 +223,18 @@ Global
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x64.Build.0 = Release|Any CPU
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x86.ActiveCfg = Release|Any CPU
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x86.Build.0 = Release|Any CPU
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|x64.ActiveCfg = Debug|x64
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|x64.Build.0 = Debug|x64
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|x86.ActiveCfg = Debug|x86
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Debug|x86.Build.0 = Debug|x86
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x64.ActiveCfg = Release|x64
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x64.Build.0 = Release|x64
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x86.ActiveCfg = Release|x86
+		{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
