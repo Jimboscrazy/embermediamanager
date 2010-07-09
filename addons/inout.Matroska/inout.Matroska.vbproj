@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}</ProjectGuid>
+    <ProjectGuid>{68222E56-2969-4CD8-8576-7F61D2825095}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>InOut.XBMC</RootNamespace>
     <AssemblyName>InOut.XBMC</AssemblyName>
@@ -128,13 +128,31 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmMovieOutputSettings.Designer.vb">
-      <DependentUpon>frmMovieOutputSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmMovieOutputSettings.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Module.MoviesXBMC.vb" />
+    <Compile Include="clsMatroska.vb" />
+    <Compile Include="NewFolder1\EbmlAsciiElement.vb" />
+    <Compile Include="NewFolder1\EbmlBinaryElement.vb" />
+    <Compile Include="NewFolder1\EbmlBoolElement.vb" />
+    <Compile Include="NewFolder1\EbmlContainerElement.vb" />
+    <Compile Include="NewFolder1\EbmlDateElement.vb" />
+    <Compile Include="NewFolder1\EbmlDocument.vb" />
+    <Compile Include="NewFolder1\EbmlElement.vb" />
+    <Compile Include="NewFolder1\EbmlFieldSemanticAttribute.vb" />
+    <Compile Include="NewFolder1\EbmlFloatElement.vb" />
+    <Compile Include="NewFolder1\EbmlFormatter.vb" />
+    <Compile Include="NewFolder1\EbmlFullBufferedWriter.vb" />
+    <Compile Include="NewFolder1\EBMLFunctions.vb" />
+    <Compile Include="NewFolder1\EbmlIPEndPointElement.vb" />
+    <Compile Include="NewFolder1\EbmlObjectElement.vb" />
+    <Compile Include="NewFolder1\EbmlSemantic.vb" />
+    <Compile Include="NewFolder1\EbmlSIntElement.vb" />
+    <Compile Include="NewFolder1\EbmlStringElement.vb" />
+    <Compile Include="NewFolder1\EbmlTypeAttribute.vb" />
+    <Compile Include="NewFolder1\EbmlUIntElement.vb" />
+    <Compile Include="NewFolder1\EbmlUtility.vb" />
+    <Compile Include="NewFolder1\EbmlValueElement.vb" />
+    <Compile Include="NewFolder1\EbmlVoidElement.vb" />
+    <Compile Include="NewFolder1\EBMLWriteOptions.vb" />
+    <Compile Include="NewFolder1\EbmlWriter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -150,22 +168,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmMovieInputSettings.Designer.vb">
-      <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmMovieInputSettings.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmMovieOutputSettings.resx">
-      <DependentUpon>frmMovieOutputSettings.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmMovieInputSettings.resx">
-      <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
