@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{68222E56-2969-4CD8-8576-7F61D2825095}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>InOut.XBMC</RootNamespace>
-    <AssemblyName>InOut.XBMC</AssemblyName>
+    <RootNamespace>InOut.Matroska</RootNamespace>
+    <AssemblyName>InOut.Matroska</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -128,31 +128,31 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsMatroska.vb" />
-    <Compile Include="NewFolder1\EbmlAsciiElement.vb" />
-    <Compile Include="NewFolder1\EbmlBinaryElement.vb" />
-    <Compile Include="NewFolder1\EbmlBoolElement.vb" />
-    <Compile Include="NewFolder1\EbmlContainerElement.vb" />
-    <Compile Include="NewFolder1\EbmlDateElement.vb" />
-    <Compile Include="NewFolder1\EbmlDocument.vb" />
-    <Compile Include="NewFolder1\EbmlElement.vb" />
-    <Compile Include="NewFolder1\EbmlFieldSemanticAttribute.vb" />
-    <Compile Include="NewFolder1\EbmlFloatElement.vb" />
-    <Compile Include="NewFolder1\EbmlFormatter.vb" />
-    <Compile Include="NewFolder1\EbmlFullBufferedWriter.vb" />
-    <Compile Include="NewFolder1\EBMLFunctions.vb" />
-    <Compile Include="NewFolder1\EbmlIPEndPointElement.vb" />
-    <Compile Include="NewFolder1\EbmlObjectElement.vb" />
-    <Compile Include="NewFolder1\EbmlSemantic.vb" />
-    <Compile Include="NewFolder1\EbmlSIntElement.vb" />
-    <Compile Include="NewFolder1\EbmlStringElement.vb" />
-    <Compile Include="NewFolder1\EbmlTypeAttribute.vb" />
-    <Compile Include="NewFolder1\EbmlUIntElement.vb" />
-    <Compile Include="NewFolder1\EbmlUtility.vb" />
-    <Compile Include="NewFolder1\EbmlValueElement.vb" />
-    <Compile Include="NewFolder1\EbmlVoidElement.vb" />
-    <Compile Include="NewFolder1\EBMLWriteOptions.vb" />
-    <Compile Include="NewFolder1\EbmlWriter.vb" />
+    <Compile Include="Matroska\clsMatroska.vb" />
+    <Compile Include="EBML\EbmlAsciiElement.vb" />
+    <Compile Include="EBML\EbmlBinaryElement.vb" />
+    <Compile Include="EBML\EbmlBoolElement.vb" />
+    <Compile Include="EBML\EbmlContainerElement.vb" />
+    <Compile Include="EBML\EbmlDateElement.vb" />
+    <Compile Include="EBML\EbmlDocument.vb" />
+    <Compile Include="EBML\EbmlElement.vb" />
+    <Compile Include="EBML\EbmlFieldSemanticAttribute.vb" />
+    <Compile Include="EBML\EbmlFloatElement.vb" />
+    <Compile Include="EBML\EbmlFormatter.vb" />
+    <Compile Include="EBML\EbmlFullBufferedWriter.vb" />
+    <Compile Include="EBML\EBMLFunctions.vb" />
+    <Compile Include="EBML\EbmlIPEndPointElement.vb" />
+    <Compile Include="EBML\EbmlObjectElement.vb" />
+    <Compile Include="EBML\EbmlSemantic.vb" />
+    <Compile Include="EBML\EbmlSIntElement.vb" />
+    <Compile Include="EBML\EbmlStringElement.vb" />
+    <Compile Include="EBML\EbmlTypeAttribute.vb" />
+    <Compile Include="EBML\EbmlUIntElement.vb" />
+    <Compile Include="EBML\EbmlUtility.vb" />
+    <Compile Include="EBML\EbmlValueElement.vb" />
+    <Compile Include="EBML\EbmlVoidElement.vb" />
+    <Compile Include="EBML\EBMLWriteOptions.vb" />
+    <Compile Include="EBML\EbmlWriter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
