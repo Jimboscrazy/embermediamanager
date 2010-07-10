@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ebml")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("AtWork")> 
-<Assembly: AssemblyProduct("ebml")> 
-<Assembly: AssemblyCopyright("Copyright © AtWork 2010")> 
+<Assembly: AssemblyTitle("generic.EmberCore")> 
+<Assembly: AssemblyDescription("www.embermm.com")> 
+<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyProduct("generic.EmberCore")> 
+<Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("f4e3e4f8-46ef-4b5f-b48d-5dc67858a2b3")> 
+<Assembly: Guid("e1649831-0036-4c83-960d-e1ef52374cd3")> 
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("0.0.0.2398")> 
+<Assembly: AssemblyFileVersion("0.0.0.2398")> 

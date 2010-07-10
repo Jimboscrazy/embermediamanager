@@ -221,6 +221,23 @@ Public Class dlgSettings
                       .Panel = Me.pnlTVImages, _
                       .Order = 400})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTVInput", _
+                      .Text = Master.eLang.GetString(790, "Input Modules"), _
+                      .ImageIndex = 11, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = New Panel, _
+                      .Order = 500})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+                      .Name = "pnlTVOutput", _
+                      .Text = Master.eLang.GetString(791, "Output Modules"), _
+                      .ImageIndex = 12, _
+                      .Type = Master.eLang.GetString(698, "TV Shows"), _
+                      .Panel = New Panel, _
+                      .Order = 550})
+
+
+
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlGeneral", _
                       .Text = Master.eLang.GetString(38, "General"), _
                       .ImageIndex = 0, _
@@ -2139,13 +2156,14 @@ Public Class dlgSettings
 
         Me.tvSettings.Nodes.Clear()
         Me.RemoveCurrPanel()
-
+        Dim cFont As New Font("Segoe UI", 9)
         For Each pPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(s) s.Type = sType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
             pNode = New TreeNode(pPanel.Text, pPanel.ImageIndex, pPanel.ImageIndex)
             pNode.Name = pPanel.Name
             For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = sType AndAlso p.Parent = pNode.Name).OrderBy(Function(s) s.Order)
                 cNode = New TreeNode(cPanel.Text, cPanel.ImageIndex, cPanel.ImageIndex)
                 cNode.Name = cPanel.Name
+                cNode.NodeFont = cFont
                 pNode.Nodes.Add(cNode)
             Next
             Me.tvSettings.Nodes.Add(pNode)
