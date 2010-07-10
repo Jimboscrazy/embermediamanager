@@ -25,10 +25,6 @@ Partial Class frmMovieOutputSettings
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
-        Me.GroupBox16 = New System.Windows.Forms.GroupBox
-        Me.chkAutoBD = New System.Windows.Forms.CheckBox
-        Me.btnBrowse = New System.Windows.Forms.Button
-        Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
@@ -49,14 +45,18 @@ Partial Class frmMovieOutputSettings
         Me.chkMovieJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox
+        Me.chkAutoBD = New System.Windows.Forms.CheckBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
-        Me.GroupBox16.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -88,48 +88,6 @@ Partial Class frmMovieOutputSettings
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 400)
         Me.pnlSettings.TabIndex = 83
-        '
-        'GroupBox16
-        '
-        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
-        Me.GroupBox16.Controls.Add(Me.btnBrowse)
-        Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(3, 321)
-        Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(366, 69)
-        Me.GroupBox16.TabIndex = 84
-        Me.GroupBox16.TabStop = False
-        Me.GroupBox16.Text = "Backdrops Folder"
-        '
-        'chkAutoBD
-        '
-        Me.chkAutoBD.AutoSize = True
-        Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
-        Me.chkAutoBD.Name = "chkAutoBD"
-        Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
-        Me.chkAutoBD.TabIndex = 2
-        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkAutoBD.UseVisualStyleBackColor = True
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(336, 15)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnBrowse.TabIndex = 1
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        '
-        'txtBDPath
-        '
-        Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
-        Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
-        Me.txtBDPath.TabIndex = 0
         '
         'GroupBox8
         '
@@ -368,6 +326,48 @@ Partial Class frmMovieOutputSettings
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
+        Me.GroupBox16.Controls.Add(Me.btnBrowse)
+        Me.GroupBox16.Controls.Add(Me.txtBDPath)
+        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox16.Location = New System.Drawing.Point(3, 321)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(366, 69)
+        Me.GroupBox16.TabIndex = 84
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "Backdrops Folder"
+        '
+        'chkAutoBD
+        '
+        Me.chkAutoBD.AutoSize = True
+        Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
+        Me.chkAutoBD.Name = "chkAutoBD"
+        Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
+        Me.chkAutoBD.TabIndex = 2
+        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
+        Me.chkAutoBD.UseVisualStyleBackColor = True
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(336, 15)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnBrowse.TabIndex = 1
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        '
+        'txtBDPath
+        '
+        Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
+        Me.txtBDPath.Name = "txtBDPath"
+        Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
+        Me.txtBDPath.TabIndex = 0
+        '
         'frmMovieOutputSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -386,8 +386,6 @@ Partial Class frmMovieOutputSettings
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
-        Me.GroupBox16.ResumeLayout(False)
-        Me.GroupBox16.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox21.ResumeLayout(False)
         Me.GroupBox21.PerformLayout()
@@ -397,6 +395,8 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

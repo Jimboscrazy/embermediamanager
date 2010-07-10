@@ -244,7 +244,6 @@ Public Class ModulesManager
         End If
     End Sub
 
-
     ''' <summary>
     ''' Load all Generic Modules and field in externalProcessorModules List
     ''' </summary>
@@ -496,6 +495,45 @@ Public Class ModulesManager
         End Try
         Return ret.Cancelled
     End Function
+
+    Public Function LoadMovieFromInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
+        Dim mMovie As New MediaContainers.Movie
+        Dim ret As Boolean = False
+        Try
+            For Each _externalModule As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled)
+                Try
+                    ret = _externalModule.ProcessorModule.LoadMovieInfoSheet(sPath, isSingle, mMovie)
+                Catch ex As Exception
+                End Try
+                If ret Then Exit For
+            Next
+            If Not ret Then
+                ' Last try, check Ember Specific Info Sheet
+                mMovie = NFO.LoadMovieFromNFO(sPath, isSingle)
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
+                    ret = True
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return mMovie
+    End Function
+
+    Public Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
+        Dim ret As Boolean
+        For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = _externalInputModuleClass.ProcessorModule.GetFilesFolderContents(Movie)
+            Catch ex As Exception
+            End Try
+            If ret Then Exit For
+        Next
+        Return ret
+    End Function
+
+
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)
@@ -680,19 +718,6 @@ Public Class ModulesManager
                     .Version = _externalTVScraperModule.ProcessorModule.ModuleVersion})
         Next
     End Sub
-
-    Public Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
-        Dim ret As Boolean
-        For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
-            Try
-                ret = _externalInputModuleClass.ProcessorModule.GetFilesFolderContents(Movie)
-            Catch ex As Exception
-            End Try
-            If ret Then Exit For
-        Next
-        Return ret
-    End Function
-
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         Dim ret As Interfaces.ModuleResult

@@ -35,7 +35,7 @@ Public Class Interfaces
         Event ModuleSettingsChanged()
         '********************************************************************************************
         Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
-        Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As Structures.DBMovie) As Boolean
+        Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As MediaContainers.Movie) As Boolean
     End Interface
     Public Interface EmberMovieOutputModule
         Property Enabled() As Boolean

@@ -110,7 +110,7 @@ Partial Class frmTVInputSettings
         Me.gbTVNaming.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVNaming.Location = New System.Drawing.Point(3, 31)
         Me.gbTVNaming.Name = "gbTVNaming"
-        Me.gbTVNaming.Size = New System.Drawing.Size(437, 253)
+        Me.gbTVNaming.Size = New System.Drawing.Size(456, 253)
         Me.gbTVNaming.TabIndex = 83
         Me.gbTVNaming.TabStop = False
         Me.gbTVNaming.Text = "File Naming"
@@ -154,9 +154,9 @@ Partial Class frmTVInputSettings
         Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDotFanart)
         Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDashFanart)
         Me.gbEpisodeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpisodeFanart.Location = New System.Drawing.Point(292, 67)
+        Me.gbEpisodeFanart.Location = New System.Drawing.Point(292, 72)
         Me.gbEpisodeFanart.Name = "gbEpisodeFanart"
-        Me.gbEpisodeFanart.Size = New System.Drawing.Size(140, 52)
+        Me.gbEpisodeFanart.Size = New System.Drawing.Size(158, 52)
         Me.gbEpisodeFanart.TabIndex = 4
         Me.gbEpisodeFanart.TabStop = False
         Me.gbEpisodeFanart.Text = "Episode Fanart"
@@ -190,7 +190,7 @@ Partial Class frmTVInputSettings
         Me.gbEpisodePosters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbEpisodePosters.Location = New System.Drawing.Point(292, 15)
         Me.gbEpisodePosters.Name = "gbEpisodePosters"
-        Me.gbEpisodePosters.Size = New System.Drawing.Size(140, 52)
+        Me.gbEpisodePosters.Size = New System.Drawing.Size(158, 52)
         Me.gbEpisodePosters.TabIndex = 6
         Me.gbEpisodePosters.TabStop = False
         Me.gbEpisodePosters.Text = "Episode Posters"

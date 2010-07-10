@@ -30,8 +30,6 @@ Partial Class frmMovieOutputSettings
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
         Me.rbDashTrailer = New System.Windows.Forms.RadioButton
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
         Me.chkMovieNFO = New System.Windows.Forms.CheckBox
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameDotFanartJPG = New System.Windows.Forms.CheckBox
@@ -141,39 +139,14 @@ Partial Class frmMovieOutputSettings
         '
         'GroupBox7
         '
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameMultiOnly)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
         Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox7.Location = New System.Drawing.Point(12, 15)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(435, 95)
+        Me.GroupBox7.Size = New System.Drawing.Size(435, 58)
         Me.GroupBox7.TabIndex = 4
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "NFO"
-        '
-        'chkMovieNameMultiOnly
-        '
-        Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(16, 52)
-        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(413, 22)
-        Me.chkMovieNameMultiOnly.TabIndex = 5
-        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
-        Me.chkMovieNameMultiOnly.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
-        '
-        'chkMovieNameNFO
-        '
-        Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 34)
-        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
-        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
-        Me.chkMovieNameNFO.TabIndex = 1
-        Me.chkMovieNameNFO.Text = "<movie>.nfo"
-        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
         '
         'chkMovieNFO
         '
@@ -181,9 +154,9 @@ Partial Class frmMovieOutputSettings
         Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
         Me.chkMovieNFO.Name = "chkMovieNFO"
-        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
+        Me.chkMovieNFO.Size = New System.Drawing.Size(95, 17)
         Me.chkMovieNFO.TabIndex = 0
-        Me.chkMovieNFO.Text = "movie.nfo"
+        Me.chkMovieNFO.Text = "mymovies.xml"
         Me.chkMovieNFO.UseVisualStyleBackColor = True
         '
         'GroupBox6
@@ -368,7 +341,7 @@ Partial Class frmMovieOutputSettings
         Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
         Me.txtBDPath.TabIndex = 0
         '
-        'frmOutputSettings
+        'frmMovieOutputSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -379,7 +352,7 @@ Partial Class frmMovieOutputSettings
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmOutputSettings"
+        Me.Name = "frmMovieOutputSettings"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "MediaBrowser Output Module"
@@ -408,8 +381,6 @@ Partial Class frmMovieOutputSettings
     Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox

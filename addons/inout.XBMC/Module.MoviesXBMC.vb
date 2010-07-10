@@ -30,7 +30,6 @@ Public Class InputXBMC_Module
     Private fInputSettings As frmMovieInputSettings
     Public Shared eSettings As New MySettings
 
-
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.Enabled
         Get
             Return False
@@ -169,7 +168,8 @@ Public Class InputXBMC_Module
         Return False
     End Function
 
-    Public Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As EmberAPI.Structures.DBMovie) As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.LoadMovieInfoSheet
+    Public Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As MediaContainers.Movie) As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.LoadMovieInfoSheet
+        mMovie = NFO.LoadMovieFromNFO(sPath, isSingle)
         Return False
     End Function
 
@@ -188,6 +188,7 @@ Public Class InputXBMC_Module
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieInputModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me.fInputSettings = New frmMovieInputSettings
+        RetrieveMySettings()
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
         SPanel.Text = Master.eLang.GetString(91, "XBMC Input Module")
@@ -197,14 +198,19 @@ Public Class InputXBMC_Module
         SPanel.ImageIndex = If(Me.Enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me.fInputSettings.pnlSettings
-        'AddHandler Me.fInputSettings.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        'AddHandler me.fInputSettings.EnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler Me.fInputSettings.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler Me.fInputSettings.ModuleEnabledChanged, AddressOf Handle_SetupChanged
         Return SPanel
         'Return Nothing
     End Function
-
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent SetupChanged(Me.ModuleName, state, difforder)
+    End Sub
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieInputModule.SaveSetup
-
+        StoreMySettings()
     End Sub
 
     Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieInputModule.SetupChanged
@@ -215,12 +221,40 @@ Public Class InputXBMC_Module
 
     Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberMovieInputModule.Init
         _AssemblyName = sAssemblyName
+        eSettings.Load("Input.")
     End Sub
-    Sub SaveMySettings()
+    Sub StoreMySettings()
 
+        eSettings.FanartJPG = fInputSettings.chkFanartJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkFolderJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameDotFanartJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameFanartJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameMultiOnly.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameNFO.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNameTBN.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieNFO.Checked
+        eSettings.FanartJPG = fInputSettings.chkMovieTBN.Checked
+        eSettings.FanartJPG = fInputSettings.chkPosterJPG.Checked
+        eSettings.FanartJPG = fInputSettings.chkPosterTBN.Checked
+        eSettings.Save("Input.")
     End Sub
-    Sub LoadMySettings()
-
+    Sub RetrieveMySettings()
+        eSettings.Load("Input.")
+        fInputSettings.chkFanartJPG.Checked = eSettings.FanartJPG
+        fInputSettings.chkFolderJPG.Checked = eSettings.FolderJPG
+        fInputSettings.chkMovieJPG.Checked = eSettings.MovieJPG
+        fInputSettings.chkMovieNameDotFanartJPG.Checked = eSettings.MovieNameDotFanartJPG
+        fInputSettings.chkMovieNameFanartJPG.Checked = eSettings.MovieNameFanartJPG
+        fInputSettings.chkMovieNameJPG.Checked = eSettings.MovieNameJPG
+        fInputSettings.chkMovieNameMultiOnly.Checked = eSettings.MovieNameMultiOnly
+        fInputSettings.chkMovieNameNFO.Checked = eSettings.MovieNameNFO
+        fInputSettings.chkMovieNameTBN.Checked = eSettings.MovieNameTBN
+        fInputSettings.chkMovieNFO.Checked = eSettings.MovieNFO
+        fInputSettings.chkMovieTBN.Checked = eSettings.MovieTBN
+        fInputSettings.chkPosterJPG.Checked = eSettings.PosterJPG
+        fInputSettings.chkPosterTBN.Checked = eSettings.PosterTBN
     End Sub
 
 End Class
@@ -259,12 +293,18 @@ Public Class OutputXBMC_Module
     End Function
 
     Public Function SaveMovieInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveMovieInfoSheet
-        Return False
+        Try
+            NFO.SaveMovieToNFO(movieToSave)
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
     End Function
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberMovieOutputModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me.fOutputSettings = New frmMovieOutputSettings
+        RetrieveMySettings()
         Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
         SPanel.Text = Master.eLang.GetString(92, "XBMC Output Module")
@@ -281,7 +321,7 @@ Public Class OutputXBMC_Module
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveSetup
-
+        StoreMySettings()
     End Sub
 
     Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SetupChanged
@@ -292,9 +332,44 @@ Public Class OutputXBMC_Module
 
     Public Sub Init(ByVal sAssemblyName As String) Implements EmberAPI.Interfaces.EmberMovieOutputModule.Init
         _AssemblyName = sAssemblyName
+        eSettings.Load("Output.")
     End Sub
 
     Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleSettingsChanged
+    Sub StoreMySettings()
+        eSettings.FanartJPG = fOutputSettings.chkFanartJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkFolderJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameDotFanartJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameFanartJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameFanartJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameMultiOnly.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameNFO.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNameTBN.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieNFO.Checked
+        eSettings.FanartJPG = fOutputSettings.chkMovieTBN.Checked
+        eSettings.FanartJPG = fOutputSettings.chkPosterJPG.Checked
+        eSettings.FanartJPG = fOutputSettings.chkPosterTBN.Checked
+        eSettings.Save("Output.")
+    End Sub
+    Sub RetrieveMySettings()
+        eSettings.Load("Output.")
+        fOutputSettings.chkFanartJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkFolderJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameDotFanartJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameFanartJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameFanartJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameMultiOnly.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameNFO.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNameTBN.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieNFO.Checked = eSettings.FanartJPG
+        fOutputSettings.chkMovieTBN.Checked = eSettings.FanartJPG
+        fOutputSettings.chkPosterJPG.Checked = eSettings.FanartJPG
+        fOutputSettings.chkPosterTBN.Checked = eSettings.FanartJPG
+    End Sub
 End Class
 
 Public Class MySettings
@@ -312,9 +387,42 @@ Public Class MySettings
     Private _movienametbn As Boolean
     Private _movienamenfo As Boolean
     Private _movienfo As Boolean
-
     Sub New()
-
+        _movienamenfo = True
+        _movienamefanartjpg = True
+        _movienamejpg = True
+    End Sub
+    Sub Save(ByVal prefix As String)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "FanartJPG"), FanartJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "FolderJPG"), FolderJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieJPG"), MovieJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameDotFanartJPG"), MovieNameDotFanartJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameFanartJPG"), MovieNameFanartJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameJPG"), MovieNameJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameMultiOnly"), MovieNameMultiOnly)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameNFO"), MovieNameNFO)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNameTBN"), MovieNameTBN)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieNFO"), MovieNFO)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
+    End Sub
+    Sub Load(ByVal prefix As String)
+        FanartJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "FanartJPG"), FanartJPG)
+        FolderJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "FolderJPG"), FolderJPG)
+        MovieJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieJPG"), MovieJPG)
+        MovieNameDotFanartJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameDotFanartJPG"), MovieNameDotFanartJPG)
+        MovieNameFanartJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameFanartJPG"), MovieNameFanartJPG)
+        MovieNameJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameJPG"), MovieNameJPG)
+        MovieNameMultiOnly = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameMultiOnly"), MovieNameMultiOnly)
+        MovieNameNFO = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameNFO"), MovieNameNFO)
+        MovieNameTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNameTBN"), MovieNameTBN)
+        MovieNFO = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieNFO"), MovieNFO)
+        MovieTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
+        PosterJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
+        PosterTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
+        VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Public Property VideoTSParent() As Boolean
         Get
