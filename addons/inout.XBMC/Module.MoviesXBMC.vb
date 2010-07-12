@@ -28,13 +28,17 @@ Public Class InputXBMC_Module
 
     Public Shared _AssemblyName As String
     Private fInputSettings As frmMovieInputSettings
+    Private _Enabled As Boolean
     Public Shared eSettings As New MySettings
+    Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieInputModule.SetupChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieInputModule.ModuleSettingsChanged
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.Enabled
         Get
-            Return False
+            Return _Enabled
         End Get
         Set(ByVal value As Boolean)
+            _Enabled = value
         End Set
     End Property
 
@@ -213,8 +217,6 @@ Public Class InputXBMC_Module
         StoreMySettings()
     End Sub
 
-    Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieInputModule.SetupChanged
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieInputModule.ModuleSettingsChanged
     Public Sub SetupOrderChanged() Implements EmberAPI.Interfaces.EmberMovieInputModule.SetupOrderChanged
 
     End Sub
@@ -224,7 +226,7 @@ Public Class InputXBMC_Module
         eSettings.Load("Input.")
     End Sub
     Sub StoreMySettings()
-
+        eSettings.Enabled = fInputSettings.chkEnabled.Checked
         eSettings.FanartJPG = fInputSettings.chkFanartJPG.Checked
         eSettings.FanartJPG = fInputSettings.chkFolderJPG.Checked
         eSettings.FanartJPG = fInputSettings.chkMovieJPG.Checked
@@ -242,6 +244,7 @@ Public Class InputXBMC_Module
     End Sub
     Sub RetrieveMySettings()
         eSettings.Load("Input.")
+        fInputSettings.chkEnabled.Checked = eSettings.Enabled
         fInputSettings.chkFanartJPG.Checked = eSettings.FanartJPG
         fInputSettings.chkFolderJPG.Checked = eSettings.FolderJPG
         fInputSettings.chkMovieJPG.Checked = eSettings.MovieJPG
@@ -266,6 +269,8 @@ Public Class OutputXBMC_Module
     Public Shared _AssemblyName As String
     Private fOutputSettings As frmMovieOutputSettings
     Public Shared eSettings As New MySettings
+    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleSettingsChanged
+    Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SetupChanged
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.Enabled
         Get
@@ -314,17 +319,20 @@ Public Class OutputXBMC_Module
         SPanel.ImageIndex = If(Me.Enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me.fOutputSettings.pnlSettings
-        'AddHandler Me.fInputSettings.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        'AddHandler me.fInputSettings.EnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler Me.fOutputSettings.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler Me.fOutputSettings.ModuleEnabledChanged, AddressOf Handle_SetupChanged
         Return SPanel
         'Return Nothing
     End Function
-
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent SetupChanged(Me.ModuleName, state, difforder)
+    End Sub
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveSetup
         StoreMySettings()
     End Sub
-
-    Public Event SetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SetupChanged
 
     Public Sub SetupOrderChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.SetupOrderChanged
 
@@ -335,7 +343,6 @@ Public Class OutputXBMC_Module
         eSettings.Load("Output.")
     End Sub
 
-    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleSettingsChanged
     Sub StoreMySettings()
         eSettings.FanartJPG = fOutputSettings.chkFanartJPG.Checked
         eSettings.FanartJPG = fOutputSettings.chkFolderJPG.Checked
@@ -373,6 +380,7 @@ Public Class OutputXBMC_Module
 End Class
 
 Public Class MySettings
+    Private _Enabled As Boolean
     Private _videotsparent As Boolean
     Private _fanartjpg As Boolean
     Private _movienamemultionly As Boolean
@@ -393,6 +401,7 @@ Public Class MySettings
         _movienamejpg = True
     End Sub
     Sub Save(ByVal prefix As String)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "Enabled"), Enabled)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "FanartJPG"), FanartJPG)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "FolderJPG"), FolderJPG)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieJPG"), MovieJPG)
@@ -409,6 +418,7 @@ Public Class MySettings
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Sub Load(ByVal prefix As String)
+        Enabled = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "Enabled"), Enabled)
         FanartJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "FanartJPG"), FanartJPG)
         FolderJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "FolderJPG"), FolderJPG)
         MovieJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieJPG"), MovieJPG)
@@ -424,6 +434,16 @@ Public Class MySettings
         PosterTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
         VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
+
+    Public Property Enabled() As Boolean
+        Get
+            Return Me._Enabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._Enabled = value
+        End Set
+    End Property
+
     Public Property VideoTSParent() As Boolean
         Get
             Return Me._videotsparent

@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.BulkRename", "addons\generic.EmberCore.BulkRename\generic.EmberCore.BulkRename.vbproj", "{EAAB0601-6478-44D2-A39C-89B0850D7833}"
@@ -38,6 +37,8 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.Matroska", "addons\inout.Matroska\inout.Matroska.vbproj", "{68222E56-2969-4CD8-8576-7F61D2825095}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.MediaBrowser", "addons\inout.MediaBrowser\inout.MediaBrowser.vbproj", "{9F077064-67AC-4D1D-9DF2-B159ECA39AC0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.RSSreader", "addons\generic.RSSreader\generic.RSSreader.vbproj", "{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -274,6 +275,18 @@ Global
 		{9F077064-67AC-4D1D-9DF2-B159ECA39AC0}.Release|x64.Build.0 = Release|x64
 		{9F077064-67AC-4D1D-9DF2-B159ECA39AC0}.Release|x86.ActiveCfg = Release|x86
 		{9F077064-67AC-4D1D-9DF2-B159ECA39AC0}.Release|x86.Build.0 = Release|x86
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|x64.ActiveCfg = Debug|x64
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|x64.Build.0 = Debug|x64
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Debug|x86.Build.0 = Debug|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|x64.ActiveCfg = Release|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|x64.Build.0 = Release|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|x86.ActiveCfg = Release|Any CPU
+		{5C8C2FEA-9518-4EAD-AA46-A026EF1FC935}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
