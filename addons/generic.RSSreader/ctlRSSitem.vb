@@ -72,6 +72,8 @@
                 'lblSearchType.Visible = False
                 lblSearchType.ForeColor = Color.Black
                 lblSearchType.Text = String.Concat("IMDB ID: ", value)
+            Else
+                lblSearchType.Text = "Not Found"
             End If
 
         End Set

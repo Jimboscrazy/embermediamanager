@@ -28,25 +28,17 @@ Partial Class frmMovieInputSettings
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
-        Me.rbDashTrailer = New System.Windows.Forms.RadioButton
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
-        Me.chkMovieNFO = New System.Windows.Forms.CheckBox
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameDotFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameFanartJPG = New System.Windows.Forms.CheckBox
         Me.chkFanartJPG = New System.Windows.Forms.CheckBox
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
         Me.chkFolderJPG = New System.Windows.Forms.CheckBox
         Me.chkPosterJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameJPG = New System.Windows.Forms.CheckBox
-        Me.chkMovieJPG = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
@@ -83,13 +75,12 @@ Partial Class frmMovieInputSettings
         'GroupBox8
         '
         Me.GroupBox8.Controls.Add(Me.GroupBox21)
-        Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
         Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(3, 31)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(406, 237)
+        Me.GroupBox8.Size = New System.Drawing.Size(424, 145)
         Me.GroupBox8.TabIndex = 81
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -97,11 +88,10 @@ Partial Class frmMovieInputSettings
         'GroupBox21
         '
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
-        Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
         Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(293, 114)
+        Me.GroupBox21.Location = New System.Drawing.Point(289, 21)
         Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(102, 117)
+        Me.GroupBox21.Size = New System.Drawing.Size(126, 117)
         Me.GroupBox21.TabIndex = 3
         Me.GroupBox21.TabStop = False
         Me.GroupBox21.Text = "Trailer"
@@ -110,80 +100,20 @@ Partial Class frmMovieInputSettings
         '
         Me.rbBracketTrailer.AutoSize = True
         Me.rbBracketTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
+        Me.rbBracketTrailer.Location = New System.Drawing.Point(6, 17)
         Me.rbBracketTrailer.Name = "rbBracketTrailer"
-        Me.rbBracketTrailer.Size = New System.Drawing.Size(61, 17)
+        Me.rbBracketTrailer.Size = New System.Drawing.Size(107, 17)
         Me.rbBracketTrailer.TabIndex = 1
         Me.rbBracketTrailer.TabStop = True
-        Me.rbBracketTrailer.Text = "[trailer]"
+        Me.rbBracketTrailer.Text = "<movie>[trailer]"
         Me.rbBracketTrailer.UseVisualStyleBackColor = True
-        '
-        'rbDashTrailer
-        '
-        Me.rbDashTrailer.AutoSize = True
-        Me.rbDashTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
-        Me.rbDashTrailer.Name = "rbDashTrailer"
-        Me.rbDashTrailer.Size = New System.Drawing.Size(59, 17)
-        Me.rbDashTrailer.TabIndex = 0
-        Me.rbDashTrailer.TabStop = True
-        Me.rbDashTrailer.Text = "-trailer"
-        Me.rbDashTrailer.UseVisualStyleBackColor = True
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameMultiOnly)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox7.Location = New System.Drawing.Point(12, 15)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(383, 95)
-        Me.GroupBox7.TabIndex = 4
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "NFO"
-        '
-        'chkMovieNameMultiOnly
-        '
-        Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(16, 52)
-        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(355, 22)
-        Me.chkMovieNameMultiOnly.TabIndex = 5
-        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
-        Me.chkMovieNameMultiOnly.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
-        '
-        'chkMovieNameNFO
-        '
-        Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 34)
-        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
-        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
-        Me.chkMovieNameNFO.TabIndex = 1
-        Me.chkMovieNameNFO.Text = "<movie>.nfo"
-        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
-        '
-        'chkMovieNFO
-        '
-        Me.chkMovieNFO.AutoSize = True
-        Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
-        Me.chkMovieNFO.Name = "chkMovieNFO"
-        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
-        Me.chkMovieNFO.TabIndex = 0
-        Me.chkMovieNFO.Text = "movie.nfo"
-        Me.chkMovieNFO.UseVisualStyleBackColor = True
         '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
-        Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
         Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(142, 114)
+        Me.GroupBox6.Location = New System.Drawing.Point(138, 21)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(136, 117)
         Me.GroupBox6.TabIndex = 2
@@ -194,29 +124,18 @@ Partial Class frmMovieInputSettings
         '
         Me.chkMovieNameDotFanartJPG.AutoSize = True
         Me.chkMovieNameDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 51)
+        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(4, 18)
         Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
         Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(126, 17)
         Me.chkMovieNameDotFanartJPG.TabIndex = 2
         Me.chkMovieNameDotFanartJPG.Text = "<movie>.fanart.jpg"
         Me.chkMovieNameDotFanartJPG.UseVisualStyleBackColor = True
         '
-        'chkMovieNameFanartJPG
-        '
-        Me.chkMovieNameFanartJPG.AutoSize = True
-        Me.chkMovieNameFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 35)
-        Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
-        Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(127, 17)
-        Me.chkMovieNameFanartJPG.TabIndex = 1
-        Me.chkMovieNameFanartJPG.Text = "<movie>-fanart.jpg"
-        Me.chkMovieNameFanartJPG.UseVisualStyleBackColor = True
-        '
         'chkFanartJPG
         '
         Me.chkFanartJPG.AutoSize = True
         Me.chkFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
+        Me.chkFanartJPG.Location = New System.Drawing.Point(4, 38)
         Me.chkFanartJPG.Name = "chkFanartJPG"
         Me.chkFanartJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFanartJPG.TabIndex = 0
@@ -228,9 +147,8 @@ Partial Class frmMovieInputSettings
         Me.GroupBox5.Controls.Add(Me.chkFolderJPG)
         Me.GroupBox5.Controls.Add(Me.chkPosterJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameJPG)
-        Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 114)
+        Me.GroupBox5.Location = New System.Drawing.Point(8, 21)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(121, 117)
         Me.GroupBox5.TabIndex = 0
@@ -241,7 +159,7 @@ Partial Class frmMovieInputSettings
         '
         Me.chkFolderJPG.AutoSize = True
         Me.chkFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 74)
+        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 58)
         Me.chkFolderJPG.Name = "chkFolderJPG"
         Me.chkFolderJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFolderJPG.TabIndex = 3
@@ -252,7 +170,7 @@ Partial Class frmMovieInputSettings
         '
         Me.chkPosterJPG.AutoSize = True
         Me.chkPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPosterJPG.Location = New System.Drawing.Point(6, 54)
+        Me.chkPosterJPG.Location = New System.Drawing.Point(6, 38)
         Me.chkPosterJPG.Name = "chkPosterJPG"
         Me.chkPosterJPG.Size = New System.Drawing.Size(79, 17)
         Me.chkPosterJPG.TabIndex = 6
@@ -269,17 +187,6 @@ Partial Class frmMovieInputSettings
         Me.chkMovieNameJPG.TabIndex = 5
         Me.chkMovieNameJPG.Text = "<movie>.jpg"
         Me.chkMovieNameJPG.UseVisualStyleBackColor = True
-        '
-        'chkMovieJPG
-        '
-        Me.chkMovieJPG.AutoSize = True
-        Me.chkMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieJPG.Location = New System.Drawing.Point(6, 36)
-        Me.chkMovieJPG.Name = "chkMovieJPG"
-        Me.chkMovieJPG.Size = New System.Drawing.Size(76, 17)
-        Me.chkMovieJPG.TabIndex = 1
-        Me.chkMovieJPG.Text = "movie.jpg"
-        Me.chkMovieJPG.UseVisualStyleBackColor = True
         '
         'frmMovieInputSettings
         '
@@ -302,8 +209,6 @@ Partial Class frmMovieInputSettings
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox21.ResumeLayout(False)
         Me.GroupBox21.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
@@ -315,21 +220,14 @@ Partial Class frmMovieInputSettings
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
     Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
-    Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
-    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
 
 End Class

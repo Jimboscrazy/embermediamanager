@@ -136,29 +136,10 @@ Public Class RSSReader
             Dim sresult As MovieSearchResults
             Dim loopCount As Integer = 60
             While Not bwCheckFeeds.CancellationPending
+                loopCount = 60
                 Read()
                 bwCheckFeeds.ReportProgress(1)
-                If dtMovieMedia Is Nothing AndAlso Master.DB.SQLcn.State = ConnectionState.Open Then
-                    dtMovieMedia = New DataTable
-                    Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
-                End If
-                If Not dtMovieMedia Is Nothing Then
-                    For Each i As RSSItem In items.Where(Function(o) o.Processed = RSSItem.Processed_State.IMDB AndAlso Not o.imdb_id = String.Empty)
-                        i.Processed = RSSItem.Processed_State.Database
-                        Dim _rows() As DataRow = dtMovieMedia.Select(String.Format("IMDB = '{0}'", i.imdb_id))
-                        If _rows.Count > 0 Then
-                            i.Processed = RSSItem.Processed_State.Found
-                            RaiseEvent RSSItemChanged(i)
-                        Else
-                            i.Processed = RSSItem.Processed_State.NotFound
-                            RaiseEvent RSSItemChanged(i)
-                        End If
-                    Next
 
-                    loopCount = 60
-                Else
-                    loopCount = 5
-                End If
                 For Each i As RSSItem In items.Where(Function(o) o.Processed = RSSItem.Processed_State.None)
                     i.Processed = RSSItem.Processed_State.IMDB
                     RaiseEvent RSSItemChanged(i)
@@ -178,17 +159,35 @@ Public Class RSSReader
                     ElseIf sresult.PartialMatches.Count > 0 Then
                         'i.imdb_id = sresult.PartialMatches.Item(0).IMDBID
                         'i.name = sresult.PartialMatches.Item(0).Title
-                        'haveNew = True
+                        i.imdb_id = String.Empty
                         i.Processed = RSSItem.Processed_State.Unknow
-                        RaiseEvent RSSItemChanged(i)
                     Else
+                        i.imdb_id = String.Empty
                         i.Processed = RSSItem.Processed_State.Unknow
-                        RaiseEvent RSSItemChanged(i)
                     End If
+                    RaiseEvent RSSItemChanged(i)
                 Next
-
                 bwCheckFeeds.ReportProgress(1)
-
+                If dtMovieMedia Is Nothing AndAlso Master.DB.SQLcn.State = ConnectionState.Open Then
+                    dtMovieMedia = New DataTable
+                    Master.DB.FillDataTable(dtMovieMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                End If
+                If Not dtMovieMedia Is Nothing Then
+                    For Each i As RSSItem In items.Where(Function(o) o.Processed = RSSItem.Processed_State.IMDB AndAlso Not o.imdb_id = String.Empty)
+                        i.Processed = RSSItem.Processed_State.Database
+                        Dim _rows() As DataRow = dtMovieMedia.Select(String.Format("IMDB = '{0}'", i.imdb_id))
+                        If _rows.Count > 0 Then
+                            i.Processed = RSSItem.Processed_State.Found
+                            RaiseEvent RSSItemChanged(i)
+                        Else
+                            i.Processed = RSSItem.Processed_State.NotFound
+                            RaiseEvent RSSItemChanged(i)
+                        End If
+                    Next
+                Else
+                    loopCount = 5
+                End If
+                bwCheckFeeds.ReportProgress(1)
                 For seconds As Integer = 1 To loopCount
                     System.Threading.Thread.Sleep(1000)
                     If bwCheckFeeds.CancellationPending Then Exit For
@@ -235,7 +234,7 @@ Public Class RSSReader
 
     Function CleanFileName(ByVal fname As String) As String
         ' TODO: Move this to AdvancedSettings
-        Dim Markers() As String = {"720p", "720i", "1080p", "1080i", "divx", "xvid", "x264", "dvdip", "brrip", "bluray", "h264", "["}
+        Dim Markers() As String = {"720p", "720i", "1080p", "1080i", "divx", "xvid", "x264", "dvdrip", "brrip", "bluray", "blu-ray", "h264", "["}
         fname = StringUtils.CleanStackingMarkers(fname)
         Dim i As Integer
         For Each s In Markers
