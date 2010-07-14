@@ -43,8 +43,13 @@ Partial Class frmSettingsHolder
         Me.btnEditTag = New System.Windows.Forms.Button
         Me.btnNewTag = New System.Windows.Forms.Button
         Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.rbToEnd = New System.Windows.Forms.RadioButton
+        Me.rbOnlyTag = New System.Windows.Forms.RadioButton
+        Me.chkScrapeLink = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ListView1
@@ -79,9 +84,9 @@ Partial Class frmSettingsHolder
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(268, 187)
+        Me.Label4.Location = New System.Drawing.Point(264, 187)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(65, 13)
+        Me.Label4.Size = New System.Drawing.Size(43, 13)
         Me.Label4.TabIndex = 8
         Me.Label4.Text = "URL"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -95,9 +100,9 @@ Partial Class frmSettingsHolder
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(339, 184)
+        Me.TextBox2.Location = New System.Drawing.Point(313, 184)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(271, 22)
+        Me.TextBox2.Size = New System.Drawing.Size(297, 22)
         Me.TextBox2.TabIndex = 10
         '
         'btnRemoveSet
@@ -156,6 +161,8 @@ Partial Class frmSettingsHolder
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.chkScrapeLink)
+        Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.ListView2)
         Me.pnlSettings.Controls.Add(Me.btnRemoveTag)
         Me.pnlSettings.Controls.Add(Me.Label1)
@@ -173,14 +180,14 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Controls.Add(Me.TextBox2)
         Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 378)
+        Me.pnlSettings.Size = New System.Drawing.Size(617, 395)
         Me.pnlSettings.TabIndex = 83
         '
         'ListView2
         '
         Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3})
         Me.ListView2.FullRowSelect = True
-        Me.ListView2.Location = New System.Drawing.Point(7, 232)
+        Me.ListView2.Location = New System.Drawing.Point(7, 247)
         Me.ListView2.Name = "ListView2"
         Me.ListView2.Size = New System.Drawing.Size(166, 133)
         Me.ListView2.TabIndex = 83
@@ -196,7 +203,7 @@ Partial Class frmSettingsHolder
         '
         Me.btnRemoveTag.Enabled = False
         Me.btnRemoveTag.Image = CType(resources.GetObject("btnRemoveTag.Image"), System.Drawing.Image)
-        Me.btnRemoveTag.Location = New System.Drawing.Point(179, 290)
+        Me.btnRemoveTag.Location = New System.Drawing.Point(179, 305)
         Me.btnRemoveTag.Name = "btnRemoveTag"
         Me.btnRemoveTag.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveTag.TabIndex = 88
@@ -204,7 +211,7 @@ Partial Class frmSettingsHolder
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(177, 327)
+        Me.Label1.Location = New System.Drawing.Point(222, 248)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(85, 13)
         Me.Label1.TabIndex = 84
@@ -215,7 +222,7 @@ Partial Class frmSettingsHolder
         Me.btnEditTag.Enabled = False
         Me.btnEditTag.Image = CType(resources.GetObject("btnEditTag.Image"), System.Drawing.Image)
         Me.btnEditTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditTag.Location = New System.Drawing.Point(179, 261)
+        Me.btnEditTag.Location = New System.Drawing.Point(179, 276)
         Me.btnEditTag.Name = "btnEditTag"
         Me.btnEditTag.Size = New System.Drawing.Size(23, 23)
         Me.btnEditTag.TabIndex = 87
@@ -227,7 +234,7 @@ Partial Class frmSettingsHolder
         Me.btnNewTag.Enabled = False
         Me.btnNewTag.Image = CType(resources.GetObject("btnNewTag.Image"), System.Drawing.Image)
         Me.btnNewTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewTag.Location = New System.Drawing.Point(177, 232)
+        Me.btnNewTag.Location = New System.Drawing.Point(177, 247)
         Me.btnNewTag.Name = "btnNewTag"
         Me.btnNewTag.Size = New System.Drawing.Size(23, 23)
         Me.btnNewTag.TabIndex = 86
@@ -236,17 +243,60 @@ Partial Class frmSettingsHolder
         '
         'TextBox3
         '
-        Me.TextBox3.Location = New System.Drawing.Point(179, 343)
+        Me.TextBox3.Location = New System.Drawing.Point(225, 264)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(108, 22)
         Me.TextBox3.TabIndex = 85
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.rbToEnd)
+        Me.GroupBox1.Controls.Add(Me.rbOnlyTag)
+        Me.GroupBox1.Location = New System.Drawing.Point(219, 307)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(200, 60)
+        Me.GroupBox1.TabIndex = 91
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Filter Tag"
+        '
+        'rbToEnd
+        '
+        Me.rbToEnd.AutoSize = True
+        Me.rbToEnd.Checked = True
+        Me.rbToEnd.Location = New System.Drawing.Point(6, 17)
+        Me.rbToEnd.Name = "rbToEnd"
+        Me.rbToEnd.Size = New System.Drawing.Size(131, 17)
+        Me.rbToEnd.TabIndex = 92
+        Me.rbToEnd.TabStop = True
+        Me.rbToEnd.Text = "Until the end of Title"
+        Me.rbToEnd.UseVisualStyleBackColor = True
+        '
+        'rbOnlyTag
+        '
+        Me.rbOnlyTag.AutoSize = True
+        Me.rbOnlyTag.Location = New System.Drawing.Point(6, 38)
+        Me.rbOnlyTag.Name = "rbOnlyTag"
+        Me.rbOnlyTag.Size = New System.Drawing.Size(89, 17)
+        Me.rbOnlyTag.TabIndex = 91
+        Me.rbOnlyTag.Text = "Only the tag"
+        Me.rbOnlyTag.UseVisualStyleBackColor = True
+        '
+        'chkScrapeLink
+        '
+        Me.chkScrapeLink.AutoSize = True
+        Me.chkScrapeLink.Location = New System.Drawing.Point(149, 212)
+        Me.chkScrapeLink.Name = "chkScrapeLink"
+        Me.chkScrapeLink.Size = New System.Drawing.Size(135, 17)
+        Me.chkScrapeLink.TabIndex = 92
+        Me.chkScrapeLink.Text = "Try to Scrape the Link"
+        Me.chkScrapeLink.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(625, 391)
+        Me.ClientSize = New System.Drawing.Size(625, 409)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -260,6 +310,8 @@ Partial Class frmSettingsHolder
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -283,5 +335,9 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnEditTag As System.Windows.Forms.Button
     Friend WithEvents btnNewTag As System.Windows.Forms.Button
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents chkScrapeLink As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbToEnd As System.Windows.Forms.RadioButton
+    Friend WithEvents rbOnlyTag As System.Windows.Forms.RadioButton
 
 End Class
