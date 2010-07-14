@@ -37,6 +37,13 @@ Namespace My
                     End
                 End If
                 Functions.TestMediaInfoDLL()
+                If My.Application.CommandLineArgs.Count > 0 Then
+                    e.Cancel = True
+                    ConsoleInterop.AttachConsole(-1)
+                    Console.WriteLine("Ember Running from Console")
+                    Dim mForm As New frmMain
+                    mForm.frmMain_Load(Nothing, Nothing)
+                End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 MsgBox(String.Concat("Ember Media Manager requires .NET Framework version 3.5 or higher.", vbNewLine, vbNewLine, _
