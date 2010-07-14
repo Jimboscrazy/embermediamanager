@@ -104,6 +104,10 @@ Public Class RSSreaderExternalModule
             Else
                 hrsslist = New Hashtable
             End If
+            _setup.ListView2.Items.Clear()
+            For Each s As String In AdvancedSettings.GetSetting("CleanMarkers", "720p|720i|1080p|1080i|divx|xvid|x264|dvdrip|brrip|bluray|blu-ray|h264|[").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                _setup.ListView2.Items.Add(s)
+            Next
         End If
     End Sub
     Private Sub ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
@@ -125,6 +129,11 @@ Public Class RSSreaderExternalModule
         For Each i As ListViewItem In _setup.ListView1.Items
             hrsslist.Add(i.SubItems(0).Text, i.SubItems(1).Text)
         Next
+        Dim l As New List(Of String)
+        For Each i As ListViewItem In _setup.ListView2.Items
+            If Not String.IsNullOrEmpty(i.SubItems(0).Text) Then l.Add(i.SubItems(0).Text)
+        Next
+        AdvancedSettings.SetSetting("CleanMarkers", Strings.Join(l.ToArray, "|"))
         AdvancedSettings.SetComplexSetting(String.Concat("rss"), hrsslist)
     End Sub
 

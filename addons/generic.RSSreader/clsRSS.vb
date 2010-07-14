@@ -105,7 +105,6 @@ Public Class RSSItem
 End Class
 Public Class RSSReader
     Private Shared dtMovieMedia As DataTable
-
     Public Event NewRSSItem()
     Public Event RSSItemChanged(ByRef rssitem As RSSItem)
     Private haveNew As Boolean = False
@@ -115,6 +114,7 @@ Public Class RSSReader
     Public description As String
     Public items As New List(Of RSSItem)
     Private _url As String
+    Private FileMarkers As String = AdvancedSettings.GetSetting("CleanMarkers", "720p|720i|1080p|1080i|divx|xvid|x264|dvdrip|brrip|bluray|blu-ray|h264|[")
     Public Sub New(ByVal url As String)
         _url = url
         StartCheck()
@@ -234,7 +234,8 @@ Public Class RSSReader
 
     Function CleanFileName(ByVal fname As String) As String
         ' TODO: Move this to AdvancedSettings
-        Dim Markers() As String = {"720p", "720i", "1080p", "1080i", "divx", "xvid", "x264", "dvdrip", "brrip", "bluray", "blu-ray", "h264", "["}
+
+        Dim Markers() As String = FileMarkers.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
         fname = StringUtils.CleanStackingMarkers(fname)
         Dim i As Integer
         For Each s In Markers

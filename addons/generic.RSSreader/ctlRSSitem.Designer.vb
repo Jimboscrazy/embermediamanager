@@ -199,9 +199,10 @@ Partial Class ctlRSSitem
         Me.lblSearchType.ForeColor = System.Drawing.Color.DarkRed
         Me.lblSearchType.Location = New System.Drawing.Point(486, 61)
         Me.lblSearchType.Name = "lblSearchType"
-        Me.lblSearchType.Size = New System.Drawing.Size(113, 14)
+        Me.lblSearchType.Size = New System.Drawing.Size(101, 14)
         Me.lblSearchType.TabIndex = 14
         Me.lblSearchType.Text = "(Guessing)"
+        Me.lblSearchType.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'ctlRSSitem
         '

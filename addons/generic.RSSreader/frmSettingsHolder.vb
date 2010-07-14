@@ -23,6 +23,7 @@ Public Class frmSettingsHolder
     #Region "Fields"
 
     Dim isSelected As Boolean = False
+    Dim isTagSelected As Boolean = False
 
     #End Region 'Fields
 
@@ -34,8 +35,6 @@ Public Class frmSettingsHolder
 
     #End Region 'Events
 
-    #Region "Methods"
-
     Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
         ListView1.SelectedItems(0).SubItems(0).Text = TextBox1.Text
         ListView1.SelectedItems(0).SubItems(1).Text = TextBox2.Text
@@ -43,6 +42,7 @@ Public Class frmSettingsHolder
         TextBox2.Text = ""
         isSelected = False
         CheckButtons()
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
@@ -78,6 +78,15 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
+    Sub CheckTagButtons()
+        If Not String.IsNullOrEmpty(TextBox3.Text) AndAlso Not isTagSelected Then
+            btnNewTag.Enabled = True
+        Else
+            btnNewTag.Enabled = False
+        End If
+    End Sub
+
+
     Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
         If ListView1.SelectedItems.Count > 0 Then
             isSelected = True
@@ -101,6 +110,46 @@ Public Class frmSettingsHolder
         CheckButtons()
     End Sub
 
+    Private Sub ListView2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView2.SelectedIndexChanged
+        If ListView2.SelectedItems.Count > 0 Then
+            isTagSelected = True
+            btnRemoveTag.Enabled = True
+            btnEditTag.Enabled = True
+            TextBox3.Text = ListView2.SelectedItems(0).SubItems(0).Text
+        Else
+            isTagSelected = False
+            btnRemoveTag.Enabled = False
+            btnEditTag.Enabled = False
+        End If
+    End Sub
+
+    Private Sub TextBox3_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox3.TextChanged
+        CheckTagButtons()
+    End Sub
+    Private Sub btnEditTag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditTag.Click
+        ListView2.SelectedItems(0).SubItems(0).Text = TextBox3.Text
+        TextBox3.Text = ""
+        isTagSelected = False
+        CheckTagButtons()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub btnNewTag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewTag.Click
+        Dim li As New ListViewItem
+        li.Text = TextBox3.Text
+        li.SubItems.Add(TextBox3.Text)
+        ListView2.Items.Add(li)
+        TextBox3.Text = ""
+        CheckTagButtons()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnRemoveTag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTag.Click
+        ListView2.Items.RemoveAt(ListView2.SelectedItems(0).Index)
+        TextBox3.Text = ""
+        isTagSelected = False
+        CheckTagButtons()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -112,11 +161,5 @@ Public Class frmSettingsHolder
         Me.Label4.Text = Master.eLang.GetString(10, "URL")
         Me.ColumnHeader1.Text = Master.eLang.GetString(232, "Name", True)
         Me.ColumnHeader2.Text = Master.eLang.GetString(10, "URL")
-    End Sub
-
-    #End Region 'Methods
-
-    Private Sub pnlSettings_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlSettings.Paint
-
     End Sub
 End Class

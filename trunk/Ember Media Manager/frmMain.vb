@@ -26,6 +26,7 @@ Imports System.Linq
 Imports System.Reflection
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
+Imports System.Runtime.InteropServices
 
 Public Class frmMain
 
@@ -5257,15 +5258,15 @@ doCancel:
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
         Catch ex As Exception
-            ' If we got here, then some of the above not run. Application.Exit can not be used. 
+            ' If we got here, then some of the above haven't run. Application.Exit can not be used. 
             ' Because Exit will dispose object that are in use by BackgroundWorkers
-            ' If any BackgroundWorker still running will raise exception 
+            ' If any BackgroundWorker still running will raise exception ...
             ' "Collection was modified; enumeration operation may not execute."
             ' Application.Exit()
         End Try
     End Sub
 
-    Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Public Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
             Me.Visible = False
@@ -5321,9 +5322,7 @@ doCancel:
             Master.eSettings.Load()
             fLoading.SetStage("Creating default options...")
             Functions.CreateDefaultOptions()
-            '//
-            ' Add our handlers, load settings, set form colors, and try to load movies at startup
-            '\\
+
             fLoading.SetStage("Loading modules...")
             'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
             'ExternalModulesManager = New ModulesManager
@@ -5343,7 +5342,9 @@ doCancel:
             ReDim Preserve Me.pbGenre(0)
             Me.pnlGenre(0) = New Panel()
             Me.pbGenre(0) = New PictureBox()
-
+            '//
+            ' Add our handlers, load settings, set form colors, and try to load movies at startup
+            '\\
             AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
             AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
@@ -8958,4 +8959,21 @@ doCancel:
         tmrKeyBuffer.Enabled = False
         KeyBuffer = String.Empty
     End Sub
+
+End Class
+Public Class ConsoleInterop
+
+    <DllImport("Kernel32.dll")> _
+        Public Shared Function AllocConsole() As Boolean
+
+    End Function
+
+    <DllImport("Kernel32.dll")> _
+        Public Shared Function FreeConsole() As Boolean
+
+    End Function
+    <DllImport("Kernel32.dll")> _
+        Public Shared Function AttachConsole(ByVal dwProcessId As Int32) As Boolean
+    End Function
+
 End Class

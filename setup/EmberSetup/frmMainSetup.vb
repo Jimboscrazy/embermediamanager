@@ -736,7 +736,7 @@ Public Class frmMainSetup
                         '###################################################################################
                         'At this point it have current a new file list and all commands
                         'Need to mark files changed by user, and download all new (hash based) files
-                        Dim skipFiles As String() = {"\images\genres\genres.xml", "\bin\mediainfo.dll"}
+                        Dim skipFiles As String() = {"\images\genres\genres.xml", "\langs\languages.xml"} '"\bin\mediainfo.dll"}
                         If bwDoInstall.CancellationPending Then Return False
                         If Not CurrentEmberVersion = String.Empty Then
                             Me.bwDoInstall.ReportProgress(0, New Object() {0, MyLang.GetString(13, "Checking Installed Files")})

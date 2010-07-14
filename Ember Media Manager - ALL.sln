@@ -26,8 +26,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.WebServer
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.NMT", "addons\generic.EmberCore.NMT\generic.EmberCore.NMT.vbproj", "{84B2143A-D04F-4262-923D-21AEDF86E2B7}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "multi.EmberExtras", "addons\multi.EmberExtras\multi.EmberExtras.vbproj", "{62356BCF-D15A-4BF1-B980-395CEC0004A9}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "multi.Compatibility", "addons\multi.Compatibility\multi.Compatibility.vbproj", "{859C1085-518B-49D2-9C84-D91C4094097F}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "inout.XBMC", "addons\inout.XBMC\inout.XBMC.vbproj", "{B7007F1A-9DE9-4D4C-B9CC-0AE674E9FCB1}"
@@ -206,18 +204,6 @@ Global
 		{84B2143A-D04F-4262-923D-21AEDF86E2B7}.Release|x64.Build.0 = Release|x64
 		{84B2143A-D04F-4262-923D-21AEDF86E2B7}.Release|x86.ActiveCfg = Release|x86
 		{84B2143A-D04F-4262-923D-21AEDF86E2B7}.Release|x86.Build.0 = Release|x86
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|x64.ActiveCfg = Debug|x64
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|x64.Build.0 = Debug|x64
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|x86.ActiveCfg = Debug|x86
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Debug|x86.Build.0 = Debug|x86
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x64.ActiveCfg = Release|x64
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x64.Build.0 = Release|x64
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x86.ActiveCfg = Release|x86
-		{62356BCF-D15A-4BF1-B980-395CEC0004A9}.Release|x86.Build.0 = Release|x86
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Debug|x64.ActiveCfg = Debug|x64
