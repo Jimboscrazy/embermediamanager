@@ -415,7 +415,7 @@ Public Class MySettings
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
-        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
+        'AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Sub Load(ByVal prefix As String)
         Enabled = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "Enabled"), Enabled)
@@ -432,7 +432,7 @@ Public Class MySettings
         MovieTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
         PosterJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
         PosterTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
-        VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
+        'VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
 
     Public Property Enabled() As Boolean
@@ -446,10 +446,10 @@ Public Class MySettings
 
     Public Property VideoTSParent() As Boolean
         Get
-            Return Me._videotsparent
+            Return False 'Me._videotsparent
         End Get
         Set(ByVal value As Boolean)
-            Me._videotsparent = value
+            'Me._videotsparent = value
         End Set
     End Property
     Public Property FanartJPG() As Boolean

@@ -177,10 +177,10 @@ Public Class ModulesManager
                 End Try
             Next
             Dim c As Integer = 0
-            'For Each ext As _externalGenericModuleClass In externalProcessorModules.OrderBy(Function(x) x.ModuleOrder)
-            'ext.ModuleOrder = c
-            'c += 1
-            'Next
+            For Each ext As _externalInputModuleClass In externalInputModules.OrderBy(Function(x) x.ModuleOrder)
+                ext.ModuleOrder = c
+                c += 1
+            Next
 
         End If
     End Sub
@@ -230,16 +230,16 @@ Public Class ModulesManager
 
                             End If
                         Catch ex As Exception
-                        End Try
+        End Try
                     Next
                 Catch ex As Exception
                 End Try
             Next
             Dim c As Integer = 0
-            'For Each ext As _externalGenericModuleClass In externalProcessorModules.OrderBy(Function(x) x.ModuleOrder)
-            'ext.ModuleOrder = c
-            'c += 1
-            'Next
+            For Each ext As _externalOutputModuleClass In externalOutputModules.OrderBy(Function(x) x.ModuleOrder)
+                ext.ModuleOrder = c
+                c += 1
+            Next
 
         End If
     End Sub
@@ -563,6 +563,24 @@ Public Class ModulesManager
             t.ScraperEnabled = _externalTVScraperModule.ProcessorModule.ScraperEnabled
             t.PostScraperOrder = _externalTVScraperModule.PostScraperOrder
             t.ScraperOrder = _externalTVScraperModule.ScraperOrder
+            tmpForXML.Add(t)
+        Next
+        For Each _externalModule As _externalInputModuleClass In externalInputModules
+            Dim t As New _XMLEmberModuleClass
+            t.AssemblyName = _externalModule.AssemblyName
+            t.AssemblyFileName = _externalModule.AssemblyFileName
+            t.Enabled = _externalModule.ProcessorModule.Enabled
+            t.ModuleOrder = _externalModule.ModuleOrder
+
+            tmpForXML.Add(t)
+        Next
+        For Each _externalModule As _externalOutputModuleClass In externalOutputModules
+            Dim t As New _XMLEmberModuleClass
+            t.AssemblyName = _externalModule.AssemblyName
+            t.AssemblyFileName = _externalModule.AssemblyFileName
+            t.Enabled = _externalModule.ProcessorModule.Enabled
+            t.ModuleOrder = _externalModule.ModuleOrder
+
             tmpForXML.Add(t)
         Next
         Master.eSettings.EmberModules = tmpForXML
@@ -1019,6 +1037,7 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public AssemblyName As String
         Public Enabled As Boolean
+        Public ModuleOrder As Integer
         Public PostScraperEnabled As Boolean
         Public PostScraperOrder As Integer
         Public ScraperEnabled As Boolean
