@@ -6,10 +6,10 @@ Imports System.Runtime.InteropServices
 ' set of attributes. Change these attribute values to modify the information
 ' associated with an assembly.
 ' Review the values of the assembly attributes
-<Assembly: AssemblyTitle("scraper.EmberExtras")>
+<Assembly: AssemblyTitle("multi.EmberExtras")>
 <Assembly: AssemblyDescription("www.embermm.com")> 
 <Assembly: AssemblyCompany("Ember Media Manager")>
-<Assembly: AssemblyProduct("scraper.EmberExtras")>
+<Assembly: AssemblyProduct("multi.EmberExtras")>
 <Assembly: AssemblyCopyright("Copyright © 2010")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(False)>
