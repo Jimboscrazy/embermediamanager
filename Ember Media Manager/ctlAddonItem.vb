@@ -36,12 +36,12 @@ Public Class AddonItem
     Private _summary As String
     Private _category As String
     Private _screenshot As Image
-    Private _version As Single
-    Private _mineversion As Single
-    Private _maxeversion As Single
+    Private _version As String
+    Private _mineversion As String
+    Private _maxeversion As String
     Private _filelist As Generic.SortedList(Of String, String)
     Private _owned As Boolean
-    Private _installed As Single
+    Private _installed As String
 
     Private _downloads As Integer = -1
 
@@ -103,11 +103,11 @@ Public Class AddonItem
         End Set
     End Property
 
-    Public Property Version() As Single
+    Public Property Version() As String
         Get
             Return Me._version
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As String)
             Me._version = value
             Me.lblVersionNumber.Text = value.ToString
         End Set
@@ -122,20 +122,20 @@ Public Class AddonItem
         End Set
     End Property
 
-    Public Property MinEVersion() As Single
+    Public Property MinEVersion() As String
         Get
             Return Me._mineversion
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As String)
             Me._mineversion = value
         End Set
     End Property
 
-    Public Property MaxEVersion() As Single
+    Public Property MaxEVersion() As String
         Get
             Return Me._maxeversion
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As String)
             Me._maxeversion = value
         End Set
     End Property
@@ -162,13 +162,13 @@ Public Class AddonItem
         End Set
     End Property
 
-    Public Property Installed() As Single
+    Public Property Installed() As String
         Get
             Return Me._installed
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As String)
             Me._installed = value
-            If value > 0 Then
+            If Not value = "0" Then
                 Me.lblInstalledNumber.Text = value.ToString
                 Me.lblInstalledNumber.Visible = True
                 Me.lblInstalled.Visible = True
@@ -193,12 +193,12 @@ Public Class AddonItem
         Me._author = String.Empty
         Me._summary = String.Empty
         Me._category = String.Empty
-        Me._version = -1
-        Me._mineversion = -1
-        Me._maxeversion = -1
+        Me._version = "-1"
+        Me._mineversion = "-1"
+        Me._maxeversion = "-1"
         Me._screenshot = Nothing
         Me._owned = False
-        Me._installed = 0
+        Me._installed = "0"
         Me._filelist = New Generic.SortedList(Of String, String)
     End Sub
 
@@ -232,7 +232,7 @@ Public Class AddonItem
     Private Sub bwDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownload.DoWork
         Try
             Dim _needRestart As Boolean = False
-            If Me.Installed > 0 Then Master.DB.UninstallAddon(Me._id)
+            If Not Me.Installed = "0" Then Master.DB.UninstallAddon(Me._id)
 
             Dim sHTTP As New HTTP
             Dim finalFile As String = String.Empty
@@ -340,7 +340,7 @@ Public Class AddonItem
     Private Sub btnUninstall_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUninstall.Click
         RaiseEvent IsDownloading(True)
         Master.DB.UninstallAddon(Me._id)
-        Me.Installed = 0
+        Me.Installed = "0"
         RaiseEvent IsDownloading(False)
     End Sub
 End Class

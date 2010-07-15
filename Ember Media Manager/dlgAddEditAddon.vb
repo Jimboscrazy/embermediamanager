@@ -66,9 +66,9 @@ Public Class dlgAddEditAddon
 
                 Me._addon.Name = Me.txtName.Text
                 Me._addon.Description = Me.txtDescription.Text
-                Me._addon.Version = NumUtils.ConvertToSingle(Me.txtVersion.Text)
-                Me._addon.MinEVersion = NumUtils.ConvertToSingle(Me.txtMinEVersion.Text)
-                Me._addon.MaxEVersion = NumUtils.ConvertToSingle(Me.txtMaxEVersion.Text)
+                Me._addon.Version = (Me.txtVersion.Text)
+                Me._addon.MinEVersion = (Me.txtMinEVersion.Text)
+                Me._addon.MaxEVersion = (Me.txtMaxEVersion.Text)
                 Me._addon.Category = Me.GetCategoryFromIndex(Me.cboCategory.SelectedIndex)
 
                 If String.IsNullOrEmpty(Me.txtScreenShotPath.Text) Then

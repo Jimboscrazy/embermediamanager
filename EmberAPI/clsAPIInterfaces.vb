@@ -49,7 +49,7 @@ Public Class Interfaces
         Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
         Function SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie) As Boolean
-        Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As String
+        Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As List(Of String)
     End Interface
     Public Interface EmberTVInputModule
         Property Enabled() As Boolean

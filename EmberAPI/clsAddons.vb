@@ -3,13 +3,16 @@
     Public Shared AddonList As New List(Of Addon)
 
 
-    Public Shared Function AllowedVersion(ByVal MinVersion As String, ByVal MaxVersion As String) As Boolean
+    Public Shared Function AllowedVersion(ByVal MinVersion As String, ByVal MaxVersion As String, Optional ByVal currentVersion As String = "") As Boolean
         Dim MinAllowed As Boolean = False
         Dim MaxAllowed As Boolean = False
         Dim tMinVersion As Single = 0
         Dim tMinRevision As Integer = 0
         Dim tMaxVersion As Single = 9999
         Dim tMaxRevision As Integer = 99999
+        Dim MajorVersion As Single = 0
+        If String.IsNullOrEmpty(currentVersion) Then currentVersion = Master.MajorVersion.ToString
+        MajorVersion = If(String.IsNullOrEmpty(currentVersion), 0, NumUtils.ConvertToSingle(currentVersion))
         MinVersion = MinVersion.Replace(",", ".")
         MaxVersion = MaxVersion.Replace(",", ".")
         If MinVersion.Split(Convert.ToChar(".")).Count = 3 Then
@@ -25,11 +28,11 @@
 
         Dim myRevision As Integer = My.Application.Info.Version.Revision
 
-        If tMinVersion <= Master.MajorVersion AndAlso tMinRevision <= myRevision Then
+        If tMinVersion <= MajorVersion AndAlso tMinRevision <= myRevision Then
             MinAllowed = True
         End If
 
-        If tMaxVersion >= Master.MajorVersion AndAlso tMaxRevision >= myRevision Then
+        If tMaxVersion >= MajorVersion AndAlso tMaxRevision >= myRevision Then
             MaxAllowed = True
         End If
 
@@ -39,8 +42,8 @@
     Structure Addon
         Public ID As Integer
         Public Name As String
-        Public Version As Single
-        Public InstalledVersion As Single
+        Public Version As String
+        Public InstalledVersion As String
         Public Category As String
         Public MinEVersion As Single
         Public MaxEVersion As Single
@@ -79,12 +82,12 @@
                                 Dim AddonItem As New Addon
                                 AddonItem.ID = Convert.ToInt32(xAddon.Element("id").Value)
                                 AddonItem.Name = xAddon.Element("Name").Value
-                                AddonItem.Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
+                                AddonItem.Version = (xAddon.Element("AddonVersion").Value)
                                 AddonItem.MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
                                 AddonItem.MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
                                 AddonItem.Category = sType
                                 AddonItem.InstalledVersion = Master.DB.IsAddonInstalled(AddonItem.ID)
-                                If AddonItem.InstalledVersion > 0 AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
+                                If Not AddonItem.InstalledVersion = "0" AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
                                     AddonList.Add(AddonItem)
                                 End If
                             End If
