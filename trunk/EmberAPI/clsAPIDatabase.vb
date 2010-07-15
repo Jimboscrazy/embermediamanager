@@ -1865,22 +1865,19 @@ Public Class Database
         End Try
     End Sub
 
-    Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
+    Public Function IsAddonInstalled(ByVal AddonID As Integer) As String
         Try
             Using SQLCommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                 SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
                 Dim tES As Object = SQLCommand.ExecuteScalar
                 If Not IsNothing(tES) Then
-                    Dim tSing As Single = 0
-                    If Single.TryParse(tES.ToString, tSing) Then
-                        Return tSing
-                    End If
+                    Return tES.ToString
                 End If
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return 0
+        Return "0"
     End Function
 
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean

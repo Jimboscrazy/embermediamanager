@@ -259,9 +259,9 @@ Public Class dlgAddons
                             Me.AddonItem(iIndex).ID = Convert.ToInt32(xAddon.Element("id").Value)
                             Me.AddonItem(iIndex).AddonName = xAddon.Element("Name").Value
                             Me.AddonItem(iIndex).Author = xAddon.Element("User").Value
-                            Me.AddonItem(iIndex).Version = NumUtils.ConvertToSingle(xAddon.Element("AddonVersion").Value)
-                            Me.AddonItem(iIndex).MinEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Min").Value)
-                            Me.AddonItem(iIndex).MaxEVersion = NumUtils.ConvertToSingle(xAddon.Element("EmberVersion_Max").Value)
+                            Me.AddonItem(iIndex).Version = (xAddon.Element("AddonVersion").Value)
+                            Me.AddonItem(iIndex).MinEVersion = (xAddon.Element("EmberVersion_Min").Value)
+                            Me.AddonItem(iIndex).MaxEVersion = (xAddon.Element("EmberVersion_Max").Value)
                             Me.AddonItem(iIndex).Summary = xAddon.Element("Description").Value
                             Me.AddonItem(iIndex).Category = e.Argument.ToString
                             If Me.txtUsername.Text = Me.AddonItem(iIndex).Author Then

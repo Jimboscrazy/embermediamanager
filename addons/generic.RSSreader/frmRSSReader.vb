@@ -18,6 +18,10 @@ Public Class frmRSSReader
     Private Sub frmRSSReader_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ShowItems()
     End Sub
+    Private Sub tsbPin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbPin.Click
+        tsbPin.Text = If(tsbPin.Checked, "o", "")
+        Me.TopMost = tsbPin.Checked
+    End Sub
     Sub ShowItems()
         Me.SuspendLayout()
         ClearItems()
@@ -98,4 +102,6 @@ Public Class frmRSSReader
         tsbReload.Enabled = False
         ShowItems()
     End Sub
+
+
 End Class

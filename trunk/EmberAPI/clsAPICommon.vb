@@ -322,9 +322,9 @@ Public Class InstallCommands
         Private _author As String
         Private _description As String
         Private _category As String
-        Private _version As Single
-        Private _mineversion As Single
-        Private _maxeversion As Single
+        Private _version As String
+        Private _mineversion As String
+        Private _maxeversion As String
         Private _screenshotpath As String
         Private _screenshotimage As Image
         Private _files As Generic.SortedList(Of String, String)
@@ -375,29 +375,29 @@ Public Class InstallCommands
             End Set
         End Property
 
-        Public Property Version() As Single
+        Public Property Version() As String
             Get
                 Return Me._version
             End Get
-            Set(ByVal value As Single)
+            Set(ByVal value As String)
                 Me._version = value
             End Set
         End Property
 
-        Public Property MinEVersion() As Single
+        Public Property MinEVersion() As String
             Get
                 Return Me._mineversion
             End Get
-            Set(ByVal value As Single)
+            Set(ByVal value As String)
                 Me._mineversion = value
             End Set
         End Property
 
-        Public Property MaxEVersion() As Single
+        Public Property MaxEVersion() As String
             Get
                 Return Me._maxeversion
             End Get
-            Set(ByVal value As Single)
+            Set(ByVal value As String)
                 Me._maxeversion = value
             End Set
         End Property
@@ -448,9 +448,9 @@ Public Class InstallCommands
             Me._author = String.Empty
             Me._description = String.Empty
             Me._category = String.Empty
-            Me._version = -1
-            Me._mineversion = -1
-            Me._maxeversion = -1
+            Me._version = "-1"
+            Me._mineversion = "-1"
+            Me._maxeversion = "-1"
             Me._screenshotpath = String.Empty
             Me._screenshotimage = Nothing
             Me._files = New Generic.SortedList(Of String, String)

@@ -22,11 +22,15 @@ Partial Class frmRSSReader
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRSSReader))
         Me.OK_Button = New System.Windows.Forms.Button
         Me.pnlList = New System.Windows.Forms.Panel
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.tsbReload = New System.Windows.Forms.ToolStripButton
+        Me.tsbPin = New System.Windows.Forms.ToolStripButton
+        Me.ilMain = New System.Windows.Forms.ImageList(Me.components)
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -52,7 +56,7 @@ Partial Class frmRSSReader
         '
         Me.ToolStrip1.BackColor = System.Drawing.Color.SteelBlue
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbReload})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbReload, Me.tsbPin, Me.ToolStripButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(623, 35)
@@ -61,7 +65,6 @@ Partial Class frmRSSReader
         '
         'tsbReload
         '
-        Me.tsbReload.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.tsbReload.AutoSize = False
         Me.tsbReload.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.tsbReload.Enabled = False
@@ -72,6 +75,40 @@ Partial Class frmRSSReader
         Me.tsbReload.Size = New System.Drawing.Size(33, 32)
         Me.tsbReload.Text = "ToolStripButton1"
         Me.tsbReload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        '
+        'tsbPin
+        '
+        Me.tsbPin.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tsbPin.Checked = True
+        Me.tsbPin.CheckOnClick = True
+        Me.tsbPin.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.tsbPin.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tsbPin.Image = CType(resources.GetObject("tsbPin.Image"), System.Drawing.Image)
+        Me.tsbPin.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.tsbPin.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbPin.Name = "tsbPin"
+        Me.tsbPin.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+        Me.tsbPin.Size = New System.Drawing.Size(23, 32)
+        Me.tsbPin.Text = "o"
+        Me.tsbPin.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.tsbPin.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay
+        '
+        'ilMain
+        '
+        Me.ilMain.ImageStream = CType(resources.GetObject("ilMain.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ilMain.TransparentColor = System.Drawing.Color.Transparent
+        Me.ilMain.Images.SetKeyName(0, "pin.png")
+        Me.ilMain.Images.SetKeyName(1, "note.png")
+        Me.ilMain.Images.SetKeyName(2, "note_accept.png")
+        '
+        'ToolStripButton1
+        '
+        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
+        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton1.Name = "ToolStripButton1"
+        Me.ToolStripButton1.Size = New System.Drawing.Size(23, 32)
+        Me.ToolStripButton1.Text = "ToolStripButton1"
         '
         'frmRSSReader
         '
@@ -102,5 +139,8 @@ Partial Class frmRSSReader
     Friend WithEvents pnlList As System.Windows.Forms.Panel
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents tsbReload As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ilMain As System.Windows.Forms.ImageList
+    Friend WithEvents tsbPin As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
 
 End Class

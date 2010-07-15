@@ -254,8 +254,8 @@ Public Class OutputMediaBrowser_Module
         End Get
     End Property
 
-    Public Function SaveImageAs(ByVal imageType As EmberAPI.Enums.ImageType, ByRef mMovie As EmberAPI.Structures.DBMovie) As String Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveImageAs
-        Return String.Empty
+    Public Function SaveImageAs(ByVal imageType As EmberAPI.Enums.ImageType, ByRef mMovie As EmberAPI.Structures.DBMovie) As List(Of String) Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveImageAs
+        Return New List(Of String)
     End Function
 
     Public Function SaveMovieInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.SaveMovieInfoSheet

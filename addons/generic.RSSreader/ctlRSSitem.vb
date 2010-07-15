@@ -70,7 +70,8 @@
             _IMDBid = value
             If Not String.IsNullOrEmpty(value) Then
                 'lblSearchType.Visible = False
-                lblSearchType.ForeColor = Color.Black
+                lblSearchType.ForeColor = Color.Blue
+                lblSearchType.Font = New Font(lblSearchType.Font, FontStyle.Underline)
                 lblSearchType.Text = String.Concat("IMDB ID: ", value)
             Else
                 lblSearchType.Text = "Not Found"
@@ -125,5 +126,31 @@
         lblMovie.Text = String.Empty
         lblYear.Text = String.Empty
         lblStatus.Text = String.Empty
+    End Sub
+
+    Private Sub lblSearchType_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lblSearchType.MouseClick
+        If Not String.IsNullOrEmpty(_IMDBid) Then
+            If Not String.IsNullOrEmpty(lblURL.Text) Then
+                If Master.isWindows Then
+                    Process.Start(String.Format("http://www.imdb.com/title/tt{0}/", _IMDBid))
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = String.Format("http://www.imdb.com/title/tt{0}/", _IMDBid)
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub lblSearchType_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblSearchType.MouseHover
+        If Not String.IsNullOrEmpty(_IMDBid) Then
+            Cursor = Cursors.Hand
+        End If
+    End Sub
+
+    Private Sub lblSearchType_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblSearchType.MouseLeave
+        Cursor = Cursors.Default
     End Sub
 End Class
