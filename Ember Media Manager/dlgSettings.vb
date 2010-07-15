@@ -325,10 +325,10 @@ Public Class dlgSettings
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
-                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
-                End If
+                'If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
+                'ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
+                'tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+                'End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
                 AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
@@ -341,10 +341,10 @@ Public Class dlgSettings
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
-                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
-                End If
+                'If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
+                'ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
+                'tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+                'End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
                 AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
@@ -2647,7 +2647,12 @@ Public Class dlgSettings
                     s.ProcessorModule.ScraperOrderChanged()
                     s.ProcessorModule.PostScraperOrderChanged()
                 Next
-
+                For Each s As ModulesManager._externalInputModuleClass In (ModulesManager.Instance.externalInputModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.SetupOrderChanged()
+                Next
+                For Each s As ModulesManager._externalOutputModuleClass In (ModulesManager.Instance.externalOutputModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.SetupOrderChanged()
+                Next
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -3669,6 +3674,20 @@ Public Class dlgSettings
                 End Try
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+                Try
+                    s.ProcessorModule.SaveSetup(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
+            For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules
+                Try
+                    s.ProcessorModule.SaveSetup(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
+            For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception
