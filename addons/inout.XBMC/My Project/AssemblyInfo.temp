@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("generic.EmberCore")> 
+<Assembly: AssemblyTitle("InOut.XBMC")> 
 <Assembly: AssemblyDescription("www.embermm.com")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("generic.EmberCore")> 
+<Assembly: AssemblyCompany("Ember Media Manager")> 
+<Assembly: AssemblyProduct("InOut.XBMC")> 
 <Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 

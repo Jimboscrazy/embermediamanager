@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("InOut.YAMJ")> 
+<Assembly: AssemblyTitle("InOut.Matroska")> 
 <Assembly: AssemblyDescription("www.embermm.com")> 
 <Assembly: AssemblyCompany("Ember Media Manager")>
-<Assembly: AssemblyProduct("InOut.YAMJ")> 
+<Assembly: AssemblyProduct("InOut.Matroska")> 
 <Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
@@ -32,4 +32,4 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("0.0.0.$WCREV$")> 
-<Assembly: AssemblyFileVersion("0.0.0.$WCREV$")> 
+<Assembly: AssemblyFileVersion("0.0.0.$WCREV$")>

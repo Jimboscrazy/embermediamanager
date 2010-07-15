@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("generic.EmberCore")> 
+<Assembly: AssemblyTitle("generic.EmberCore.BulkRename")> 
 <Assembly: AssemblyDescription("www.embermm.com")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("generic.EmberCore")> 
+<Assembly: AssemblyProduct("generic.EmberCore.BulkRename")> 
 <Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
