@@ -150,12 +150,15 @@ Public Class RSSReader
                     If sresult.ExactMatches.Count = 1 AndAlso sresult.PopularTitles.Count = 0 AndAlso sresult.PartialMatches.Count = 0 Then 'redirected to imdb info page
                         i.imdb_id = sresult.ExactMatches.Item(0).IMDBID
                         i.name = sresult.ExactMatches.Item(0).Title
+                        If String.IsNullOrEmpty(i.year) Then i.year = sresult.ExactMatches.Item(0).Year
                     ElseIf (popularHaveYear >= 0 OrElse exactHaveYear = -1) AndAlso sresult.PopularTitles.Count > 0 AndAlso sresult.PopularTitles(If(popularHaveYear >= 0, popularHaveYear, 0)).Lev <= 5 Then
                         i.imdb_id = sresult.PopularTitles.Item(If(popularHaveYear >= 0, popularHaveYear, 0)).IMDBID
                         i.name = sresult.PopularTitles.Item(If(popularHaveYear >= 0, popularHaveYear, 0)).Title
+                        If String.IsNullOrEmpty(i.year) Then i.year = sresult.PopularTitles.Item(If(popularHaveYear >= 0, popularHaveYear, 0)).Year
                     ElseIf sresult.ExactMatches.Count > 0 AndAlso sresult.ExactMatches(If(exactHaveYear >= 0, exactHaveYear, 0)).Lev <= 5 Then
                         i.imdb_id = sresult.ExactMatches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).IMDBID
                         i.name = sresult.ExactMatches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).Title
+                        If String.IsNullOrEmpty(i.year) Then i.year = sresult.ExactMatches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).Year
                     ElseIf sresult.PartialMatches.Count > 0 Then
                         'i.imdb_id = sresult.PartialMatches.Item(0).IMDBID
                         'i.name = sresult.PartialMatches.Item(0).Title
@@ -222,7 +225,7 @@ Public Class RSSReader
                 Dim c As String = _items(a).compute()
                 If items.Where(Function(e) e.crc = c).Count = 0 Then
                     _items(a).name = CleanFileName(_items(a).title)
-                    _items(a).year = FindYear(_items(a).name)
+                    _items(a).year = FindYear(_items(a).name).Trim
                     items.Insert(0, _items(a))
                     haveNew = True
                 End If
