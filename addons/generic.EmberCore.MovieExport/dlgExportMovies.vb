@@ -707,8 +707,9 @@ Public Class dlgExportMovies
         BuildHTML(use_filter, String.Empty, String.Empty, base_template, True)
     End Sub
 
-    Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
+    Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = -1)
         wbMovieList.Visible = False
+        If resizePoster = -1 Then resizePoster = Convert.ToInt32(AdvancedSettings.GetSetting("DefaultPosterSize", "200"))
         If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
         cbSearch.Enabled = False
         cbTemplate.Enabled = False

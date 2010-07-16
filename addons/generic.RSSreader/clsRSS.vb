@@ -145,7 +145,7 @@ Public Class RSSReader
                     RaiseEvent RSSItemChanged(i)
                     sresult = imdb.SearchMovie(i.name)
                     Dim exactHaveYear As Integer = IMDB_FindYear(i.year, sresult.ExactMatches)
-                    Dim popularHaveYear As Integer = IMDB_FindYear(i.name, sresult.PopularTitles)
+                    Dim popularHaveYear As Integer = IMDB_FindYear(i.year, sresult.PopularTitles)
                     'it seems "popular matches" is a better result than "exact matches"
                     If sresult.ExactMatches.Count = 1 AndAlso sresult.PopularTitles.Count = 0 AndAlso sresult.PartialMatches.Count = 0 Then 'redirected to imdb info page
                         i.imdb_id = sresult.ExactMatches.Item(0).IMDBID

@@ -21,6 +21,8 @@ Public Class frmRSSReader
     Private Sub tsbPin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbPin.Click
         tsbPin.Text = If(tsbPin.Checked, "o", "")
         Me.TopMost = tsbPin.Checked
+        Me.ShowInTaskbar = Not tsbPin.Checked
+        Me.MinimizeBox = Not tsbPin.Checked
     End Sub
     Sub ShowItems()
         Me.SuspendLayout()
