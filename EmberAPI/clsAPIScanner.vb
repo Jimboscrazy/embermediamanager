@@ -340,6 +340,9 @@ Public Class Scanner
                             Case fFile.ToLower = String.Concat(tmpName, "[trailer]", t.ToLower)
                                 Movie.Trailer = fFile
                                 Exit For
+                            Case FileUtils.Common.isVideoTS(Movie.Filename) AndAlso fFile.ToLower = Path.Combine(parPath, String.Concat("video_ts-trailer", t.ToLower))
+                                Movie.Trailer = fFile
+                                Exit For
                             Case Movie.isSingle AndAlso fFile.ToLower = Path.Combine(parPath, String.Concat("movie-trailer", t.ToLower))
                                 Movie.Trailer = fFile
                                 Exit For
