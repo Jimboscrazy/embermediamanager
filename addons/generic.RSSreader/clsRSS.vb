@@ -27,7 +27,6 @@ Public Class RSSItem
             _link = value
         End Set
     End Property
-
     Private _description As String
     Public Property description() As String
         Get
@@ -114,9 +113,13 @@ Public Class RSSReader
     Public description As String
     Public items As New List(Of RSSItem)
     Private _url As String
+    Private _authString As String
+    Private _checkLink As Boolean
     Private FileMarkers As String = AdvancedSettings.GetSetting("CleanMarkers", "720p|720i|1080p|1080i|divx|xvid|x264|dvdrip|brrip|bluray|blu-ray|h264|[")
-    Public Sub New(ByVal url As String)
+    Public Sub New(ByVal url As String, Optional ByVal checklink As Boolean = False, Optional ByVal authString As String = "")
         _url = url
+        _authString = authString
+        _checkLink = checklink
         StartCheck()
     End Sub
 
@@ -133,8 +136,8 @@ Public Class RSSReader
         Try
 
             Dim imdb As New RSS_IMDB
-            Dim sresult As MovieSearchResults
-            Dim loopCount As Integer = 60
+            Dim sresult As MovieSearchResults = Nothing
+            Dim loopCount As Integer = Convert.ToInt32(AdvancedSettings.GetSetting("Retry", "60"))
             While Not bwCheckFeeds.CancellationPending
                 loopCount = 60
                 Read()
@@ -143,7 +146,17 @@ Public Class RSSReader
                 For Each i As RSSItem In items.Where(Function(o) o.Processed = RSSItem.Processed_State.None)
                     i.Processed = RSSItem.Processed_State.IMDB
                     RaiseEvent RSSItemChanged(i)
-                    sresult = imdb.SearchMovie(i.name)
+                    If _checkLink Then
+                        i.imdb_id = imdb.SearchImdbLink(String.Concat(i.link, _authString))
+                        If Not String.IsNullOrEmpty(i.imdb_id) Then
+                            sresult = imdb.SearchMovie(String.Empty, i.imdb_id)
+                        Else
+                            sresult = imdb.SearchMovie(i.name)
+                        End If
+                    Else
+                        sresult = imdb.SearchMovie(i.name)
+                    End If
+
                     Dim exactHaveYear As Integer = IMDB_FindYear(i.year, sresult.ExactMatches)
                     Dim popularHaveYear As Integer = IMDB_FindYear(i.year, sresult.PopularTitles)
                     'it seems "popular matches" is a better result than "exact matches"

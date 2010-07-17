@@ -38,8 +38,10 @@ Public Class frmSettingsHolder
     Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
         ListView1.SelectedItems(0).SubItems(0).Text = TextBox1.Text
         ListView1.SelectedItems(0).SubItems(1).Text = TextBox2.Text
+        ListView1.SelectedItems(0).SubItems(2).Text = TextBox4.Text
         TextBox1.Text = ""
         TextBox2.Text = ""
+        TextBox4.Text = ""
         isSelected = False
         CheckButtons()
         RaiseEvent ModuleSettingsChanged()
@@ -49,9 +51,11 @@ Public Class frmSettingsHolder
         Dim li As New ListViewItem
         li.Text = TextBox1.Text
         li.SubItems.Add(TextBox2.Text)
+        li.SubItems.Add(TextBox4.Text)
         ListView1.Items.Add(li)
         TextBox1.Text = ""
         TextBox2.Text = ""
+        TextBox4.Text = ""
         CheckButtons()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -60,6 +64,7 @@ Public Class frmSettingsHolder
         ListView1.Items.RemoveAt(ListView1.SelectedItems(0).Index)
         TextBox1.Text = ""
         TextBox2.Text = ""
+        TextBox4.Text = ""
         isSelected = False
         CheckButtons()
         RaiseEvent ModuleSettingsChanged()
@@ -94,6 +99,7 @@ Public Class frmSettingsHolder
             btnEditSet.Enabled = True
             TextBox1.Text = ListView1.SelectedItems(0).SubItems(0).Text
             TextBox2.Text = ListView1.SelectedItems(0).SubItems(1).Text
+            TextBox4.Text = ListView1.SelectedItems(0).SubItems(2).Text
         Else
             isSelected = False
             btnRemoveSet.Enabled = False

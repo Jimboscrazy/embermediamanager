@@ -93,13 +93,18 @@ Public Class RSSreaderExternalModule
 
     Public Sub Load()
         Dim hrsslist As New Hashtable
+        Dim hrssauthlist As New Hashtable
         hrsslist = AdvancedSettings.GetComplexSetting(String.Concat("rss"))
+        hrssauthlist = AdvancedSettings.GetComplexSetting(String.Concat("rssAuth"))
         If Not _setup Is Nothing Then
             _setup.ListView1.Items.Clear()
             If Not hrsslist Is Nothing Then
+                If hrssauthlist Is Nothing Then hrssauthlist = New Hashtable
                 For Each k In hrsslist.Keys
                     Dim i As ListViewItem = _setup.ListView1.Items.Add(k.ToString)
                     i.SubItems.Add(hrsslist.Item(k).ToString)
+                    Dim auth As String = If(IsNothing(hrssauthlist.Item(k)), String.Empty, hrssauthlist.Item(k).ToString)
+                    i.SubItems.Add(auth)
                 Next
             Else
                 hrsslist = New Hashtable
@@ -108,6 +113,7 @@ Public Class RSSreaderExternalModule
             For Each s As String In AdvancedSettings.GetSetting("CleanMarkers", "720p|720i|1080p|1080i|divx|xvid|x264|dvdrip|brrip|bluray|blu-ray|h264|[").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 _setup.ListView2.Items.Add(s)
             Next
+            _setup.TextBox5.Text = AdvancedSettings.GetSetting("Retry", "60")
         End If
     End Sub
     Private Sub ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click
@@ -126,15 +132,19 @@ Public Class RSSreaderExternalModule
 
     Public Sub Save()
         Dim hrsslist As New Hashtable
+        Dim hrssauthlist As New Hashtable
         For Each i As ListViewItem In _setup.ListView1.Items
             hrsslist.Add(i.SubItems(0).Text, i.SubItems(1).Text)
+            hrssauthlist.Add(i.SubItems(0).Text, i.SubItems(2).Text)
         Next
         Dim l As New List(Of String)
         For Each i As ListViewItem In _setup.ListView2.Items
             If Not String.IsNullOrEmpty(i.SubItems(0).Text) Then l.Add(i.SubItems(0).Text)
         Next
+        AdvancedSettings.SetSetting("Retry", _setup.TextBox5.Text)
         AdvancedSettings.SetSetting("CleanMarkers", Strings.Join(l.ToArray, "|"))
         AdvancedSettings.SetComplexSetting(String.Concat("rss"), hrsslist)
+        AdvancedSettings.SetComplexSetting(String.Concat("rssAuth"), hrssauthlist)
     End Sub
 
     Sub Disable()
@@ -147,17 +157,29 @@ Public Class RSSreaderExternalModule
     End Sub
 
     Sub Enable()
-        MyMenu.Text = Master.eLang.GetString(1, "RSS Reader")
-        MyMenu.Alignment = ToolStripItemAlignment.Right
-        'ModulesManager.Instance.RuntimeObjects.TopMenu.Items.Add(MyMenuSep)
-        ModulesManager.Instance.RuntimeObjects.TopMenu.Items.Add(MyMenu)
-        Dim hrsslist As New Hashtable
-        hrsslist = AdvancedSettings.GetComplexSetting(String.Concat("rss"))
-        If Not hrsslist Is Nothing Then
-            For Each k In hrsslist.Keys
-                _rssReader.Add(New RSSReader(hrsslist.Item(k).ToString))
-            Next
-        End If
+        Try
+
+            MyMenu.Text = Master.eLang.GetString(1, "RSS Reader")
+            MyMenu.Alignment = ToolStripItemAlignment.Right
+            'ModulesManager.Instance.RuntimeObjects.TopMenu.Items.Add(MyMenuSep)
+            ModulesManager.Instance.RuntimeObjects.TopMenu.Items.Add(MyMenu)
+            Dim hrsslist As New Hashtable
+            hrsslist = AdvancedSettings.GetComplexSetting(String.Concat("rss"))
+            Dim hrsscllist As New Hashtable
+            hrsscllist = AdvancedSettings.GetComplexSetting(String.Concat("rssCheckLink"))
+            Dim hrssauthlist As New Hashtable
+            hrssauthlist = AdvancedSettings.GetComplexSetting(String.Concat("rssAuth"))
+            If hrssauthlist Is Nothing Then hrssauthlist = New Hashtable
+            If hrsscllist Is Nothing Then hrsscllist = New Hashtable
+            If Not hrsslist Is Nothing Then
+                For Each k In hrsslist.Keys
+                    Dim auth As String = If(IsNothing(hrssauthlist.Item(k)), String.Empty, hrssauthlist.Item(k).ToString)
+                    Dim cl As Boolean = If(IsNothing(hrsscllist.Item(k)), False, Convert.ToBoolean(hrssauthlist.Item(k)))
+                    _rssReader.Add(New RSSReader(hrsslist.Item(k).ToString, cl, auth))
+                Next
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)

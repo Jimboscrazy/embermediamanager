@@ -9,12 +9,23 @@ Class RSS_IMDB
     Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
     Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
     Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
-    Public Function SearchMovie(ByVal sMovie As String) As MovieSearchResults
+    Public Function SearchImdbLink(ByVal url As String) As String
+        Dim sHTTP As New HTTP
+        Dim HTML As String = sHTTP.DownloadData(url)
+        Return Regex.Match(HTML, IMDB_ID_REGEX).ToString
+    End Function
+    Public Function SearchMovie(ByVal sMovie As String, Optional ByVal imdbid As String = "") As MovieSearchResults
         Try
             Dim D, W As Integer
             Dim R As New MovieSearchResults
             Dim sHTTP As New HTTP
-            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")), "&x=0&y=0"))
+            Dim HTML As String
+            If String.IsNullOrEmpty(imdbid) Then
+                HTML = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")), "&x=0&y=0"))
+            Else
+                HTML = sHTTP.DownloadData(String.Concat("http://", IMDBURL, "/title/tt", imdbid))
+            End If
+
             Dim rUri As String = sHTTP.ResponseUri
             sHTTP = Nothing
             'Check if we've been redirected straight to the movie page

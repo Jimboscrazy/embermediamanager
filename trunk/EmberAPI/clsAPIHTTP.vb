@@ -92,6 +92,8 @@ Public Class HTTP
         Try
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = 20000
+            Me.wrRequest.CookieContainer = New CookieContainer()
+
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then

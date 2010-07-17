@@ -36,6 +36,10 @@ Partial Class frmSettingsHolder
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
+        Me.chkScrapeLink = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.rbToEnd = New System.Windows.Forms.RadioButton
+        Me.rbOnlyTag = New System.Windows.Forms.RadioButton
         Me.ListView2 = New System.Windows.Forms.ListView
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.btnRemoveTag = New System.Windows.Forms.Button
@@ -43,10 +47,12 @@ Partial Class frmSettingsHolder
         Me.btnEditTag = New System.Windows.Forms.Button
         Me.btnNewTag = New System.Windows.Forms.Button
         Me.TextBox3 = New System.Windows.Forms.TextBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.rbToEnd = New System.Windows.Forms.RadioButton
-        Me.rbOnlyTag = New System.Windows.Forms.RadioButton
-        Me.chkScrapeLink = New System.Windows.Forms.CheckBox
+        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.TextBox5 = New System.Windows.Forms.TextBox
+        Me.Label6 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -54,9 +60,9 @@ Partial Class frmSettingsHolder
         '
         'ListView1
         '
-        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader4})
         Me.ListView1.FullRowSelect = True
-        Me.ListView1.Location = New System.Drawing.Point(7, 44)
+        Me.ListView1.Location = New System.Drawing.Point(7, 58)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(603, 133)
         Me.ListView1.TabIndex = 2
@@ -75,7 +81,7 @@ Partial Class frmSettingsHolder
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(98, 187)
+        Me.Label3.Location = New System.Drawing.Point(98, 201)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(45, 13)
         Me.Label3.TabIndex = 7
@@ -84,7 +90,7 @@ Partial Class frmSettingsHolder
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(264, 187)
+        Me.Label4.Location = New System.Drawing.Point(264, 201)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(43, 13)
         Me.Label4.TabIndex = 8
@@ -93,14 +99,14 @@ Partial Class frmSettingsHolder
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(149, 184)
+        Me.TextBox1.Location = New System.Drawing.Point(149, 198)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(108, 22)
         Me.TextBox1.TabIndex = 9
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(313, 184)
+        Me.TextBox2.Location = New System.Drawing.Point(313, 198)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(297, 22)
         Me.TextBox2.TabIndex = 10
@@ -109,7 +115,7 @@ Partial Class frmSettingsHolder
         '
         Me.btnRemoveSet.Enabled = False
         Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
-        Me.btnRemoveSet.Location = New System.Drawing.Point(70, 182)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(65, 196)
         Me.btnRemoveSet.Name = "btnRemoveSet"
         Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveSet.TabIndex = 37
@@ -120,7 +126,7 @@ Partial Class frmSettingsHolder
         Me.btnEditSet.Enabled = False
         Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
         Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSet.Location = New System.Drawing.Point(41, 182)
+        Me.btnEditSet.Location = New System.Drawing.Point(36, 196)
         Me.btnEditSet.Name = "btnEditSet"
         Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
         Me.btnEditSet.TabIndex = 36
@@ -132,7 +138,7 @@ Partial Class frmSettingsHolder
         Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(12, 182)
+        Me.btnNewSet.Location = New System.Drawing.Point(7, 196)
         Me.btnNewSet.Name = "btnNewSet"
         Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
         Me.btnNewSet.TabIndex = 35
@@ -161,6 +167,11 @@ Partial Class frmSettingsHolder
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.Label6)
+        Me.pnlSettings.Controls.Add(Me.Label5)
+        Me.pnlSettings.Controls.Add(Me.TextBox5)
+        Me.pnlSettings.Controls.Add(Me.Label2)
+        Me.pnlSettings.Controls.Add(Me.TextBox4)
         Me.pnlSettings.Controls.Add(Me.chkScrapeLink)
         Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.ListView2)
@@ -180,79 +191,25 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Controls.Add(Me.TextBox2)
         Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 395)
+        Me.pnlSettings.Size = New System.Drawing.Size(617, 401)
         Me.pnlSettings.TabIndex = 83
         '
-        'ListView2
+        'chkScrapeLink
         '
-        Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3})
-        Me.ListView2.FullRowSelect = True
-        Me.ListView2.Location = New System.Drawing.Point(7, 247)
-        Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(166, 133)
-        Me.ListView2.TabIndex = 83
-        Me.ListView2.UseCompatibleStateImageBehavior = False
-        Me.ListView2.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Tag"
-        Me.ColumnHeader3.Width = 138
-        '
-        'btnRemoveTag
-        '
-        Me.btnRemoveTag.Enabled = False
-        Me.btnRemoveTag.Image = CType(resources.GetObject("btnRemoveTag.Image"), System.Drawing.Image)
-        Me.btnRemoveTag.Location = New System.Drawing.Point(179, 305)
-        Me.btnRemoveTag.Name = "btnRemoveTag"
-        Me.btnRemoveTag.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveTag.TabIndex = 88
-        Me.btnRemoveTag.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Location = New System.Drawing.Point(222, 248)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 13)
-        Me.Label1.TabIndex = 84
-        Me.Label1.Text = "Title Filter Tag"
-        '
-        'btnEditTag
-        '
-        Me.btnEditTag.Enabled = False
-        Me.btnEditTag.Image = CType(resources.GetObject("btnEditTag.Image"), System.Drawing.Image)
-        Me.btnEditTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditTag.Location = New System.Drawing.Point(179, 276)
-        Me.btnEditTag.Name = "btnEditTag"
-        Me.btnEditTag.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditTag.TabIndex = 87
-        Me.btnEditTag.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditTag.UseVisualStyleBackColor = True
-        '
-        'btnNewTag
-        '
-        Me.btnNewTag.Enabled = False
-        Me.btnNewTag.Image = CType(resources.GetObject("btnNewTag.Image"), System.Drawing.Image)
-        Me.btnNewTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewTag.Location = New System.Drawing.Point(177, 247)
-        Me.btnNewTag.Name = "btnNewTag"
-        Me.btnNewTag.Size = New System.Drawing.Size(23, 23)
-        Me.btnNewTag.TabIndex = 86
-        Me.btnNewTag.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnNewTag.UseVisualStyleBackColor = True
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(225, 264)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(108, 22)
-        Me.TextBox3.TabIndex = 85
+        Me.chkScrapeLink.AutoSize = True
+        Me.chkScrapeLink.Location = New System.Drawing.Point(101, 226)
+        Me.chkScrapeLink.Name = "chkScrapeLink"
+        Me.chkScrapeLink.Size = New System.Drawing.Size(135, 17)
+        Me.chkScrapeLink.TabIndex = 92
+        Me.chkScrapeLink.Text = "Try to Scrape the Link"
+        Me.chkScrapeLink.UseVisualStyleBackColor = True
+        Me.chkScrapeLink.Visible = False
         '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.rbToEnd)
         Me.GroupBox1.Controls.Add(Me.rbOnlyTag)
-        Me.GroupBox1.Location = New System.Drawing.Point(219, 307)
+        Me.GroupBox1.Location = New System.Drawing.Point(219, 321)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(200, 60)
         Me.GroupBox1.TabIndex = 91
@@ -281,22 +238,125 @@ Partial Class frmSettingsHolder
         Me.rbOnlyTag.Text = "Only the tag"
         Me.rbOnlyTag.UseVisualStyleBackColor = True
         '
-        'chkScrapeLink
+        'ListView2
         '
-        Me.chkScrapeLink.AutoSize = True
-        Me.chkScrapeLink.Location = New System.Drawing.Point(149, 212)
-        Me.chkScrapeLink.Name = "chkScrapeLink"
-        Me.chkScrapeLink.Size = New System.Drawing.Size(135, 17)
-        Me.chkScrapeLink.TabIndex = 92
-        Me.chkScrapeLink.Text = "Try to Scrape the Link"
-        Me.chkScrapeLink.UseVisualStyleBackColor = True
+        Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3})
+        Me.ListView2.FullRowSelect = True
+        Me.ListView2.Location = New System.Drawing.Point(7, 261)
+        Me.ListView2.Name = "ListView2"
+        Me.ListView2.Size = New System.Drawing.Size(166, 133)
+        Me.ListView2.TabIndex = 83
+        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.ListView2.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Tag"
+        Me.ColumnHeader3.Width = 138
+        '
+        'btnRemoveTag
+        '
+        Me.btnRemoveTag.Enabled = False
+        Me.btnRemoveTag.Image = CType(resources.GetObject("btnRemoveTag.Image"), System.Drawing.Image)
+        Me.btnRemoveTag.Location = New System.Drawing.Point(179, 319)
+        Me.btnRemoveTag.Name = "btnRemoveTag"
+        Me.btnRemoveTag.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveTag.TabIndex = 88
+        Me.btnRemoveTag.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.Location = New System.Drawing.Point(222, 262)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(85, 13)
+        Me.Label1.TabIndex = 84
+        Me.Label1.Text = "Title Filter Tag"
+        '
+        'btnEditTag
+        '
+        Me.btnEditTag.Enabled = False
+        Me.btnEditTag.Image = CType(resources.GetObject("btnEditTag.Image"), System.Drawing.Image)
+        Me.btnEditTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditTag.Location = New System.Drawing.Point(179, 290)
+        Me.btnEditTag.Name = "btnEditTag"
+        Me.btnEditTag.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditTag.TabIndex = 87
+        Me.btnEditTag.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditTag.UseVisualStyleBackColor = True
+        '
+        'btnNewTag
+        '
+        Me.btnNewTag.Enabled = False
+        Me.btnNewTag.Image = CType(resources.GetObject("btnNewTag.Image"), System.Drawing.Image)
+        Me.btnNewTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewTag.Location = New System.Drawing.Point(177, 261)
+        Me.btnNewTag.Name = "btnNewTag"
+        Me.btnNewTag.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewTag.TabIndex = 86
+        Me.btnNewTag.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewTag.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(225, 278)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(108, 22)
+        Me.TextBox3.TabIndex = 85
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(313, 224)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(297, 22)
+        Me.TextBox4.TabIndex = 93
+        Me.TextBox4.Visible = False
+        '
+        'Label2
+        '
+        Me.Label2.Location = New System.Drawing.Point(225, 227)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(82, 13)
+        Me.Label2.TabIndex = 94
+        Me.Label2.Text = "Auth String"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.Label2.Visible = False
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Width = 0
+        '
+        'Label5
+        '
+        Me.Label5.Location = New System.Drawing.Point(6, 36)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(89, 13)
+        Me.Label5.TabIndex = 96
+        Me.Label5.Text = "Check Every"
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Location = New System.Drawing.Point(97, 33)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(38, 22)
+        Me.TextBox5.TabIndex = 95
+        Me.TextBox5.Text = "60"
+        Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label6
+        '
+        Me.Label6.Location = New System.Drawing.Point(138, 36)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(62, 13)
+        Me.Label6.TabIndex = 97
+        Me.Label6.Text = "seconds"
         '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(625, 409)
+        Me.ClientSize = New System.Drawing.Size(625, 415)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -339,5 +399,11 @@ Partial Class frmSettingsHolder
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents rbToEnd As System.Windows.Forms.RadioButton
     Friend WithEvents rbOnlyTag As System.Windows.Forms.RadioButton
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
 
 End Class
