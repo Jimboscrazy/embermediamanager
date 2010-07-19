@@ -195,7 +195,7 @@ Public Class InputXBMC_Module
         RetrieveMySettings()
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(91, "XBMC Input Module")
+        SPanel.Text = Master.eLang.GetString(91, "XBMC")
         SPanel.Prefix = "XBMCInputModule_"
         SPanel.Parent = "pnlMovieInput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
@@ -312,7 +312,7 @@ Public Class OutputXBMC_Module
         RetrieveMySettings()
         Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(92, "XBMC Output Module")
+        SPanel.Text = Master.eLang.GetString(92, "XBMC")
         SPanel.Prefix = "XBMCOutputModule_"
         SPanel.Parent = "pnlMovieOutput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)

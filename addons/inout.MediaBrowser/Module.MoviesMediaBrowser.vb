@@ -190,7 +190,7 @@ Public Class InputMediaBrowser_Module
         Me.fInputSettings = New frmMovieInputSettings
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(91, "MediaBrowser Input Module")
+        SPanel.Text = Master.eLang.GetString(91, "MediaBrowser")
         SPanel.Prefix = "MediaBrowserInputModule_"
         SPanel.Parent = "pnlMovieInput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
@@ -267,7 +267,7 @@ Public Class OutputMediaBrowser_Module
         Me.fOutputSettings = New frmMovieOutputSettings
         Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(92, "MediaBrowser Output Module")
+        SPanel.Text = Master.eLang.GetString(92, "MediaBrowser")
         SPanel.Prefix = "MediaBrowserOutputModule_"
         SPanel.Parent = "pnlMovieOutput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)

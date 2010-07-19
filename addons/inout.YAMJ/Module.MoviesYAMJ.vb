@@ -214,7 +214,7 @@ Public Class InputYAMJ_Module
         Me.fInputSettings = New frmMovieInputSettings
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(91, "YAMJ Input Module")
+        SPanel.Text = Master.eLang.GetString(91, "YAMJ")
         SPanel.Prefix = "YAMJInputModule_"
         SPanel.Parent = "pnlMovieInput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)
@@ -292,7 +292,7 @@ Public Class OutputYAMJ_Module
         Me.fOutputSettings = New frmMovieOutputSettings
         Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(92, "YAMJ Output Module")
+        SPanel.Text = Master.eLang.GetString(92, "YAMJ")
         SPanel.Prefix = "YAMJOutputModule_"
         SPanel.Parent = "pnlMovieOutput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)

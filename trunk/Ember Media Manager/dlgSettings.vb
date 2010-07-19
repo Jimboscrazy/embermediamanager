@@ -182,14 +182,14 @@ Public Class dlgSettings
                       .Text = Master.eLang.GetString(790, "Input Modules"), _
                       .ImageIndex = 11, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
-                      .Panel = New Panel, _
+                      .Panel = Me.pnlInput, _
                       .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlMovieOutput", _
                       .Text = Master.eLang.GetString(791, "Output Modules"), _
                       .ImageIndex = 12, _
                       .Type = Master.eLang.GetString(36, "Movies"), _
-                      .Panel = New Panel, _
+                      .Panel = Me.pnlOutput, _
                       .Order = 550})
 
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
@@ -225,17 +225,15 @@ Public Class dlgSettings
                       .Text = Master.eLang.GetString(790, "Input Modules"), _
                       .ImageIndex = 11, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
-                      .Panel = New Panel, _
+                      .Panel = Me.pnlTVInput, _
                       .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlTVOutput", _
                       .Text = Master.eLang.GetString(791, "Output Modules"), _
                       .ImageIndex = 12, _
                       .Type = Master.eLang.GetString(698, "TV Shows"), _
-                      .Panel = New Panel, _
+                      .Panel = Me.pnlTVOutput, _
                       .Order = 550})
-
-
 
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
                       .Name = "pnlGeneral", _
@@ -371,6 +369,14 @@ Public Class dlgSettings
         Next
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
             RemoveHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules
+            RemoveHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        Next
+        For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules
+            RemoveHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Next
     End Sub

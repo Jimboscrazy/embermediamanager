@@ -66,7 +66,7 @@ Public Class InputMatroska_Module
         Me.fInputSettings = New frmMovieInputSettings
         Me.fInputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
-        SPanel.Text = Master.eLang.GetString(91, "Matroska Input Module")
+        SPanel.Text = Master.eLang.GetString(91, "Matroska")
         SPanel.Prefix = "MatroskaInputModule_"
         SPanel.Parent = "pnlMovieInput"
         SPanel.Type = Master.eLang.GetString(36, "Movies", True)

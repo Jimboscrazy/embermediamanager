@@ -594,6 +594,14 @@ Partial Class dlgSettings
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
+        Me.pnlInput = New System.Windows.Forms.Panel
+        Me.pnlOutput = New System.Windows.Forms.Panel
+        Me.chkAlwaysUseEMI = New System.Windows.Forms.CheckBox
+        Me.chkSaveEMI = New System.Windows.Forms.CheckBox
+        Me.pnlTVOutput = New System.Windows.Forms.Panel
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.pnlTVInput = New System.Windows.Forms.Panel
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -700,6 +708,10 @@ Partial Class dlgSettings
         Me.gbHelp.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
+        Me.pnlInput.SuspendLayout()
+        Me.pnlOutput.SuspendLayout()
+        Me.pnlTVOutput.SuspendLayout()
+        Me.pnlTVInput.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox4
@@ -7024,6 +7036,95 @@ Partial Class dlgSettings
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 77
         '
+        'pnlInput
+        '
+        Me.pnlInput.AutoScroll = True
+        Me.pnlInput.BackColor = System.Drawing.Color.White
+        Me.pnlInput.Controls.Add(Me.pnlTVInput)
+        Me.pnlInput.Controls.Add(Me.chkAlwaysUseEMI)
+        Me.pnlInput.Location = New System.Drawing.Point(251, 147)
+        Me.pnlInput.Name = "pnlInput"
+        Me.pnlInput.Size = New System.Drawing.Size(617, 397)
+        Me.pnlInput.TabIndex = 78
+        Me.pnlInput.Visible = False
+        '
+        'pnlOutput
+        '
+        Me.pnlOutput.AutoScroll = True
+        Me.pnlOutput.BackColor = System.Drawing.Color.White
+        Me.pnlOutput.Controls.Add(Me.chkSaveEMI)
+        Me.pnlOutput.Location = New System.Drawing.Point(251, 147)
+        Me.pnlOutput.Name = "pnlOutput"
+        Me.pnlOutput.Size = New System.Drawing.Size(617, 396)
+        Me.pnlOutput.TabIndex = 79
+        Me.pnlOutput.Visible = False
+        '
+        'chkAlwaysUseEMI
+        '
+        Me.chkAlwaysUseEMI.AutoSize = True
+        Me.chkAlwaysUseEMI.Location = New System.Drawing.Point(14, 16)
+        Me.chkAlwaysUseEMI.Name = "chkAlwaysUseEMI"
+        Me.chkAlwaysUseEMI.Size = New System.Drawing.Size(224, 17)
+        Me.chkAlwaysUseEMI.TabIndex = 0
+        Me.chkAlwaysUseEMI.Text = "Always use Ember MediaFile Info (.emi)"
+        Me.chkAlwaysUseEMI.UseVisualStyleBackColor = True
+        '
+        'chkSaveEMI
+        '
+        Me.chkSaveEMI.AutoSize = True
+        Me.chkSaveEMI.Checked = True
+        Me.chkSaveEMI.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkSaveEMI.Location = New System.Drawing.Point(12, 14)
+        Me.chkSaveEMI.Name = "chkSaveEMI"
+        Me.chkSaveEMI.Size = New System.Drawing.Size(191, 17)
+        Me.chkSaveEMI.TabIndex = 1
+        Me.chkSaveEMI.Text = "Save Ember MediaFile Info (.emi)"
+        Me.chkSaveEMI.UseVisualStyleBackColor = True
+        '
+        'pnlTVOutput
+        '
+        Me.pnlTVOutput.AutoScroll = True
+        Me.pnlTVOutput.BackColor = System.Drawing.Color.White
+        Me.pnlTVOutput.Controls.Add(Me.CheckBox1)
+        Me.pnlTVOutput.Location = New System.Drawing.Point(251, 147)
+        Me.pnlTVOutput.Name = "pnlTVOutput"
+        Me.pnlTVOutput.Size = New System.Drawing.Size(617, 396)
+        Me.pnlTVOutput.TabIndex = 80
+        Me.pnlTVOutput.Visible = False
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Checked = True
+        Me.CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox1.Location = New System.Drawing.Point(12, 14)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(191, 17)
+        Me.CheckBox1.TabIndex = 1
+        Me.CheckBox1.Text = "Save Ember MediaFile Info (.emi)"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'pnlTVInput
+        '
+        Me.pnlTVInput.AutoScroll = True
+        Me.pnlTVInput.BackColor = System.Drawing.Color.White
+        Me.pnlTVInput.Controls.Add(Me.CheckBox2)
+        Me.pnlTVInput.Location = New System.Drawing.Point(0, 0)
+        Me.pnlTVInput.Name = "pnlTVInput"
+        Me.pnlTVInput.Size = New System.Drawing.Size(617, 397)
+        Me.pnlTVInput.TabIndex = 81
+        Me.pnlTVInput.Visible = False
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(14, 16)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(224, 17)
+        Me.CheckBox2.TabIndex = 0
+        Me.CheckBox2.Text = "Always use Ember MediaFile Info (.emi)"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7031,8 +7132,13 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlInput)
+        Me.Controls.Add(Me.pnlTVOutput)
+        Me.Controls.Add(Me.pnlOutput)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
@@ -7046,10 +7152,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVImages)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -7225,6 +7329,14 @@ Partial Class dlgSettings
         Me.gbHelp.ResumeLayout(False)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
+        Me.pnlInput.ResumeLayout(False)
+        Me.pnlInput.PerformLayout()
+        Me.pnlOutput.ResumeLayout(False)
+        Me.pnlOutput.PerformLayout()
+        Me.pnlTVOutput.ResumeLayout(False)
+        Me.pnlTVOutput.PerformLayout()
+        Me.pnlTVInput.ResumeLayout(False)
+        Me.pnlTVInput.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -7793,4 +7905,12 @@ Partial Class dlgSettings
     Friend WithEvents chkAskCheckboxScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkActorCache As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlInput As System.Windows.Forms.Panel
+    Friend WithEvents pnlOutput As System.Windows.Forms.Panel
+    Friend WithEvents chkAlwaysUseEMI As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSaveEMI As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlTVInput As System.Windows.Forms.Panel
+    Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlTVOutput As System.Windows.Forms.Panel
+    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
 End Class
