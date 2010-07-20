@@ -323,10 +323,6 @@ Public Class dlgSettings
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
-                'If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                'ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                'tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
-                'End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
                 AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged
@@ -339,10 +335,6 @@ Public Class dlgSettings
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
-                'If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                'ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                'tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
-                'End If
                 Me.SettingsPanels.Add(tPanel)
                 ModuleCounter += 1
                 AddHandler s.ProcessorModule.SetupChanged, AddressOf Handle_ModuleSetupChanged

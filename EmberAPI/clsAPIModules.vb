@@ -507,13 +507,7 @@ Public Class ModulesManager
                 End Try
                 If ret Then Exit For
             Next
-            If Not ret Then
-                ' Last try, check Ember Specific Info Sheet
-                mMovie = NFO.LoadMovieFromNFO(sPath, isSingle)
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
-                    ret = True
-                End If
-            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
