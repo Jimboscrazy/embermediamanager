@@ -375,6 +375,7 @@ Namespace XBMC
         Private _trailer As String
         Private _playcount As String
         Private _watched As String
+        Private _country As String
         Private _actors As New List(Of Person)
         Private _thumb As New List(Of String)
         Private _fanart As New Fanart
@@ -535,7 +536,21 @@ Namespace XBMC
                 Return Not String.IsNullOrEmpty(Me._top250)
             End Get
         End Property
-
+        <XmlElement("country")> _
+        Public Property Country() As String
+            Get
+                Return Me._country
+            End Get
+            Set(ByVal value As String)
+                Me._country = value
+            End Set
+        End Property
+        <XmlIgnore()> _
+        Public ReadOnly Property CountrySpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._country)
+            End Get
+        End Property
         <XmlElement("rating")> _
         Public Property Rating() As String
             Get

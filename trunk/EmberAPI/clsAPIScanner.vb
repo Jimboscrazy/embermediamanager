@@ -611,12 +611,12 @@ Public Class Scanner
             GetMovieFolderContents(mContainer)
 
             If Not String.IsNullOrEmpty(mContainer.Nfo) Then
-                tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Nfo, mContainer.isSingle)
+                tmpMovieDB.Movie = NFO.LoadMovieFromDisk(mContainer.Nfo, mContainer.isSingle)
                 If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
                     MediaInfo.UpdateMediaInfo(tmpMovieDB)
                 End If
             Else
-                tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Filename, mContainer.isSingle)
+                tmpMovieDB.Movie = NFO.LoadMovieFromDisk(mContainer.Filename, mContainer.isSingle)
                 If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
                     MediaInfo.UpdateMediaInfo(tmpMovieDB)
                 End If

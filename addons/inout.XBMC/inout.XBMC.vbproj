@@ -162,10 +162,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmMovieInputSettings.Designer.vb">
+    <Compile Include="XBMC\frmMovieInputSettings.Designer.vb">
       <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMovieInputSettings.vb">
+    <Compile Include="XBMC\frmMovieInputSettings.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="XBMC\clsXBMC_MediaContainers.vb" />
@@ -184,7 +184,7 @@
       <DependentUpon>frmMovieOutputSettings.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMovieInputSettings.resx">
+    <EmbeddedResource Include="XBMC\frmMovieInputSettings.resx">
       <DependentUpon>frmMovieInputSettings.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

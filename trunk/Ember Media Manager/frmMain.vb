@@ -5530,9 +5530,9 @@ doCancel:
                                         sFile.UseFolder = If(isSingle, True, False)
                                         fScanner.GetMovieFolderContents(sFile)
                                         If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                            Master.currMovie.Movie = NFO.LoadMovieFromDisk(sFile.Nfo, sFile.isSingle)
                                         Else
-                                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                                            Master.currMovie.Movie = NFO.LoadMovieFromDisk(sFile.Filename, sFile.isSingle)
                                         End If
                                         If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                                             'no title so assume it's an invalid nfo, clear nfo path if exists
@@ -6888,9 +6888,9 @@ doCancel:
                     If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
                         Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
                         tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.isSingle)
+                        tmpMovie = NFO.LoadMovieFromDisk(sNFO, tmpMovieDb.isSingle)
                     Else
-                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
+                        tmpMovie = NFO.LoadMovieFromDisk(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1

@@ -514,79 +514,13 @@ Public Class NFO
         End Try
     End Function
 
-    Public Shared Function LoadMovieFromNFO(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
-        '//
-        ' Deserialze the NFO to pass all the data to a MediaContainers.Movie
-        '\\
-
-        Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlMov As New MediaContainers.Movie
-
-        If Not String.IsNullOrEmpty(sPath) Then
-            Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
-                        xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                        xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
-                        xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                        xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                        xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                    End Using
-                Else
-                    If Not String.IsNullOrEmpty(sPath) Then
-                        Dim sReturn As New NonConf
-                        sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                        xmlMov.IMDBID = sReturn.IMDBID
-                        Try
-                            If Not String.IsNullOrEmpty(sReturn.Text) Then
-                                Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                    xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                    xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                    xmlMov.IMDBID = sReturn.IMDBID
-                                End Using
-                            End If
-                        Catch
-                        End Try
-                    End If
-                End If
-
-            Catch
-                xmlMov.Clear()
-                If Not String.IsNullOrEmpty(sPath) Then
-
-                    'go ahead and rename it now, will still be picked up in getimdbfromnonconf
-                    If Not Master.eSettings.OverwriteNfo Then
-                        RenameNonConfNfo(sPath, True)
-                    End If
-
-                    Dim sReturn As New NonConf
-                    sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                    xmlMov.IMDBID = sReturn.IMDBID
-                    Try
-                        If Not String.IsNullOrEmpty(sReturn.Text) Then
-                            Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                                xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                xmlMov.Plot = xmlMov.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                                xmlMov.IMDBID = sReturn.IMDBID
-                            End Using
-                        End If
-                    Catch
-                    End Try
-                End If
-            End Try
-
-            If Not IsNothing(xmlSer) Then
-                xmlSer = Nothing
-            End If
+    Public Shared Function LoadMovieFromDisk(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
+        Dim mMovie As MediaContainers.Movie = ModulesManager.Instance.LoadMovieFromInfoSheet(sPath, isSingle)
+        If String.IsNullOrEmpty(mMovie.Title) Then
+            ' Last try, check Ember Specific Info Sheet
+            'mMovie = NFO.LoadEmberMovieFromDisk(sPath, isSingle)
         End If
-
-        Return xmlMov
+        Return mMovie
     End Function
 
     Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer) As MediaContainers.EpisodeDetails

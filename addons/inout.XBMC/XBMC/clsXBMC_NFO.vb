@@ -1012,10 +1012,142 @@ Public Class NFO
 
     Shared Function ContertToMovie(ByVal sMovie As XBMC.Movie) As MediaContainers.Movie
         Dim dMovie As New MediaContainers.Movie
+        dMovie.Actors = New List(Of MediaContainers.Person)
+        For Each sp As XBMC.Person In sMovie.Actors
+            Dim dp As New MediaContainers.Person
+            dp.Name = sp.Name
+            dp.Role = sp.Role
+            dp.Thumb = sp.Thumb
+            dMovie.Actors.Add(dp)
+        Next
+        dMovie.Certification = sMovie.Certification
+        dMovie.Credits = sMovie.Credits
+        dMovie.Director = sMovie.Director
+        dMovie.Fanart = New MediaContainers.Fanart
+        For Each t As XBMC.Thumb In sMovie.Fanart.Thumb
+            Dim dt As New MediaContainers.Thumb
+            dt.Preview = t.Preview
+            dt.Text = t.Text
+            dMovie.Fanart.Thumb.Add(dt)
+        Next
+        dMovie.Fanart.URL = sMovie.Fanart.URL
+        dMovie.FileInfo = sMovie.FileInfo
+        dMovie.Genre = sMovie.Genre
+        dMovie.ID = sMovie.ID
+        dMovie.IDMovieDB = sMovie.IDMovieDB
+        dMovie.IMDBID = sMovie.IMDBID
+        dMovie.Lev = sMovie.Lev
+        dMovie.LGenre = sMovie.LGenre
+        dMovie.MPAA = sMovie.MPAA
+        dMovie.OriginalTitle = sMovie.OriginalTitle
+        dMovie.Outline = sMovie.Outline
+        dMovie.PlayCount = sMovie.PlayCount
+        dMovie.Plot = sMovie.Plot
+        dMovie.Rating = sMovie.Rating
+        dMovie.ReleaseDate = sMovie.ReleaseDate
+        dMovie.Runtime = sMovie.Runtime
+        dMovie.Sets = New List(Of MediaContainers.Set)
+        For Each s As XBMC.Set In sMovie.Sets
+            Dim ss As New MediaContainers.Set
+            ss.Order = s.Order
+            ss.Set = s.Set
+            dMovie.Sets.Add(ss)
+        Next
+        dMovie.SortTitle = sMovie.SortTitle
+        dMovie.Studio = sMovie.Studio
+        dMovie.Tagline = sMovie.Tagline
+        dMovie.Thumb = sMovie.Thumb
+        dMovie.Title = sMovie.Title
+        dMovie.Top250 = sMovie.Top250
+        dMovie.Trailer = sMovie.Trailer
+        dMovie.VideoSource = sMovie.VideoSource
+        dMovie.Votes = sMovie.Votes
+        dMovie.Watched = sMovie.Watched
+        dMovie.XSets = New List(Of MediaContainers.Set)
+        For Each s As XBMC.Set In sMovie.XSets
+            Dim ss As New MediaContainers.Set
+            ss.Order = s.Order
+            ss.Set = s.Set
+            dMovie.XSets.Add(ss)
+        Next
+        dMovie.YSets = New MediaContainers.SetContainer
+        Dim sls As New List(Of MediaContainers.Set)
+        For Each s As XBMC.Set In sMovie.YSets.Sets
+            Dim sys As New MediaContainers.Set
+            sys.Set = s.Set
+            sys.Order = s.Order
+            sls.Add(sys)
+        Next
         Return dMovie
     End Function
     Shared Function ContertToXBMCMovie(ByVal sMovie As MediaContainers.Movie) As XBMC.Movie
         Dim dMovie As New XBMC.Movie
+        dMovie.Actors = New List(Of XBMC.Person)
+        For Each sp As MediaContainers.Person In sMovie.Actors
+            Dim dp As New XBMC.Person
+            dp.Name = sp.Name
+            dp.Role = sp.Role
+            dp.Thumb = sp.Thumb
+            dMovie.Actors.Add(dp)
+        Next
+        dMovie.Certification = sMovie.Certification
+        dMovie.Credits = sMovie.Credits
+        dMovie.Director = sMovie.Director
+        dMovie.Fanart = New XBMC.Fanart
+        For Each t As MediaContainers.Thumb In sMovie.Fanart.Thumb
+            Dim dt As New XBMC.Thumb
+            dt.Preview = t.Preview
+            dt.Text = t.Text
+            dMovie.Fanart.Thumb.Add(dt)
+        Next
+        dMovie.Fanart.URL = sMovie.Fanart.URL
+        dMovie.FileInfo = sMovie.FileInfo
+        dMovie.Genre = sMovie.Genre
+        dMovie.ID = sMovie.ID
+        dMovie.IDMovieDB = sMovie.IDMovieDB
+        dMovie.IMDBID = sMovie.IMDBID
+        dMovie.Lev = sMovie.Lev
+        dMovie.LGenre = sMovie.LGenre
+        dMovie.MPAA = sMovie.MPAA
+        dMovie.OriginalTitle = sMovie.OriginalTitle
+        dMovie.Outline = sMovie.Outline
+        dMovie.PlayCount = sMovie.PlayCount
+        dMovie.Plot = sMovie.Plot
+        dMovie.Rating = sMovie.Rating
+        dMovie.ReleaseDate = sMovie.ReleaseDate
+        dMovie.Runtime = sMovie.Runtime
+        dMovie.Sets = New List(Of XBMC.Set)
+        For Each s As MediaContainers.Set In sMovie.Sets
+            Dim ss As New XBMC.Set
+            ss.Order = s.Order
+            ss.Set = s.Set
+            dMovie.Sets.Add(ss)
+        Next
+        dMovie.SortTitle = sMovie.SortTitle
+        dMovie.Studio = sMovie.Studio
+        dMovie.Tagline = sMovie.Tagline
+        dMovie.Thumb = sMovie.Thumb
+        dMovie.Title = sMovie.Title
+        dMovie.Top250 = sMovie.Top250
+        dMovie.Trailer = sMovie.Trailer
+        dMovie.VideoSource = sMovie.VideoSource
+        dMovie.Votes = sMovie.Votes
+        dMovie.Watched = sMovie.Watched
+        dMovie.XSets = New List(Of XBMC.Set)
+        For Each s As MediaContainers.Set In sMovie.XSets
+            Dim ss As New XBMC.Set
+            ss.Order = s.Order
+            ss.Set = s.Set
+            dMovie.XSets.Add(ss)
+        Next
+        dMovie.YSets = New XBMC.SetContainer
+        Dim sls As New List(Of XBMC.Set)
+        For Each s As MediaContainers.Set In sMovie.YSets.Sets
+            Dim sys As New XBMC.Set
+            sys.Set = s.Set
+            sys.Order = s.Order
+            sls.Add(sys)
+        Next
         Return dMovie
     End Function
     Shared Function ContertToEpsDetais(ByVal sEps As XBMC.EpisodeDetails) As MediaContainers.EpisodeDetails

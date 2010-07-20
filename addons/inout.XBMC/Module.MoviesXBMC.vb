@@ -174,7 +174,7 @@ Public Class InputXBMC_Module
 
     Public Function LoadMovieInfoSheet(ByVal sPath As String, ByVal isSingle As Boolean, ByRef mMovie As MediaContainers.Movie) As Boolean Implements EmberAPI.Interfaces.EmberMovieInputModule.LoadMovieInfoSheet
         mMovie = NFO.LoadMovieFromNFO(sPath, isSingle)
-        Return False
+        Return If(String.IsNullOrEmpty(mMovie.Title), False, True)
     End Function
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.EmberMovieInputModule.ModuleName
@@ -226,6 +226,7 @@ Public Class InputXBMC_Module
         eSettings.Load("Input.")
     End Sub
     Sub StoreMySettings()
+        Enabled = fInputSettings.chkEnabled.Checked
         eSettings.Enabled = fInputSettings.chkEnabled.Checked
         eSettings.FanartJPG = fInputSettings.chkFanartJPG.Checked
         eSettings.FanartJPG = fInputSettings.chkFolderJPG.Checked
