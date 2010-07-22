@@ -88,10 +88,14 @@ Public Class MediaInfo
                     ' overwrite only if it get something from Mediainfo
                     miMovie.Movie.FileInfo = tinfo
                 End If
-                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
-                    If Not String.IsNullOrEmpty(tVid.Duration) Then
-                        miMovie.Movie.Runtime = tVid.Duration
+                If Master.eSettings.UseMIDuration Then
+                    If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+                        If Not String.IsNullOrEmpty(tVid.Duration) Then
+                            miMovie.Movie.Runtime = tVid.Duration
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(miMovie.Movie.Runtime) Then
+                        miMovie.Movie.Runtime = FormatDuration(DurationToMins(miMovie.Movie.Runtime, False))
                     End If
                 End If
                 MI = Nothing
@@ -376,7 +380,7 @@ Public Class MediaInfo
         End If
     End Function
 
-    Private Function DurationToMins(ByVal Duration As String, ByVal Reverse As Boolean) As String
+    Private Shared Function DurationToMins(ByVal Duration As String, ByVal Reverse As Boolean) As String
         If Not String.IsNullOrEmpty(Duration) Then
             If Reverse Then
                 Dim ts As New TimeSpan(0, Convert.ToInt32(Duration), 0)
@@ -514,7 +518,7 @@ Public Class MediaInfo
         Return fiOut
     End Function
 
-    Private Function FormatDuration(ByVal tDur As String) As String
+    Private Shared Function FormatDuration(ByVal tDur As String) As String
         Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
         Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
         Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
@@ -533,13 +537,13 @@ Public Class MediaInfo
         End If
     End Function
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class Audio
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _channels As String = String.Empty
         Private _codec As String = String.Empty
@@ -547,9 +551,9 @@ Public Class MediaInfo
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("channels")> _
         Public Property Channels() As String
@@ -561,7 +565,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._channels)
@@ -578,14 +582,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._codec)
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property HasPreferred() As Boolean
             Get
                 Return Me._haspreferred
@@ -605,7 +609,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
@@ -622,29 +626,29 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
     <XmlRoot("fileinfo")> _
     Public Class Fileinfo
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _streamdetails As New StreamData
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property StreamDetailsSpecified() As Boolean
             Get
                 Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
@@ -663,22 +667,22 @@ Public Class MediaInfo
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
     <XmlRoot("streamdata")> _
     Public Class StreamData
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _audio As New List(Of Audio)
         Private _subtitle As New List(Of Subtitle)
         Private _video As New List(Of Video)
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("audio")> _
         Public Property Audio() As List(Of Audio)
@@ -690,7 +694,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property AudioSpecified() As Boolean
             Get
                 Return Me._audio.Count > 0
@@ -707,7 +711,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property SubtitleSpecified() As Boolean
             Get
                 Return Me._subtitle.Count > 0
@@ -724,29 +728,29 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property VideoSpecified() As Boolean
             Get
                 Return Me._video.Count > 0
             End Get
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
     Public Class Subtitle
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
         Private _subs_path As String = String.Empty
         Private _subs_type As String = String.Empty
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -758,7 +762,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
@@ -775,14 +779,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property SubsPath() As String
             Get
                 Return _subs_path
@@ -792,7 +796,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public Property SubsType() As String
             Get
                 Return _subs_type
@@ -802,13 +806,13 @@ Public Class MediaInfo
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
     Public Class Video
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _aspect As String = String.Empty
         Private _codec As String = String.Empty
@@ -819,9 +823,9 @@ Public Class MediaInfo
         Private _scantype As String = String.Empty
         Private _width As String = String.Empty
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Properties"
+#Region "Properties"
 
         <XmlElement("aspect")> _
         Public Property Aspect() As String
@@ -833,7 +837,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._aspect)
@@ -850,7 +854,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._codec)
@@ -867,7 +871,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._duration)
@@ -884,7 +888,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._height)
@@ -901,7 +905,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
@@ -918,7 +922,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
@@ -935,7 +939,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._scantype)
@@ -952,17 +956,17 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore()> _
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._width)
             End Get
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

@@ -513,7 +513,22 @@ Public Class ModulesManager
         End Try
         Return mMovie
     End Function
+    Public Function SaveMovieFromInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean
+        Dim ret As Boolean = False
+        Try
+            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled)
+                Try
+                    ret = _externalModule.ProcessorModule.SaveMovieInfoSheet(movieToSave)
+                Catch ex As Exception
+                End Try
+                If ret Then Exit For
+            Next
 
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return ret
+    End Function
     Public Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
         Dim ret As Boolean
         For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)

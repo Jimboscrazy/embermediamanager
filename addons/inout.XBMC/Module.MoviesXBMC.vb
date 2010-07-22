@@ -229,18 +229,18 @@ Public Class InputXBMC_Module
         Enabled = fInputSettings.chkEnabled.Checked
         eSettings.Enabled = fInputSettings.chkEnabled.Checked
         eSettings.FanartJPG = fInputSettings.chkFanartJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkFolderJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameDotFanartJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameFanartJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameMultiOnly.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameNFO.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNameTBN.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieNFO.Checked
-        eSettings.FanartJPG = fInputSettings.chkMovieTBN.Checked
-        eSettings.FanartJPG = fInputSettings.chkPosterJPG.Checked
-        eSettings.FanartJPG = fInputSettings.chkPosterTBN.Checked
+        eSettings.FolderJPG = fInputSettings.chkFolderJPG.Checked
+        eSettings.MovieJPG = fInputSettings.chkMovieJPG.Checked
+        eSettings.MovieNameDotFanartJPG = fInputSettings.chkMovieNameDotFanartJPG.Checked
+        eSettings.MovieNameFanartJPG = fInputSettings.chkMovieNameFanartJPG.Checked
+        eSettings.MovieNameJPG = fInputSettings.chkMovieNameJPG.Checked
+        eSettings.MovieNameMultiOnly = fInputSettings.chkMovieNameMultiOnly.Checked
+        eSettings.MovieNameNFO = fInputSettings.chkMovieNameNFO.Checked
+        eSettings.MovieNameTBN = fInputSettings.chkMovieNameTBN.Checked
+        eSettings.MovieNFO = fInputSettings.chkMovieNFO.Checked
+        eSettings.MovieTBN = fInputSettings.chkMovieTBN.Checked
+        eSettings.PosterJPG = fInputSettings.chkPosterJPG.Checked
+        eSettings.PosterTBN = fInputSettings.chkPosterTBN.Checked
         eSettings.Save("Input.")
     End Sub
     Sub RetrieveMySettings()
@@ -266,7 +266,7 @@ End Class
 
 Public Class OutputXBMC_Module
     Implements Interfaces.EmberMovieOutputModule
-
+    Private _Enabled As Boolean
     Public Shared _AssemblyName As String
     Private fOutputSettings As frmMovieOutputSettings
     Public Shared eSettings As New MySettings
@@ -278,7 +278,7 @@ Public Class OutputXBMC_Module
             Return False
         End Get
         Set(ByVal value As Boolean)
-
+            _Enabled = value
         End Set
     End Property
 
@@ -311,7 +311,7 @@ Public Class OutputXBMC_Module
         Dim SPanel As New Containers.SettingsPanel
         Me.fOutputSettings = New frmMovieOutputSettings
         RetrieveMySettings()
-        Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
+        'Me.fOutputSettings.chkEnabled.Checked = Me.Enabled
         SPanel.Name = Me.ModuleName
         SPanel.Text = Master.eLang.GetString(92, "XBMC")
         SPanel.Prefix = "XBMCOutputModule_"
@@ -345,24 +345,27 @@ Public Class OutputXBMC_Module
     End Sub
 
     Sub StoreMySettings()
+        Enabled = fOutputSettings.chkEnabled.Checked
+        eSettings.Enabled = fOutputSettings.chkEnabled.Checked
+        eSettings.Enabled = fOutputSettings.chkEnabled.Checked
         eSettings.FanartJPG = fOutputSettings.chkFanartJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkFolderJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameDotFanartJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameFanartJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameFanartJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameMultiOnly.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameNFO.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNameTBN.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieNFO.Checked
-        eSettings.FanartJPG = fOutputSettings.chkMovieTBN.Checked
-        eSettings.FanartJPG = fOutputSettings.chkPosterJPG.Checked
-        eSettings.FanartJPG = fOutputSettings.chkPosterTBN.Checked
+        eSettings.FolderJPG = fOutputSettings.chkFolderJPG.Checked
+        eSettings.MovieJPG = fOutputSettings.chkMovieJPG.Checked
+        eSettings.MovieNameDotFanartJPG = fOutputSettings.chkMovieNameDotFanartJPG.Checked
+        eSettings.MovieNameFanartJPG = fOutputSettings.chkMovieNameFanartJPG.Checked
+        eSettings.MovieNameJPG = fOutputSettings.chkMovieNameJPG.Checked
+        eSettings.MovieNameMultiOnly = fOutputSettings.chkMovieNameMultiOnly.Checked
+        eSettings.MovieNameNFO = fOutputSettings.chkMovieNameNFO.Checked
+        eSettings.MovieNameTBN = fOutputSettings.chkMovieNameTBN.Checked
+        eSettings.MovieNFO = fOutputSettings.chkMovieNFO.Checked
+        eSettings.MovieTBN = fOutputSettings.chkMovieTBN.Checked
+        eSettings.PosterJPG = fOutputSettings.chkPosterJPG.Checked
+        eSettings.PosterTBN = fOutputSettings.chkPosterTBN.Checked
         eSettings.Save("Output.")
     End Sub
     Sub RetrieveMySettings()
         eSettings.Load("Output.")
+        fOutputSettings.chkEnabled.Checked = eSettings.Enabled
         fOutputSettings.chkFanartJPG.Checked = eSettings.FanartJPG
         fOutputSettings.chkFolderJPG.Checked = eSettings.FanartJPG
         fOutputSettings.chkMovieJPG.Checked = eSettings.FanartJPG
