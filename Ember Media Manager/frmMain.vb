@@ -6928,8 +6928,9 @@ doCancel:
                         tmpMovieDb.ListTitle = tTitle
                     End If
                 End If
+                If Not String.IsNullOrEmpty(tmpMovie.VideoSource) Then tmpMovieDb.FileSource = tmpMovieDb.Movie.VideoSource
                 Dim fromFile As String = APIXML.GetFileSource(tmpMovieDb.Filename)
-                If Not String.IsNullOrEmpty(fromFile) Then
+                If Not String.IsNullOrEmpty(fromFile) AndAlso String.IsNullOrEmpty(tmpMovieDb.FileSource) Then
                     tmpMovieDb.FileSource = fromFile
                 ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                     tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")

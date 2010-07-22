@@ -465,31 +465,6 @@ Public Class NFO
             Return False
         End Try
     End Function
-
-    Public Shared Function IsConformingNfo(ByVal sPath As String) As Boolean
-        Dim testSer As XmlSerializer = Nothing
-
-        Try
-            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
-                Using testSR As StreamReader = New StreamReader(sPath)
-                    testSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                    Dim testMovie As MediaContainers.Movie = DirectCast(testSer.Deserialize(testSR), MediaContainers.Movie)
-                    testMovie = Nothing
-                    testSer = Nothing
-                End Using
-                Return True
-            Else
-                Return False
-            End If
-        Catch
-            If Not IsNothing(testSer) Then
-                testSer = Nothing
-            End If
-
-            Return False
-        End Try
-    End Function
-
     Public Shared Function IsConformingShowNfo(ByVal sPath As String) As Boolean
         Dim testSer As XmlSerializer = Nothing
 
@@ -606,156 +581,9 @@ Public Class NFO
         Return xmlShow
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie)
-        '//
-        ' Serialize MediaContainers.Movie to an NFO
-        '\\
+    Public Shared Sub SaveMovieToDisk(ByRef movieToSave As Structures.DBMovie)
         Try
-            Try
-                Dim params As New List(Of Object)(New Object() {movieToSave})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
-                If Not doContinue Then Return
-            Catch ex As Exception
-            End Try
-
-            If Not String.IsNullOrEmpty(movieToSave.Filename) Then
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
-
-                Dim tPath As String = String.Empty
-                Dim nPath As String = String.Empty
-                Dim doesExist As Boolean = False
-                Dim fAtt As New FileAttributes
-
-                If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                    tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
-
-                    If Not Master.eSettings.OverwriteNfo Then
-                        RenameNonConfNfo(tPath, False)
-                    End If
-
-                    doesExist = File.Exists(tPath)
-                    If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                        If doesExist Then
-                            fAtt = File.GetAttributes(tPath)
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        End If
-
-                        Using xmlSW As New StreamWriter(tPath)
-                            movieToSave.NfoPath = tPath
-                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                        End Using
-
-                        If doesExist Then File.SetAttributes(tPath, fAtt)
-                    End If
-                ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                    tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).Name), ".nfo")
-
-                    If Not Master.eSettings.OverwriteNfo Then
-                        RenameNonConfNfo(tPath, False)
-                    End If
-
-                    doesExist = File.Exists(tPath)
-                    If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                        If doesExist Then
-                            fAtt = File.GetAttributes(tPath)
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        End If
-
-                        Using xmlSW As New StreamWriter(tPath)
-                            movieToSave.NfoPath = tPath
-                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                        End Using
-
-                        If doesExist Then File.SetAttributes(tPath, fAtt)
-                    End If
-                Else
-                    Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
-                    nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, tmpName)
-
-                    If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                        If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                            tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
-                        ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                            tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "index.nfo")
-                        Else
-                            tPath = String.Concat(nPath, ".nfo")
-                        End If
-
-                        If Not Master.eSettings.OverwriteNfo Then
-                            RenameNonConfNfo(tPath, False)
-                        End If
-
-                        doesExist = File.Exists(tPath)
-                        If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                            If doesExist Then
-                                fAtt = File.GetAttributes(tPath)
-                                File.SetAttributes(tPath, FileAttributes.Normal)
-                            End If
-
-                            Using xmlSW As New StreamWriter(tPath)
-                                movieToSave.NfoPath = tPath
-                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                            End Using
-
-                            If doesExist Then File.SetAttributes(tPath, fAtt)
-                        End If
-                    End If
-
-                    If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
-                        tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
-
-                        If Not Master.eSettings.OverwriteNfo Then
-                            RenameNonConfNfo(tPath, False)
-                        End If
-
-                        doesExist = File.Exists(tPath)
-                        If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                            If doesExist Then
-                                fAtt = File.GetAttributes(tPath)
-                                File.SetAttributes(tPath, FileAttributes.Normal)
-                            End If
-
-                            Using xmlSW As New StreamWriter(tPath)
-                                movieToSave.NfoPath = tPath
-                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                            End Using
-                            If doesExist Then File.SetAttributes(tPath, fAtt)
-                        End If
-                    End If
-                End If
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Public Shared Sub SaveSingleNFOItem(ByVal sPath As String, ByVal strToWrite As String, ByVal strNode As String)
-        '//
-        ' Save just one item of an NFO file
-        '\\
-
-        Try
-            Dim xmlDoc As New XmlDocument()
-            'use streamreader to open NFO so we don't get any access violations when trying to save
-            Dim xmlSR As New StreamReader(sPath)
-            'copy NFO to string
-            Dim xmlString As String = xmlSR.ReadToEnd
-            'close the streamreader... we're done with it
-            xmlSR.Close()
-            xmlSR = Nothing
-
-            xmlDoc.LoadXml(xmlString)
-            Dim xNode As XmlNode = xmlDoc.SelectSingleNode(strNode)
-            xNode.InnerText = strToWrite
-            xmlDoc.Save(sPath)
-
-            xmlDoc = Nothing
+            ModulesManager.Instance.SaveMovieFromInfoSheet(movieToSave)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -896,19 +724,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
-        'test if current nfo is non-conforming... rename per setting
 
-        Try
-            If isChecked OrElse Not IsConformingNfo(sPath) Then
-                If isChecked OrElse File.Exists(sPath) Then
-                    RenameToInfo(sPath)
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
 
     Private Shared Sub RenameShowNonConfNfo(ByVal sPath As String)
         'test if current nfo is non-conforming... rename per setting
