@@ -122,18 +122,19 @@ Public Class dlgNMTMovies
             End If
             dgvSources.ShowCellToolTips = True
             For Each s As Structures.MovieSource In Master.MovieSources
-                Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
+                Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, "default", String.Empty, "movie"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
                 'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Name), "")
                 'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Name), False)
             Next
             For Each s As Structures.TVSource In Master.TVSources
-                Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.television, String.Empty, "tv"})
+                Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.television, "default", String.Empty, "tv"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
                 'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Name), "")
                 'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Name), False)
             Next
             If Not conf Is Nothing Then
+                LoadMenus()
                 PopulateParams()
                 Application.DoEvents()
             End If
@@ -144,6 +145,46 @@ Public Class dlgNMTMovies
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Sub LoadMenus()
+        For Each r As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "menus")
+            Dim strFile As String = File.ReadAllText(Path.Combine(conf.TemplatePath, r.Name))
+            Dim i As Integer = -1
+            Dim f As Integer = -1
+            Dim mi As String
+            While True
+                i = strFile.IndexOf("<$MenuItem=", i + 1)
+                If i > -1 Then
+                    f = strFile.IndexOf("</$MenuItem>", i)
+                    If f > -1 Then
+                        mi = strFile.Substring(i, f + 12 - i)
+                        Dim MenuName As String = GetMenuValue(mi, "MenuItem")
+                        Dim MenuTitle As String = GetMenuValue(mi, "Menu.Title")
+                    Else
+                        Exit While
+                    End If
+                Else
+                    Exit While
+                End If
+                i = f + 12
+            End While
+        Next
+    End Sub
+
+    Function GetMenuValue(ByVal s As String, ByVal tag As String) As String
+        Dim regStart As MatchCollection = Regex.Matches(s, String.Format("\<\${0}=(?<values>.*?)\>", tag), RegexOptions.Multiline)
+        If regStart.Count > 0 Then
+            For Each status As Match In regStart
+                If status.Groups.Count > 1 Then
+                    Dim ret As String = status.Groups.Item(1).Value.ToString()
+                    If ret.StartsWith("""") Then ret = ret.Substring(1)
+                    If ret.EndsWith("""") Then ret = ret.Substring(0, ret.Length - 1)
+                    Return ret
+                End If
+            Next
+        End If
+        Return String.Empty
+    End Function
 
     Public Sub SaveConfig()
         Try
@@ -167,11 +208,13 @@ Public Class dlgNMTMovies
                 If IsNothing(s.Cells(1).Value) Then Continue For
                 If IsNothing(s.Cells(0).Value) Then s.Cells(0).Value = False
 
-                If s.Cells(4).Value.ToString = "movie" Then
-                    AdvancedSettings.SetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
+                If s.Cells(5).Value.ToString = "movie" Then
+                    AdvancedSettings.SetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(4).Value.ToString)
+                    AdvancedSettings.SetSetting(String.Concat("Path.Movie.Menu.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
                     AdvancedSettings.SetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
                 Else
-                    AdvancedSettings.SetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
+                    AdvancedSettings.SetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(4).Value.ToString)
+                    AdvancedSettings.SetSetting(String.Concat("Path.TV.Menu.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
                     AdvancedSettings.SetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
                 End If
             Next
@@ -889,13 +932,23 @@ Public Class dlgNMTMovies
 
     Private Sub PopulateParams()
         For Each s As DataGridViewRow In dgvSources.Rows
-            ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
-            If s.Cells(4).Value.ToString = "movie" Then
-                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+            'Dim cCell As New DataGridViewComboBoxCell()
+            's.Cells(3) = cCell
+            Dim dcb As DataGridViewComboBoxCell = DirectCast(s.Cells(3), DataGridViewComboBoxCell)
+            dcb.DataSource = New String() {"default"}
+            dcb.Value = "default"
+            ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, nothing ,String.Empty, "movie"})
+            If s.Cells(5).Value.ToString = "movie" Then
+                s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), "default")
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             Else
-                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), "default")
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
+            End If
+            If dcb.Value.ToString = "default" Then
+                dcb.ReadOnly = True
             End If
         Next
 
@@ -1313,7 +1366,7 @@ Public Class dlgNMTMovies
         Me.dgvProperties.Columns(0).HeaderText = Master.eLang.GetString(29, "Property")
         Me.dgvProperties.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(31, "Ember Source")
-        Me.dgvSources.Columns(3).HeaderText = Master.eLang.GetString(32, "NMT Path")
+        Me.dgvSources.Columns(4).HeaderText = Master.eLang.GetString(32, "NMT Path")
         Me.dgvSettings.Columns(0).HeaderText = Master.eLang.GetString(33, "Setting")
         Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
         Me.TabPage1.Text = Master.eLang.GetString(34, "Template Settings")
@@ -1604,14 +1657,14 @@ Public Class dlgNMTMovies
                 Dim dcb As DataGridViewCheckBoxCell = DirectCast(row.Cells(0), DataGridViewCheckBoxCell)
                 If DirectCast(dcb.Value, Boolean) = True Then
                     Try
-                        row.Cells(3).Value = If(IsNothing(row.Cells(3).Value), String.Empty, row.Cells(3).Value)
-                        If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
+                        row.Cells(4).Value = If(IsNothing(row.Cells(4).Value), String.Empty, row.Cells(4).Value)
+                        If String.IsNullOrEmpty(row.Cells(4).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
                             warn = Master.eLang.GetString(26, "Output Folder don't match Selected Sources and no NMT Path defined")
                             Exit For
                         Else
-                            selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
-                            If row.Cells(4).Value.ToString = "tv" Then HaveTV = True
-                            If row.Cells(4).Value.ToString = "movie" Then HaveMovies = True
+                            selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(4).Value.ToString)
+                            If row.Cells(5).Value.ToString = "tv" Then HaveTV = True
+                            If row.Cells(5).Value.ToString = "movie" Then HaveMovies = True
                         End If
                     Catch ex As Exception
                         ' TODO Strings

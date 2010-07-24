@@ -1078,6 +1078,7 @@ Public Class NFO
             sys.Order = s.Order
             sls.Add(sys)
         Next
+        dMovie.Year = sMovie.Year
         Return dMovie
     End Function
     Shared Function ContertToXBMCMovie(ByVal sMovie As MediaContainers.Movie) As XBMC.Movie
@@ -1148,6 +1149,7 @@ Public Class NFO
             sys.Order = s.Order
             sls.Add(sys)
         Next
+        dMovie.Year = sMovie.Year
         Return dMovie
     End Function
     Shared Function ContertToEpsDetais(ByVal sEps As XBMC.EpisodeDetails) As MediaContainers.EpisodeDetails

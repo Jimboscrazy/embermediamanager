@@ -275,7 +275,7 @@ Public Class OutputXBMC_Module
 
     Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.Enabled
         Get
-            Return False
+            Return _Enabled
         End Get
         Set(ByVal value As Boolean)
             _Enabled = value
@@ -366,20 +366,20 @@ Public Class OutputXBMC_Module
     Sub RetrieveMySettings()
         eSettings.Load("Output.")
         fOutputSettings.chkEnabled.Checked = eSettings.Enabled
+        fOutputSettings.chkEnabled.Checked = eSettings.Enabled
         fOutputSettings.chkFanartJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkFolderJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameDotFanartJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameFanartJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameFanartJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameMultiOnly.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameNFO.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNameTBN.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieNFO.Checked = eSettings.FanartJPG
-        fOutputSettings.chkMovieTBN.Checked = eSettings.FanartJPG
-        fOutputSettings.chkPosterJPG.Checked = eSettings.FanartJPG
-        fOutputSettings.chkPosterTBN.Checked = eSettings.FanartJPG
+        fOutputSettings.chkFolderJPG.Checked = eSettings.FolderJPG
+        fOutputSettings.chkMovieJPG.Checked = eSettings.MovieJPG
+        fOutputSettings.chkMovieNameDotFanartJPG.Checked = eSettings.MovieNameDotFanartJPG
+        fOutputSettings.chkMovieNameFanartJPG.Checked = eSettings.MovieNameFanartJPG
+        fOutputSettings.chkMovieNameJPG.Checked = eSettings.MovieNameJPG
+        fOutputSettings.chkMovieNameMultiOnly.Checked = eSettings.MovieNameMultiOnly
+        fOutputSettings.chkMovieNameNFO.Checked = eSettings.MovieNameNFO
+        fOutputSettings.chkMovieNameTBN.Checked = eSettings.MovieNameTBN
+        fOutputSettings.chkMovieNFO.Checked = eSettings.MovieNFO
+        fOutputSettings.chkMovieTBN.Checked = eSettings.MovieTBN
+        fOutputSettings.chkPosterJPG.Checked = eSettings.PosterJPG
+        fOutputSettings.chkPosterTBN.Checked = eSettings.PosterTBN
     End Sub
 End Class
 

@@ -37,18 +37,19 @@ Partial Class dlgNMTMovies
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgNMTMovies))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgNMTMovies))
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.Close_Button = New System.Windows.Forms.Button
         Me.Label2 = New System.Windows.Forms.Label
         Me.pnlCancel = New System.Windows.Forms.Panel
-        Me.btnCancel = New System.Windows.Forms.Button
         Me.pbCompile = New System.Windows.Forms.ProgressBar
         Me.lblCompiling = New System.Windows.Forms.Label
         Me.lblCanceling = New System.Windows.Forms.Label
@@ -58,14 +59,8 @@ Partial Class dlgNMTMovies
         Me.txtOutputFolder = New System.Windows.Forms.TextBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.gbHelp = New System.Windows.Forms.GroupBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.lblHelpa = New System.Windows.Forms.Label
         Me.dgvSources = New System.Windows.Forms.DataGridView
-        Me.export = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.EmberSource = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column1 = New System.Windows.Forms.DataGridViewImageColumn
-        Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.sourcetype = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.dgvSettings = New System.Windows.Forms.DataGridView
         Me.Setting = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -79,27 +74,43 @@ Partial Class dlgNMTMovies
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.pbTemplateLogo = New System.Windows.Forms.PictureBox
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.lblWarning = New System.Windows.Forms.Label
-        Me.pbWarning = New System.Windows.Forms.PictureBox
         Me.ilNMT = New System.Windows.Forms.ImageList(Me.components)
         Me.chHighPriority = New System.Windows.Forms.CheckBox
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView
+        Me.DataGridViewImageColumn1 = New System.Windows.Forms.DataGridViewImageColumn
         Me.pbHelp = New System.Windows.Forms.PictureBox
+        Me.pbTemplateLogo = New System.Windows.Forms.PictureBox
+        Me.pbWarning = New System.Windows.Forms.PictureBox
+        Me.btnCancel = New System.Windows.Forms.Button
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Column2 = New System.Windows.Forms.DataGridViewImageColumn
+        Me.export = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.EmberSource = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Column1 = New System.Windows.Forms.DataGridViewImageColumn
+        Me.Menu = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.sourcetype = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.pnlCancel.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.gbHelp.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
-        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -107,7 +118,7 @@ Partial Class dlgNMTMovies
         Me.Close_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(778, 368)
+        Me.Close_Button.Location = New System.Drawing.Point(869, 368)
         Me.Close_Button.Name = "Close_Button"
         Me.Close_Button.Size = New System.Drawing.Size(67, 23)
         Me.Close_Button.TabIndex = 7
@@ -136,19 +147,6 @@ Partial Class dlgNMTMovies
         Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
         Me.pnlCancel.TabIndex = 9
         Me.pnlCancel.Visible = False
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 0
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pbCompile
         '
@@ -195,7 +193,7 @@ Partial Class dlgNMTMovies
         Me.btnBuild.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBuild.Enabled = False
         Me.btnBuild.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBuild.Location = New System.Drawing.Point(705, 368)
+        Me.btnBuild.Location = New System.Drawing.Point(723, 264)
         Me.btnBuild.Name = "btnBuild"
         Me.btnBuild.Size = New System.Drawing.Size(67, 23)
         Me.btnBuild.TabIndex = 6
@@ -243,15 +241,6 @@ Partial Class dlgNMTMovies
         Me.gbHelp.TabStop = False
         Me.gbHelp.Text = "     Help"
         '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(6, -2)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(16, 16)
-        Me.PictureBox2.TabIndex = 1
-        Me.PictureBox2.TabStop = False
-        '
         'lblHelpa
         '
         Me.lblHelpa.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -268,7 +257,7 @@ Partial Class dlgNMTMovies
         Me.dgvSources.AllowUserToResizeRows = False
         Me.dgvSources.BackgroundColor = System.Drawing.Color.White
         Me.dgvSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.export, Me.EmberSource, Me.Column1, Me.Value, Me.sourcetype})
+        Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.export, Me.EmberSource, Me.Column1, Me.Menu, Me.Value, Me.sourcetype})
         Me.dgvSources.Location = New System.Drawing.Point(370, 86)
         Me.dgvSources.MultiSelect = False
         Me.dgvSources.Name = "dgvSources"
@@ -278,55 +267,8 @@ Partial Class dlgNMTMovies
         Me.dgvSources.ShowCellErrors = False
         Me.dgvSources.ShowCellToolTips = False
         Me.dgvSources.ShowRowErrors = False
-        Me.dgvSources.Size = New System.Drawing.Size(472, 168)
+        Me.dgvSources.Size = New System.Drawing.Size(566, 168)
         Me.dgvSources.TabIndex = 5
-        '
-        'export
-        '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.NullValue = False
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
-        Me.export.DefaultCellStyle = DataGridViewCellStyle1
-        Me.export.FillWeight = 20.0!
-        Me.export.HeaderText = ""
-        Me.export.Name = "export"
-        Me.export.Width = 20
-        '
-        'EmberSource
-        '
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
-        Me.EmberSource.DefaultCellStyle = DataGridViewCellStyle2
-        Me.EmberSource.FillWeight = 130.0!
-        Me.EmberSource.HeaderText = "Ember Source"
-        Me.EmberSource.Name = "EmberSource"
-        Me.EmberSource.ReadOnly = True
-        Me.EmberSource.Width = 130
-        '
-        'Column1
-        '
-        Me.Column1.FillWeight = 18.0!
-        Me.Column1.HeaderText = ""
-        Me.Column1.Name = "Column1"
-        Me.Column1.Width = 18
-        '
-        'Value
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.Value.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Value.FillWeight = 280.0!
-        Me.Value.HeaderText = "NMT Path"
-        Me.Value.Name = "Value"
-        Me.Value.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Value.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Value.Width = 280
-        '
-        'sourcetype
-        '
-        Me.sourcetype.HeaderText = ""
-        Me.sourcetype.Name = "sourcetype"
-        Me.sourcetype.Visible = False
         '
         'dgvSettings
         '
@@ -378,7 +320,7 @@ Partial Class dlgNMTMovies
         'lblTemplateInfo
         '
         Me.lblTemplateInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTemplateInfo.Location = New System.Drawing.Point(458, 3)
+        Me.lblTemplateInfo.Location = New System.Drawing.Point(552, 3)
         Me.lblTemplateInfo.Name = "lblTemplateInfo"
         Me.lblTemplateInfo.Size = New System.Drawing.Size(384, 72)
         Me.lblTemplateInfo.TabIndex = 91
@@ -398,7 +340,7 @@ Partial Class dlgNMTMovies
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnSave.Enabled = False
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(705, 263)
+        Me.btnSave.Location = New System.Drawing.Point(796, 263)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(136, 23)
         Me.btnSave.TabIndex = 92
@@ -408,6 +350,7 @@ Partial Class dlgNMTMovies
         '
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(7, 64)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -477,14 +420,6 @@ Partial Class dlgNMTMovies
         Me.TabPage1.Text = "Template Settings"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'pbTemplateLogo
-        '
-        Me.pbTemplateLogo.Location = New System.Drawing.Point(324, 5)
-        Me.pbTemplateLogo.Name = "pbTemplateLogo"
-        Me.pbTemplateLogo.Size = New System.Drawing.Size(130, 70)
-        Me.pbTemplateLogo.TabIndex = 94
-        Me.pbTemplateLogo.TabStop = False
-        '
         'Panel1
         '
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -503,14 +438,6 @@ Partial Class dlgNMTMovies
         Me.lblWarning.TabIndex = 1
         Me.lblWarning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'pbWarning
-        '
-        Me.pbWarning.Location = New System.Drawing.Point(3, 5)
-        Me.pbWarning.Name = "pbWarning"
-        Me.pbWarning.Size = New System.Drawing.Size(18, 18)
-        Me.pbWarning.TabIndex = 0
-        Me.pbWarning.TabStop = False
-        '
         'ilNMT
         '
         Me.ilNMT.ImageStream = CType(resources.GetObject("ilNMT.ImageStream"), System.Windows.Forms.ImageListStreamer)
@@ -521,21 +448,184 @@ Partial Class dlgNMTMovies
         '
         'chHighPriority
         '
-        Me.chHighPriority.Location = New System.Drawing.Point(705, 346)
+        Me.chHighPriority.Location = New System.Drawing.Point(723, 292)
         Me.chHighPriority.Name = "chHighPriority"
         Me.chHighPriority.Size = New System.Drawing.Size(129, 18)
         Me.chHighPriority.TabIndex = 96
         Me.chHighPriority.Text = "High Priority"
         Me.chHighPriority.UseVisualStyleBackColor = True
         '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.DataGridView1)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(349, 168)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Menus"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.AllowUserToAddRows = False
+        Me.DataGridView1.AllowUserToDeleteRows = False
+        Me.DataGridView1.AllowUserToResizeColumns = False
+        Me.DataGridView1.AllowUserToResizeRows = False
+        Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.Column2})
+        Me.DataGridView1.Location = New System.Drawing.Point(1, 1)
+        Me.DataGridView1.MultiSelect = False
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.RowHeadersVisible = False
+        Me.DataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.DataGridView1.ShowCellErrors = False
+        Me.DataGridView1.ShowCellToolTips = False
+        Me.DataGridView1.ShowRowErrors = False
+        Me.DataGridView1.Size = New System.Drawing.Size(347, 166)
+        Me.DataGridView1.TabIndex = 5
+        '
+        'DataGridViewImageColumn1
+        '
+        Me.DataGridViewImageColumn1.HeaderText = ""
+        Me.DataGridViewImageColumn1.Image = Global.generic.EmberCore.NMT.My.Resources.Resources.edit
+        Me.DataGridViewImageColumn1.Name = "DataGridViewImageColumn1"
+        Me.DataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
         'pbHelp
         '
         Me.pbHelp.Image = CType(resources.GetObject("pbHelp.Image"), System.Drawing.Image)
-        Me.pbHelp.Location = New System.Drawing.Point(824, 5)
+        Me.pbHelp.Location = New System.Drawing.Point(920, 3)
         Me.pbHelp.Name = "pbHelp"
         Me.pbHelp.Size = New System.Drawing.Size(16, 16)
         Me.pbHelp.TabIndex = 97
         Me.pbHelp.TabStop = False
+        '
+        'pbTemplateLogo
+        '
+        Me.pbTemplateLogo.Location = New System.Drawing.Point(418, 5)
+        Me.pbTemplateLogo.Name = "pbTemplateLogo"
+        Me.pbTemplateLogo.Size = New System.Drawing.Size(130, 70)
+        Me.pbTemplateLogo.TabIndex = 94
+        Me.pbTemplateLogo.TabStop = False
+        '
+        'pbWarning
+        '
+        Me.pbWarning.Location = New System.Drawing.Point(3, 5)
+        Me.pbWarning.Name = "pbWarning"
+        Me.pbWarning.Size = New System.Drawing.Size(18, 18)
+        Me.pbWarning.TabIndex = 0
+        Me.pbWarning.TabStop = False
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
+        Me.btnCancel.TabIndex = 0
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(6, -2)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(16, 16)
+        Me.PictureBox2.TabIndex = 1
+        Me.PictureBox2.TabStop = False
+        '
+        'DataGridViewTextBoxColumn3
+        '
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black
+        Me.DataGridViewTextBoxColumn3.DefaultCellStyle = DataGridViewCellStyle8
+        Me.DataGridViewTextBoxColumn3.FillWeight = 155.0!
+        Me.DataGridViewTextBoxColumn3.HeaderText = "Menu"
+        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.ReadOnly = True
+        Me.DataGridViewTextBoxColumn3.Width = 155
+        '
+        'DataGridViewTextBoxColumn4
+        '
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewTextBoxColumn4.DefaultCellStyle = DataGridViewCellStyle9
+        Me.DataGridViewTextBoxColumn4.FillWeight = 150.0!
+        Me.DataGridViewTextBoxColumn4.HeaderText = "Type"
+        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
+        Me.DataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn4.Width = 150
+        '
+        'Column2
+        '
+        Me.Column2.FillWeight = 18.0!
+        Me.Column2.HeaderText = ""
+        Me.Column2.Image = Global.generic.EmberCore.NMT.My.Resources.Resources.edit
+        Me.Column2.Name = "Column2"
+        Me.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Column2.Width = 18
+        '
+        'export
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.NullValue = False
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
+        Me.export.DefaultCellStyle = DataGridViewCellStyle1
+        Me.export.FillWeight = 20.0!
+        Me.export.HeaderText = ""
+        Me.export.Name = "export"
+        Me.export.Width = 20
+        '
+        'EmberSource
+        '
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        Me.EmberSource.DefaultCellStyle = DataGridViewCellStyle2
+        Me.EmberSource.FillWeight = 110.0!
+        Me.EmberSource.HeaderText = "Ember Source"
+        Me.EmberSource.Name = "EmberSource"
+        Me.EmberSource.ReadOnly = True
+        Me.EmberSource.Width = 110
+        '
+        'Column1
+        '
+        Me.Column1.FillWeight = 18.0!
+        Me.Column1.HeaderText = ""
+        Me.Column1.Name = "Column1"
+        Me.Column1.Width = 18
+        '
+        'Menu
+        '
+        Me.Menu.FillWeight = 113.0!
+        Me.Menu.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Menu.HeaderText = "Menu"
+        Me.Menu.Name = "Menu"
+        Me.Menu.Width = 113
+        '
+        'Value
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.Value.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Value.FillWeight = 280.0!
+        Me.Value.HeaderText = "NMT Path"
+        Me.Value.Name = "Value"
+        Me.Value.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Value.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Value.Width = 280
+        '
+        'sourcetype
+        '
+        Me.sourcetype.HeaderText = ""
+        Me.sourcetype.Name = "sourcetype"
+        Me.sourcetype.Visible = False
         '
         'dlgNMTMovies
         '
@@ -543,7 +633,7 @@ Partial Class dlgNMTMovies
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.CancelButton = Me.Close_Button
-        Me.ClientSize = New System.Drawing.Size(853, 396)
+        Me.ClientSize = New System.Drawing.Size(944, 396)
         Me.Controls.Add(Me.pbHelp)
         Me.Controls.Add(Me.chHighPriority)
         Me.Controls.Add(Me.pbTemplateLogo)
@@ -572,17 +662,19 @@ Partial Class dlgNMTMovies
         Me.pnlCancel.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.gbHelp.ResumeLayout(False)
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         CType(Me.dgvProperties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
-        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
-        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage3.ResumeLayout(False)
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTemplateLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbWarning, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -601,11 +693,6 @@ Partial Class dlgNMTMovies
     Friend WithEvents lblTemplateInfo As System.Windows.Forms.Label
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
-    Friend WithEvents export As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents EmberSource As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewImageColumn
-    Friend WithEvents Value As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents sourcetype As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Setting As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewComboBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
@@ -621,6 +708,18 @@ Partial Class dlgNMTMovies
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents pbHelp As System.Windows.Forms.PictureBox
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents DataGridViewTextBoxColumn3 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn4 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewImageColumn
+    Friend WithEvents DataGridViewImageColumn1 As System.Windows.Forms.DataGridViewImageColumn
+    Friend WithEvents export As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents EmberSource As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewImageColumn
+    Friend WithEvents Menu As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents Value As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents sourcetype As System.Windows.Forms.DataGridViewTextBoxColumn
 
 #End Region 'Methods
 
