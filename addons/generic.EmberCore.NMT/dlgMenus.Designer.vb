@@ -24,16 +24,16 @@ Partial Class dlgMenus
     Private Sub InitializeComponent()
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.txtTitle = New System.Windows.Forms.TextBox
+        Me.tctPath = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.cbType = New System.Windows.Forms.ComboBox
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.txtParam1 = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
-        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.txtParam2 = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.SuspendLayout()
         '
@@ -41,7 +41,7 @@ Partial Class dlgMenus
         '
         Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(365, 83)
+        Me.OK_Button.Location = New System.Drawing.Point(365, 78)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -56,19 +56,19 @@ Partial Class dlgMenus
         Me.Label1.Text = "Title"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'TextBox1
+        'txtTitle
         '
-        Me.TextBox1.Location = New System.Drawing.Point(104, 32)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(145, 20)
-        Me.TextBox1.TabIndex = 2
+        Me.txtTitle.Location = New System.Drawing.Point(104, 32)
+        Me.txtTitle.Name = "txtTitle"
+        Me.txtTitle.Size = New System.Drawing.Size(145, 20)
+        Me.txtTitle.TabIndex = 2
         '
-        'TextBox2
+        'tctPath
         '
-        Me.TextBox2.Location = New System.Drawing.Point(104, 58)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(255, 20)
-        Me.TextBox2.TabIndex = 4
+        Me.tctPath.Location = New System.Drawing.Point(104, 58)
+        Me.tctPath.Name = "tctPath"
+        Me.tctPath.Size = New System.Drawing.Size(255, 20)
+        Me.tctPath.TabIndex = 4
         '
         'Label2
         '
@@ -88,14 +88,14 @@ Partial Class dlgMenus
         Me.Label3.Text = "Type"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'ComboBox1
+        'cbType
         '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(104, 6)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(145, 21)
-        Me.ComboBox1.TabIndex = 6
+        Me.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbType.FormattingEnabled = True
+        Me.cbType.Location = New System.Drawing.Point(104, 6)
+        Me.cbType.Name = "cbType"
+        Me.cbType.Size = New System.Drawing.Size(145, 21)
+        Me.cbType.TabIndex = 6
         '
         'CheckBox1
         '
@@ -111,18 +111,18 @@ Partial Class dlgMenus
         '
         Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(365, 107)
+        Me.Cancel_Button.Location = New System.Drawing.Point(365, 102)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 8
         Me.Cancel_Button.Text = "Cancel"
         '
-        'TextBox3
+        'txtParam1
         '
-        Me.TextBox3.Location = New System.Drawing.Point(104, 82)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(145, 20)
-        Me.TextBox3.TabIndex = 10
+        Me.txtParam1.Location = New System.Drawing.Point(104, 82)
+        Me.txtParam1.Name = "txtParam1"
+        Me.txtParam1.Size = New System.Drawing.Size(145, 20)
+        Me.txtParam1.TabIndex = 10
         '
         'Label4
         '
@@ -133,12 +133,12 @@ Partial Class dlgMenus
         Me.Label4.Text = "Parameter 1"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'TextBox4
+        'txtParam2
         '
-        Me.TextBox4.Location = New System.Drawing.Point(104, 107)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(145, 20)
-        Me.TextBox4.TabIndex = 12
+        Me.txtParam2.Location = New System.Drawing.Point(104, 107)
+        Me.txtParam2.Name = "txtParam2"
+        Me.txtParam2.Size = New System.Drawing.Size(145, 20)
+        Me.txtParam2.TabIndex = 12
         '
         'Label5
         '
@@ -154,18 +154,18 @@ Partial Class dlgMenus
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(435, 135)
-        Me.Controls.Add(Me.TextBox4)
+        Me.ClientSize = New System.Drawing.Size(435, 130)
+        Me.Controls.Add(Me.txtParam2)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.TextBox3)
+        Me.Controls.Add(Me.txtParam1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.CheckBox1)
-        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.cbType)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.TextBox2)
+        Me.Controls.Add(Me.tctPath)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.txtTitle)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.OK_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -181,16 +181,16 @@ Partial Class dlgMenus
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtTitle As System.Windows.Forms.TextBox
+    Friend WithEvents tctPath As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents cbType As System.Windows.Forms.ComboBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents txtParam1 As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents txtParam2 As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
 
 End Class

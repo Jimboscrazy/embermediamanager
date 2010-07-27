@@ -27,10 +27,21 @@ Imports System.Threading
 
 Public Class dlgNMTMovies
 
-#Region "Fields"
 
+
+#Region "Fields"
+    Structure myMenu
+        Dim Id As String
+        Dim Type As String
+        Dim Path As String
+        Dim Title As String
+        Dim Parameter1 As String
+        Dim Parameter2 As String
+    End Structure
     Friend WithEvents bwBuildHTML As New System.ComponentModel.BackgroundWorker
 
+    Private Menus As New List(Of myMenu)
+    Private HaveMenus As Boolean = False
     Private template_Path As String
     Private bCancelled As Boolean = False
     Private bexportFlags As Boolean = False
@@ -147,6 +158,8 @@ Public Class dlgNMTMovies
     End Sub
 
     Sub LoadMenus()
+        Menus.Clear()
+        HaveMenus = False
         For Each r As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "menus")
             Dim strFile As String = File.ReadAllText(Path.Combine(conf.TemplatePath, r.Name))
             Dim i As Integer = -1
@@ -158,8 +171,13 @@ Public Class dlgNMTMovies
                     f = strFile.IndexOf("</$MenuItem>", i)
                     If f > -1 Then
                         mi = strFile.Substring(i, f + 12 - i)
-                        Dim MenuName As String = GetMenuValue(mi, "MenuItem")
-                        Dim MenuTitle As String = GetMenuValue(mi, "Menu.Title")
+                        Dim m As New myMenu
+                        m.Id = GetMenuValue(mi, "MenuItem")
+                        m.Type = GetMenuValue(mi, "Menu.Type")
+                        m.Path = GetMenuValue(mi, "Menu.Path")
+                        m.Title = GetMenuValue(mi, "Menu.Title")
+                        m.Parameter1 = GetMenuValue(mi, "Parameter1")
+                        Menus.Add(m)
                     Else
                         Exit While
                     End If
@@ -169,6 +187,15 @@ Public Class dlgNMTMovies
                 i = f + 12
             End While
         Next
+        If Menus.Count > 0 Then
+            HaveMenus = True
+            dgvMenus.Visible = True
+        Else
+            HaveMenus = False
+            dgvMenus.Visible = False
+            Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
+            Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").Name})
+        End If
     End Sub
 
     Function GetMenuValue(ByVal s As String, ByVal tag As String) As String
@@ -905,8 +932,10 @@ Public Class dlgNMTMovies
 
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
         If cbTemplate.SelectedIndex >= 0 Then
+
             conf = confs(cbTemplate.SelectedIndex)
             template_Path = conf.TemplatePath
+            LoadMenus()
             PopulateParams()
             lblTemplateInfo.Text = conf.Description
             If File.Exists(Path.Combine(conf.TemplatePath, "logo.jpg")) Then
@@ -935,21 +964,29 @@ Public Class dlgNMTMovies
             'Dim cCell As New DataGridViewComboBoxCell()
             's.Cells(3) = cCell
             Dim dcb As DataGridViewComboBoxCell = DirectCast(s.Cells(3), DataGridViewComboBoxCell)
-            dcb.DataSource = New String() {"default"}
-            dcb.Value = "default"
+            Dim mm As New List(Of String)
+
             ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, nothing ,String.Empty, "movie"})
             If s.Cells(5).Value.ToString = "movie" Then
+                For Each m As myMenu In Menus.Where(Function(y) y.Type = "Movies")
+                    mm.Add(m.Title)
+                Next
+                dcb.DataSource = mm.ToArray ' New String() {"default"}
+                dcb.Value = If(Not HaveMenus, "default", mm(0))
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), "default")
+                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), dcb.Value.ToString)
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             Else
+                For Each m As myMenu In Menus.Where(Function(y) y.Type = "TVShows")
+                    mm.Add(m.Title)
+                Next
+                dcb.DataSource = mm.ToArray ' New String() {"default"}
+                dcb.Value = If(Not HaveMenus, "default", mm(0))
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), "default")
+                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), dcb.Value.ToString)
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             End If
-            If dcb.Value.ToString = "default" Then
-                dcb.ReadOnly = True
-            End If
+            dcb.ReadOnly = Not HaveMenus
         Next
 
         dgvSettings.Rows.Clear()
@@ -1004,6 +1041,11 @@ Public Class dlgNMTMovies
                 c.value = defvalue
                 If lst.Count > 0 Then dcb.Value = saved
             End If
+        Next
+        dgvMenus.Rows.Clear()
+        For Each c As myMenu In Menus
+            Dim i As Integer
+            i = dgvMenus.Rows.Add(New Object() {c.Title, c.Type, My.Resources.edit, c.Id})
         Next
     End Sub
 
@@ -1816,6 +1858,14 @@ Public Class dlgNMTMovies
     Private Sub pbHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbHelp.Click
         Using dlg As New dlgHelp
             dlg.ShowDialog(conf.TemplatePath)
+        End Using
+    End Sub
+
+    Private Sub dgvMenus_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMenus.CellClick
+        Using m As New dlgMenus
+            m.txtTitle.Text = Menus.FirstOrDefault(Function(y) y.Id = dgvMenus.Rows(e.RowIndex).Cells(3).Value.ToString).Title
+            m.ShowDialog()
+            dgvMenus.ClearSelection()
         End Using
     End Sub
 #End Region
