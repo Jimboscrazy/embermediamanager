@@ -125,15 +125,15 @@ Public Class dlgBulkRenamer
                                             If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                                 Try
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                        Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                                                        Dim tVid As MediaInfo.Video = MediaSheet.GetBestVideo(_curMovie.Movie.FileInfo)
+                                                        Dim tRes As String = MediaSheet.GetResFromDimensions(tVid)
                                                         MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes))
                                                     Else
                                                         MovieFile.Resolution = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                        Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
+                                                        Dim tAud As MediaInfo.Audio = MediaSheet.GetBestAudio(_curMovie.Movie.FileInfo, False)
                                                         MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels))
                                                     Else
                                                         MovieFile.Audio = String.Empty

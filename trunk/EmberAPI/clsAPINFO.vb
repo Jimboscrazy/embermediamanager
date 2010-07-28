@@ -24,9 +24,9 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Xml.Serialization
 
-Public Class NFO
+Public Class MediaSheet
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//
@@ -756,28 +756,28 @@ Public Class NFO
         End Try
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class NonConf
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _imdbid As String
         Private _text As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property IMDBID() As String
             Get
@@ -797,19 +797,19 @@ Public Class NFO
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._imdbid = String.Empty
             Me._text = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

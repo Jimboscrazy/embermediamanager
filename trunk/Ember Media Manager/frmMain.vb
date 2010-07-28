@@ -1086,11 +1086,11 @@ Public Class frmMain
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.TVShow)
                 Master.DB.SaveTVEpToDB(Args.TVShow, False, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
+                e.Result = New Results With {.fileinfo = MediaSheet.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.Movie)
                 Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
+                e.Result = New Results With {.fileinfo = MediaSheet.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
             End If
 
             If Me.bwMediaInfo.CancellationPending Then
@@ -1442,7 +1442,7 @@ doCancel:
                 End If
             Next
 
-            If Not cbFilterFileSource.Text = Master.eLang.All Then 
+            If Not cbFilterFileSource.Text = Master.eLang.All Then
                 Me.FilterArray.Add(String.Format("FileSource = '{0}'", If(cbFilterFileSource.Text = Master.eLang.None, String.Empty, cbFilterFileSource.Text)))
             End If
 
@@ -3739,7 +3739,7 @@ doCancel:
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
-                    If drvRow.Cells(2).Value.ToString.StartsWith (KeyBuffer) Then
+                    If drvRow.Cells(2).Value.ToString.StartsWith(KeyBuffer) Then
                         drvRow.Selected = True
                         Me.dgvTVSeasons.CurrentCell = drvRow.Cells(1)
                         Exit For
@@ -4557,7 +4557,7 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo, True)
+            Me.txtMetaData.Text = MediaSheet.FIToString(Master.currShow.TVEp.FileInfo, True)
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
@@ -4742,7 +4742,7 @@ doCancel:
             Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
+            Me.txtMetaData.Text = MediaSheet.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
@@ -5530,9 +5530,9 @@ doCancel:
                                         sFile.UseFolder = If(isSingle, True, False)
                                         fScanner.GetMovieFolderContents(sFile)
                                         If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                                            Master.currMovie.Movie = NFO.LoadMovieFromDisk(sFile.Nfo, sFile.isSingle)
+                                            Master.currMovie.Movie = MediaSheet.LoadMovieFromDisk(sFile.Nfo, sFile.isSingle)
                                         Else
-                                            Master.currMovie.Movie = NFO.LoadMovieFromDisk(sFile.Filename, sFile.isSingle)
+                                            Master.currMovie.Movie = MediaSheet.LoadMovieFromDisk(sFile.Filename, sFile.isSingle)
                                         End If
                                         If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                                             'no title so assume it's an invalid nfo, clear nfo path if exists
@@ -6787,11 +6787,11 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
-                        Dim sNFO As String = NFO.GetEpNfoPath(tmpShowDb.Filename)
+                        Dim sNFO As String = MediaSheet.GetEpNfoPath(tmpShowDb.Filename)
                         tmpShowDb.EpNfoPath = sNFO
-                        tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
+                        tmpEp = MediaSheet.LoadTVEpFromNFO(sNFO, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
                     Else
-                        tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
+                        tmpEp = MediaSheet.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
                     End If
                     tmpShowDb.TVEp = tmpEp
                 End If
@@ -6886,11 +6886,11 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
-                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
+                        Dim sNFO As String = MediaSheet.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
                         tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromDisk(sNFO, tmpMovieDb.isSingle)
+                        tmpMovie = MediaSheet.LoadMovieFromDisk(sNFO, tmpMovieDb.isSingle)
                     Else
-                        tmpMovie = NFO.LoadMovieFromDisk(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
+                        tmpMovie = MediaSheet.LoadMovieFromDisk(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
@@ -7109,11 +7109,11 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(tmpShowDb.ShowNfoPath) Then
-                        Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
+                        Dim sNFO As String = MediaSheet.GetShowNfoPath(tmpShowDb.ShowPath)
                         tmpShowDb.ShowNfoPath = sNFO
-                        tmpShow = NFO.LoadTVShowFromNFO(sNFO)
+                        tmpShow = MediaSheet.LoadTVShowFromNFO(sNFO)
                     Else
-                        tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.ShowNfoPath)
+                        tmpShow = MediaSheet.LoadTVShowFromNFO(tmpShowDb.ShowNfoPath)
                     End If
                     tmpShowDb.TVShow = tmpShow
                 End If

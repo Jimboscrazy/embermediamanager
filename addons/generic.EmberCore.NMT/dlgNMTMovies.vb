@@ -190,9 +190,11 @@ Public Class dlgNMTMovies
         If Menus.Count > 0 Then
             HaveMenus = True
             dgvMenus.Visible = True
+            lblNoMenus.Visible = False
         Else
             HaveMenus = False
             dgvMenus.Visible = False
+            lblNoMenus.Visible = True
             Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
             Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").Name})
         End If
@@ -665,9 +667,9 @@ Public Class dlgNMTMovies
                     Dim _vidDimensions As String = String.Empty
                     If Not IsNothing(fiAV) Then
                         If fiAV.StreamDetails.Video.Count > 0 Then
-                            tVid = NFO.GetBestVideo(fiAV)
-                            tRes = NFO.GetResFromDimensions(tVid)
-                            _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                            tVid = MediaSheet.GetBestVideo(fiAV)
+                            tRes = MediaSheet.GetResFromDimensions(tVid)
+                            _vidDimensions = MediaSheet.GetDimensionsFromVideo(tVid)
                             _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
                         End If
                     End If
@@ -677,7 +679,7 @@ Public Class dlgNMTMovies
                 If row.Contains("<$AUDIO>") Then
                     Dim _audDetails As String = String.Empty
                     If fiAV.StreamDetails.Audio.Count > 0 Then
-                        tAud = NFO.GetBestAudio(fiAV, False)
+                        tAud = MediaSheet.GetBestAudio(fiAV, False)
                         _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
@@ -1294,10 +1296,10 @@ Public Class dlgNMTMovies
         If APIXML.lFlags.Count > 0 Then
             Try
                 Dim flagspath As String = GetUserParam("FlagsPath", "Flags/")
-                Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
+                Dim tVideo As MediaInfo.Video = MediaSheet.GetBestVideo(fiAV)
+                Dim tAudio As MediaInfo.Audio = MediaSheet.GetBestAudio(fiAV, False)
 
-                Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = MediaSheet.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
                 If Not IsNothing(vresFlag) Then
                     line = line.Replace("<$FLAG_VRES>", String.Concat(relpath, flagspath, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                 Else

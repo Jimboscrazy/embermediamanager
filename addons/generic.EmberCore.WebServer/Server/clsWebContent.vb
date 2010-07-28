@@ -198,9 +198,9 @@ Public Class ProccessPages
                                         Dim _vidDimensions As String = String.Empty
                                         If Not IsNothing(fiAV) Then
                                             If fiAV.StreamDetails.Video.Count > 0 Then
-                                                tVid = NFO.GetBestVideo(fiAV)
-                                                tRes = NFO.GetResFromDimensions(tVid)
-                                                _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                                                tVid = MediaSheet.GetBestVideo(fiAV)
+                                                tRes = MediaSheet.GetResFromDimensions(tVid)
+                                                _vidDimensions = MediaSheet.GetDimensionsFromVideo(tVid)
                                                 _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
                                             End If
                                         End If
@@ -209,7 +209,7 @@ Public Class ProccessPages
                                     Case "<$MAUDIO>"
                                         Dim _audDetails As String = String.Empty
                                         If fiAV.StreamDetails.Audio.Count > 0 Then
-                                            tAud = NFO.GetBestAudio(fiAV, False)
+                                            tAud = MediaSheet.GetBestAudio(fiAV, False)
                                             _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
                                         End If
                                         row = row.Replace("<$MAUDIO>", _audDetails)
@@ -315,9 +315,9 @@ Public Class ProccessPages
 
         Try
             'Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
-            Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-            Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
-            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            Dim tVideo As MediaInfo.Video = MediaSheet.GetBestVideo(fiAV)
+            Dim tAudio As MediaInfo.Audio = MediaSheet.GetBestAudio(fiAV, False)
+            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = MediaSheet.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If Not IsNothing(vresFlag) Then
                 line = line.Replace("<$MFLAG_VRES>", String.Concat("<$ESOURCE>Images/Flags/", Path.GetFileName(vresFlag.Path).Replace("\", "/")))
             Else

@@ -131,7 +131,7 @@ Public Class dlgEditShow
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog(Master.currShow.ShowNfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currShow.TVShow = NFO.LoadTVShowFromNFO(Master.currShow.ShowNfoPath)
+                Master.currShow.TVShow = MediaSheet.LoadTVShowFromNFO(Master.currShow.ShowNfoPath)
                 Me.FillInfo()
             End If
         Catch ex As Exception
