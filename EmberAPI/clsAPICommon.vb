@@ -664,10 +664,11 @@ Public Class Functions
     End Function
 
     Public Shared Function IsBetaEnabled() As Boolean
-        If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
-            Return True
-        End If
-        Return False
+        'If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
+        'Return True
+        'End If
+        'Return False
+        Return AdvancedSettings.GetBooleanSetting("IsBetaEnabled", False, "*Internal")
     End Function
 
     ''' <summary>
