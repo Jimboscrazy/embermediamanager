@@ -1864,11 +1864,13 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub dgvMenus_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMenus.CellClick
-        Using m As New dlgMenus
-            m.txtTitle.Text = Menus.FirstOrDefault(Function(y) y.Id = dgvMenus.Rows(e.RowIndex).Cells(3).Value.ToString).Title
-            m.ShowDialog()
-            dgvMenus.ClearSelection()
-        End Using
+        If e.ColumnIndex = 2 Then
+            Using m As New dlgMenus
+                m.txtTitle.Text = Menus.FirstOrDefault(Function(y) y.Id = dgvMenus.Rows(e.RowIndex).Cells(3).Value.ToString).Title
+                m.ShowDialog()
+            End Using
+        End If
+        dgvMenus.ClearSelection()
     End Sub
 #End Region
 End Class
