@@ -77,8 +77,11 @@ Public Class frmMainSetup
     Private ShowCredits As Boolean = False
     Dim SlowDown As Integer = 0
     Private w As New dlgCommands
-    Private RemoteSiteFolder As String = "Updates"
-    Private IsBeta As Boolean = False
+
+    'Private RemoteSiteFolder As String = "Updates"
+    'Private IsBeta As Boolean = False
+    Private RemoteSiteFolder As String = "UpdatesBeta"
+    Private IsBeta As Boolean = True
 
     Dim ProxyURI As String = ""
     Dim ProxyPort As Integer = 0
@@ -669,6 +672,9 @@ Public Class frmMainSetup
                             LogWrite(String.Format("*** Main: Nothing to Update ... EXIT"))
                             Me.bwDoInstall.ReportProgress(6, MyLang.GetString(10, "No New Version to Install"))
                             RemoveSetupFolders(Path.GetDirectoryName(emberPath))
+                            AdvancedSettings.Load(Path.Combine(Path.GetDirectoryName(emberPath), "AdvancedSettings.xml"))
+                            AdvancedSettings.SetSetting("IsBetaEnabled", IsBeta, "*Internal", Not IsBeta)
+                            AdvancedSettings.Save(Path.Combine(Path.GetDirectoryName(emberPath), "AdvancedSettings.xml"))
                             Return True
                         End If
                         Me.bwDoInstall.ReportProgress(5, "")
@@ -1059,6 +1065,9 @@ Public Class frmMainSetup
                 System.Threading.Thread.Sleep(1000)
                 Me.bwDoInstall.ReportProgress(0, New Object() {80, ""})
                 If bwDoInstall.CancellationPending Then Return False
+                AdvancedSettings.Load(Path.Combine(Path.GetDirectoryName(emberPath), "AdvancedSettings.xml"))
+                AdvancedSettings.SetSetting("IsBetaEnabled", IsBeta, "*Internal", Not IsBeta)
+                AdvancedSettings.Save(Path.Combine(Path.GetDirectoryName(emberPath), "AdvancedSettings.xml"))
                 LogWrite(String.Format("*** Main: Commands END"))
 
             Catch ex As Exception
@@ -1213,10 +1222,10 @@ Public Class frmMainSetup
         Try
             SetupMyControls()
             InitCredits()
-            If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
-                RemoteSiteFolder = "UpdatesBeta"
-                IsBeta = True
-            End If
+            'If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
+            'RemoteSiteFolder = "UpdatesBeta"
+            'IsBeta = True
+            'End If
             'Me.lblStatus.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint Or ControlStyles.SupportsTransparentBackColor, True)
             Me.lblStatus.BackColor = System.Drawing.Color.Transparent
 
@@ -1248,7 +1257,7 @@ Public Class frmMainSetup
                     Case "-recover"
                         Recover = True
                     Case "-blind"
-                        blindSetup = True
+                        BlindSetup = True
                 End Select
             Next
             WindowsInstallPath = Path.GetDirectoryName(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData))

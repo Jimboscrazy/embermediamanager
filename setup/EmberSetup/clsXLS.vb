@@ -260,3 +260,126 @@ Public Class Langs
         Public Filename As String
     End Class
 End Class
+
+Class AdvancedSettings
+    Private Shared _AdvancedSettings As New List(Of SettingItem)
+    Private Shared _ComplexAdvancedSettings As New List(Of ComplexSettingItem)
+    ' ******************************************************************************
+    Public Class SettingItem
+        Public DefaultValue As String
+        Public Name As String
+        Public Section As String
+        Public Value As String
+    End Class
+    Public Class ComplexSettingItem
+        Public Name As String
+        Public Section As String
+        Public TableItem As New Hashtable
+    End Class
+    Public Shared Sub Load(ByVal fname As String)
+        Try
+            If File.Exists(fname) Then
+                Dim xdoc As New XDocument
+                xdoc = XDocument.Load(fname)
+                For Each i As XElement In xdoc...<Setting>
+                    Dim ii As XElement = i
+                    Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section)
+                    If v Is Nothing Then
+                        _AdvancedSettings.Add(New SettingItem With {.Section = ii.@Section, .Name = ii.@Name, .Value = ii.Value, .DefaultValue = ""})
+                    Else
+                        _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section).Value = Convert.ToString(i.Value)
+                    End If
+                Next
+                For Each i As XElement In xdoc...<ComplexSettings>...<Table>
+                    Dim l As XElement = i
+                    Dim dict As New Hashtable
+                    For Each t As XElement In l...<Item>
+                        dict.Add(t.@Name, t.Value)
+                    Next
+                    Dim cs As ComplexSettingItem = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
+                    If cs Is Nothing Then
+                        _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = l.@Section, .Name = l.@Name})
+                        cs = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
+                    Else
+                        cs.TableItem.Clear()
+                    End If
+                    cs.TableItem = dict
+                Next
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+    Public Shared Sub Save(ByVal fname As String)
+        Try
+            If File.Exists(fname) Then
+                File.Delete(fname)
+            End If
+            Dim xdoc As New XmlDocument()
+            xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
+
+            Dim count As Integer = 0
+            For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
+                Dim elem As XmlElement = xdoc.CreateElement("Setting")
+                Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                attr.Value = i.Section
+                elem.Attributes.SetNamedItem(attr)
+                Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                attr2.Value = i.Name
+                elem.Attributes.SetNamedItem(attr2)
+                elem.InnerText = i.Value
+                xdoc.DocumentElement.AppendChild(elem)
+                count += 1
+            Next
+            Dim elemp As XmlElement = xdoc.CreateElement("ComplexSettings")
+            For Each i As ComplexSettingItem In _ComplexAdvancedSettings
+
+                If Not i.TableItem Is Nothing Then
+                    Dim elem As XmlElement = xdoc.CreateElement("Table")
+                    Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
+                    attr.Value = i.Section
+                    elem.Attributes.SetNamedItem(attr)
+                    Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                    attr2.Value = i.Name
+                    elem.Attributes.SetNamedItem(attr2)
+                    For Each ti In i.TableItem.Keys
+                        Dim elemi As XmlElement = xdoc.CreateElement("Item")
+                        Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
+                        attr3.Value = ti.ToString
+                        elemi.InnerText = i.TableItem.Item(ti.ToString).ToString
+                        elemi.Attributes.SetNamedItem(attr3)
+                        elem.AppendChild(elemi)
+                    Next
+                    elemp.AppendChild(elem)
+                    count += 1
+                End If
+            Next
+            xdoc.DocumentElement.AppendChild(elemp)
+            If count > 0 Then xdoc.Save(fname)
+        Catch ex As Exception
+        End Try
+    End Sub
+    Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, ByVal Assembly As String) As String
+        Try
+            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
+
+        Catch ex As Exception
+            Return defvalue
+        End Try
+    End Function
+    Public Shared Function SetSetting(ByVal key As String, ByVal value As Object, ByVal Assembly As String, Optional ByVal isDefault As Boolean = False) As Boolean
+        Try
+            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If v Is Nothing Then
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
+            Else
+                _AdvancedSettings.Remove(v)
+                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
+                '_AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
+            End If
+
+        Catch ex As Exception
+        End Try
+        Return True
+    End Function
+End Class
