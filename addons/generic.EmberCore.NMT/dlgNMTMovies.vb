@@ -31,12 +31,13 @@ Public Class dlgNMTMovies
 
 #Region "Fields"
     Structure myMenu
-        Dim Id As String
-        Dim Type As String
-        Dim Path As String
-        Dim Title As String
-        Dim Parameter1 As String
-        Dim Parameter2 As String
+        Public Id As String
+        Public Enabled As Boolean
+        Public Type As String
+        Public Path As String
+        Public Title As String
+        Public Parameter1 As String
+        Public Parameter2 As String
     End Structure
     Friend WithEvents bwBuildHTML As New System.ComponentModel.BackgroundWorker
 
@@ -60,6 +61,7 @@ Public Class dlgNMTMovies
     Private conf As NMTExporterModule.Config
     Private confs As New List(Of NMTExporterModule.Config)
     Private selectedSources As New Hashtable
+    Private selectedSourcesMenus As New Hashtable
     Private outputFolder As String
     Private MoviesGenres As New List(Of String)
     Private TVShowsGenres As New List(Of String)
@@ -173,6 +175,8 @@ Public Class dlgNMTMovies
                         mi = strFile.Substring(i, f + 12 - i)
                         Dim m As New myMenu
                         m.Id = GetMenuValue(mi, "MenuItem")
+                        Dim enabled As String = GetMenuValue(mi, "Menu.Enabled")
+                        m.Enabled = Convert.ToBoolean(If(String.IsNullOrEmpty(enabled) AndAlso Not enabled.ToLower = "false" AndAlso Not enabled.ToLower = "true", "false", enabled))
                         m.Type = GetMenuValue(mi, "Menu.Type")
                         m.Path = GetMenuValue(mi, "Menu.Path")
                         m.Title = GetMenuValue(mi, "Menu.Title")
@@ -187,6 +191,13 @@ Public Class dlgNMTMovies
                 i = f + 12
             End While
         Next
+        For i As Integer = 0 To Menus.Count - 1
+            Dim mm As myMenu = Menus(i)
+            mm.Enabled = AdvancedSettings.GetBooleanSetting(String.Concat("Menus.Enabled", conf.Name, ".", Menus(i).Id), Menus(i).Enabled)
+            mm.Title = AdvancedSettings.GetSetting(String.Concat("Menus.Title", conf.Name, ".", Menus(i).Id), Menus(i).Title)
+            Menus(i) = mm
+        Next
+
         If Menus.Count > 0 Then
             HaveMenus = True
             dgvMenus.Visible = True
@@ -246,6 +257,10 @@ Public Class dlgNMTMovies
                     AdvancedSettings.SetSetting(String.Concat("Path.TV.Menu.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
                     AdvancedSettings.SetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
                 End If
+            Next
+            For Each m As myMenu In Menus
+                AdvancedSettings.SetBooleanSetting(String.Concat("Menus.Enabled", conf.Name, ".", m.Id), m.Enabled)
+                AdvancedSettings.SetSetting(String.Concat("Menus.Title", conf.Name, ".", m.Id), m.Title)
             Next
             'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
         Catch ex As Exception
@@ -363,57 +378,66 @@ Public Class dlgNMTMovies
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("MoviesDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLMovieBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
-            Dim htmlPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name)
+
             Dim htmlDetailsPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movie").Name)
             Dim pattern As String = String.Empty
             Dim patternDetails As String = String.Empty
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
+            'Dim htmlPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name)
+            Dim htmlPath As String = String.Empty
 
-            pattern = File.ReadAllText(htmlPath)
-            PreProcessProperties(pattern)
-            patternDetails = File.ReadAllText(htmlDetailsPath)
-            PreProcessProperties(patternDetails)
-            Dim s = pattern.IndexOf("<$MOVIE>")
-            If s >= 0 Then
-                Dim e = pattern.IndexOf("<$/MOVIE>")
-                If e >= 0 Then
-                    movieheader = pattern.Substring(0, s)
-                    movierow = pattern.Substring(s + 8, e - s - 8)
-                    moviefooter = pattern.Substring(e + 9, pattern.Length - e - 9)
+            For Each m As myMenu In Menus.Where(Function(y) y.Enabled AndAlso y.Type = "Movies")
+                htmlPath = Path.Combine(template, m.Path)
+                pattern = File.ReadAllText(htmlPath)
+                PreProcessProperties(pattern)
+                patternDetails = File.ReadAllText(htmlDetailsPath)
+                PreProcessProperties(patternDetails)
+                Dim s = pattern.IndexOf("<$MOVIE>")
+                If s >= 0 Then
+                    Dim e = pattern.IndexOf("<$/MOVIE>")
+                    If e >= 0 Then
+                        movieheader = pattern.Substring(0, s)
+                        movierow = pattern.Substring(s + 8, e - s - 8)
+                        moviefooter = pattern.Substring(e + 9, pattern.Length - e - 9)
+                    Else
+                        'error
+                    End If
                 Else
                     'error
                 End If
-            Else
-                'error
-            End If
 
-            HTMLMovieBody.Append(movieheader)
-            Dim counter As Integer = 1
-            FilterMovies.Clear()
-            MoviesGenres.Clear()
+                HTMLMovieBody.Append(movieheader)
+                Dim counter As Integer = 1
+                FilterMovies.Clear()
+                MoviesGenres.Clear()
 
-            For Each _curMovie As DataRow In dtMovieMedia.Rows
-                If bwBuildHTML.CancellationPending Then Return
-                'now check if we need to include this movie
-                If Not selectedSources.Contains(_curMovie.Item("Source").ToString) Then
+                For Each _curMovie As DataRow In dtMovieMedia.Rows
+                    If bwBuildHTML.CancellationPending Then Return
+                    'now check if we need to include this movie
+                    If Not selectedSources.Contains(_curMovie.Item("Source").ToString) Then
+                        bwBuildHTML.ReportProgress(1)
+                        Continue For
+                    End If
+                    If Not selectedSourcesMenus(_curMovie.Item("Source").ToString).ToString = m.Title Then
+                        'bwBuildHTML.ReportProgress(1)
+                        Continue For
+                    End If
+
+                    FilterMovies.Add(Convert.ToInt32(_curMovie.Item("ID")))
+                    Dim hfile As String = Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").DestPath.Replace("/", Path.DirectorySeparatorChar))
+                    HTMLMovieBody.Append(ProcessMovieTags(_curMovie, hfile, counter, _curMovie.Item("ID").ToString, movierow))
+                    Dim detailsoutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movie").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat(_curMovie.Item("ID").ToString, ".htm"))
+                    File.WriteAllText(detailsoutput, ProcessMovieTags(_curMovie, String.Concat(Path.GetDirectoryName(detailsoutput), Path.DirectorySeparatorChar), counter, _curMovie.Item("ID").ToString, patternDetails))
+                    counter += 1
                     bwBuildHTML.ReportProgress(1)
-                    Continue For
-                End If
-
-                FilterMovies.Add(Convert.ToInt32(_curMovie.Item("ID")))
-                Dim hfile As String = Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").DestPath.Replace("/", Path.DirectorySeparatorChar))
-                HTMLMovieBody.Append(ProcessMovieTags(_curMovie, hfile, counter, _curMovie.Item("ID").ToString, movierow))
-                Dim detailsoutput As String = Path.Combine(Path.Combine(outputbase, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movie").DestPath.Replace("/", Path.DirectorySeparatorChar)), String.Concat(_curMovie.Item("ID").ToString, ".htm"))
-                File.WriteAllText(detailsoutput, ProcessMovieTags(_curMovie, String.Concat(Path.GetDirectoryName(detailsoutput), Path.DirectorySeparatorChar), counter, _curMovie.Item("ID").ToString, patternDetails))
-                counter += 1
-                bwBuildHTML.ReportProgress(1)
+                Next
+                HTMLMovieBody.Append(moviefooter)
+                HTMLMovieBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
+                DontSaveExtra = False
             Next
-            HTMLMovieBody.Append(moviefooter)
-            HTMLMovieBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
-            DontSaveExtra = False
-            Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
+            Me.SaveMovieFiles(template, outputbase)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -970,22 +994,43 @@ Public Class dlgNMTMovies
 
             ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, nothing ,String.Empty, "movie"})
             If s.Cells(5).Value.ToString = "movie" Then
-                For Each m As myMenu In Menus.Where(Function(y) y.Type = "Movies")
+                For Each m As myMenu In Menus.Where(Function(y) y.Type = "Movies" AndAlso y.Enabled)
                     mm.Add(m.Title)
                 Next
+                Dim d As String
+                If mm.Count = 0 Then
+                    d = "default"
+                    Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
+                    HaveMenus = False
+                Else
+                    HaveMenus = True
+                    d = mm(0)
+                End If
                 dcb.DataSource = mm.ToArray ' New String() {"default"}
-                dcb.Value = If(Not HaveMenus, "default", mm(0))
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), dcb.Value.ToString)
+                d = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), d)
+                If Not mm.Contains(d) AndAlso mm.Count > 0 AndAlso mm.Contains(mm(0)) Then d = mm(0)
+                dcb.Value = d
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             Else
-                For Each m As myMenu In Menus.Where(Function(y) y.Type = "TVShows")
+                For Each m As myMenu In Menus.Where(Function(y) y.Type = "TVShows" AndAlso y.Enabled)
                     mm.Add(m.Title)
                 Next
+
+                Dim d As String
+                If mm.Count = 0 Then
+                    d = "default"
+                    Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
+                    HaveMenus = False
+                Else
+                    HaveMenus = True
+                    d = mm(0)
+                End If
                 dcb.DataSource = mm.ToArray ' New String() {"default"}
-                dcb.Value = If(Not HaveMenus, "default", mm(0))
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), dcb.Value.ToString)
+                d = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), d)
+                If Not mm.Contains(d) AndAlso mm.Count > 0 AndAlso mm.Contains(mm(0)) Then d = mm(0)
+                dcb.Value = d
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             End If
             dcb.ReadOnly = Not HaveMenus
@@ -1048,7 +1093,9 @@ Public Class dlgNMTMovies
         For Each c As myMenu In Menus
             Dim i As Integer
             i = dgvMenus.Rows.Add(New Object() {c.Title, c.Type, My.Resources.edit, c.Id})
+            If Not c.Enabled Then dgvMenus.Rows(i).DefaultCellStyle.ForeColor = Color.Red
         Next
+        dgvMenus.ClearSelection()
     End Sub
 
     Private Sub SetUserParam(ByVal param As String, ByVal value As String)
@@ -1682,6 +1729,7 @@ Public Class dlgNMTMovies
         ValidatedToBuild.Stop()
         ValidatedToBuild.Interval = 300
         selectedSources.Clear()
+        selectedSourcesMenus.Clear()
         HaveMovies = False
         HaveTV = False
         Cursor = Cursors.WaitCursor
@@ -1707,6 +1755,7 @@ Public Class dlgNMTMovies
                             Exit For
                         Else
                             selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(4).Value.ToString)
+                            selectedSourcesMenus.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
                             If row.Cells(5).Value.ToString = "tv" Then HaveTV = True
                             If row.Cells(5).Value.ToString = "movie" Then HaveMovies = True
                         End If
@@ -1866,11 +1915,27 @@ Public Class dlgNMTMovies
     Private Sub dgvMenus_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMenus.CellClick
         If e.ColumnIndex = 2 Then
             Using m As New dlgMenus
-                m.txtTitle.Text = Menus.FirstOrDefault(Function(y) y.Id = dgvMenus.Rows(e.RowIndex).Cells(3).Value.ToString).Title
-                m.ShowDialog()
+                Dim mm As myMenu = Menus.FirstOrDefault(Function(y) y.Id = dgvMenus.Rows(e.RowIndex).Cells(3).Value.ToString)
+                m.cbType.Items.Add(mm.Type)
+                m.cbEnabled.Checked = mm.Enabled
+                m.cbType.SelectedIndex = 0
+                m.txtTitle.Text = mm.Title
+                m.txtPath.Text = mm.Path
+                m.txtParam1.Text = mm.Parameter1
+                If m.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    Dim i As Integer = Menus.IndexOf(mm)
+                    Menus.Remove(mm)
+                    mm.Enabled = m.cbEnabled.Checked
+                    mm.Title = m.txtTitle.Text
+                    Menus.Insert(i, mm)
+                    dgvMenus.Rows(e.RowIndex).DefaultCellStyle.ForeColor = If(mm.Enabled, Color.Black, Color.Red)
+                    PopulateParams()
+                End If
             End Using
         End If
         dgvMenus.ClearSelection()
     End Sub
 #End Region
+
+
 End Class

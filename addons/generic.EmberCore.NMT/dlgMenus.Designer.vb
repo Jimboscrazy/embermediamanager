@@ -25,11 +25,11 @@ Partial Class dlgMenus
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
-        Me.tctPath = New System.Windows.Forms.TextBox
+        Me.txtPath = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbType = New System.Windows.Forms.ComboBox
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.cbEnabled = New System.Windows.Forms.CheckBox
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.txtParam1 = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
@@ -63,12 +63,13 @@ Partial Class dlgMenus
         Me.txtTitle.Size = New System.Drawing.Size(145, 20)
         Me.txtTitle.TabIndex = 2
         '
-        'tctPath
+        'txtPath
         '
-        Me.tctPath.Location = New System.Drawing.Point(104, 58)
-        Me.tctPath.Name = "tctPath"
-        Me.tctPath.Size = New System.Drawing.Size(255, 20)
-        Me.tctPath.TabIndex = 4
+        Me.txtPath.Location = New System.Drawing.Point(104, 58)
+        Me.txtPath.Name = "txtPath"
+        Me.txtPath.ReadOnly = True
+        Me.txtPath.Size = New System.Drawing.Size(255, 20)
+        Me.txtPath.TabIndex = 4
         '
         'Label2
         '
@@ -91,21 +92,22 @@ Partial Class dlgMenus
         'cbType
         '
         Me.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbType.Enabled = False
         Me.cbType.FormattingEnabled = True
         Me.cbType.Location = New System.Drawing.Point(104, 6)
         Me.cbType.Name = "cbType"
         Me.cbType.Size = New System.Drawing.Size(145, 21)
         Me.cbType.TabIndex = 6
         '
-        'CheckBox1
+        'cbEnabled
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(264, 8)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(65, 17)
-        Me.CheckBox1.TabIndex = 7
-        Me.CheckBox1.Text = "Enabled"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.cbEnabled.AutoSize = True
+        Me.cbEnabled.Location = New System.Drawing.Point(264, 8)
+        Me.cbEnabled.Name = "cbEnabled"
+        Me.cbEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.cbEnabled.TabIndex = 7
+        Me.cbEnabled.Text = "Enabled"
+        Me.cbEnabled.UseVisualStyleBackColor = True
         '
         'Cancel_Button
         '
@@ -121,6 +123,7 @@ Partial Class dlgMenus
         '
         Me.txtParam1.Location = New System.Drawing.Point(104, 82)
         Me.txtParam1.Name = "txtParam1"
+        Me.txtParam1.ReadOnly = True
         Me.txtParam1.Size = New System.Drawing.Size(145, 20)
         Me.txtParam1.TabIndex = 10
         '
@@ -137,6 +140,7 @@ Partial Class dlgMenus
         '
         Me.txtParam2.Location = New System.Drawing.Point(104, 107)
         Me.txtParam2.Name = "txtParam2"
+        Me.txtParam2.ReadOnly = True
         Me.txtParam2.Size = New System.Drawing.Size(145, 20)
         Me.txtParam2.TabIndex = 12
         '
@@ -160,10 +164,10 @@ Partial Class dlgMenus
         Me.Controls.Add(Me.txtParam1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.CheckBox1)
+        Me.Controls.Add(Me.cbEnabled)
         Me.Controls.Add(Me.cbType)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.tctPath)
+        Me.Controls.Add(Me.txtPath)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtTitle)
         Me.Controls.Add(Me.Label1)
@@ -182,11 +186,11 @@ Partial Class dlgMenus
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
-    Friend WithEvents tctPath As System.Windows.Forms.TextBox
+    Friend WithEvents txtPath As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents cbType As System.Windows.Forms.ComboBox
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents txtParam1 As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
