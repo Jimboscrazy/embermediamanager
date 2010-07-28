@@ -90,7 +90,7 @@ Public Class MediaInfo
                 End If
                 If Master.eSettings.UseMIDuration Then
                     If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                        Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+                        Dim tVid As MediaInfo.Video = MediaSheet.GetBestVideo(miMovie.Movie.FileInfo)
                         If Not String.IsNullOrEmpty(tVid.Duration) Then
                             miMovie.Movie.Runtime = tVid.Duration
                         End If
@@ -246,8 +246,8 @@ Public Class MediaInfo
                         If bIsVTS OrElse (oFile = StringUtils.CleanStackingMarkers(File, False)) Then
                             tInfo = ScanMI(File)
 
-                            tVideo = NFO.GetBestVideo(tInfo)
-                            tAudio = NFO.GetBestAudio(tInfo, ForTV)
+                            tVideo = MediaSheet.GetBestVideo(tInfo)
+                            tAudio = MediaSheet.GetBestAudio(tInfo, ForTV)
 
                             If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
                                 If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then

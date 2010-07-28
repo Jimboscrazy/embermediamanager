@@ -107,12 +107,12 @@ Public Class APIXML
 
     Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal fileSource As String) As Image()
         Dim iReturn(5) As Image
-        Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-        Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
+        Dim tVideo As MediaInfo.Video = MediaSheet.GetBestVideo(fiAV)
+        Dim tAudio As MediaInfo.Audio = MediaSheet.GetBestAudio(fiAV, ForTV)
 
         If lFlags.Count > 0 Then
             Try
-                Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
+                Dim vRes As String = MediaSheet.GetResFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
                 If Not IsNothing(vresFlag) Then
                     iReturn(0) = vresFlag.Image

@@ -139,7 +139,7 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog(Master.currMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = NFO.LoadMovieFromDisk(Master.currMovie.NfoPath, Master.currMovie.isSingle)
+                Master.currMovie.Movie = MediaSheet.LoadMovieFromDisk(Master.currMovie.NfoPath, Master.currMovie.isSingle)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception

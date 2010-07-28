@@ -611,12 +611,12 @@ Public Class Scanner
             GetMovieFolderContents(mContainer)
 
             If Not String.IsNullOrEmpty(mContainer.Nfo) Then
-                tmpMovieDB.Movie = NFO.LoadMovieFromDisk(mContainer.Nfo, mContainer.isSingle)
+                tmpMovieDB.Movie = MediaSheet.LoadMovieFromDisk(mContainer.Nfo, mContainer.isSingle)
                 If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
                     MediaInfo.UpdateMediaInfo(tmpMovieDB)
                 End If
             Else
-                tmpMovieDB.Movie = NFO.LoadMovieFromDisk(mContainer.Filename, mContainer.isSingle)
+                tmpMovieDB.Movie = MediaSheet.LoadMovieFromDisk(mContainer.Filename, mContainer.isSingle)
                 If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.ScanMediaInfo Then
                     MediaInfo.UpdateMediaInfo(tmpMovieDB)
                 End If
@@ -1168,7 +1168,7 @@ Public Class Scanner
                     GetShowFolderContents(TVContainer)
 
                     If Not String.IsNullOrEmpty(TVContainer.Nfo) Then
-                        tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(TVContainer.Nfo)
+                        tmpTVDB.TVShow = MediaSheet.LoadTVShowFromNFO(TVContainer.Nfo)
                     Else
                         tmpTVDB.TVShow = New MediaContainers.TVShow
                     End If
@@ -1233,7 +1233,7 @@ Public Class Scanner
                                     tmpTVDB.Filename = Episode.Filename
 
                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
-                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
+                                        tmpTVDB.TVEp = MediaSheet.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
                                         If Not tmpTVDB.TVEp.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) AndAlso Master.eSettings.ScanTVMediaInfo Then
                                             MediaInfo.UpdateTVMediaInfo(tmpTVDB)
                                         End If
@@ -1268,7 +1268,7 @@ Public Class Scanner
                                         Else
                                             tmpTVDB.TVEp = New MediaContainers.EpisodeDetails
                                         End If
-                                        End If
+                                    End If
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                         'no title so assume it's an invalid nfo, clear nfo path if exists

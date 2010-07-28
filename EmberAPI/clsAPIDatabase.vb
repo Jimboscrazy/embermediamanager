@@ -1104,7 +1104,7 @@ Public Class Database
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
                 'Why do we need IMDB to save to NFO?
-                If ToNfo Then NFO.SaveMovieToDisk(_movieDB)
+                If ToNfo Then MediaSheet.SaveMovieToDisk(_movieDB)
                 parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
 
                 parMoviePath.Value = _movieDB.Filename
@@ -1444,7 +1444,7 @@ Public Class Database
                 Dim parTVEpMissing As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpMissing", DbType.Boolean, 0, "Missing")
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
+                If ToNfo Then MediaSheet.SaveTVEpToNFO(_TVEpDB)
 
                 parTVShowID.Value = _TVEpDB.ShowID
                 parPosterPath.Value = _TVEpDB.EpPosterPath
@@ -1686,7 +1686,7 @@ Public Class Database
                 Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
+                If ToNfo Then MediaSheet.SaveTVShowToNFO(_TVShowDB)
 
                 parTVShowPath.Value = _TVShowDB.ShowPath
                 parPosterPath.Value = _TVShowDB.ShowPosterPath
