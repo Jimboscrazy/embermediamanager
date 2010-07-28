@@ -78,10 +78,10 @@ Public Class frmMainSetup
     Dim SlowDown As Integer = 0
     Private w As New dlgCommands
 
-    'Private RemoteSiteFolder As String = "Updates"
-    'Private IsBeta As Boolean = False
-    Private RemoteSiteFolder As String = "UpdatesBeta"
-    Private IsBeta As Boolean = True
+    Private RemoteSiteFolder As String = "Updates"
+    Private IsBeta As Boolean = False
+    'Private RemoteSiteFolder As String = "UpdatesBeta"
+    'Private IsBeta As Boolean = True
 
     Dim ProxyURI As String = ""
     Dim ProxyPort As Integer = 0
