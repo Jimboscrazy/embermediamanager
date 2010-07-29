@@ -193,8 +193,8 @@ Public Class dlgNMTMovies
         Next
         For i As Integer = 0 To Menus.Count - 1
             Dim mm As myMenu = Menus(i)
-            mm.Enabled = AdvancedSettings.GetBooleanSetting(String.Concat("Menus.Enabled", conf.Name, ".", Menus(i).Id), Menus(i).Enabled)
-            mm.Title = AdvancedSettings.GetSetting(String.Concat("Menus.Title", conf.Name, ".", Menus(i).Id), Menus(i).Title)
+            mm.Enabled = AdvancedSettings.GetBooleanSetting(String.Concat("Menus.Enabled.", conf.Name, ".", Menus(i).Id), Menus(i).Enabled)
+            mm.Title = AdvancedSettings.GetSetting(String.Concat("Menus.Title.", conf.Name, ".", Menus(i).Id), Menus(i).Title)
             Menus(i) = mm
         Next
 
@@ -206,8 +206,8 @@ Public Class dlgNMTMovies
             HaveMenus = False
             dgvMenus.Visible = False
             lblNoMenus.Visible = True
-            Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
-            Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").Name})
+            Menus.Add(New myMenu With {.Enabled = True, .Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
+            Menus.Add(New myMenu With {.Enabled = True, .Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "tvindex").Name})
         End If
     End Sub
 
@@ -259,8 +259,8 @@ Public Class dlgNMTMovies
                 End If
             Next
             For Each m As myMenu In Menus
-                AdvancedSettings.SetBooleanSetting(String.Concat("Menus.Enabled", conf.Name, ".", m.Id), m.Enabled)
-                AdvancedSettings.SetSetting(String.Concat("Menus.Title", conf.Name, ".", m.Id), m.Title)
+                AdvancedSettings.SetBooleanSetting(String.Concat("Menus.Enabled.", conf.Name, ".", m.Id), m.Enabled)
+                AdvancedSettings.SetSetting(String.Concat("Menus.Title.", conf.Name, ".", m.Id), m.Title)
             Next
             'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
         Catch ex As Exception
@@ -998,17 +998,10 @@ Public Class dlgNMTMovies
                     mm.Add(m.Title)
                 Next
                 Dim d As String
-                If mm.Count = 0 Then
-                    d = "default"
-                    Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "Movies", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
-                    HaveMenus = False
-                Else
-                    HaveMenus = True
-                    d = mm(0)
-                End If
+                d = mm(0)
                 dcb.DataSource = mm.ToArray ' New String() {"default"}
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                d = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu", conf.Name, ".", s.Cells(1).Value.ToString), d)
+                d = AdvancedSettings.GetSetting(String.Concat("Path.Movie.Menu.", conf.Name, ".", s.Cells(1).Value.ToString), d)
                 If Not mm.Contains(d) AndAlso mm.Count > 0 AndAlso mm.Contains(mm(0)) Then d = mm(0)
                 dcb.Value = d
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
@@ -1018,17 +1011,11 @@ Public Class dlgNMTMovies
                 Next
 
                 Dim d As String
-                If mm.Count = 0 Then
-                    d = "default"
-                    Menus.Add(New myMenu With {.Id = "default", .Title = "default", .Type = "TVShows", .Path = conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name})
-                    HaveMenus = False
-                Else
-                    HaveMenus = True
-                    d = mm(0)
-                End If
+                d = mm(0)
+
                 dcb.DataSource = mm.ToArray ' New String() {"default"}
                 s.Cells(4).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                d = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu", conf.Name, ".", s.Cells(1).Value.ToString), d)
+                d = AdvancedSettings.GetSetting(String.Concat("Path.TV.Menu.", conf.Name, ".", s.Cells(1).Value.ToString), d)
                 If Not mm.Contains(d) AndAlso mm.Count > 0 AndAlso mm.Contains(mm(0)) Then d = mm(0)
                 dcb.Value = d
                 s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
