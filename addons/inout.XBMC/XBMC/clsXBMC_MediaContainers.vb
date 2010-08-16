@@ -950,7 +950,7 @@ Namespace XBMC
             End Set
         End Property
 
-        <XmlElement("videoSource")> _
+        <XmlElement("source")> _
         Public Property VideoSource() As String
             Get
                 Return Me._videosource
