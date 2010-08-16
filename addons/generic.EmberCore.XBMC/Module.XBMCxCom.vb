@@ -160,7 +160,9 @@ Public Class XBMCxCom
             Dim DBMovie As Structures.DBMovie '= DirectCast(e.Argument, Structures.DBMovie)
             While RunQueue.Count > 0
                 DBMovie = RunQueue.Dequeue
+                If IsNothing(Master.MovieSources) OrElse Master.MovieSources.Count = 0 Then Continue While
                 eSource = Master.MovieSources.FirstOrDefault(Function(y) y.Name = DBMovie.Source).Path
+                If IsNothing(_MySettings.XComs) OrElse _MySettings.XComs.Count = 0 Then Continue While
                 For Each s As XBMCxCom.XBMCCom In _MySettings.XComs.Where(Function(y) y.RealTime)
                     If s.Paths.Count = 0 Then Continue For
                     Dim remoteSource As String = s.Paths(eSource).ToString
