@@ -37,13 +37,13 @@ Public Class Settings
     Private _alwaysgetenglishtvimages As Boolean
     Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
-    Private _autobd As Boolean
+    'Private _autobd As Boolean
     Private _autodetectvts As Boolean
     Private _autoET As Boolean
     Private _autoETsize As Enums.FanartSize
     Private _autothumbnospoilers As Boolean
     Private _autothumbs As Integer
-    Private _bdpath As String
+    'Private _bdpath As String
     Private _castimagesonly As Boolean
     Private _certificationLang As String
     Private _checkupdates As Boolean
@@ -98,7 +98,6 @@ Public Class Settings
     Private _expertcleaner As Boolean
     Private _externaltvdbapikey As String
     Private _fanartheight As Integer
-    Private _fanartjpg As Boolean
     Private _fanartprefsizeonly As Boolean
     Private _fanartQuality As Integer
     Private _fanartsize As Enums.FanartSize
@@ -160,17 +159,17 @@ Public Class Settings
     Private _movieextraCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
-    Private _moviejpg As Boolean
-    Private _movienamedotfanartjpg As Boolean
-    Private _movienamefanartjpg As Boolean
-    Private _movienamejpg As Boolean
+    'Private _moviejpg As Boolean
+    'Private _movienamedotfanartjpg As Boolean
+    'Private _movienamefanartjpg As Boolean
+    'Private _movienamejpg As Boolean
     Private _movienamemultionly As Boolean
-    Private _movienamenfo As Boolean
-    Private _movienametbn As Boolean
-    Private _movienfo As Boolean
+    'Private _movienamenfo As Boolean
+    'Private _movienametbn As Boolean
+    'Private _movienfo As Boolean
     Private _movieposterCol As Boolean
     Private _moviesubCol As Boolean
-    Private _movietbn As Boolean
+    'Private _movietbn As Boolean
     Private _movietheme As String
     Private _movietrailerCol As Boolean
     Private _nodisplayfanart As Boolean
@@ -198,10 +197,8 @@ Public Class Settings
     Private _overwritetrailer As Boolean
     Private _persistimagecache As Boolean
     Private _posterheight As Integer
-    Private _posterjpg As Boolean
     Private _posterQuality As Integer
     Private _postersize As Enums.PosterSize
-    Private _postertbn As Boolean
     Private _posterwidth As Integer
     Private _properCase As Boolean
     Private _proxycredentials As NetworkCredential
@@ -429,15 +426,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property AutoBD() As Boolean
-        Get
-            Return Me._autobd
-        End Get
-        Set(ByVal value As Boolean)
-            Me._autobd = value
-        End Set
-    End Property
-
     Public Property AutoDetectVTS() As Boolean
         Get
             Return Me._autodetectvts
@@ -480,15 +468,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._autothumbnospoilers = value
-        End Set
-    End Property
-
-    Public Property BDPath() As String
-        Get
-            Return Me._bdpath
-        End Get
-        Set(ByVal value As String)
-            Me._bdpath = value
         End Set
     End Property
 
@@ -968,15 +947,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._fanartheight = value
-        End Set
-    End Property
-
-    Public Property FanartJPG() As Boolean
-        Get
-            Return Me._fanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._fanartjpg = value
         End Set
     End Property
 
@@ -1538,75 +1508,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieJPG() As Boolean
-        Get
-            Return Me._moviejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviejpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameDotFanartJPG() As Boolean
-        Get
-            Return Me._movienamedotfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamedotfanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameFanartJPG() As Boolean
-        Get
-            Return Me._movienamefanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamefanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameJPG() As Boolean
-        Get
-            Return Me._movienamejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamejpg = value
-        End Set
-    End Property
-
     Public Property MovieNameMultiOnly() As Boolean
         Get
             Return Me._movienamemultionly
         End Get
         Set(ByVal value As Boolean)
             Me._movienamemultionly = value
-        End Set
-    End Property
-
-    Public Property MovieNameNFO() As Boolean
-        Get
-            Return Me._movienamenfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamenfo = value
-        End Set
-    End Property
-
-    Public Property MovieNameTBN() As Boolean
-        Get
-            Return Me._movienametbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienametbn = value
-        End Set
-    End Property
-
-    Public Property MovieNFO() As Boolean
-        Get
-            Return Me._movienfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienfo = value
         End Set
     End Property
 
@@ -1625,15 +1532,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesubCol = value
-        End Set
-    End Property
-
-    Public Property MovieTBN() As Boolean
-        Get
-            Return Me._movietbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietbn = value
         End Set
     End Property
 
@@ -1880,30 +1778,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property PosterJPG() As Boolean
-        Get
-            Return Me._posterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._posterjpg = value
-        End Set
-    End Property
-
     Public Property PosterQuality() As Integer
         Get
             Return Me._posterQuality
         End Get
         Set(ByVal value As Integer)
             Me._posterQuality = value
-        End Set
-    End Property
-
-    Public Property PosterTBN() As Boolean
-        Get
-            Return Me._postertbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._postertbn = value
         End Set
     End Property
 
@@ -3218,18 +3098,7 @@ Public Class Settings
         Me._overwritenfo = False
         Me._validexts = New List(Of String)
         Me._nostackexts = New List(Of String)
-        Me._movietbn = True
-        Me._movienametbn = True
-        Me._moviejpg = False
-        Me._movienamejpg = False
-        Me._postertbn = False
-        Me._posterjpg = False
         Me._folderjpg = False
-        Me._fanartjpg = True
-        Me._movienamefanartjpg = True
-        Me._movienamedotfanartjpg = False
-        Me._movienfo = True
-        Me._movienamenfo = True
         Me._movienamemultionly = False
         Me._dashtrailer = True
         Me._videotsparent = False
@@ -3283,8 +3152,8 @@ Public Class Settings
         Me._scseasonstate = 200
         Me._infopanelanim = True
         Me._checkupdates = True
-        Me._bdpath = String.Empty
-        Me._autobd = False
+        'Me._bdpath = String.Empty
+        'Me._autobd = False
         Me._usemiduration = False
         Me._runtimemask = "<m> mins"
         Me._genrefilter = "English"

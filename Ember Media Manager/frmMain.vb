@@ -1330,29 +1330,37 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(sPath) Then
                                         If FileUtils.Common.isVideoTS(sPath) Then
                                             If Master.eSettings.VideoTSParent Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                                ' TODO
+                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
                                             Else
                                                 If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                    ' TODO
+                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
                                                 Else
-                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                    ' TODO
+                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                                 End If
                                             End If
                                         ElseIf FileUtils.Common.isBDRip(sPath) Then
                                             If Master.eSettings.VideoTSParent Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
+                                                ' TODO
+                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
                                             Else
                                                 If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
+                                                    ' TODO
+                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
                                                 Else
-                                                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                    ' TODO
+                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                                 End If
                                             End If
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
+                                                ' TODO
+                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
                                             Else
-                                                FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                ' TODO
+                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
 
                                         End If
@@ -5528,7 +5536,8 @@ doCancel:
                                         sFile.Filename = MoviePath
                                         sFile.isSingle = isSingle
                                         sFile.UseFolder = If(isSingle, True, False)
-                                        fScanner.GetMovieFolderContents(sFile)
+                                        ModulesManager.Instance.GetFilesFolderContents(sFile)
+                                        'fScanner.GetMovieFolderContents(sFile)
                                         If Not String.IsNullOrEmpty(sFile.Nfo) Then
                                             Master.currMovie.Movie = MediaSheet.LoadMovieFromDisk(sFile.Nfo, sFile.isSingle)
                                         Else
@@ -6937,7 +6946,8 @@ doCancel:
                 End If
 
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
-                fScanner.GetMovieFolderContents(mContainer)
+                'fScanner.GetMovieFolderContents(mContainer)
+                ModulesManager.Instance.GetFilesFolderContents(mContainer)
                 tmpMovieDb.PosterPath = mContainer.Poster
                 tmpMovieDb.FanartPath = mContainer.Fanart
                 'assume invalid nfo if no title
@@ -7675,7 +7685,8 @@ doCancel:
                     Me.CleanFoldersToolStripMenuItem.Enabled = False
                 End If
 
-                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
+                ' TODO
+                'Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
 
                 Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
 
