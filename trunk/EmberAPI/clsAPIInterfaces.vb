@@ -50,6 +50,7 @@ Public Class Interfaces
         '********************************************************************************************
         Function SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie) As Boolean
         Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As List(Of String)
+        Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
     End Interface
     Public Interface EmberTVInputModule
         Property Enabled() As Boolean

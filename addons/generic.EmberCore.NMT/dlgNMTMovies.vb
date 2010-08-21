@@ -387,7 +387,8 @@ Public Class dlgNMTMovies
             Dim movierow As String = String.Empty
             'Dim htmlPath As String = Path.Combine(template, conf.Files.FirstOrDefault(Function(y) y.Process = True AndAlso y.Type = "movieindex").Name)
             Dim htmlPath As String = String.Empty
-
+            FilterMovies.Clear()
+            MoviesGenres.Clear()
             For Each m As myMenu In Menus.Where(Function(y) y.Enabled AndAlso y.Type = "Movies")
                 htmlPath = Path.Combine(template, m.Path)
                 pattern = File.ReadAllText(htmlPath)
@@ -410,8 +411,7 @@ Public Class dlgNMTMovies
 
                 HTMLMovieBody.Append(movieheader)
                 Dim counter As Integer = 1
-                FilterMovies.Clear()
-                MoviesGenres.Clear()
+
 
                 For Each _curMovie As DataRow In dtMovieMedia.Rows
                     If bwBuildHTML.CancellationPending Then Return
@@ -434,7 +434,7 @@ Public Class dlgNMTMovies
                     bwBuildHTML.ReportProgress(1)
                 Next
                 HTMLMovieBody.Append(moviefooter)
-                HTMLMovieBody.Replace("<$GENRES_LIST>", StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")))
+                HTMLMovieBody.Replace("<$GENRES_LIST>", If(MoviesGenres.Count > 0, StringUtils.HtmlEncode(Strings.Join(MoviesGenres.ToArray, ",")), String.Empty))
                 DontSaveExtra = False
             Next
             Me.SaveMovieFiles(template, outputbase)
@@ -1747,7 +1747,6 @@ Public Class dlgNMTMovies
                             If row.Cells(5).Value.ToString = "movie" Then HaveMovies = True
                         End If
                     Catch ex As Exception
-                        ' TODO Strings
                         warn = Master.eLang.GetString(25, "Invalid Output Folder")
                         Exit For
                     End Try

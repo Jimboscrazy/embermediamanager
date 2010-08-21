@@ -317,22 +317,24 @@ Public Class MediaSheet
             Catch
             End Try
             fList = fList.ConvertAll(Function(s) s.ToLower)
+            'TODO Move to Modules
 
-            If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
-                Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
-                Return String.Concat(nPathWithStack, ".nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
-                Return String.Concat(nPath, ".nfo")
-            Else
-                If Not isSingle Then
-                    Return String.Empty
-                Else
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                End If
-            End If
+            'If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+            'Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
+            'ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
+            'Return String.Concat(nPathWithStack, ".nfo")
+            'ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
+            'Return String.Concat(nPath, ".nfo")
+            'Else
+            'If Not isSingle Then
+            'Return String.Empty
+            'Else
+            ''return movie path so we can use it for looking for non-conforming nfos
+            'Return sPath
+            'End If
+            'End If
         End If
+        Return String.Empty
     End Function
 
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String

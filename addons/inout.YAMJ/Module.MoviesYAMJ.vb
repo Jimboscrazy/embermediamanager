@@ -254,6 +254,7 @@ End Class
 Public Class OutputYAMJ_Module
     Implements Interfaces.EmberMovieOutputModule
 
+
     Public Shared _AssemblyName As String
     Private fOutputSettings As frmMovieOutputSettings
     Public Shared eSettings As New MySettings
@@ -320,6 +321,10 @@ Public Class OutputYAMJ_Module
     End Sub
 
     Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.EmberMovieOutputModule.ModuleSettingsChanged
+
+    Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.IsAllowedToDownload
+
+    End Function
 End Class
 
 Public Class MySettings

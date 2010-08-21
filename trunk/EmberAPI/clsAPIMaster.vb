@@ -43,7 +43,7 @@ Public Class Master
     Public Shared tmpMovie As New MediaContainers.Movie
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
-    Public Shared MajorVersion As Single = 1.2
+    Public Shared MajorVersion As Single = 1.3
     #End Region 'Fields
 
 End Class

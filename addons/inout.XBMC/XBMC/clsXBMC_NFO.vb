@@ -318,11 +318,11 @@ Public Class NFO
             End Try
             fList = fList.ConvertAll(Function(s) s.ToLower)
 
-            If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+            If isSingle AndAlso InputXBMC_Module.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
                 Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
+            ElseIf InputXBMC_Module.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
                 Return String.Concat(nPathWithStack, ".nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
+            ElseIf InputXBMC_Module.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
                 Return String.Concat(nPath, ".nfo")
             Else
                 If Not isSingle Then
@@ -332,7 +332,9 @@ Public Class NFO
                     Return sPath
                 End If
             End If
+
         End If
+        Return String.Empty
     End Function
 
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
@@ -742,7 +744,7 @@ Public Class NFO
                     Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
                     nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, tmpName)
 
-                    If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
+                    If OutputXBMC_Module.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not OutputXBMC_Module.eSettings.MovieNameMultiOnly) Then
                         If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
                             tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
@@ -772,7 +774,7 @@ Public Class NFO
                         End If
                     End If
 
-                    If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
+                    If movieToSave.isSingle AndAlso OutputXBMC_Module.eSettings.MovieNFO Then
                         tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
 
                         If Not Master.eSettings.OverwriteNfo Then

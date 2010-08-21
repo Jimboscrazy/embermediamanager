@@ -122,42 +122,39 @@
 
 Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting "Settings..." from the "Edit" menu.</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
-    <value>Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnMovieRem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
-        Kfy/bqW7Bd2QG3YGjZd1lf9f1lH6f8PesPf/wZmMIDVgA656WHGd1lH+f1xRGoxPqcv9v2iJMOSyrUHj
-        aW0loJwUGJ/SVPx/3kzbFG7ATk4uxgOK0j0HlGX+gzFQ0SE1uf9nLHVXnLM3rDmqrfh/P1AMLq8kvf+A
-        rAQ33ACYc3cqy/TuUJL+vxOIdyhI/d8DdMk+LcX/2xUkIWIQuf1LNBVZYHowYmAj0JANQIVgDLR1PdAg
-        GH+jkvTe+doqrFgDEVlwhZL08RXAsEDD7zaZGsBtxumCBYrSDQsVpP4A8X90vEBRaiN67KB4YYaidONM
-        oEYYngFkgzCqmPSW/0+/w/WBGRNU5RkmKkg1TJSX+g/DE0BsBenNkxSku8BsZKwgtWWSihwHPBZ61RS4
-        OuUl/6Ph/bX6qkwgRV0KUr0daPJditJmKNHYoSSb2AS0pUlO8j+Q3vctwBusGYab5aW6wXJA3KIoM/2x
-        sxVYnoGZAYwFgBRvnKRofba02BZuFmYDIF8HKG4MwkA2iK+QIik6N1NafCGQLQLEfHAXABUxAzHYT2BB
-        BgZOIJ8XGQPFeJDk2UB6MFIiOdkaALyqHwCXXFYvAAAAAElFTkSuQmCC
+        CukB/XXO0wAAAfJJREFUOE9j/P//PwNFAGQADN93MPa9a2fQjCyGzL5nZ5B5z96oEFkMrvmWq1nEFQPV
+        /5e0FP5ft9Ldgm7IDTuDxsu6yv8v6yj9v2Fv2Pv/4ExGsOtBxFUPK67TOsr/jytKg/Epdbn/Fy0Rhly2
+        NWg8ra0ElJMC41Oaiv/Pm2mbwg3YycnFeEBRuueAssx/MAYqOqQm9/+Mpe6Kc/aGNUe1Ff/vB4rB5ZWk
+        9x+QleCGGwBz7k5lmd4dStL/dwLxDgWp/3uALtmnpfh/u4IkRAwit3+JpiILTA88DGACG4GGbAAqBGOg
+        reuBBsH4G5Wk987XVmHFGojIgiuUpI+vAIYFGn63ydQAbjNOFyxQlG5YqCD1B4j/o+MFilIb0WMHxQsz
+        FKUbZwI1wvAMIBuEUcWkt/x/+h2uD8yYoCrPMFFBqmGivNR/GJ4AYitIb56kIN0FZiNjBaktk1TkOOCx
+        0KumwNUpL/kfDe+v1VdlAinqUpDq7UCT71KUNkOJxg4l2cQmoC1NcpL/gfS+bwHeYM0w3Cwv1Q2WA+IW
+        RZnpj52twPIMzMCcBMQCQIo3TlK0PltabAs3C7MBkK8DFDcGYSAbxFdIkRSdmyktvhDIFgFiPrgLgIqY
+        gRjsJ2ju5ATyeZExUAMPkjwbSA9GSsSVC/GJAwCRQPIfo8qcKwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="btnMovieAddFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
-        zOsslWLdzMjMJCjDaWoPywdzrfA+15zOy9zV7cw5zXbO2fj13wFHom8e+HI48P9/zv+c/zk8ALz1FJjs
-        maqKpI1PEhiTLJ42Pye9iKcttfG0tc5fgsf86thaN+IA92BeKGuWsV7bS3hna+G1v4bX8QY+qgE+ZyN8
-        riauP+ZPpTNObPwf4oD5vuxwxvAI7MxDsMYqsKYasObH8Fpk8FqfwQ/7Zp9iwdIFB7VotNtnJU4nFeyf
-        ywFOVQafniwBM/mAVARmqphUCma6HKxBysFeYxncpk643B5QlAME2RcA7N3JfHq8EMx4Ppix2+R8F4y+
-        AMzEPZKEQ9mJO5g3yDE3/xcOh32aIBsCgK1LyPeMikFrRaB/Z5FzNujRXECXD4wRiKCs7iZck82gXEt+
-        IG/5PXCPYPp6jr80IoJnOJ2UBlqdDnbkBgaHBPg1dIKgGXBrSkDZraCccx6y/G0rgMnWeP5CfyYWeq9i
-        sTcFbN81MAPpkKnCUKHcjsVBIZZ0TXC6fbDZrI2rdmH042n+3M/rcCmTQfVcgk6ZCK0qCTXfI1HeHQG1
-        SgDtcBEsZAWm/nfFqwD1+1N8e3caXF1XoP52BpmKMOQoIlCg2INCUo5iNzI6t0Cp/wCPpqViFfCj7ni4
-        QZEKU8dFaNoTUNl2kEvUGo1MeRSkbTGo7IxDx4Acmp666lXAwFtBiPZLCjPy+Ty0zUkwtFzAlFyI1IYY
-        JNZHQ992FvoOCbTynHpr+8ldK4AgHndsFl/eL6jOjSuUZh2WVN6KLaoUxd4/WrLXeKQs2i3JPiQVC6PE
-        ZFwEKYzMCSeFBL4DchG05o+yI3RryIGdoYEt4/E2kbH+gpfnrOtX9sP/AIt1021BwrQaAAAAAElFTkSu
-        QmCC
+        CukB/XXO0wAAArNJREFUOE+lk1tIk2EYx40oCSoUiu6aJhGoXSQVYUgXXXTRgVWTxFZUaKZW5lQmWdoy
+        j1upFOtkRmYmQRlOU7tYXphrhee55nQe5o5u35zTbN/3bfx7t3Ak684Xfu/DC8/z43lPawCErGr4BD7c
+        U1XRtOFRImOU8mjTU8IzHm2u5dGWOh+JbtOLI8u5/0Z/sWswP5w1SVmP9Tk8s7Xw2F7CY38FL9UAr6MR
+        XmeTn1+mD2UzDqwPEsz35UQy+gdgZ+6DNVSBNdaANT2ExyyFx/IEPrF39jEWzF2wU4sGm21W5HBQof7t
+        +yaHMpNDT5aCmbxHKAYzVUIoAzNdAVYv9os9hnK4jJ1wutygKDuIZE9AYOtO4dDjRWDGC8CM3STxNhhd
+        IZiJOwSRX8pO3MK8Xoa5+d+w223TRLIuILB28TnuUSFojQD0z2wSc0CP5gHaAmCMiIiU1V6Hc7IZlHPJ
+        J8hfPgf/Foyfz3CWRgRwD2cQ0kGrMsCOXMPgEBc/ho4RaSZc6lJQNgsox5ybtL9lhWCylcdZ6M/CQu9l
+        LPamgu27AmYgA1JlBCoVW7E4yMeStgkOlxdWq6Ux6BZG35/kzH2/CqciBVTPBWgVSdAok1HzNRoV3VFQ
+        KbnQDBfDTDow9r8pCRKo3p7g2LrT4ey6BNWXU8iSRyBXHoVC+S4UEXLlO5HZuQkK3Tu41S2VQYJvdUcj
+        9fI0GDvOQ92eCEnbfj+C1lhkyWIgbouDpDMBHQMyqHvqqoMEA6+5YZpPqczIx7PQNCdD33IOUzI+0hri
+        kFQfC13baeg6RNDIcust7cd3rBCs/fuTNgov7uVW5yUUibMPiiQ34oslgvi7h0t3Gw6Vx7pEOQfEQn6M
+        kORFESJITSQhLPAOyGLtfz/KtvDNYfu2hweuLCRkA8n1Ebpc438Hq+EPYAumm+11WZoAAAAASUVORK5C
+        YII=
 </value>
   </data>
   <data name="Label8.Text" xml:space="preserve">
@@ -173,34 +170,34 @@ Locks - This section allows you to "lock" certain information so it does not get
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAAetJREFUOE9j+P//PwMlGEXzfQdj37t2Bs24DLxnZ5B5z96oEFkebsAtV7OIKwaq/y9p
-        Kfy/bqW7Bd2QG3YGjZd1lf9f1lH6f8PesPf/wZmMIDVgA656WHGd1lH+f1xRGoxPqcv9v2iJMOSyrUHj
-        aW0loJwUGJ/SVPx/3kzbFG7ATk4uxgOK0j0HlGX+gzFQ0SE1uf9nLHVXnLM3rDmqrfh/P1AMLq8kvf+A
-        rAQ33ACYc3cqy/TuUJL+vxOIdyhI/d8DdMk+LcX/2xUkIWIQuf1LNBVZYHowYmAj0JANQIVgDLR1PdAg
-        GH+jkvTe+doqrFgDEVlwhZL08RXAsEDD7zaZGsBtxumCBYrSDQsVpP4A8X90vEBRaiN67KB4YYaidONM
-        oEYYngFkgzCqmPSW/0+/w/WBGRNU5RkmKkg1TJSX+g/DE0BsBenNkxSku8BsZKwgtWWSihwHPBZ61RS4
-        OuUl/6Ph/bX6qkwgRV0KUr0daPJditJmKNHYoSSb2AS0pUlO8j+Q3vctwBusGYab5aW6wXJA3KIoM/2x
-        sxVYnoGZAYwFgBRvnKRofba02BZuFmYDIF8HKG4MwkA2iK+QIik6N1NafCGQLQLEfHAXABUxAzHYT2BB
-        BgZOIJ8XGQPFeJDk2UB6MFIiOdkaALyqHwCXXFYvAAAAAElFTkSuQmCC
+        CukB/XXO0wAAAfJJREFUOE9j/P//PwNFAGQADN93MPa9a2fQjCyGzL5nZ5B5z96oEFkMrvmWq1nEFQPV
+        /5e0FP5ft9Ldgm7IDTuDxsu6yv8v6yj9v2Fv2Pv/4ExGsOtBxFUPK67TOsr/jytKg/Epdbn/Fy0Rhly2
+        NWg8ra0ElJMC41Oaiv/Pm2mbwg3YycnFeEBRuueAssx/MAYqOqQm9/+Mpe6Kc/aGNUe1Ff/vB4rB5ZWk
+        9x+QleCGGwBz7k5lmd4dStL/dwLxDgWp/3uALtmnpfh/u4IkRAwit3+JpiILTA88DGACG4GGbAAqBGOg
+        reuBBsH4G5Wk987XVmHFGojIgiuUpI+vAIYFGn63ydQAbjNOFyxQlG5YqCD1B4j/o+MFilIb0WMHxQsz
+        FKUbZwI1wvAMIBuEUcWkt/x/+h2uD8yYoCrPMFFBqmGivNR/GJ4AYitIb56kIN0FZiNjBaktk1TkOOCx
+        0KumwNUpL/kfDe+v1VdlAinqUpDq7UCT71KUNkOJxg4l2cQmoC1NcpL/gfS+bwHeYM0w3Cwv1Q2WA+IW
+        RZnpj52twPIMzMCcBMQCQIo3TlK0PltabAs3C7MBkK8DFDcGYSAbxFdIkRSdmyktvhDIFgFiPrgLgIqY
+        gRjsJ2ju5ATyeZExUAMPkjwbSA9GSsSVC/GJAwCRQPIfo8qcKwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="btnTVAddSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
-        CukB/XXO0wAAArRJREFUOE+l01tIU3EAx/GBlAQVCkVvTZMI1B6SijCkhx566MIqJbEVFZqplTmVSZa2
-        zOsslWLdzMjMJCjDaWoPywdzrfA+15zOy9zV7cw5zXbO2fj13wFHom8e+HI48P9/zv+c/zk8ALz1FJjs
-        maqKpI1PEhiTLJ42Pye9iKcttfG0tc5fgsf86thaN+IA92BeKGuWsV7bS3hna+G1v4bX8QY+qgE+ZyN8
-        riauP+ZPpTNObPwf4oD5vuxwxvAI7MxDsMYqsKYasObH8Fpk8FqfwQ/7Zp9iwdIFB7VotNtnJU4nFeyf
-        ywFOVQafniwBM/mAVARmqphUCma6HKxBysFeYxncpk643B5QlAME2RcA7N3JfHq8EMx4Ppix2+R8F4y+
-        AMzEPZKEQ9mJO5g3yDE3/xcOh32aIBsCgK1LyPeMikFrRaB/Z5FzNujRXECXD4wRiKCs7iZck82gXEt+
-        IG/5PXCPYPp6jr80IoJnOJ2UBlqdDnbkBgaHBPg1dIKgGXBrSkDZraCccx6y/G0rgMnWeP5CfyYWeq9i
-        sTcFbN81MAPpkKnCUKHcjsVBIZZ0TXC6fbDZrI2rdmH042n+3M/rcCmTQfVcgk6ZCK0qCTXfI1HeHQG1
-        SgDtcBEsZAWm/nfFqwD1+1N8e3caXF1XoP52BpmKMOQoIlCg2INCUo5iNzI6t0Cp/wCPpqViFfCj7ni4
-        QZEKU8dFaNoTUNl2kEvUGo1MeRSkbTGo7IxDx4Acmp666lXAwFtBiPZLCjPy+Ty0zUkwtFzAlFyI1IYY
-        JNZHQ992FvoOCbTynHpr+8ldK4AgHndsFl/eL6jOjSuUZh2WVN6KLaoUxd4/WrLXeKQs2i3JPiQVC6PE
-        ZFwEKYzMCSeFBL4DchG05o+yI3RryIGdoYEt4/E2kbH+gpfnrOtX9sP/AIt1021BwrQaAAAAAElFTkSu
-        QmCC
+        CukB/XXO0wAAArNJREFUOE+lk1tIk2EYx40oCSoUiu6aJhGoXSQVYUgXXXTRgVWTxFZUaKZW5lQmWdoy
+        j1upFOtkRmYmQRlOU7tYXphrhee55nQe5o5u35zTbN/3bfx7t3Ak684Xfu/DC8/z43lPawCErGr4BD7c
+        U1XRtOFRImOU8mjTU8IzHm2u5dGWOh+JbtOLI8u5/0Z/sWswP5w1SVmP9Tk8s7Xw2F7CY38FL9UAr6MR
+        XmeTn1+mD2UzDqwPEsz35UQy+gdgZ+6DNVSBNdaANT2ExyyFx/IEPrF39jEWzF2wU4sGm21W5HBQof7t
+        +yaHMpNDT5aCmbxHKAYzVUIoAzNdAVYv9os9hnK4jJ1wutygKDuIZE9AYOtO4dDjRWDGC8CM3STxNhhd
+        IZiJOwSRX8pO3MK8Xoa5+d+w223TRLIuILB28TnuUSFojQD0z2wSc0CP5gHaAmCMiIiU1V6Hc7IZlHPJ
+        J8hfPgf/Foyfz3CWRgRwD2cQ0kGrMsCOXMPgEBc/ho4RaSZc6lJQNgsox5ybtL9lhWCylcdZ6M/CQu9l
+        LPamgu27AmYgA1JlBCoVW7E4yMeStgkOlxdWq6Ux6BZG35/kzH2/CqciBVTPBWgVSdAok1HzNRoV3VFQ
+        KbnQDBfDTDow9r8pCRKo3p7g2LrT4ey6BNWXU8iSRyBXHoVC+S4UEXLlO5HZuQkK3Tu41S2VQYJvdUcj
+        9fI0GDvOQ92eCEnbfj+C1lhkyWIgbouDpDMBHQMyqHvqqoMEA6+5YZpPqczIx7PQNCdD33IOUzI+0hri
+        kFQfC13baeg6RNDIcust7cd3rBCs/fuTNgov7uVW5yUUibMPiiQ34oslgvi7h0t3Gw6Vx7pEOQfEQn6M
+        kORFESJITSQhLPAOyGLtfz/KtvDNYfu2hweuLCRkA8n1Ebpc438Hq+EPYAumm+11WZoAAAAASUVORK5C
+        YII=
 </value>
   </data>
   <data name="Label11.Text" xml:space="preserve">

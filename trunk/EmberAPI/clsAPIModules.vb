@@ -529,6 +529,37 @@ Public Class ModulesManager
         End Try
         Return ret
     End Function
+
+    Public Function SaveImageAs(ByVal imageType As EmberAPI.Enums.ImageType, ByRef mMovie As EmberAPI.Structures.DBMovie) As List(Of String)
+        Dim ImageList As New List(Of String)
+        Try
+            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled)
+                Dim tmpList As New List(Of String)
+                Try
+                    tmpList = _externalModule.ProcessorModule.SaveImageAs(imageType, mMovie)
+                Catch ex As Exception
+                End Try
+                ImageList.AddRange(tmpList.ToArray)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return ImageList
+    End Function
+
+
+    Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
+        Dim ret As Boolean
+        For Each _externalInputModuleClass As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = _externalInputModuleClass.ProcessorModule.IsAllowedToDownload(mMovie, fType, isChange)
+            Catch ex As Exception
+            End Try
+            If ret Then Exit For
+        Next
+        Return ret
+    End Function
+
     Public Function GetFilesFolderContents(ByRef Movie As Scanner.MovieContainer) As Boolean
         Dim ret As Boolean
         For Each _externalInputModuleClass As _externalInputModuleClass In externalInputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
@@ -540,8 +571,6 @@ Public Class ModulesManager
         Next
         Return ret
     End Function
-
-
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Sub SaveSettings()

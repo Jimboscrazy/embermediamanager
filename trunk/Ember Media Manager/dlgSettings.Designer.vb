@@ -96,26 +96,6 @@ Partial Class dlgSettings
         Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
         Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
         Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox
-        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
-        Me.GroupBox21 = New System.Windows.Forms.GroupBox
-        Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
-        Me.rbDashTrailer = New System.Windows.Forms.RadioButton
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
-        Me.chkMovieNFO = New System.Windows.Forms.CheckBox
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox
-        Me.chkMovieNameDotFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkFanartJPG = New System.Windows.Forms.CheckBox
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox
-        Me.chkFolderJPG = New System.Windows.Forms.CheckBox
-        Me.chkPosterJPG = New System.Windows.Forms.CheckBox
-        Me.chkPosterTBN = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameJPG = New System.Windows.Forms.CheckBox
-        Me.chkMovieJPG = New System.Windows.Forms.CheckBox
-        Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
-        Me.chkMovieTBN = New System.Windows.Forms.CheckBox
         Me.lvMovies = New System.Windows.Forms.ListView
         Me.colID = New System.Windows.Forms.ColumnHeader
         Me.colName = New System.Windows.Forms.ColumnHeader
@@ -207,10 +187,6 @@ Partial Class dlgSettings
         Me.chkMissingNFO = New System.Windows.Forms.CheckBox
         Me.chkMissingFanart = New System.Windows.Forms.CheckBox
         Me.chkMissingPoster = New System.Windows.Forms.CheckBox
-        Me.GroupBox16 = New System.Windows.Forms.GroupBox
-        Me.chkAutoBD = New System.Windows.Forms.CheckBox
-        Me.btnBrowse = New System.Windows.Forms.Button
-        Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
@@ -595,13 +571,13 @@ Partial Class dlgSettings
         Me.lblHelp = New System.Windows.Forms.Label
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.pnlInput = New System.Windows.Forms.Panel
-        Me.pnlOutput = New System.Windows.Forms.Panel
+        Me.pnlTVInput = New System.Windows.Forms.Panel
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox
         Me.chkAlwaysUseEMI = New System.Windows.Forms.CheckBox
+        Me.pnlOutput = New System.Windows.Forms.Panel
         Me.chkSaveEMI = New System.Windows.Forms.CheckBox
         Me.pnlTVOutput = New System.Windows.Forms.Panel
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
-        Me.pnlTVInput = New System.Windows.Forms.Panel
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -611,11 +587,6 @@ Partial Class dlgSettings
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox25.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
-        Me.GroupBox21.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
         Me.GroupBox14.SuspendLayout()
         CType(Me.tbPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox13.SuspendLayout()
@@ -633,7 +604,6 @@ Partial Class dlgSettings
         Me.gbGenreFilter.SuspendLayout()
         Me.gbFilters.SuspendLayout()
         Me.GroupBox27.SuspendLayout()
-        Me.GroupBox16.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlExtensions.SuspendLayout()
@@ -709,9 +679,9 @@ Partial Class dlgSettings
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         Me.pnlInput.SuspendLayout()
+        Me.pnlTVInput.SuspendLayout()
         Me.pnlOutput.SuspendLayout()
         Me.pnlTVOutput.SuspendLayout()
-        Me.pnlTVInput.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox4
@@ -1467,243 +1437,6 @@ Partial Class dlgSettings
         Me.chkMoviePosterCol.TabIndex = 0
         Me.chkMoviePosterCol.Text = "Hide Poster Column"
         Me.chkMoviePosterCol.UseVisualStyleBackColor = True
-        '
-        'GroupBox8
-        '
-        Me.GroupBox8.Controls.Add(Me.chkMovieNameMultiOnly)
-        Me.GroupBox8.Controls.Add(Me.GroupBox21)
-        Me.GroupBox8.Controls.Add(Me.GroupBox7)
-        Me.GroupBox8.Controls.Add(Me.GroupBox6)
-        Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox8.Location = New System.Drawing.Point(243, 113)
-        Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(366, 197)
-        Me.GroupBox8.TabIndex = 5
-        Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "File Naming"
-        '
-        'chkMovieNameMultiOnly
-        '
-        Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(195, 70)
-        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(167, 43)
-        Me.chkMovieNameMultiOnly.TabIndex = 5
-        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
-        Me.chkMovieNameMultiOnly.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
-        '
-        'GroupBox21
-        '
-        Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
-        Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
-        Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(150, 111)
-        Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(102, 59)
-        Me.GroupBox21.TabIndex = 3
-        Me.GroupBox21.TabStop = False
-        Me.GroupBox21.Text = "Trailer"
-        '
-        'rbBracketTrailer
-        '
-        Me.rbBracketTrailer.AutoSize = True
-        Me.rbBracketTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
-        Me.rbBracketTrailer.Name = "rbBracketTrailer"
-        Me.rbBracketTrailer.Size = New System.Drawing.Size(61, 17)
-        Me.rbBracketTrailer.TabIndex = 1
-        Me.rbBracketTrailer.TabStop = True
-        Me.rbBracketTrailer.Text = "[trailer]"
-        Me.rbBracketTrailer.UseVisualStyleBackColor = True
-        '
-        'rbDashTrailer
-        '
-        Me.rbDashTrailer.AutoSize = True
-        Me.rbDashTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
-        Me.rbDashTrailer.Name = "rbDashTrailer"
-        Me.rbDashTrailer.Size = New System.Drawing.Size(59, 17)
-        Me.rbDashTrailer.TabIndex = 0
-        Me.rbDashTrailer.TabStop = True
-        Me.rbDashTrailer.Text = "-trailer"
-        Me.rbDashTrailer.UseVisualStyleBackColor = True
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox7.Location = New System.Drawing.Point(258, 111)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(102, 59)
-        Me.GroupBox7.TabIndex = 4
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "NFO"
-        '
-        'chkMovieNameNFO
-        '
-        Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 34)
-        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
-        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
-        Me.chkMovieNameNFO.TabIndex = 1
-        Me.chkMovieNameNFO.Text = "<movie>.nfo"
-        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
-        '
-        'chkMovieNFO
-        '
-        Me.chkMovieNFO.AutoSize = True
-        Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
-        Me.chkMovieNFO.Name = "chkMovieNFO"
-        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
-        Me.chkMovieNFO.TabIndex = 0
-        Me.chkMovieNFO.Text = "movie.nfo"
-        Me.chkMovieNFO.UseVisualStyleBackColor = True
-        '
-        'GroupBox6
-        '
-        Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
-        Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
-        Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(6, 111)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(136, 81)
-        Me.GroupBox6.TabIndex = 2
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Fanart"
-        '
-        'chkMovieNameDotFanartJPG
-        '
-        Me.chkMovieNameDotFanartJPG.AutoSize = True
-        Me.chkMovieNameDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 51)
-        Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
-        Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(126, 17)
-        Me.chkMovieNameDotFanartJPG.TabIndex = 2
-        Me.chkMovieNameDotFanartJPG.Text = "<movie>.fanart.jpg"
-        Me.chkMovieNameDotFanartJPG.UseVisualStyleBackColor = True
-        '
-        'chkMovieNameFanartJPG
-        '
-        Me.chkMovieNameFanartJPG.AutoSize = True
-        Me.chkMovieNameFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 35)
-        Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
-        Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(127, 17)
-        Me.chkMovieNameFanartJPG.TabIndex = 1
-        Me.chkMovieNameFanartJPG.Text = "<movie>-fanart.jpg"
-        Me.chkMovieNameFanartJPG.UseVisualStyleBackColor = True
-        '
-        'chkFanartJPG
-        '
-        Me.chkFanartJPG.AutoSize = True
-        Me.chkFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
-        Me.chkFanartJPG.Name = "chkFanartJPG"
-        Me.chkFanartJPG.Size = New System.Drawing.Size(77, 17)
-        Me.chkFanartJPG.TabIndex = 0
-        Me.chkFanartJPG.Text = "fanart.jpg"
-        Me.chkFanartJPG.UseVisualStyleBackColor = True
-        '
-        'GroupBox5
-        '
-        Me.GroupBox5.Controls.Add(Me.chkFolderJPG)
-        Me.GroupBox5.Controls.Add(Me.chkPosterJPG)
-        Me.GroupBox5.Controls.Add(Me.chkPosterTBN)
-        Me.GroupBox5.Controls.Add(Me.chkMovieNameJPG)
-        Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
-        Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
-        Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 17)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(185, 83)
-        Me.GroupBox5.TabIndex = 0
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Posters"
-        '
-        'chkFolderJPG
-        '
-        Me.chkFolderJPG.AutoSize = True
-        Me.chkFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 63)
-        Me.chkFolderJPG.Name = "chkFolderJPG"
-        Me.chkFolderJPG.Size = New System.Drawing.Size(77, 17)
-        Me.chkFolderJPG.TabIndex = 3
-        Me.chkFolderJPG.Text = "folder.jpg"
-        Me.chkFolderJPG.UseVisualStyleBackColor = True
-        '
-        'chkPosterJPG
-        '
-        Me.chkPosterJPG.AutoSize = True
-        Me.chkPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPosterJPG.Location = New System.Drawing.Point(85, 47)
-        Me.chkPosterJPG.Name = "chkPosterJPG"
-        Me.chkPosterJPG.Size = New System.Drawing.Size(79, 17)
-        Me.chkPosterJPG.TabIndex = 6
-        Me.chkPosterJPG.Text = "poster.jpg"
-        Me.chkPosterJPG.UseVisualStyleBackColor = True
-        '
-        'chkPosterTBN
-        '
-        Me.chkPosterTBN.AutoSize = True
-        Me.chkPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPosterTBN.Location = New System.Drawing.Point(6, 47)
-        Me.chkPosterTBN.Name = "chkPosterTBN"
-        Me.chkPosterTBN.Size = New System.Drawing.Size(80, 17)
-        Me.chkPosterTBN.TabIndex = 2
-        Me.chkPosterTBN.Text = "poster.tbn"
-        Me.chkPosterTBN.UseVisualStyleBackColor = True
-        '
-        'chkMovieNameJPG
-        '
-        Me.chkMovieNameJPG.AutoSize = True
-        Me.chkMovieNameJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameJPG.Location = New System.Drawing.Point(85, 31)
-        Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
-        Me.chkMovieNameJPG.Size = New System.Drawing.Size(92, 17)
-        Me.chkMovieNameJPG.TabIndex = 5
-        Me.chkMovieNameJPG.Text = "<movie>.jpg"
-        Me.chkMovieNameJPG.UseVisualStyleBackColor = True
-        '
-        'chkMovieJPG
-        '
-        Me.chkMovieJPG.AutoSize = True
-        Me.chkMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieJPG.Location = New System.Drawing.Point(6, 31)
-        Me.chkMovieJPG.Name = "chkMovieJPG"
-        Me.chkMovieJPG.Size = New System.Drawing.Size(76, 17)
-        Me.chkMovieJPG.TabIndex = 1
-        Me.chkMovieJPG.Text = "movie.jpg"
-        Me.chkMovieJPG.UseVisualStyleBackColor = True
-        '
-        'chkMovieNameTBN
-        '
-        Me.chkMovieNameTBN.AutoSize = True
-        Me.chkMovieNameTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameTBN.Location = New System.Drawing.Point(85, 15)
-        Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
-        Me.chkMovieNameTBN.Size = New System.Drawing.Size(93, 17)
-        Me.chkMovieNameTBN.TabIndex = 4
-        Me.chkMovieNameTBN.Text = "<movie>.tbn"
-        Me.chkMovieNameTBN.UseVisualStyleBackColor = True
-        '
-        'chkMovieTBN
-        '
-        Me.chkMovieTBN.AutoSize = True
-        Me.chkMovieTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieTBN.Location = New System.Drawing.Point(6, 15)
-        Me.chkMovieTBN.Name = "chkMovieTBN"
-        Me.chkMovieTBN.Size = New System.Drawing.Size(77, 17)
-        Me.chkMovieTBN.TabIndex = 0
-        Me.chkMovieTBN.Text = "movie.tbn"
-        Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
         'lvMovies
         '
@@ -2701,48 +2434,6 @@ Partial Class dlgSettings
         Me.chkMissingPoster.Text = "Check for Poster"
         Me.chkMissingPoster.UseVisualStyleBackColor = True
         '
-        'GroupBox16
-        '
-        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
-        Me.GroupBox16.Controls.Add(Me.btnBrowse)
-        Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(243, 315)
-        Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(366, 69)
-        Me.GroupBox16.TabIndex = 6
-        Me.GroupBox16.TabStop = False
-        Me.GroupBox16.Text = "Backdrops Folder"
-        '
-        'chkAutoBD
-        '
-        Me.chkAutoBD.AutoSize = True
-        Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
-        Me.chkAutoBD.Name = "chkAutoBD"
-        Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
-        Me.chkAutoBD.TabIndex = 2
-        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkAutoBD.UseVisualStyleBackColor = True
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(336, 15)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnBrowse.TabIndex = 1
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        '
-        'txtBDPath
-        '
-        Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
-        Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
-        Me.txtBDPath.TabIndex = 0
-        '
         'lblCurrent
         '
         Me.lblCurrent.BackColor = System.Drawing.Color.SteelBlue
@@ -2913,8 +2604,6 @@ Partial Class dlgSettings
         Me.pnlSources.Controls.Add(Me.lvMovies)
         Me.pnlSources.Controls.Add(Me.btnMovieRem)
         Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
-        Me.pnlSources.Controls.Add(Me.GroupBox8)
-        Me.pnlSources.Controls.Add(Me.GroupBox16)
         Me.pnlSources.Location = New System.Drawing.Point(251, 147)
         Me.pnlSources.Name = "pnlSources"
         Me.pnlSources.Size = New System.Drawing.Size(617, 402)
@@ -7048,16 +6737,26 @@ Partial Class dlgSettings
         Me.pnlInput.TabIndex = 78
         Me.pnlInput.Visible = False
         '
-        'pnlOutput
+        'pnlTVInput
         '
-        Me.pnlOutput.AutoScroll = True
-        Me.pnlOutput.BackColor = System.Drawing.Color.White
-        Me.pnlOutput.Controls.Add(Me.chkSaveEMI)
-        Me.pnlOutput.Location = New System.Drawing.Point(251, 147)
-        Me.pnlOutput.Name = "pnlOutput"
-        Me.pnlOutput.Size = New System.Drawing.Size(617, 396)
-        Me.pnlOutput.TabIndex = 79
-        Me.pnlOutput.Visible = False
+        Me.pnlTVInput.AutoScroll = True
+        Me.pnlTVInput.BackColor = System.Drawing.Color.White
+        Me.pnlTVInput.Controls.Add(Me.CheckBox2)
+        Me.pnlTVInput.Location = New System.Drawing.Point(0, 0)
+        Me.pnlTVInput.Name = "pnlTVInput"
+        Me.pnlTVInput.Size = New System.Drawing.Size(617, 397)
+        Me.pnlTVInput.TabIndex = 81
+        Me.pnlTVInput.Visible = False
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(14, 16)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(224, 17)
+        Me.CheckBox2.TabIndex = 0
+        Me.CheckBox2.Text = "Always use Ember MediaFile Info (.emi)"
+        Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'chkAlwaysUseEMI
         '
@@ -7068,6 +6767,17 @@ Partial Class dlgSettings
         Me.chkAlwaysUseEMI.TabIndex = 0
         Me.chkAlwaysUseEMI.Text = "Always use Ember MediaFile Info (.emi)"
         Me.chkAlwaysUseEMI.UseVisualStyleBackColor = True
+        '
+        'pnlOutput
+        '
+        Me.pnlOutput.AutoScroll = True
+        Me.pnlOutput.BackColor = System.Drawing.Color.White
+        Me.pnlOutput.Controls.Add(Me.chkSaveEMI)
+        Me.pnlOutput.Location = New System.Drawing.Point(251, 147)
+        Me.pnlOutput.Name = "pnlOutput"
+        Me.pnlOutput.Size = New System.Drawing.Size(617, 396)
+        Me.pnlOutput.TabIndex = 79
+        Me.pnlOutput.Visible = False
         '
         'chkSaveEMI
         '
@@ -7104,27 +6814,6 @@ Partial Class dlgSettings
         Me.CheckBox1.Text = "Save Ember MediaFile Info (.emi)"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
-        'pnlTVInput
-        '
-        Me.pnlTVInput.AutoScroll = True
-        Me.pnlTVInput.BackColor = System.Drawing.Color.White
-        Me.pnlTVInput.Controls.Add(Me.CheckBox2)
-        Me.pnlTVInput.Location = New System.Drawing.Point(0, 0)
-        Me.pnlTVInput.Name = "pnlTVInput"
-        Me.pnlTVInput.Size = New System.Drawing.Size(617, 397)
-        Me.pnlTVInput.TabIndex = 81
-        Me.pnlTVInput.Visible = False
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(14, 16)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(224, 17)
-        Me.CheckBox2.TabIndex = 0
-        Me.CheckBox2.Text = "Always use Ember MediaFile Info (.emi)"
-        Me.CheckBox2.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7132,14 +6821,15 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlInput)
         Me.Controls.Add(Me.pnlTVOutput)
         Me.Controls.Add(Me.pnlOutput)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7149,7 +6839,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -7180,15 +6869,6 @@ Partial Class dlgSettings
         Me.GroupBox2.PerformLayout()
         Me.GroupBox25.ResumeLayout(False)
         Me.GroupBox25.PerformLayout()
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox21.ResumeLayout(False)
-        Me.GroupBox21.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
         Me.GroupBox14.ResumeLayout(False)
         Me.GroupBox14.PerformLayout()
         CType(Me.tbPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
@@ -7214,8 +6894,6 @@ Partial Class dlgSettings
         Me.gbFilters.ResumeLayout(False)
         Me.gbFilters.PerformLayout()
         Me.GroupBox27.ResumeLayout(False)
-        Me.GroupBox16.ResumeLayout(False)
-        Me.GroupBox16.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlExtensions.ResumeLayout(False)
@@ -7331,12 +7009,12 @@ Partial Class dlgSettings
         Me.Panel2.ResumeLayout(False)
         Me.pnlInput.ResumeLayout(False)
         Me.pnlInput.PerformLayout()
+        Me.pnlTVInput.ResumeLayout(False)
+        Me.pnlTVInput.PerformLayout()
         Me.pnlOutput.ResumeLayout(False)
         Me.pnlOutput.PerformLayout()
         Me.pnlTVOutput.ResumeLayout(False)
         Me.pnlTVOutput.PerformLayout()
-        Me.pnlTVInput.ResumeLayout(False)
-        Me.pnlTVInput.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -7376,23 +7054,7 @@ Partial Class dlgSettings
     Friend WithEvents chkMoviePosterCol As System.Windows.Forms.CheckBox
     Friend WithEvents btnMovieRem As System.Windows.Forms.Button
     Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
-    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPosterTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieNameJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieJPG As System.Windows.Forms.CheckBox
@@ -7433,10 +7095,6 @@ Partial Class dlgSettings
     Friend WithEvents txtMovieExt As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieExts As System.Windows.Forms.ListBox
     Friend WithEvents chkUpdates As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox16 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtBDPath As System.Windows.Forms.TextBox
-    Friend WithEvents btnBrowse As System.Windows.Forms.Button
-    Friend WithEvents chkAutoBD As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieExtraCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSources As System.Windows.Forms.Panel
@@ -7474,9 +7132,6 @@ Partial Class dlgSettings
     Friend WithEvents chkShowDims As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoDisplayFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoDisplayPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
-    Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
-    Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents GroupBox22 As System.Windows.Forms.GroupBox
     Friend WithEvents btnRemoveNoStack As System.Windows.Forms.Button
     Friend WithEvents btnAddNoStack As System.Windows.Forms.Button
@@ -7499,7 +7154,6 @@ Partial Class dlgSettings
     Friend WithEvents txtETHeight As System.Windows.Forms.TextBox
     Friend WithEvents rbETCustom As System.Windows.Forms.RadioButton
     Friend WithEvents rbETNative As System.Windows.Forms.RadioButton
-    Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox25 As System.Windows.Forms.GroupBox
     Friend WithEvents btnRemoveToken As System.Windows.Forms.Button
     Friend WithEvents btnAddToken As System.Windows.Forms.Button

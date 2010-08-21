@@ -809,32 +809,6 @@ Public Class ScrapeImages
         End If
     End Sub
 
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
-        Try
-            Select Case fType
-                Case Enums.ImageType.Fanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
-                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
-                    AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Else
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
-                    (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
-                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterJPG OrElse Master.eSettings.FolderJPG) AndAlso _
-                     (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-            End Select
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return False
-        End Try
-    End Function
     Public Shared Sub SaveFAasET(ByVal faPath As String, ByVal inPath As String)
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
