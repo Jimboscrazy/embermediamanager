@@ -582,28 +582,38 @@ Public Class ScrapeImages
                                         If iMovie.Description.ToLower = "original" Then
                                             If Not IsNothing(iMovie.WebImage.Image) Then
                                                 Image.Image = iMovie.WebImage.Image
+                                                GoTo foundIT
                                             Else
                                                 Image.FromWeb(iMovie.URL)
+                                                If Not IsNothing(Image.Image) Then
+                                                    GoTo foundIT
+                                                End If
                                             End If
-                                            GoTo foundIT
                                         End If
                                     Case Enums.FanartSize.Mid
                                         If iMovie.Description.ToLower = "mid" Then
                                             If Not IsNothing(iMovie.WebImage.Image) Then
                                                 Image.Image = iMovie.WebImage.Image
+                                                GoTo foundIT
                                             Else
                                                 Image.FromWeb(iMovie.URL)
+                                                If Not IsNothing(Image.Image) Then
+                                                    GoTo foundIT
+                                                End If
                                             End If
-                                            GoTo foundIT
+
                                         End If
                                     Case Enums.FanartSize.Small
                                         If iMovie.Description.ToLower = "thumb" Then
                                             If Not IsNothing(iMovie.WebImage.Image) Then
                                                 Image.Image = iMovie.WebImage.Image
+                                                GoTo foundIT
                                             Else
                                                 Image.FromWeb(iMovie.URL)
+                                                If Not IsNothing(Image.Image) Then
+                                                    GoTo foundIT
+                                                End If
                                             End If
-                                            GoTo foundIT
                                         End If
                                 End Select
                             Next
@@ -617,19 +627,25 @@ Public Class ScrapeImages
                                 Dim l = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "original"
                                 If l.Count > 0 Then
                                     Image.FromWeb(l(0).URL)
-                                    GoTo foundIT
+                                    If Not IsNothing(Image.Image) Then
+                                        GoTo foundIT
+                                    End If
                                 End If
 
                                 Dim m = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "mid"
                                 If m.Count > 0 Then
                                     Image.FromWeb(m(0).URL)
-                                    GoTo foundIT
+                                    If Not IsNothing(Image.Image) Then
+                                        GoTo foundIT
+                                    End If
                                 End If
 
                                 Dim s = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "thumb"
                                 If s.Count > 0 Then
                                     Image.FromWeb(s(0).URL)
-                                    GoTo foundIT
+                                    If Not IsNothing(Image.Image) Then
+                                        GoTo foundIT
+                                    End If
                                 End If
 
                             End If
