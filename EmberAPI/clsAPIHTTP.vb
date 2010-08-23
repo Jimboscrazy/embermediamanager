@@ -302,8 +302,8 @@ Public Class HTTP
                 Using wrResponse As WebResponse = Me.wrRequest.GetResponse()
                     If Me._cancel Then Return
                     Dim temp As String = wrResponse.ContentType.ToString
-                    ' TODO Temporary Bad hack because of TMDB issues
-                    If wrResponse.ContentType.ToLower.Contains("image") OrElse wrResponse.ContentType.ToLower = "g" Then
+                    ' Settings to Bypass ContentType
+                    If wrResponse.ContentType.ToLower.Contains("image") OrElse AdvancedSettings.GetBooleanSetting("ImageDownloadIgnoreContentType", False) Then
                         If Me._cancel Then Return
                         Me._image = ReadImageStreamToEnd(wrResponse.GetResponseStream)
                     End If
