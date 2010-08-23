@@ -563,7 +563,7 @@ Public Class Images
                 Dim imageList As New List(Of String)
                 imageList = ModulesManager.Instance.SaveImageAs(Enums.ImageType.Fanart, mMovie)
                 For Each s As String In imageList
-                    If Not File.Exists(s) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonFanart) Then
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(s, Master.eSettings.FanartQuality)
                         If String.IsNullOrEmpty(strReturn) Then strReturn = s
                     End If
@@ -597,10 +597,10 @@ Public Class Images
                 Dim imageList As New List(Of String)
                 imageList = ModulesManager.Instance.SaveImageAs(Enums.ImageType.Posters, mMovie)
                 For Each s As String In imageList
-                    If Not File.Exists(s) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwriteSeasonFanart) Then
-                        Save(s, Master.eSettings.PosterQuality)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
+                If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                    Save(s, Master.eSettings.PosterQuality)
+                    If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                End If
                 Next
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -714,8 +714,6 @@ Public Class Images
             If Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse Master.eSettings.SeasonNameTBN OrElse _
             Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
                 Dim tPath As String = String.Empty
-
-
                 Try
                     tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
                 Catch

@@ -26,6 +26,7 @@ Partial Class frmSplash
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.pbLoading = New System.Windows.Forms.ProgressBar
         Me.txtStage = New System.Windows.Forms.Label
+        Me.lblRelease = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -73,12 +74,25 @@ Partial Class frmSplash
         Me.txtStage.Text = "Loading settings..."
         Me.txtStage.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
+        'lblRelease
+        '
+        Me.lblRelease.BackColor = System.Drawing.Color.FromArgb(CType(CType(10, Byte), Integer), CType(CType(10, Byte), Integer), CType(CType(10, Byte), Integer))
+        Me.lblRelease.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRelease.ForeColor = System.Drawing.Color.White
+        Me.lblRelease.Location = New System.Drawing.Point(194, 272)
+        Me.lblRelease.Name = "lblRelease"
+        Me.lblRelease.Size = New System.Drawing.Size(83, 11)
+        Me.lblRelease.TabIndex = 5
+        Me.lblRelease.Text = "Release Version"
+        Me.lblRelease.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'frmSplash
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(310, 312)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblRelease)
         Me.Controls.Add(Me.pbLoading)
         Me.Controls.Add(Me.txtStage)
         Me.Controls.Add(Me.Version)
@@ -99,5 +113,6 @@ Partial Class frmSplash
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents pbLoading As System.Windows.Forms.ProgressBar
     Friend WithEvents txtStage As System.Windows.Forms.Label
+    Friend WithEvents lblRelease As System.Windows.Forms.Label
 
 End Class
