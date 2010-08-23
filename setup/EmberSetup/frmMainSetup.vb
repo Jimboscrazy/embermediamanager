@@ -524,6 +524,8 @@ Public Class frmMainSetup
             btnInstall.Visible = False
             btnOptions.Visible = False
             btnRunEmber.Visible = True
+            rbBeta.Visible = False
+            rbRelease.Visible = False
             pnlProgress.Visible = False
             pbFiles.Visible = False
         End If
@@ -565,6 +567,8 @@ Public Class frmMainSetup
             btnInstall.Visible = False
             btnOptions.Visible = False
             btnRunEmber.Visible = False
+            rbBeta.Visible = False
+            rbRelease.Visible = False
             pnlProgress.Visible = False
             pbFiles.Visible = False
         End If
@@ -601,6 +605,13 @@ Public Class frmMainSetup
 
     Function DOInstallEmber() As Boolean
         ' From BackGorundWorker Only
+        If rbRelease.Checked Then
+            RemoteSiteFolder = "Updates"
+            IsBeta = False
+        Else
+            RemoteSiteFolder = "UpdatesBeta"
+            IsBeta = True
+        End If
         Dim InstallVersion As String = String.Empty
         Dim counter As Integer = 0
         Me.bwDoInstall.ReportProgress(9, Nothing)
@@ -1215,6 +1226,8 @@ Public Class frmMainSetup
         Me.btnOptions.Text = MyLang.GetString(40, "Change Options")
         Me.emmNotify.Text = MyLang.GetString(41, "EmberMM Setup")
         Me.llAbout.Text = MyLang.GetString(36, "About")
+        Me.rbRelease.Text = MyLang.GetString(56, "Release Version")
+        Me.rbBeta.Text = MyLang.GetString(57, "Beta Version")
     End Sub
 
 
@@ -1572,6 +1585,8 @@ Public Class frmMainSetup
             btnInstall.Visible = False
             btnOptions.Tag = btnOptions.Visible
             btnOptions.Visible = False
+            rbBeta.Visible = False
+            rbRelease.Visible = False
             btnExit.Tag = btnExit.Visible
             btnExit.Visible = False
 
@@ -1582,6 +1597,8 @@ Public Class frmMainSetup
             llAbout.Text = MyLang.GetString(36, "About")
             btnInstall.Visible = btnInstall.Tag
             btnOptions.Visible = btnOptions.Tag
+            rbBeta.Visible = btnInstall.Tag
+            rbRelease.Visible = btnInstall.Tag
             btnExit.Visible = btnExit.Tag
             LogoStop = True
             Me.Refresh()

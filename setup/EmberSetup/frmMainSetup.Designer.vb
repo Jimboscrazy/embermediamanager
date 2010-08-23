@@ -35,6 +35,8 @@ Partial Class frmMainSetup
         Me.llAbout = New System.Windows.Forms.LinkLabel
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
+        Me.rbRelease = New System.Windows.Forms.RadioButton
+        Me.rbBeta = New System.Windows.Forms.RadioButton
         Me.pnlProgress.SuspendLayout()
         CType(Me.MyBackGround, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -127,6 +129,28 @@ Partial Class frmMainSetup
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
+        'rbRelease
+        '
+        Me.rbRelease.AutoSize = True
+        Me.rbRelease.Checked = True
+        Me.rbRelease.Location = New System.Drawing.Point(138, 234)
+        Me.rbRelease.Name = "rbRelease"
+        Me.rbRelease.Size = New System.Drawing.Size(106, 17)
+        Me.rbRelease.TabIndex = 12
+        Me.rbRelease.TabStop = True
+        Me.rbRelease.Text = "Release Version"
+        Me.rbRelease.UseVisualStyleBackColor = True
+        '
+        'rbBeta
+        '
+        Me.rbBeta.AutoSize = True
+        Me.rbBeta.Location = New System.Drawing.Point(279, 234)
+        Me.rbBeta.Name = "rbBeta"
+        Me.rbBeta.Size = New System.Drawing.Size(90, 17)
+        Me.rbBeta.TabIndex = 13
+        Me.rbBeta.Text = "Beta Version"
+        Me.rbBeta.UseVisualStyleBackColor = True
+        '
         'frmMainSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -136,6 +160,8 @@ Partial Class frmMainSetup
         Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(505, 325)
         Me.ControlBox = False
+        Me.Controls.Add(Me.rbBeta)
+        Me.Controls.Add(Me.rbRelease)
         Me.Controls.Add(Me.llAbout)
         Me.Controls.Add(Me.pnlProgress)
         Me.Controls.Add(Me.MyBackGround)
@@ -169,5 +195,7 @@ Partial Class frmMainSetup
     Friend WithEvents llAbout As System.Windows.Forms.LinkLabel
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents rbRelease As System.Windows.Forms.RadioButton
+    Friend WithEvents rbBeta As System.Windows.Forms.RadioButton
 
 End Class
