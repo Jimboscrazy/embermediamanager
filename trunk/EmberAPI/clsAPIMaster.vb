@@ -44,6 +44,7 @@ Public Class Master
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
     Public Shared MajorVersion As Single = 1.3
+    Public Shared IsBeta As Boolean = True
     #End Region 'Fields
 
 End Class

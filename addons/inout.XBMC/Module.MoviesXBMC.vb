@@ -308,8 +308,6 @@ Public Class OutputXBMC_Module
                             pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".jpg")
                             If Not File.Exists(pPath) OrElse (Master.eSettings.OverwritePoster) Then
                                 imageList.Add(pPath)
-                                'Save(pPath, Master.eSettings.PosterQuality)
-                                'strReturn = pPath
                             End If
                         ElseIf eSettings.MovieNameTBN OrElse eSettings.MovieTBN OrElse eSettings.PosterTBN Then
                             pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".tbn")
@@ -334,7 +332,7 @@ Public Class OutputXBMC_Module
                         Dim tmpName As String = Path.GetFileNameWithoutExtension(mMovie.Filename)
                         pPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, tmpName)
 
-                        If Master.eSettings.FolderJPG AndAlso mMovie.isSingle Then
+                        If eSettings.FolderJPG AndAlso mMovie.isSingle Then
                             tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "folder.jpg")
                             If Not File.Exists(tPath) OrElse (Master.eSettings.OverwritePoster) Then
                                 imageList.Add(tPath)
@@ -403,22 +401,19 @@ Public Class OutputXBMC_Module
 
                 If eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
                     fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".fanart.jpg")
-                    If Not File.Exists(fPath) OrElse (Master.eSettings.OverwritePoster) Then
+                    If Not File.Exists(fPath) OrElse (Master.eSettings.OverwriteFanart) Then
                         imageList.Add(fPath)
-                        ' TODO
-                        'If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
-                        'Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath)), Master.eSettings.FanartQuality)
-                        'End If
+                        If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
+                            imageList.Add(Path.Combine(eSettings.BDPath, Path.GetFileName(fPath)))
+                        End If
                     End If
                 ElseIf eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(mMovie.Filename) Then
                     fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".fanart.jpg")
-                    If Not File.Exists(fPath) OrElse (Master.eSettings.OverwritePoster) Then
+                    If Not File.Exists(fPath) OrElse (Master.eSettings.OverwriteFanart) Then
                         imageList.Add(fPath)
-                        ' TODO
-                        'If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
-                        'imageList.Add(fPath)
-                        'Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath)), Master.eSettings.FanartQuality)
-                        ' End If
+                        If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
+                            imageList.Add(Path.Combine(eSettings.BDPath, Path.GetFileName(fPath)))
+                        End If
                     End If
                 Else
                     Dim tmpName As String = Path.GetFileNameWithoutExtension(mMovie.Filename)
@@ -434,16 +429,15 @@ Public Class OutputXBMC_Module
                         End If
                         If Not File.Exists(tPath) OrElse (Master.eSettings.OverwriteFanart) Then
                             imageList.Add(tPath)
-                            ' TODO
-                            'If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            'If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'Else
-                            'Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)), Master.eSettings.FanartQuality)
-                            'End If
-                            'End If
+                            If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
+                                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")))
+                                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")))
+                                Else
+                                    imageList.Add(Path.Combine(eSettings.BDPath, Path.GetFileName(tPath)))
+                                End If
+                            End If
                         End If
                     End If
 
@@ -458,16 +452,14 @@ Public Class OutputXBMC_Module
 
                         If Not File.Exists(tPath) OrElse (Master.eSettings.OverwriteFanart) Then
                             imageList.Add(tPath)
-                            ' TODO
-                            'If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            'If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'Else
-                            'Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)), Master.eSettings.FanartQuality)
-                            'End If
-                            'End If
+                            If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
+                                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")))
+                                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")))
+                                    imageList.Add(Path.Combine(eSettings.BDPath, Path.GetFileName(tPath)))
+                                End If
+                            End If
                         End If
                     End If
 
@@ -475,16 +467,15 @@ Public Class OutputXBMC_Module
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "fanart.jpg")
                         If Not File.Exists(tPath) OrElse (Master.eSettings.OverwriteFanart) Then
                             imageList.Add(fPath)
-                            ' TODO
-                            'If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            'If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'Else
-                            'Save(Path.Combine(Master.eSettings.BDPath, String.Concat(tmpName, "-fanart.jpg")), Master.eSettings.FanartQuality)
-                            'End If
-                            'End If
+                            If eSettings.AutoBD AndAlso Directory.Exists(eSettings.BDPath) Then
+                                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")))
+                                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")))
+                                Else
+                                    imageList.Add(Path.Combine(eSettings.BDPath, String.Concat(tmpName, "-fanart.jpg")))
+                                End If
+                            End If
                         End If
                     End If
                 End If
@@ -556,6 +547,8 @@ Public Class OutputXBMC_Module
         eSettings.MovieTBN = fOutputSettings.chkMovieTBN.Checked
         eSettings.PosterJPG = fOutputSettings.chkPosterJPG.Checked
         eSettings.PosterTBN = fOutputSettings.chkPosterTBN.Checked
+        eSettings.AutoBD = fOutputSettings.chkAutoBD.Checked
+        eSettings.BDPath = fOutputSettings.txtBDPath.Text
         eSettings.Save("Output.")
     End Sub
     Sub RetrieveMySettings()
@@ -575,6 +568,8 @@ Public Class OutputXBMC_Module
         fOutputSettings.chkMovieTBN.Checked = eSettings.MovieTBN
         fOutputSettings.chkPosterJPG.Checked = eSettings.PosterJPG
         fOutputSettings.chkPosterTBN.Checked = eSettings.PosterTBN
+        fOutputSettings.chkAutoBD.Checked = eSettings.AutoBD
+        fOutputSettings.txtBDPath.Text = eSettings.BDPath
     End Sub
 
     Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.IsAllowedToDownload
@@ -607,6 +602,8 @@ End Class
 
 Public Class MySettings
     Private _Enabled As Boolean
+    Private _bdpath As String
+    Private _autobd As Boolean
     Private _videotsparent As Boolean
     Private _fanartjpg As Boolean
     Private _movienamemultionly As Boolean
@@ -641,6 +638,8 @@ Public Class MySettings
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
+        AdvancedSettings.SetSetting(String.Concat(prefix, "BDPath"), BDPath)
         'AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Sub Load(ByVal prefix As String)
@@ -658,6 +657,8 @@ Public Class MySettings
         MovieTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "MovieTBN"), MovieTBN)
         PosterJPG = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterJPG"), PosterJPG)
         PosterTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
+        AutoBD = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
+        BDPath = AdvancedSettings.GetSetting(String.Concat(prefix, "BDPath"), BDPath)
         'VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
 
@@ -669,7 +670,22 @@ Public Class MySettings
             Me._Enabled = value
         End Set
     End Property
-
+    Public Property AutoBD() As Boolean
+        Get
+            Return Me._autobd
+        End Get
+        Set(ByVal value As Boolean)
+            Me._autobd = value
+        End Set
+    End Property
+    Public Property BDPath() As String
+        Get
+            Return Me._bdpath
+        End Get
+        Set(ByVal value As String)
+            Me._bdpath = value
+        End Set
+    End Property
     Public Property VideoTSParent() As Boolean
         Get
             Return False 'Me._videotsparent
