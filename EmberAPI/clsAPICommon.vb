@@ -668,7 +668,7 @@ Public Class Functions
         'Return True
         'End If
         'Return False
-        Return AdvancedSettings.GetBooleanSetting("IsBetaEnabled", False, "*Internal")
+        Return Master.IsBeta OrElse AdvancedSettings.GetBooleanSetting("IsBetaEnabled", False, "*Internal")
     End Function
 
     ''' <summary>

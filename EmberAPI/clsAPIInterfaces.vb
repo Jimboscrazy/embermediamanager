@@ -51,6 +51,7 @@ Public Class Interfaces
         Function SaveMovieInfoSheet(ByRef movieToSave As Structures.DBMovie) As Boolean
         Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mMovie As Structures.DBMovie) As List(Of String)
         Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
+        Function CopyBackDrops(ByVal sPath As String, ByVal sFile As String) As Boolean
     End Interface
     Public Interface EmberTVInputModule
         Property Enabled() As Boolean
@@ -63,6 +64,8 @@ Public Class Interfaces
         Event ModuleSettingsChanged()
         Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
+        Function LoadShowInfoSheet(ByVal sPath As String, ByRef mShow As MediaContainers.TVShow) As Boolean
+        Function LoadEpisodeInfoSheet(ByVal sPath As String, ByRef mEpisode As MediaContainers.EpisodeDetails) As Boolean
     End Interface
     Public Interface EmberTVOutputModule
         Property Enabled() As Boolean
@@ -75,6 +78,8 @@ Public Class Interfaces
         Event ModuleSettingsChanged()
         Sub Init(ByVal sAssemblyName As String)
         '********************************************************************************************
+        Function SaveShowInfoSheet(ByRef showToSave As Structures.DBTV) As Boolean
+        Function SaveImageAs(ByVal imageType As Enums.ImageType, ByRef mShow As Structures.DBTV) As List(Of String)
     End Interface
 
     Public Interface EmberExternalModule

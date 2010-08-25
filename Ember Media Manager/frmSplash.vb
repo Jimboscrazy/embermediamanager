@@ -48,7 +48,7 @@ Public NotInheritable Class frmSplash
         Me.PictureBox1.Location = New Point(4, 4)
         Me.PictureBox1.Size = New Size(Me.Width - 10, Me.Height - 10)
         Version.Text = String.Format("Version {0}.{1}", Master.MajorVersion.ToString, My.Application.Info.Version.Revision)
-        Release.Text = If(Master.IsBeta, "Beta Version", "Release Version")
+        Release.Text = If(Master.IsBeta, "Beta Release", "")
     End Sub
 
     #End Region 'Methods

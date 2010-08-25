@@ -377,6 +377,7 @@ Public Class AdvancedSettings
             SetBooleanSetting("StudioTagAlwaysOn", False, "*EmberAPP", True)
             SetBooleanSetting("ScrapeActorsThumbs", False, "*EmberAPP", True)
             SetBooleanSetting("PosterGlassOverlay", True, "*EmberAPP", True)
+            SetSetting("DownloadTimeout", "20", "*EmberAPP", True)
         End If
 
  

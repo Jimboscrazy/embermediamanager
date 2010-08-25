@@ -1320,6 +1320,7 @@ Public Class frmMain
                             Next
                         Case Enums.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
+                            Dim sFile As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
                                 Try
                                     Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
@@ -1327,44 +1328,11 @@ Public Class frmMain
 
                                     If Me.bwNonScrape.CancellationPending Then GoTo doCancel
                                     sPath = drvRow.Item(36).ToString
-                                    If Not String.IsNullOrEmpty(sPath) Then
-                                        If FileUtils.Common.isVideoTS(sPath) Then
-                                            If Master.eSettings.VideoTSParent Then
-                                                ' TODO
-                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
-                                            Else
-                                                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                    ' TODO
-                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
-                                                Else
-                                                    ' TODO
-                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                                End If
-                                            End If
-                                        ElseIf FileUtils.Common.isBDRip(sPath) Then
-                                            If Master.eSettings.VideoTSParent Then
-                                                ' TODO
-                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
-                                            Else
-                                                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                    ' TODO
-                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
-                                                Else
-                                                    ' TODO
-                                                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                                End If
-                                            End If
-                                        Else
-                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                ' TODO
-                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
-                                            Else
-                                                ' TODO
-                                                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-                                            End If
+                                    sFile = drvRow.Item(1).ToString
 
-                                        End If
-                                    End If
+                                    ''''''''''''''''''''''''''''''''
+
+
                                 Catch ex As Exception
                                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
                                 End Try

@@ -91,7 +91,7 @@ Public Class HTTP
 
         Try
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Timeout = Convert.ToInt32(AdvancedSettings.GetSetting("DownloadTimeout", "20")) * 1000
             Me.wrRequest.CookieContainer = New CookieContainer()
 
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
@@ -160,7 +160,7 @@ Public Class HTTP
             postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
 
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Timeout = Convert.ToInt32(AdvancedSettings.GetSetting("DownloadTimeout", "20")) * 1000
             Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -217,7 +217,7 @@ Public Class HTTP
 
         Try
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Timeout = Convert.ToInt32(AdvancedSettings.GetSetting("DownloadTimeout", "20")) * 1000
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -281,7 +281,7 @@ Public Class HTTP
         Try
             If StringUtils.isValidURL(Me._URL) Then
                 Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
-                Me.wrRequest.Timeout = 20000
+                Me.wrRequest.Timeout = Convert.ToInt32(AdvancedSettings.GetSetting("DownloadTimeout", "20")) * 1000
 
                 If Me._cancel Then Return
 
@@ -318,7 +318,7 @@ Public Class HTTP
         Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
         Try
-            Me.wrRequest.Timeout = 20000
+            Me.wrRequest.Timeout = Convert.ToInt32(AdvancedSettings.GetSetting("DownloadTimeout", "20")) * 1000
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
