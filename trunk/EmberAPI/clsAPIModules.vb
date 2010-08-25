@@ -230,7 +230,7 @@ Public Class ModulesManager
 
                             End If
                         Catch ex As Exception
-        End Try
+                        End Try
                     Next
                 Catch ex As Exception
                 End Try
@@ -516,7 +516,7 @@ Public Class ModulesManager
     Public Function SaveMovieFromInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean
         Dim ret As Boolean = False
         Try
-            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled)
+            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
                 Try
                     ret = _externalModule.ProcessorModule.SaveMovieInfoSheet(movieToSave)
                 Catch ex As Exception
@@ -533,7 +533,7 @@ Public Class ModulesManager
     Public Function SaveImageAs(ByVal imageType As EmberAPI.Enums.ImageType, ByRef mMovie As EmberAPI.Structures.DBMovie) As List(Of String)
         Dim ImageList As New List(Of String)
         Try
-            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled)
+            For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)
                 Dim tmpList As New List(Of String)
                 Try
                     tmpList = _externalModule.ProcessorModule.SaveImageAs(imageType, mMovie)

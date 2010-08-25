@@ -85,4 +85,29 @@ Public Class frmMovieOutputSettings
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
     End Sub
+
+    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        Dim order As Integer = ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.AssemblyName = OutputXBMC_Module._AssemblyName).ModuleOrder
+        If order < ModulesManager.Instance.externalOutputModules.Count - 1 Then
+            ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
+            ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.AssemblyName = OutputXBMC_Module._AssemblyName).ModuleOrder = order + 1
+            RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 1)
+            orderChanged()
+        End If
+    End Sub
+
+    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        Dim order As Integer = ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.AssemblyName = OutputXBMC_Module._AssemblyName).ModuleOrder
+        If order > 0 Then
+            ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
+            ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.AssemblyName = OutputXBMC_Module._AssemblyName).ModuleOrder = order - 1
+            RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, -1)
+            orderChanged()
+        End If
+    End Sub
+    Sub orderChanged()
+        Dim order As Integer = ModulesManager.Instance.externalOutputModules.FirstOrDefault(Function(p) p.AssemblyName = OutputXBMC_Module._AssemblyName).ModuleOrder
+        btnDown.Enabled = (order < ModulesManager.Instance.externalOutputModules.Count - 1)
+        btnUp.Enabled = (order > 0)
+    End Sub
 End Class

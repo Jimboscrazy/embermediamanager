@@ -22,8 +22,12 @@ Partial Class frmMovieOutputSettings
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMovieOutputSettings))
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
         Me.chkEnabled = New System.Windows.Forms.CheckBox
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
@@ -62,12 +66,25 @@ Partial Class frmMovieOutputSettings
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.Label3)
         Me.Panel1.Controls.Add(Me.chkEnabled)
+        Me.Panel1.Controls.Add(Me.btnDown)
+        Me.Panel1.Controls.Add(Me.btnUp)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(617, 25)
         Me.Panel1.TabIndex = 82
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(535, 7)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(28, 12)
+        Me.Label3.TabIndex = 90
+        Me.Label3.Text = "Order"
         '
         'chkEnabled
         '
@@ -79,12 +96,32 @@ Partial Class frmMovieOutputSettings
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(592, 1)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 89
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(567, 1)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 88
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
         'pnlSettings
         '
         Me.pnlSettings.Controls.Add(Me.GroupBox8)
         Me.pnlSettings.Controls.Add(Me.GroupBox16)
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Location = New System.Drawing.Point(3, 12)
+        Me.pnlSettings.Location = New System.Drawing.Point(3, 2)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 400)
         Me.pnlSettings.TabIndex = 83
@@ -427,5 +464,8 @@ Partial Class frmMovieOutputSettings
     Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNameTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
 
 End Class

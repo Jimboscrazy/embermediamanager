@@ -83,7 +83,7 @@ Partial Class frmSplash
         Me.Release.Name = "Release"
         Me.Release.Size = New System.Drawing.Size(89, 13)
         Me.Release.TabIndex = 5
-        Me.Release.Text = "Release Version"
+        Me.Release.Text = "Release"
         Me.Release.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'frmSplash

@@ -300,6 +300,10 @@ Public Class OutputMediaBrowser_Module
     Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.IsAllowedToDownload
 
     End Function
+
+    Public Function CopyBackDrops(ByVal sPath As String, ByVal sFile As String) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.CopyBackDrops
+
+    End Function
 End Class
 
 Public Class MySettings

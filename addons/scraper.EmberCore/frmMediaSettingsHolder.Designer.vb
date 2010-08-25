@@ -60,7 +60,7 @@ Partial Class frmMediaSettingsHolder
         Me.pnlSettings.Controls.Add(Me.GroupBox3)
         Me.pnlSettings.Controls.Add(Me.GroupBox1)
         Me.pnlSettings.Controls.Add(Me.Panel2)
-        Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
+        Me.pnlSettings.Location = New System.Drawing.Point(12, 4)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 83

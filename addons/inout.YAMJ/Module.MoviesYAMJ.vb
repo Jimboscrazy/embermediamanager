@@ -325,6 +325,26 @@ Public Class OutputYAMJ_Module
     Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.IsAllowedToDownload
 
     End Function
+
+    Public Function CopyBackDrops(ByVal sPath As String, ByVal sFile As String) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.CopyBackDrops
+        If Not String.IsNullOrEmpty(sPath) Then
+            If FileUtils.Common.isVideoTS(sPath) Then
+
+                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+
+                'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
+
+            Else
+                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(sFile), "-fanart.jpg")))
+                Else
+                    'FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, Path.GetFileName(sPath)))
+                End If
+            End If
+        End If
+    End Function
 End Class
 
 Public Class MySettings

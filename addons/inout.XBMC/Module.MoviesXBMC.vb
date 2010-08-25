@@ -204,6 +204,7 @@ Public Class InputXBMC_Module
         SPanel.Panel = Me.fInputSettings.pnlSettings
         AddHandler Me.fInputSettings.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler Me.fInputSettings.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        fInputSettings.orderChanged()
         Return SPanel
         'Return Nothing
     End Function
@@ -266,7 +267,6 @@ End Class
 
 Public Class OutputXBMC_Module
     Implements Interfaces.EmberMovieOutputModule
-
     Private _Enabled As Boolean
     Public Shared _AssemblyName As String
     Private fOutputSettings As frmMovieOutputSettings
@@ -303,8 +303,9 @@ Public Class OutputXBMC_Module
         Select Case imageType
             Case Enums.ImageType.Posters
                 Try
+                    'YAMJ Options, Remove after cloning the module
                     If eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                        If eSettings.MovieNameJPG OrElse eSettings.MovieJPG OrElse Master.eSettings.FolderJPG OrElse eSettings.PosterJPG Then
+                        If eSettings.MovieNameJPG OrElse eSettings.MovieJPG OrElse eSettings.FolderJPG OrElse eSettings.PosterJPG Then
                             pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".jpg")
                             If Not File.Exists(pPath) OrElse (Master.eSettings.OverwritePoster) Then
                                 imageList.Add(pPath)
@@ -315,9 +316,10 @@ Public Class OutputXBMC_Module
                                 imageList.Add(pPath)
                             End If
                         End If
+                        'YAMJ Options, Remove after cloning the module
                     ElseIf eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(mMovie.Filename) Then
 
-                        If eSettings.MovieNameJPG OrElse eSettings.MovieJPG OrElse Master.eSettings.FolderJPG OrElse eSettings.PosterJPG Then
+                        If eSettings.MovieNameJPG OrElse eSettings.MovieJPG OrElse eSettings.FolderJPG OrElse eSettings.PosterJPG Then
                             pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".jpg")
                             If Not File.Exists(pPath) OrElse (Master.eSettings.OverwritePoster) Then
                                 imageList.Add(pPath)
@@ -353,7 +355,7 @@ Public Class OutputXBMC_Module
                             End If
                         End If
 
-                        If eSettings.MovieNameJPG AndAlso (Not mMovie.isSingle OrElse Not OutputXBMC_Module.eSettings.MovieNameMultiOnly) Then
+                        If eSettings.MovieNameJPG AndAlso (Not mMovie.isSingle OrElse Not eSettings.MovieNameMultiOnly) Then
                             If FileUtils.Common.isVideoTS(mMovie.Filename) Then
                                 tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.jpg")
                             ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
@@ -373,7 +375,7 @@ Public Class OutputXBMC_Module
                             End If
                         End If
 
-                        If eSettings.MovieNameTBN AndAlso (Not mMovie.isSingle OrElse Not OutputXBMC_Module.eSettings.MovieNameMultiOnly) Then
+                        If eSettings.MovieNameTBN AndAlso (Not mMovie.isSingle OrElse Not eSettings.MovieNameMultiOnly) Then
                             If FileUtils.Common.isVideoTS(mMovie.Filename) Then
                                 tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.tbn")
                             ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
@@ -398,7 +400,7 @@ Public Class OutputXBMC_Module
                 End Try
 
             Case Enums.ImageType.Fanart
-
+                'YAMJ Options, Remove after cloning the module
                 If eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(mMovie.Filename) Then
                     fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".fanart.jpg")
                     If Not File.Exists(fPath) OrElse (Master.eSettings.OverwriteFanart) Then
@@ -407,6 +409,7 @@ Public Class OutputXBMC_Module
                             imageList.Add(Path.Combine(eSettings.BDPath, Path.GetFileName(fPath)))
                         End If
                     End If
+                    'YAMJ Options, Remove after cloning the module
                 ElseIf eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(mMovie.Filename) Then
                     fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".fanart.jpg")
                     If Not File.Exists(fPath) OrElse (Master.eSettings.OverwriteFanart) Then
@@ -419,7 +422,7 @@ Public Class OutputXBMC_Module
                     Dim tmpName As String = Path.GetFileNameWithoutExtension(mMovie.Filename)
                     fPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, tmpName)
 
-                    If eSettings.MovieNameDotFanartJPG AndAlso (Not mMovie.isSingle OrElse Not OutputXBMC_Module.eSettings.MovieNameMultiOnly) Then
+                    If eSettings.MovieNameDotFanartJPG AndAlso (Not mMovie.isSingle OrElse Not eSettings.MovieNameMultiOnly) Then
                         If FileUtils.Common.isVideoTS(mMovie.Filename) Then
                             tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.fanart.jpg")
                         ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
@@ -508,6 +511,7 @@ Public Class OutputXBMC_Module
         SPanel.Panel = Me.fOutputSettings.pnlSettings
         AddHandler Me.fOutputSettings.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler Me.fOutputSettings.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        fOutputSettings.orderChanged()
         Return SPanel
         'Return Nothing
     End Function
@@ -586,7 +590,7 @@ Public Class OutputXBMC_Module
                 Case Else
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
                     (eSettings.MovieTBN OrElse eSettings.MovieNameTBN OrElse eSettings.MovieJPG OrElse _
-                     eSettings.MovieNameJPG OrElse eSettings.PosterTBN OrElse eSettings.PosterJPG OrElse Master.eSettings.FolderJPG) AndAlso _
+                     eSettings.MovieNameJPG OrElse eSettings.PosterTBN OrElse eSettings.PosterJPG OrElse eSettings.FolderJPG) AndAlso _
                      (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
                         Return True
                     Else
@@ -597,6 +601,31 @@ Public Class OutputXBMC_Module
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
+    End Function
+
+    Public Function CopyBackDrops(ByVal sPath As String, ByVal sFile As String) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.CopyBackDrops
+        If Not String.IsNullOrEmpty(sPath) Then
+            If FileUtils.Common.isVideoTS(sPath) Then
+                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                Else
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, Path.GetFileName(sPath)))
+                End If
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
+                Else
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, Path.GetFileName(sPath)))
+                End If
+            Else
+                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(sFile), "-fanart.jpg")))
+                Else
+                    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(eSettings.BDPath, Path.GetFileName(sPath)))
+                End If
+            End If
+        End If
+        Return True
     End Function
 End Class
 

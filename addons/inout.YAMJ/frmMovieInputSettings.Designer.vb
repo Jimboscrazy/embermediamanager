@@ -22,6 +22,7 @@ Partial Class frmMovieInputSettings
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMovieInputSettings))
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
@@ -35,6 +36,9 @@ Partial Class frmMovieInputSettings
         Me.chkFolderJPG = New System.Windows.Forms.CheckBox
         Me.chkPosterJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameJPG = New System.Windows.Forms.CheckBox
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
@@ -46,6 +50,9 @@ Partial Class frmMovieInputSettings
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.btnDown)
+        Me.Panel1.Controls.Add(Me.btnUp)
         Me.Panel1.Controls.Add(Me.chkEnabled)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
@@ -188,6 +195,36 @@ Partial Class frmMovieInputSettings
         Me.chkMovieNameJPG.Text = "<movie>.jpg"
         Me.chkMovieNameJPG.UseVisualStyleBackColor = True
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(534, 8)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(28, 12)
+        Me.Label3.TabIndex = 93
+        Me.Label3.Text = "Order"
+        '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(591, 2)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 92
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(566, 2)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 91
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
         'frmMovieInputSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -229,5 +266,8 @@ Partial Class frmMovieInputSettings
     Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
 
 End Class
