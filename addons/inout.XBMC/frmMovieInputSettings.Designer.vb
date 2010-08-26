@@ -24,6 +24,9 @@ Partial Class frmMovieInputSettings
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMovieInputSettings))
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
         Me.chkEnabled = New System.Windows.Forms.CheckBox
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
@@ -46,9 +49,9 @@ Partial Class frmMovieInputSettings
         Me.chkMovieJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.btnDown = New System.Windows.Forms.Button
-        Me.btnUp = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnETBrowse = New System.Windows.Forms.Button
+        Me.tdxtETPath = New System.Windows.Forms.TextBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
@@ -56,6 +59,7 @@ Partial Class frmMovieInputSettings
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -70,6 +74,36 @@ Partial Class frmMovieInputSettings
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(617, 25)
         Me.Panel1.TabIndex = 82
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(534, 8)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(28, 12)
+        Me.Label3.TabIndex = 93
+        Me.Label3.Text = "Order"
+        '
+        'btnDown
+        '
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(591, 2)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 92
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(566, 2)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 91
+        Me.btnUp.UseVisualStyleBackColor = True
         '
         'chkEnabled
         '
@@ -92,6 +126,7 @@ Partial Class frmMovieInputSettings
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.GroupBox1)
         Me.GroupBox8.Controls.Add(Me.GroupBox21)
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
@@ -99,7 +134,7 @@ Partial Class frmMovieInputSettings
         Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(3, 31)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(409, 283)
+        Me.GroupBox8.Size = New System.Drawing.Size(611, 360)
         Me.GroupBox8.TabIndex = 81
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -109,9 +144,9 @@ Partial Class frmMovieInputSettings
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
         Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(299, 114)
+        Me.GroupBox21.Location = New System.Drawing.Point(467, 251)
         Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(102, 159)
+        Me.GroupBox21.Size = New System.Drawing.Size(138, 61)
         Me.GroupBox21.TabIndex = 3
         Me.GroupBox21.TabStop = False
         Me.GroupBox21.Text = "Trailer"
@@ -193,9 +228,9 @@ Partial Class frmMovieInputSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
         Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(157, 114)
+        Me.GroupBox6.Location = New System.Drawing.Point(467, 170)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(136, 159)
+        Me.GroupBox6.Size = New System.Drawing.Size(136, 75)
         Me.GroupBox6.TabIndex = 2
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -243,9 +278,9 @@ Partial Class frmMovieInputSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
         Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 114)
+        Me.GroupBox5.Location = New System.Drawing.Point(467, 15)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(138, 159)
+        Me.GroupBox5.Size = New System.Drawing.Size(138, 149)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Posters"
@@ -327,35 +362,36 @@ Partial Class frmMovieInputSettings
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
-        'Label3
+        'GroupBox1
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(534, 8)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(28, 12)
-        Me.Label3.TabIndex = 93
-        Me.Label3.Text = "Order"
+        Me.GroupBox1.Controls.Add(Me.btnETBrowse)
+        Me.GroupBox1.Controls.Add(Me.tdxtETPath)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 102)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(389, 56)
+        Me.GroupBox1.TabIndex = 86
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Extrathunbs Folder"
         '
-        'btnDown
+        'btnETBrowse
         '
-        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(591, 2)
-        Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnDown.TabIndex = 92
-        Me.btnDown.UseVisualStyleBackColor = True
+        Me.btnETBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnETBrowse.Location = New System.Drawing.Point(358, 15)
+        Me.btnETBrowse.Name = "btnETBrowse"
+        Me.btnETBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnETBrowse.TabIndex = 1
+        Me.btnETBrowse.Text = "..."
+        Me.btnETBrowse.UseVisualStyleBackColor = True
         '
-        'btnUp
+        'tdxtETPath
         '
-        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(566, 2)
-        Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnUp.TabIndex = 91
-        Me.btnUp.UseVisualStyleBackColor = True
+        Me.tdxtETPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tdxtETPath.Location = New System.Drawing.Point(7, 17)
+        Me.tdxtETPath.Name = "tdxtETPath"
+        Me.tdxtETPath.Size = New System.Drawing.Size(345, 22)
+        Me.tdxtETPath.TabIndex = 0
+        Me.tdxtETPath.Text = "extrathunbs\"
         '
         'frmMovieInputSettings
         '
@@ -384,6 +420,8 @@ Partial Class frmMovieInputSettings
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -413,5 +451,8 @@ Partial Class frmMovieInputSettings
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnETBrowse As System.Windows.Forms.Button
+    Friend WithEvents tdxtETPath As System.Windows.Forms.TextBox
 
 End Class

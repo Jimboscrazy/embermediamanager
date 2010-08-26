@@ -53,6 +53,9 @@ Partial Class frmMovieOutputSettings
         Me.chkAutoBD = New System.Windows.Forms.CheckBox
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.txtBDPath = New System.Windows.Forms.TextBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnETBrowse = New System.Windows.Forms.Button
+        Me.tdxtETPath = New System.Windows.Forms.TextBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
@@ -61,6 +64,7 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -119,7 +123,6 @@ Partial Class frmMovieOutputSettings
         'pnlSettings
         '
         Me.pnlSettings.Controls.Add(Me.GroupBox8)
-        Me.pnlSettings.Controls.Add(Me.GroupBox16)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(3, 2)
         Me.pnlSettings.Name = "pnlSettings"
@@ -128,14 +131,16 @@ Partial Class frmMovieOutputSettings
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.GroupBox1)
         Me.GroupBox8.Controls.Add(Me.GroupBox21)
+        Me.GroupBox8.Controls.Add(Me.GroupBox16)
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
         Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox8.Location = New System.Drawing.Point(3, 31)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(409, 283)
+        Me.GroupBox8.Size = New System.Drawing.Size(611, 345)
         Me.GroupBox8.TabIndex = 85
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -145,9 +150,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
         Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(299, 114)
+        Me.GroupBox21.Location = New System.Drawing.Point(469, 257)
         Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(102, 159)
+        Me.GroupBox21.Size = New System.Drawing.Size(136, 59)
         Me.GroupBox21.TabIndex = 3
         Me.GroupBox21.TabStop = False
         Me.GroupBox21.Text = "Trailer"
@@ -229,9 +234,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
         Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(157, 114)
+        Me.GroupBox6.Location = New System.Drawing.Point(469, 170)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(136, 159)
+        Me.GroupBox6.Size = New System.Drawing.Size(136, 81)
         Me.GroupBox6.TabIndex = 2
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -279,9 +284,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
         Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 114)
+        Me.GroupBox5.Location = New System.Drawing.Point(469, 15)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(138, 159)
+        Me.GroupBox5.Size = New System.Drawing.Size(138, 149)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Posters"
@@ -369,9 +374,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
         Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(3, 321)
+        Me.GroupBox16.Location = New System.Drawing.Point(12, 257)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(366, 69)
+        Me.GroupBox16.Size = New System.Drawing.Size(389, 69)
         Me.GroupBox16.TabIndex = 84
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Backdrops Folder"
@@ -390,7 +395,7 @@ Partial Class frmMovieOutputSettings
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(336, 15)
+        Me.btnBrowse.Location = New System.Drawing.Point(358, 15)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 1
@@ -402,8 +407,39 @@ Partial Class frmMovieOutputSettings
         Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
         Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(323, 22)
+        Me.txtBDPath.Size = New System.Drawing.Size(345, 22)
         Me.txtBDPath.TabIndex = 0
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnETBrowse)
+        Me.GroupBox1.Controls.Add(Me.tdxtETPath)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 104)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(389, 56)
+        Me.GroupBox1.TabIndex = 85
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Extrathunbs Folder"
+        '
+        'btnETBrowse
+        '
+        Me.btnETBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnETBrowse.Location = New System.Drawing.Point(358, 15)
+        Me.btnETBrowse.Name = "btnETBrowse"
+        Me.btnETBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnETBrowse.TabIndex = 1
+        Me.btnETBrowse.Text = "..."
+        Me.btnETBrowse.UseVisualStyleBackColor = True
+        '
+        'tdxtETPath
+        '
+        Me.tdxtETPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tdxtETPath.Location = New System.Drawing.Point(7, 17)
+        Me.tdxtETPath.Name = "tdxtETPath"
+        Me.tdxtETPath.Size = New System.Drawing.Size(345, 22)
+        Me.tdxtETPath.TabIndex = 0
+        Me.tdxtETPath.Text = "extrathunbs\"
         '
         'frmMovieOutputSettings
         '
@@ -434,6 +470,8 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox5.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -467,5 +505,8 @@ Partial Class frmMovieOutputSettings
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnETBrowse As System.Windows.Forms.Button
+    Friend WithEvents tdxtETPath As System.Windows.Forms.TextBox
 
 End Class

@@ -319,7 +319,7 @@ Public Class dlgSettings
         Next
         '****
         ModuleCounter = 1
-        For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules
+        For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules.OrderBy(Function(e) e.ModuleOrder)
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
@@ -331,7 +331,7 @@ Public Class dlgSettings
             End If
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules
+        For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules.OrderBy(Function(e) e.ModuleOrder)
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
@@ -3623,14 +3623,14 @@ Public Class dlgSettings
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
-            For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules
+            For Each s As ModulesManager._externalInputModuleClass In ModulesManager.Instance.externalInputModules.OrderBy(Function(e) e.ModuleOrder)
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
-            For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules
+            For Each s As ModulesManager._externalOutputModuleClass In ModulesManager.Instance.externalOutputModules.OrderBy(Function(e) e.ModuleOrder)
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception

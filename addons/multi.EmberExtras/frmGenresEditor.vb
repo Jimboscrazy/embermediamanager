@@ -176,6 +176,13 @@ Public Class frmGenresEditor
     End Sub
     Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
         If dgvGenres.SelectedCells.Count > 0 Then
+            Dim gi As String = dgvGenres.SelectedCells(0).Value.ToString
+            For Each g As xGenre In xmlGenres.listOfGenres
+                If g.searchstring = gi Then
+                    xmlGenres.listOfGenres.Remove(g)
+                    Exit For
+                End If
+            Next
             dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If

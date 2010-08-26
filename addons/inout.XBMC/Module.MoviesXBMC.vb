@@ -65,8 +65,8 @@ Public Class InputXBMC_Module
             tmpName = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Movie.Filename))).ToLower
             tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(Movie.Filename)).ToLower
 
-            If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                Movie.Extra = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+            If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, eSettings.ETPath, Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                Movie.Extra = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, eSettings.ETPath, Path.DirectorySeparatorChar, "thumb1.jpg")
             End If
 
             For Each fFile As String In fList
@@ -631,9 +631,10 @@ End Class
 
 Public Class MySettings
     Private _Enabled As Boolean
-    Private _bdpath As String
+    Private _bdpath As String = String.Empty
     Private _autobd As Boolean
-    Private _videotsparent As Boolean
+    Private _etpath As String = String.Empty
+    Private _videotsparent As Boolean ' to remove
     Private _fanartjpg As Boolean
     Private _movienamemultionly As Boolean
     Private _moviejpg As Boolean
@@ -669,6 +670,7 @@ Public Class MySettings
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
         AdvancedSettings.SetSetting(String.Concat(prefix, "BDPath"), BDPath)
+        AdvancedSettings.SetSetting(String.Concat(prefix, "ETPath"), ETPath)
         'AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Sub Load(ByVal prefix As String)
@@ -688,6 +690,7 @@ Public Class MySettings
         PosterTBN = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "PosterTBN"), PosterTBN)
         AutoBD = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
         BDPath = AdvancedSettings.GetSetting(String.Concat(prefix, "BDPath"), BDPath)
+        ETPath = AdvancedSettings.GetSetting(String.Concat(prefix, "ETPath"), ETPath)
         'VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
 
@@ -713,6 +716,14 @@ Public Class MySettings
         End Get
         Set(ByVal value As String)
             Me._bdpath = value
+        End Set
+    End Property
+    Public Property ETPath() As String
+        Get
+            Return Me._etpath
+        End Get
+        Set(ByVal value As String)
+            Me._etpath = value
         End Set
     End Property
     Public Property VideoTSParent() As Boolean
