@@ -74,13 +74,13 @@ Public Class InputXBMC_Module
                 If String.IsNullOrEmpty(Movie.Fanart) Then
                     If (Movie.isSingle AndAlso eSettings.FanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "fanart.jpg")) _
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                                ((eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, "-fanart.jpg")) _
-                                OrElse (eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
-                                OrElse (eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg")))) _
-                                OrElse (eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg")))) _
+                        ((eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, "-fanart.jpg")) _
+                        OrElse (eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
+                        OrElse (eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg")))) _
+                        OrElse (eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                                (((eSettings.MovieNameDotFanartJPG) AndAlso fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
-                                OrElse ((eSettings.MovieNameDotFanartJPG) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
+                        (((eSettings.MovieNameDotFanartJPG) AndAlso fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
+                        OrElse ((eSettings.MovieNameDotFanartJPG) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
 
                         Movie.Fanart = fFile
                         Continue For
@@ -90,21 +90,21 @@ Public Class InputXBMC_Module
                 'poster
                 If String.IsNullOrEmpty(Movie.Poster) Then
                     If (Movie.isSingle AndAlso (eSettings.MovieTBN AndAlso fFile.ToLower = Path.Combine(parPath, "movie.tbn")) _
-                                OrElse (eSettings.PosterTBN AndAlso fFile.ToLower = Path.Combine(parPath, "poster.tbn")) _
-                                OrElse (eSettings.MovieJPG AndAlso fFile.ToLower = Path.Combine(parPath, "movie.jpg")) _
-                                OrElse (eSettings.PosterJPG AndAlso fFile.ToLower = Path.Combine(parPath, "poster.jpg")) _
-                                OrElse (eSettings.FolderJPG AndAlso fFile.ToLower = Path.Combine(parPath, "folder.jpg"))) _
+                        OrElse (eSettings.PosterTBN AndAlso fFile.ToLower = Path.Combine(parPath, "poster.tbn")) _
+                        OrElse (eSettings.MovieJPG AndAlso fFile.ToLower = Path.Combine(parPath, "movie.jpg")) _
+                        OrElse (eSettings.PosterJPG AndAlso fFile.ToLower = Path.Combine(parPath, "poster.jpg")) _
+                        OrElse (eSettings.FolderJPG AndAlso fFile.ToLower = Path.Combine(parPath, "folder.jpg"))) _
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                                ((eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
-                                OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")))) _
+                            ((eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
+                        OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                                 ((eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "index.tbn")) _
-                                OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")))) _
+                        OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                                 (((eSettings.MovieNameTBN) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".tbn")) _
-                                OrElse ((eSettings.MovieNameTBN) AndAlso fFile.ToLower = String.Concat(tmpName, ".tbn")) _
-                                OrElse ((eSettings.MovieNameJPG) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".jpg")) _
-                                OrElse ((eSettings.MovieNameJPG) AndAlso fFile.ToLower = String.Concat(tmpName, ".jpg")))) Then
+                        OrElse ((eSettings.MovieNameTBN) AndAlso fFile.ToLower = String.Concat(tmpName, ".tbn")) _
+                        OrElse ((eSettings.MovieNameJPG) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".jpg")) _
+                        OrElse ((eSettings.MovieNameJPG) AndAlso fFile.ToLower = String.Concat(tmpName, ".jpg")))) Then
                         Movie.Poster = fFile
                         Continue For
                     End If
@@ -113,11 +113,11 @@ Public Class InputXBMC_Module
                 'nfo
                 If String.IsNullOrEmpty(Movie.Nfo) Then
                     If (Movie.isSingle AndAlso eSettings.MovieNFO AndAlso fFile.ToLower = Path.Combine(parPath, "movie.nfo")) _
-                    OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
-                    (((eSettings.MovieNameNFO) AndAlso (fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
-                                                                             fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
-                                                                             fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
-                                                                             fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
+                        OrElse ((Not Movie.isSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
+                        (((eSettings.MovieNameNFO) AndAlso (fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo") OrElse _
+                         fFile.ToLower = String.Concat(tmpName, ".nfo") OrElse _
+                         fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
+                         fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
                         Movie.Nfo = fFile
                         Continue For
                     End If
