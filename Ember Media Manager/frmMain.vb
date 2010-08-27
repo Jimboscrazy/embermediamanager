@@ -6310,7 +6310,8 @@ doCancel:
                         ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Posters, pResults, True, AllowFA)
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                             Master.currMovie.PosterPath = pResults.ImagePath
-                            If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                            'If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                            If pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                         End If
                         pResults = Nothing
                     End If
@@ -6322,7 +6323,8 @@ doCancel:
                         ModulesManager.Instance.ScraperSelectImageOfType(Master.currMovie, Enums.ImageType.Fanart, fResults, True, True)
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             Master.currMovie.FanartPath = fResults.ImagePath
-                            If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
+                            'If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
+                            If fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
                         End If
                         fResults = Nothing
                     End If

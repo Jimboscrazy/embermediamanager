@@ -568,7 +568,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Credits")) Then .Credits = SQLreader("Credits").ToString
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
                         If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
-                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.NoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                        'If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.NoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) Then .Fanart.URL = SQLreader("FanartURL").ToString
                     End With
 
                 End Using
@@ -648,28 +649,28 @@ Public Class Database
                     End While
                 End Using
             End Using
-            If Not Master.eSettings.NoSaveImagesToNfo Then
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesFanart WHERE MovieID = ", MovieID, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        Dim thumb As MediaContainers.Thumb
-                        While SQLreader.Read
-                            thumb = New MediaContainers.Thumb
-                            If Not DBNull.Value.Equals(SQLreader("preview")) Then thumb.Preview = SQLreader("preview").ToString
-                            If Not DBNull.Value.Equals(SQLreader("thumbs")) Then thumb.Text = SQLreader("thumbs").ToString
-                            _movieDB.Movie.Fanart.Thumb.Add(thumb)
-                        End While
-                    End Using
+            'If Not Master.eSettings.NoSaveImagesToNfo Then
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesFanart WHERE MovieID = ", MovieID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim thumb As MediaContainers.Thumb
+                    While SQLreader.Read
+                        thumb = New MediaContainers.Thumb
+                        If Not DBNull.Value.Equals(SQLreader("preview")) Then thumb.Preview = SQLreader("preview").ToString
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then thumb.Text = SQLreader("thumbs").ToString
+                        _movieDB.Movie.Fanart.Thumb.Add(thumb)
+                    End While
                 End Using
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesPosters WHERE MovieID = ", MovieID, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLreader.Read
-                            If Not DBNull.Value.Equals(SQLreader("thumbs")) Then _movieDB.Movie.Thumb.Add(SQLreader("thumbs").ToString)
-                        End While
-                    End Using
+            End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesPosters WHERE MovieID = ", MovieID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then _movieDB.Movie.Thumb.Add(SQLreader("thumbs").ToString)
+                    End While
                 End Using
-            End If
+            End Using
+            'End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _movieDB.ID = -1
@@ -1118,11 +1119,11 @@ Public Class Database
                 parSubPath.Value = _movieDB.SubPath
                 parExtraPath.Value = _movieDB.ExtraPath
 
-                If Not Master.eSettings.NoSaveImagesToNfo Then
-                    parFanartURL.Value = _movieDB.Movie.Fanart.URL
-                Else
-                    parFanartURL.Value = String.Empty
-                End If
+                'If Not Master.eSettings.NoSaveImagesToNfo Then
+                parFanartURL.Value = _movieDB.Movie.Fanart.URL
+                'Else
+                'parFanartURL.Value = String.Empty
+                'End If
 
                 parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.PosterPath)
                 parHasFanart.Value = Not String.IsNullOrEmpty(_movieDB.FanartPath)
@@ -1290,37 +1291,37 @@ Public Class Database
                         SQLcommandMoviesPosters.CommandText = String.Concat("DELETE FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesPosters.ExecuteNonQuery()
 
-                        If Not Master.eSettings.NoSaveImagesToNfo Then
-                            SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
-                                     "MovieID, thumbs", _
-                                     ") VALUES (?,?);")
-                            Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.UInt64, 0, "MovieID")
-                            Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumbs")
-                            For Each p As String In _movieDB.Movie.Thumb
-                                parPosters_MovieID.Value = _movieDB.ID
-                                parPosters_thumb.Value = p
-                                SQLcommandMoviesPosters.ExecuteNonQuery()
-                            Next
-                        End If
+                        'If Not Master.eSettings.NoSaveImagesToNfo Then
+                        SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
+                                 "MovieID, thumbs", _
+                                 ") VALUES (?,?);")
+                        Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.UInt64, 0, "MovieID")
+                        Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumbs")
+                        For Each p As String In _movieDB.Movie.Thumb
+                            parPosters_MovieID.Value = _movieDB.ID
+                            parPosters_thumb.Value = p
+                            SQLcommandMoviesPosters.ExecuteNonQuery()
+                        Next
+                        'End If
                     End Using
                     Using SQLcommandMoviesFanart As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                         SQLcommandMoviesFanart.CommandText = String.Concat("DELETE FROM MoviesFanart WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesFanart.ExecuteNonQuery()
 
-                        If Not Master.eSettings.NoSaveImagesToNfo Then
-                            SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
-                                       "MovieID, preview, thumbs", _
-                                       ") VALUES (?,?,?);")
-                            Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.UInt64, 0, "MovieID")
-                            Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
-                            Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
-                            For Each p As MediaContainers.Thumb In _movieDB.Movie.Fanart.Thumb
-                                parFanart_MovieID.Value = _movieDB.ID
-                                parFanart_Preview.Value = p.Preview
-                                parFanart_thumb.Value = p.Text
-                                SQLcommandMoviesFanart.ExecuteNonQuery()
-                            Next
-                        End If
+                        'If Not Master.eSettings.NoSaveImagesToNfo Then
+                        SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
+                                   "MovieID, preview, thumbs", _
+                                   ") VALUES (?,?,?);")
+                        Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.UInt64, 0, "MovieID")
+                        Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
+                        Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
+                        For Each p As MediaContainers.Thumb In _movieDB.Movie.Fanart.Thumb
+                            parFanart_MovieID.Value = _movieDB.ID
+                            parFanart_Preview.Value = p.Preview
+                            parFanart_thumb.Value = p.Text
+                            SQLcommandMoviesFanart.ExecuteNonQuery()
+                        Next
+                        'End If
                     End Using
                     Using SQLcommandSets As SQLite.SQLiteCommand = Master.DB.SQLcn.CreateCommand
                         SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
