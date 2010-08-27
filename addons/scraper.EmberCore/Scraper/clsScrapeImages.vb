@@ -87,7 +87,8 @@ Public Class ScrapeImages
                                     tImage.Description = "poster"
                             End Select
                             tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
-                            If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tImage.URL)
+                            'If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tImage.URL)
+                            imgResult.Posters.Add(tImage.URL)
                             tmpListTMDB.Add(tImage)
                             Image.Clear()
                         Next
@@ -107,7 +108,8 @@ Public Class ScrapeImages
                         For Each tmdbThumb As MediaContainers.Image In tmpListTMDB
                             tmdbThumb.WebImage.FromWeb(tmdbThumb.URL)
                             If Not IsNothing(tmdbThumb.WebImage.Image) Then
-                                If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tmdbThumb.URL)
+                                'If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tmdbThumb.URL)
+                                imgResult.Posters.Add(tmdbThumb.URL)
                                 Image.Image = tmdbThumb.WebImage.Image
                                 Image.Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", StringUtils.CleanURL(tmdbThumb.URL), ").jpg")))
                             End If
@@ -145,11 +147,11 @@ Public Class ScrapeImages
                         If tmpListTMDB.Count > 0 Then
                             hasImages = True
 
-                            If Not Master.eSettings.NoSaveImagesToNfo Then
-                                For Each tmdbThumb As MediaContainers.Image In tmpListTMDB
-                                    imgResult.Posters.Add(tmdbThumb.URL)
-                                Next
-                            End If
+                            'If Not Master.eSettings.NoSaveImagesToNfo Then
+                            For Each tmdbThumb As MediaContainers.Image In tmpListTMDB
+                                imgResult.Posters.Add(tmdbThumb.URL)
+                            Next
+                            'End If
 
                             For Each iMovie As MediaContainers.Image In tmpListTMDB
                                 Select Case Master.eSettings.PreferredPosterSize
@@ -178,193 +180,195 @@ Public Class ScrapeImages
                                 Image.Clear()
                             Next
                         End If
+                End If
+
+                If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
+                    If IsNothing(Image.Image) Then
+                        'no poster of the proper size from TMDB found... try IMPA
+
+                        tmpListIMPA = IMPA.GetIMPAPosters(IMDBID)
+
+                        If tmpListIMPA.Count > 0 Then
+                            hasImages = True
+                            For Each iImage As MediaContainers.Image In tmpListIMPA
+                                Image.FromWeb(iImage.URL)
+                                If Not IsNothing(Image.Image) Then
+                                        'If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
+                                        imgResult.Posters.Add(iImage.URL)
+                                    Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
+                                    If Not tmpSize = Master.eSettings.PreferredPosterSize Then
+                                        'cache the first result from each type in case the preferred size is not available
+                                        Select Case tmpSize
+                                            Case Enums.PosterSize.Xlrg
+                                                If IsNothing(tmpIMPAX) Then
+                                                    tmpIMPAX = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Lrg
+                                                If IsNothing(tmpIMPAL) Then
+                                                    tmpIMPAL = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Mid
+                                                If IsNothing(tmpIMPAM) Then
+                                                    tmpIMPAM = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Small
+                                                If IsNothing(tmpIMPAS) Then
+                                                    tmpIMPAS = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Wide
+                                                If IsNothing(tmpIMPAW) Then
+                                                    tmpIMPAW = New Bitmap(Image.Image)
+                                                End If
+                                        End Select
+                                    Else
+                                        'image found
+                                        GoTo foundIT
+                                    End If
+                                End If
+                                Image.Clear()
+                            Next
+                        End If
                     End If
+                End If
+
+                If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
+                    If IsNothing(Image.Image) Then
+                        'no poster of the proper size from TMDB or IMPA found... try MPDB
+
+                        tmpListMPDB = MPDB.GetMPDBPosters(IMDBID)
+
+                        If tmpListMPDB.Count > 0 Then
+                            hasImages = True
+                            For Each iImage As MediaContainers.Image In tmpListMPDB
+                                Image.FromWeb(iImage.URL)
+                                If Not IsNothing(Image.Image) Then
+                                        'If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
+                                        imgResult.Posters.Add(iImage.URL)
+                                    Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
+                                    If Not tmpSize = Master.eSettings.PreferredPosterSize Then
+                                        'cache the first result from each type in case the preferred size is not available
+                                        Select Case tmpSize
+                                            Case Enums.PosterSize.Xlrg
+                                                If IsNothing(tmpMPDBX) Then
+                                                    tmpMPDBX = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Lrg
+                                                If IsNothing(tmpMPDBL) Then
+                                                    tmpMPDBL = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Mid
+                                                If IsNothing(tmpMPDBM) Then
+                                                    tmpMPDBM = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Small
+                                                If IsNothing(tmpMPDBS) Then
+                                                    tmpMPDBS = New Bitmap(Image.Image)
+                                                End If
+                                            Case Enums.PosterSize.Wide
+                                                If IsNothing(tmpMPDBW) Then
+                                                    tmpMPDBW = New Bitmap(Image.Image)
+                                                End If
+                                        End Select
+                                    Else
+                                        'image found
+                                        GoTo foundIT
+                                    End If
+                                End If
+                                Image.Clear()
+                            Next
+                        End If
+                    End If
+                End If
+
+                If IsNothing(Image.Image) AndAlso Not doAsk Then
+                    'STILL no image found, just get the first available image, starting with the largest
+                    If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
+                        'check TMDB first
+                        If tmpListTMDB.Count > 0 Then
+                            Dim x = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "original"
+                            If x.Count > 0 Then
+                                Image.FromWeb(x(0).URL)
+                                If Not IsNothing(Image.Image) Then GoTo foundIT
+                            End If
+
+                            Dim l = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "mid"
+                            If l.Count > 0 Then
+                                Image.FromWeb(l(0).URL)
+                                If Not IsNothing(Image.Image) Then GoTo foundIT
+                            End If
+
+                            Dim m = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "cover"
+                            If m.Count > 0 Then
+                                Image.FromWeb(m(0).URL)
+                                If Not IsNothing(Image.Image) Then GoTo foundIT
+                            End If
+
+                            Dim s = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "thumb"
+                            If s.Count > 0 Then
+                                Image.FromWeb(s(0).URL)
+                                If Not IsNothing(Image.Image) Then GoTo foundIT
+                            End If
+
+                        End If
+                    End If
+
+                    Image.Clear()
 
                     If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
-                        If IsNothing(Image.Image) Then
-                            'no poster of the proper size from TMDB found... try IMPA
-
-                            tmpListIMPA = IMPA.GetIMPAPosters(IMDBID)
-
-                            If tmpListIMPA.Count > 0 Then
-                                hasImages = True
-                                For Each iImage As MediaContainers.Image In tmpListIMPA
-                                    Image.FromWeb(iImage.URL)
-                                    If Not IsNothing(Image.Image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
-                                        If Not tmpSize = Master.eSettings.PreferredPosterSize Then
-                                            'cache the first result from each type in case the preferred size is not available
-                                            Select Case tmpSize
-                                                Case Enums.PosterSize.Xlrg
-                                                    If IsNothing(tmpIMPAX) Then
-                                                        tmpIMPAX = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Lrg
-                                                    If IsNothing(tmpIMPAL) Then
-                                                        tmpIMPAL = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Mid
-                                                    If IsNothing(tmpIMPAM) Then
-                                                        tmpIMPAM = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Small
-                                                    If IsNothing(tmpIMPAS) Then
-                                                        tmpIMPAS = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Wide
-                                                    If IsNothing(tmpIMPAW) Then
-                                                        tmpIMPAW = New Bitmap(Image.Image)
-                                                    End If
-                                            End Select
-                                        Else
-                                            'image found
-                                            GoTo foundIT
-                                        End If
-                                    End If
-                                    Image.Clear()
-                                Next
+                        If tmpListIMPA.Count > 0 Then
+                            If Not IsNothing(tmpIMPAX) Then
+                                Image.Image = New Bitmap(tmpIMPAX)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpIMPAL) Then
+                                Image.Image = New Bitmap(tmpIMPAL)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpIMPAM) Then
+                                Image.Image = New Bitmap(tmpIMPAM)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpIMPAS) Then
+                                Image.Image = New Bitmap(tmpIMPAS)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpIMPAW) Then
+                                Image.Image = New Bitmap(tmpIMPAW)
+                                GoTo foundIT
                             End If
                         End If
                     End If
+
+                    Image.Clear()
 
                     If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
-                        If IsNothing(Image.Image) Then
-                            'no poster of the proper size from TMDB or IMPA found... try MPDB
-
-                            tmpListMPDB = MPDB.GetMPDBPosters(IMDBID)
-
-                            If tmpListMPDB.Count > 0 Then
-                                hasImages = True
-                                For Each iImage As MediaContainers.Image In tmpListMPDB
-                                    Image.FromWeb(iImage.URL)
-                                    If Not IsNothing(Image.Image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Enums.PosterSize = Images.GetPosterDims(Image.Image)
-                                        If Not tmpSize = Master.eSettings.PreferredPosterSize Then
-                                            'cache the first result from each type in case the preferred size is not available
-                                            Select Case tmpSize
-                                                Case Enums.PosterSize.Xlrg
-                                                    If IsNothing(tmpMPDBX) Then
-                                                        tmpMPDBX = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Lrg
-                                                    If IsNothing(tmpMPDBL) Then
-                                                        tmpMPDBL = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Mid
-                                                    If IsNothing(tmpMPDBM) Then
-                                                        tmpMPDBM = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Small
-                                                    If IsNothing(tmpMPDBS) Then
-                                                        tmpMPDBS = New Bitmap(Image.Image)
-                                                    End If
-                                                Case Enums.PosterSize.Wide
-                                                    If IsNothing(tmpMPDBW) Then
-                                                        tmpMPDBW = New Bitmap(Image.Image)
-                                                    End If
-                                            End Select
-                                        Else
-                                            'image found
-                                            GoTo foundIT
-                                        End If
-                                    End If
-                                    Image.Clear()
-                                Next
+                        If tmpListMPDB.Count > 0 Then
+                            If Not IsNothing(tmpMPDBX) Then
+                                Image.Image = New Bitmap(tmpMPDBX)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBL) Then
+                                Image.Image = New Bitmap(tmpMPDBL)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBM) Then
+                                Image.Image = New Bitmap(tmpMPDBM)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBS) Then
+                                Image.Image = New Bitmap(tmpMPDBS)
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBW) Then
+                                Image.Image = New Bitmap(tmpMPDBW)
+                                GoTo foundIT
                             End If
                         End If
                     End If
 
-                    If IsNothing(Image.Image) AndAlso Not doAsk Then
-                        'STILL no image found, just get the first available image, starting with the largest
-                        If AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
-                            'check TMDB first
-                            If tmpListTMDB.Count > 0 Then
-                                Dim x = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "original"
-                                If x.Count > 0 Then
-                                    Image.FromWeb(x(0).URL)
-                                    If Not IsNothing(Image.Image) Then GoTo foundIT
-                                End If
+                    Image.Clear()
 
-                                Dim l = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "mid"
-                                If l.Count > 0 Then
-                                    Image.FromWeb(l(0).URL)
-                                    If Not IsNothing(Image.Image) Then GoTo foundIT
-                                End If
-
-                                Dim m = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "cover"
-                                If m.Count > 0 Then
-                                    Image.FromWeb(m(0).URL)
-                                    If Not IsNothing(Image.Image) Then GoTo foundIT
-                                End If
-
-                                Dim s = From MI As MediaContainers.Image In tmpListTMDB Where MI.Description = "thumb"
-                                If s.Count > 0 Then
-                                    Image.FromWeb(s(0).URL)
-                                    If Not IsNothing(Image.Image) Then GoTo foundIT
-                                End If
-
-                            End If
-                        End If
-
-                        Image.Clear()
-
-                        If AdvancedSettings.GetBooleanSetting("UseIMPA", False) Then
-                            If tmpListIMPA.Count > 0 Then
-                                If Not IsNothing(tmpIMPAX) Then
-                                    Image.Image = New Bitmap(tmpIMPAX)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpIMPAL) Then
-                                    Image.Image = New Bitmap(tmpIMPAL)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpIMPAM) Then
-                                    Image.Image = New Bitmap(tmpIMPAM)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpIMPAS) Then
-                                    Image.Image = New Bitmap(tmpIMPAS)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpIMPAW) Then
-                                    Image.Image = New Bitmap(tmpIMPAW)
-                                    GoTo foundIT
-                                End If
-                            End If
-                        End If
-
-                        Image.Clear()
-
-                        If AdvancedSettings.GetBooleanSetting("UseMPDB", False) Then
-                            If tmpListMPDB.Count > 0 Then
-                                If Not IsNothing(tmpMPDBX) Then
-                                    Image.Image = New Bitmap(tmpMPDBX)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpMPDBL) Then
-                                    Image.Image = New Bitmap(tmpMPDBL)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpMPDBM) Then
-                                    Image.Image = New Bitmap(tmpMPDBM)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpMPDBS) Then
-                                    Image.Image = New Bitmap(tmpMPDBS)
-                                    GoTo foundIT
-                                End If
-                                If Not IsNothing(tmpMPDBW) Then
-                                    Image.Image = New Bitmap(tmpMPDBW)
-                                    GoTo foundIT
-                                End If
-                            End If
-                        End If
-
-                        Image.Clear()
-
-                    End If
+                End If
 
                 End If
 
@@ -460,19 +464,19 @@ Public Class ScrapeImages
                                                     End If
                                             End Select
                                         End If
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then
-                                            If Not miFanart.URL.Contains("_thumb.") Then
-                                                thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
-                                                If thumbLink.Contains("_poster.") Then
-                                                    thumbLink = thumbLink.Replace("_poster.", "_thumb.")
-                                                Else
-                                                    thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                                                End If
-                                                imgResult.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                        'If Not Master.eSettings.NoSaveImagesToNfo Then
+                                        If Not miFanart.URL.Contains("_thumb.") Then
+                                            thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
+                                            If thumbLink.Contains("_poster.") Then
+                                                thumbLink = thumbLink.Replace("_poster.", "_thumb.")
+                                            Else
+                                                thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
                                             End If
+                                            imgResult.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
                                         End If
+                                        'End If
                                     End If
-                                    Image.Clear()
+                            Image.Clear()
                                 Next
                             End If
                         End If
@@ -509,20 +513,20 @@ Public Class ScrapeImages
 
                             'setup fanart for nfo
                             Dim thumbLink As String = String.Empty
-                            If Not Master.eSettings.NoSaveImagesToNfo Then
-                                imgResult.Fanart.URL = "http://images.themoviedb.org"
-                                For Each miFanart As MediaContainers.Image In tmpListTMDB
-                                    If Not miFanart.URL.Contains("_thumb.") Then
-                                        thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
-                                        If thumbLink.Contains("_poster.") Then
-                                            thumbLink = thumbLink.Replace("_poster.", "_thumb.")
-                                        Else
-                                            thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                                        End If
-                                        imgResult.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
+                            'If Not Master.eSettings.NoSaveImagesToNfo Then
+                            imgResult.Fanart.URL = "http://images.themoviedb.org"
+                            For Each miFanart As MediaContainers.Image In tmpListTMDB
+                                If Not miFanart.URL.Contains("_thumb.") Then
+                                    thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
+                                    If thumbLink.Contains("_poster.") Then
+                                        thumbLink = thumbLink.Replace("_poster.", "_thumb.")
+                                    Else
+                                        thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
                                     End If
-                                Next
-                            End If
+                                    imgResult.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                End If
+                            Next
+                            'End If
 
                             If Master.eSettings.AutoET AndAlso doETs Then
 
@@ -652,7 +656,7 @@ Public Class ScrapeImages
 
                             Image.Clear()
 
-                        End If
+                    End If
                     End If
                 End If
             End If

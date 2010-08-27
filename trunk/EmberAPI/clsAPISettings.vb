@@ -177,7 +177,7 @@ Public Class Settings
     Private _noepfilters As Boolean
     Private _nofilterepisode As Boolean
     Private _nofilters As Boolean
-    Private _nosaveimagestonfo As Boolean
+    'Private _nosaveimagestonfo As Boolean
     Private _noshowfilters As Boolean
     Private _nostackexts As List(Of String)
     Private _notokens As Boolean
@@ -1598,14 +1598,7 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property NoSaveImagesToNfo() As Boolean
-        Get
-            Return Me._nosaveimagestonfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._nosaveimagestonfo = value
-        End Set
-    End Property
+
 
     Public Property NoShowFilters() As Boolean
         Get
@@ -3173,7 +3166,6 @@ Public Class Settings
         Me._overwritetrailer = False
         Me._deletealltrailers = False
         Me._sets = New List(Of String)
-        Me._nosaveimagestonfo = False
         Me._showdims = False
         Me._nodisplayposter = False
         Me._nodisplayfanart = False

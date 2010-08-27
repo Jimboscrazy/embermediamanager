@@ -263,7 +263,8 @@ Public Class dlgImgSelect
             Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
             Try
                 Me.IMPAPosters.Item(i).WebImage.FromWeb(Me.IMPAPosters.Item(i).URL)
-                If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.IMPAPosters.Item(i).URL)
+                'If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.IMPAPosters.Item(i).URL)
+                Me.Results.Posters.Add(Me.IMPAPosters.Item(i).URL)
                 If Master.eSettings.UseImgCache Then
                     Try
                         Me.IMPAPosters.Item(i).URL = StringUtils.CleanURL(Me.IMPAPosters.Item(i).URL)
@@ -314,7 +315,8 @@ Public Class dlgImgSelect
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Try
                     Me.MPDBPosters.Item(i).WebImage.FromWeb(Me.MPDBPosters.Item(i).URL)
-                    If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MPDBPosters.Item(i).URL)
+                    'If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MPDBPosters.Item(i).URL)
+                    Me.Results.Posters.Add(Me.MPDBPosters.Item(i).URL)
                     If Master.eSettings.UseImgCache Then
                         Try
                             Me.MPDBPosters.Item(i).URL = StringUtils.CleanURL(Me.MPDBPosters.Item(i).URL)
@@ -370,23 +372,23 @@ Public Class dlgImgSelect
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Try
                         Me.TMDBPosters.Item(i).WebImage.FromWeb(Me.TMDBPosters.Item(i).URL)
-                        If Not Master.eSettings.NoSaveImagesToNfo Then
-                            If Me.DLType = Enums.ImageType.Fanart Then
-                                If Not Me.TMDBPosters.Item(i).URL.Contains("-thumb.") Then
-                                    Me.Results.Fanart.URL = GetServerURL(Me.TMDBPosters.Item(i).URL) '  "http://images.themoviedb.org"
-                                    thumbLink = RemoveServerURL(Me.TMDBPosters.Item(i).URL)
-                                    'If thumbLink.Contains("_poster.") Then
-                                    thumbLink = thumbLink.Replace("-poster.", "-thumb.")
-                                    thumbLink = thumbLink.Replace("-original.", "-thumb.")
-                                    ''Else
-                                    'thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "-thumb")
-                                    'End If
-                                    Me.Results.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
-                                End If
-                            Else
-                                Me.Results.Posters.Add(Me.TMDBPosters.Item(i).URL)
+                        'If Not Master.eSettings.NoSaveImagesToNfo Then
+                        If Me.DLType = Enums.ImageType.Fanart Then
+                            If Not Me.TMDBPosters.Item(i).URL.Contains("-thumb.") Then
+                                Me.Results.Fanart.URL = GetServerURL(Me.TMDBPosters.Item(i).URL) '  "http://images.themoviedb.org"
+                                thumbLink = RemoveServerURL(Me.TMDBPosters.Item(i).URL)
+                                'If thumbLink.Contains("_poster.") Then
+                                thumbLink = thumbLink.Replace("-poster.", "-thumb.")
+                                thumbLink = thumbLink.Replace("-original.", "-thumb.")
+                                ''Else
+                                'thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "-thumb")
+                                'End If
+                                Me.Results.Fanart.Thumb.Add(New MediaContainers.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
                             End If
+                        Else
+                            Me.Results.Posters.Add(Me.TMDBPosters.Item(i).URL)
                         End If
+                        'End If
                         If Master.eSettings.UseImgCache OrElse Master.eSettings.AutoET Then
                             Try
                                 Me.TMDBPosters.Item(i).URL = StringUtils.CleanURL(Me.TMDBPosters.Item(i).URL)

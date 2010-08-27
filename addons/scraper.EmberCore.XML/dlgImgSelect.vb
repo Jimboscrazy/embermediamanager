@@ -242,7 +242,8 @@ Public Class dlgImgSelect
             Me.bwDownload.ReportProgress(i + 1, Me.MovieImages.Item(i).URL)
             Try
                 Me.MovieImages.Item(i).WebImage.FromWeb(Me.MovieImages.Item(i).URL)
-                If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MovieImages.Item(i).URL)
+                'If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MovieImages.Item(i).URL)
+                Me.Results.Posters.Add(Me.MovieImages.Item(i).URL)
                 If Master.eSettings.UseImgCache Then
                     Try
                         Me.MovieImages.Item(i).URL = StringUtils.CleanURL(Me.MovieImages.Item(i).URL)

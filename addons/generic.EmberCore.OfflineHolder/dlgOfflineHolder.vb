@@ -564,7 +564,8 @@ Public Class dlgOfflineHolder
                 ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
                 If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                     tMovie.FanartPath = fResults.ImagePath
-                    If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
+                    'If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
+                    tMovie.Movie.Fanart = fResults.Fanart
                 End If
                 'sPath = Path.Combine(Master.TempPath, "poster.jpg")
                 fResults = New Containers.ImgResult

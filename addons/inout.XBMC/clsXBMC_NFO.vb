@@ -678,7 +678,7 @@ Public Class NFO
         ' Serialize XBMC.Movie to an NFO
         '\\
         Dim xMovie As XBMC.Movie = ContertToXBMCMovie(movieToSave.Movie)
-
+        If OutputXBMC_Module.eSettings.NoSaveImagesToNfo Then xMovie.Fanart.URL = String.Empty
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})

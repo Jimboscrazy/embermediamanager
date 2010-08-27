@@ -30,9 +30,16 @@ Partial Class frmMovieOutputSettings
         Me.btnUp = New System.Windows.Forms.Button
         Me.pnlSettings = New System.Windows.Forms.Panel
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnETBrowse = New System.Windows.Forms.Button
+        Me.tdxtETPath = New System.Windows.Forms.TextBox
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
         Me.rbDashTrailer = New System.Windows.Forms.RadioButton
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox
+        Me.chkAutoBD = New System.Windows.Forms.CheckBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
@@ -49,22 +56,19 @@ Partial Class frmMovieOutputSettings
         Me.chkMovieJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox
-        Me.GroupBox16 = New System.Windows.Forms.GroupBox
-        Me.chkAutoBD = New System.Windows.Forms.CheckBox
-        Me.btnBrowse = New System.Windows.Forms.Button
-        Me.txtBDPath = New System.Windows.Forms.TextBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.btnETBrowse = New System.Windows.Forms.Button
-        Me.tdxtETPath = New System.Windows.Forms.TextBox
+        Me.chkActorCache = New System.Windows.Forms.CheckBox
+        Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
-        Me.GroupBox16.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -131,6 +135,7 @@ Partial Class frmMovieOutputSettings
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.GroupBox2)
         Me.GroupBox8.Controls.Add(Me.GroupBox1)
         Me.GroupBox8.Controls.Add(Me.GroupBox21)
         Me.GroupBox8.Controls.Add(Me.GroupBox16)
@@ -145,14 +150,45 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnETBrowse)
+        Me.GroupBox1.Controls.Add(Me.tdxtETPath)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 104)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(389, 56)
+        Me.GroupBox1.TabIndex = 85
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Extrathunbs Folder"
+        '
+        'btnETBrowse
+        '
+        Me.btnETBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnETBrowse.Location = New System.Drawing.Point(358, 15)
+        Me.btnETBrowse.Name = "btnETBrowse"
+        Me.btnETBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnETBrowse.TabIndex = 1
+        Me.btnETBrowse.Text = "..."
+        Me.btnETBrowse.UseVisualStyleBackColor = True
+        '
+        'tdxtETPath
+        '
+        Me.tdxtETPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tdxtETPath.Location = New System.Drawing.Point(7, 17)
+        Me.tdxtETPath.Name = "tdxtETPath"
+        Me.tdxtETPath.Size = New System.Drawing.Size(345, 22)
+        Me.tdxtETPath.TabIndex = 0
+        Me.tdxtETPath.Text = "extrathunbs\"
+        '
         'GroupBox21
         '
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
         Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(469, 257)
+        Me.GroupBox21.Location = New System.Drawing.Point(450, 257)
         Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(136, 59)
+        Me.GroupBox21.Size = New System.Drawing.Size(155, 59)
         Me.GroupBox21.TabIndex = 3
         Me.GroupBox21.TabStop = False
         Me.GroupBox21.Text = "Trailer"
@@ -180,6 +216,48 @@ Partial Class frmMovieOutputSettings
         Me.rbDashTrailer.TabStop = True
         Me.rbDashTrailer.Text = "-trailer"
         Me.rbDashTrailer.UseVisualStyleBackColor = True
+        '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
+        Me.GroupBox16.Controls.Add(Me.btnBrowse)
+        Me.GroupBox16.Controls.Add(Me.txtBDPath)
+        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox16.Location = New System.Drawing.Point(12, 166)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(389, 69)
+        Me.GroupBox16.TabIndex = 84
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "Backdrops Folder"
+        '
+        'chkAutoBD
+        '
+        Me.chkAutoBD.AutoSize = True
+        Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
+        Me.chkAutoBD.Name = "chkAutoBD"
+        Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
+        Me.chkAutoBD.TabIndex = 2
+        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
+        Me.chkAutoBD.UseVisualStyleBackColor = True
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(358, 15)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnBrowse.TabIndex = 1
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        '
+        'txtBDPath
+        '
+        Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
+        Me.txtBDPath.Name = "txtBDPath"
+        Me.txtBDPath.Size = New System.Drawing.Size(345, 22)
+        Me.txtBDPath.TabIndex = 0
         '
         'GroupBox7
         '
@@ -234,9 +312,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
         Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(469, 170)
+        Me.GroupBox6.Location = New System.Drawing.Point(450, 170)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(136, 81)
+        Me.GroupBox6.Size = New System.Drawing.Size(155, 81)
         Me.GroupBox6.TabIndex = 2
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -284,9 +362,9 @@ Partial Class frmMovieOutputSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
         Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(469, 15)
+        Me.GroupBox5.Location = New System.Drawing.Point(450, 15)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(138, 149)
+        Me.GroupBox5.Size = New System.Drawing.Size(157, 149)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Posters"
@@ -368,78 +446,40 @@ Partial Class frmMovieOutputSettings
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
-        'GroupBox16
+        'chkActorCache
         '
-        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
-        Me.GroupBox16.Controls.Add(Me.btnBrowse)
-        Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox16.Location = New System.Drawing.Point(12, 257)
-        Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(389, 69)
-        Me.GroupBox16.TabIndex = 84
-        Me.GroupBox16.TabStop = False
-        Me.GroupBox16.Text = "Backdrops Folder"
+        Me.chkActorCache.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkActorCache.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkActorCache.Location = New System.Drawing.Point(6, 20)
+        Me.chkActorCache.Name = "chkActorCache"
+        Me.chkActorCache.Size = New System.Drawing.Size(173, 19)
+        Me.chkActorCache.TabIndex = 87
+        Me.chkActorCache.Text = "Enable Actors Cache"
+        Me.chkActorCache.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkActorCache.UseVisualStyleBackColor = True
         '
-        'chkAutoBD
+        'chkNoSaveImagesToNfo
         '
-        Me.chkAutoBD.AutoSize = True
-        Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
-        Me.chkAutoBD.Name = "chkAutoBD"
-        Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
-        Me.chkAutoBD.TabIndex = 2
-        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkAutoBD.UseVisualStyleBackColor = True
+        Me.chkNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 38)
+        Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
+        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(368, 24)
+        Me.chkNoSaveImagesToNfo.TabIndex = 86
+        Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
+        Me.chkNoSaveImagesToNfo.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoSaveImagesToNfo.UseVisualStyleBackColor = True
         '
-        'btnBrowse
+        'GroupBox2
         '
-        Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(358, 15)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnBrowse.TabIndex = 1
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        '
-        'txtBDPath
-        '
-        Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
-        Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(345, 22)
-        Me.txtBDPath.TabIndex = 0
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.btnETBrowse)
-        Me.GroupBox1.Controls.Add(Me.tdxtETPath)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 104)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(389, 56)
-        Me.GroupBox1.TabIndex = 85
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Extrathunbs Folder"
-        '
-        'btnETBrowse
-        '
-        Me.btnETBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnETBrowse.Location = New System.Drawing.Point(358, 15)
-        Me.btnETBrowse.Name = "btnETBrowse"
-        Me.btnETBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnETBrowse.TabIndex = 1
-        Me.btnETBrowse.Text = "..."
-        Me.btnETBrowse.UseVisualStyleBackColor = True
-        '
-        'tdxtETPath
-        '
-        Me.tdxtETPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tdxtETPath.Location = New System.Drawing.Point(7, 17)
-        Me.tdxtETPath.Name = "tdxtETPath"
-        Me.tdxtETPath.Size = New System.Drawing.Size(345, 22)
-        Me.tdxtETPath.TabIndex = 0
-        Me.tdxtETPath.Text = "extrathunbs\"
+        Me.GroupBox2.Controls.Add(Me.chkActorCache)
+        Me.GroupBox2.Controls.Add(Me.chkNoSaveImagesToNfo)
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 241)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(389, 71)
+        Me.GroupBox2.TabIndex = 88
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Images"
         '
         'frmMovieOutputSettings
         '
@@ -460,18 +500,19 @@ Partial Class frmMovieOutputSettings
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.GroupBox21.ResumeLayout(False)
         Me.GroupBox21.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.GroupBox16.ResumeLayout(False)
-        Me.GroupBox16.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -508,5 +549,8 @@ Partial Class frmMovieOutputSettings
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents btnETBrowse As System.Windows.Forms.Button
     Friend WithEvents tdxtETPath As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkActorCache As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNoSaveImagesToNfo As System.Windows.Forms.CheckBox
 
 End Class

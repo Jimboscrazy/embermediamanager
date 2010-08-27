@@ -322,7 +322,8 @@ Public Class EmberNativeScraperModule
                         If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                             DBMovie.PosterPath = pResults.ImagePath
                             RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
-                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                            'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                            If Master.GlobalScrapeMod.NFO Then
                                 DBMovie.Movie.Thumb = pResults.Posters
                             End If
                         End If
@@ -334,7 +335,8 @@ Public Class EmberNativeScraperModule
                             If Not String.IsNullOrEmpty(pResults.ImagePath) Then
                                 DBMovie.PosterPath = pResults.ImagePath
                                 RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.PosterItem, True) '4, True)
-                                If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                If Master.GlobalScrapeMod.NFO Then
                                     DBMovie.Movie.Thumb = pResults.Posters
                                 End If
                             End If
@@ -355,7 +357,8 @@ Public Class EmberNativeScraperModule
                         If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                             DBMovie.FanartPath = fResults.ImagePath
                             RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
-                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                            'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                            If Master.GlobalScrapeMod.NFO Then
                                 DBMovie.Movie.Fanart = fResults.Fanart
                             End If
                         End If
@@ -368,7 +371,8 @@ Public Class EmberNativeScraperModule
                             If Not String.IsNullOrEmpty(fResults.ImagePath) Then
                                 DBMovie.FanartPath = fResults.ImagePath
                                 RaiseEvent MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
-                                If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                If Master.GlobalScrapeMod.NFO Then
                                     DBMovie.Movie.Fanart = fResults.Fanart
                                 End If
                             End If

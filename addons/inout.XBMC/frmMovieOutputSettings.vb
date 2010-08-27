@@ -110,4 +110,7 @@ Public Class frmMovieOutputSettings
         btnDown.Enabled = (order < ModulesManager.Instance.externalOutputModules.Count - 1)
         btnUp.Enabled = (order > 0)
     End Sub
+    Public Sub SetUp()
+        Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
+    End Sub
 End Class

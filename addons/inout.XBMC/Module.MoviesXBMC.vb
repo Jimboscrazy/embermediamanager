@@ -553,6 +553,8 @@ Public Class OutputXBMC_Module
         eSettings.PosterTBN = fOutputSettings.chkPosterTBN.Checked
         eSettings.AutoBD = fOutputSettings.chkAutoBD.Checked
         eSettings.BDPath = fOutputSettings.txtBDPath.Text
+        eSettings.NoSaveImagesToNfo = fOutputSettings.chkNoSaveImagesToNfo.Checked
+
         eSettings.Save("Output.")
     End Sub
     Sub RetrieveMySettings()
@@ -574,6 +576,7 @@ Public Class OutputXBMC_Module
         fOutputSettings.chkPosterTBN.Checked = eSettings.PosterTBN
         fOutputSettings.chkAutoBD.Checked = eSettings.AutoBD
         fOutputSettings.txtBDPath.Text = eSettings.BDPath
+        fOutputSettings.chkNoSaveImagesToNfo.Checked = eSettings.NoSaveImagesToNfo
     End Sub
 
     Public Function IsAllowedToDownload(ByVal mMovie As EmberAPI.Structures.DBMovie, ByVal fType As EmberAPI.Enums.ImageType, Optional ByVal isChange As Boolean = False) As Boolean Implements EmberAPI.Interfaces.EmberMovieOutputModule.IsAllowedToDownload
@@ -648,6 +651,7 @@ Public Class MySettings
     Private _movienametbn As Boolean
     Private _movienamenfo As Boolean
     Private _movienfo As Boolean
+    Private _nosaveimagestonfo As Boolean
     Sub New()
         _movienamenfo = True
         _movienamefanartjpg = True
@@ -673,6 +677,7 @@ Public Class MySettings
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
         AdvancedSettings.SetSetting(String.Concat(prefix, "BDPath"), BDPath)
         AdvancedSettings.SetSetting(String.Concat(prefix, "ETPath"), ETPath)
+        AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "NoSaveImagesToNfo"), NoSaveImagesToNfo)
         'AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
     Sub Load(ByVal prefix As String)
@@ -693,6 +698,7 @@ Public Class MySettings
         AutoBD = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "AutoBD"), AutoBD)
         BDPath = AdvancedSettings.GetSetting(String.Concat(prefix, "BDPath"), BDPath)
         ETPath = AdvancedSettings.GetSetting(String.Concat(prefix, "ETPath"), ETPath)
+        NoSaveImagesToNfo = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "NoSaveImagesToNfo"), NoSaveImagesToNfo)
         'VideoTSParent = AdvancedSettings.GetBooleanSetting(String.Concat(prefix, "VideoTSParent"), VideoTSParent)
     End Sub
 
@@ -841,6 +847,14 @@ Public Class MySettings
         End Get
         Set(ByVal value As Boolean)
             Me._movienfo = value
+        End Set
+    End Property
+    Public Property NoSaveImagesToNfo() As Boolean
+        Get
+            Return Me._nosaveimagestonfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nosaveimagestonfo = value
         End Set
     End Property
 End Class

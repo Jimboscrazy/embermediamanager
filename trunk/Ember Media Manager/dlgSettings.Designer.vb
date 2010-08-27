@@ -132,7 +132,6 @@ Partial Class dlgSettings
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.chkActorCache = New System.Windows.Forms.CheckBox
-        Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.GroupBox17 = New System.Windows.Forms.GroupBox
         Me.chkUseImgCacheUpdaters = New System.Windows.Forms.CheckBox
@@ -1788,7 +1787,6 @@ Partial Class dlgSettings
         'GroupBox9
         '
         Me.GroupBox9.Controls.Add(Me.chkActorCache)
-        Me.GroupBox9.Controls.Add(Me.chkNoSaveImagesToNfo)
         Me.GroupBox9.Controls.Add(Me.chkSingleScrapeImages)
         Me.GroupBox9.Controls.Add(Me.GroupBox17)
         Me.GroupBox9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -1810,18 +1808,6 @@ Partial Class dlgSettings
         Me.chkActorCache.Text = "Enable Actors Cache"
         Me.chkActorCache.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkActorCache.UseVisualStyleBackColor = True
-        '
-        'chkNoSaveImagesToNfo
-        '
-        Me.chkNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 53)
-        Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
-        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(172, 34)
-        Me.chkNoSaveImagesToNfo.TabIndex = 4
-        Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
-        Me.chkNoSaveImagesToNfo.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoSaveImagesToNfo.UseVisualStyleBackColor = True
         '
         'chkSingleScrapeImages
         '
@@ -6821,13 +6807,13 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(894, 629)
-        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlInput)
         Me.Controls.Add(Me.pnlTVOutput)
         Me.Controls.Add(Me.pnlOutput)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.Panel2)
@@ -7117,7 +7103,6 @@ Partial Class dlgSettings
     Friend WithEvents tbFanartQual As System.Windows.Forms.TrackBar
     Friend WithEvents Label26 As System.Windows.Forms.Label
     Friend WithEvents chkFanartOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents chkNoSaveImagesToNfo As System.Windows.Forms.CheckBox
     Friend WithEvents tcCleaner As System.Windows.Forms.TabControl
     Friend WithEvents tpStandard As System.Windows.Forms.TabPage
     Friend WithEvents tpExpert As System.Windows.Forms.TabPage

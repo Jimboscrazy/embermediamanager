@@ -1507,7 +1507,7 @@ Public Class dlgSettings
         Me.btnRemoveEpFilter.Enabled = Not Me.chkNoFilterEpisode.Checked
     End Sub
 
-    Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSaveImagesToNfo.CheckedChanged
+    Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2329,7 +2329,6 @@ Public Class dlgSettings
             Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
             Me.txtTVSkipLessThan.Text = Master.eSettings.SkipLessThanEp.ToString
-            Me.chkNoSaveImagesToNfo.Checked = Master.eSettings.NoSaveImagesToNfo
             Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
             Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
             Me.chkNoDLTrailer.Checked = Master.eSettings.UpdaterTrailersNoDownload
@@ -3376,7 +3375,6 @@ Public Class dlgSettings
             Master.eSettings.SkipLessThan = Convert.ToInt32(Me.txtSkipLessThan.Text)
             Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
             Master.eSettings.SkipLessThanEp = Convert.ToInt32(Me.txtTVSkipLessThan.Text)
-            Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
             If Me.cbTrailerQuality.SelectedValue IsNot Nothing Then
                 Master.eSettings.PreferredTrailerQuality = DirectCast(Me.cbTrailerQuality.SelectedValue, Enums.TrailerQuality)
@@ -3721,7 +3719,7 @@ Public Class dlgSettings
         Me.chkLockOutline.Text = Master.eLang.GetString(495, "Lock Outline")
         Me.chkLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
         Me.GroupBox9.Text = Master.eLang.GetString(497, "Images")
-        Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
+
         Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Get on Single Scrape")
 
         Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use if no Fanart Found")
