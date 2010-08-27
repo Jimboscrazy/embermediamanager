@@ -5629,7 +5629,7 @@ doCancel:
                             Me.btnFilterDown.Enabled = False
                             Me.btnFilterUp.Enabled = True
                         End If
-                        Try ' On error just ignore this a let it use default
+                        Try ' On error just ignore this and let it use default
                             Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
                             Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
                             Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
@@ -5664,7 +5664,7 @@ doCancel:
                         If Master.eSettings.CheckUpdates AndAlso Not CloseApp Then
                             If EmberAddons.CheckUpdates() > 0 Then
                                 Dim s As String = vbCrLf
-                                For Each a As EmberAddons.Addon In EmberAddons.AddonList
+                                For Each a As EmberAddons.Addon In EmberAddons.NewVersonAddonList
                                     s = String.Concat(s, vbCrLf, a.Name)
                                 Next
                                 fLoading.Hide()

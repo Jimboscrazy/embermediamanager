@@ -631,9 +631,9 @@ End Class
 
 Public Class MySettings
     Private _Enabled As Boolean
-    Private _bdpath As String = String.Empty
+    Private _bdpath As String
     Private _autobd As Boolean
-    Private _etpath As String = String.Empty
+    Private _etpath As String
     Private _videotsparent As Boolean ' to remove
     Private _fanartjpg As Boolean
     Private _movienamemultionly As Boolean
@@ -652,6 +652,8 @@ Public Class MySettings
         _movienamenfo = True
         _movienamefanartjpg = True
         _movienamejpg = True
+        _bdpath = String.Empty
+        _etpath = String.Empty
     End Sub
     Sub Save(ByVal prefix As String)
         AdvancedSettings.SetBooleanSetting(String.Concat(prefix, "Enabled"), Enabled)

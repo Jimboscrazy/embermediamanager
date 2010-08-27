@@ -1,6 +1,6 @@
 ﻿Public Class EmberAddons
     Friend WithEvents bwDownload As New System.ComponentModel.BackgroundWorker
-    Public Shared AddonList As New List(Of Addon)
+    Public Shared NewVersonAddonList As New List(Of Addon)
 
 
     Public Shared Function AllowedVersion(ByVal MinVersion As String, ByVal MaxVersion As String, Optional ByVal currentVersion As String = "") As Boolean
@@ -51,12 +51,12 @@
 
     Public Shared Function CheckUpdates() As Integer
         Dim aCheck As New EmberAddons
-        AddonList.Clear()
+        NewVersonAddonList.Clear()
         aCheck.bwDownload.RunWorkerAsync()
         While aCheck.bwDownload.IsBusy
             Application.DoEvents()
         End While
-        Return AddonList.Count
+        Return NewVersonAddonList.Count
     End Function
 
 
@@ -88,7 +88,7 @@
                                 AddonItem.Category = sType
                                 AddonItem.InstalledVersion = Master.DB.IsAddonInstalled(AddonItem.ID)
                                 If Not AddonItem.InstalledVersion = "0" AndAlso AddonItem.Version > AddonItem.InstalledVersion Then
-                                    AddonList.Add(AddonItem)
+                                    NewVersonAddonList.Add(AddonItem)
                                 End If
                             End If
                         Catch ex As Exception

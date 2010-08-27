@@ -168,8 +168,8 @@
     <Compile Include="frmMovieInputSettings.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="XBMC\clsXBMC_MediaContainers.vb" />
-    <Compile Include="XBMC\clsXBMC_NFO.vb" />
+    <Compile Include="clsXBMC_MediaContainers.vb" />
+    <Compile Include="clsXBMC_NFO.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmTVOutputSettings.resx">
@@ -211,6 +211,9 @@
       <Project>{C16FB22E-1041-4FCD-9118-F4A6BAC12E4D}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="XBMC\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
