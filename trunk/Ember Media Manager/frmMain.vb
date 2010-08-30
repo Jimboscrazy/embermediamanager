@@ -384,6 +384,7 @@ Public Class frmMain
     End Sub
 
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutToolStripMenuItem.Click
+        Application.DoEvents()
         Using dAbout As New dlgAbout
             dAbout.ShowDialog()
         End Using
@@ -8842,6 +8843,7 @@ doCancel:
     End Sub
 
     Private Sub CheckUpdatesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckUpdatesToolStripMenuItem.Click
+        Application.DoEvents()
         If Functions.CheckNeedUpdate() Then
             Using dNewVer As New dlgNewVersion
                 If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then

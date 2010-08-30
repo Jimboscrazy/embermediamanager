@@ -281,24 +281,15 @@ Public NotInheritable Class dlgAbout
 
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
         Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
-
         For i As Integer = 0 To CredList.Count - 1
-
             CurrentY = PicY + FontMod
             FontMod += CredList(i).Font.Size + 5
-
             CurrentX = (Me.picDisplay.ClientSize.Width - e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
-
             If i = CredList.Count - 1 AndAlso CurrentY < -25 Then PicY = Me.picDisplay.ClientSize.Height
-
             e.Graphics.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
-
         Next
-
         PicY -= 1
-
         System.Threading.Thread.Sleep(30)
-
         Me.picDisplay.Invalidate()
     End Sub
 

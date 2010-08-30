@@ -161,6 +161,7 @@ Public Class ModulesManager
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
                                         _externalProcessorModule.ProcessorModule.Enabled = i.Enabled
+                                        _externalProcessorModule.ModuleOrder = i.ModuleOrder
                                         found = True
                                     End If
                                 Next
@@ -220,13 +221,10 @@ Public Class ModulesManager
                                 For Each i In Master.eSettings.EmberModules
                                     If i.AssemblyName = _externalProcessorModule.AssemblyName Then
                                         _externalProcessorModule.ProcessorModule.Enabled = i.Enabled
+                                        _externalProcessorModule.ModuleOrder = i.ModuleOrder
                                         found = True
                                     End If
                                 Next
-                                'If Not found AndAlso Path.GetFileNameWithoutExtension(file).Contains("generic.EmberCore") Then
-                                '_externalProcessorModule.ProcessorModule.Enabled = True
-                                'End If
-                                'AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
 
                             End If
                         Catch ex As Exception
