@@ -511,7 +511,7 @@ Public Class ModulesManager
         End Try
         Return mMovie
     End Function
-    Public Function SaveMovieFromInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean
+    Public Function SaveMovieToInfoSheet(ByRef movieToSave As EmberAPI.Structures.DBMovie) As Boolean
         Dim ret As Boolean = False
         Try
             For Each _externalModule As _externalOutputModuleClass In externalOutputModules.Where(Function(e) e.ProcessorModule.Enabled).OrderBy(Function(e) e.ModuleOrder)

@@ -154,7 +154,7 @@
     <Compile Include="clsAPIHashing.vb" />
     <Compile Include="clsAPILocalization.vb" />
     <Compile Include="clsAPIDVD.vb" />
-    <Compile Include="clsAPINFO.vb" />
+    <Compile Include="clsAPIMediaSheet.vb" />
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIModules.vb" />

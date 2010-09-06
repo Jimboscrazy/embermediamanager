@@ -495,7 +495,7 @@ Public Class MediaSheet
         Dim mMovie As MediaContainers.Movie = ModulesManager.Instance.LoadMovieFromInfoSheet(sPath, isSingle)
         If String.IsNullOrEmpty(mMovie.Title) Then
             ' Last try, check Ember Specific Info Sheet
-            'mMovie = NFO.LoadEmberMovieFromDisk(sPath, isSingle)
+            'mMovie = LoadEmberMovieFromDisk(sPath, isSingle)
         End If
         Return mMovie
     End Function
@@ -585,7 +585,7 @@ Public Class MediaSheet
 
     Public Shared Sub SaveMovieToDisk(ByRef movieToSave As Structures.DBMovie)
         Try
-            ModulesManager.Instance.SaveMovieFromInfoSheet(movieToSave)
+            ModulesManager.Instance.SaveMovieToInfoSheet(movieToSave)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
